@@ -1,0 +1,57 @@
+matrixfw
+
+desc:
+-----
+
+output: entweder auf screen (emu) und/oder auf dem device. 
+es ist möglich mehrere screens zu verwenden, entweder alle separat 
+oder zusammengeschlossen als ein grosser schirm
+
+input: soundquelle wird als input verwendet (mik oder line-in).
+
+generatoren: 
+-plasma
+-text scroller
+-animierte blockfüller
+-audio lautstärke als balken
+-beat detection
+-blinkenlights IMPORTER
+
+mixer: mehrere generatoren (erste version: nur 2) werden zusammen als ein bild angezeigt,
+mögliche mix effekte:
+-mix (bild1/2 + bild2/2)
+-negativ mix
+-add sat
+-multiplikation
+
+
+das ergibt folgende pakete:
+
+output
+------
+in diesem paket werden die outputs generiert, implementation des SeMatrixOutput interface
+
+input
+-----
+in diesem paket werden die inhalte der screen generiert, implementation des 
+SeMatrixInput Interfaces
+
+mixer
+-----
+in diesem paket werden die screens gemixt, implementation des SeMatrixMixrt interfaces
+
+glue
+----
+in diesem paket wird der ganze ablauf gesteuert, weiter existiert hier auch die 
+konfiguration und der main buffer.
+
+
+
+
+
+    
+	@Override
+	public void update(MatrixData matrixData) {
+		BufferedImage image = getBufferedImageFromInternalBuffer();
+		//PImage pimage = new PImage(matrixData.getScreenXSize(), matrixData.getScreenYSize(), BufferedImage.TYPE_INT_RGB);
+		PImage pimage = new PImage(image);
