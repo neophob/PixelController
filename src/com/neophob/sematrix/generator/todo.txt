@@ -1,0 +1,10 @@
+
+fx:
+-fire
+-textscroller
+
+
+pd:
+---
+http://www.youtube.com/user/cheetomoskeeto#g/c/12DC9A161D8DC5DC
+
