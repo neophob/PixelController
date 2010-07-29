@@ -28,7 +28,8 @@ public abstract class Generator {
 		IMAGE(2),
 		PLASMA(3),
 		SIMPLECOLORS(4),
-		VOLUMEDISPLAY(5);
+		VOLUMEDISPLAY(5),
+		METABALLS(6);
 		
 		private int id;
 		
