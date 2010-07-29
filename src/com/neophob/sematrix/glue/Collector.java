@@ -23,6 +23,7 @@ import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Image;
+import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
@@ -106,6 +107,7 @@ public class Collector {
 			new SimpleColors();
 			new VolumeDisplay(20);
 			new PassThruGen();
+			new Metaballs();
 			
 			//create effects
 			new Inverter();
