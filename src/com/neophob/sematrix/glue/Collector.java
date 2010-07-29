@@ -42,6 +42,8 @@ public class Collector {
 
 		private static Collector instance = new Collector();
 		
+		private boolean randomMode = false;
+
 		private boolean init;
 		private PApplet papplet;
 		private MatrixData matrix;
@@ -101,8 +103,8 @@ public class Collector {
 		 */
 		private void initSystem() {
 			//create generators
-			new Blinkenlights("bnf_auge.bml");//torus.bml");
-			new Image("ccc-hdl-alex.preview.jpg");
+			new Blinkenlights("torus.bml");
+			new Image("check.jpg");
 			new Plasma2();
 			new SimpleColors();
 			new VolumeDisplay(20);
@@ -243,11 +245,19 @@ public class Collector {
 		public int getFps() {
 			return fps;
 		}
+		
+		public boolean isRandomMode() {
+			return randomMode;
+		}
 
+		public void setRandomMode(boolean randomMode) {
+			this.randomMode = randomMode;
+		}
+		
 		/*
 		 * MATRIX ======================================================
 		 */
-		
+
 		public MatrixData getMatrix() {
 			return matrix;
 		}

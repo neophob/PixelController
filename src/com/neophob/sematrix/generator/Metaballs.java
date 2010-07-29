@@ -1,11 +1,7 @@
 package com.neophob.sematrix.generator;
 
-import java.util.logging.Logger;
 
 public class Metaballs extends Generator {
-
-	static Logger log = Logger.getLogger(Image.class.getName());
-
 	int numBlobs = 3;
 
 	//TODO make movement dynamic
