@@ -28,7 +28,8 @@ public class TcpServer implements Runnable {
 		CHANGE_OUTPUT,
 		CHANGE_FADER,
 		BLINKEN,
-		IMAGE
+		IMAGE,
+		RANDOM
 	}
 
 	private static Logger log = Logger.getLogger(TcpServer.class.getName());
@@ -261,6 +262,18 @@ public class TcpServer implements Runnable {
 					String fileToLoad = msg[1];
 					Image img = (Image)Collector.getInstance().getGenerator(GeneratorName.IMAGE);
 					img.loadFile(fileToLoad);
+				} catch (Exception e) {e.printStackTrace();}
+				break;
+
+			case RANDOM:
+				try {
+					String onOrOff = msg[1];
+					if (onOrOff.equalsIgnoreCase("ON")) {
+						Collector.getInstance().setRandomMode(true);
+					}
+					if (onOrOff.equalsIgnoreCase("OFF")) {
+						Collector.getInstance().setRandomMode(false);						
+					}
 				} catch (Exception e) {e.printStackTrace();}
 				break;
 				
