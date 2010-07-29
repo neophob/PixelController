@@ -68,7 +68,7 @@ public class VisualDaemon extends PApplet {
 
 		//screen nr, fx nr
 //		Collector.getInstance().mapInputToScreen(0, 0);
-		Collector.getInstance().mapInputToScreen(1, 3);
+		Collector.getInstance().mapInputToScreen(1, 4);
 		
 		nwh = new NewWindowHelper(true);
 		/**/

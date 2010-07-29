@@ -254,13 +254,15 @@ public class TcpServer implements Runnable {
 					Blinkenlights blink = (Blinkenlights)Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS);
 					blink.loadFile(fileToLoad);
 				} catch (Exception e) {e.printStackTrace();}
-
+				break;
+				
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
 					Image img = (Image)Collector.getInstance().getGenerator(GeneratorName.IMAGE);
 					img.loadFile(fileToLoad);
 				} catch (Exception e) {e.printStackTrace();}
+				break;
 				
 			default:
 				System.out.println("valid: "+cmd);

@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.MatrixTest;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 
@@ -32,7 +31,7 @@ public class InternalBuffer extends PApplet {
     public void setup() {
     	log.log(Level.INFO, "create frame with size "+x+"/"+y);
         size(x,y);
-        frameRate(MatrixTest.FPS);
+        frameRate(Collector.getInstance().getFps());
         background(0,0,0);
     }
 

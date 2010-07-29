@@ -22,7 +22,7 @@ public class Plasma2 extends Generator {
 
 	@Override
 	public void update() {
-		float  xc = 25;
+		float  xc = 20;
 
 		// Enable this to control the speed of animation regardless of CPU power
 		// int timeDisplacement = millis()/30;
@@ -33,19 +33,19 @@ public class Plasma2 extends Generator {
 		// No need to do this math for every pixel
 		float calculation1 = PApplet.sin( PApplet.radians(timeDisplacement * 0.61655617f));
 		float calculation2 = PApplet.sin( PApplet.radians(timeDisplacement * -3.6352262f));
-int aaa = 1024;
+		
+		int aaa = 1024;
 		int ySize = getInternalBufferYSize();
 		// Plasma algorithm
 		for (int x = 0; x < getInternalBufferXSize(); x++, xc++) {
-			float yc = 25;
+			float yc = 20;
 			float s1 = aaa + aaa * PApplet.sin(PApplet.radians(xc) * calculation1 );
 
 			for (int y = 0; y < ySize; y++, yc++) {
 				float s2 = aaa + aaa * PApplet.sin(PApplet.radians(yc) * calculation2 );
 				float s3 = aaa + aaa * PApplet.sin(PApplet.radians((xc + yc + timeDisplacement * 5) / 2));  
-				float s  = (s1+ s2 + s3) / 3;
-				//pg.pixels[x+y*pg.width] = PApplet.color(s, 255f - s / 2.0f, 255f);
-				this.internalBuffer[y*this.getInternalBufferXSize()+x] = Color.HSBtoRGB(s/255f, /*255f*(255f - s / 2.0f)*/0.5f, 1.0f);
+				float s  = (s1+ s2 + s3) / (6f*255f);
+				this.internalBuffer[y*this.getInternalBufferXSize()+x] = Color.HSBtoRGB(s, 0.8f, 0.9f);
 			}
 		}   
 	}
