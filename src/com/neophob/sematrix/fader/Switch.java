@@ -4,7 +4,7 @@ package com.neophob.sematrix.fader;
 public class Switch extends Fader {
 
 	public Switch() {
-		super(FaderName.SWITCH, 0);
+		super(FaderName.SWITCH, 50);
 	}
 	
 	@Override
