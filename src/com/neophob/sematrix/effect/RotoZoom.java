@@ -24,31 +24,31 @@ public class RotoZoom extends Effect {
 		int[] ret = new int[buffer.length];
 
 		int x,y,offs=0,soffs;
-		float tx,ty,txx=0,tyy=0,ca,sa;
+		float tx,ty;
 		
-		ca=(float)(scale*Math.cos(angle));//cosAng);
-		sa=(float)(scale*Math.sin(angle));//sinAng);
+		float ca=(float)(scale*Math.cos(angle));//cosAng);
+		float sa=(float)(scale*Math.sin(angle));//sinAng);
 
+		float txx=0-(generator.getInternalBufferYSize()/2)*sa;
+		float tyy=0+(generator.getInternalBufferYSize()/2)*ca;
+		
 		for (y=0;y<generator.getInternalBufferYSize();y++) {
-			txx+=-sa;
+			txx-=sa;
 			tyy+=ca;
 			ty=tyy;
 			tx=txx;
 			for (x=0;x<generator.getInternalBufferXSize();x++) {
 				tx+=ca;
 				ty+=sa;
-				soffs=(int)(ty)*generator.getInternalBufferXSize();
-				soffs+=(int)tx;
-				
-				int a = buffer[soffs&(buffer.length-1)];
-				ret[offs++]=a;
+				soffs=(int)tx+(int)(ty)*generator.getInternalBufferXSize();
+				ret[offs++]=buffer[soffs&(buffer.length-1)];
 			}
 		}
 
 		angle+=0.01f;
 		scale+=dscalee;
 //		if (scale<0.53 || scale>3) {
-		if (scale<0.6 || scale>1.4) {
+		if (scale<0.13f || scale>1.6f) {
 			dscalee*=-1;
 		}
 		
