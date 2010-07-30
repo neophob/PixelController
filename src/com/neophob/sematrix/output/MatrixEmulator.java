@@ -9,12 +9,12 @@ public class MatrixEmulator extends Output {
 	private static final int RAHMEN_SIZE = 4;
 	private static final int LED_SIZE = 16;
 	private static final int LED_ABSTAND = 0;
-		
+
 	public MatrixEmulator() {
 		super(MatrixEmulator.class.toString());
 
-        int x = getOneMatrixXSize()*Collector.getInstance().getNrOfScreens();
-        int y = getOneMatrixYSize();
+		int x = getOneMatrixXSize()*Collector.getInstance().getNrOfScreens();
+		int y = getOneMatrixYSize();
 
 		Collector.getInstance().getPapplet().size(x, y);
 		Collector.getInstance().getPapplet().background(33,33,33);
@@ -26,7 +26,7 @@ public class MatrixEmulator extends Output {
 	private int getOneMatrixYSize() {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+LED_SIZE);
 	}
-	
+
 	@Override
 	public void update() {
 		for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
@@ -43,20 +43,29 @@ public class MatrixEmulator extends Output {
 		int xOfs = n*(getOneMatrixXSize()+LED_ABSTAND);
 		int ofs=0;
 		int tmp,r,g,b;
-		
+
 		PApplet parent = Collector.getInstance().getPapplet();
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
 			for (int x=0; x<matrixData.getDeviceXSize(); x++) {					
 				tmp = buffer[ofs++];
-			    r = (int) ((tmp>>16) & 255);
-		        g = (int) ((tmp>>8)  & 255);       
-		        b = (int) ( tmp      & 255);
+				r = (int) ((tmp>>16) & 255);
+				g = (int) ((tmp>>8)  & 255);       
+				b = (int) ( tmp      & 255);
+
+				//simulate 4bit color
+				r >>= 4;
+				g >>= 4;
+				b >>= 4;
+				r <<= 4;
+				g <<= 4;
+				b <<= 4;
+
 				parent.fill(r,g,b);
 				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+LED_SIZE),RAHMEN_SIZE+y*(RAHMEN_SIZE+LED_SIZE),LED_SIZE,LED_SIZE);
 			}		
 		}
 	}
-	
+
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
