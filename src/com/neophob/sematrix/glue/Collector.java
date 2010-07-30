@@ -114,7 +114,7 @@ public class Collector {
 			//create effects
 			new Inverter();
 			new PassThru();
-			new RotoZoom(0.3f, 0.9f);
+			new RotoZoom(0.7f, 2.3f);
 			new RndVerticalShift();
 			new RndHorizShift();
 			

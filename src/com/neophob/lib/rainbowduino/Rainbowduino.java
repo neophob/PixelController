@@ -252,6 +252,7 @@ public class Rainbowduino implements Runnable {
 		}
 		cmdfull[data.length+5] = END_OF_DATA;
 		port.write(cmdfull);
+		//TODO add error counter and disable write after an amout f erros
 	}
 
 

@@ -2,6 +2,10 @@ package com.neophob.sematrix.glue;
 
 import java.util.Random;
 
+import com.neophob.sematrix.generator.Blinkenlights;
+import com.neophob.sematrix.generator.Image;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
+
 public class Shuffler {
 
 	private Shuffler() {
@@ -62,5 +66,51 @@ public class Shuffler {
 			Collector.getInstance().getAllOutputMappings().get(1).getFader().startFade(rand.nextInt(5), 1);
 		}
 
+		if (blah == 31) {
+			int nr = rand.nextInt(4);
+			String fileToLoad="";
+			switch (nr) {
+			case 0:
+				fileToLoad="circle.jpg";
+				break;
+			case 1:
+				fileToLoad="half.jpg";
+				break;
+			case 2:
+				fileToLoad="gradient.jpg";
+				break;
+			case 3:
+				fileToLoad="check.jpg";
+				break;
+			}
+			Image img = (Image)Collector.getInstance().getGenerator(GeneratorName.IMAGE);
+			img.loadFile(fileToLoad);
+		}
+		
+		if (blah == 34) {
+			int nr = rand.nextInt(4);
+			String fileToLoad="";
+			switch (nr) {
+			case 0:
+				fileToLoad="torus.bml";
+				break;
+			case 1:
+				fileToLoad="bnf_auge.bml";
+				break;
+			case 2:
+				fileToLoad="bb-frogskin2.bml";
+				break;
+			case 3:
+				fileToLoad="bb-rauten2.bml";
+				break;
+			case 4:
+				fileToLoad="bb-spiral2fast.bml";
+				break;
+			}
+			Blinkenlights blink = (Blinkenlights)Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS);
+			blink.loadFile(fileToLoad);
+		}
+
+		
 	}
 }
