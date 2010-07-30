@@ -126,10 +126,10 @@ public class Collector {
 			
 			//create 5 visuals
 			new Visual(GeneratorName.PLASMA);
+			new Visual(GeneratorName.METABALLS);
 			new Visual(GeneratorName.SIMPLECOLORS);
 			new Visual(GeneratorName.BLINKENLIGHTS);
-			new Visual(GeneratorName.SIMPLECOLORS);
-			new Visual(GeneratorName.PLASMA);
+			new Visual(GeneratorName.IMAGE);
 		}
 		
 		/**

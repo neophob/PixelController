@@ -6,14 +6,10 @@ import java.util.List;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
-import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.listener.TcpServer;
-import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.MatrixEmulator;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.RainbowduinoDevice;
@@ -47,7 +43,6 @@ public class VisualDaemon extends PApplet {
 	public void setup() {
 		Collector.getInstance().init(this, FPS, NR_OF_SCREENS, 8, 8);
 		srv = new TcpServer(this, 3443, "127.0.0.1", 3445);		
-		
 		osd = new MatrixEmulator();
 		
 		frameRate(Collector.getInstance().getFps());
@@ -60,20 +55,10 @@ public class VisualDaemon extends PApplet {
 			rainbowduino = null;
 		}
 		
-		Visual v = Collector.getInstance().getVisual(0);
-		v.setEffect1(Collector.getInstance().getEffect(EffectName.RND_HORIZONTAL_SHIFT));
-		v.setGenerator1(Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS));
-		v.setEffect2(Collector.getInstance().getEffect(EffectName.PASSTHRU));
-		v.setGenerator2(Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS));
-		v.setMixer(Collector.getInstance().getMixer(MixerName.ADDSAT));
-
 		//screen nr, fx nr
 		//Collector.getInstance().mapInputToScreen(0, 5);
-		Collector.getInstance().mapInputToScreen(1, 4);
 		
 		nwh = new NewWindowHelper(true);
-		/**/
-		
 	}
 	
 	public void draw() { 
@@ -101,23 +86,6 @@ public class VisualDaemon extends PApplet {
 		}
 
 		frame++;
-		/*
-		if ((frame%400)==65) {
-			Visual v = Collector.getInstance().getVisual(0);
-			Fader f = new SlideLeftRight(0,4,0);
-			v.setFader(f);			
-		}
-		if ((frame%400)==265) {
-			Visual v = Collector.getInstance().getVisual(4);
-			Fader f = new Crossfader(4,0,0);
-			v.setFader(f);			
-		}
-/*		if ((frame%500)==320) {
-			Visual v = Collector.getInstance().getVisual(0);
-			v.setGenerator2( 0 );
-			v.setEffect2( 2 );
-			v.setMixer( 0 );
-		}*/
 	}
 	
 	public static void main(String args[]) {
