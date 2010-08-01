@@ -43,6 +43,7 @@ public class TcpServer implements Runnable {
 	private PApplet app;
 	private int sendPort;
 	private String sendHost;
+	private int count=0;
 	
 	public TcpServer(PApplet app, int port, String sendHost, int sendPort) {
 		this.app = app;
@@ -73,13 +74,18 @@ public class TcpServer implements Runnable {
 	public void run() {
 		log.log(Level.INFO,	"Ready receiving messages...");
 		while (Thread.currentThread() == runner) {
+			count++;
 			try {
-				Thread.sleep(20);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 			}
 
 			if (tcpServer!=null) {
 				sendSoundStatus();
+				if (Collector.getInstance().isRandomMode() && (count%20)==2) {
+					sendStatusToGui();					
+				}
+				
 				Client c = tcpServer.available();
 				if (c!=null && c.available()>0) {					
 					String msg = lastMsg+StringUtils.replace(c.readString(), "\n", "");
@@ -139,37 +145,7 @@ public class TcpServer implements Runnable {
 			
 			switch (cmd) {
 			case STATUS:
-				log.log(Level.INFO,	"Send Status");				
-				sendFudiMsg("hello from processing");
-				
-				String gen1="";
-				String gen2="";
-				String fx1="";
-				String fx2="";
-				String mix="";
-				for (Visual v: Collector.getInstance().getAllVisuals()) {
-					gen1+=v.getGenerator1Idx()+" ";
-					gen2+=v.getGenerator2Idx()+" ";
-					fx1+=v.getEffect1Idx()+" ";
-					fx2+=v.getEffect2Idx()+" ";
-					mix+=v.getMixerIdx()+" ";					
-				}
-				
-				String fader="";
-				String output="";
-				for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
-					fader+=o.getFader().getId()+" ";
-					output+=o.getVisualId()+" ";
-				}
-
-				sendFudiMsg("GENERATOR_A "+gen1);
-				sendFudiMsg("GENERATOR_B "+gen2);
-				sendFudiMsg("EFFECT_A "+fx1);
-				sendFudiMsg("EFFECT_B "+fx2);
-				sendFudiMsg("MIXER "+mix);
-				sendFudiMsg("FADER "+fader);
-				sendFudiMsg("OUTPUT "+output);
-
+				sendStatusToGui();
 				break;
 
 			case CHANGE_GENERATOR_A:
@@ -297,7 +273,8 @@ public class TcpServer implements Runnable {
 						Collector.getInstance().setRandomMode(true);
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
-						Collector.getInstance().setRandomMode(false);						
+						Collector.getInstance().setRandomMode(false);
+						this.sendStatusToGui();
 					}
 				} catch (Exception e) {e.printStackTrace();}
 				break;
@@ -326,6 +303,40 @@ public class TcpServer implements Runnable {
 			client.write(msg+";");	
 		}		
 	}
+	
+	/**
+	 * 
+	 */
+	private void sendStatusToGui() {
+		String gen1="";
+		String gen2="";
+		String fx1="";
+		String fx2="";
+		String mix="";
+		for (Visual v: Collector.getInstance().getAllVisuals()) {
+			gen1+=v.getGenerator1Idx()+" ";
+			gen2+=v.getGenerator2Idx()+" ";
+			fx1+=v.getEffect1Idx()+" ";
+			fx2+=v.getEffect2Idx()+" ";
+			mix+=v.getMixerIdx()+" ";					
+		}
+		
+		String fader="";
+		String output="";
+		for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
+			fader+=o.getFader().getId()+" ";
+			output+=o.getVisualId()+" ";
+		}
+
+		sendFudiMsg("GENERATOR_A "+gen1);
+		sendFudiMsg("GENERATOR_B "+gen2);
+		sendFudiMsg("EFFECT_A "+fx1);
+		sendFudiMsg("EFFECT_B "+fx2);
+		sendFudiMsg("MIXER "+mix);
+		sendFudiMsg("FADER "+fader);
+		sendFudiMsg("OUTPUT "+output);
+	}
+	
 	
 	/**
 	 * 
