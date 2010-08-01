@@ -1,4 +1,4 @@
-#N canvas 267 206 974 681 10;
+#N canvas 2 22 974 681 10;
 #X obj 12 384 cnv 15 220 120 empty empty netsend 20 12 0 14 -257985
 -66577 0;
 #N canvas 0 183 1417 617 send 0;
@@ -430,36 +430,38 @@
 #X text 664 -63 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
 #X text 740 -80 Mixer: Off \, AddSat \, Multiply \, Mix;
-#X obj 255 309 cnv 15 220 180 empty empty blinken 20 12 0 14 -261234
--66577 0;
-#X msg 267 339 send BLINKEN torus.bml;
-#X msg 267 362 send BLINKEN bnf_auge.bml;
-#X obj 267 454 send blinkenfile;
-#X obj 492 309 cnv 15 220 180 empty empty image 20 12 0 14 -261682
--66577 0;
-#X obj 504 437 send image;
-#X msg 504 388 send IMAGE gradient.jpg;
-#X msg 504 363 send IMAGE half.jpg;
-#X msg 504 339 send IMAGE circle.jpg;
-#X msg 504 412 send IMAGE check.jpg;
+#X obj 375 309 cnv 15 220 180 empty empty blinken_generator 20 12 0
+14 -261234 -66577 0;
+#X msg 387 339 send BLINKEN torus.bml;
+#X msg 387 362 send BLINKEN bnf_auge.bml;
+#X obj 387 454 send blinkenfile;
+#X obj 612 309 cnv 15 220 180 empty empty image_generator 20 12 0 14
+-261682 -66577 0;
+#X obj 624 437 send image;
+#X msg 624 388 send IMAGE gradient.jpg;
+#X msg 624 363 send IMAGE half.jpg;
+#X msg 624 339 send IMAGE circle.jpg;
+#X msg 624 412 send IMAGE check.jpg;
 #X obj 13 113 cnv 15 220 110 empty empty random_mode 20 12 0 14 -258113
 -66577 0;
 #X obj 25 191 send randommode;
 #X msg 25 143 send RANDOM ON;
 #X msg 25 167 send RANDOM OFF;
-#X msg 267 386 send BLINKEN bb-frogskin2.bml;
-#X msg 267 408 send BLINKEN bb-rauten2.bml;
-#X msg 267 430 send BLINKEN bb-spiral2fast.bml;
-#X obj 817 312 tgl 30 0 empty r_snd_kick kick 32 15 0 15 -232576 -1
--1 0 1;
-#X obj 817 352 tgl 30 0 empty r_snd_hat hat 32 15 0 15 -232576 -1 -1
-0 1;
-#X obj 817 392 tgl 30 0 empty r_snd_snare snare 32 15 0 15 -232576
--1 -1 0 1;
+#X msg 387 386 send BLINKEN bb-frogskin2.bml;
+#X msg 387 408 send BLINKEN bb-rauten2.bml;
+#X msg 387 430 send BLINKEN bb-spiral2fast.bml;
 #X text 321 -78 Effects: OFF \, INVERTER \, ROTOZOOM \, Beat horizontal
 shift \, Beat vertical shift \, Voluminize;
 #X text 22 -78 Generators: OFF \, BLINKENLIGHTS \, IMAGE \, PLASMA
 \, SIMPLECOLORS \, VOLUMEDISPLAY \, Metaballs;
+#X obj 255 309 cnv 15 100 180 empty empty beat 20 12 0 14 -191407 -66577
+0;
+#X obj 267 351 tgl 30 0 empty r_snd_kick kick 32 15 0 15 -232576 -1
+-1 0 1;
+#X obj 267 391 tgl 30 0 empty r_snd_hat hat 32 15 0 15 -232576 -1 -1
+0 1;
+#X obj 267 431 tgl 30 0 empty r_snd_snare snare 32 15 0 15 -232576
+-1 -1 0 1;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
 #X connect 6 0 5 0;
