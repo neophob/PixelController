@@ -10,9 +10,14 @@ fx:
 
 -random mode bug, slowdown, maybe mem leak, loading an image/blm?
 
--colorize output, mit color slider
+-new effect: colorize output, mit color slider
+-new generator: volume visualizer, returns array of int values, zb. wenn mit parameter 5 gibt es 
+ 5 werte zurück mit den buffer werten. ala winamp visualize
 
 -bug: mehrere rotozoomer: speed erhöht sich
+
+-optimize rainbowduino output, workarround multiply output with itself, maybe gamma tab?
+
 
 pd:
 ---

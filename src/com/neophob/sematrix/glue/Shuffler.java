@@ -31,19 +31,9 @@ public class Shuffler {
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
 					v.setGenerator1(rand.nextInt(size));
 				}
-/*				Collector.getInstance().getVisual(0).setGenerator1(rand.nextInt(7));
-				Collector.getInstance().getVisual(1).setGenerator1(rand.nextInt(7));
-				Collector.getInstance().getVisual(2).setGenerator1(rand.nextInt(7));
-				Collector.getInstance().getVisual(3).setGenerator1(rand.nextInt(7));
-				Collector.getInstance().getVisual(4).setGenerator1(rand.nextInt(7));*/				
 			}
 
 			if (blah == 2) {
-				/*Collector.getInstance().getVisual(0).setGenerator2(rand.nextInt(7));
-				Collector.getInstance().getVisual(1).setGenerator2(rand.nextInt(7));
-				Collector.getInstance().getVisual(2).setGenerator2(rand.nextInt(7));
-				Collector.getInstance().getVisual(3).setGenerator2(rand.nextInt(7));
-				Collector.getInstance().getVisual(4).setGenerator2(rand.nextInt(7));*/
 				int size = Collector.getInstance().getAllGenerators().size();
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
 					v.setGenerator2(rand.nextInt(size));
@@ -52,11 +42,6 @@ public class Shuffler {
 			}
 			
 			if (blah == 3) {
-/*				Collector.getInstance().getVisual(0).setEffect1(rand.nextInt(5));
-				Collector.getInstance().getVisual(1).setEffect1(rand.nextInt(5));
-				Collector.getInstance().getVisual(2).setEffect1(rand.nextInt(5));
-				Collector.getInstance().getVisual(3).setEffect1(rand.nextInt(5));
-				Collector.getInstance().getVisual(4).setEffect1(rand.nextInt(5));*/
 				int size = Collector.getInstance().getAllEffects().size();
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
 					v.setEffect1(rand.nextInt(size));
@@ -64,27 +49,16 @@ public class Shuffler {
 			}
 
 			if (blah == 4) {
-/*				Collector.getInstance().getVisual(0).setEffect2(rand.nextInt(5));
-				Collector.getInstance().getVisual(1).setEffect2(rand.nextInt(5));
-				Collector.getInstance().getVisual(2).setEffect2(rand.nextInt(5));
-				Collector.getInstance().getVisual(3).setEffect2(rand.nextInt(5));
-				Collector.getInstance().getVisual(4).setEffect2(rand.nextInt(5));*/
 				int size = Collector.getInstance().getAllEffects().size();
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
 					v.setEffect2(rand.nextInt(size));
 				}
-
 			}
 			
 		}
 		
 		if (hat) {
 			if (blah == 5) {
-/*				Collector.getInstance().getVisual(0).setMixer(rand.nextInt(4));
-				Collector.getInstance().getVisual(1).setMixer(rand.nextInt(4));
-				Collector.getInstance().getVisual(2).setMixer(rand.nextInt(4));
-				Collector.getInstance().getVisual(3).setMixer(rand.nextInt(4));
-				Collector.getInstance().getVisual(4).setMixer(rand.nextInt(4));*/
 				int size = Collector.getInstance().getAllMixer().size();
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
 					v.setMixer(rand.nextInt(size));
