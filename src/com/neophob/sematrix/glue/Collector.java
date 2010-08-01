@@ -10,8 +10,8 @@ import processing.core.PImage;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
-import com.neophob.sematrix.effect.RndHorizShift;
-import com.neophob.sematrix.effect.RndVerticalShift;
+import com.neophob.sematrix.effect.BeatHorizShift;
+import com.neophob.sematrix.effect.BeatVerticalShift;
 import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Crossfader;
@@ -115,8 +115,8 @@ public class Collector {
 			new Inverter();
 			new PassThru();
 			new RotoZoom(0.7f, 2.3f);
-			new RndVerticalShift();
-			new RndHorizShift();
+			new BeatVerticalShift();
+			new BeatHorizShift();
 			
 			//create mixer
 			new AddSat();
@@ -445,6 +445,10 @@ public class Collector {
 				return new SlideLeftRight();
 			}
 			return null;
+		}
+		
+		public int getFaderCount() {
+			return 4;
 		}
 
 }

@@ -2,7 +2,13 @@
 fx:
 -fire
 -textscroller
+-VolumeDisplay as Effect instead Generator?
 
+-prevent black/white output in random mode
+
+-save settings as present
+
+-random mode bug, slowdown, maybe mem leak, loading an image/blm?
 
 pd:
 ---

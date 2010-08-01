@@ -1,17 +1,18 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.input.Sound;
 
-public class RndHorizShift extends HorizShift {
+public class BeatHorizShift extends HorizShift {
 
 	int ammount=0;
 	
-	public RndHorizShift() {
+	public BeatHorizShift() {
 		super(EffectName.RND_HORIZONTAL_SHIFT);
 	}
 
 	public int[] getBuffer(Generator generator) {
-		if (Math.random()>0.9f) {
+		if (Sound.getInstance().isPang()) {
 			ammount = (int)(Math.random()*generator.getInternalBufferXSize());
 		}
 		
