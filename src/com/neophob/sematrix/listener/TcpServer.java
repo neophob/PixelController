@@ -15,6 +15,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.input.Sound;
  
 public class TcpServer implements Runnable {
 	
@@ -66,15 +67,19 @@ public class TcpServer implements Runnable {
 		runner = null;
 	}
 	
+	/**
+	 * 
+	 */
 	public void run() {
 		log.log(Level.INFO,	"Ready receiving messages...");
 		while (Thread.currentThread() == runner) {
 			try {
-				Thread.sleep(50);
+				Thread.sleep(20);
 			} catch (InterruptedException e) {
 			}
 
 			if (tcpServer!=null) {
+				sendSoundStatus();
 				Client c = tcpServer.available();
 				if (c!=null && c.available()>0) {					
 					String msg = lastMsg+StringUtils.replace(c.readString(), "\n", "");
@@ -104,6 +109,26 @@ public class TcpServer implements Runnable {
 		}
 	}
 	
+	/**
+	 * send beat detection to gui
+	 */
+	private void sendSoundStatus() {
+		boolean bhat = Sound.getInstance().isHat();
+		boolean bkick = Sound.getInstance().isKick();
+		boolean bsnare = Sound.getInstance().isSnare();
+		int hat=0, kick=0, snare=0;
+		if (bhat) hat=1;
+		if (bkick) kick=1;
+		if (bsnare) snare=1;
+		sendFudiMsg("SND_HAT "+hat);
+		sendFudiMsg("SND_KICK "+kick);
+		sendFudiMsg("SND_SNARE "+snare);
+	}
+	
+	/**
+	 * 
+	 * @param msg
+	 */
 	private synchronized void processMsg(String[] msg) {
 		if (msg==null || msg.length<1) {
 			return;
@@ -288,7 +313,11 @@ public class TcpServer implements Runnable {
 		}		
 	}
 	
-	private void sendFudiMsg(String msg) {
+	/**
+	 * 
+	 * @param msg
+	 */
+	private synchronized void sendFudiMsg(String msg) {
 		if (client==null) {
 			connectToClient();
 		}

@@ -1,17 +1,18 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.input.Sound;
 
-public class RndVerticalShift extends VerticalShift {
+public class BeatVerticalShift extends VerticalShift {
 
 	int ammount=0;
 	
-	public RndVerticalShift() {
+	public BeatVerticalShift() {
 		super(EffectName.RND_VERTICAL_SHIFT);
 	}
 
 	public int[] getBuffer(Generator generator) {
-		if (Math.random()>0.9f) {
+		if (Sound.getInstance().isPang()) {
 			ammount = (int)(Math.random()*generator.getInternalBufferYSize());
 		}
 		return super.doVerticalShift(generator, ammount);
