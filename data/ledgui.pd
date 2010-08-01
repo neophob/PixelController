@@ -1,7 +1,7 @@
-#N canvas 220 39 970 587 10;
-#X obj 12 254 cnv 15 220 120 empty empty netsend 20 12 0 14 -257985
+#N canvas 209 175 974 681 10;
+#X obj 12 384 cnv 15 220 120 empty empty netsend 20 12 0 14 -257985
 -66577 0;
-#N canvas 0 183 1417 617 send 1;
+#N canvas 0 183 1417 617 send 0;
 #X obj 70 439 netsend;
 #X floatatom 70 465 5 0 0 0 - - -;
 #X obj -22 389 metro 1000;
@@ -250,12 +250,12 @@
 #X connect 105 0 0 0;
 #X connect 106 0 0 0;
 #X connect 107 0 0 0;
-#X restore 33 339 pd send;
-#X msg 33 312 connect 127.0.0.1 3443;
-#X obj 33 284 receive s_connect;
-#X obj 13 114 cnv 15 220 120 empty empty netreceive 20 12 0 14 -260097
+#X restore 33 469 pd send;
+#X msg 33 442 connect 127.0.0.1 3443;
+#X obj 33 414 receive s_connect;
+#X obj 13 244 cnv 15 220 120 empty empty netreceive 20 12 0 14 -260097
 -66577 0;
-#N canvas 33 177 954 552 receive 0;
+#N canvas 13 248 954 552 receive 0;
 #X obj 17 40 inlet;
 #X obj 382 80 route EFFECT_A EFFECT_B;
 #X obj 17 79 route GENERATOR_A GENERATOR_B;
@@ -291,10 +291,17 @@
 #X obj 18 430 s r_fader1;
 #X obj 92 430 s r_fader2;
 #X obj 18 280 route MIXER FADER OUTPUT;
-#X obj 282 279 unpack i i;
-#X obj 282 313 s r_out1;
-#X obj 346 313 s r_out2;
+#X obj 265 334 unpack i i;
+#X obj 265 368 s r_out1;
+#X obj 329 368 s r_out2;
 #X obj 18 396 unpack i i;
+#X obj 411 280 route SND_HAT SND_SNARE SND_KICK;
+#X obj 411 330 s r_snd_hat;
+#X obj 504 330 s r_snd_snare;
+#X obj 604 331 s r_snd_kick;
+#X floatatom 411 304 5 0 0 0 - - -;
+#X floatatom 504 304 5 0 0 0 - - -;
+#X floatatom 604 304 5 0 0 0 - - -;
 #X connect 0 0 2 0;
 #X connect 0 0 34 0;
 #X connect 1 0 15 0;
@@ -329,21 +336,28 @@
 #X connect 34 0 27 0;
 #X connect 34 1 38 0;
 #X connect 34 2 35 0;
+#X connect 34 3 39 0;
 #X connect 35 0 36 0;
 #X connect 35 1 37 0;
 #X connect 38 0 32 0;
 #X connect 38 1 33 0;
-#X restore 26 175 pd receive;
-#X obj 26 145 netreceive 3445;
-#X floatatom 113 175 5 0 0 3 connected_clients - -;
-#X obj 13 -26 cnv 15 220 120 empty empty control 20 12 0 14 -258113
+#X connect 39 0 43 0;
+#X connect 39 1 44 0;
+#X connect 39 2 45 0;
+#X connect 43 0 40 0;
+#X connect 44 0 41 0;
+#X connect 45 0 42 0;
+#X restore 26 305 pd receive;
+#X obj 26 275 netreceive 3445;
+#X floatatom 113 305 5 0 0 3 connected_clients - -;
+#X obj 13 -26 cnv 15 220 120 empty empty control 20 12 0 14 -99865
 -66577 0;
 #X obj 23 1 bng 30 250 50 0 s_connect empty Connect 32 15 0 15 -228856
 -1 -1;
 #X obj 23 46 bng 30 250 50 0 s_disconnect empty Disconnect 32 15 0
 15 -228856 -1 -1;
 #X obj 150 1 tgl 30 0 empty r_connected Connected 0 40 0 15 -228856
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 254 -26 cnv 15 700 320 empty empty mainboard 20 12 0 14 -191407
 -66577 0;
 #X obj 369 46 hradio 15 1 0 7 s_gen1 r_gen1 empty 0 -8 0 10 -262144
@@ -351,19 +365,19 @@
 #X obj 479 46 hradio 15 1 0 7 s_gen2 r_gen2 empty 0 -8 0 10 -262144
 -1 -1 6;
 #X obj 589 46 hradio 15 1 0 7 s_gen3 r_gen3 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 4;
 #X obj 369 68 hradio 15 1 0 5 s_fx1 r_fx1 empty 0 -8 0 10 -262144 -1
 -1 0;
 #X text 291 43 Generator1;
-#X obj 479 68 hradio 15 1 0 5 s_fx2 r_fx2 empty 0 -8 0 10 -262144 -1
--1 0;
+#X obj 479 68 hradio 15 1 0 6 s_fx2 r_fx2 empty 0 -8 0 10 -262144 -1
+-1 5;
 #X obj 589 68 hradio 15 1 0 5 s_fx3 r_fx3 empty 0 -8 0 10 -262144 -1
 -1 0;
 #X text 291 64 Effect1;
 #X obj 369 101 hradio 15 1 0 7 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 479 101 hradio 15 1 0 7 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -262144
--1 -1 6;
+-1 -1 0;
 #X obj 589 101 hradio 15 1 0 7 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 369 123 hradio 15 1 0 5 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262144
@@ -377,19 +391,19 @@
 #X obj 369 155 hradio 15 1 0 4 s_mix1 r_mix1 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 479 155 hradio 15 1 0 4 s_mix2 r_mix2 empty 0 -8 0 10 -262144
--1 -1 2;
+-1 -1 0;
 #X obj 589 155 hradio 15 1 0 4 s_mix3 r_mix3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X text 292 152 Mixer;
 #X obj 369 235 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X obj 479 235 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
 -1 -1 1;
 #X text 292 232 Output;
 #X obj 699 46 hradio 15 1 0 7 s_gen4 r_gen4 empty 0 -8 0 10 -262144
--1 -1 4;
+-1 -1 1;
 #X obj 809 46 hradio 15 1 0 7 s_gen5 r_gen5 empty 0 -8 0 10 -262144
--1 -1 3;
+-1 -1 2;
 #X obj 699 68 hradio 15 1 0 5 s_fx4 r_fx4 empty 0 -8 0 10 -262144 -1
 -1 0;
 #X obj 809 68 hradio 15 1 0 5 s_fx5 r_fx5 empty 0 -8 0 10 -262144 -1
@@ -408,9 +422,9 @@
 -1 -1 0;
 #X text 292 213 Fader;
 #X obj 369 213 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X obj 479 213 hradio 15 1 0 4 s_fader2 r_fader2 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X obj 13 -88 cnv 15 941 50 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X text 664 -63 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
@@ -420,23 +434,32 @@
 \, RND_VERTICAL_SHIFT;
 #X text 22 -78 Generators: OFF \, BLINKENLIGHTS \, IMAGE \, PLASMA
 \, SIMPLECOLORS \, VOLUMEDISPLAY;
-#X obj 255 309 cnv 15 180 110 empty empty blinken 20 12 0 14 -261234
+#X obj 255 309 cnv 15 220 180 empty empty blinken 20 12 0 14 -261234
 -66577 0;
 #X msg 267 339 send BLINKEN torus.bml;
-#X msg 267 363 send BLINKEN bnf_auge.bml;
-#X obj 267 387 send blinkenfile;
-#X obj 455 309 cnv 15 180 160 empty empty image 20 12 0 14 -261682
+#X msg 267 362 send BLINKEN bnf_auge.bml;
+#X obj 267 454 send blinkenfile;
+#X obj 492 309 cnv 15 220 180 empty empty image 20 12 0 14 -261682
 -66577 0;
-#X obj 467 437 send image;
-#X msg 467 388 send IMAGE gradient.jpg;
-#X msg 467 363 send IMAGE half.jpg;
-#X msg 467 339 send IMAGE circle.jpg;
-#X msg 467 412 send IMAGE check.jpg;
-#X obj 655 309 cnv 15 180 110 empty empty random_mode 20 12 0 14 -262130
+#X obj 504 437 send image;
+#X msg 504 388 send IMAGE gradient.jpg;
+#X msg 504 363 send IMAGE half.jpg;
+#X msg 504 339 send IMAGE circle.jpg;
+#X msg 504 412 send IMAGE check.jpg;
+#X obj 13 113 cnv 15 220 110 empty empty random_mode 20 12 0 14 -258113
 -66577 0;
-#X obj 667 387 send randommode;
-#X msg 667 339 send RANDOM ON;
-#X msg 667 363 send RANDOM OFF;
+#X obj 25 191 send randommode;
+#X msg 25 143 send RANDOM ON;
+#X msg 25 167 send RANDOM OFF;
+#X msg 267 386 send BLINKEN bb-frogskin2.bml;
+#X msg 267 408 send BLINKEN bb-rauten2.bml;
+#X msg 267 430 send BLINKEN bb-spiral2fast.bml;
+#X obj 817 312 tgl 30 0 empty r_snd_kick kick 32 15 0 15 -232576 -1
+-1 0 1;
+#X obj 817 352 tgl 30 0 empty r_snd_hat hat 32 15 0 15 -232576 -1 -1
+1 1;
+#X obj 817 392 tgl 30 0 empty r_snd_snare snare 32 15 0 15 -232576
+-1 -1 0 1;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
 #X connect 6 0 5 0;
@@ -449,3 +472,6 @@
 #X connect 63 0 59 0;
 #X connect 66 0 65 0;
 #X connect 67 0 65 0;
+#X connect 68 0 57 0;
+#X connect 69 0 57 0;
+#X connect 70 0 57 0;

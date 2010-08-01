@@ -38,6 +38,7 @@ public class Image extends Generator {
 	 */
 	public void loadFile(String filename) {
 		PApplet parent = Collector.getInstance().getPapplet();
+		
 		pimage = parent.loadImage(filename);
 		log.log(Level.INFO, "resize to img "+filename+" "+this.getInternalBufferXSize()+", "+this.getInternalBufferYSize());
 		pimage.resize(this.getInternalBufferXSize(), this.getInternalBufferYSize());

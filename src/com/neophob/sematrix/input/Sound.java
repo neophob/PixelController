@@ -38,6 +38,10 @@ public class Sound {
 		return instance;
 	}
 
+	/**
+	 * get current volume
+	 * @return
+	 */
 	public float getVolume() {
 		float m = 0;
 		for(int i = 0; i < in.bufferSize() - 1; i++) {

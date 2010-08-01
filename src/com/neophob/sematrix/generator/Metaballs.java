@@ -59,10 +59,10 @@ public class Metaballs extends Generator {
 				}
 				//pg.pixels[x+y*pg.width] = color(0, m+x, (x+m+y)/2);
 				int g = m+x;
-				int b = (x+m+y)/2;
+				int b = (x+m+y)/3;
 				if (g>255) g=255;
 				if (b>255) b=255;
-				this.internalBuffer[y*xSize+x] = (64 << 16) | (g << 8) | (b);
+				this.internalBuffer[y*xSize+x] = (0 << 16) | (g << 8) | (b);
 			}
 		}
 

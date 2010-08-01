@@ -7,12 +7,13 @@ import java.util.List;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.sematrix.effect.BeatHorizShift;
+import com.neophob.sematrix.effect.BeatVerticalShift;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
-import com.neophob.sematrix.effect.BeatHorizShift;
-import com.neophob.sematrix.effect.BeatVerticalShift;
 import com.neophob.sematrix.effect.RotoZoom;
+import com.neophob.sematrix.effect.Voluminize;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Crossfader;
 import com.neophob.sematrix.fader.Fader;
@@ -117,6 +118,7 @@ public class Collector {
 			new RotoZoom(0.7f, 2.3f);
 			new BeatVerticalShift();
 			new BeatHorizShift();
+			new Voluminize();
 			
 			//create mixer
 			new AddSat();
