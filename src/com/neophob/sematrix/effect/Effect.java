@@ -10,7 +10,8 @@ public abstract class Effect {
 		INVERTER(1),
 		ROTOZOOM(2),
 		RND_HORIZONTAL_SHIFT(3),
-		RND_VERTICAL_SHIFT(4);
+		RND_VERTICAL_SHIFT(4),
+		VOLUMINIZE(5);
 		
 		private int id;
 		

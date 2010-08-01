@@ -10,6 +10,10 @@ fx:
 
 -random mode bug, slowdown, maybe mem leak, loading an image/blm?
 
+-colorize output, mit color slider
+
+-bug: mehrere rotozoomer: speed erhšht sich
+
 pd:
 ---
 http://www.youtube.com/user/cheetomoskeeto#g/c/12DC9A161D8DC5DC
