@@ -29,7 +29,8 @@ public abstract class Generator {
 		PLASMA(3),
 		SIMPLECOLORS(4),
 		FIRE(5),
-		METABALLS(6);
+		METABALLS(6),
+		VOLUMEDISPLAY(7);
 		
 		private int id;
 		

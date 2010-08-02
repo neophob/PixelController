@@ -51,7 +51,30 @@ public class Sound {
 		}
 		return m;
 	}
-	
+
+	/**
+	 * 
+	 * @param count: slit up result in n pieces
+	 * @return
+	 */
+	public float[] getVolume(int count) {
+		float m = 0;
+		float result[] = new float[count];
+		int sequenze = in.bufferSize()/count;
+		
+		int ofs=0;
+		for (int s=0; s<count; s++) {
+			for (int i=0; i<sequenze; i++) {
+				if ( Math.abs(in.mix.get(i+ofs)) > m ) {
+					m = Math.abs(in.mix.get(i));
+				}		
+			}
+			result[s] = m;
+			ofs+=sequenze;
+		}
+		return result;
+	}
+
 	public boolean isKick() {
 		return beat.isKick();
 	}
