@@ -28,7 +28,7 @@ import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
-import com.neophob.sematrix.generator.VolumeDisplay;
+import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.mixer.AddSat;
@@ -108,7 +108,7 @@ public class Collector {
 			new Image("check.jpg");
 			new Plasma2();
 			new SimpleColors();
-			new VolumeDisplay(20);
+			new Fire();
 			new PassThruGen();
 			new Metaballs();
 			
