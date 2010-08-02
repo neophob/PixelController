@@ -22,13 +22,14 @@ import com.neophob.sematrix.fader.SlideUpsideDown;
 import com.neophob.sematrix.fader.Switch;
 import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Blinkenlights;
+import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
-import com.neophob.sematrix.generator.Fire;
+import com.neophob.sematrix.generator.VolumeDisplay;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.mixer.AddSat;
@@ -111,6 +112,7 @@ public class Collector {
 			new Fire();
 			new PassThruGen();
 			new Metaballs();
+			new VolumeDisplay();
 			
 			//create effects
 			new Inverter();

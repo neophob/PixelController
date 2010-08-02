@@ -1,6 +1,5 @@
 
 fx:
--fire
 -textscroller
 -VolumeDisplay as Effect instead Generator?
 

@@ -21,8 +21,6 @@ public class Metaballs extends Generator {
 
 	@Override
 	public void update() {
-		int xSize = getInternalBufferXSize();
-		int ySize = getInternalBufferYSize();
 		for (int i=0; i<numBlobs; ++i) {
 			blogPx[i]+=blogDx[i];
 			blogPy[i]+=blogDy[i];
@@ -31,27 +29,27 @@ public class Metaballs extends Generator {
 			if (blogPx[i] < 0) {
 				blogDx[i] = 1;
 			}
-			if (blogPx[i] > xSize) {
+			if (blogPx[i] > internalBufferXSize) {
 				blogDx[i] = -1;
 			}
 			if (blogPy[i] < 0) {
 				blogDy[i] = 1;
 			}
-			if (blogPy[i] > ySize) {
+			if (blogPy[i] > internalBufferYSize) {
 				blogDy[i]=-1;
 			}
 
-			for (int x = 0; x < xSize; x++) {
+			for (int x = 0; x < internalBufferXSize; x++) {
 				vx[i][x] = (blogPx[i]-x)*(blogPx[i]-x);
 			}
 
-			for (int y = 0; y < ySize; y++) {
+			for (int y = 0; y < internalBufferYSize; y++) {
 				vy[i][y] = (blogPy[i]-y)*(blogPy[i]-y); 
 			}
 		}
 
-		for (int y = 0; y < ySize; y++) {
-			for (int x = 0; x < xSize; x++) {
+		for (int y = 0; y < internalBufferYSize; y++) {
+			for (int x = 0; x < internalBufferXSize; x++) {
 				int m = 1;
 				for (int i = 0; i < numBlobs; i++) {
 					// Increase this number to make your blobs bigger
@@ -62,7 +60,7 @@ public class Metaballs extends Generator {
 				int b = (x+m+y)/3;
 				if (g>255) g=255;
 				if (b>255) b=255;
-				this.internalBuffer[y*xSize+x] = (0 << 16) | (g << 8) | (b);
+				this.internalBuffer[y*internalBufferXSize+x] = (0 << 16) | (g << 8) | (b);
 			}
 		}
 

@@ -22,10 +22,10 @@ public class Fire extends Generator implements PConstants {
 		buffer = new int[internalBufferXSize*internalBufferYSize];
 		for (int i = 0; i < 32; ++i) {
 			/* black to blue, 32 values*/
-			colors[i]=getColor(16, 16, 16+(i << 1));
+			colors[i]=getColor(0, 0, i << 1);
 
 			/* blue to red, 32 values*/
-			colors[i + 32]=getColor(i << 3, 16, 64 - (i << 1));
+			colors[i + 32]=getColor(i << 3, 0, 64 - (i << 1));
 
 			/*red to yellow, 32 values*/
 			colors[i + 64]=getColor(255, i << 3, 0);
