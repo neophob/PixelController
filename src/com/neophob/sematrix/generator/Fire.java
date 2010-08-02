@@ -51,16 +51,19 @@ public class Fire extends Generator implements PConstants {
 		int random;
 		for (int i = 0; i < this.getInternalBufferXSize(); i++) {
 			random = 1 + (int)(16.f * (Math.random()));
-			if (random > 9) /* the lower the value, the intenser the fire, compensate a lower value with a higher decay value*/
-				this.buffer[j + i] = 255; /*maximum heat*/
-			else
+			/* the lower the value, the intense the fire, compensate a lower value with a higher decay value*/
+			if (random > 9) {
+				/*maximum heat*/
+				this.buffer[j + i] = 255; 
+			} else {
 				this.buffer[j + i] = 0;
+			}
 		}  
 
 		/* move fire upwards, start at bottom*/
 		int temp;
 		for (int index = 0; index < internalBufferYSize-1; index++) {
-			for (int i = 0; i < internalBufferXSize; ++i) {
+			for (int i = 0; i < internalBufferXSize; i++) {
 				if (i == 0) {
 					/* at the left border*/
 					temp = buffer[j];
