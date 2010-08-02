@@ -28,7 +28,7 @@ public abstract class Generator {
 		IMAGE(2),
 		PLASMA(3),
 		SIMPLECOLORS(4),
-		VOLUMEDISPLAY(5),
+		FIRE(5),
 		METABALLS(6);
 		
 		private int id;
@@ -51,8 +51,8 @@ public abstract class Generator {
 	
 	//internal, larger buffer
 	public int[] internalBuffer;
-	private int internalBufferXSize;
-	private int internalBufferYSize;
+	protected int internalBufferXSize;
+	protected int internalBufferYSize;
 	
 	/**
 	 * 
