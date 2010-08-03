@@ -23,7 +23,7 @@ public class Blinkenlights extends Generator implements PConstants {
 	public Blinkenlights(String filename) {
 		super(GeneratorName.BLINKENLIGHTS);
 		PApplet parent = Collector.getInstance().getPapplet();
-		tmp=parent.createImage( this.getInternalBufferXSize(), this.getInternalBufferYSize(), RGB);
+		tmp=parent.createImage( internalBufferXSize, internalBufferYSize, RGB);
 		blinken = new BlinkenLibrary(parent, filename);
 		blinken.setIgnoreFileDelay(true);
 		blinken.loop();
@@ -43,8 +43,10 @@ public class Blinkenlights extends Generator implements PConstants {
 	
 	@Override
 	public void update() {
-		tmp.copy(blinken, 0, 0, blinken.getWidth(), blinken.getHeight(), 0, 0, this.getInternalBufferXSize(), this.getInternalBufferYSize());
+		tmp.loadPixels();
+		tmp.copy(blinken, 0, 0, blinken.width, blinken.height, 0, 0, internalBufferXSize, internalBufferYSize);
 		System.arraycopy(tmp.pixels, 0, this.internalBuffer, 0, tmp.pixels.length);
+		tmp.updatePixels();
 	}
 
 	@Override

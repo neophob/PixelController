@@ -26,10 +26,11 @@ public class Image extends Generator {
 	 */
 	public Image(String filename) {
 		super(GeneratorName.IMAGE);
-		PApplet parent = Collector.getInstance().getPapplet();
+/*		PApplet parent = Collector.getInstance().getPapplet();
 		pimage = parent.loadImage(filename);
-		log.log(Level.INFO, "resize to img "+filename+" "+this.getInternalBufferXSize()+", "+this.getInternalBufferYSize());
-		pimage.resize(this.getInternalBufferXSize(), this.getInternalBufferYSize());
+		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
+		pimage.resize(internalBufferXSize, internalBufferYSize);*/
+		this.loadFile(filename);
 	}
 	
 	/**
@@ -38,16 +39,18 @@ public class Image extends Generator {
 	 */
 	public void loadFile(String filename) {
 		PApplet parent = Collector.getInstance().getPapplet();
-		
 		pimage = parent.loadImage(filename);
-		log.log(Level.INFO, "resize to img "+filename+" "+this.getInternalBufferXSize()+", "+this.getInternalBufferYSize());
-		pimage.resize(this.getInternalBufferXSize(), this.getInternalBufferYSize());
+		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
+		//TODO still buggy!
+		pimage.resize(internalBufferXSize, internalBufferYSize);
 	}
 
 	
 	@Override
 	public void update() {
-		System.arraycopy(pimage.pixels, 0, this.internalBuffer, 0, this.getInternalBufferXSize()*this.getInternalBufferYSize());
+		pimage.loadPixels();
+		System.arraycopy(pimage.pixels, 0, this.internalBuffer, 0, internalBufferXSize*internalBufferYSize);
+		pimage.updatePixels();
 	}
 
 	@Override

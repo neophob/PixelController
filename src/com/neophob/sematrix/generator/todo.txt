@@ -17,6 +17,10 @@ fx:
 
 -optimize rainbowduino output, workarround multiply output with itself, maybe gamma tab?
 
+-blinkenlights: add option for random mode
+
+-gui: enable/disable elements for random mode (generator1, effect1, generator2...)
+
 
 pd:
 ---
