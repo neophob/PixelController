@@ -23,6 +23,9 @@ Boston, MA  02111-1307  USA
 
 package com.neophob.lib.rainbowduino;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import processing.core.PApplet;
 import processing.serial.Serial;
 
@@ -34,6 +37,8 @@ import processing.serial.Serial;
  *
  */
 public class Rainbowduino implements Runnable {
+
+	static Logger log = Logger.getLogger(Rainbowduino.class.getName());
 
 	public static int width = 8;
 	public static int height = width;
@@ -141,7 +146,10 @@ public class Rainbowduino implements Runnable {
 		String[] ports = Serial.list();
 		for(int i = 0; port == null && i < ports.length; i++) {
 			if(PApplet.match(ports[i], "tty") == null) continue;
-			PApplet.println(ports[i]);
+			log.log(Level.INFO,
+					"open port: {0} "
+					, new Object[] { ports[i] });
+
 			openPort(ports[i], check);
 		}			
 	}
@@ -166,7 +174,10 @@ public class Rainbowduino implements Runnable {
 				this.runner.start(); 
 				return true; //skip check			
 			}
-			PApplet.println("No response");			
+			log.log(Level.WARNING,
+					"No response from port {0}"
+					, new Object[] { port_name });
+
 		}
 		catch (Exception e) {			
 		}
@@ -331,7 +342,10 @@ public class Rainbowduino implements Runnable {
 		}
 
 		public void print() {
-			PApplet.println("Error happend: " + this.error);
+			log.log(Level.INFO,
+					"Error happend: {0} "
+					, new Object[] { this.error });
+
 		}		
 	}
 
