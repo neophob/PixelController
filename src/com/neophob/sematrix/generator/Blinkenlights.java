@@ -35,10 +35,10 @@ public class Blinkenlights extends Generator implements PConstants {
 	 */
 	public void loadFile(String file) {
 		PApplet parent = Collector.getInstance().getPapplet();
-		blinken.dispose();
-		blinken = new BlinkenLibrary(parent, file);
+//		blinken.dispose();
+//		blinken = new BlinkenLibrary(parent, file);
+		blinken.loadFile(file);
 		blinken.setIgnoreFileDelay(true);
-		blinken.loop();
 	}
 	
 	@Override
