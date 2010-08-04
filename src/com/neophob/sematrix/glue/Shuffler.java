@@ -29,7 +29,7 @@ public class Shuffler {
 			if (blah == 1) {
 				int size = Collector.getInstance().getAllGenerators().size();
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
-					v.setGenerator1(rand.nextInt(size));
+					v.setGenerator1(rand.nextInt(size-1)+1);
 				}
 			}
 
