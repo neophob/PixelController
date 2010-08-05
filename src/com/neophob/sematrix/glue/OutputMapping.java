@@ -1,7 +1,6 @@
 package com.neophob.sematrix.glue;
 
 import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.Fader.FaderName;
