@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,16 +71,16 @@ public class Collector {
 	private int fps;
 
 	private Collector() {
-		allOutputs = new ArrayList<Output>();
+		allOutputs = Collections.synchronizedList(new ArrayList<Output>());
 
-		allGenerators = new ArrayList<Generator>();			
-		allEffects = new ArrayList<Effect>();
-		allMixer = new ArrayList<Mixer>();
+		allGenerators = Collections.synchronizedList(new ArrayList<Generator>());			
+		allEffects = Collections.synchronizedList(new ArrayList<Effect>());
+		allMixer = Collections.synchronizedList(new ArrayList<Mixer>());
 
-		allVisuals = new ArrayList<Visual>();
+		allVisuals = Collections.synchronizedList(new ArrayList<Visual>());
 
 		this.nrOfScreens = 0;
-		ioMapping = new LinkedList<OutputMapping>();
+		ioMapping = Collections.synchronizedList(new LinkedList<OutputMapping>());
 		init=false;
 	}
 
@@ -189,6 +190,8 @@ public class Collector {
 		*/
 		
 		BufferedImage bi = new BufferedImage(matrix.getBufferXSize(), matrix.getBufferYSize(), BufferedImage.TYPE_INT_RGB);
+		System.out.println(matrix.getBufferXSize());
+		if (buffer==null) System.out.println("BUFFRNULL");
 		bi.setRGB(0, 0, matrix.getBufferXSize(), matrix.getBufferYSize(), buffer, 0, matrix.getBufferXSize());
 		BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
 		
