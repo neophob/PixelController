@@ -190,8 +190,6 @@ public class Collector {
 		*/
 		
 		BufferedImage bi = new BufferedImage(matrix.getBufferXSize(), matrix.getBufferYSize(), BufferedImage.TYPE_INT_RGB);
-		System.out.println(matrix.getBufferXSize());
-		if (buffer==null) System.out.println("BUFFRNULL");
 		bi.setRGB(0, 0, matrix.getBufferXSize(), matrix.getBufferYSize(), buffer, 0, matrix.getBufferXSize());
 		BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
 		

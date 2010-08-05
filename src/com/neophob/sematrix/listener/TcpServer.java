@@ -31,6 +31,7 @@ public class TcpServer implements Runnable {
 		CHANGE_EFFECT_B,
 		CHANGE_MIXER,
 		CHANGE_OUTPUT,
+		CHANGE_OUTPUT_EFFECT,
 		CHANGE_FADER,
 		CHANGE_TINT,
 		BLINKEN,
@@ -248,7 +249,16 @@ public class TcpServer implements Runnable {
 					}
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-	
+			
+			case CHANGE_OUTPUT_EFFECT:
+				try {					
+					int newFxA = Integer.parseInt(msg[1]);
+					int newFxB = Integer.parseInt(msg[2]);
+					Collector.getInstance().getAllOutputMappings().get(0).setEffect(Collector.getInstance().getEffect(newFxA));
+					Collector.getInstance().getAllOutputMappings().get(1).setEffect(Collector.getInstance().getEffect(newFxB));
+				} catch (Exception e) {e.printStackTrace();}
+				break;
+				
 			case CHANGE_FADER:
 				try {					
 					int a = Integer.parseInt(msg[1]);
@@ -341,9 +351,11 @@ public class TcpServer implements Runnable {
 		
 		String fader="";
 		String output="";
+		String outputEffect="";
 		for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
 			fader+=o.getFader().getId()+" ";
 			output+=o.getVisualId()+" ";
+			outputEffect+=o.getFader().getId()+" ";
 		}
 
 		sendFudiMsg("GENERATOR_A "+gen1);
@@ -353,6 +365,8 @@ public class TcpServer implements Runnable {
 		sendFudiMsg("MIXER "+mix);
 		sendFudiMsg("FADER "+fader);
 		sendFudiMsg("OUTPUT "+output);
+		sendFudiMsg("OUTPUT_EFFECT "+outputEffect);
+		
 	}
 	
 	

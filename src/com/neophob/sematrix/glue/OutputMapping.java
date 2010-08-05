@@ -2,6 +2,7 @@ package com.neophob.sematrix.glue;
 
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Inverter;
+import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.Fader.FaderName;
 
@@ -28,7 +29,7 @@ public class OutputMapping {
 		this.visualId = 0;
 		this.screenNr = 0;
 		this.fader = Collector.getInstance().getFader(FaderName.SWITCH);
-		this.effect = new Inverter();//Collector.getInstance().getEffect(EffectName.PASSTHRU);
+		this.effect = Collector.getInstance().getEffect(EffectName.PASSTHRU);
 	}
 
 	public OutputMapping(int visualId, int screenNr) {
