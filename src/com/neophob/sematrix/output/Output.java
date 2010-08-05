@@ -3,8 +3,6 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
