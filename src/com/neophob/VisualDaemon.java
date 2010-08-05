@@ -1,12 +1,15 @@
 package com.neophob;
 
+import java.net.BindException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.listener.TcpServer;
@@ -19,16 +22,12 @@ import com.neophob.sematrix.output.helper.NewWindowHelper;
  * 
  * @author michu
  *
- * TODO:
- *  -mixer
- *  -"fullscreen"
- *  -layouts
  */
 public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 
-	public static final int FPS = 20;
+	public static final int FPS = 40;
 	//96*2*25 = 4800bytes
 	public static final int NR_OF_SCREENS = 2;
 	
@@ -42,7 +41,11 @@ public class VisualDaemon extends PApplet {
 	
 	public void setup() {
 		Collector.getInstance().init(this, FPS, NR_OF_SCREENS, 8, 8);
-		srv = new TcpServer(this, 3443, "127.0.0.1", 3445);		
+		try {
+			srv = new TcpServer(this, 3449, "127.0.0.1", 3445);	
+		} catch (BindException e) {
+			System.out.println("IIIKS");
+		}			
 		osd = new MatrixEmulator();
 		
 		frameRate(Collector.getInstance().getFps());
@@ -57,7 +60,11 @@ public class VisualDaemon extends PApplet {
 		
 		//screen nr, fx nr
 		//Collector.getInstance().mapInputToScreen(0, 5);
-		
+		Blinkenlights blink = (Blinkenlights)Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS);
+		for (int i=880; i<100; i++) {
+			blink.loadFile("bb-rauten2.bml");
+			System.out.println(i);
+		}
 		nwh = new NewWindowHelper(true);
 	}
 	
