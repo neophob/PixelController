@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import processing.core.PImage;
 
 import com.neophob.sematrix.fader.Fader;
-import com.neophob.sematrix.generator.Generator;
 
 /**
  * matrix display buffer class
@@ -20,7 +19,11 @@ import com.neophob.sematrix.generator.Generator;
  */
 public class MatrixData {
 
-	static Logger log = Logger.getLogger(MatrixData.class.getName());
+	private static Logger log = Logger.getLogger(MatrixData.class.getName());
+
+	/** the internal buffer is 8 times larger than the output buffer */
+	private static final int INTERNAL_BUFFER_SIZE = 8;
+	
 
 	//output buffer
 	private int deviceXSize;
@@ -78,10 +81,17 @@ public class MatrixData {
 	 * @return
 	 */
 	public int[] getScreenBufferForDevice(Visual visual, OutputMapping map) {
+		//get the visual 
 		int buffer[] = visual.getBuffer();
+		
+		//apply output specific effect
+		buffer = map.getEffect().getBuffer(buffer);
+		
+		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
-		PImage p = Collector.getInstance().getImageFromBuffer(buffer, deviceXSize, deviceYSize);
-		return p.pixels;
+		
+		//resize to the ouput buffer return image
+		return Collector.getInstance().getImageFromBuffer(buffer, deviceXSize, deviceYSize);
 	}
 	
 
@@ -94,12 +104,17 @@ public class MatrixData {
 	 * @return
 	 */
 	public int[] getScreenBufferForDevice(Visual visual, int xOfsNr, int total, OutputMapping map) {
-		//get internal buffer as image
+		//get the visual 
 		int buffer[] = visual.getBuffer();
+		
+		//apply output specific effect
+		buffer = map.getEffect().getBuffer(buffer);
+		
+		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
 
-		PImage p = Collector.getInstance().getImageFromBuffer(buffer, deviceXSize, deviceYSize);
-		
+		return Collector.getInstance().getImageFromBuffer(buffer, deviceXSize, deviceYSize);
+		/*
 		float f=1.0f/total; //0.33 - 0.33 - 1
 		int xStart=(int)(xOfsNr*f*p.width); //0 - 0.33 
 		int xWidth=(int)((xOfsNr+1)*f*p.width); //0.33 - 0.66
@@ -107,7 +122,7 @@ public class MatrixData {
 		     //sx, sy, swidth, sheight, dx, dy, dwidth, dheight
 		p.copy(xStart, 0, xWidth, p.height, 0, 0, p.width, p.height);
 		p.resize(deviceXSize, deviceYSize);
-		return p.pixels;
+		return p.pixels;*/
 	}
 
 
@@ -137,7 +152,7 @@ public class MatrixData {
 	 * @return
 	 */
 	public int getBufferXSize() {
-		return deviceXSize*Generator.INTERNAL_BUFFER_SIZE;
+		return deviceXSize*INTERNAL_BUFFER_SIZE;
 	}
 
 	/**
@@ -145,7 +160,7 @@ public class MatrixData {
 	 * @return
 	 */
 	public int getBufferYSize() {
-		return deviceYSize*Generator.INTERNAL_BUFFER_SIZE;
+		return deviceYSize*INTERNAL_BUFFER_SIZE;
 	}
 
 	public int getDeviceSize() {

@@ -1,6 +1,5 @@
 package com.neophob.sematrix.effect;
 
-import com.neophob.sematrix.generator.Generator;
 
 public class Tint extends Effect {
 
@@ -31,8 +30,7 @@ public class Tint extends Effect {
 	/**
 	 * 
 	 */
-	public int[] getBuffer(Generator generator) {
-		int[] buffer = generator.getBuffer();
+	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
 		
 		short cr,cg,cb;

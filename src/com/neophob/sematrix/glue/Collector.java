@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -171,13 +172,11 @@ public class Collector {
 		}
 
 	/**
-	 * 
+	 * convert buffer to output size
 	 * @param buffer
-	 * @return
+	 * @return RESIZED image
 	 */
-	public PImage getImageFromBuffer(int[] buffer, int deviceXSize, int deviceYSize) {
-		//TODO: this is ugly!
-		Generator gen1 = this.getGenerator(0);
+	public int[] getImageFromBuffer(int[] buffer, int deviceXSize, int deviceYSize) {
 /*		
 		Processing resize is buggy!
  		PImage pImage = Collector.getInstance().getPapplet().createImage
@@ -189,15 +188,13 @@ public class Collector {
 		BufferedImage resizedImage = resize2((BufferedImage)pImage.getImage(), deviceXSize, deviceYSize);
 
 		*/
-		BufferedImage bi = new BufferedImage(gen1.getInternalBufferXSize(), gen1.getInternalBufferYSize(), BufferedImage.TYPE_INT_RGB);
-		bi.setRGB(0, 0, gen1.getInternalBufferXSize(), gen1.getInternalBufferYSize(), buffer, 0, gen1.getInternalBufferXSize());
 		
+		BufferedImage bi = new BufferedImage(matrix.getBufferXSize(), matrix.getBufferYSize(), BufferedImage.TYPE_INT_RGB);
+		bi.setRGB(0, 0, matrix.getBufferXSize(), matrix.getBufferYSize(), buffer, 0, matrix.getBufferXSize());
 		BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
 		
-		PImage resized = new PImage(deviceXSize, deviceYSize);
-		resizedImage.getRGB(0, 0, deviceXSize, deviceYSize, resized.pixels, 0, deviceXSize);
-		
-		return resized;
+		DataBufferInt dbi = (DataBufferInt)resizedImage.getRaster().getDataBuffer();
+		return dbi.getData();
 	}
 
 

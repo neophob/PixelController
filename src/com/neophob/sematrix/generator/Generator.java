@@ -43,9 +43,6 @@ public abstract class Generator {
 		}
 	}
 	
-	/** the internal buffer is 8 times larger than the output buffer */
-	public static final int INTERNAL_BUFFER_SIZE = 8;
-	
 	private static Logger log = Logger.getLogger(Generator.class.getName());
 
 	private GeneratorName name;
@@ -62,9 +59,8 @@ public abstract class Generator {
 	public Generator(GeneratorName name) {
 		this.name = name;
 		MatrixData matrix = Collector.getInstance().getMatrix();
-
-		this.internalBufferXSize = matrix.getDeviceXSize()*INTERNAL_BUFFER_SIZE;
-		this.internalBufferYSize = matrix.getDeviceYSize()*INTERNAL_BUFFER_SIZE;
+		this.internalBufferXSize = matrix.getBufferXSize();
+		this.internalBufferYSize = matrix.getBufferYSize();
 		this.internalBuffer = new int[internalBufferXSize*internalBufferYSize];
 
 		log.log(Level.INFO,
@@ -99,6 +95,10 @@ public abstract class Generator {
 		return internalBuffer;
 	}
 	
+	/**
+	 * used for debug output
+	 * @return
+	 */
 	public PImage getBufferAsImage() {
 		PImage pImage = Collector.getInstance().getPapplet().createImage
 							( internalBufferXSize, internalBufferYSize, PApplet.RGB );

@@ -78,7 +78,7 @@ public class Visual {
 	}
 
 	public int[] getEffect1Buffer() {
-		return effect1.getBuffer(generator1);
+		return effect1.getBuffer(generator1.getBuffer());
 	}
 
 	public void setEffect1(Effect effect1) {
@@ -98,7 +98,7 @@ public class Visual {
 	}
 
 	public int[] getEffect2Buffer() {
-		return effect2.getBuffer(generator2);
+		return effect2.getBuffer(generator2.getBuffer());
 	}
 
 	public void setEffect2(Effect effect2) {

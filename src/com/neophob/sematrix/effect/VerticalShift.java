@@ -30,7 +30,7 @@ public class VerticalShift extends Effect {
 		return ret;
 	}
 
-	public int[] getBuffer(Generator generator) {
+	public int[] getBuffer(int[] buffer) {
 		//subclass needs to implement this!
 		return null;
 	}

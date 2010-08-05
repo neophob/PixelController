@@ -1,6 +1,5 @@
 package com.neophob.sematrix.effect;
 
-import com.neophob.sematrix.generator.Generator;
 
 public class Inverter extends Effect {
 
@@ -8,8 +7,7 @@ public class Inverter extends Effect {
 		super(EffectName.INVERTER);
 	}
 
-	public int[] getBuffer(Generator generator) {
-		int[] buffer = generator.getBuffer();
+	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
 		
 		short cr,cg,cb;//,ca;

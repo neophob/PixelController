@@ -17,11 +17,16 @@ public class InternalBuffer extends PApplet {
 	 */
 	private static final long serialVersionUID = 2344499301021L;
 
+	private static final int BFR_X = 128;
+	private static final int BFR_Y = 128;
+	
 	static Logger log = Logger.getLogger(InternalBuffer.class.getName());
 
 	private boolean displayHoriz;
 	private int x,y;
-	
+	private int[] buffer;
+	private PImage pImage;
+
 	public InternalBuffer(boolean displayHoriz, int x, int y) {
 		this.displayHoriz = displayHoriz;
 		this.x = x;
@@ -37,16 +42,22 @@ public class InternalBuffer extends PApplet {
 
 	public void draw() {
 		int x=0, y=0;
-		
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
-			//PImage pimage = v.getBufferAsImage();
-			PImage pimage = Collector.getInstance().getImageFromBuffer(v.getBuffer(), 128, 128);
-			image(pimage,x,y);
+			//get image
+			buffer = Collector.getInstance().getImageFromBuffer(v.getBuffer(), BFR_X, BFR_Y);
 			
+			//create an image out of the buffer
+	 		pImage = Collector.getInstance().getPapplet().createImage( BFR_X, BFR_Y, PApplet.RGB );
+			pImage.loadPixels();
+			System.arraycopy(buffer, 0, pImage.pixels, 0, BFR_X*BFR_Y);
+			pImage.updatePixels();
+
+			//display it
+			image(pImage,x,y);
 			if (displayHoriz) {
-				x += pimage.width;
+				x += pImage.width;
 			} else {
-				y += pimage.height;
+				y += pImage.height;
 			}			
 		}
 
