@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 
 import com.neophob.sematrix.effect.BeatHorizShift;
 import com.neophob.sematrix.effect.BeatVerticalShift;
@@ -176,7 +175,7 @@ public class Collector {
 	 * @param buffer
 	 * @return RESIZED image
 	 */
-	public int[] getImageFromBuffer(int[] buffer, int deviceXSize, int deviceYSize) {
+	public int[] resizeBufferForDevice(int[] buffer, int deviceXSize, int deviceYSize) {
 /*		
 		Processing resize is buggy!
  		PImage pImage = Collector.getInstance().getPapplet().createImage

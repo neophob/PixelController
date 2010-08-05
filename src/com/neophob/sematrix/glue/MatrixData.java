@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.fader.Fader;
@@ -91,7 +92,7 @@ public class MatrixData {
 		buffer = doTheFaderBaby(buffer, map);
 		
 		//resize to the ouput buffer return image
-		return Collector.getInstance().getImageFromBuffer(buffer, deviceXSize, deviceYSize);
+		return Collector.getInstance().resizeBufferForDevice(buffer, deviceXSize, deviceYSize);
 	}
 	
 
@@ -100,10 +101,10 @@ public class MatrixData {
 	 * 
 	 * @param buffer
 	 * @param xOfsNr offset screen 0..n
-	 * @param total nr of screens 1..n
+	 * @param nrOfScreens nr of screens 1..n
 	 * @return
 	 */
-	public int[] getScreenBufferForDevice(Visual visual, int xOfsNr, int total, OutputMapping map) {
+	public int[] getScreenBufferForDevice(Visual visual, int xOfsNr, int nrOfScreens, OutputMapping map) {
 		//get the visual 
 		int buffer[] = visual.getBuffer();
 		
@@ -113,16 +114,29 @@ public class MatrixData {
 		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
 
-		return Collector.getInstance().getImageFromBuffer(buffer, deviceXSize, deviceYSize);
-		/*
-		float f=1.0f/total; //0.33 - 0.33 - 1
-		int xStart=(int)(xOfsNr*f*p.width); //0 - 0.33 
-		int xWidth=(int)((xOfsNr+1)*f*p.width); //0.33 - 0.66
+//		return Collector.getInstance().resizeBufferForDevice(buffer, deviceXSize, deviceYSize);
 		
-		     //sx, sy, swidth, sheight, dx, dy, dwidth, dheight
-		p.copy(xStart, 0, xWidth, p.height, 0, 0, p.width, p.height);
-		p.resize(deviceXSize, deviceYSize);
-		return p.pixels;*/
+		float f=1.0f/nrOfScreens; //0.33 - 0.33 - 1
+		int xStart=(int)(xOfsNr*f*getBufferXSize()); //0 - 0.33 
+		int xWidth=(int)((xOfsNr+1)*f*getBufferXSize()); //0.33 - 0.66
+		
+		//very UGLY and SLOW method to copy the image - im lazy!
+ 		PImage p = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );
+		p.loadPixels();
+		System.arraycopy(buffer, 0, p.pixels, 0, getBufferXSize()*getBufferYSize());
+		p.updatePixels();
+
+		//sx, sy, swidth, sheight, dx, dy, dwidth, dheight
+		p.copy(xStart, 0, xWidth, getBufferYSize(), 0, 0, getBufferXSize(), getBufferYSize());
+
+		p.loadPixels();
+		int[] bfr2 = p.pixels.clone();
+		p.updatePixels();
+		
+		return Collector.getInstance().resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
+		
+		//p.resize(deviceXSize, deviceYSize);
+		//return p.pixels;*/
 	}
 
 
