@@ -11,6 +11,8 @@ import processing.core.PApplet;
 import processing.net.Client;
 import processing.net.Server;
 
+import com.neophob.sematrix.effect.Tint;
+import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
@@ -30,6 +32,7 @@ public class TcpServer implements Runnable {
 		CHANGE_MIXER,
 		CHANGE_OUTPUT,
 		CHANGE_FADER,
+		CHANGE_TINT,
 		BLINKEN,
 		IMAGE,
 		RANDOM
@@ -252,6 +255,16 @@ public class TcpServer implements Runnable {
 					int b = Integer.parseInt(msg[2]);
 					Collector.getInstance().getAllOutputMappings().get(0).setFader(Collector.getInstance().getFader(a));					
 					Collector.getInstance().getAllOutputMappings().get(1).setFader(Collector.getInstance().getFader(b));					
+				} catch (Exception e) {e.printStackTrace();}
+				break;
+				
+			case CHANGE_TINT:
+				try {					
+					int r = Integer.parseInt(msg[1]);
+					int g = Integer.parseInt(msg[2]);
+					int b = Integer.parseInt(msg[3]);
+					Tint t = (Tint)Collector.getInstance().getEffect(EffectName.TINT);
+					t.setColor(r, g, b);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
 			
