@@ -17,6 +17,7 @@ import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
 import com.neophob.sematrix.effect.RotoZoom;
+import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Voluminize;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Crossfader;
@@ -125,6 +126,7 @@ public class Collector {
 		new BeatVerticalShift();
 		new BeatHorizShift();
 		new Voluminize();
+		new Tint();
 
 		//create mixer
 		new AddSat();

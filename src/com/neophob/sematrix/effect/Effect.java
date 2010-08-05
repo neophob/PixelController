@@ -11,7 +11,8 @@ public abstract class Effect {
 		ROTOZOOM(2),
 		RND_HORIZONTAL_SHIFT(3),
 		RND_VERTICAL_SHIFT(4),
-		VOLUMINIZE(5);
+		VOLUMINIZE(5),
+		TINT(6);
 		
 		private int id;
 		

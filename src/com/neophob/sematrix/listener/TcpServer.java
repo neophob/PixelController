@@ -1,5 +1,7 @@
 package com.neophob.sematrix.listener;
 
+import java.net.BindException;
+import java.net.ConnectException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,23 +47,26 @@ public class TcpServer implements Runnable {
 	private String sendHost;
 	private int count=0;
 	
-	public TcpServer(PApplet app, int port, String sendHost, int sendPort) {
+	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {
 		this.app = app;
 		app.registerDispose(this);
 		
 		this.sendHost = sendHost;
 		this.sendPort = sendPort;
 		
-		tcpServer = new Server(app, port);
-		this.runner = new Thread(this);
-		this.runner.start();
-		
-		log.log(Level.INFO,	"Server started at port {0}", new Object[] { port });
-		
-		connectToClient();
-		if (client==null) {
-			log.log(Level.INFO,	"Pure Data Client not available yet!");
-		}
+		try {
+			serverWrapper(listeningPort);
+			log.log(Level.INFO,	"Server started at port {0}", new Object[] { listeningPort });
+			this.runner = new Thread(this);
+			this.runner.start();
+					
+			connectToClient();
+			if (client==null) {
+				log.log(Level.INFO,	"Pure Data Client not available yet!");
+			}
+		} catch (Exception e) {
+			log.log(Level.INFO,	"Failed to start TCP Server {0}", new Object[] { e });
+		}				
 	}
 	
 	public void dispose() {
@@ -343,10 +348,29 @@ public class TcpServer implements Runnable {
 	 */
 	private void connectToClient() {
 		try {
-			client = new Client(app, sendHost, sendPort);
+			//client = new Client(app, sendHost, sendPort);
+			clientConnectionWrapper();
 			log.log(Level.INFO,	"Pure Data Client connected!");
 		} catch (Exception e) {
+			log.log(Level.WARNING, "Pure Data Client not found!");
 			client = null;			
 		}		
+	}
+	
+	/**
+	 * stupid wrapper, as processing does not declare throws!
+	 * @throws ConnectException
+	 * @throws BindException
+	 */
+	private void clientConnectionWrapper() throws ConnectException, BindException {
+		client = new Client(app, sendHost, sendPort);
+	}
+	
+	/**
+	 * 
+	 * @param listeningPort
+	 */
+	private void serverWrapper(int listeningPort) throws ConnectException, BindException {
+		tcpServer = new Server(app, listeningPort);
 	}
 }
