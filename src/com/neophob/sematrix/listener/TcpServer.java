@@ -355,9 +355,8 @@ public class TcpServer implements Runnable {
 		for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
 			fader+=o.getFader().getId()+" ";
 			output+=o.getVisualId()+" ";
-			outputEffect+=o.getFader().getId()+" ";
+			outputEffect+=o.getEffect().getId()+" ";
 		}
-
 		sendFudiMsg("GENERATOR_A "+gen1);
 		sendFudiMsg("GENERATOR_B "+gen2);
 		sendFudiMsg("EFFECT_A "+fx1);
