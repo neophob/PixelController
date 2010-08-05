@@ -27,7 +27,7 @@ public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 
-	public static final int FPS = 40;
+	public static final int FPS = 20;
 	//96*2*25 = 4800bytes
 	public static final int NR_OF_SCREENS = 2;
 	

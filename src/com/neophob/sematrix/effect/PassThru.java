@@ -1,6 +1,5 @@
 package com.neophob.sematrix.effect;
 
-import com.neophob.sematrix.generator.Generator;
 
 public class PassThru extends Effect {
 
@@ -8,8 +7,8 @@ public class PassThru extends Effect {
 		super(EffectName.PASSTHRU);
 	}
 
-	public int[] getBuffer(Generator generator) {
-		return generator.getBuffer();
+	public int[] getBuffer(int[] buffer) {
+		return buffer;
 	}
 	
 
