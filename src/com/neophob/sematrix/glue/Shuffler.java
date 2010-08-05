@@ -2,6 +2,8 @@ package com.neophob.sematrix.glue;
 
 import java.util.Random;
 
+import com.neophob.sematrix.effect.Tint;
+import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
@@ -23,7 +25,7 @@ public class Shuffler {
 		}
 		
 		Random rand = new Random();
-		int blah = rand.nextInt(10);
+		int blah = rand.nextInt(11);
 		
 		if (snare) {
 			if (blah == 1) {
@@ -69,7 +71,15 @@ public class Shuffler {
 				int size = Collector.getInstance().getFaderCount();
 				Collector.getInstance().getAllOutputMappings().get(0).setFader(Collector.getInstance().getFader(rand.nextInt(size)));					
 				Collector.getInstance().getAllOutputMappings().get(1).setFader(Collector.getInstance().getFader(rand.nextInt(size)));		
-			}			
+			}
+			
+			if (blah == 11) {
+				int r = rand.nextInt(256);
+				int g = rand.nextInt(256);
+				int b = rand.nextInt(256);
+				Tint t = (Tint)Collector.getInstance().getEffect(EffectName.TINT);
+				t.setColor(r, g, b);
+			}
 		}
 		
 		
