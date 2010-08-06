@@ -1,6 +1,5 @@
 package com.neophob;
 
-import java.net.BindException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +11,6 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
-import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.output.MatrixEmulator;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.RainbowduinoDevice;
@@ -27,7 +25,7 @@ public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 
-	public static final int FPS = 20;
+	public static final int FPS = 40;
 	//96*2*25 = 4800bytes
 	public static final int NR_OF_SCREENS = 2;
 	
@@ -37,21 +35,16 @@ public class VisualDaemon extends PApplet {
 	int error=0;
 	int frame=0;
 	MatrixEmulator osd;
-	TcpServer srv;
+	
 	
 	public void setup() {
 		Collector.getInstance().init(this, FPS, NR_OF_SCREENS, 8, 8);
-		try {
-			srv = new TcpServer(this, 3449, "127.0.0.1", 3445);	
-		} catch (BindException e) {
-			System.out.println("IIIKS");
-		}			
 		osd = new MatrixEmulator();
 		
 		frameRate(Collector.getInstance().getFps());
 		
 		List<Integer> i2cDest = new ArrayList<Integer>();
-		i2cDest.add(6); i2cDest.add(5);
+		i2cDest.add(6); i2cDest.add(5); 
 		try {
 			rainbowduino = new RainbowduinoDevice(i2cDest);			
 		} catch (Exception e) {

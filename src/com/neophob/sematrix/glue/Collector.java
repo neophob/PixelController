@@ -5,9 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.commons.lang.StringUtils;
 
 import processing.core.PApplet;
 
@@ -37,6 +40,8 @@ import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.VolumeDisplay;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.listener.MessageProcessor;
+import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Mix;
 import com.neophob.sematrix.mixer.Mixer;
@@ -68,6 +73,8 @@ public class Collector {
 
 	private int nrOfScreens;
 	private int fps;
+	
+	private TcpServer srv;
 
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
@@ -102,7 +109,15 @@ public class Collector {
 		for (int n=0; n<nrOfScreens; n++) {
 			ioMapping.add(new OutputMapping(n, 0));			
 		}
-		init=true;		
+		
+		//Start tcp server
+		try {
+			srv = new TcpServer(papplet, 3449, "127.0.0.1", 3445);	
+		} catch (BindException e) {
+			System.out.println("IIIKS");
+		}			
+
+		init=true;
 	}
 
 	/**
@@ -297,6 +312,51 @@ public class Collector {
 
 	public void setRandomMode(boolean randomMode) {
 		this.randomMode = randomMode;
+	}
+	
+	public void setCurrentStatus(List<String> preset) {
+		for (String s: preset) {
+			s = StringUtils.trim(s);
+			s = StringUtils.removeEnd(s, ";");
+			MessageProcessor.processMsg(StringUtils.split(s, ' '));
+		}
+	}
+
+	/**
+	 * get current state of visuals/outputs
+	 */
+	public List<String> getCurrentStatus() {
+		List<String> ret = new ArrayList<String>();
+		String gen1="";
+		String gen2="";
+		String fx1="";
+		String fx2="";
+		String mix="";
+		for (Visual v: getAllVisuals()) {
+			gen1+=v.getGenerator1Idx()+" ";
+			gen2+=v.getGenerator2Idx()+" ";
+			fx1+=v.getEffect1Idx()+" ";
+			fx2+=v.getEffect2Idx()+" ";
+			mix+=v.getMixerIdx()+" ";					
+		}
+		
+		String fader="";
+		String output="";
+		String outputEffect="";
+		for (OutputMapping o: getAllOutputMappings()) {
+			fader+=o.getFader().getId()+" ";
+			output+=o.getVisualId()+" ";
+			outputEffect+=o.getEffect().getId()+" ";
+		}
+		ret.add("GENERATOR_A "+gen1);
+		ret.add("GENERATOR_B "+gen2);
+		ret.add("EFFECT_A "+fx1);
+		ret.add("EFFECT_B "+fx2);
+		ret.add("MIXER "+mix);
+		ret.add("FADER "+fader);
+		ret.add("OUTPUT "+output);
+		ret.add("OUTPUT_EFFECT "+outputEffect);
+		return ret;
 	}
 
 	/*
@@ -494,6 +554,10 @@ public class Collector {
 
 	public int getFaderCount() {
 		return 4;
+	}
+	
+	public TcpServer getTcpServer() {
+		return srv;
 	}
 
 }
