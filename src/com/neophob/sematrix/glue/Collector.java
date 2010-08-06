@@ -6,9 +6,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import processing.core.PApplet;
 
@@ -71,16 +70,16 @@ public class Collector {
 	private int fps;
 
 	private Collector() {
-		allOutputs = Collections.synchronizedList(new ArrayList<Output>());
+		allOutputs = new CopyOnWriteArrayList<Output>();
 
-		allGenerators = Collections.synchronizedList(new ArrayList<Generator>());			
-		allEffects = Collections.synchronizedList(new ArrayList<Effect>());
-		allMixer = Collections.synchronizedList(new ArrayList<Mixer>());
+		allGenerators = new CopyOnWriteArrayList<Generator>();			
+		allEffects = new CopyOnWriteArrayList<Effect>();
+		allMixer = new CopyOnWriteArrayList<Mixer>();
 
-		allVisuals = Collections.synchronizedList(new ArrayList<Visual>());
+		allVisuals = new CopyOnWriteArrayList<Visual>();
 
 		this.nrOfScreens = 0;
-		ioMapping = Collections.synchronizedList(new LinkedList<OutputMapping>());
+		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
 		init=false;
 	}
 
