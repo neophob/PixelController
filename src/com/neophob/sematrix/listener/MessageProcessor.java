@@ -16,11 +16,11 @@ public class MessageProcessor {
 
 	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
 	private static List<String> present;
-	
+
 	private MessageProcessor() {
 		//no instance
 	}
-	
+
 	/**
 	 * 
 	 * @param msg
@@ -29,10 +29,10 @@ public class MessageProcessor {
 		if (msg==null || msg.length<1) {
 			return null;
 		}
-		
+
 		try {			
 			ValidCommands cmd = ValidCommands.valueOf(msg[0]);
-			
+
 			switch (cmd) {
 			case STATUS:
 				return ValidCommands.STATUS;
@@ -65,7 +65,7 @@ public class MessageProcessor {
 					Collector.getInstance().getVisual(4).setGenerator2(e);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-			
+
 			case CHANGE_EFFECT_A:
 				try {
 					int a = Integer.parseInt(msg[1]);
@@ -80,7 +80,7 @@ public class MessageProcessor {
 					Collector.getInstance().getVisual(4).setEffect1(e);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-				
+
 			case CHANGE_EFFECT_B:
 				try {					
 					int a = Integer.parseInt(msg[1]);
@@ -129,7 +129,7 @@ public class MessageProcessor {
 					}
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-			
+
 			case CHANGE_OUTPUT_EFFECT:
 				try {					
 					int newFxA = Integer.parseInt(msg[1]);
@@ -138,7 +138,7 @@ public class MessageProcessor {
 					Collector.getInstance().getAllOutputMappings().get(1).setEffect(Collector.getInstance().getEffect(newFxB));
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-				
+
 			case CHANGE_FADER:
 				try {					
 					int a = Integer.parseInt(msg[1]);
@@ -147,7 +147,7 @@ public class MessageProcessor {
 					Collector.getInstance().getAllOutputMappings().get(1).setFader(Collector.getInstance().getFader(b));					
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-				
+
 			case CHANGE_TINT:
 				try {					
 					int r = Integer.parseInt(msg[1]);
@@ -160,17 +160,25 @@ public class MessageProcessor {
 					t.setColor(r, g, b);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-			
+
 			case SAVE_PRESENT:
 				present = Collector.getInstance().getCurrentStatus();
 				break;
-			
+
 			case LOAD_PRESENT:
 				if (present!=null) {
+					//convert 
 					Collector.getInstance().setCurrentStatus(present);
 				}
 				break;
 
+			case CHANGE_PRESENT:
+				try {
+					int a = Integer.parseInt(msg[1]);
+					System.out.println("PRESENT: "+a);
+				} catch (Exception e) {e.printStackTrace();}
+				break;
+				
 			case BLINKEN:
 				try {
 					String fileToLoad = msg[1];
@@ -178,7 +186,7 @@ public class MessageProcessor {
 					blink.loadFile(fileToLoad);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-				
+
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
@@ -199,7 +207,7 @@ public class MessageProcessor {
 					}
 				} catch (Exception e) {e.printStackTrace();}
 				break;
-				
+
 			default:
 				System.out.println("valid: "+cmd);
 				for (int i=1; i<msg.length; i++) System.out.println(msg[i]);
@@ -208,7 +216,7 @@ public class MessageProcessor {
 		} catch (IllegalArgumentException e) {
 			log.log(Level.INFO,	"Illegal argument: <{0}>", new Object[] { msg[0] });			
 		}		
-		
+
 		return null;
 	}
 }
