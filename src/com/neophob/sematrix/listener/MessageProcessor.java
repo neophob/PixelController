@@ -165,6 +165,7 @@ public class MessageProcessor {
 				int idxs = Collector.getInstance().getSelectedPresent();
 				List<String> present = Collector.getInstance().getCurrentStatus();
 				Collector.getInstance().getPresent().get(idxs).setPresent(present);
+				//TODO SAVE PRESENT
 				break;
 
 			case LOAD_PRESENT:
