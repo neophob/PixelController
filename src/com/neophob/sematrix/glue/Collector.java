@@ -53,6 +53,9 @@ import com.neophob.sematrix.output.Output;
 
 public class Collector {
 
+	private static final String FILE_BLINKEN = "torus.bml";
+	private static final String FILE_IMAGE = "check.jpg";
+	
 	private static Collector instance = new Collector();
 
 	private boolean randomMode = false;
@@ -78,6 +81,9 @@ public class Collector {
 	/** present settings */
 	private int selectedPresent;
 	private List<PresentSettings> present;
+	private int r=255,g=255,b=255;
+	private String fileBlinken = FILE_BLINKEN;
+	private String fileImage = FILE_IMAGE;
 
 	private TcpServer srv;
 
@@ -138,8 +144,8 @@ public class Collector {
 	 */
 	private void initSystem() {
 		//create generators
-		new Blinkenlights("torus.bml");
-		new Image("check.jpg");
+		new Blinkenlights(FILE_BLINKEN);
+		new Image(FILE_IMAGE);
 		new Plasma2();
 		new SimpleColors();
 		new Fire();
@@ -368,6 +374,11 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
 		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
+		ret.add(ValidCommands.CHANGE_TINT+" "+r+" "+g+" "+b);
+		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
+		ret.add(ValidCommands.IMAGE+" "+fileImage);
+		
+		
 		return ret;
 	}
 
@@ -546,10 +557,44 @@ public class Collector {
 		this.present = present;
 	}
 
+	public void setRGB(int r, int g, int b) {
+		this.r = r;
+		this.g = g;
+		this.b = b;
+	}
+
+	public int getR() {
+		return r;
+	}
+
+	public int getG() {
+		return g;
+	}
+
+	public int getB() {
+		return b;
+	}
+	
+	public String getFileBlinken() {
+		return fileBlinken;
+	}
+
+	public void setFileBlinken(String fileBlinken) {
+		this.fileBlinken = fileBlinken;
+	}
+
+	public String getFileImage() {
+		return fileImage;
+	}
+
+	public void setFileImage(String fileImage) {
+		this.fileImage = fileImage;
+	}
+
+		
 	/* 
 	 * FADER ======================================================
 	 */
-
 
 	/**
 	 * return a NEW INSTANCE of a fader
