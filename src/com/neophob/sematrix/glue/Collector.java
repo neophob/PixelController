@@ -42,6 +42,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
+import com.neophob.sematrix.listener.TcpServer.ValidCommands;
 import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Mix;
 import com.neophob.sematrix.mixer.Mixer;
@@ -348,14 +349,14 @@ public class Collector {
 			output+=o.getVisualId()+" ";
 			outputEffect+=o.getEffect().getId()+" ";
 		}
-		ret.add("GENERATOR_A "+gen1);
-		ret.add("GENERATOR_B "+gen2);
-		ret.add("EFFECT_A "+fx1);
-		ret.add("EFFECT_B "+fx2);
-		ret.add("MIXER "+mix);
-		ret.add("FADER "+fader);
-		ret.add("OUTPUT "+output);
-		ret.add("OUTPUT_EFFECT "+outputEffect);
+		ret.add(ValidCommands.CHANGE_GENERATOR_A+" "+gen1);
+		ret.add(ValidCommands.CHANGE_GENERATOR_B+" "+gen2);
+		ret.add(ValidCommands.CHANGE_EFFECT_A+" "+fx1);
+		ret.add(ValidCommands.CHANGE_EFFECT_B+" "+fx2);
+		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
+		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
+		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
+		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
 		return ret;
 	}
 
