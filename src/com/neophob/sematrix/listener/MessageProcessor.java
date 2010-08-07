@@ -157,6 +157,7 @@ public class MessageProcessor {
 					if (b>255) b=255;
 					Tint t = (Tint)Collector.getInstance().getEffect(EffectName.TINT);
 					t.setColor(r, g, b);
+					Collector.getInstance().setRGB(r, g, b);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
 
@@ -184,6 +185,7 @@ public class MessageProcessor {
 			case BLINKEN:
 				try {
 					String fileToLoad = msg[1];
+					Collector.getInstance().setFileBlinken(fileToLoad);
 					Blinkenlights blink = (Blinkenlights)Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS);
 					blink.loadFile(fileToLoad);
 				} catch (Exception e) {e.printStackTrace();}
@@ -192,6 +194,7 @@ public class MessageProcessor {
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
+					Collector.getInstance().setFileImage(fileToLoad);
 					Image img = (Image)Collector.getInstance().getGenerator(GeneratorName.IMAGE);
 					img.loadFile(fileToLoad);
 				} catch (Exception e) {e.printStackTrace();}
