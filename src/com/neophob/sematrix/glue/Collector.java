@@ -74,7 +74,11 @@ public class Collector {
 
 	private int nrOfScreens;
 	private int fps;
-	
+
+	/** present settings */
+	private int selectedPresent;
+	private List<PresentSettings> present;
+
 	private TcpServer srv;
 
 	private Collector() {
@@ -89,6 +93,14 @@ public class Collector {
 		this.nrOfScreens = 0;
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
 		init=false;
+
+		selectedPresent=0;
+		present = new CopyOnWriteArrayList<PresentSettings>();
+		for (int n=0; n<128; n++) {
+			present.add(new PresentSettings());
+		}
+
+
 	}
 
 	/**
@@ -110,7 +122,7 @@ public class Collector {
 		for (int n=0; n<nrOfScreens; n++) {
 			ioMapping.add(new OutputMapping(n, 0));			
 		}
-		
+
 		//Start tcp server
 		try {
 			srv = new TcpServer(papplet, 3449, "127.0.0.1", 3445);	
@@ -173,18 +185,18 @@ public class Collector {
 		g.setComposite(AlphaComposite.Src);
 
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-		RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
 		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-		RenderingHints.VALUE_RENDER_SPEED);
+				RenderingHints.VALUE_RENDER_SPEED);
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		RenderingHints.VALUE_ANTIALIAS_OFF);
+				RenderingHints.VALUE_ANTIALIAS_OFF);
 
 		g.drawImage(image, 0, 0, width, height, null);
 		g.dispose();
 		return resizedImage;
-		}
+	}
 
 	/**
 	 * convert buffer to output size
@@ -192,7 +204,7 @@ public class Collector {
 	 * @return RESIZED image
 	 */
 	public int[] resizeBufferForDevice(int[] buffer, int deviceXSize, int deviceYSize) {
-/*		
+		/*		
 		Processing resize is buggy!
  		PImage pImage = Collector.getInstance().getPapplet().createImage
 		( gen1.getInternalBufferXSize(), gen1.getInternalBufferYSize(), PApplet.RGB );
@@ -201,13 +213,12 @@ public class Collector {
 		System.arraycopy(buffer, 0, pImage.pixels, 0, gen1.internalBuffer.length);
 		pImage.updatePixels();
 		BufferedImage resizedImage = resize2((BufferedImage)pImage.getImage(), deviceXSize, deviceYSize);
+		 */
 
-		*/
-		
 		BufferedImage bi = new BufferedImage(matrix.getBufferXSize(), matrix.getBufferYSize(), BufferedImage.TYPE_INT_RGB);
 		bi.setRGB(0, 0, matrix.getBufferXSize(), matrix.getBufferYSize(), buffer, 0, matrix.getBufferXSize());
 		BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
-		
+
 		DataBufferInt dbi = (DataBufferInt)resizedImage.getRaster().getDataBuffer();
 		return dbi.getData();
 	}
@@ -314,7 +325,7 @@ public class Collector {
 	public void setRandomMode(boolean randomMode) {
 		this.randomMode = randomMode;
 	}
-	
+
 	public void setCurrentStatus(List<String> preset) {
 		for (String s: preset) {
 			s = StringUtils.trim(s);
@@ -340,7 +351,7 @@ public class Collector {
 			fx2+=v.getEffect2Idx()+" ";
 			mix+=v.getMixerIdx()+" ";					
 		}
-		
+
 		String fader="";
 		String output="";
 		String outputEffect="";
@@ -517,8 +528,28 @@ public class Collector {
 
 
 	/* 
+	 * PRESENT ======================================================
+	 */
+	public int getSelectedPresent() {
+		return selectedPresent;
+	}
+
+	public void setSelectedPresent(int selectedPresent) {
+		this.selectedPresent = selectedPresent;
+	}
+
+	public List<PresentSettings> getPresent() {
+		return present;
+	}
+
+	public void setPresent(List<PresentSettings> present) {
+		this.present = present;
+	}
+
+	/* 
 	 * FADER ======================================================
 	 */
+
 
 	/**
 	 * return a NEW INSTANCE of a fader
@@ -539,6 +570,7 @@ public class Collector {
 		return null;
 	}
 
+
 	public Fader getFader(int index) {
 		switch (index) {
 		case 0:
@@ -553,10 +585,11 @@ public class Collector {
 		return null;
 	}
 
+	//TODO static is NOT sexy!
 	public int getFaderCount() {
 		return 4;
 	}
-	
+
 	public TcpServer getTcpServer() {
 		return srv;
 	}

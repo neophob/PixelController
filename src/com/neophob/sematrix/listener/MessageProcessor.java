@@ -15,7 +15,6 @@ import com.neophob.sematrix.listener.TcpServer.ValidCommands;
 public class MessageProcessor {
 
 	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
-	private static List<String> present;
 
 	private MessageProcessor() {
 		//no instance
@@ -162,20 +161,23 @@ public class MessageProcessor {
 				break;
 
 			case SAVE_PRESENT:
-				present = Collector.getInstance().getCurrentStatus();
+				int idxs = Collector.getInstance().getSelectedPresent();
+				List<String> present = Collector.getInstance().getCurrentStatus();
+				Collector.getInstance().getPresent().get(idxs).setPresent(present);
 				break;
 
 			case LOAD_PRESENT:
-				if (present!=null) {
-					//convert 
+				int idxl = Collector.getInstance().getSelectedPresent();
+				present = Collector.getInstance().getPresent().get(idxl).getPresent();
+				if (present!=null) { 
 					Collector.getInstance().setCurrentStatus(present);
 				}
-				break;
+				return ValidCommands.STATUS;
 
 			case CHANGE_PRESENT:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					System.out.println("PRESENT: "+a);
+					Collector.getInstance().setSelectedPresent(a);
 				} catch (Exception e) {e.printStackTrace();}
 				break;
 				
