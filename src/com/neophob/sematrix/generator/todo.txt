@@ -5,19 +5,17 @@ fx:
 
 -prevent black/white output in random mode
 
--save settings as present
-
--random mode bug, slowdown, maybe mem leak, loading an image/blm?
-
--new effect: colorize output, mit color slider
--new generator: volume visualizer, returns array of int values, zb. wenn mit parameter 5 gibt es 
- 5 werte zurück mit den buffer werten. ala winamp visualize
-
 -bug: mehrere rotozoomer: speed erhöht sich
 
 -optimize rainbowduino output, workarround multiply output with itself, maybe gamma tab?
 
 -blinkenlights: add option for random mode
+
+-config klasse
+
+-presents in date speichern
+
+-config date erstellen (i2c addr., erstes image+blinkenlight file...)
 
 -gui: enable/disable elements for random mode (generator1, effect1, generator2...)
 

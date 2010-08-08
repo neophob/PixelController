@@ -9,6 +9,11 @@ import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 
+/**
+ * create random outputs
+ * @author michu
+ *
+ */
 public class Shuffler {
 
 	private Shuffler() {
@@ -63,7 +68,12 @@ public class Shuffler {
 			if (blah == 5) {
 				int size = Collector.getInstance().getAllMixer().size();
 				for (Visual v: Collector.getInstance().getAllVisuals()) {
-					v.setMixer(rand.nextInt(size));
+					if (v.getGenerator2Idx()==0) {
+						//no 2nd generator - use passthru mixer
+						v.setMixer(0);						
+					} else {
+						v.setMixer(rand.nextInt(size));						
+					}
 				}
 			}			
 

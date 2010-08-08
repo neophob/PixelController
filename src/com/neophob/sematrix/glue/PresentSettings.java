@@ -2,6 +2,11 @@ package com.neophob.sematrix.glue;
 
 import java.util.List;
 
+/**
+ * simple class to store present set's
+ * @author michu
+ *
+ */
 public class PresentSettings {
 	private List<String> present;
 
