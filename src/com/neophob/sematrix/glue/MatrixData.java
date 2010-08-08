@@ -1,5 +1,10 @@
 package com.neophob.sematrix.glue;
 
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,7 +97,7 @@ public class MatrixData {
 		buffer = doTheFaderBaby(buffer, map);
 		
 		//resize to the ouput buffer return image
-		return Collector.getInstance().resizeBufferForDevice(buffer, deviceXSize, deviceYSize);
+		return resizeBufferForDevice(buffer, deviceXSize, deviceYSize);
 	}
 	
 
@@ -133,9 +138,63 @@ public class MatrixData {
 		int[] bfr2 = p.pixels;
 		p.updatePixels();
 		
-		return Collector.getInstance().resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
+		return resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
 	}
 
+
+	/**
+	 * workarround until processing resize works 
+	 * 
+	 * @param image
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	private static BufferedImage resize2(BufferedImage image, int width, int height) {
+		int type = image.getType() == 0? BufferedImage.TYPE_INT_RGB : image.getType();
+		BufferedImage resizedImage = new BufferedImage(width, height, type);
+		Graphics2D g = resizedImage.createGraphics();
+		g.setComposite(AlphaComposite.Src);
+
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+		g.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_SPEED);
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_OFF);
+
+		g.drawImage(image, 0, 0, width, height, null);
+		g.dispose();
+		return resizedImage;
+	}
+
+	/**
+	 * TODO maybe move
+	 * convert buffer to output size
+	 * @param buffer
+	 * @return RESIZED image
+	 */
+	public int[] resizeBufferForDevice(int[] buffer, int deviceXSize, int deviceYSize) {
+		/*		
+		Processing resize is buggy!
+ 		PImage pImage = Collector.getInstance().getPapplet().createImage
+		( gen1.getInternalBufferXSize(), gen1.getInternalBufferYSize(), PApplet.RGB );
+
+		pImage.loadPixels();
+		System.arraycopy(buffer, 0, pImage.pixels, 0, gen1.internalBuffer.length);
+		pImage.updatePixels();
+		BufferedImage resizedImage = resize2((BufferedImage)pImage.getImage(), deviceXSize, deviceYSize);
+		 */
+
+		BufferedImage bi = new BufferedImage(getBufferXSize(), getBufferYSize(), BufferedImage.TYPE_INT_RGB);
+		bi.setRGB(0, 0, getBufferXSize(), getBufferYSize(), buffer, 0, getBufferXSize());
+		BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
+
+		DataBufferInt dbi = (DataBufferInt)resizedImage.getRaster().getDataBuffer();
+		return dbi.getData();
+	}
 
 
 	/** 

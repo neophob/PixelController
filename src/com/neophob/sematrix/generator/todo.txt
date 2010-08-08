@@ -1,9 +1,6 @@
 
 fx:
 -textscroller
--VolumeDisplay as Effect instead Generator?
-
--prevent black/white output in random mode
 
 -bug: mehrere rotozoomer: speed erhšht sich
 
@@ -11,14 +8,15 @@ fx:
 
 -blinkenlights: add option for random mode
 
--config klasse
+-presents in file speichern
 
--presents in date speichern
-
--config date erstellen (i2c addr., erstes image+blinkenlight file...)
+-config file erstellen (i2c addr., erstes image+blinkenlight file...)
 
 -gui: enable/disable elements for random mode (generator1, effect1, generator2...)
 
+-random mode: do not switch output if fader is running
+
+-stretch over 3 screens does not work
 
 pd:
 ---
