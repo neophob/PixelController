@@ -114,11 +114,9 @@ public class MatrixData {
 		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
 
-//		return Collector.getInstance().resizeBufferForDevice(buffer, deviceXSize, deviceYSize);
-		
 		float f=1.0f/nrOfScreens; //0.33 - 0.33 - 1
 		int xStart=(int)(xOfsNr*f*getBufferXSize()); //0 - 0.33 
-		int xWidth=(int)((xOfsNr+1)*f*getBufferXSize()); //0.33 - 0.66
+		int xWidth=(int)((xOfsNr+1)*f*getBufferXSize())-xStart; //0.33 - 0.66
 		
 		//very UGLY and SLOW method to copy the image - im lazy!
  		PImage p = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );
@@ -130,13 +128,12 @@ public class MatrixData {
 		p.copy(xStart, 0, xWidth, getBufferYSize(), 0, 0, getBufferXSize(), getBufferYSize());
 
 		p.loadPixels();
-		int[] bfr2 = p.pixels.clone();
+		//TODO clone maybe not needed
+//		int[] bfr2 = p.pixels.clone();
+		int[] bfr2 = p.pixels;
 		p.updatePixels();
 		
 		return Collector.getInstance().resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
-		
-		//p.resize(deviceXSize, deviceYSize);
-		//return p.pixels;*/
 	}
 
 
