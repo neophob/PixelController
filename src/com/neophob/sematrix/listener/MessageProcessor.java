@@ -11,6 +11,7 @@ import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.listener.TcpServer.ValidCommands;
+import com.neophob.sematrix.present.PropertiesHelper;
 
 public class MessageProcessor {
 
@@ -183,7 +184,7 @@ public class MessageProcessor {
 					int idxs = col.getSelectedPresent();
 					List<String> present = col.getCurrentStatus();
 					col.getPresent().get(idxs).setPresent(present);
-					//TODO SAVE PRESENT					
+					PropertiesHelper.savePresents();
 				} catch (Exception e) {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}

@@ -18,4 +18,24 @@ public class PresentSettings {
 		this.present = present;
 	}
 	
+	public void setPresent(String[] present) {
+		this.present.clear();
+		for (String s: present) {
+			this.present.add(s);
+		}
+	}
+	
+	public String getSettingsAsString() {		
+		if (present==null) {
+			return "";
+		}
+		
+		String ret="";
+		
+		for (String s: present) {
+			ret+=s+";";
+		}
+		return ret;
+	}
+	
 }

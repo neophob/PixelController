@@ -10,11 +10,11 @@ fx:
 
 -presents in file speichern
 
--config file erstellen (i2c addr., erstes image+blinkenlight file...)
-
--gui: enable/disable elements for random mode (generator1, effect1, generator2...)
+-config file erstellen (i2c addr., erstes image+blinkenlight file, generator blacklist für shuffler...)
 
 -random mode: do not switch output if fader is running
+
+-bug mit crossfade und effect (2x invert)
 
 pd:
 ---
