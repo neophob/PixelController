@@ -73,7 +73,7 @@ public class MessageProcessor {
 
 			case CHANGE_EFFECT_A:
 				try {
-					int size = col.getAllEffects().size();
+					int size = col.getAllVisuals().size();
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setEffect1(tmp);
@@ -85,7 +85,7 @@ public class MessageProcessor {
 
 			case CHANGE_EFFECT_B:
 				try {					
-					int size = col.getAllEffects().size();
+					int size = col.getAllVisuals().size();
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setEffect2(tmp);
@@ -147,7 +147,15 @@ public class MessageProcessor {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}
 				break;
-
+				
+			case CHANGE_SHUFFLER_SELECT:
+				try {					
+					System.out.println("shuffler select");
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
+				break;
+				
 			case CHANGE_TINT:
 				try {					
 					int r = Integer.parseInt(msg[1]);
@@ -234,7 +242,9 @@ public class MessageProcessor {
 				break;
 
 			default:
-				log.log(Level.INFO,	"Ignored command");
+				String s="";
+				for (int i=0; i<msg.length;i++) s+=msg[i]+"; ";
+				log.log(Level.INFO,	"Ignored command <{0}>", s);
 				break;
 			}
 		} catch (IllegalArgumentException e) {
