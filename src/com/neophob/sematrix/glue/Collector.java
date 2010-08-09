@@ -479,6 +479,9 @@ public class Collector {
 		return ioMapping;
 	}
 
+	public OutputMapping getOutputMappings(int index) {
+		return ioMapping.get(index);
+	}
 
 	/* 
 	 * PRESENT ======================================================

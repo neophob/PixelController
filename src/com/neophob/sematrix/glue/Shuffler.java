@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
@@ -79,8 +80,12 @@ public class Shuffler {
 
 			if (blah == 6) {
 				int size = Collector.getInstance().getFaderCount();
-				Collector.getInstance().getAllOutputMappings().get(0).setFader(Collector.getInstance().getFader(rand.nextInt(size)));					
-				Collector.getInstance().getAllOutputMappings().get(1).setFader(Collector.getInstance().getFader(rand.nextInt(size)));		
+				for (OutputMapping om: Collector.getInstance().getAllOutputMappings()) {
+					Fader f=om.getFader();
+					if (!f.isStarted()) {
+						om.setFader(Collector.getInstance().getFader(rand.nextInt(size)));	
+					}
+				}
 			}
 			
 			if (blah == 11) {
@@ -95,9 +100,16 @@ public class Shuffler {
 		
 		if (kick) {
 			if (blah == 7) {
-				int size = Collector.getInstance().getAllVisuals().size();
-				Collector.getInstance().getAllOutputMappings().get(0).getFader().startFade(rand.nextInt(size), 0);
-				Collector.getInstance().getAllOutputMappings().get(1).getFader().startFade(rand.nextInt(size), 1);
+				int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
+				int screenNr = 0;
+				for (OutputMapping om: Collector.getInstance().getAllOutputMappings()) {
+					Fader f=om.getFader();
+					if (!f.isStarted()) {
+						//start fader only if not another one is started
+						f.startFade(rand.nextInt(nrOfVisuals), screenNr);
+					}
+					screenNr++;
+				}
 			}
 
 			if (blah == 8) {
