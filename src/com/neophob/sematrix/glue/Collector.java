@@ -50,6 +50,7 @@ public class Collector {
 
 	private static final String FILE_BLINKEN = "torus.bml";
 	private static final String FILE_IMAGE = "check.jpg";
+	private static final int SHUFFLER_OPTIONS = 11;
 	
 	private static Collector instance = new Collector();
 
@@ -66,6 +67,7 @@ public class Collector {
 	private List<Effect> allEffects;
 	private List<Mixer> allMixer;
 	private List<Visual> allVisuals;
+	private List<Boolean> shufflerSelect;
 
 	/** fx to screen mapping */
 	private List<OutputMapping> ioMapping;
@@ -101,6 +103,10 @@ public class Collector {
 			present.add(new PresentSettings());
 		}
 
+		shufflerSelect = new CopyOnWriteArrayList<Boolean>();
+		for (int n=0; n<SHUFFLER_OPTIONS; n++) {
+			shufflerSelect.add(true);
+		}
 
 	}
 
@@ -320,6 +326,7 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_TINT+" "+r+" "+g+" "+b);
 		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
 		ret.add(ValidCommands.IMAGE+" "+fileImage);
+		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
 		
 		return ret;
 	}
@@ -537,6 +544,63 @@ public class Collector {
 	}
 
 		
+	/* 
+	 * SHUFFLER OPTIONS ======================================================
+	 */
+	
+	public enum ShufflerOffset {
+		GENERATOR_A(0),
+		GENERATOR_B(1),
+		EFFECT_A(2),
+		EFFECT_B(3),
+		MIXER(4),
+		MIXER_OUTPUT(5),
+		FADER_OUTPUT(6),
+		OUTPUT(7),
+		BLINKEN(8),
+		IMAGE(9),
+		TINT(10);
+		
+		int ofs;
+		ShufflerOffset(int ofs) {
+			this.ofs = ofs;
+		}
+		
+		int getOffset() {
+			return ofs;
+		}
+	}
+	
+	/**
+	 * returns string for current status. the order is fix and
+	 * defined by gui
+	 */
+	private String getShufflerStatus() {
+		String s="";
+		int value;
+		
+		for (int i=0; i<shufflerSelect.size(); i++) {
+			value=0;
+			if (shufflerSelect.get(i)) value=1;
+			s+=" "+value;			
+		}
+		return s;
+	}
+
+	public List<Boolean> getShufflerSelect() {
+		return shufflerSelect;
+	}
+
+	public boolean getShufflerSelect(ShufflerOffset ofs) {
+		return shufflerSelect.get(ofs.getOffset());
+	}
+
+	public void setShufflerSelect(int ofs, Boolean value) {
+		this.shufflerSelect.set(ofs, value);
+	}
+
+	
+	
 	/* 
 	 * FADER ======================================================
 	 */
