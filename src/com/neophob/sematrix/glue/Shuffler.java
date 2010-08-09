@@ -8,6 +8,7 @@ import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
+import com.neophob.sematrix.glue.Collector.ShufflerOffset;
 import com.neophob.sematrix.input.Sound;
 
 /**
@@ -30,35 +31,37 @@ public class Shuffler {
 			return;
 		}
 		
+		Collector col = Collector.getInstance(); 
+		
 		Random rand = new Random();
 		int blah = rand.nextInt(11);
 		
 		if (snare) {
-			if (blah == 1) {
-				int size = Collector.getInstance().getAllGenerators().size();
-				for (Visual v: Collector.getInstance().getAllVisuals()) {
+			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
+				int size = col.getAllGenerators().size();
+				for (Visual v: col.getAllVisuals()) {
 					v.setGenerator1(rand.nextInt(size-1)+1);
 				}
 			}
 
-			if (blah == 2) {
-				int size = Collector.getInstance().getAllGenerators().size();
-				for (Visual v: Collector.getInstance().getAllVisuals()) {
+			if (blah == 2 && col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {
+				int size = col.getAllGenerators().size();
+				for (Visual v: col.getAllVisuals()) {
 					v.setGenerator2(rand.nextInt(size));
 				}
 
 			}
 			
-			if (blah == 3) {
-				int size = Collector.getInstance().getAllEffects().size();
-				for (Visual v: Collector.getInstance().getAllVisuals()) {
+			if (blah == 3 && col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
+				int size = col.getAllEffects().size();
+				for (Visual v: col.getAllVisuals()) {
 					v.setEffect1(rand.nextInt(size));
 				}
 			}
 
-			if (blah == 4) {
-				int size = Collector.getInstance().getAllEffects().size();
-				for (Visual v: Collector.getInstance().getAllVisuals()) {
+			if (blah == 4 && col.getShufflerSelect(ShufflerOffset.EFFECT_B)) {
+				int size = col.getAllEffects().size();
+				for (Visual v: col.getAllVisuals()) {
 					v.setEffect2(rand.nextInt(size));
 				}
 			}
@@ -66,9 +69,9 @@ public class Shuffler {
 		}
 		
 		if (hat) {
-			if (blah == 5) {
-				int size = Collector.getInstance().getAllMixer().size();
-				for (Visual v: Collector.getInstance().getAllVisuals()) {
+			if (blah == 5 && col.getShufflerSelect(ShufflerOffset.MIXER)) {
+				int size = col.getAllMixer().size();
+				for (Visual v: col.getAllVisuals()) {
 					if (v.getGenerator2Idx()==0) {
 						//no 2nd generator - use passthru mixer
 						v.setMixer(0);						
@@ -78,31 +81,31 @@ public class Shuffler {
 				}
 			}			
 
-			if (blah == 6) {
-				int size = Collector.getInstance().getFaderCount();
-				for (OutputMapping om: Collector.getInstance().getAllOutputMappings()) {
+			if (blah == 6 && col.getShufflerSelect(ShufflerOffset.FADER_OUTPUT)) {
+				int size = col.getFaderCount();
+				for (OutputMapping om: col.getAllOutputMappings()) {
 					Fader f=om.getFader();
 					if (!f.isStarted()) {
-						om.setFader(Collector.getInstance().getFader(rand.nextInt(size)));	
+						om.setFader(col.getFader(rand.nextInt(size)));	
 					}
 				}
 			}
 			
-			if (blah == 11) {
+			if (blah == 11 && col.getShufflerSelect(ShufflerOffset.TINT)) {
 				int r = rand.nextInt(256);
 				int g = rand.nextInt(256);
 				int b = rand.nextInt(256);
-				Tint t = (Tint)Collector.getInstance().getEffect(EffectName.TINT);
+				Tint t = (Tint)col.getEffect(EffectName.TINT);
 				t.setColor(r, g, b);
 			}
 		}
 		
 		
 		if (kick) {
-			if (blah == 7) {
-				int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
+			if (blah == 7 && col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
+				int nrOfVisuals = col.getAllVisuals().size();
 				int screenNr = 0;
-				for (OutputMapping om: Collector.getInstance().getAllOutputMappings()) {
+				for (OutputMapping om: col.getAllOutputMappings()) {
 					Fader f=om.getFader();
 					if (!f.isStarted()) {
 						//start fader only if not another one is started
@@ -112,7 +115,7 @@ public class Shuffler {
 				}
 			}
 
-			if (blah == 8) {
+			if (blah == 8 && col.getShufflerSelect(ShufflerOffset.IMAGE)) {
 				int nr = rand.nextInt(4);
 				String fileToLoad="";
 				switch (nr) {
@@ -129,11 +132,11 @@ public class Shuffler {
 					fileToLoad="check.jpg";
 					break;
 				}
-				Image img = (Image)Collector.getInstance().getGenerator(GeneratorName.IMAGE);
+				Image img = (Image)col.getGenerator(GeneratorName.IMAGE);
 				img.loadFile(fileToLoad);
 			}
 			
-			if (blah == 9) {
+			if (blah == 9 && col.getShufflerSelect(ShufflerOffset.BLINKEN)) {
 				int nr = rand.nextInt(4);
 				String fileToLoad="";
 				switch (nr) {
@@ -153,7 +156,7 @@ public class Shuffler {
 					fileToLoad="bb-spiral2fast.bml";
 					break;
 				}
-				Blinkenlights blink = (Blinkenlights)Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS);
+				Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
 				blink.loadFile(fileToLoad);
 			}
 	

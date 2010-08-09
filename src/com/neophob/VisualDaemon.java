@@ -25,9 +25,9 @@ public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 
-	public static final int FPS = 40;
+	public static final int FPS = 30;
 	//96*2*25 = 4800bytes
-	public static final int NR_OF_SCREENS = 2;
+	public static final int NR_OF_SCREENS = 4;
 	
 	RainbowduinoDevice rainbowduino;
 	NewWindowHelper nwh;
@@ -58,7 +58,7 @@ public class VisualDaemon extends PApplet {
 			blink.loadFile("bb-rauten2.bml");
 			System.out.println(i);
 		}
-		nwh = new NewWindowHelper(true);
+		//nwh = new NewWindowHelper(true);
 	}
 	
 	public void draw() { 
