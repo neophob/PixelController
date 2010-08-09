@@ -28,6 +28,7 @@ public class TcpServer implements Runnable {
 		CHANGE_FADER,
 		CHANGE_TINT,
 		CHANGE_PRESENT,
+		CHANGE_SHUFFLER_SELECT,
 		SAVE_PRESENT,
 		LOAD_PRESENT,
 		BLINKEN,
