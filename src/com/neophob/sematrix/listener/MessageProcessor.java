@@ -29,6 +29,8 @@ public class MessageProcessor {
 			return null;
 		}
 
+		int tmp;
+		
 		try {			
 			ValidCommands cmd = ValidCommands.valueOf(msg[0]);
 			Collector col = Collector.getInstance();
@@ -38,7 +40,12 @@ public class MessageProcessor {
 
 			case CHANGE_GENERATOR_A:
 				try {
-					int a = Integer.parseInt(msg[1]);
+					int size = col.getAllVisuals().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getVisual(i).setGenerator1(tmp);
+					}
+/*					int a = Integer.parseInt(msg[1]);
 					int b = Integer.parseInt(msg[2]);
 					int c = Integer.parseInt(msg[3]);
 					int d = Integer.parseInt(msg[4]);
@@ -47,104 +54,98 @@ public class MessageProcessor {
 					col.getVisual(1).setGenerator1(b);
 					col.getVisual(2).setGenerator1(c);
 					col.getVisual(3).setGenerator1(d);
-					col.getVisual(4).setGenerator1(e);
-				} catch (Exception e) {e.printStackTrace();}
+					col.getVisual(4).setGenerator1(e);*/
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 			case CHANGE_GENERATOR_B:
 				try {
-					int a = Integer.parseInt(msg[1]);
-					int b = Integer.parseInt(msg[2]);
-					int c = Integer.parseInt(msg[3]);
-					int d = Integer.parseInt(msg[4]);
-					int e = Integer.parseInt(msg[5]);
-					col.getVisual(0).setGenerator2(a);
-					col.getVisual(1).setGenerator2(b);
-					col.getVisual(2).setGenerator2(c);
-					col.getVisual(3).setGenerator2(d);
-					col.getVisual(4).setGenerator2(e);
-				} catch (Exception e) {e.printStackTrace();}
+					int size = col.getAllVisuals().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getVisual(i).setGenerator2(tmp);
+					}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_EFFECT_A:
 				try {
-					int a = Integer.parseInt(msg[1]);
-					int b = Integer.parseInt(msg[2]);
-					int c = Integer.parseInt(msg[3]);
-					int d = Integer.parseInt(msg[4]);
-					int e = Integer.parseInt(msg[5]);
-					col.getVisual(0).setEffect1(a);
-					col.getVisual(1).setEffect1(b);
-					col.getVisual(2).setEffect1(c);
-					col.getVisual(3).setEffect1(d);
-					col.getVisual(4).setEffect1(e);
-				} catch (Exception e) {e.printStackTrace();}
+					int size = col.getAllEffects().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getVisual(i).setEffect1(tmp);
+					}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_EFFECT_B:
 				try {					
-					int a = Integer.parseInt(msg[1]);
-					int b = Integer.parseInt(msg[2]);
-					int c = Integer.parseInt(msg[3]);
-					int d = Integer.parseInt(msg[4]);
-					int e = Integer.parseInt(msg[5]);
-					col.getVisual(0).setEffect2(a);
-					col.getVisual(1).setEffect2(b);
-					col.getVisual(2).setEffect2(c);
-					col.getVisual(3).setEffect2(d);
-					col.getVisual(4).setEffect2(e);
-				} catch (Exception e) {e.printStackTrace();}
+					int size = col.getAllEffects().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getVisual(i).setEffect2(tmp);
+					}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_MIXER:
-				try {					
-					int a = Integer.parseInt(msg[1]);
-					int b = Integer.parseInt(msg[2]);
-					int c = Integer.parseInt(msg[3]);
-					int d = Integer.parseInt(msg[4]);
-					int e = Integer.parseInt(msg[5]);
-					col.getVisual(0).setMixer(a);
-					col.getVisual(1).setMixer(b);
-					col.getVisual(2).setMixer(c);
-					col.getVisual(3).setMixer(d);
-					col.getVisual(4).setMixer(e);
-				} catch (Exception e) {e.printStackTrace();}
+				try {
+					int size = col.getAllMixer().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getVisual(i).setMixer(tmp);
+					}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_OUTPUT:
-				try {					
-					int newFxA = Integer.parseInt(msg[1]);
-					int newFxB = Integer.parseInt(msg[2]);
-					int oldFxA = col.getFxInputForScreen(0);
-					int oldFxB = col.getFxInputForScreen(1);
-					if(oldFxA!=newFxA) {
-						log.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFxA, newFxA});
-						//col.mapInputToScreen(0, newFxA);						
-						col.getAllOutputMappings().get(0).getFader().startFade(newFxA, 0);
+				try {
+					int size = col.getAllOutputMappings().size();
+					for (int i=0; i<size; i++) {
+						int newFx = Integer.parseInt(msg[i+1]);
+						int oldFx = col.getFxInputForScreen(i);
+						if(oldFx!=newFx) {
+							log.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
+							//col.mapInputToScreen(0, newFxA);						
+							col.getOutputMappings(i).getFader().startFade(newFx, i);
+						}
 					}
-					if(oldFxB!=newFxB) {
-						log.log(Level.INFO,	"Change Output 1, old fx: {0}, new fx {1}", new Object[] {oldFxB, newFxB});
-						//col.mapInputToScreen(1, newFxB);
-						col.getAllOutputMappings().get(1).getFader().startFade(newFxB, 1);
-					}
-				} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_OUTPUT_EFFECT:
-				try {					
-					int newFxA = Integer.parseInt(msg[1]);
-					int newFxB = Integer.parseInt(msg[2]);
-					col.getAllOutputMappings().get(0).setEffect(col.getEffect(newFxA));
-					col.getAllOutputMappings().get(1).setEffect(col.getEffect(newFxB));
-				} catch (Exception e) {e.printStackTrace();}
+				try {
+					int size = col.getAllOutputMappings().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getOutputMappings(i).setEffect(col.getEffect(tmp));
+					}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_FADER:
 				try {					
-					int a = Integer.parseInt(msg[1]);
-					int b = Integer.parseInt(msg[2]);
-					col.getAllOutputMappings().get(0).setFader(col.getFader(a));					
-					col.getAllOutputMappings().get(1).setFader(col.getFader(b));					
-				} catch (Exception e) {e.printStackTrace();}
+					int size = col.getAllOutputMappings().size();
+					for (int i=0; i<size; i++) {
+						tmp=Integer.parseInt(msg[i+1]);
+						col.getOutputMappings(i).setFader(col.getFader(tmp));
+					}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case CHANGE_TINT:
@@ -158,29 +159,41 @@ public class MessageProcessor {
 					Tint t = (Tint)col.getEffect(EffectName.TINT);
 					t.setColor(r, g, b);
 					col.setRGB(r, g, b);
-				} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case SAVE_PRESENT:
-				int idxs = col.getSelectedPresent();
-				List<String> present = col.getCurrentStatus();
-				col.getPresent().get(idxs).setPresent(present);
-				//TODO SAVE PRESENT
+				try {
+					int idxs = col.getSelectedPresent();
+					List<String> present = col.getCurrentStatus();
+					col.getPresent().get(idxs).setPresent(present);
+					//TODO SAVE PRESENT					
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case LOAD_PRESENT:
-				int idxl = col.getSelectedPresent();
-				present = col.getPresent().get(idxl).getPresent();
-				if (present!=null) { 
-					col.setCurrentStatus(present);
+				try {
+					int idxl = col.getSelectedPresent();
+					List<String> present = col.getPresent().get(idxl).getPresent();
+					if (present!=null) { 
+						col.setCurrentStatus(present);
+					}
+					return ValidCommands.STATUS;					
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
 				}
-				return ValidCommands.STATUS;
-
+				break;
 			case CHANGE_PRESENT:
 				try {
 					int a = Integer.parseInt(msg[1]);
 					col.setSelectedPresent(a);
-				} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 				
 			case BLINKEN:
@@ -189,7 +202,9 @@ public class MessageProcessor {
 					col.setFileBlinken(fileToLoad);
 					Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
 					blink.loadFile(fileToLoad);
-				} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case IMAGE:
@@ -198,7 +213,9 @@ public class MessageProcessor {
 					col.setFileImage(fileToLoad);
 					Image img = (Image)col.getGenerator(GeneratorName.IMAGE);
 					img.loadFile(fileToLoad);
-				} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			case RANDOM:
@@ -211,12 +228,13 @@ public class MessageProcessor {
 						col.setRandomMode(false);
 						return ValidCommands.STATUS;
 					}
-				} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
 				break;
 
 			default:
-				System.out.println("valid: "+cmd);
-				for (int i=1; i<msg.length; i++) System.out.println(msg[i]);
+				log.log(Level.INFO,	"Ignored command");
 				break;
 			}
 		} catch (IllegalArgumentException e) {
