@@ -16,8 +16,6 @@ fx:
 
 -random mode: do not switch output if fader is running
 
--stretch over 3 screens does not work
-
 pd:
 ---
 http://www.youtube.com/user/cheetomoskeeto#g/c/12DC9A161D8DC5DC
