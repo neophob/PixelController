@@ -1,4 +1,4 @@
-#N canvas 17 139 1190 541 10;
+#N canvas 51 145 1190 541 10;
 #X obj 13 230 cnv 15 220 190 empty empty network 20 12 0 14 -257985
 -66577 0;
 #N canvas 48 64 354 454 receive 0;
@@ -208,7 +208,7 @@
 -1 -1 0;
 #X text 273 116 Mixer;
 #X obj 341 219 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 4;
 #X obj 471 219 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
 -1 -1 1;
 #X text 273 216 Output;
@@ -262,13 +262,13 @@
 #X msg 251 331 send BLINKEN bb-frogskin2.bml;
 #X msg 251 353 send BLINKEN bb-rauten2.bml;
 #X msg 251 375 send BLINKEN bb-spiral2fast.bml;
-#X obj 149 94 cnv 15 84 130 empty empty beat 20 12 0 14 -260097 -66577
+#X obj 149 94 cnv 15 84 130 empty empty beat 20 12 0 14 -4034 -66577
 0;
-#X obj 157 132 tgl 20 0 empty r_snd_kick kick 32 10 0 10 -232576 -1
+#X obj 157 132 tgl 20 0 empty r_snd_kick kick 32 10 0 10 -204786 -1
 -1 0 1;
-#X obj 157 161 tgl 20 0 empty r_snd_hat hat 32 10 0 10 -232576 -1 -1
+#X obj 157 161 tgl 20 0 empty r_snd_hat hat 32 10 0 10 -204786 -1 -1
 0 1;
-#X obj 157 192 tgl 20 0 empty r_snd_snare snare 32 10 0 10 -232576
+#X obj 157 192 tgl 20 0 empty r_snd_snare snare 32 10 0 10 -204786
 -1 -1 0 1;
 #N canvas 229 22 680 655 send 0;
 #X obj 312 447 netsend;
@@ -892,7 +892,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 691 254 cnv 15 297 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 705 287 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 919 314;
+10 10 825 320;
 #X floatatom 705 371 5 0 0 0 - - s_tint_r;
 #X floatatom 829 371 5 0 0 0 - - s_tint_g;
 #X floatatom 954 367 5 0 0 0 - - s_tint_b;
@@ -904,13 +904,13 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 471 174 hradio 15 1 0 7 s_fx_output2 r_fx_output2 empty 0 -8
 0 10 -262144 -1 -1 0;
 #X text 273 171 Effect;
-#X obj 995 -88 cnv 15 190 400 empty empty present 20 12 0 14 -204786
+#X obj 995 -88 cnv 15 190 400 empty empty present 20 12 0 14 -204800
 -66577 0;
 #X obj 1003 289 bng 15 250 50 0 s_save_preset r_save_preset save_preset
 17 7 0 10 -262144 -1 -1;
 #X obj 1003 267 bng 15 250 50 0 s_load_preset r_load_preset load_preset
 17 7 0 10 -262144 -1 -1;
-#X obj 1009 -23 cnv 15 150 25 empty empty empty 20 12 0 14 -228856
+#X obj 1009 -23 cnv 15 150 25 empty empty empty 20 12 0 14 -262144
 -66577 0;
 #X obj 1039 -18 bng 15 250 50 0 s_sel_01 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -925,7 +925,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 1139 -18 bng 15 250 50 0 s_sel_06 empty empty 17 7 0 10 -262144
 -1 -1;
 #X floatatom 1010 -51 5 1 48 1 current_slot r_sel s_sel;
-#X obj 1009 3 cnv 15 150 25 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 1009 3 cnv 15 150 25 empty empty empty 20 12 0 14 -262144 -66577
 0;
 #X obj 1039 8 bng 15 250 50 0 s_sel_07 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -967,7 +967,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1;
 #X obj 1139 60 bng 15 250 50 0 s_sel_24 empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1009 81 cnv 15 150 25 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 1009 81 cnv 15 150 25 empty empty empty 20 12 0 14 -191407 -66577
 0;
 #X obj 1039 86 bng 15 250 50 0 s_sel_25 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -981,7 +981,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1;
 #X obj 1139 86 bng 15 250 50 0 s_sel_30 empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1009 107 cnv 15 150 25 empty empty empty 20 12 0 14 -228856
+#X obj 1009 107 cnv 15 150 25 empty empty empty 20 12 0 14 -191407
 -66577 0;
 #X obj 1039 112 bng 15 250 50 0 s_sel_31 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -995,7 +995,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1;
 #X obj 1139 112 bng 15 250 50 0 s_sel_36 empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1009 133 cnv 15 150 25 empty empty empty 20 12 0 14 -228856
+#X obj 1009 133 cnv 15 150 25 empty empty empty 20 12 0 14 -162280
 -66577 0;
 #X obj 1039 138 bng 15 250 50 0 s_sel_37 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -1009,7 +1009,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1;
 #X obj 1139 138 bng 15 250 50 0 s_sel_42 empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 1009 159 cnv 15 150 25 empty empty empty 20 12 0 14 -228856
+#X obj 1009 159 cnv 15 150 25 empty empty empty 20 12 0 14 -162280
 -66577 0;
 #X obj 1039 164 bng 15 250 50 0 s_sel_43 empty empty 17 7 0 10 -262144
 -1 -1;
@@ -1035,28 +1035,28 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 0 10 -262144 -1 -1 0;
 #X obj 731 174 hradio 15 1 0 7 s_fx_output4 r_fx_output4 empty 0 -8
 0 10 -262144 -1 -1 0;
-#X obj 252 9 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -262144
+#X obj 252 9 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -260097
 -1 -1 1 1;
-#X obj 252 29 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -262144
+#X obj 252 29 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 252 63 tgl 15 0 s_rndsel_gen2 r_rndsel_gen2 empty 17 7 0 10
--262144 -1 -1 1 1;
-#X obj 252 86 tgl 15 0 s_rndsel_fx2 r_rndsel_fx2 empty 17 7 0 10 -262144
+-260097 -1 -1 1 1;
+#X obj 252 86 tgl 15 0 s_rndsel_fx2 r_rndsel_fx2 empty 17 7 0 10 -260097
 -1 -1 1 1;
-#X obj 252 117 tgl 15 0 s_rndsel_mix r_rndsel_mix empty 17 7 0 10 -262144
+#X obj 252 117 tgl 15 0 s_rndsel_mix r_rndsel_mix empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 252 172 tgl 15 0 s_rndsel_mixout r_rndsel_mixout empty 17 7
-0 10 -262144 -1 -1 1 1;
+0 10 -260097 -1 -1 1 1;
 #X obj 252 196 tgl 15 0 s_rndsel_faderout r_rndsel_faderout empty 17
-7 0 10 -262144 -1 -1 1 1;
-#X obj 252 218 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -262144
+7 0 10 -260097 -1 -1 1 1;
+#X obj 252 218 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 439 258 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17
-7 0 10 -262144 -1 -1 1 1;
+7 0 10 -260097 -1 -1 1 1;
 #X obj 666 258 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0
-10 -262144 -1 -1 1 1;
+10 -260097 -1 -1 1 1;
 #X obj 968 258 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
--262144 -1 -1 1 1;
+-260097 -1 -1 1 1;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 49 0 51 0;
