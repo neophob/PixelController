@@ -35,17 +35,17 @@ public class PropertiesHelper {
 			List<PresentSettings> presents = Collector.getInstance().getPresent();
 			props.load(input);
 			String s;
-			//TODOOO
-			System.out.println("LOAAADDDDDDD");
+			int count=0;
 			for (int i=0; i<128; i++) {
 				s=props.getProperty(""+i);
 				if (StringUtils.isNotBlank(s)) {
-					presents.get(i).setPresent(s.split(";"));			
+					presents.get(i).setPresent(s.split(";"));
+					count++;
 				}
 			}
 			log.log(Level.INFO,
-					"Presents loaded from file {0}"
-					, new Object[] { PRESENTS_FILENAME });
+					"Presents loaded {0} presents from file {1}"
+					, new Object[] { count, PRESENTS_FILENAME });
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.log(Level.WARNING,
