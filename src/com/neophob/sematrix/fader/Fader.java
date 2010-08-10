@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.OutputMapping;
 
 
 /**
@@ -37,6 +38,8 @@ public abstract class Fader {
 	}
 	
 	private FaderName faderName;
+	private OutputMapping outputMapping;
+	
 	/** fade time in ms */
 	protected int fadeTime;
 	
@@ -69,6 +72,8 @@ public abstract class Fader {
 	public void startFade(int newVisual, int screenNr) {
 		this.newVisual = newVisual;
 		this.screenOutput = screenNr;
+		this.outputMapping = Collector.getInstance().getOutputMappings(screenNr);
+
 		currentStep = 0;
 		started = true;
 		
@@ -100,9 +105,10 @@ public abstract class Fader {
 		}
 		return false;
 	}
-	
+
 	protected int[] getNewBuffer() {
-		return Collector.getInstance().getVisual(newVisual).getBuffer();
+		int[] buffer = Collector.getInstance().getVisual(newVisual).getBuffer();
+		return outputMapping.getEffect().getBuffer(buffer);
 	}
 
 	protected float getCurrentStep() {

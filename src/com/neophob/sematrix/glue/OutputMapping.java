@@ -69,5 +69,4 @@ public class OutputMapping {
 		this.fader = fader;
 	}
 	
-	
 }
