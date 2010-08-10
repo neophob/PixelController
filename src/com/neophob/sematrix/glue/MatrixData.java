@@ -173,17 +173,23 @@ public class MatrixData {
 	 * @return RESIZED image
 	 */
 	public int[] resizeBufferForDevice(int[] buffer, int deviceXSize, int deviceYSize) {
-		/*		
-		Processing resize is buggy!
+		
+		//Processing resize is buggy!
+/*		int[] ret = new int[deviceXSize*deviceYSize];
  		PImage pImage = Collector.getInstance().getPapplet().createImage
-		( gen1.getInternalBufferXSize(), gen1.getInternalBufferYSize(), PApplet.RGB );
-
+ 			( getBufferXSize(), getBufferYSize(), PApplet.RGB );
 		pImage.loadPixels();
-		System.arraycopy(buffer, 0, pImage.pixels, 0, gen1.internalBuffer.length);
+		System.arraycopy(buffer, 0, pImage.pixels, 0, buffer.length);
 		pImage.updatePixels();
-		BufferedImage resizedImage = resize2((BufferedImage)pImage.getImage(), deviceXSize, deviceYSize);
-		 */
 
+		pImage.resize(deviceXSize, deviceYSize);
+		
+		pImage.loadPixels();
+		ret = pImage.pixels;
+		pImage.updatePixels();
+		
+		return ret;*/
+		
 		BufferedImage bi = new BufferedImage(getBufferXSize(), getBufferYSize(), BufferedImage.TYPE_INT_RGB);
 		bi.setRGB(0, 0, getBufferXSize(), getBufferYSize(), buffer, 0, getBufferXSize());
 		BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
