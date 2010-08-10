@@ -16,6 +16,7 @@ import com.neophob.sematrix.glue.Collector;
  */
 public class Blinkenlights extends Generator implements PConstants {
 
+	private static final String PREFIX = "blinken/";
 	static Logger log = Logger.getLogger(Blinkenlights.class.getName());
 
 	private BlinkenLibrary blinken;
@@ -28,7 +29,7 @@ public class Blinkenlights extends Generator implements PConstants {
 		PApplet parent = Collector.getInstance().getPapplet();
 		tmp=parent.createImage( internalBufferXSize, internalBufferYSize, RGB);
 		random=false;
-		blinken = new BlinkenLibrary(parent, filename);
+		blinken = new BlinkenLibrary(parent, PREFIX+filename);
 		blinken.setIgnoreFileDelay(true);
 		blinken.loop();
 	}
@@ -38,7 +39,7 @@ public class Blinkenlights extends Generator implements PConstants {
 	 * @param file
 	 */
 	public void loadFile(String file) {
-		blinken.loadFile(file);
+		blinken.loadFile(PREFIX+file);
 		blinken.setIgnoreFileDelay(true);
 	}
 	

@@ -16,7 +16,8 @@ import com.neophob.sematrix.glue.Collector;
  */
 public class Image extends Generator {
 
-	static Logger log = Logger.getLogger(Image.class.getName());
+	private static final String PREFIX = "pics/";
+	private static Logger log = Logger.getLogger(Image.class.getName());
 	
 	private PImage pimage;
 	
@@ -39,7 +40,7 @@ public class Image extends Generator {
 	 */
 	public void loadFile(String filename) {
 		PApplet parent = Collector.getInstance().getPapplet();
-		pimage = parent.loadImage(filename);
+		pimage = parent.loadImage(PREFIX+filename);
 		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
 		//TODO still buggy!
 		pimage.resize(internalBufferXSize, internalBufferYSize);
