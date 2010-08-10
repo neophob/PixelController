@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>global</key>
+	<dict>
+		<key>isFlipped</key>
+		<false/>
+		<key>size</key>
+		<string>{36,32}</string>
+	</dict>
+	<key>images</key>
+	<dict>
+		<key>background</key>
+		<string>meters4_bg</string>
+		<key>bar background</key>
+		<string>meters4_bar_bg</string>
+		<key>bar foreground</key>
+		<string>meters4_bar_fg</string>
+	</dict>
+	<key>layout</key>
+	<dict>
+		<key>bar left</key>
+		<string>{(7,5), (10,23)}</string>
+		<key>bar right</key>
+		<string>{(19,5), (10,23)}</string>
+		<key>title bar</key>
+		<string>{{0,0},{36,32}}</string>
+	</dict>
+</dict>
+</plist>

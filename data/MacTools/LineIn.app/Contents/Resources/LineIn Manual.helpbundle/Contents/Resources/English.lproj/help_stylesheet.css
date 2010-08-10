@@ -1,0 +1,68 @@
+
+/*** Basic styles ***/
+
+html, body
+{
+	font-family: Verdana, sans-serif;
+	font-size: small;
+}
+
+.heading
+{
+	font-family: Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	font-size: larger;	
+	margin-top: 2em;
+}
+
+.centeredheading
+{
+	font-family: Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	font-size: larger;
+	text-align: center;
+}
+
+.underlinedheading
+{
+	font-family: Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	font-size: larger;
+	text-decoration: underline;
+	
+}
+
+/*** Misc styles ***/
+
+.tinytext
+{
+	font-size: smaller;
+}
+
+.filepath
+{
+	font-family: Monaco, sans-serif;
+	font-size: smaller;
+}
+
+/*** AppleScript styles ***/
+
+.applscpt-term
+{
+	font-style: italic;
+}
+
+.applscpt-block
+{
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	display: block;
+	white-space: pre;
+	line-height: 125%;
+	padding-left: 2.5em;
+}
+
+.applscpt-comment
+{
+	font-style: italic;
+}

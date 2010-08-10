@@ -1,0 +1,12 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = PTSupportWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_spinner" = NSProgressIndicator; "_webView" = WebView; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
