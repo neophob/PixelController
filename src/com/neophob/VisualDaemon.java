@@ -59,7 +59,10 @@ public class VisualDaemon extends PApplet {
 			blink.loadFile("bb-rauten2.bml");
 			System.out.println(i);
 		}
-		//nwh = new NewWindowHelper(true);
+		
+		if (Collector.getInstance().getConfig().getProperty("show.debug.window").equalsIgnoreCase("true")) {
+			nwh = new NewWindowHelper(true);	
+		}
 	}
 	
 	public void draw() { 

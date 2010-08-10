@@ -3,6 +3,7 @@ package com.neophob.sematrix.glue;
 import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
@@ -49,9 +50,6 @@ import com.neophob.sematrix.present.PropertiesHelper;
 
 public class Collector {
 
-	private static final String FILE_BLINKEN = "torus.bml";
-	private static final String FILE_IMAGE = "check.jpg";
-	
 	/** nr of shuffler entries. enable/disable option for random mode */
 	private static final int SHUFFLER_OPTIONS = 11;
 	
@@ -84,9 +82,11 @@ public class Collector {
 	private int selectedPresent;
 	private List<PresentSettings> present;
 	private int r=255,g=255,b=255;
-	private String fileBlinken = FILE_BLINKEN;
-	private String fileImage = FILE_IMAGE;
+	private String fileBlinken;
+	private String fileImage;
 
+	private Properties config;
+	
 	private TcpServer srv;
 
 	private Collector() {
@@ -127,6 +127,8 @@ public class Collector {
 		this.fps = fps;
 		Sound.getInstance();
 		new MatrixData(deviceXsize, deviceYsize);
+		config = PropertiesHelper.loadConfig();
+
 		this.initSystem();
 
 		//create an empty mapping
@@ -136,8 +138,10 @@ public class Collector {
 		}
 
 		//Start tcp server
+		int listeningPort = Integer.parseInt( config.getProperty("net.listening.port", "3449") );
+		int sendPort = Integer.parseInt( config.getProperty("net.send.port", "3445") );
 		try {
-			srv = new TcpServer(papplet, 3449, "127.0.0.1", 3445);	
+			srv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);	
 		} catch (BindException e) {
 			System.out.println("IIIKS");
 		}			
@@ -150,8 +154,10 @@ public class Collector {
 	 */
 	private void initSystem() {
 		//create generators
-		new Blinkenlights(FILE_BLINKEN);
-		new Image(FILE_IMAGE);
+		this.fileBlinken = config.getProperty("initial.blinken");
+		new Blinkenlights(this.fileBlinken);
+		this.fileImage = config.getProperty("initial.image");
+		new Image(this.fileImage);		
 		new Plasma2();
 		new SimpleColors();
 		new Fire();
@@ -674,5 +680,11 @@ public class Collector {
 	public TcpServer getTcpServer() {
 		return srv;
 	}
+
+	public Properties getConfig() {
+		return config;
+	}
+	
+	
 
 }
