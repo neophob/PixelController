@@ -46,7 +46,7 @@ import com.neophob.sematrix.mixer.Multiply;
 import com.neophob.sematrix.mixer.PassThruMixer;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.present.PropertiesHelper;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class Collector {
 
@@ -684,7 +684,6 @@ public class Collector {
 	public Properties getConfig() {
 		return config;
 	}
-	
 	
 
 }

@@ -26,7 +26,7 @@ public class RainbowduinoDevice extends Output {
 		rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet() );
 		rainbowduino.initPort();
 		
-		ping = rainbowduino.ping((byte)0);;
+		ping = rainbowduino.ping((byte)0);
 		log.log(Level.INFO, "ping result: "+ ping);
 	}
 	
