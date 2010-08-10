@@ -1,5 +1,6 @@
 package com.neophob.sematrix.glue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,10 +20,11 @@ public class PresentSettings {
 	}
 	
 	public void setPresent(String[] present) {
-		this.present.clear();
+		List<String> list=new ArrayList<String>();
 		for (String s: present) {
-			this.present.add(s);
+			list.add(s);
 		}
+		this.present=list;
 	}
 	
 	public String getSettingsAsString() {		
