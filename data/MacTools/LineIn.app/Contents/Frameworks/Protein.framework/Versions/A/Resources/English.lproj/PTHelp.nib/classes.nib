@@ -1,0 +1,14 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = PTHelpWebView; LANGUAGE = ObjC; SUPERCLASS = WebView; }, 
+        {
+            CLASS = PTHelpWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mContentView = WebView; mTopicsDrawer = NSDrawer; mTopicsView = WebView; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = WebView; LANGUAGE = ObjC; SUPERCLASS = NSView; }
+    ); 
+    IBVersion = 1; 
+}

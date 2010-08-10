@@ -1,0 +1,27 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = PTMessage; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mDelegate = id; mMessageView = PTMessageView; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {buttonClicked = id; }; 
+            CLASS = PTMessageView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAlternateButton = NSButton; 
+                mDefaultButton = NSButton; 
+                mImageView = NSImageView; 
+                mInformativeField = NSTextField; 
+                mInnerView = NSView; 
+                mMessageField = NSTextField; 
+                mOtherButton = NSButton; 
+            }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

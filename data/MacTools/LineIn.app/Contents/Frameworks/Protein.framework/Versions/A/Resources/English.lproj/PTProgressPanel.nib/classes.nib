@@ -1,0 +1,12 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = "_PTRemoteDataLoader"; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mProgressBar = NSProgressIndicator; mProgressWindow = NSWindow; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

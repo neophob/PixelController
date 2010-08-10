@@ -1,0 +1,18 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {diveRightIn = id; openHelp = id; }; 
+            CLASS = PTWelcomeWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "_subtitleField" = NSTextField; 
+                "_titleField" = NSTextField; 
+                "_webView" = WebView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = PTWelcomeWindowBackgroundView; LANGUAGE = ObjC; SUPERCLASS = NSView; }
+    ); 
+    IBVersion = 1; 
+}

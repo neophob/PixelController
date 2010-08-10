@@ -1,0 +1,81 @@
+{
+    //localizersReadMe = "Localize the 'label', 'paletteLabel' and 'toolTip' fields only."; 
+
+    allowsUserCustomization = 1; 
+    autosavesConfiguration = 1; 
+
+    allowedItemIdentifiers = (
+		Topics,
+		Languages,
+		Bigger,
+		Smaller,
+		PrintPage,
+		//PrintAll,
+        NSToolbarSeparatorItem, 
+        NSToolbarSpaceItem, 
+        NSToolbarFlexibleSpaceItem, 
+    ); 
+
+    defaultItemIdentifiers = (
+		Topics , Languages,
+		NSToolbarFlexibleSpaceItem,
+		Bigger, Smaller,
+	); 
+
+    itemInfoByIdentifier =
+	{
+		Topics =
+		{
+			label = "Topics"; 
+			paletteLabel = "Topics"; 
+			toolTip = "Toggle Topics Drawer";
+			imageName = "PTIconTopics.tiff"; 
+			action = "hitTopics:"; 
+		}; 
+		
+		Languages =
+		{
+			label = "Language"; 
+			paletteLabel = "Language"; 
+			toolTip = "";
+			action = "hitLanguages:"; 
+		};
+		
+		Bigger =
+		{
+			label = "Bigger"; 
+			paletteLabel = "Bigger Text"; 
+			toolTip = "Increase font size";
+			imageName = "PTIconTextBigger.tiff"; 
+			action = "hitBigger:"; 
+		}; 
+		
+		Smaller =
+		{
+			label = "Smaller"; 
+			paletteLabel = "Smaller Text"; 
+			toolTip = "Decrease font size";
+			imageName = "PTIconTextSmaller.tiff"; 
+			action = "hitSmaller:"; 
+		}; 
+
+		PrintPage =
+		{
+			label = "Print"; 
+			paletteLabel = "Print Page"; 
+			toolTip = "";
+			imageName = "PTIconPrint.tiff"; 
+			action = "printDocument:"; 
+		}; 
+
+		/*PrintAll =
+		{
+			label = "Print All"; 
+			paletteLabel = "Print All"; 
+			toolTip = "";
+			imageName = "PTIconPrint.tiff"; 
+			action = "printAll:"; 
+		};*/
+
+    }; 
+}

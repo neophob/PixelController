@@ -1,0 +1,13 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {changed = id; }; 
+            CLASS = LNPreferencesWindow; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mCheckUpdateBtn = NSButton; mFloatsBtn = NSButton; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

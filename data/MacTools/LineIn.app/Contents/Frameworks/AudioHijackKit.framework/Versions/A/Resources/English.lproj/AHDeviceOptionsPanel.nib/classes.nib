@@ -1,0 +1,26 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {changedInputSettings = id; changedOutputSettings = id; }; 
+            CLASS = AHDeviceOptionsPanel; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mInputBufferPopup = NSPopUpButton; 
+                mInputChanLeftPopup = NSPopUpButton; 
+                mInputChanRightPopup = NSPopUpButton; 
+                mOutputBufferPopup = NSPopUpButton; 
+                mOutputChanLeftPopup = NSPopUpButton; 
+                mOutputChanRightPopup = NSPopUpButton; 
+            }; 
+            SUPERCLASS = AHTargetOptionsPanel; 
+        }, 
+        {
+            ACTIONS = {hitCancel = id; hitOK = id; }; 
+            CLASS = AHTargetOptionsPanel; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

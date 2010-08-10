@@ -1,0 +1,36 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {showMainWindow = id; }; 
+            CLASS = LNAppController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = PTAppController; 
+        }, 
+        {
+            ACTIONS = {
+                checkForUpdate = id; 
+                quit = id; 
+                registrationChanged = id; 
+                showAbout = id; 
+                showApplicationSupport = id; 
+                showCompanyURL = id; 
+                showEmailURL = id; 
+                showFaqURL = id; 
+                showForumsURL = id; 
+                showHelp = id; 
+                showNoiseAlert = id; 
+                showNoiseAlertIfNeeded = id; 
+                showPrefs = id; 
+                showRegistration = id; 
+                showSecretAbout = id; 
+                showStoreURL = id; 
+                showWelcome = id; 
+            }; 
+            CLASS = PTAppController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
