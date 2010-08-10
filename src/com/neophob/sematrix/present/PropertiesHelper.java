@@ -36,7 +36,7 @@ public class PropertiesHelper {
 			props.load(input);
 			String s;
 			int count=0;
-			for (int i=0; i<128; i++) {
+			for (int i=0; i<Collector.NR_OF_PRESENT_SLOTS; i++) {
 				s=props.getProperty(""+i);
 				if (StringUtils.isNotBlank(s)) {
 					presents.get(i).setPresent(s.split(";"));
