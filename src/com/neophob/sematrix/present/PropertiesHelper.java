@@ -21,6 +21,7 @@ import com.neophob.sematrix.glue.PresentSettings;
 public class PropertiesHelper {
 
 	private static final String PRESENTS_FILENAME = "data/presents.led";
+	private static final String CONFIG_FILENAME = "data/config.properties";
 	
 	static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
@@ -28,6 +29,24 @@ public class PropertiesHelper {
 		//no instance
 	}
 
+	/**
+	 * load config file
+	 * @return
+	 */
+	public static Properties loadConfig() {
+		Properties props = new Properties();		
+		try {
+			InputStream input = Collector.getInstance().getPapplet().createInput(CONFIG_FILENAME);
+			props.load(input);
+			log.log(Level.INFO, "Config loaded");
+		} catch (Exception e) {
+			log.log(Level.WARNING,
+					"Failed to load Config", e );
+		}
+		
+		return props;
+	}
+	
 	public static void loadPresents() {
 		Properties props = new Properties();
 		try {
@@ -47,12 +66,10 @@ public class PropertiesHelper {
 					"Presents loaded {0} presents from file {1}"
 					, new Object[] { count, PRESENTS_FILENAME });
 		} catch (Exception e) {
-			e.printStackTrace();
 			log.log(Level.WARNING,
 					"Failed to load {0}, Error: {1}"
 					, new Object[] { PRESENTS_FILENAME, e });
 		}
-
 	}
 		
 	public static void savePresents() {
