@@ -51,7 +51,11 @@ public class Collector {
 
 	private static final String FILE_BLINKEN = "torus.bml";
 	private static final String FILE_IMAGE = "check.jpg";
+	
+	/** nr of shuffler entries. enable/disable option for random mode */
 	private static final int SHUFFLER_OPTIONS = 11;
+	
+	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
 	private static Collector instance = new Collector();
 
@@ -100,7 +104,7 @@ public class Collector {
 
 		selectedPresent=0;
 		present = new CopyOnWriteArrayList<PresentSettings>();
-		for (int n=0; n<128; n++) {
+		for (int n=0; n<NR_OF_PRESENT_SLOTS; n++) {
 			present.add(new PresentSettings());
 		}
 
