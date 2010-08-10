@@ -1,7 +1,8 @@
-package com.neophob.sematrix.present;
+package com.neophob.sematrix.properties;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -23,6 +24,8 @@ public class PropertiesHelper {
 	private static final String PRESENTS_FILENAME = "data/presents.led";
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
+	private static Properties config=null;
+	
 	static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
 	private PropertiesHelper() {
@@ -34,19 +37,27 @@ public class PropertiesHelper {
 	 * @return
 	 */
 	public static Properties loadConfig() {
-		Properties props = new Properties();		
+		//cache config
+		if (config!=null) {
+			return config;
+		}
+		
+		config = new Properties();		
 		try {
 			InputStream input = Collector.getInstance().getPapplet().createInput(CONFIG_FILENAME);
-			props.load(input);
+			config.load(input);
 			log.log(Level.INFO, "Config loaded");
 		} catch (Exception e) {
 			log.log(Level.WARNING,
 					"Failed to load Config", e );
 		}
 		
-		return props;
+		return config;
 	}
 	
+	/**
+	 * 
+	 */
 	public static void loadPresents() {
 		Properties props = new Properties();
 		try {
@@ -72,6 +83,9 @@ public class PropertiesHelper {
 		}
 	}
 		
+	/**
+	 * 
+	 */
 	public static void savePresents() {
 		Properties props = new Properties();
 		List<PresentSettings> presents = Collector.getInstance().getPresent();
@@ -92,6 +106,28 @@ public class PropertiesHelper {
 					"Failed to save {0}, Error: {1}"
 					, new Object[] { PRESENTS_FILENAME, e });
 		}
-		
 	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static List<Integer> getAllI2cAddress() {
+		loadConfig();
+		List<Integer> adr = new ArrayList<Integer>();
+		String rawConfig = config.getProperty("layout.row1.i2c.addr");
+		if (StringUtils.isNotBlank(rawConfig)) {
+			for (String s: rawConfig.split(",")) {
+				adr.add( Integer.parseInt(s));
+			}
+		}
+		rawConfig = config.getProperty("layout.row2.i2c.addr");
+		if (StringUtils.isNotBlank(rawConfig)) {
+			for (String s: rawConfig.split(",")) {
+				adr.add( Integer.parseInt(s));
+			}
+		}
+		return adr;
+	}
+
 }

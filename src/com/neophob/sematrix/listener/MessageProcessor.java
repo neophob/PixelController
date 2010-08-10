@@ -11,7 +11,7 @@ import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.listener.TcpServer.ValidCommands;
-import com.neophob.sematrix.present.PropertiesHelper;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class MessageProcessor {
 
