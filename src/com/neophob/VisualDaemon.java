@@ -6,6 +6,7 @@ import java.util.List;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
@@ -63,16 +64,8 @@ public class VisualDaemon extends PApplet {
 	
 	public void draw() { 
 		//update all generators
-		for (Generator m: Collector.getInstance().getAllGenerators()) {
-			m.update();
-		}
-		for (Output o: Collector.getInstance().getAllOutputs()) {
-			o.update();
-		}
-		
-		if (Collector.getInstance().isRandomMode()) {
-			Shuffler.shuffleStuff();
-		}
+
+		Collector.getInstance().updateSystem();
 		
 		if (rainbowduino!=null) {
 			long l = rainbowduino.getLatestHeartbeat();

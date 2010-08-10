@@ -2,13 +2,9 @@
 fx:
 -textscroller
 
--bug: mehrere rotozoomer: speed erhöht sich
-
 -optimize rainbowduino output, workarround multiply output with itself, maybe gamma tab?
 
 -blinkenlights: add option for random mode
-
--presents in file speichern
 
 -config file erstellen (i2c addr., erstes image+blinkenlight file, generator blacklist für shuffler...)
 

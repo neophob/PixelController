@@ -43,14 +43,16 @@ public class RotoZoom extends Effect {
 			}
 		}
 
-		angle+=0.01f;
+		return ret;
+	}
+
+	public void update() {
+		angle+=0.02f;
 		scale+=dscalee;
 //		if (scale<0.53 || scale>3) {
 		if (scale<0.13f || scale>1.6f) {
 			dscalee*=-1;
-		}
-		
-		return ret;
+		}		
 	}
 
 

@@ -184,7 +184,27 @@ public class Collector {
 		PropertiesHelper.loadPresents();
 	}
 
-
+	/**
+	 * update the whole system:
+	 *  -generators
+	 *  -effects
+	 *  -outputs
+	 */
+	public void updateSystem() {
+		for (Generator m: allGenerators) {
+			m.update();
+		}
+		for (Effect e: allEffects) {
+			e.update();
+		}
+		for (Output o: allOutputs) {
+			o.update();
+		}
+		
+		if (randomMode) {
+			Shuffler.shuffleStuff();
+		}
+	}
 
 	/**
 	 * 

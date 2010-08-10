@@ -46,6 +46,13 @@ public abstract class Effect {
 	 */
 	public abstract int[] getBuffer(int[] buffer);
 	
+	/**
+	 * update an effect 
+	 */
+	public void update() {
+		//overwrite me if needed
+	}
+	
 	public int getId() {
 		return this.effectName.getId();
 	}
