@@ -3,7 +3,6 @@ package com.neophob.sematrix.glue;
 import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.StringUtils;
@@ -84,8 +83,6 @@ public class Collector {
 	private int r=255,g=255,b=255;
 	private String fileBlinken;
 	private String fileImage;
-
-	private Properties config;
 	
 	private TcpServer srv;
 
@@ -127,7 +124,6 @@ public class Collector {
 		this.fps = fps;
 		Sound.getInstance();
 		new MatrixData(deviceXsize, deviceYsize);
-		config = PropertiesHelper.loadConfig();
 
 		this.initSystem();
 
@@ -138,8 +134,8 @@ public class Collector {
 		}
 
 		//Start tcp server
-		int listeningPort = Integer.parseInt( config.getProperty("net.listening.port", "3449") );
-		int sendPort = Integer.parseInt( config.getProperty("net.send.port", "3445") );
+		int listeningPort = Integer.parseInt( PropertiesHelper.getProperty("net.listening.port", "3449") );
+		int sendPort = Integer.parseInt( PropertiesHelper.getProperty("net.send.port", "3445") );
 		try {
 			srv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);	
 		} catch (BindException e) {
@@ -154,9 +150,9 @@ public class Collector {
 	 */
 	private void initSystem() {
 		//create generators
-		this.fileBlinken = config.getProperty("initial.blinken");
+		this.fileBlinken = PropertiesHelper.getProperty("initial.blinken");
 		new Blinkenlights(this.fileBlinken);
-		this.fileImage = config.getProperty("initial.image");
+		this.fileImage = PropertiesHelper.getProperty("initial.image");
 		new Image(this.fileImage);		
 		new Plasma2();
 		new SimpleColors();
@@ -680,10 +676,5 @@ public class Collector {
 	public TcpServer getTcpServer() {
 		return srv;
 	}
-
-	public Properties getConfig() {
-		return config;
-	}
-	
 
 }

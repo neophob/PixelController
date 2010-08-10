@@ -113,7 +113,9 @@ public class PropertiesHelper {
 	 * @return
 	 */
 	public static List<Integer> getAllI2cAddress() {
-		loadConfig();
+		if (config == null) {
+			loadConfig();
+		}
 		List<Integer> adr = new ArrayList<Integer>();
 		String rawConfig = config.getProperty("layout.row1.i2c.addr");
 		if (StringUtils.isNotBlank(rawConfig)) {
@@ -130,4 +132,28 @@ public class PropertiesHelper {
 		return adr;
 	}
 
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static String getProperty(String key) {
+		if (config == null) {
+			loadConfig();
+		}
+		return config.getProperty(key);
+	}
+
+	/**
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public static String getProperty(String key, String defaultValue) {
+		if (config == null) {
+			loadConfig();
+		}
+		return config.getProperty(key, defaultValue);
+	}
 }

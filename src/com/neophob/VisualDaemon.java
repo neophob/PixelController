@@ -1,21 +1,14 @@
 package com.neophob;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.generator.Blinkenlights;
-import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.output.MatrixEmulator;
-import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.helper.NewWindowHelper;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * 
@@ -44,23 +37,13 @@ public class VisualDaemon extends PApplet {
 		
 		frameRate(Collector.getInstance().getFps());
 		
-		List<Integer> i2cDest = new ArrayList<Integer>();
-		i2cDest.add(6); i2cDest.add(5); 
 		try {
-			rainbowduino = new RainbowduinoDevice(i2cDest);			
+			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());			
 		} catch (Exception e) {
 			rainbowduino = null;
 		}
 		
-		//screen nr, fx nr
-		//Collector.getInstance().mapInputToScreen(0, 5);
-		Blinkenlights blink = (Blinkenlights)Collector.getInstance().getGenerator(GeneratorName.BLINKENLIGHTS);
-		for (int i=880; i<100; i++) {
-			blink.loadFile("bb-rauten2.bml");
-			System.out.println(i);
-		}
-		
-		if (Collector.getInstance().getConfig().getProperty("show.debug.window").equalsIgnoreCase("true")) {
+		if (PropertiesHelper.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			nwh = new NewWindowHelper(true);	
 		}
 	}
