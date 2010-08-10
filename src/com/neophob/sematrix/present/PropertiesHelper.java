@@ -7,6 +7,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PresentSettings;
 
@@ -18,7 +20,7 @@ import com.neophob.sematrix.glue.PresentSettings;
  */
 public class PropertiesHelper {
 
-	private static final String PRESENTS_FILENAME = "data//presents.led";
+	private static final String PRESENTS_FILENAME = "data/presents.led";
 	
 	static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
@@ -34,15 +36,18 @@ public class PropertiesHelper {
 			props.load(input);
 			String s;
 			//TODOOO
+			System.out.println("LOAAADDDDDDD");
 			for (int i=0; i<128; i++) {
 				s=props.getProperty(""+i);
-				presents.get(i).setPresent(s.split(";"));
-				System.out.println(s);
+				if (StringUtils.isNotBlank(s)) {
+					presents.get(i).setPresent(s.split(";"));			
+				}
 			}
 			log.log(Level.INFO,
 					"Presents loaded from file {0}"
 					, new Object[] { PRESENTS_FILENAME });
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.log(Level.WARNING,
 					"Failed to load {0}, Error: {1}"
 					, new Object[] { PRESENTS_FILENAME, e });
