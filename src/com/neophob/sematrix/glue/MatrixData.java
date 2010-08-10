@@ -127,17 +127,13 @@ public class MatrixData {
  		PImage p = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );
 		p.loadPixels();
 		System.arraycopy(buffer, 0, p.pixels, 0, getBufferXSize()*getBufferYSize());
-		p.updatePixels();
 
 		//sx, sy, swidth, sheight, dx, dy, dwidth, dheight
 		p.copy(xStart, 0, xWidth, getBufferYSize(), 0, 0, getBufferXSize(), getBufferYSize());
 
-		p.loadPixels();
-		//TODO clone maybe not needed
-//		int[] bfr2 = p.pixels.clone();
 		int[] bfr2 = p.pixels;
 		p.updatePixels();
-		
+
 		return resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
 	}
 
