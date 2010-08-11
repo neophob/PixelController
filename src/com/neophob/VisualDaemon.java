@@ -21,7 +21,6 @@ public class VisualDaemon extends PApplet {
 
 	public static final int FPS = 30;
 	//96*2*25 = 4800bytes
-	public static final int NR_OF_SCREENS = 4;
 	
 	RainbowduinoDevice rainbowduino;
 	NewWindowHelper nwh;
@@ -32,10 +31,10 @@ public class VisualDaemon extends PApplet {
 	
 	
 	public void setup() {
-		Collector.getInstance().init(this, FPS, NR_OF_SCREENS, 8, 8);
-		osd = new MatrixEmulator();
+		Collector.getInstance().init(this, FPS, 8, 8);
+		frameRate(FPS);
 		
-		frameRate(Collector.getInstance().getFps());
+		osd = new MatrixEmulator();
 		
 		try {
 			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());			
