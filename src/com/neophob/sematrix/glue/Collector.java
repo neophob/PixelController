@@ -85,7 +85,7 @@ public class Collector {
 	private String fileImage;
 	
 	private TcpServer srv;
-
+	
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
 
@@ -117,11 +117,12 @@ public class Collector {
 	 * @param papplet
 	 * @param nrOfScreens
 	 */
-	public void init(PApplet papplet, int fps, int nrOfScreens, int deviceXsize, int deviceYsize) {
+	public void init(PApplet papplet, int fps, int deviceXsize, int deviceYsize) {
 		if (init) return;
-		this.nrOfScreens = nrOfScreens;
 		this.papplet = papplet;
+		this.nrOfScreens = PropertiesHelper.getAllI2cAddress().size();
 		this.fps = fps;
+		
 		Sound.getInstance();
 		new MatrixData(deviceXsize, deviceYsize);
 
@@ -137,7 +138,7 @@ public class Collector {
 		int listeningPort = Integer.parseInt( PropertiesHelper.getProperty("net.listening.port", "3449") );
 		int sendPort = Integer.parseInt( PropertiesHelper.getProperty("net.send.port", "3445") );
 		try {
-			srv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);	
+			srv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);
 		} catch (BindException e) {
 			System.out.println("IIIKS");
 		}			
@@ -177,11 +178,28 @@ public class Collector {
 		new PassThruMixer();
 
 		//create 5 visuals
-		new Visual(GeneratorName.PLASMA);
-		new Visual(GeneratorName.METABALLS);
-		new Visual(GeneratorName.SIMPLECOLORS);
-		new Visual(GeneratorName.BLINKENLIGHTS);
-		new Visual(GeneratorName.IMAGE);
+		for (int n=0; n<nrOfScreens; n++) {
+			switch (n%5) {
+			case 0:
+				new Visual(GeneratorName.BLINKENLIGHTS);
+				break;
+			case 1:
+				new Visual(GeneratorName.METABALLS);
+				break;
+			case 2:
+				new Visual(GeneratorName.SIMPLECOLORS);
+				break;
+			case 3:
+				new Visual(GeneratorName.PLASMA);
+				break;
+			case 4:
+				new Visual(GeneratorName.IMAGE);
+				break;
+			case 5:
+				new Visual(GeneratorName.FIRE);
+				break;
+			}
+		}
 		
 		PropertiesHelper.loadPresents();
 	}
@@ -221,40 +239,6 @@ public class Collector {
 		return nrOfScreens;
 	}
 
-	/**
-	 * how man screens share an fx? 
-	 * @param fxInput
-	 * @return how many
-	 */
-	public int howManyScreensShareThisFx(int fxInput) {
-		int ret=0;
-
-		for (OutputMapping o: ioMapping) {
-			if (o.getVisualId()==fxInput) {
-				ret++;
-			}
-		}
-
-		return ret;
-	}
-
-	/**
-	 * check which offset position the fx at this screen is
-	 * @param screenOutput
-	 * @return
-	 */
-	public int getOffsetForScreen(int screenOutput) {
-		int ret=0;
-		int fxInput = ioMapping.get(screenOutput).getVisualId();
-
-		for (int i=0; i<screenOutput; i++) {
-			if (ioMapping.get(i).getVisualId()==fxInput) {
-				ret++;
-			}
-		}
-
-		return ret;
-	}
 
 	/**
 	 * which fx for screenOutput?
@@ -483,7 +467,6 @@ public class Collector {
 	}
 
 	public void addOutput(Output output) {
-		System.out.println("regged: "+output.toString());
 		allOutputs.add(output);
 	}
 

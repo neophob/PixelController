@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
+import com.neophob.sematrix.layout.Layout;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * parent output class
@@ -22,15 +24,18 @@ public abstract class Output {
 	
 	protected MatrixData matrixData;
 	
+	protected Layout layout;
+	
 	public Output(String name) {
 		this.name = name;
 				
-		matrixData = Collector.getInstance().getMatrix();
+		this.matrixData = Collector.getInstance().getMatrix();
+		this.layout = PropertiesHelper.getLayout();
 
 		log.log(Level.INFO,
-				"Output created: {0}"
-				, new Object[] { this.name });
-		
+				"Output created: {0}, Layout: {1}"
+				, new Object[] { this.name, layout.getLayoutName() });
+	
 		//add to list
 		Collector.getInstance().addOutput(this);
 	}
@@ -48,21 +53,22 @@ public abstract class Output {
 	public int[] getBufferForScreen(int screenNr) {
 		Collector c = Collector.getInstance();
 		int fxInput = c.getFxInputForScreen(screenNr);
-		int fxOnHowMayScreens = c.howManyScreensShareThisFx(fxInput);
-		//Fader f = Collector.getInstance().getAllOutputMappings().get(screenNr).getFader();
-
-		OutputMapping map = Collector.getInstance().getAllOutputMappings().get(screenNr);
-		int buffer[];
-		if (fxOnHowMayScreens==1) {
-			buffer = matrixData.getScreenBufferForDevice(Collector.getInstance().getAllVisuals().get(fxInput), map);
+		int fxOnHowMayScreensX = layout.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr);
+		int fxOnHowMayScreensY = layout.howManyScreensShareThisFxOnTheYAxis(fxInput, screenNr);
+		OutputMapping map = c.getOutputMappings(screenNr);
+		
+		if (fxOnHowMayScreensX==1 && fxOnHowMayScreensY==1) {
+			return matrixData.getScreenBufferForDevice(c.getVisual(fxInput), map);
 		} else {
-			buffer = matrixData.getScreenBufferForDevice(
-					Collector.getInstance().getAllVisuals().get(fxInput),
-					c.getOffsetForScreen(screenNr), //offset
-					fxOnHowMayScreens, map //total
+			return matrixData.getScreenBufferForDevice(
+					c.getVisual(fxInput),
+					layout.getXOffsetForScreen(screenNr), 	//xoffset
+					layout.getYOffsetForScreen(screenNr), 	//yoffset
+					fxOnHowMayScreensX, 					//
+					fxOnHowMayScreensY, 					//
+					map 									//total
 			);
 		}
-		return buffer;
 	}
 	
 	public String toString() {

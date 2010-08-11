@@ -12,6 +12,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PresentSettings;
+import com.neophob.sematrix.layout.BoxLayout;
+import com.neophob.sematrix.layout.HorizontalLayout;
+import com.neophob.sematrix.layout.Layout;
 
 /**
  * load and save properties files
@@ -25,8 +28,11 @@ public class PropertiesHelper {
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
 	private static Properties config=null;
+	private static List<Integer> i2cAddr=null;
+	private static int devicesInRow1 = -1;
+	private static int devicesInRow2 = -1;
 	
-	static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+	private static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
 	private PropertiesHelper() {
 		//no instance
@@ -36,7 +42,7 @@ public class PropertiesHelper {
 	 * load config file
 	 * @return
 	 */
-	public static Properties loadConfig() {
+	public static synchronized Properties loadConfig() {
 		//cache config
 		if (config!=null) {
 			return config;
@@ -74,7 +80,7 @@ public class PropertiesHelper {
 				}
 			}
 			log.log(Level.INFO,
-					"Presents loaded {0} presents from file {1}"
+					"Loaded {0} presents from file {1}"
 					, new Object[] { count, PRESENTS_FILENAME });
 		} catch (Exception e) {
 			log.log(Level.WARNING,
@@ -116,20 +122,27 @@ public class PropertiesHelper {
 		if (config == null) {
 			loadConfig();
 		}
-		List<Integer> adr = new ArrayList<Integer>();
+		if (i2cAddr!=null) {
+			return i2cAddr;
+		}
+		devicesInRow1=0;
+		devicesInRow2=0;
+		i2cAddr = new ArrayList<Integer>();
 		String rawConfig = config.getProperty("layout.row1.i2c.addr");
 		if (StringUtils.isNotBlank(rawConfig)) {
 			for (String s: rawConfig.split(",")) {
-				adr.add( Integer.parseInt(s));
+				i2cAddr.add( Integer.parseInt(s));
+				devicesInRow1++;
 			}
 		}
 		rawConfig = config.getProperty("layout.row2.i2c.addr");
 		if (StringUtils.isNotBlank(rawConfig)) {
 			for (String s: rawConfig.split(",")) {
-				adr.add( Integer.parseInt(s));
+				i2cAddr.add( Integer.parseInt(s));
+				devicesInRow2++;
 			}
 		}
-		return adr;
+		return i2cAddr;
 	}
 
 	/**
@@ -156,4 +169,25 @@ public class PropertiesHelper {
 		}
 		return config.getProperty(key, defaultValue);
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static Layout getLayout() {
+		if (config == null) {
+			loadConfig();
+		}
+		
+		if (i2cAddr==null) {
+			getAllI2cAddress();
+		}
+
+		if (devicesInRow2>0) {
+			return new BoxLayout(devicesInRow1, devicesInRow2);
+		}
+	
+		return new HorizontalLayout(devicesInRow1, devicesInRow2);
+	}
+
 }

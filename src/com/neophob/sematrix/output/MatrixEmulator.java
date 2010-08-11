@@ -13,9 +13,20 @@ public class MatrixEmulator extends Output {
 	public MatrixEmulator() {
 		super(MatrixEmulator.class.toString());
 
-		int x = getOneMatrixXSize()*Collector.getInstance().getNrOfScreens();
-		int y = getOneMatrixYSize();
-
+		int x,y;
+		switch (layout.getLayoutName()) {
+		case HORIZONTAL:
+			x = getOneMatrixXSize()*layout.getRow1Size()+layout.getRow2Size();
+			y = getOneMatrixYSize();
+			break;
+			
+		default: //AKA BOX
+			int xsize = (layout.getRow1Size()+layout.getRow2Size())/2;
+			x = getOneMatrixXSize()*xsize;
+			y = getOneMatrixYSize()*2; //2 rows
+			break;
+		}
+		
 		Collector.getInstance().getPapplet().size(x, y);
 		Collector.getInstance().getPapplet().background(33,33,33);
 	}
@@ -29,8 +40,23 @@ public class MatrixEmulator extends Output {
 
 	@Override
 	public void update() {
-		for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
-			drawOutput(screen, super.getBufferForScreen(screen));
+		switch (layout.getLayoutName()) {
+		case HORIZONTAL:
+			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
+				drawOutput(screen, 0, super.getBufferForScreen(screen));
+			}			
+			break;
+
+		case BOX:
+			int ofs=0;
+			for (int screen=0; screen<layout.getRow1Size(); screen++) {
+				drawOutput(screen, 0, super.getBufferForScreen(screen));
+				ofs++;
+			}			
+			for (int screen=0; screen<layout.getRow2Size(); screen++) {
+				drawOutput(screen, 1, super.getBufferForScreen(ofs+screen));
+			}			
+			break;
 		}
 	}
 
@@ -39,8 +65,9 @@ public class MatrixEmulator extends Output {
 	 * @param n - x offset nr (0..n)
 	 * @param buffer - the buffer to draw
 	 */
-	private void drawOutput(int n, int buffer[]) {
-		int xOfs = n*(getOneMatrixXSize()+LED_ABSTAND);
+	private void drawOutput(int nrX, int nrY, int buffer[]) {
+		int xOfs = nrX*(getOneMatrixXSize()+LED_ABSTAND);
+		int yOfs = nrY*(getOneMatrixYSize()+LED_ABSTAND);
 		int ofs=0;
 		int tmp,r,g,b;
 
@@ -61,7 +88,9 @@ public class MatrixEmulator extends Output {
 				b <<= 4;
 
 				parent.fill(r,g,b);
-				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+LED_SIZE),RAHMEN_SIZE+y*(RAHMEN_SIZE+LED_SIZE),LED_SIZE,LED_SIZE);
+				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+LED_SIZE),
+							yOfs+RAHMEN_SIZE+y*(RAHMEN_SIZE+LED_SIZE),
+							LED_SIZE,LED_SIZE);
 			}		
 		}
 	}

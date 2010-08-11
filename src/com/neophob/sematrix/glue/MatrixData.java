@@ -106,31 +106,41 @@ public class MatrixData {
 	 * 
 	 * @param buffer
 	 * @param xOfsNr offset screen 0..n
-	 * @param nrOfScreens nr of screens 1..n
+	 * @param fxOnHowMayScreens 
 	 * @return
 	 */
-	public int[] getScreenBufferForDevice(Visual visual, int xOfsNr, int nrOfScreens, OutputMapping map) {
+	public int[] getScreenBufferForDevice(Visual visual, int xOfsNr, int yOfsNr, 
+			int fxOnHowMayScreensX, int fxOnHowMayScreensY, OutputMapping map) {
 		//get the visual 
 		int buffer[] = visual.getBuffer();
-		
+//System.out.println(xOfsNr+"/"+yOfsNr+" howmany: "+fxOnHowMayScreensX+"/"+fxOnHowMayScreensY);		
 		//apply output specific effect
 		buffer = map.getEffect().getBuffer(buffer);
 		
 		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
 
-		float f=1.0f/nrOfScreens; //0.33 - 0.33 - 1
+		float f=1.0f/fxOnHowMayScreensX; //1.0 / 3 = 0.33
 		int xStart=(int)(xOfsNr*f*getBufferXSize()); //0 - 0.33 
 		int xWidth=(int)((xOfsNr+1)*f*getBufferXSize())-xStart; //0.33 - 0.66
+
+		if (fxOnHowMayScreensY<2) {
+			f = 1.0f;
+		} else {
+			f=1.0f/fxOnHowMayScreensY;			
+		}
+		int yStart=(int)(yOfsNr*f*getBufferYSize()); 
+		int yWidth=(int)((yOfsNr+1)*f*getBufferYSize())-yStart;
 		
 		//very UGLY and SLOW method to copy the image - im lazy!
  		PImage p = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );
 		p.loadPixels();
 		System.arraycopy(buffer, 0, p.pixels, 0, getBufferXSize()*getBufferYSize());
 
-		//sx, sy, swidth, sheight, dx, dy, dwidth, dheight
-		p.copy(xStart, 0, xWidth, getBufferYSize(), 0, 0, getBufferXSize(), getBufferYSize());
-
+		//copy(x, y, width, height, dx, dy, dwidth, dheight)
+		p.copy(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize());
+		//p.copy(xStart, 0, xWidth, getBufferYSize(), 0, 0, getBufferXSize(), getBufferYSize());
+		
 		int[] bfr2 = p.pixels;
 		p.updatePixels();
 
