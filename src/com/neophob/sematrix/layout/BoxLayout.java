@@ -106,7 +106,8 @@ public class BoxLayout extends Layout {
 		}
 
 		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
-		for (int i=ofs; i<max; i++) {
+		//for (int i=ofs; i<max; i++) {
+		for (int i=ofs; i<max; i+=(ioMappingSize/2)) {
 			if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
 				ret++;
 			}
