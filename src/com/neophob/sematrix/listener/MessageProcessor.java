@@ -98,7 +98,7 @@ public class MessageProcessor {
 
 			case CHANGE_MIXER:
 				try {
-					int size = col.getAllMixer().size();
+					int size = col.getAllVisuals().size();
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setMixer(tmp);
