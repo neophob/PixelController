@@ -9,7 +9,7 @@ public class HorizontalLayout extends Layout {
 		super(LayoutName.HORIZONTAL, row1Size, row2Size);
 	}
 
-	public int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
+	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
 		int ret=0;
 		for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
 			if (o.getVisualId()==fxInput) {
@@ -19,20 +19,15 @@ public class HorizontalLayout extends Layout {
 		return ret;			
 	}
 	
-	public int howManyScreensShareThisFxOnTheYAxis(int fxInput, int screenNr) {
-		return 1;
-	}
-	
 	/**
 	 * check which offset position the fx at this screen is
 	 * @param screenOutput
 	 * @return
 	 */
-	public int getXOffsetForScreen(int screenOutput) {
+	private int getXOffsetForScreen(int fxInput, int screenNr) {
 		int ret=0;
-		int fxInput = Collector.getInstance().getOutputMappings(screenOutput).getVisualId();
 
-		for (int i=0; i<screenOutput; i++) {
+		for (int i=0; i<screenNr; i++) {
 			if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
 				ret++;
 			}
@@ -41,8 +36,19 @@ public class HorizontalLayout extends Layout {
 		return ret;
 	}
 	
-	public int getYOffsetForScreen(int screenOutput) {
-		return 0;
+
+	/**
+	 * 
+	 */
+	public LayoutModel getDataForScreen(int screenNr) {
+		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
+
+		return new LayoutModel(
+				this.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr), 
+				1,
+				this.getXOffsetForScreen(fxInput, screenNr),
+				0,
+				fxInput);
 	}
 
 }

@@ -178,7 +178,7 @@ public class Collector {
 		new PassThruMixer();
 
 		//create 5 visuals
-		for (int n=0; n<nrOfScreens; n++) {
+		for (int n=0; n<nrOfScreens+1; n++) {
 			switch (n%5) {
 			case 0:
 				new Visual(GeneratorName.BLINKENLIGHTS);

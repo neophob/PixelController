@@ -7,6 +7,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.layout.Layout;
+import com.neophob.sematrix.layout.LayoutModel;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -52,20 +53,15 @@ public abstract class Output {
 	 */
 	public int[] getBufferForScreen(int screenNr) {
 		Collector c = Collector.getInstance();
-		int fxInput = c.getFxInputForScreen(screenNr);
-		int fxOnHowMayScreensX = layout.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr);
-		int fxOnHowMayScreensY = layout.howManyScreensShareThisFxOnTheYAxis(fxInput, screenNr);
+		LayoutModel lm = layout.getDataForScreen(screenNr);
 		OutputMapping map = c.getOutputMappings(screenNr);
 		
-		if (fxOnHowMayScreensX==1 && fxOnHowMayScreensY==1) {
-			return matrixData.getScreenBufferForDevice(c.getVisual(fxInput), map);
+		if (lm.screenDoesNotNeedStretching()) {
+			return matrixData.getScreenBufferForDevice(c.getVisual(lm.getFxInput()).getBuffer(), map);
 		} else {
 			return matrixData.getScreenBufferForDevice(
-					c.getVisual(fxInput),
-					layout.getXOffsetForScreen(screenNr), 	//xoffset
-					layout.getYOffsetForScreen(screenNr), 	//yoffset
-					fxOnHowMayScreensX, 					//
-					fxOnHowMayScreensY, 					//
+					c.getVisual(lm.getFxInput()).getBuffer(),
+					lm,
 					map 									//total
 			);
 		}
