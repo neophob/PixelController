@@ -37,12 +37,7 @@ public abstract class Layout {
 				, new Object[] { layoutName.toString(), row1Size, row2Size });
 	}
 	
-	public abstract int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr);
-	public abstract int howManyScreensShareThisFxOnTheYAxis(int fxInput, int screenNr);
-	
-	public abstract int getXOffsetForScreen(int screenOutput);
-	public abstract int getYOffsetForScreen(int screenOutput);
-
+	public abstract LayoutModel getDataForScreen(int screenNr);
 	
 	public int getRow1Size() {
 		return row1Size;
