@@ -6,7 +6,7 @@ import com.neophob.sematrix.glue.OutputMapping;
 public class BoxLayout extends Layout {
 
 	private int ioMappingSize;
-	
+
 	/**
 	 * 
 	 * @param row1Size
@@ -17,15 +17,7 @@ public class BoxLayout extends Layout {
 		ioMappingSize = Collector.getInstance().getAllOutputMappings().size();
 	}
 
-	/**
-	 * 
-	 * @param screenNr
-	 * @return
-	 */
-	private boolean isInTopRow(int screenNr) {
-		return screenNr<(ioMappingSize/2);
-	}
-	
+
 	/**
 	 * 
 	 * @param fxInput
@@ -33,37 +25,33 @@ public class BoxLayout extends Layout {
 	 * @return
 	 */
 	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
-		int ofs=0;
-		int ret=0;
-		boolean checkLineOne=false;
-		int l1=0;
-		
-		//we check only our x line
-		if (!isInTopRow(screenNr)) {
-			ofs=ioMappingSize/2;
-			//checkLineOne=true;
-		}
+		int ret=-1;
 		OutputMapping o;
-		for (int i=ofs; i<ofs+ioMappingSize/2; i++) {
-			o = Collector.getInstance().getOutputMappings(i);
-			if (o.getVisualId()==fxInput) {
-				ret++;
+		boolean found=false;
+
+		//we only have 2 rows
+		int xsize=ioMappingSize/2;
+		for (int y=0; y<2; y++) {	
+			for (int x=0; x<xsize; x++) {
+				o = Collector.getInstance().getOutputMappings(xsize*y+x);
+				if (o.getVisualId()==fxInput) {
+					//save the maximal x position
+					if (!found) {
+						//if there is only one fx
+						ret=1;
+						found=true;
+					} else {
+						//if there are multiple fx'es, store the max position
+						if (x+1>ret) {
+							ret=x+1;
+						}
+					}
+				}
 			}
 		}
-		
-		if (checkLineOne) {
-			for (int i=0; i<(ioMappingSize/2); i++) {
-				if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
-					l1++;
-				}
-			}			
-		}
-
-		//System.out.println(screenNr+":share x "+Math.max(ret, l1));
-
 		return ret;
 	}
-	
+
 	/**
 	 * 
 	 * @param fxInput
@@ -71,58 +59,51 @@ public class BoxLayout extends Layout {
 	 * @return
 	 */
 	private int howManyScreensShareThisFxOnTheYAxis(int fxInput, int screenNr) {
-		int ofs=0;
-		int ret=0;
-		//we check only the opposite line
-		if (isInTopRow(screenNr)) {
-			ofs=ioMappingSize/2;
-		}
+		int ret=-1;
 		OutputMapping o;
-		for (int i=ofs; i<ofs+ioMappingSize/2; i++) {
-			o = Collector.getInstance().getOutputMappings(i);
-			if (o.getVisualId()==fxInput) {
-				ret++;
+		boolean found=false;
+
+		//we only have 2 rows
+		int xsize=ioMappingSize/2;
+
+		for (int x=0; x<xsize; x++) {
+			for (int y=0; y<2; y++) {
+				o = Collector.getInstance().getOutputMappings(xsize*y+x);
+
+				if (o.getVisualId()==fxInput) {
+					//save the maximal x position
+					if (!found) {
+						//if there is only one fx
+						ret=1;
+						found=true;
+					} else {
+						//if there are multiple fx'es, store the max position
+						if (y+1>ret) {
+							ret=y+1;
+						}
+					}
+				}
 			}
 		}
-		
-		//System.out.println(screenNr+":share y "+ret);
-
 		return ret;
 	}
 
-	
+
 	/**
 	 * return y offset of screen position
 	 * (0=first row, 1=second row...)
 	 * 
 	 */
-	private int getXOffsetForScreen(int fxInput,int screenNr) {
-		int ret=0;
-		int ofs=0;
-		int max=screenNr;
-		boolean checkLineOne=false;
-		int l1=0;
-		
-		if (!isInTopRow(screenNr)) { 
-			ofs=(ioMappingSize/2);
-			//checkLineOne=true;
+	private int getXOffsetForScreen(int fxInput, int screenNr, int fxOnHowMayScreens) {
+		if (fxOnHowMayScreens==1 || screenNr==0) {
+			return 0;
 		}
 
-		for (int i=ofs; i<max; i++) {
-			if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
-				ret++;
-			}
+		if (screenNr>=ioMappingSize/2) {
+			screenNr-=ioMappingSize/2;
 		}
-		
-		if (checkLineOne) {
-			for (int i=0; i<(ioMappingSize/2); i++) {
-				if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
-					l1++;
-				}
-			}			
-		}
-		System.out.println(screenNr+" ofs: "+ret);
-		return ret;
+
+		return screenNr;
 	}
 
 	/**
@@ -134,23 +115,17 @@ public class BoxLayout extends Layout {
 	 * (0=first row, 1=second row...)
 	 * 
 	 */
-	private int getYOffsetForScreen(int fxInput, int screenNr) {
-		int ret=0;
-		int ofs=0;
-		int max=screenNr;
-		if (isInTopRow(screenNr)) {
-			ofs=(ioMappingSize/2)-1;
-		} else {
-			max-=(ioMappingSize/2)-1;
+	private int getYOffsetForScreen(int fxInput, int screenNr, int fxOnHowMayScreens) {
+		if (fxOnHowMayScreens==1 || screenNr==0) {
+			return 0;
 		}
 
-		//for (int i=ofs; i<max; i++) {
-		for (int i=ofs; i<max; i+=(ioMappingSize/2)) {
-			if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
-				ret++;
-			}
+		if (screenNr>=ioMappingSize/2) {
+			//System.out.println(fxOnHowMayScreens);
+			return 1;
 		}
-		return ret;
+
+		return 0;
 	}
 
 	/**
@@ -161,18 +136,16 @@ public class BoxLayout extends Layout {
 
 		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr);
 		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput, screenNr);
-		
-		if (fxOnHowMayScreensX>0 && fxOnHowMayScreensY>0) {
-			int fxOnHowMayScreens = Math.max(fxOnHowMayScreensX, fxOnHowMayScreensY);
-			fxOnHowMayScreensX=fxOnHowMayScreens;
-			fxOnHowMayScreensY=fxOnHowMayScreens;
-		} 
-		
+	/*	System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
+", posX"+this.getXOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensX)+
+", posY"+this.getYOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensY)
+);/**/
+
 		return new LayoutModel(
 				fxOnHowMayScreensX, 
 				fxOnHowMayScreensY,
-				this.getXOffsetForScreen(fxInput, screenNr),
-				this.getYOffsetForScreen(fxInput, screenNr),
+				this.getXOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensX),
+				this.getYOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensY),
 				fxInput);
 	}
 
