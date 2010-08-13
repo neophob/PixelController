@@ -25,10 +25,9 @@ public class BoxLayout extends Layout {
 	 * @return
 	 */
 	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
-		int max=-1;
+		int max=0;
 		int min=10;
 		OutputMapping o;
-		boolean found=false;
 
 		//we only have 2 rows
 		int xsize=ioMappingSize/2;
@@ -40,15 +39,9 @@ public class BoxLayout extends Layout {
 						min=x;
 					}
 					//save the maximal x position
-					if (!found) {
-						//if there is only one fx
-						max=1;
-						found=true;
-					} else {
-						//if there are multiple fx'es, store the max position
-						if (x+1>max) {
-							max=x+1;
-						}
+					//if there are multiple fx'es, store the max position
+					if (x+1>max) {
+						max=x+1;
 					}
 				}
 			}
@@ -63,14 +56,12 @@ public class BoxLayout extends Layout {
 	 * @return
 	 */
 	private int howManyScreensShareThisFxOnTheYAxis(int fxInput, int screenNr) {
-		int max=-1;
+		int max=0;
 		int min=10;
 		OutputMapping o;
-		boolean found=false;
 
 		//we only have 2 rows
 		int xsize=ioMappingSize/2;
-
 		for (int x=0; x<xsize; x++) {
 			for (int y=0; y<2; y++) {
 				o = Collector.getInstance().getOutputMappings(xsize*y+x);
@@ -79,17 +70,10 @@ public class BoxLayout extends Layout {
 					if (y<min) {
 						min=y;
 					}
-
 					//save the maximal x position
-					if (!found) {
-						//if there is only one fx
-						max=1;
-						found=true;
-					} else {
-						//if there are multiple fx'es, store the max position
-						if (y+1>max) {
-							max=y+1;
-						}
+					//if there are multiple fx'es, store the max position
+					if (y+1>max) {
+						max=y+1;
 					}
 				}
 			}
@@ -103,7 +87,7 @@ public class BoxLayout extends Layout {
 	 * (0=first row, 1=second row...)
 	 * 
 	 */
-	private int getXOffsetForScreen(int fxInput, int screenNr, int fxOnHowMayScreens) {
+	private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
 		if (fxOnHowMayScreens==1 || screenNr==0) {
 			return 0;
 		}
@@ -124,7 +108,7 @@ public class BoxLayout extends Layout {
 	 * (0=first row, 1=second row...)
 	 * 
 	 */
-	private int getYOffsetForScreen(int fxInput, int screenNr, int fxOnHowMayScreens) {
+	private int getYOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
 		if (fxOnHowMayScreens==1 || screenNr==0) {
 			return 0;
 		}
@@ -145,16 +129,16 @@ public class BoxLayout extends Layout {
 
 		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr);
 		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput, screenNr);
-	/*	System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
-", posX"+this.getXOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensX)+
-", posY"+this.getYOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensY)
-);/**/
+		System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
+				", posX"+this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX)+
+				", posY"+this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY)
+		);
 
 		return new LayoutModel(
 				fxOnHowMayScreensX, 
 				fxOnHowMayScreensY,
-				this.getXOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensX),
-				this.getYOffsetForScreen(fxInput, screenNr, fxOnHowMayScreensY),
+				this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX),
+				this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY),
 				fxInput);
 	}
 
