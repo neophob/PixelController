@@ -25,7 +25,8 @@ public class BoxLayout extends Layout {
 	 * @return
 	 */
 	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
-		int ret=-1;
+		int max=-1;
+		int min=10;
 		OutputMapping o;
 		boolean found=false;
 
@@ -35,21 +36,24 @@ public class BoxLayout extends Layout {
 			for (int x=0; x<xsize; x++) {
 				o = Collector.getInstance().getOutputMappings(xsize*y+x);
 				if (o.getVisualId()==fxInput) {
+					if (x<min) {
+						min=x;
+					}
 					//save the maximal x position
 					if (!found) {
 						//if there is only one fx
-						ret=1;
+						max=1;
 						found=true;
 					} else {
 						//if there are multiple fx'es, store the max position
-						if (x+1>ret) {
-							ret=x+1;
+						if (x+1>max) {
+							max=x+1;
 						}
 					}
 				}
 			}
 		}
-		return ret;
+		return max-min;
 	}
 
 	/**
@@ -59,7 +63,8 @@ public class BoxLayout extends Layout {
 	 * @return
 	 */
 	private int howManyScreensShareThisFxOnTheYAxis(int fxInput, int screenNr) {
-		int ret=-1;
+		int max=-1;
+		int min=10;
 		OutputMapping o;
 		boolean found=false;
 
@@ -71,21 +76,25 @@ public class BoxLayout extends Layout {
 				o = Collector.getInstance().getOutputMappings(xsize*y+x);
 
 				if (o.getVisualId()==fxInput) {
+					if (y<min) {
+						min=y;
+					}
+
 					//save the maximal x position
 					if (!found) {
 						//if there is only one fx
-						ret=1;
+						max=1;
 						found=true;
 					} else {
 						//if there are multiple fx'es, store the max position
-						if (y+1>ret) {
-							ret=y+1;
+						if (y+1>max) {
+							max=y+1;
 						}
 					}
 				}
 			}
 		}
-		return ret;
+		return max-min;
 	}
 
 
