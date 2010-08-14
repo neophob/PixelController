@@ -30,7 +30,8 @@ public abstract class Generator {
 		SIMPLECOLORS(4),
 		FIRE(5),
 		METABALLS(6),
-		VOLUMEDISPLAY(7);
+		VOLUMEDISPLAY(7),
+		TEXTURE_DEFORMATION(8);
 		
 		private int id;
 		

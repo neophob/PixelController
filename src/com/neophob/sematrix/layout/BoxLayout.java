@@ -129,11 +129,11 @@ public class BoxLayout extends Layout {
 
 		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr);
 		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput, screenNr);
-		System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
+/*		System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
 				", posX"+this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX)+
 				", posY"+this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY)
 		);
-
+*/
 		return new LayoutModel(
 				fxOnHowMayScreensX, 
 				fxOnHowMayScreensY,

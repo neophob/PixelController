@@ -32,6 +32,7 @@ import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
+import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.VolumeDisplay;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
@@ -42,6 +43,7 @@ import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Mix;
 import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.mixer.Multiply;
+import com.neophob.sematrix.mixer.NegativeMultiply;
 import com.neophob.sematrix.mixer.PassThruMixer;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
@@ -170,12 +172,14 @@ public class Collector {
 		new BeatHorizShift();
 		new Voluminize();
 		new Tint();
+		new TextureDeformation();
 
 		//create mixer
 		new AddSat();
 		new Multiply();
 		new Mix();
 		new PassThruMixer();
+		new NegativeMultiply();
 
 		//create 5 visuals
 		for (int n=0; n<nrOfScreens+1; n++) {
