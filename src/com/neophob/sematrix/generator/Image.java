@@ -9,8 +9,6 @@ import processing.core.PImage;
 import com.neophob.sematrix.glue.Collector;
 
 /**
- * TODO: multiple palettes
- * 		 various sizes
  * @author mvogt
  *
  */

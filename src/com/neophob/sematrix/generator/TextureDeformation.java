@@ -15,14 +15,14 @@ public class TextureDeformation extends Generator {
 	private PImage textureImg;
 	private int timeDisplacement;
 
-	public TextureDeformation() {
+	public TextureDeformation(String filename) {
 		super(GeneratorName.TEXTURE_DEFORMATION);
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
 		mLUT =  new int[3 * w * h];
 		tmp = new int[this.internalBuffer.length];
 		// use higher resolution textures if things get to pixelated
-		textureImg=Collector.getInstance().getPapplet().loadImage("ceiling_texture.jpg");
+		textureImg=Collector.getInstance().getPapplet().loadImage(filename);
 		
 		createLUT(7);
 	}
