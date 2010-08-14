@@ -114,20 +114,8 @@ public class MatrixData {
 		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
 
-/*		float f=1.0f/lm.getSameFxOnX(); //1.0 / 3 = 0.33
-		int xStart=(int)(lm.getOfsX()*f*getBufferXSize()); //0 - 0.33 
-		int xWidth=(int)((lm.getOfsX()+1)*f*getBufferXSize())-xStart; //0.33 - 0.66
-*/
 		int xStart=lm.getxStart(getBufferXSize());
 		int xWidth=lm.getxWidth(getBufferXSize());
-/*		float f;
-		if (lm.getSameFxOnY()<2) {
-			f = 1.0f;
-		} else {
-			f=1.0f/lm.getSameFxOnY();			
-		}
-		int yStart=(int)(lm.getOfsY()*f*getBufferYSize()); 
-		int yWidth=(int)((lm.getOfsY()+1)*f*getBufferYSize())-yStart;*/
 		int yStart=lm.getyStart(getBufferYSize());
 		int yWidth=lm.getyWidth(getBufferYSize());
 		
@@ -138,7 +126,6 @@ public class MatrixData {
 
 		//copy(x, y, width, height, dx, dy, dwidth, dheight)
 		p.copy(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize());
-		//p.copy(xStart, 0, xWidth, getBufferYSize(), 0, 0, getBufferXSize(), getBufferYSize());
 		
 		int[] bfr2 = p.pixels;
 		p.updatePixels();
