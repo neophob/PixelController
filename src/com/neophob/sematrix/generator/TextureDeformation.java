@@ -11,6 +11,7 @@ public class TextureDeformation extends Generator {
 
 	private int w, h;
 	private int[] mLUT;
+	private int[] tmp;
 	private PImage textureImg;
 	private int timeDisplacement;
 
@@ -19,16 +20,16 @@ public class TextureDeformation extends Generator {
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
 		mLUT =  new int[3 * w * h];
-
+		tmp = new int[this.internalBuffer.length];
 		// use higher resolution textures if things get to pixelated
 		textureImg=Collector.getInstance().getPapplet().loadImage("ceiling_texture.jpg");
-		if (textureImg==null) System.out.println("NULLLLL");
-		textureImg.loadPixels();
+		
 		createLUT(7);
 	}
 
 	@Override
 	public void update() {
+		textureImg.loadPixels();
 		for (int pixelCount = 0; pixelCount < getInternalBufferSize(); pixelCount++)
 		{
 			int o = (pixelCount << 1) + pixelCount;  // equivalent to 3 * pixelCount
@@ -63,9 +64,11 @@ public class TextureDeformation extends Generator {
 			}
 
 			// put texture pixel on buffer screen
-			this.internalBuffer[pixelCount] = currentPixel;
+			tmp[pixelCount] = currentPixel;
 		}
-		this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, this.internalBuffer, 64);
+		textureImg.updatePixels();
+		//TODO replace static texturesze
+		this.internalBuffer = BoxFilter.applyBoxFilter(0, 11, tmp, getInternalBufferXSize());
 		timeDisplacement++;
 	}
 
@@ -165,6 +168,6 @@ public class TextureDeformation extends Generator {
 
 	@Override
 	public void close() {
-		textureImg.updatePixels();
+		
 	}
 }
