@@ -33,6 +33,7 @@ import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.TextureDeformation;
+import com.neophob.sematrix.generator.Textwriter;
 import com.neophob.sematrix.generator.VolumeDisplay;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
@@ -83,8 +84,10 @@ public class Collector {
 	private int selectedPresent;
 	private List<PresentSettings> present;
 	private int r=255,g=255,b=255;
+	
 	private String fileBlinken;
 	private String fileImage;
+	private String fileTexture;
 	
 	private TcpServer srv;
 	
@@ -163,6 +166,9 @@ public class Collector {
 		new PassThruGen();
 		new Metaballs();
 		new VolumeDisplay();
+		fileTexture = PropertiesHelper.getProperty("initial.texture");
+		new TextureDeformation(fileTexture);
+		new Textwriter();
 
 		//create effects
 		new Inverter();
@@ -172,7 +178,6 @@ public class Collector {
 		new BeatHorizShift();
 		new Voluminize();
 		new Tint();
-		new TextureDeformation();
 
 		//create mixer
 		new AddSat();

@@ -31,7 +31,8 @@ public abstract class Generator {
 		FIRE(5),
 		METABALLS(6),
 		VOLUMEDISPLAY(7),
-		TEXTURE_DEFORMATION(8);
+		TEXTURE_DEFORMATION(8),
+		TEXTWRITER(9);
 		
 		private int id;
 		
