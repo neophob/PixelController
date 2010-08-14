@@ -9,7 +9,8 @@ public abstract class Mixer {
 		PASSTHRU(0),
 		ADDSAT(1),		
 		MULTIPLY(2),
-		MIX(3);
+		MIX(3),
+		NEGATIVE_MULTIPLY(4);
 		
 		private int id;
 		
