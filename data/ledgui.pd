@@ -1,7 +1,7 @@
-#N canvas 327 208 1190 541 10;
+#N canvas 84 161 1190 541 10;
 #X obj 13 230 cnv 15 220 190 empty empty network 20 12 0 14 -228856
 -66577 0;
-#N canvas 418 22 457 607 receive 1;
+#N canvas 418 22 457 607 receive 0;
 #X obj 139 125 inlet;
 #N canvas 0 22 450 300 beatDisplay 0;
 #X obj 105 120 route SND_HAT SND_SNARE SND_KICK;
@@ -189,10 +189,10 @@
 #X obj 23 40 bng 30 250 50 0 s_disconnect r_disconnect Disconnect 32
 15 0 15 -257985 -1 -1;
 #X obj 150 -5 tgl 30 0 empty r_connected Connected 0 40 0 15 -191407
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 239 -32 cnv 15 750 280 empty empty mainboard 20 12 0 14 -204786
 -66577 0;
-#X obj 341 10 hradio 15 1 0 8 s_gen1 r_gen1 empty 0 -8 0 10 -203904
+#X obj 328 10 hradio 15 1 0 9 s_gen1 r_gen1 empty 0 -8 0 10 -203904
 -1 -1 1;
 #X obj 471 10 hradio 15 1 0 8 s_gen2 r_gen2 empty 0 -8 0 10 -203904
 -1 -1 6;
@@ -207,7 +207,7 @@
 -1 0;
 #X text 272 28 Effect1;
 #X obj 341 65 hradio 15 1 0 8 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 2;
 #X obj 471 65 hradio 15 1 0 8 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 601 65 hradio 15 1 0 8 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
@@ -220,11 +220,11 @@
 -1 -1 0;
 #X text 272 62 Generator2;
 #X text 273 84 Effect2;
-#X obj 341 119 hradio 15 1 0 4 s_mix1 r_mix1 empty 0 -8 0 10 -262144
+#X obj 341 119 hradio 15 1 0 5 s_mix1 r_mix1 empty 0 -8 0 10 -262144
+-1 -1 4;
+#X obj 471 119 hradio 15 1 0 5 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
-#X obj 471 119 hradio 15 1 0 4 s_mix2 r_mix2 empty 0 -8 0 10 -262144
--1 -1 0;
-#X obj 601 119 hradio 15 1 0 4 s_mix3 r_mix3 empty 0 -8 0 10 -262144
+#X obj 601 119 hradio 15 1 0 5 s_mix3 r_mix3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X text 273 116 Mixer;
 #X obj 341 219 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
@@ -248,10 +248,10 @@
 -1 -1 0;
 #X obj 861 87 hradio 15 1 0 7 s_fx_b5 r_fx_b5 empty 0 -8 0 10 -262130
 -1 -1 0;
-#X obj 731 119 hradio 15 1 0 4 s_mix4 r_mix4 empty 0 -8 0 10 -262144
+#X obj 731 119 hradio 15 1 0 5 s_mix4 r_mix4 empty 0 -8 0 10 -262144
 -1 -1 0;
-#X obj 861 119 hradio 15 1 0 4 s_mix5 r_mix5 empty 0 -8 0 10 -262144
--1 -1 3;
+#X obj 861 119 hradio 15 1 0 5 s_mix5 r_mix5 empty 0 -8 0 10 -262144
+-1 -1 0;
 #X text 273 195 Fader;
 #X obj 341 197 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -259,9 +259,8 @@
 -1 -1 0;
 #X obj 13 -88 cnv 15 976 50 empty empty empty 20 12 0 14 -228856 -66577
 0;
-#X text 654 -63 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
+#X text 668 -63 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
-#X text 730 -80 Mixer: Off \, AddSat \, Multiply \, Mix;
 #X obj 239 254 cnv 15 220 180 empty empty blinken_generator 20 12 0
 14 -203904 -66577 0;
 #X msg 251 284 send BLINKEN torus.bml;
@@ -378,7 +377,7 @@
 #X connect 27 0 18 0;
 #X connect 27 0 19 0;
 #X restore 398 216 pd shufflerSel;
-#N canvas -12 28 1140 628 basicGui 0;
+#N canvas 0 28 1140 628 basicGui 0;
 #X obj 84 -21 receive s_gen1;
 #X obj 183 -21 receive s_gen2;
 #X obj 282 -21 receive s_gen3;
@@ -912,7 +911,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 691 254 cnv 15 297 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 705 287 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 787 324;
+10 10 875 350;
 #X floatatom 705 371 5 0 0 0 - - s_tint_r;
 #X floatatom 829 371 5 0 0 0 - - s_tint_g;
 #X floatatom 954 367 5 0 0 0 - - s_tint_b;
@@ -1077,24 +1076,26 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 10 -260097 -1 -1 1 1;
 #X obj 968 258 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
 -260097 -1 -1 1 1;
+#X text 669 -80 Mixer: Off \, AddSat \, Multiply \, Mix \, Neg Multiply
+;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
-#X connect 49 0 51 0;
-#X connect 50 0 51 0;
-#X connect 54 0 53 0;
-#X connect 55 0 53 0;
-#X connect 56 0 53 0;
-#X connect 57 0 53 0;
-#X connect 60 0 59 0;
-#X connect 61 0 59 0;
-#X connect 62 0 51 0;
-#X connect 63 0 51 0;
-#X connect 64 0 51 0;
-#X connect 70 0 72 0;
-#X connect 72 0 69 0;
-#X connect 75 0 79 0;
-#X connect 75 1 80 0;
-#X connect 75 2 81 0;
+#X connect 48 0 50 0;
+#X connect 49 0 50 0;
+#X connect 53 0 52 0;
+#X connect 54 0 52 0;
+#X connect 55 0 52 0;
+#X connect 56 0 52 0;
+#X connect 59 0 58 0;
+#X connect 60 0 58 0;
+#X connect 61 0 50 0;
+#X connect 62 0 50 0;
+#X connect 63 0 50 0;
+#X connect 69 0 71 0;
+#X connect 71 0 68 0;
+#X connect 74 0 78 0;
+#X connect 74 1 79 0;
+#X connect 74 2 80 0;
+#X connect 78 0 75 0;
 #X connect 79 0 76 0;
 #X connect 80 0 77 0;
-#X connect 81 0 78 0;
