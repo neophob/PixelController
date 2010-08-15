@@ -1,4 +1,4 @@
-#N canvas 315 57 1271 588 10;
+#N canvas 89 108 1271 588 10;
 #X obj 4 259 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 418 22 457 607 receive 0;
@@ -132,7 +132,6 @@
 #N canvas 0 22 1203 347 shuffler 0;
 #X obj 42 56 inlet;
 #X obj 42 99 route CHANGE_SHUFFLER_SELECT;
-#X obj 42 136 unpack i i i i i i i i i i i;
 #X obj 41 286 s r_rndsel_gen1;
 #X obj 151 286 s r_rndsel_gen2;
 #X obj 261 286 s r_rndsel_fx1;
@@ -144,19 +143,22 @@
 #X obj 940 286 s r_rndsel_blinken;
 #X obj 1067 286 s r_rndsel_image;
 #X obj 1065 237 s r_rndsel_tint;
+#X obj 42 136 unpack i i i i i i i i i i i i;
+#X obj 1065 187 s r_rndsel_textdef;
 #X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
-#X connect 2 2 5 0;
-#X connect 2 3 6 0;
-#X connect 2 4 7 0;
-#X connect 2 5 8 0;
-#X connect 2 6 9 0;
-#X connect 2 7 10 0;
-#X connect 2 8 11 0;
-#X connect 2 9 12 0;
-#X connect 2 10 13 0;
+#X connect 1 0 13 0;
+#X connect 13 0 2 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X connect 13 5 7 0;
+#X connect 13 6 8 0;
+#X connect 13 7 9 0;
+#X connect 13 8 10 0;
+#X connect 13 9 11 0;
+#X connect 13 10 12 0;
+#X connect 13 11 14 0;
 #X restore 162 258 pd shuffler;
 #N canvas 0 22 308 351 autoconnect 0;
 #X obj 55 50 r s_connected_clients;
@@ -192,13 +194,13 @@
 #X obj 160 -23 cnv 15 910 280 empty empty mainboard 20 12 0 14 -204786
 -66577 0;
 #X obj 262 19 hradio 15 1 0 10 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 8;
+-1 -1 7;
 #X obj 424 19 hradio 15 1 0 10 s_gen2 r_gen2 empty 0 -8 0 10 -203904
 -1 -1 6;
 #X obj 585 19 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 4;
 #X obj 262 41 hradio 15 1 0 7 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 1;
+-1 6;
 #X text 193 16 Generator1;
 #X obj 424 41 hradio 15 1 0 7 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
 -1 0;
@@ -206,13 +208,13 @@
 -1 0;
 #X text 193 37 Effect1;
 #X obj 262 74 hradio 15 1 0 10 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 3;
+-1 -1 8;
 #X obj 424 74 hradio 15 1 0 10 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 585 74 hradio 15 1 0 10 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 262 96 hradio 15 1 0 7 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 0;
+-1 -1 2;
 #X obj 424 96 hradio 15 1 0 7 s_fx_b2 r_fx_b2 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X obj 585 96 hradio 15 1 0 7 s_fx_b3 r_fx_b3 empty 0 -8 0 10 -262130
@@ -220,7 +222,7 @@
 #X text 193 71 Generator2;
 #X text 194 93 Effect2;
 #X obj 262 128 hradio 15 1 0 6 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X obj 424 128 hradio 15 1 0 6 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 585 128 hradio 15 1 0 6 s_mix3 r_mix3 empty 0 -8 0 10 -262144
@@ -307,7 +309,7 @@
 #X obj 312 64 r blinkenfile;
 #X obj 312 94 r image;
 #X obj 312 124 r randommode;
-#N canvas 45 299 1212 261 shufflerSel 0;
+#N canvas 27 464 1212 261 shufflerSel 0;
 #X obj 9 36 r s_rndsel_gen1;
 #X floatatom 9 65 5 0 0 0 - - -;
 #X floatatom 119 65 5 0 0 0 - - -;
@@ -331,50 +333,54 @@
 #X obj 823 200 print;
 #X obj 908 36 r s_rndsel_blinken;
 #X obj 1035 36 r s_rndsel_image;
-#X obj 1035 107 r s_rndsel_tint;
+#X obj 905 107 r s_rndsel_tint;
 #X floatatom 908 65 5 0 0 0 - - -;
 #X floatatom 1035 65 5 0 0 0 - - -;
+#X floatatom 905 135 5 0 0 0 - - -;
 #X floatatom 1035 135 5 0 0 0 - - -;
-#X obj 429 138 pack i i i i i i i i i i i;
+#X obj 1035 107 r s_rndsel_textdef;
+#X obj 429 138 pack i i i i i i i i i i i i;
 #X msg 429 170 send CHANGE_SHUFFLER_SELECT \$1 \$2 \$3 \$4 \$5 \$6
-\$7 \$8 \$9 \$10 \$11;
+\$7 \$8 \$9 \$10 \$11 \$12;
 #X connect 0 0 1 0;
-#X connect 1 0 26 0;
+#X connect 1 0 28 0;
 #X connect 2 0 16 0;
-#X connect 2 0 26 1;
+#X connect 2 0 28 1;
 #X connect 3 0 2 0;
 #X connect 4 0 16 0;
-#X connect 4 0 26 2;
+#X connect 4 0 28 2;
 #X connect 5 0 16 0;
-#X connect 5 0 26 3;
+#X connect 5 0 28 3;
 #X connect 6 0 4 0;
 #X connect 7 0 5 0;
 #X connect 8 0 16 0;
-#X connect 8 0 26 4;
+#X connect 8 0 28 4;
 #X connect 9 0 16 0;
-#X connect 9 0 26 5;
+#X connect 9 0 28 5;
 #X connect 10 0 8 0;
 #X connect 11 0 9 0;
 #X connect 12 0 16 0;
-#X connect 12 0 26 6;
+#X connect 12 0 28 6;
 #X connect 13 0 17 0;
-#X connect 13 0 26 7;
+#X connect 13 0 28 7;
 #X connect 14 0 12 0;
 #X connect 15 0 13 0;
 #X connect 16 0 17 0;
-#X connect 17 0 26 0;
+#X connect 17 0 28 0;
 #X connect 20 0 23 0;
 #X connect 21 0 24 0;
 #X connect 22 0 25 0;
 #X connect 23 0 16 0;
-#X connect 23 0 26 8;
+#X connect 23 0 28 8;
 #X connect 24 0 16 0;
-#X connect 24 0 26 9;
+#X connect 24 0 28 9;
 #X connect 25 0 16 0;
-#X connect 25 0 26 10;
-#X connect 26 0 27 0;
-#X connect 27 0 18 0;
-#X connect 27 0 19 0;
+#X connect 25 0 28 10;
+#X connect 26 0 28 11;
+#X connect 27 0 26 0;
+#X connect 28 0 29 0;
+#X connect 29 0 18 0;
+#X connect 29 0 19 0;
 #X restore 398 216 pd shufflerSel;
 #N canvas 0 28 1140 628 basicGui 0;
 #X obj 84 -21 receive s_gen1;
@@ -940,7 +946,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 773 263 cnv 15 297 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 787 296 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 865 324;
+10 10 823 321;
 #X floatatom 787 380 5 0 0 0 - - s_tint_r;
 #X floatatom 911 380 5 0 0 0 - - s_tint_g;
 #X floatatom 1036 376 5 0 0 0 - - s_tint_b;
@@ -1126,6 +1132,8 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1;
 #X obj 706 314 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
 -1;
+#X obj 741 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
+7 0 10 -260097 -1 -1 1 1;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 48 0 50 0;
