@@ -3,8 +3,6 @@ fx:
 
 -textscroller
 
--checkboard mixer (1 pixel img1, 1 pixel img2...)
-
 -optimize rainbowduino output, workarround multiply output with itself, maybe gamma tab?
 
 -blinkenlights: add option for random mode
