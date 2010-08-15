@@ -54,7 +54,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class Collector {
 
 	/** nr of shuffler entries. enable/disable option for random mode */
-	private static final int SHUFFLER_OPTIONS = 11;
+	private static final int SHUFFLER_OPTIONS = 12;
 	
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
