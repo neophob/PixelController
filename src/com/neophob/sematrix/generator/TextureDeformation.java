@@ -23,10 +23,9 @@ public class TextureDeformation extends Generator {
 		mLUT =  new int[3 * w * h];
 		tmp = new int[this.internalBuffer.length];
 		// use higher resolution textures if things get to pixelated
-		textureImg=Collector.getInstance().getPapplet().loadImage(filename);
-		
-		lut=9;
-		createLUT(lut);
+
+		this.lut=9;
+		loadFile(filename);
 	}
 
 	public void changeLUT(int lut) {
@@ -35,7 +34,7 @@ public class TextureDeformation extends Generator {
 	}
 	
 	public void loadFile(String fileName) {
-		textureImg=Collector.getInstance().getPapplet().loadImage(fileName);
+		textureImg=Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
 		createLUT(lut);
 	}
 	
