@@ -14,6 +14,7 @@ public class TextureDeformation extends Generator {
 	private int[] tmp;
 	private PImage textureImg;
 	private int timeDisplacement;
+	private int lut;
 
 	public TextureDeformation(String filename) {
 		super(GeneratorName.TEXTURE_DEFORMATION);
@@ -24,9 +25,20 @@ public class TextureDeformation extends Generator {
 		// use higher resolution textures if things get to pixelated
 		textureImg=Collector.getInstance().getPapplet().loadImage(filename);
 		
-		createLUT(7);
+		lut=9;
+		createLUT(lut);
 	}
 
+	public void changeLUT(int lut) {
+		this.lut = lut;
+		createLUT(lut);
+	}
+	
+	public void loadFile(String fileName) {
+		textureImg=Collector.getInstance().getPapplet().loadImage(fileName);
+		createLUT(lut);
+	}
+	
 	@Override
 	public void update() {
 		textureImg.loadPixels();
@@ -67,8 +79,7 @@ public class TextureDeformation extends Generator {
 			tmp[pixelCount] = currentPixel;
 		}
 		textureImg.updatePixels();
-		//TODO replace static texturesze
-		this.internalBuffer = BoxFilter.applyBoxFilter(0, 11, tmp, getInternalBufferXSize());
+		this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, tmp, getInternalBufferXSize());
 		timeDisplacement++;
 	}
 

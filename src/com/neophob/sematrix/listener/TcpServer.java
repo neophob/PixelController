@@ -33,6 +33,8 @@ public class TcpServer implements Runnable {
 		LOAD_PRESENT,
 		BLINKEN,
 		IMAGE,
+		TEXTDEF,
+		TEXTDEF_FILE,
 		RANDOM
 	}
 
