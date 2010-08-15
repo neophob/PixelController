@@ -14,7 +14,7 @@ import com.neophob.sematrix.glue.Collector;
  */
 public class Image extends Generator {
 
-	private static final String PREFIX = "pics/";
+	public static final String PREFIX = "pics/";
 	private static Logger log = Logger.getLogger(Image.class.getName());
 	
 	private PImage pimage;
