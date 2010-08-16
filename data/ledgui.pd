@@ -1,4 +1,4 @@
-#N canvas 169 22 1272 682 10;
+#N canvas 255 141 1272 682 10;
 #X obj 4 259 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 418 22 457 607 receive 0;
@@ -52,11 +52,10 @@
 #X obj 202 360 s r_mix4;
 #X obj 18 430 s r_fader1;
 #X obj 92 430 s r_fader2;
-#X obj 455 348 s r_out1;
-#X obj 519 348 s r_out2;
+#X obj 363 400 s r_out1;
+#X obj 427 400 s r_out2;
 #X obj 18 79 route CHANGE_GENERATOR_A CHANGE_GENERATOR_B;
 #X obj 382 80 route CHANGE_EFFECT_A CHANGE_EFFECT_B;
-#X obj 18 280 route CHANGE_MIXER CHANGE_FADER CHANGE_OUTPUT;
 #X obj 712 80 route CHANGE_OUTPUT_EFFECT;
 #X floatatom 712 163 5 0 0 0 - - -;
 #X floatatom 816 164 5 0 0 0 - - -;
@@ -65,9 +64,9 @@
 #X obj 18 396 unpack i i i i;
 #X obj 168 430 s r_fader3;
 #X obj 242 430 s r_fader4;
-#X obj 455 314 unpack i i i i;
-#X obj 585 348 s r_out3;
-#X obj 649 348 s r_out4;
+#X obj 363 366 unpack i i i i;
+#X obj 493 400 s r_out3;
+#X obj 557 400 s r_out4;
 #X floatatom 912 163 5 0 0 0 - - -;
 #X floatatom 1016 164 5 0 0 0 - - -;
 #X obj 912 190 s r_fx_output3;
@@ -75,8 +74,11 @@
 #X obj 712 116 unpack i i i i;
 #X obj 18 326 unpack i i i i i;
 #X obj 262 360 s r_mix5;
+#X obj 285 307 s r_sel;
+#X obj 18 280 route CHANGE_MIXER CHANGE_FADER CHANGE_OUTPUT CHANGE_PRESENT
+;
 #X connect 0 0 33 0;
-#X connect 0 0 35 0;
+#X connect 0 0 54 0;
 #X connect 1 0 2 0;
 #X connect 1 1 3 0;
 #X connect 1 2 4 0;
@@ -102,32 +104,33 @@
 #X connect 33 2 34 0;
 #X connect 34 0 13 0;
 #X connect 34 1 19 0;
-#X connect 34 2 36 0;
-#X connect 35 0 52 0;
-#X connect 35 1 41 0;
-#X connect 35 2 44 0;
-#X connect 36 0 51 0;
+#X connect 34 2 35 0;
+#X connect 35 0 50 0;
+#X connect 36 0 38 0;
 #X connect 37 0 39 0;
-#X connect 38 0 40 0;
-#X connect 41 0 29 0;
-#X connect 41 1 30 0;
-#X connect 41 2 42 0;
-#X connect 41 3 43 0;
-#X connect 44 0 31 0;
-#X connect 44 1 32 0;
-#X connect 44 2 45 0;
-#X connect 44 3 46 0;
+#X connect 40 0 29 0;
+#X connect 40 1 30 0;
+#X connect 40 2 41 0;
+#X connect 40 3 42 0;
+#X connect 43 0 31 0;
+#X connect 43 1 32 0;
+#X connect 43 2 44 0;
+#X connect 43 3 45 0;
+#X connect 46 0 48 0;
 #X connect 47 0 49 0;
-#X connect 48 0 50 0;
-#X connect 51 0 37 0;
-#X connect 51 1 38 0;
-#X connect 51 2 47 0;
-#X connect 51 3 48 0;
-#X connect 52 0 25 0;
-#X connect 52 1 26 0;
-#X connect 52 2 27 0;
-#X connect 52 3 28 0;
-#X connect 52 4 53 0;
+#X connect 50 0 36 0;
+#X connect 50 1 37 0;
+#X connect 50 2 46 0;
+#X connect 50 3 47 0;
+#X connect 51 0 25 0;
+#X connect 51 1 26 0;
+#X connect 51 2 27 0;
+#X connect 51 3 28 0;
+#X connect 51 4 52 0;
+#X connect 54 0 51 0;
+#X connect 54 1 40 0;
+#X connect 54 2 43 0;
+#X connect 54 3 53 0;
 #X restore 162 175 pd basicGui;
 #N canvas 0 22 1203 347 shuffler 0;
 #X obj 42 56 inlet;
@@ -190,17 +193,17 @@
 #X obj 14 41 bng 30 250 50 0 s_disconnect r_disconnect Disconnect 35
 15 0 15 -257985 -1 -1;
 #X obj 15 77 tgl 29 0 empty r_connected Connected 35 15 0 15 -191407
--1 -1 1 1;
+-1 -1 0 1;
 #X obj 160 -23 cnv 15 910 280 empty empty mainboard 20 12 0 14 -204786
 -66577 0;
 #X obj 262 19 hradio 15 1 0 10 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 9;
+-1 -1 1;
 #X obj 424 19 hradio 15 1 0 10 s_gen2 r_gen2 empty 0 -8 0 10 -203904
 -1 -1 6;
 #X obj 585 19 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 4;
 #X obj 262 41 hradio 15 1 0 7 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 3;
+-1 0;
 #X text 193 16 Generator1;
 #X obj 424 41 hradio 15 1 0 7 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
 -1 0;
@@ -208,13 +211,13 @@
 -1 0;
 #X text 193 37 Effect1;
 #X obj 262 74 hradio 15 1 0 10 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 1;
+-1 -1 0;
 #X obj 424 74 hradio 15 1 0 10 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 585 74 hradio 15 1 0 10 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 262 96 hradio 15 1 0 7 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 1;
+-1 -1 0;
 #X obj 424 96 hradio 15 1 0 7 s_fx_b2 r_fx_b2 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X obj 585 96 hradio 15 1 0 7 s_fx_b3 r_fx_b3 empty 0 -8 0 10 -262130
@@ -222,7 +225,7 @@
 #X text 193 71 Generator2;
 #X text 194 93 Effect2;
 #X obj 262 128 hradio 15 1 0 6 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 2;
+-1 -1 0;
 #X obj 424 128 hradio 15 1 0 6 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 585 128 hradio 15 1 0 6 s_mix3 r_mix3 empty 0 -8 0 10 -262144
@@ -231,7 +234,7 @@
 #X obj 262 228 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 424 228 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 1;
 #X text 194 225 Output;
 #X obj 747 19 hradio 15 1 0 10 s_gen4 r_gen4 empty 0 -8 0 10 -203904
 -1 -1 3;
@@ -985,9 +988,9 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 911 357 int;
 #X obj 1036 354 int;
 #X obj 262 183 hradio 15 1 0 7 s_fx_output1 r_fx_output1 empty 0 -8
-0 10 -262130 -1 -1 6;
+0 10 -262130 -1 -1 0;
 #X obj 424 183 hradio 15 1 0 7 s_fx_output2 r_fx_output2 empty 0 -8
-0 10 -262130 -1 -1 6;
+0 10 -262130 -1 -1 0;
 #X text 194 180 Effect;
 #X obj 1076 -79 cnv 15 190 400 empty empty present 20 12 0 14 -204786
 -66577 0;
@@ -1109,17 +1112,17 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 1220 173 bng 15 250 50 0 s_sel_48 empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 585 227 hradio 15 1 0 5 s_out3 r_out3 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X obj 747 227 hradio 15 1 0 5 s_out4 r_out4 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 3;
 #X obj 585 205 hradio 15 1 0 4 s_fader3 r_fader3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 747 205 hradio 15 1 0 4 s_fader4 r_fader4 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 585 182 hradio 15 1 0 7 s_fx_output3 r_fx_output3 empty 0 -8
-0 10 -262130 -1 -1 6;
+0 10 -262130 -1 -1 0;
 #X obj 747 182 hradio 15 1 0 7 s_fx_output4 r_fx_output4 empty 0 -8
-0 10 -262130 -1 -1 6;
+0 10 -262130 -1 -1 0;
 #X obj 173 18 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10
 -260097 -1 -1 1 1;
 #X obj 173 38 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
@@ -1174,7 +1177,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 159 448 cnv 15 220 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
 #X obj 173 500 send textwriter;
-#X msg 173 475 send TEXTWR TEST;
+#X msg 173 475 send TEXTWR 3333AAASSDFGGHJJJKKKKKKK;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 48 0 50 0;
