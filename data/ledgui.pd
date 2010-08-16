@@ -1,4 +1,4 @@
-#N canvas 150 78 1272 682 10;
+#N canvas 306 253 1272 682 10;
 #X obj 4 259 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 418 22 457 607 receive 0;
@@ -199,9 +199,9 @@
 #X obj 262 19 hradio 15 1 0 10 s_gen1 r_gen1 empty 0 -8 0 10 -203904
 -1 -1 1;
 #X obj 424 19 hradio 15 1 0 10 s_gen2 r_gen2 empty 0 -8 0 10 -203904
--1 -1 6;
+-1 -1 9;
 #X obj 585 19 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
--1 -1 4;
+-1 -1 8;
 #X obj 262 41 hradio 15 1 0 7 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X text 193 16 Generator1;
@@ -988,16 +988,16 @@
 #X msg 9 383 connect 127.0.0.1 3449;
 #X text 299 -69 Effects: Off \, Inverter \, Rotozoom \, Beat horizontal
 shift \, Beat vertical shift \, Voluminize \, Tint;
-#X obj 773 263 cnv 15 297 180 empty empty tint_fx 20 12 0 14 -262130
+#X obj 795 263 cnv 15 275 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
-#X obj 787 296 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 809 331;
-#X floatatom 787 380 5 0 0 0 - - s_tint_r;
-#X floatatom 911 380 5 0 0 0 - - s_tint_g;
-#X floatatom 1036 376 5 0 0 0 - - s_tint_b;
-#X obj 787 356 int;
-#X obj 911 357 int;
-#X obj 1036 354 int;
+#X obj 809 296 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
+10 10 821 306;
+#X floatatom 809 380 5 0 0 0 - - s_tint_r;
+#X floatatom 933 380 5 0 0 0 - - s_tint_g;
+#X floatatom 1028 376 5 0 0 0 - - s_tint_b;
+#X obj 809 356 int;
+#X obj 933 357 int;
+#X obj 1028 354 int;
 #X obj 262 183 hradio 15 1 0 7 s_fx_output1 r_fx_output1 empty 0 -8
 0 10 -262130 -1 -1 0;
 #X obj 424 183 hradio 15 1 0 7 s_fx_output2 r_fx_output2 empty 0 -8
@@ -1154,26 +1154,26 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 7 0 10 -260097 -1 -1 1 1;
 #X obj 445 268 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0
 10 -260097 -1 -1 1 1;
-#X obj 1050 267 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
+#X obj 1048 267 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
 -260097 -1 -1 1 1;
 #X text 641 -52 Mixer: Off \, AddSat \, Multiply \, Mix \, Neg Multiply
 \, Checkb;
-#X obj 469 263 cnv 15 200 180 empty empty texture_deformation 20 12
-0 14 -203904 -66577 0;
+#X obj 469 263 cnv 15 180 180 empty empty textdeformation 20 12 0 14
+-203904 -66577 0;
 #X obj 479 419 send change_lut;
-#X obj 483 293 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
+#X obj 473 293 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
 -1 -1;
-#X obj 483 314 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
+#X obj 473 314 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
 -1 -1;
-#X obj 547 293 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
+#X obj 537 293 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
 -1 -1;
-#X obj 547 314 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
+#X obj 537 314 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
 -1 -1;
-#X obj 613 293 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144
+#X obj 603 293 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144
 -1 -1;
-#X obj 613 314 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
+#X obj 603 314 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
 -1;
-#X obj 648 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
+#X obj 630 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 907 227 hradio 15 1 0 5 s_outALL empty empty 0 -8 0 10 -228856
 -1 -1 0;
@@ -1181,10 +1181,10 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1 0;
 #X obj 907 182 hradio 15 1 0 7 s_fx_outputALL empty empty 0 -8 0 10
 -228856 -1 -1 0;
-#X obj 159 448 cnv 15 220 80 empty empty textwriter 20 12 0 14 -203904
+#X obj 161 449 cnv 15 220 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
-#X obj 173 500 send textwriter;
-#X msg 173 475 TEST123;
+#X obj 175 501 send textwriter;
+#X msg 175 476 TEST123;
 #X msg 172 293 torus.bml;
 #X msg 172 316 bnf_auge.bml;
 #X msg 172 340 bb-frogskin2.bml;
