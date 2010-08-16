@@ -89,7 +89,7 @@ public class Collector {
 	
 	private String fileBlinken;
 	private String fileImage;
-	private String fileTexture;
+	//private String fileTexture;
 	
 	private String fileTextureDeformation;
 	private int textureDeformationLut;
@@ -173,11 +173,13 @@ public class Collector {
 		new PassThruGen();
 		new Metaballs();
 		new VolumeDisplay();
-		fileTexture = PropertiesHelper.getProperty("initial.texture");
-		new TextureDeformation(fileTexture);
+		this.fileTextureDeformation = PropertiesHelper.getProperty("initial.texture");
+		new TextureDeformation(fileTextureDeformation);
+		this.text = PropertiesHelper.getProperty("initial.text");
 		new Textwriter(
 				PropertiesHelper.getProperty("font.filename"), 
-				Integer.parseInt(PropertiesHelper.getProperty("font.size"))
+				Integer.parseInt(PropertiesHelper.getProperty("font.size")),
+				this.text
 		);
 
 		//create effects

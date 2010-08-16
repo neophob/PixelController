@@ -41,7 +41,7 @@ public class Textwriter extends Generator {
 	 * 
 	 * @param filename
 	 */
-	public Textwriter(String fontName, int fontSize) {
+	public Textwriter(String fontName, int fontSize, String text) {
 		super(GeneratorName.TEXTWRITER);
 		color = new Color(255,255,255);
 		xpos=0;
@@ -50,7 +50,7 @@ public class Textwriter extends Generator {
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
-			createTextImage("ABcd!%$FRFWWEFD*");			
+			createTextImage(text);			
 		} catch (Exception e) {
 			log.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
 		}
@@ -71,12 +71,9 @@ public class Textwriter extends Generator {
 		Rectangle2D rect = layout.getBounds();
 		
 		int h = (int)(0.5f+rect.getHeight());
-		System.out.println(h);
 
 		maxXPos=(int)(0.5f+rect.getWidth())+5;
 		ypos=internalBufferYSize-(internalBufferYSize-h)/2;
-//		System.out.println("maxXPos: "+maxXPos);
-//		System.out.println("ypos: "+ypos);
 
 		img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
 		g2 = img.createGraphics();
