@@ -170,7 +170,10 @@ public class Collector {
 		new VolumeDisplay();
 		fileTexture = PropertiesHelper.getProperty("initial.texture");
 		new TextureDeformation(fileTexture);
-		new Textwriter();
+		new Textwriter(
+				PropertiesHelper.getProperty("font.filename"), 
+				Integer.parseInt(PropertiesHelper.getProperty("font.size"))
+		);
 
 		//create effects
 		new Inverter();

@@ -150,9 +150,13 @@ public class Sound implements Runnable {
 					max = Math.max(max, (Float)o);
 					min = Math.min(min, (Float)o);
 				}
-				sndVolumeMax=max;
-				sndVolumeMin=min;
-				//System.out.println("MAX: "+sndVolumeMax+", MIN: "+sndVolumeMin+", DIFF: "+(sndVolumeMax-sndVolumeMin));
+				if (max-min<0.002f) {
+					sndVolumeMax=1;
+					sndVolumeMin=0;
+				} else {
+					sndVolumeMax=max;
+					sndVolumeMin=min;					
+				}
 			}
 			
 			cnt++;
