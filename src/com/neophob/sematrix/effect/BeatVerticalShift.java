@@ -12,7 +12,7 @@ public class BeatVerticalShift extends Effect {
 
 	public int[] getBuffer(int[] buffer) {
 		if (Sound.getInstance().isPang()) {
-			ammount = (int)(Math.random()*internalBufferYSize);
+			ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferYSize);
 		}
 		return doVerticalShift(buffer, ammount);
 	}

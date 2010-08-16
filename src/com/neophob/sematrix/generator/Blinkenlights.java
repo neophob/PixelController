@@ -23,6 +23,8 @@ public class Blinkenlights extends Generator implements PConstants {
 	private PImage tmp;
 	private boolean random;
 	private Random rand = new Random();
+	private int frames;
+	private int movieFrames;
 
 	public Blinkenlights(String filename) {
 		super(GeneratorName.BLINKENLIGHTS);
@@ -31,7 +33,9 @@ public class Blinkenlights extends Generator implements PConstants {
 		random=false;
 		blinken = new BlinkenLibrary(parent, PREFIX+filename);
 		blinken.setIgnoreFileDelay(true);
-		blinken.loop();
+		blinken.noLoop();
+		blinken.stop();
+		movieFrames = blinken.getNrOfFrames();
 	}
 
 	/**
@@ -41,6 +45,9 @@ public class Blinkenlights extends Generator implements PConstants {
 	public void loadFile(String file) {
 		blinken.loadFile(PREFIX+file);
 		blinken.setIgnoreFileDelay(true);
+		blinken.noLoop();
+		blinken.stop();
+		movieFrames = blinken.getNrOfFrames();
 	}
 	
 	@Override
@@ -49,6 +56,9 @@ public class Blinkenlights extends Generator implements PConstants {
 			blinken.jump(
 					rand.nextInt(blinken.getNrOfFrames())
 			);
+		} else {
+			blinken.jump(frames%movieFrames);
+			frames++;
 		}
 		tmp.loadPixels();
 		tmp.copy(blinken, 0, 0, blinken.width, blinken.height, 0, 0, internalBufferXSize, internalBufferYSize);
