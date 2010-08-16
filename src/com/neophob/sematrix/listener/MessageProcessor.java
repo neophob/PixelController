@@ -9,6 +9,7 @@ import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.TextureDeformation;
+import com.neophob.sematrix.generator.Textwriter;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.listener.TcpServer.ValidCommands;
@@ -237,6 +238,7 @@ public class MessageProcessor {
 			case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
+					col.setTextureDeformationLut(lut);
 					TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 					df.changeLUT(lut);
 				} catch (Exception e) {
@@ -247,8 +249,20 @@ public class MessageProcessor {
 			case TEXTDEF_FILE:
 				try {
 					String fileToLoad = msg[1];
+					col.setFileTextureDeformation(fileToLoad);
 					TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 					df.loadFile(fileToLoad);
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
+				break;
+			
+			case TEXTWR:
+				try {
+					String message = msg[1];
+					col.setText(message);
+					Textwriter txt = (Textwriter)col.getGenerator(GeneratorName.TEXTWRITER);
+					txt.createTextImage(message);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}

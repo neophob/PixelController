@@ -21,7 +21,7 @@ import com.neophob.sematrix.glue.Collector;
  */
 public class Textwriter extends Generator {
 
-	private static final int TEXT_BUFFER_X_SIZE=512;
+	private static final int TEXT_BUFFER_X_SIZE=128;
 	private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT=12;
 	
 	private static Logger log = Logger.getLogger(Textwriter.class.getName());
@@ -73,10 +73,10 @@ public class Textwriter extends Generator {
 		int h = (int)(0.5f+rect.getHeight());
 		System.out.println(h);
 
-		maxXPos=(int)(0.5f+rect.getWidth());
-		ypos=h;
-		System.out.println("maxXPos: "+maxXPos);
-		System.out.println("ypos: "+ypos);
+		maxXPos=(int)(0.5f+rect.getWidth())+5;
+		ypos=internalBufferYSize-(internalBufferYSize-h)/2;
+//		System.out.println("maxXPos: "+maxXPos);
+//		System.out.println("ypos: "+ypos);
 
 		img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
 		g2 = img.createGraphics();
@@ -97,6 +97,11 @@ public class Textwriter extends Generator {
 		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
 		textBuffer=dbi.getData();
 		g2.dispose();
+		
+		if (xofs>maxXPos) {
+			xofs = 0;
+			scrollRight = false;
+		}
 	}
 	
 	
