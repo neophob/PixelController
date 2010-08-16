@@ -80,7 +80,8 @@ public class Collector {
 
 	private int nrOfScreens;
 	private int fps;
-
+	private int frames;
+	
 	/** present settings */
 	private int selectedPresent;
 	private List<PresentSettings> present;
@@ -222,8 +223,22 @@ public class Collector {
 	 *  -outputs
 	 */
 	public void updateSystem() {
+		//get sound volume
+		float f = Sound.getInstance().getVolumeNormalized();
+		int u = (int)(0.5f+f*3);
+
+		//check for silence - in this case update slowly
+		if (u<1) {
+			if (frames%2==1) {
+				u=1;
+			}
+		}
+		if (Sound.getInstance().isKick()) u+=2;
+		
 		for (Generator m: allGenerators) {
-			m.update();
+			for (int i=0; i<u; i++) {
+				m.update();	
+			}			
 		}
 		for (Effect e: allEffects) {
 			e.update();
@@ -235,6 +250,8 @@ public class Collector {
 		if (randomMode) {
 			Shuffler.shuffleStuff();
 		}
+		
+		frames++;
 	}
 
 	/**
@@ -582,7 +599,8 @@ public class Collector {
 		OUTPUT(7),
 		BLINKEN(8),
 		IMAGE(9),
-		TINT(10);
+		TINT(10),
+		TEXTURE_DEFORMATION(11);
 		
 		int ofs;
 		ShufflerOffset(int ofs) {

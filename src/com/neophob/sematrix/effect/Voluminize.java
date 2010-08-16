@@ -13,7 +13,7 @@ public class Voluminize extends Effect {
 		
 		short cr,cg,cb;
 		int col;
-		float volume = Sound.getInstance().getVolume();
+		float volume = Sound.getInstance().getVolumeNormalized();
 		for (int i=0; i<buffer.length; i++){
 			col = buffer[i];
     		cr=(short) (volume*((col>>16)&255));

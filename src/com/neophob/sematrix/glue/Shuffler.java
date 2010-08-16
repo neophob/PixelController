@@ -7,6 +7,7 @@ import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
+import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector.ShufflerOffset;
 import com.neophob.sematrix.input.Sound;
@@ -34,7 +35,7 @@ public class Shuffler {
 		Collector col = Collector.getInstance(); 
 		
 		Random rand = new Random();
-		int blah = rand.nextInt(11);
+		int blah = rand.nextInt(14);
 		
 		if (snare) {
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
@@ -137,7 +138,7 @@ public class Shuffler {
 			}
 			
 			if (blah == 9 && col.getShufflerSelect(ShufflerOffset.BLINKEN)) {
-				int nr = rand.nextInt(4);
+				int nr = rand.nextInt(5);
 				String fileToLoad="";
 				switch (nr) {
 				case 0:
@@ -159,7 +160,36 @@ public class Shuffler {
 				Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
 				blink.loadFile(fileToLoad);
 			}
-	
+			
+			if (blah == 12 && col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+				TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
+				df.changeLUT(rand.nextInt(12));
+			}
+
+			if (blah == 13 && col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+				TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
+				int nr = rand.nextInt(5);
+				String fileToLoad="";
+				switch (nr) {
+				case 0:
+					fileToLoad="1316.jpg";
+					break;
+				case 1:
+					fileToLoad="ceiling.jpg";
+					break;
+				case 2:
+					fileToLoad="circle.jpg";
+					break;
+				case 3:
+					fileToLoad="gradient.jpg";
+					break;
+				case 4:
+					fileToLoad="check.jpg";
+					break;
+				}
+				df.loadFile(fileToLoad);
+			}
+
 		}
 		
 	}

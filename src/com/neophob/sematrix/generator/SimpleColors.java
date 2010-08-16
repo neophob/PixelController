@@ -19,7 +19,7 @@ public class SimpleColors extends Generator {
 				this.internalBuffer[ofs++]=col;
 			}
 		}
-		rotate+=5;
+		rotate++;
 	}
 
 	
