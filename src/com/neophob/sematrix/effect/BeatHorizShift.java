@@ -12,7 +12,6 @@ public class BeatHorizShift extends Effect {
 
 	public int[] getBuffer(int[] buffer) {
 		if (Sound.getInstance().isPang()) {
-//			ammount = (int)(Math.random()*internalBufferXSize);
 			ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferXSize);
 		}
 		

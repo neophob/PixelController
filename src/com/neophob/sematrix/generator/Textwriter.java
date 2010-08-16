@@ -6,6 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.neophob.sematrix.glue.Collector;
 
 /**
  * @author mvogt
@@ -13,27 +18,52 @@ import java.awt.image.DataBufferInt;
  */
 public class Textwriter extends Generator {
 
-	private String text = "VTG!";
-	private String fontName = "";
-	private int fontSize = 54;
-	private int xpos=0,ypos=64;
+	private static final int TEXT_BUFFER_X_SIZE=512;
+	private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT=12;
+	
+	private static Logger log = Logger.getLogger(Textwriter.class.getName());
+	
+	private int xpos,ypos;
 	private Font font;
 	private Color color;
+	
+	private int xofs;
+	private int maxXPos;
+	private boolean scrollRight=true;
+	private int wait;
+	
+	private int[] textBuffer;
 	
 	/**
 	 * 
 	 * @param filename
 	 */
-	public Textwriter() {
+	public Textwriter(String fontName, int fontSize) {
 		super(GeneratorName.TEXTWRITER);
 		color = new Color(255,255,255);
-		font=new Font(fontName, Font.PLAIN, fontSize);
-		
+		xpos=0;
+		ypos=getInternalBufferYSize()-2;
+		InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
+		try {
+			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float)fontSize);
+			//font=new Font("", Font.PLAIN, fontSize);
+			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize); 
+			createTextImage("VTG!");			
+		} catch (Exception e) {
+			log.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public void createTextImage(String text) {
 		BufferedImage img = getBufferedImage();
 		Graphics2D g2 = img.createGraphics();
 		g2.setColor(color);
 		g2.setFont(font);		
-		g2.setClip(0, 0, getInternalBufferXSize(), getInternalBufferYSize());
+		g2.setClip(0, 0, TEXT_BUFFER_X_SIZE, internalBufferYSize);
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
@@ -45,8 +75,23 @@ public class Textwriter extends Generator {
 
 		g2.drawString(text, xpos, ypos);
 		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
-		
-		System.arraycopy(dbi.getData(), 0, internalBuffer, 0, internalBuffer.length);
+		textBuffer=dbi.getData();
+		int ofs;
+		maxXPos=TEXT_BUFFER_X_SIZE;
+		System.out.println(TEXT_BUFFER_X_SIZE*internalBufferYSize);
+		//Scan buffer for maximal right position
+		for (int x=TEXT_BUFFER_X_SIZE-1; x>0; x--) {
+			for (int y=0; y<internalBufferYSize; y++) {
+				ofs=x+y*TEXT_BUFFER_X_SIZE;
+				if (textBuffer[ofs]!=0) {
+					System.out.println("found max: "+x);
+					maxXPos=x;
+					x=0;
+					break;
+				}
+			}
+		}
+		System.out.println("maxXPos: "+maxXPos);
 		g2.dispose();
 	}
 	
@@ -56,12 +101,40 @@ public class Textwriter extends Generator {
 	 * @return BufferedImage 
 	 */
 	private BufferedImage getBufferedImage() {
-		BufferedImage image = new BufferedImage( getInternalBufferXSize(), getInternalBufferYSize(), BufferedImage.TYPE_INT_RGB); 
+		BufferedImage image = 
+			new BufferedImage( TEXT_BUFFER_X_SIZE, internalBufferYSize, BufferedImage.TYPE_INT_RGB); 
 		return image;
 	}
 	
 	@Override
 	public void update() {
+		int srcOfs=xofs;
+		int dstOfs=0;
+		for (int y=0; y<internalBufferYSize; y++) {
+			System.arraycopy(textBuffer, srcOfs, this.internalBuffer, dstOfs, internalBufferXSize);
+			dstOfs+=internalBufferXSize;
+			srcOfs+=TEXT_BUFFER_X_SIZE;
+		}
+		
+		if (wait>0) {
+			wait--;
+		} else {
+			if (scrollRight) {
+				xofs+=4;
+				if (xofs>maxXPos-internalBufferXSize) {
+					scrollRight=false;
+					xofs=maxXPos-internalBufferXSize;
+					wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+				}			
+			} else {
+				xofs-=4;
+				if (xofs<1) {
+					scrollRight=true;
+					xofs=0;
+					wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+				}
+			}			
+		}
 	}
 
 	@Override
