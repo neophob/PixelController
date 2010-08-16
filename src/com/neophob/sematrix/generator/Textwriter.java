@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.InputStream;
@@ -47,8 +50,8 @@ public class Textwriter extends Generator {
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float)fontSize);
 			//font=new Font("", Font.PLAIN, fontSize);
-			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize); 
-			createTextImage("VTG!");			
+			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
+			createTextImage("ABcd!");			
 		} catch (Exception e) {
 			log.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
 		}
@@ -60,7 +63,18 @@ public class Textwriter extends Generator {
 	 */
 	public void createTextImage(String text) {
 		BufferedImage img = getBufferedImage();
+
 		Graphics2D g2 = img.createGraphics();
+		FontRenderContext frc = g2.getFontRenderContext(); 
+		TextLayout layout = new TextLayout(text, font, frc); 
+		Rectangle2D rect = layout.getBounds();
+		
+		int h = (int)(0.5f+rect.getHeight());
+		System.out.println(h);
+
+		ypos=internalBufferYSize-(internalBufferYSize-h)/2;
+		maxXPos=(int)(0.5f+rect.getWidth());
+		
 		g2.setColor(color);
 		g2.setFont(font);		
 		g2.setClip(0, 0, TEXT_BUFFER_X_SIZE, internalBufferYSize);
@@ -76,21 +90,7 @@ public class Textwriter extends Generator {
 		g2.drawString(text, xpos, ypos);
 		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
 		textBuffer=dbi.getData();
-		int ofs;
-		maxXPos=TEXT_BUFFER_X_SIZE;
-		System.out.println(TEXT_BUFFER_X_SIZE*internalBufferYSize);
-		//Scan buffer for maximal right position
-		for (int x=TEXT_BUFFER_X_SIZE-1; x>0; x--) {
-			for (int y=0; y<internalBufferYSize; y++) {
-				ofs=x+y*TEXT_BUFFER_X_SIZE;
-				if (textBuffer[ofs]!=0) {
-					System.out.println("found max: "+x);
-					maxXPos=x;
-					x=0;
-					break;
-				}
-			}
-		}
+
 		System.out.println("maxXPos: "+maxXPos);
 		g2.dispose();
 	}
