@@ -48,8 +48,7 @@ public class Textwriter extends Generator {
 		ypos=getInternalBufferYSize()-2;
 		InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont((float)fontSize);
-			//font=new Font("", Font.PLAIN, fontSize);
+			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
 			createTextImage("ABcd!");			
 		} catch (Exception e) {
