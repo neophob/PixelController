@@ -1,13 +1,11 @@
 
 fx:
 
--textscroller
-
 -optimize rainbowduino output, workarround multiply output with itself, maybe gamma tab?
 
 -blinkenlights: add option for random mode
 
--config file erstellen (i2c addr., erstes image+blinkenlight file, generator blacklist für shuffler...)
+-config file erstellen (generator blacklist für shuffler...)
 
 -random mode: do not switch output if fader is running
 
