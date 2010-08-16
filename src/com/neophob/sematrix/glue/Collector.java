@@ -381,6 +381,7 @@ public class Collector {
 		ret.add(ValidCommands.TEXTDEF_FILE+" "+fileTextureDeformation);
 		ret.add(ValidCommands.TEXTDEF+" "+textureDeformationLut);
 		ret.add(ValidCommands.TEXTWR+" "+text);
+		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
 		return ret;
 	}
 
