@@ -45,7 +45,7 @@ public class Textwriter extends Generator {
 		super(GeneratorName.TEXTWRITER);
 		color = new Color(255,255,255);
 		xpos=0;
-		ypos=getInternalBufferYSize()-2;
+		ypos=getInternalBufferYSize();
 		InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
@@ -71,7 +71,6 @@ public class Textwriter extends Generator {
 		Rectangle2D rect = layout.getBounds();
 		
 		int h = (int)(0.5f+rect.getHeight());
-
 		maxXPos=(int)(0.5f+rect.getWidth())+5;
 		ypos=internalBufferYSize-(internalBufferYSize-h)/2;
 
