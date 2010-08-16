@@ -1,4 +1,4 @@
-#N canvas 255 141 1272 682 10;
+#N canvas 150 78 1272 682 10;
 #X obj 4 259 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 418 22 457 607 receive 0;
@@ -265,26 +265,17 @@
 0;
 #X text 693 -69 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
-#X obj 160 263 cnv 15 220 180 empty empty blinken_generator 20 12 0
-14 -203904 -66577 0;
-#X msg 172 293 send BLINKEN torus.bml;
-#X msg 172 316 send BLINKEN bnf_auge.bml;
+#X obj 160 263 cnv 15 150 180 empty empty blinken 20 12 0 14 -203904
+-66577 0;
 #X obj 172 408 send blinkenfile;
-#X obj 386 263 cnv 15 170 180 empty empty image_generator 20 12 0 14
--203904 -66577 0;
-#X obj 398 391 send image;
-#X msg 398 342 send IMAGE gradient.jpg;
-#X msg 398 317 send IMAGE half.jpg;
-#X msg 398 293 send IMAGE circle.jpg;
-#X msg 398 366 send IMAGE check.jpg;
+#X obj 315 263 cnv 15 150 180 empty empty image 20 12 0 14 -203904
+-66577 0;
+#X obj 327 391 send image;
 #X obj 4 123 cnv 15 150 130 empty empty random_mode 20 12 0 14 -260097
 -66577 0;
 #X obj 16 214 send randommode;
 #X msg 16 166 send RANDOM ON;
 #X msg 16 190 send RANDOM OFF;
-#X msg 172 340 send BLINKEN bb-frogskin2.bml;
-#X msg 172 362 send BLINKEN bb-rauten2.bml;
-#X msg 172 384 send BLINKEN bb-spiral2fast.bml;
 #X obj 1078 330 cnv 15 84 130 empty empty beat 20 12 0 14 -228856 -66577
 0;
 #X obj 1086 368 tgl 20 0 empty r_snd_kick kick 32 10 0 10 -191407 -1
@@ -293,7 +284,7 @@
 -1 0 1;
 #X obj 1086 428 tgl 20 0 empty r_snd_snare snare 32 10 0 10 -191407
 -1 -1 0 1;
-#N canvas 350 40 680 655 send 0;
+#N canvas 21 78 680 655 send 0;
 #X obj 312 447 netsend;
 #X floatatom 312 473 5 0 0 0 - - -;
 #X obj 220 397 metro 1000;
@@ -309,8 +300,6 @@
 #X obj 312 502 s r_connected;
 #X obj 312 -20 inlet;
 #X msg 312 31 disconnect;
-#X obj 312 64 r blinkenfile;
-#X obj 312 94 r image;
 #X obj 312 124 r randommode;
 #N canvas 27 464 1212 261 shufflerSel 0;
 #X obj 9 36 r s_rndsel_gen1;
@@ -891,7 +880,6 @@
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
 #X restore 397 301 pd presentStuff;
-#X obj 312 161 r change_lut;
 #N canvas 0 22 729 300 textureDeformation 0;
 #X obj 346 226 outlet;
 #X obj 37 58 r s_td_5;
@@ -948,7 +936,33 @@
 #X connect 14 0 12 0;
 #X connect 14 0 13 0;
 #X restore 10 -8 pd output4all;
-#X obj 312 197 r textwriter;
+#N canvas 289 85 673 328 generator 0;
+#X obj 167 45 r blinkenfile;
+#X obj 49 47 r textwriter;
+#X msg 49 101 send TEXTWR \$1;
+#X obj 49 74 symbol;
+#X obj 167 72 symbol;
+#X msg 167 102 send BLINKEN \$1;
+#X obj 277 194 outlet;
+#X obj 311 45 r image;
+#X obj 311 72 symbol;
+#X msg 311 102 send IMAGE \$1;
+#X obj 433 45 r change_lut;
+#X obj 433 72 symbol;
+#X msg 433 103 send TEXTDEF_FILE \$1;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 6 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 6 0;
+#X restore 216 194 pd generator;
 #X connect 0 0 1 0;
 #X connect 1 0 5 0;
 #X connect 1 0 9 0;
@@ -966,10 +980,7 @@
 #X connect 14 0 0 0;
 #X connect 15 0 0 0;
 #X connect 16 0 0 0;
-#X connect 17 0 0 0;
 #X connect 18 0 0 0;
-#X connect 19 0 0 0;
-#X connect 21 0 0 0;
 #X restore 9 410 pd send;
 #X obj 9 355 receive s_connect;
 #X text 13 -69 Generators: Off \, Blinkenlights \, Image \, Plasma
@@ -980,7 +991,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 773 263 cnv 15 297 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 787 296 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 811 317;
+10 10 809 331;
 #X floatatom 787 380 5 0 0 0 - - s_tint_r;
 #X floatatom 911 380 5 0 0 0 - - s_tint_g;
 #X floatatom 1036 376 5 0 0 0 - - s_tint_b;
@@ -1139,34 +1150,30 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 7 0 10 -260097 -1 -1 1 1;
 #X obj 173 227 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -260097
 -1 -1 1 1;
-#X obj 360 267 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17
+#X obj 291 267 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17
 7 0 10 -260097 -1 -1 1 1;
-#X obj 536 268 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0
+#X obj 445 268 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0
 10 -260097 -1 -1 1 1;
 #X obj 1050 267 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
 -260097 -1 -1 1 1;
 #X text 641 -52 Mixer: Off \, AddSat \, Multiply \, Mix \, Neg Multiply
 \, Checkb;
-#X obj 562 263 cnv 15 200 180 empty empty texture_deformation 20 12
+#X obj 469 263 cnv 15 200 180 empty empty texture_deformation 20 12
 0 14 -203904 -66577 0;
-#X obj 572 419 send change_lut;
-#X msg 572 377 send TEXTDEF_FILE circle.jpg;
-#X msg 572 357 send TEXTDEF_FILE 1316.jpg;
-#X msg 572 398 send TEXTDEF_FILE gradient.jpg;
-#X msg 572 337 send TEXTDEF_FILE ceiling.jpg;
-#X obj 576 293 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
+#X obj 479 419 send change_lut;
+#X obj 483 293 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
 -1 -1;
-#X obj 576 314 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
+#X obj 483 314 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
 -1 -1;
-#X obj 640 293 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
+#X obj 547 293 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
 -1 -1;
-#X obj 640 314 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
+#X obj 547 314 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
 -1 -1;
-#X obj 706 293 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144
+#X obj 613 293 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144
 -1 -1;
-#X obj 706 314 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
+#X obj 613 314 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
 -1;
-#X obj 741 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
+#X obj 648 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 907 227 hradio 15 1 0 5 s_outALL empty empty 0 -8 0 10 -228856
 -1 -1 0;
@@ -1177,30 +1184,43 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 159 448 cnv 15 220 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
 #X obj 173 500 send textwriter;
-#X msg 173 475 send TEXTWR 3333AAASSDFGGHJJJKKKKKKK;
+#X msg 173 475 TEST123;
+#X msg 172 293 torus.bml;
+#X msg 172 316 bnf_auge.bml;
+#X msg 172 340 bb-frogskin2.bml;
+#X msg 172 362 bb-rauten2.bml;
+#X msg 172 384 bb-spiral2fast.bml;
+#X msg 327 293 circle.jpg;
+#X msg 327 317 half.jpg;
+#X msg 327 342 gradient.jpg;
+#X msg 327 366 check.jpg;
+#X msg 479 337 ceiling.jpg;
+#X msg 479 377 circle.jpg;
+#X msg 479 398 gradient.jpg;
+#X msg 479 357 1316.jpg;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
-#X connect 48 0 50 0;
-#X connect 49 0 50 0;
 #X connect 53 0 52 0;
 #X connect 54 0 52 0;
-#X connect 55 0 52 0;
-#X connect 56 0 52 0;
-#X connect 59 0 58 0;
-#X connect 60 0 58 0;
-#X connect 61 0 50 0;
-#X connect 62 0 50 0;
-#X connect 63 0 50 0;
-#X connect 69 0 71 0;
+#X connect 60 0 62 0;
+#X connect 62 0 59 0;
+#X connect 65 0 69 0;
+#X connect 65 1 70 0;
+#X connect 65 2 71 0;
+#X connect 69 0 66 0;
+#X connect 70 0 67 0;
 #X connect 71 0 68 0;
-#X connect 74 0 78 0;
-#X connect 74 1 79 0;
-#X connect 74 2 80 0;
-#X connect 78 0 75 0;
-#X connect 79 0 76 0;
-#X connect 80 0 77 0;
-#X connect 164 0 163 0;
-#X connect 165 0 163 0;
-#X connect 166 0 163 0;
-#X connect 167 0 163 0;
-#X connect 180 0 179 0;
+#X connect 167 0 166 0;
+#X connect 168 0 48 0;
+#X connect 169 0 48 0;
+#X connect 170 0 48 0;
+#X connect 171 0 48 0;
+#X connect 172 0 48 0;
+#X connect 173 0 50 0;
+#X connect 174 0 50 0;
+#X connect 175 0 50 0;
+#X connect 176 0 50 0;
+#X connect 177 0 154 0;
+#X connect 178 0 154 0;
+#X connect 179 0 154 0;
+#X connect 180 0 154 0;
