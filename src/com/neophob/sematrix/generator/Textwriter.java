@@ -50,7 +50,7 @@ public class Textwriter extends Generator {
 		try {
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
-			createTextImage("ABcd!");			
+			createTextImage("ABcd!%$FRFWWEFD*");			
 		} catch (Exception e) {
 			log.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
 		}
@@ -61,7 +61,9 @@ public class Textwriter extends Generator {
 	 * @return
 	 */
 	public void createTextImage(String text) {
-		BufferedImage img = getBufferedImage();
+		//BufferedImage img = getBufferedImage();
+		BufferedImage img = 
+			new BufferedImage( TEXT_BUFFER_X_SIZE, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
 
 		Graphics2D g2 = img.createGraphics();
 		FontRenderContext frc = g2.getFontRenderContext(); 
@@ -71,12 +73,17 @@ public class Textwriter extends Generator {
 		int h = (int)(0.5f+rect.getHeight());
 		System.out.println(h);
 
-		ypos=internalBufferYSize-(internalBufferYSize-h)/2;
 		maxXPos=(int)(0.5f+rect.getWidth());
+		ypos=h;
+		System.out.println("maxXPos: "+maxXPos);
+		System.out.println("ypos: "+ypos);
+
+		img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
+		g2 = img.createGraphics();
 		
 		g2.setColor(color);
 		g2.setFont(font);		
-		g2.setClip(0, 0, TEXT_BUFFER_X_SIZE, internalBufferYSize);
+		g2.setClip(0, 0, maxXPos, internalBufferYSize);
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
@@ -89,21 +96,9 @@ public class Textwriter extends Generator {
 		g2.drawString(text, xpos, ypos);
 		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
 		textBuffer=dbi.getData();
-
-		System.out.println("maxXPos: "+maxXPos);
 		g2.dispose();
 	}
 	
-	/**
-	 * create a BufferedImage from a Texture Layer
-	 * @param nr
-	 * @return BufferedImage 
-	 */
-	private BufferedImage getBufferedImage() {
-		BufferedImage image = 
-			new BufferedImage( TEXT_BUFFER_X_SIZE, internalBufferYSize, BufferedImage.TYPE_INT_RGB); 
-		return image;
-	}
 	
 	@Override
 	public void update() {
@@ -112,7 +107,7 @@ public class Textwriter extends Generator {
 		for (int y=0; y<internalBufferYSize; y++) {
 			System.arraycopy(textBuffer, srcOfs, this.internalBuffer, dstOfs, internalBufferXSize);
 			dstOfs+=internalBufferXSize;
-			srcOfs+=TEXT_BUFFER_X_SIZE;
+			srcOfs+=maxXPos;
 		}
 		
 		if (wait>0) {
