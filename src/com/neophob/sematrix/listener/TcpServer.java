@@ -35,6 +35,7 @@ public class TcpServer implements Runnable {
 		IMAGE,
 		TEXTDEF,
 		TEXTDEF_FILE,
+		TEXTWR,
 		RANDOM
 	}
 

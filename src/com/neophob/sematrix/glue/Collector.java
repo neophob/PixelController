@@ -91,6 +91,11 @@ public class Collector {
 	private String fileImage;
 	private String fileTexture;
 	
+	private String fileTextureDeformation;
+	private int textureDeformationLut;
+	
+	private String text;
+	
 	private TcpServer srv;
 	
 	private Collector() {
@@ -371,7 +376,9 @@ public class Collector {
 		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
 		ret.add(ValidCommands.IMAGE+" "+fileImage);
 		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
-		
+		ret.add(ValidCommands.TEXTDEF_FILE+" "+fileTextureDeformation);
+		ret.add(ValidCommands.TEXTDEF+" "+textureDeformationLut);
+		ret.add(ValidCommands.TEXTWR+" "+text);
 		return ret;
 	}
 
@@ -586,11 +593,38 @@ public class Collector {
 		this.fileImage = fileImage;
 	}
 
+	
+	public String getFileTextureDeformation() {
+		return fileTextureDeformation;
+	}
+
+	public void setFileTextureDeformation(String fileTextureDeformation) {
+		this.fileTextureDeformation = fileTextureDeformation;
+	}
+
+	
+	public int getTextureDeformationLut() {
+		return textureDeformationLut;
+	}
+
+	public void setTextureDeformationLut(int textureDeformationLut) {
+		this.textureDeformationLut = textureDeformationLut;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 		
 	/* 
 	 * SHUFFLER OPTIONS ======================================================
 	 */
-	
+
+
 	public enum ShufflerOffset {
 		GENERATOR_A(0),
 		GENERATOR_B(1),
