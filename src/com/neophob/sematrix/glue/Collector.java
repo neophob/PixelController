@@ -233,10 +233,10 @@ public class Collector {
 	 *  -outputs
 	 */
 	public void updateSystem() {
+		
 		//get sound volume
 		float f = Sound.getInstance().getVolumeNormalized();
 		int u = (int)(0.5f+f*3);
-
 		//check for silence - in this case update slowly
 		if (u<1) {
 			if (frames%2==1) {
@@ -245,6 +245,7 @@ public class Collector {
 		}
 		if (Sound.getInstance().isKick()) u+=2;
 		
+		//update generator depending on the input sound
 		for (Generator m: allGenerators) {
 			for (int i=0; i<u; i++) {
 				m.update();	
@@ -256,6 +257,7 @@ public class Collector {
 		for (Output o: allOutputs) {
 			o.update();
 		}
+		//cleanup faders
 		for (OutputMapping om: ioMapping) {
 			Fader fader = om.getFader();
 			if (fader.isDone()) {
