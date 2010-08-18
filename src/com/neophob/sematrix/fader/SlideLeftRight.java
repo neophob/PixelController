@@ -23,10 +23,11 @@ public class SlideLeftRight extends Fader {
 		int ammount=(int)(g.getInternalBufferXSize()*f);
 		int ofs,x,idx=0;
 		
+		int linesize=g.getInternalBufferXSize();
 		for (int y=0; y<g.getInternalBufferYSize(); y++) {
 			ofs=g.getInternalBufferXSize()*y;
 			for (x=0; x<ammount; x++) {
-				ret[idx++] = newBuffer[ofs+ammount-x];
+				ret[idx++] = newBuffer[ofs+(linesize-ammount+x)];
 			}
 			for (x=ammount; x<g.getInternalBufferXSize(); x++) {
 				ret[idx++] = buffer[ofs+x];
