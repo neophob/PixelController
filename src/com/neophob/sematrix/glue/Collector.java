@@ -256,6 +256,13 @@ public class Collector {
 		for (Output o: allOutputs) {
 			o.update();
 		}
+		for (OutputMapping om: ioMapping) {
+			Fader fader = om.getFader();
+			if (fader.isDone()) {
+				//fading is finished
+				fader.cleanUp();
+			}
+		}
 		
 		if (randomMode) {
 			Shuffler.shuffleStuff();

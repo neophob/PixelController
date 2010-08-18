@@ -69,11 +69,13 @@ public class MatrixData {
 	private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
 		Fader fader = map.getFader();
 		if (fader.isStarted()) {
-			if (fader.isDone()) {
+			buffer=fader.getBuffer(buffer);
+			//do not cleanup fader here, the box layout gets messed up!
+			//the fader is cleaned up in the update system method
+/*			if (fader.isDone()) {
 				//fading is finished
 				fader.cleanUp();
-			}
-			buffer=fader.getBuffer(buffer);
+			}*/
 		}
 		return buffer;
 	}
