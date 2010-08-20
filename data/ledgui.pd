@@ -1,5 +1,5 @@
-#N canvas 92 22 1272 682 10;
-#X obj 4 259 cnv 15 150 190 empty empty network 20 12 0 14 -228856
+#N canvas 10 22 1272 682 10;
+#X obj 4 339 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 418 22 457 607 receive 0;
 #X obj 139 125 inlet;
@@ -191,9 +191,9 @@ CHANGE_TINT;
 #X connect 0 0 2 0;
 #X connect 0 0 1 0;
 #X connect 0 0 3 0;
-#X restore 9 317 pd receive;
-#X obj 9 287 netreceive 3445;
-#X floatatom 81 317 5 0 0 3 clients - s_connected_clients;
+#X restore 9 397 pd receive;
+#X obj 9 367 netreceive 3445;
+#X floatatom 81 397 5 0 0 3 clients - s_connected_clients;
 #X obj 4 -23 cnv 15 150 140 empty empty control 20 12 0 14 -228856
 -66577 0;
 #X obj 14 4 bng 30 250 50 0 s_connect r_connect Connect 35 15 0 15
@@ -201,11 +201,11 @@ CHANGE_TINT;
 #X obj 14 41 bng 30 250 50 0 s_disconnect r_disconnect Disconnect 35
 15 0 15 -257985 -1 -1;
 #X obj 15 77 tgl 29 0 empty r_connected Connected 35 15 0 15 -191407
--1 -1 1 1;
+-1 -1 0 1;
 #X obj 160 -23 cnv 15 910 280 empty empty mainboard 20 12 0 14 -204786
 -66577 0;
 #X obj 262 19 hradio 15 1 0 10 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 1;
+-1 -1 4;
 #X obj 424 19 hradio 15 1 0 10 s_gen2 r_gen2 empty 0 -8 0 10 -203904
 -1 -1 6;
 #X obj 585 19 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
@@ -240,7 +240,7 @@ CHANGE_TINT;
 -1 -1 0;
 #X text 194 125 Mixer;
 #X obj 262 228 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 1;
 #X obj 424 228 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
 -1 -1 1;
 #X text 194 225 Output;
@@ -284,14 +284,14 @@ CHANGE_TINT;
 #X obj 16 214 send randommode;
 #X msg 16 166 send RANDOM ON;
 #X msg 16 190 send RANDOM OFF;
-#X obj 1078 330 cnv 15 84 130 empty empty beat 20 12 0 14 -228856 -66577
+#X obj 4 259 cnv 15 150 74 empty empty beat 20 12 0 14 -228856 -66577
 0;
-#X obj 1086 368 tgl 20 0 empty r_snd_kick kick 32 10 0 10 -191407 -1
+#X obj 15 287 tgl 20 0 empty r_snd_kick kick 0 30 0 10 -191407 -1 -1
+0 1;
+#X obj 66 287 tgl 20 0 empty r_snd_hat hat 0 30 0 10 -191407 -1 -1
+0 1;
+#X obj 116 287 tgl 20 0 empty r_snd_snare snare 0 30 0 10 -191407 -1
 -1 0 1;
-#X obj 1086 397 tgl 20 0 empty r_snd_hat hat 32 10 0 10 -191407 -1
--1 0 1;
-#X obj 1086 428 tgl 20 0 empty r_snd_snare snare 32 10 0 10 -191407
--1 -1 0 1;
 #N canvas 21 78 680 655 send 0;
 #X obj 312 447 netsend;
 #X floatatom 312 473 5 0 0 0 - - -;
@@ -989,11 +989,11 @@ CHANGE_TINT;
 #X connect 15 0 0 0;
 #X connect 16 0 0 0;
 #X connect 18 0 0 0;
-#X restore 9 410 pd send;
-#X obj 9 355 receive s_connect;
+#X restore 9 490 pd send;
+#X obj 9 435 receive s_connect;
 #X text 13 -69 Generators: Off \, Blinkenlights \, Image \, Plasma
 \, Simplecolors \, Fire \, Metaballs \, Equalizer;
-#X msg 9 383 connect 127.0.0.1 3449;
+#X msg 9 463 connect 127.0.0.1 3449;
 #X text 299 -69 Effects: Off \, Inverter \, Rotozoom \, Beat horizontal
 shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 795 263 cnv 15 275 180 empty empty tint_fx 20 12 0 14 -262130
