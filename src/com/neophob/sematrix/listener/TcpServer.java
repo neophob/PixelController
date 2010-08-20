@@ -83,44 +83,48 @@ public class TcpServer implements Runnable {
 	public void run() {
 		log.log(Level.INFO,	"Ready receiving messages...");
 		while (Thread.currentThread() == runner) {
+
+			if (tcpServer!=null) {
+				try {
+					sendSoundStatus();
+					if (Collector.getInstance().isRandomMode() && (count%20)==2) {
+						sendStatusToGui();					
+					}
+					
+					Client c = tcpServer.available();
+					if (c!=null && c.available()>0) {					
+						String msg = lastMsg+StringUtils.replace(c.readString(), "\n", "");
+						msg = StringUtils.trim(msg);
+						int msgCount = StringUtils.countMatches(msg, ";");
+						log.log(Level.INFO,	"Got Message: {0}, cnt: {1}", new Object[] {msg, msgCount});
+						//ideal, one message receieved
+						if (msgCount==1) {
+							msg = StringUtils.removeEnd(msg, ";");
+							lastMsg="";
+							sendMsg(StringUtils.split(msg, ' '));						
+						//missing end of message... save it
+						} else if (msgCount==0) {
+							lastMsg=msg;
+						//more than one message receieved, split it
+						} else {
+							lastMsg="";
+							String[] msgs = msg.split(";");
+							for (String s: msgs) {
+								s = StringUtils.trim(s);
+								s = StringUtils.removeEnd(s, ";");
+								sendMsg(StringUtils.split(s, ' '));
+							}
+						}
+					}												
+				} catch (Exception e) {}
+			}
+
 			count++;
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 			}
 
-			if (tcpServer!=null) {
-				sendSoundStatus();
-				if (Collector.getInstance().isRandomMode() && (count%20)==2) {
-					sendStatusToGui();					
-				}
-				
-				Client c = tcpServer.available();
-				if (c!=null && c.available()>0) {					
-					String msg = lastMsg+StringUtils.replace(c.readString(), "\n", "");
-					msg = StringUtils.trim(msg);
-					int msgCount = StringUtils.countMatches(msg, ";");
-					log.log(Level.INFO,	"Got Message: {0}, cnt: {1}", new Object[] {msg, msgCount});
-					//ideal, one message receieved
-					if (msgCount==1) {
-						msg = StringUtils.removeEnd(msg, ";");
-						lastMsg="";
-						sendMsg(StringUtils.split(msg, ' '));						
-					//missing end of message... save it
-					} else if (msgCount==0) {
-						lastMsg=msg;
-					//more than one message receieved, split it
-					} else {
-						lastMsg="";
-						String[] msgs = msg.split(";");
-						for (String s: msgs) {
-							s = StringUtils.trim(s);
-							s = StringUtils.removeEnd(s, ";");
-							sendMsg(StringUtils.split(s, ' '));
-						}
-					}
-				}							
-			}
 		}
 	}
 	
@@ -160,13 +164,17 @@ public class TcpServer implements Runnable {
 	 * @param msg
 	 */
 	private synchronized void sendFudiMsg(String msg) {
-		if (client==null) {
-			connectToClient();
+		try {
+			if (client==null) {
+				connectToClient();
+			}
+			
+			if (client!=null) {
+				client.write(msg+";");	
+			}					
+		} catch (Exception e) {
+			log.warning("Failed to send data to the client");
 		}
-		
-		if (client!=null) {
-			client.write(msg+";");	
-		}		
 	}
 	
 	/**
