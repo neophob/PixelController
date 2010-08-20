@@ -144,7 +144,10 @@ public class MessageProcessor {
 					int size = col.getAllOutputMappings().size();
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
-						col.getOutputMappings(i).setFader(col.getFader(tmp));
+						//do not start a new fader while the old one is still running
+						if (!col.getOutputMappings(i).getFader().isStarted()) {
+							col.getOutputMappings(i).setFader(col.getFader(tmp));							
+						}
 					}
 				} catch (Exception e) {
 					log.log(Level.WARNING,	"Ignored command", e);
