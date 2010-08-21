@@ -23,6 +23,8 @@ Boston, MA  02111-1307  USA
 
 package com.neophob.lib.rainbowduino;
 
+import gnu.io.PortInUseException;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,7 +53,7 @@ public class Rainbowduino implements Runnable {
 	private static final byte CMD_HEARTBEAT = 0x10;
 	private static final byte START_OF_DATA = 0x10;
 	private static final byte END_OF_DATA = 0x20;
-	
+
 	private PApplet app;
 
 	private int baud = 57600;//115200;
@@ -61,7 +63,7 @@ public class Rainbowduino implements Runnable {
 	private long arduinoHeartbeat;
 	private int arduinoBufferSize;
 	private int arduinoErrorCounter;
-	
+
 	/**
 	 * Create a new instance to communicate with the rainbowduino. Make sure to (auto)init the serial port, too 
 	 * 
@@ -151,7 +153,7 @@ public class Rainbowduino implements Runnable {
 					, new Object[] { ports[i] });
 
 			openPort(ports[i], check);
-		}			
+		}						
 	}
 
 	/* *********************** */
@@ -178,9 +180,7 @@ public class Rainbowduino implements Runnable {
 					"No response from port {0}"
 					, new Object[] { port_name });
 
-		}
-		catch (Exception e) {			
-		}
+		} catch (Exception e) {	}
 		if(port != null) port.stop();        					
 		port = null;
 		return false;

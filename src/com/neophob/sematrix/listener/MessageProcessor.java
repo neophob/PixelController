@@ -176,9 +176,12 @@ public class MessageProcessor {
 					if (r>255) r=255;
 					if (g>255) g=255;
 					if (b>255) b=255;
+					if (r<0) r=0;
+					if (g<0) g=0;
+					if (b<0) b=0;
+					col.setRGB(r, g, b);
 					Tint t = (Tint)col.getEffect(EffectName.TINT);
 					t.setColor(r, g, b);
-					col.setRGB(r, g, b);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}
@@ -207,6 +210,7 @@ public class MessageProcessor {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}
 				break;
+				
 			case CHANGE_PRESENT:
 				try {
 					int a = Integer.parseInt(msg[1]);
