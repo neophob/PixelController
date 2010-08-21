@@ -45,6 +45,7 @@ public class TcpServer implements Runnable {
 	private Client client;
 	private String lastMsg="";
 	
+	private boolean clientIsConnected=true;
 	private Thread runner;
 	private PApplet app;
 	private int sendPort;
@@ -168,10 +169,15 @@ public class TcpServer implements Runnable {
 			if (client==null) {
 				connectToClient();
 			}
-			
-			if (client!=null) {
+
+			if (client!=null && client.active()) {
+				clientIsConnected=true;
 				client.write(msg+";");	
-			}					
+			}
+			else if (clientIsConnected) {
+				log.warning("No Client available!");
+				clientIsConnected=false;
+			}
 		} catch (Exception e) {
 			log.warning("Failed to send data to the client");
 		}
