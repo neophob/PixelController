@@ -1,7 +1,7 @@
-#N canvas 10 22 1272 682 10;
+#N canvas 162 125 1272 682 10;
 #X obj 4 339 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
-#N canvas 418 22 457 607 receive 0;
+#N canvas 418 22 457 607 receive 1;
 #X obj 139 125 inlet;
 #N canvas 0 22 450 300 beatDisplay 0;
 #X obj 105 120 route SND_HAT SND_SNARE SND_KICK;
@@ -171,22 +171,23 @@ CHANGE_TINT;
 #X connect 13 10 12 0;
 #X connect 13 11 14 0;
 #X restore 162 258 pd shuffler;
-#N canvas 0 22 308 351 autoconnect 0;
+#N canvas 0 22 308 351 autoconnect 1;
 #X obj 55 50 r s_connected_clients;
 #X floatatom 55 87 5 0 0 0 - - -;
-#X obj 55 133 route 1;
 #X obj 55 166 bng 15 250 50 0 empty empty Connect -13 22 0 10 -262144
 -1 -1;
 #X obj 94 166 bng 15 250 50 0 empty empty Disconnect 0 22 0 10 -262144
 -1 -1;
 #X obj 55 228 s r_connect;
 #X obj 94 202 s r_disconnect;
+#X obj 55 133 route 1 2;
 #X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
+#X connect 1 0 6 0;
+#X connect 2 0 4 0;
 #X connect 3 0 5 0;
-#X connect 4 0 6 0;
+#X connect 6 0 2 0;
+#X connect 6 1 2 0;
+#X connect 6 2 3 0;
 #X restore 163 303 pd autoconnect;
 #X connect 0 0 2 0;
 #X connect 0 0 1 0;
@@ -205,7 +206,7 @@ CHANGE_TINT;
 #X obj 160 -23 cnv 15 910 280 empty empty mainboard 20 12 0 14 -204786
 -66577 0;
 #X obj 262 19 hradio 15 1 0 10 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 4;
+-1 -1 1;
 #X obj 424 19 hradio 15 1 0 10 s_gen2 r_gen2 empty 0 -8 0 10 -203904
 -1 -1 6;
 #X obj 585 19 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
@@ -240,7 +241,7 @@ CHANGE_TINT;
 -1 -1 0;
 #X text 194 125 Mixer;
 #X obj 262 228 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X obj 424 228 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
 -1 -1 1;
 #X text 194 225 Output;
@@ -998,14 +999,14 @@ CHANGE_TINT;
 shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 795 263 cnv 15 275 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
-#X obj 809 296 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 849 318;
-#X floatatom 809 380 5 0 0 0 - r_tint_r s_tint_r;
-#X floatatom 933 380 5 0 0 0 - r_tint_g s_tint_g;
-#X floatatom 1028 376 5 0 0 0 - r_tint_b s_tint_b;
-#X obj 809 356 int;
-#X obj 933 357 int;
-#X obj 1028 354 int;
+#X obj 805 293 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
+10 10 1006 301;
+#X floatatom 809 392 5 0 0 0 - - s_tint_r;
+#X floatatom 929 392 5 0 0 0 - - s_tint_g;
+#X floatatom 1028 392 5 0 0 0 - - s_tint_b;
+#X obj 809 368 int;
+#X obj 929 369 int;
+#X obj 1028 369 int;
 #X obj 262 183 hradio 15 1 0 7 s_fx_output1 r_fx_output1 empty 0 -8
 0 10 -262130 -1 -1 0;
 #X obj 424 183 hradio 15 1 0 7 s_fx_output2 r_fx_output2 empty 0 -8
@@ -1206,6 +1207,9 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X msg 479 377 circle.jpg;
 #X msg 479 398 gradient.jpg;
 #X msg 479 357 1316.jpg;
+#X obj 839 355 r r_tint_r;
+#X obj 959 355 r r_tint_b;
+#X obj 852 375 r r_tint_g;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 53 0 52 0;
@@ -1215,6 +1219,9 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X connect 65 0 69 0;
 #X connect 65 1 70 0;
 #X connect 65 2 71 0;
+#X connect 69 0 66 0;
+#X connect 70 0 67 0;
+#X connect 71 0 68 0;
 #X connect 167 0 166 0;
 #X connect 168 0 48 0;
 #X connect 169 0 48 0;
@@ -1229,3 +1236,6 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X connect 178 0 154 0;
 #X connect 179 0 154 0;
 #X connect 180 0 154 0;
+#X connect 181 0 66 0;
+#X connect 182 0 68 0;
+#X connect 183 0 67 0;
