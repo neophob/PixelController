@@ -55,7 +55,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class Collector {
 
 	/** nr of shuffler entries. enable/disable option for random mode */
-	private static final int SHUFFLER_OPTIONS = 12;
+	private static final int SHUFFLER_OPTIONS = 13;
 	
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
@@ -97,7 +97,7 @@ public class Collector {
 	
 	private String text;
 	
-	private int thresholdValue;
+	private int thresholdValue=128;
 	
 	private TcpServer srv;
 	
@@ -655,7 +655,8 @@ public class Collector {
 		BLINKEN(8),
 		IMAGE(9),
 		TINT(10),
-		TEXTURE_DEFORMATION(11);
+		TEXTURE_DEFORMATION(11),
+		THRESHOLD_VALUE(12);
 		
 		int ofs;
 		ShufflerOffset(int ofs) {
