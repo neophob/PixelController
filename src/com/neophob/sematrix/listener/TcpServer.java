@@ -29,6 +29,7 @@ public class TcpServer implements Runnable {
 		CHANGE_TINT,
 		CHANGE_PRESENT,
 		CHANGE_SHUFFLER_SELECT,
+		CHANGE_THRESHOLD_VALUE,
 		SAVE_PRESENT,
 		LOAD_PRESENT,
 		BLINKEN,
@@ -170,7 +171,7 @@ public class TcpServer implements Runnable {
 				connectToClient();
 			}
 
-			if (client!=null && client.active()) {
+			if (client!=null /*&& client.active()*/) {
 				clientIsConnected=true;
 				client.write(msg+";");	
 			}

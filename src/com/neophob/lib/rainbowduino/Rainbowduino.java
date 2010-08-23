@@ -62,7 +62,10 @@ public class Rainbowduino implements Runnable {
 	private Thread runner;
 	private long arduinoHeartbeat;
 	private int arduinoBufferSize;
+	//logical errors reported by arduino
 	private int arduinoErrorCounter;
+	//connection errors to arduino
+	private int connectionErrorCounter;
 
 	/**
 	 * Create a new instance to communicate with the rainbowduino. Make sure to (auto)init the serial port, too 
@@ -252,6 +255,8 @@ public class Rainbowduino implements Runnable {
 	 * @param check wheter to perform sensity check
 	 */
 	public synchronized void sendFrame(byte addr, byte data[], boolean check) {
+		//if (connectionErrorCounter>10000) {}
+		
 		byte cmdfull[] = new byte[6+data.length];
 		cmdfull[0] = START_OF_CMD;
 		cmdfull[1] = addr;
@@ -262,8 +267,13 @@ public class Rainbowduino implements Runnable {
 			cmdfull[5+i] = data[i];
 		}
 		cmdfull[data.length+5] = END_OF_DATA;
-		port.write(cmdfull);
-		//TODO add error counter and disable write after an amout f erros
+		
+		try {
+			port.write(cmdfull);	
+		} catch (Exception e) {
+			log.warning("Failed to send data to serial port!");
+			connectionErrorCounter++;
+		}
 	}
 
 
