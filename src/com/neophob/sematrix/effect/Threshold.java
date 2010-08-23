@@ -28,7 +28,7 @@ public class Threshold extends Effect {
     		
     		ret[i]= (cr << 16) | (cg << 8) | cb;
 		}
-		return ret;
+		return BoxFilter.applyBoxFilter(0, 1, ret, this.internalBufferXSize);
 	}
 	
 	public void setThreshold(int threshold) {
