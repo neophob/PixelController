@@ -2,6 +2,7 @@ package com.neophob.sematrix.glue;
 
 import java.util.Random;
 
+import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
@@ -35,7 +36,7 @@ public class Shuffler {
 		Collector col = Collector.getInstance(); 
 		
 		Random rand = new Random();
-		int blah = rand.nextInt(14);
+		int blah = rand.nextInt(15);
 		
 		if (snare) {
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
@@ -66,7 +67,13 @@ public class Shuffler {
 					v.setEffect2(rand.nextInt(size));
 				}
 			}
-			
+
+			if (blah == 14 && col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
+				int size = rand.nextInt()%255;
+				Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
+				t.setThreshold(size);
+			}
+
 		}
 		
 		if (hat) {
