@@ -13,7 +13,8 @@ public abstract class Effect {
 		BEAT_HORIZONTAL_SHIFT(3),
 		BEAT_VERTICAL_SHIFT(4),
 		VOLUMINIZE(5),
-		TINT(6);
+		TINT(6),
+		THRESHOLD(7);
 		
 		private int id;
 		

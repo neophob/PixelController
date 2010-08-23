@@ -15,6 +15,7 @@ import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
 import com.neophob.sematrix.effect.RotoZoom;
+import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Voluminize;
 import com.neophob.sematrix.effect.Effect.EffectName;
@@ -95,6 +96,8 @@ public class Collector {
 	private int textureDeformationLut;
 	
 	private String text;
+	
+	private int thresholdValue;
 	
 	private TcpServer srv;
 	
@@ -190,6 +193,7 @@ public class Collector {
 		new BeatHorizShift();
 		new Voluminize();
 		new Tint();
+		new Threshold();
 
 		//create mixer
 		new AddSat();
@@ -392,6 +396,7 @@ public class Collector {
 		ret.add(ValidCommands.TEXTWR+" "+text);
 		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
 		ret.add(ValidCommands.CHANGE_TINT +" "+r+" "+g+" "+b);
+		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresholdValue);
 		return ret;
 	}
 
@@ -728,6 +733,11 @@ public class Collector {
 			return new SlideLeftRight();
 		}
 		return null;
+	}
+	
+
+	public void setThresholdValue(int thresholdValue) {
+		this.thresholdValue = thresholdValue;
 	}
 
 	//TODO static is NOT sexy!

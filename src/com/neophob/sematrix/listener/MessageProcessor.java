@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Blinkenlights;
@@ -62,6 +63,7 @@ public class MessageProcessor {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}
 				break;
+				
 			case CHANGE_GENERATOR_B:
 				try {
 					int size = col.getAllVisuals().size();
@@ -215,6 +217,19 @@ public class MessageProcessor {
 				try {
 					int a = Integer.parseInt(msg[1]);
 					col.setSelectedPresent(a);
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
+				break;
+				
+			case CHANGE_THRESHOLD_VALUE:
+				try {
+					int a = Integer.parseInt(msg[1]);
+					if (a>255) a=255;
+					if (a<0) a=0;
+					col.setThresholdValue(a);
+					Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
+					t.setThreshold(a);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}

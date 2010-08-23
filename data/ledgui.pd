@@ -1,7 +1,7 @@
-#N canvas 162 125 1272 682 10;
+#N canvas 87 79 1272 682 10;
 #X obj 4 339 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
-#N canvas 418 22 457 607 receive 1;
+#N canvas 234 58 457 607 receive 0;
 #X obj 139 125 inlet;
 #N canvas 0 22 450 300 beatDisplay 0;
 #X obj 105 120 route SND_HAT SND_SNARE SND_KICK;
@@ -75,14 +75,16 @@
 #X obj 18 326 unpack i i i i i;
 #X obj 262 360 s r_mix5;
 #X obj 285 327 s r_sel;
+#X obj 644 365 unpack i i i;
+#X obj 644 404 s r_tint_r;
+#X obj 724 404 s r_tint_g;
+#X obj 804 404 s r_tint_b;
 #X obj 18 267 route CHANGE_MIXER CHANGE_FADER CHANGE_OUTPUT CHANGE_PRESENT
-CHANGE_TINT;
-#X obj 644 305 unpack i i i;
-#X obj 644 344 s r_tint_r;
-#X obj 724 344 s r_tint_g;
-#X obj 804 344 s r_tint_b;
+CHANGE_TINT CHANGE_THRESHOLD_VALUE;
+#X obj 914 365 unpack i;
+#X obj 914 395 s r_threshold;
 #X connect 0 0 33 0;
-#X connect 0 0 54 0;
+#X connect 0 0 58 0;
 #X connect 1 0 2 0;
 #X connect 1 1 3 0;
 #X connect 1 2 4 0;
@@ -131,14 +133,16 @@ CHANGE_TINT;
 #X connect 51 2 27 0;
 #X connect 51 3 28 0;
 #X connect 51 4 52 0;
-#X connect 54 0 51 0;
-#X connect 54 1 40 0;
-#X connect 54 2 43 0;
-#X connect 54 3 53 0;
-#X connect 54 4 55 0;
-#X connect 55 0 56 0;
-#X connect 55 1 57 0;
-#X connect 55 2 58 0;
+#X connect 54 0 55 0;
+#X connect 54 1 56 0;
+#X connect 54 2 57 0;
+#X connect 58 0 51 0;
+#X connect 58 1 40 0;
+#X connect 58 2 43 0;
+#X connect 58 3 53 0;
+#X connect 58 4 54 0;
+#X connect 58 5 59 0;
+#X connect 59 0 60 0;
 #X restore 162 175 pd basicGui;
 #N canvas 0 22 1203 347 shuffler 0;
 #X obj 42 56 inlet;
@@ -171,7 +175,7 @@ CHANGE_TINT;
 #X connect 13 10 12 0;
 #X connect 13 11 14 0;
 #X restore 162 258 pd shuffler;
-#N canvas 0 22 308 351 autoconnect 1;
+#N canvas 0 22 308 351 autoconnect 0;
 #X obj 55 50 r s_connected_clients;
 #X floatatom 55 87 5 0 0 0 - - -;
 #X obj 55 166 bng 15 250 50 0 empty empty Connect -13 22 0 10 -262144
@@ -211,8 +215,8 @@ CHANGE_TINT;
 -1 -1 6;
 #X obj 585 19 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 4;
-#X obj 262 41 hradio 15 1 0 7 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 0;
+#X obj 262 41 hradio 15 1 0 8 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
+-1 7;
 #X text 193 16 Generator1;
 #X obj 424 41 hradio 15 1 0 7 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
 -1 0;
@@ -220,7 +224,7 @@ CHANGE_TINT;
 -1 0;
 #X text 193 37 Effect1;
 #X obj 262 74 hradio 15 1 0 10 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 3;
 #X obj 424 74 hradio 15 1 0 10 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 585 74 hradio 15 1 0 10 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
@@ -234,7 +238,7 @@ CHANGE_TINT;
 #X text 193 71 Generator2;
 #X text 194 93 Effect2;
 #X obj 262 128 hradio 15 1 0 6 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X obj 424 128 hradio 15 1 0 6 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 585 128 hradio 15 1 0 6 s_mix3 r_mix3 empty 0 -8 0 10 -262144
@@ -243,28 +247,28 @@ CHANGE_TINT;
 #X obj 262 228 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 424 228 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X text 194 225 Output;
 #X obj 747 19 hradio 15 1 0 10 s_gen4 r_gen4 empty 0 -8 0 10 -203904
--1 -1 1;
+-1 -1 0;
 #X obj 910 19 hradio 15 1 0 10 s_gen5 r_gen5 empty 0 -8 0 10 -203904
--1 -1 6;
+-1 -1 0;
 #X obj 747 41 hradio 15 1 0 7 s_fx4 r_fx4 empty 0 -8 0 10 -262130 -1
--1 1;
+-1 0;
 #X obj 910 41 hradio 15 1 0 7 s_fx5 r_fx5 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X obj 747 74 hradio 15 1 0 10 s_gen_b4 r_gen_b4 empty 0 -8 0 10 -203904
--1 -1 7;
+-1 -1 0;
 #X obj 910 74 hradio 15 1 0 10 s_gen_b5 r_gen_b5 empty 0 -8 0 10 -203904
--1 -1 5;
+-1 -1 0;
 #X obj 747 96 hradio 15 1 0 7 s_fx_b4 r_fx_b4 empty 0 -8 0 10 -262130
--1 -1 6;
+-1 -1 0;
 #X obj 910 96 hradio 15 1 0 7 s_fx_b5 r_fx_b5 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X obj 747 128 hradio 15 1 0 6 s_mix4 r_mix4 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 910 128 hradio 15 1 0 6 s_mix5 r_mix5 empty 0 -8 0 10 -262144
--1 -1 5;
+-1 -1 0;
 #X text 194 204 Fader;
 #X obj 262 206 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -676,7 +680,7 @@ CHANGE_TINT;
 #X connect 124 0 106 0;
 #X connect 124 0 125 0;
 #X restore 398 362 pd basicGui;
-#N canvas 313 34 233 460 presentStuff 0;
+#N canvas 760 56 233 460 presentStuff 0;
 #N canvas 0 22 899 611 presentSel 0;
 #X obj 9 -75 r s_sel_01;
 #X obj 429 -14 s r_sel;
@@ -881,13 +885,19 @@ CHANGE_TINT;
 #X msg 16 173 send SAVE_PRESENT;
 #X obj 16 208 r s_sel;
 #X msg 16 233 send CHANGE_PRESENT \$1;
-#X obj 16 310 outlet;
+#X obj 16 360 outlet;
+#X obj 16 270 r s_threshold;
+#X msg 16 320 send CHANGE_THRESHOLD_VALUE \$1;
+#X obj 16 295 int;
 #X connect 1 0 4 0;
 #X connect 2 0 7 0;
 #X connect 3 0 2 0;
 #X connect 4 0 7 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
+#X connect 8 0 10 0;
+#X connect 9 0 7 0;
+#X connect 10 0 9 0;
 #X restore 397 301 pd presentStuff;
 #N canvas 0 22 729 300 textureDeformation 0;
 #X obj 346 226 outlet;
@@ -1134,15 +1144,15 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 585 227 hradio 15 1 0 5 s_out3 r_out3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 747 227 hradio 15 1 0 5 s_out4 r_out4 empty 0 -8 0 10 -262144
--1 -1 2;
+-1 -1 0;
 #X obj 585 205 hradio 15 1 0 4 s_fader3 r_fader3 empty 0 -8 0 10 -262144
--1 -1 2;
+-1 -1 0;
 #X obj 747 205 hradio 15 1 0 4 s_fader4 r_fader4 empty 0 -8 0 10 -262144
--1 -1 3;
+-1 -1 0;
 #X obj 585 182 hradio 15 1 0 7 s_fx_output3 r_fx_output3 empty 0 -8
-0 10 -262130 -1 -1 6;
+0 10 -262130 -1 -1 0;
 #X obj 747 182 hradio 15 1 0 7 s_fx_output4 r_fx_output4 empty 0 -8
-0 10 -262130 -1 -1 6;
+0 10 -262130 -1 -1 0;
 #X obj 173 18 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10
 -260097 -1 -1 1 1;
 #X obj 173 38 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
@@ -1185,11 +1195,11 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 630 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 907 227 hradio 15 1 0 5 s_outALL empty empty 0 -8 0 10 -228856
--1 -1 2;
+-1 -1 0;
 #X obj 907 205 hradio 15 1 0 4 s_faderALL empty empty 0 -8 0 10 -228856
--1 -1 2;
+-1 -1 0;
 #X obj 907 182 hradio 15 1 0 7 s_fx_outputALL empty empty 0 -8 0 10
--228856 -1 -1 6;
+-228856 -1 -1 0;
 #X obj 161 449 cnv 15 220 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
 #X obj 175 501 send textwriter;
@@ -1210,6 +1220,10 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 839 355 r r_tint_r;
 #X obj 959 355 r r_tint_b;
 #X obj 852 375 r r_tint_g;
+#X obj 655 264 cnv 15 120 180 empty empty threshold 20 12 0 14 -262130
+-66577 0;
+#X obj 670 298 vsl 15 128 0 255 0 0 s_threshold r_threshold empty 0
+-9 0 10 -262144 -1 -1 7072 1;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 53 0 52 0;
