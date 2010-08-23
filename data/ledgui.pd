@@ -218,9 +218,9 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 262 41 hradio 15 1 0 8 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
 -1 7;
 #X text 193 16 Generator1;
-#X obj 424 41 hradio 15 1 0 7 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
+#X obj 424 41 hradio 15 1 0 8 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
 -1 0;
-#X obj 585 41 hradio 15 1 0 7 s_fx3 r_fx3 empty 0 -8 0 10 -262130 -1
+#X obj 585 41 hradio 15 1 0 8 s_fx3 r_fx3 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X text 193 37 Effect1;
 #X obj 262 74 hradio 15 1 0 10 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
@@ -229,11 +229,11 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -1 -1 0;
 #X obj 585 74 hradio 15 1 0 10 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
 -1 -1 0;
-#X obj 262 96 hradio 15 1 0 7 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
+#X obj 262 96 hradio 15 1 0 8 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
 -1 -1 0;
-#X obj 424 96 hradio 15 1 0 7 s_fx_b2 r_fx_b2 empty 0 -8 0 10 -262130
+#X obj 424 96 hradio 15 1 0 8 s_fx_b2 r_fx_b2 empty 0 -8 0 10 -262130
 -1 -1 0;
-#X obj 585 96 hradio 15 1 0 7 s_fx_b3 r_fx_b3 empty 0 -8 0 10 -262130
+#X obj 585 96 hradio 15 1 0 8 s_fx_b3 r_fx_b3 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X text 193 71 Generator2;
 #X text 194 93 Effect2;
@@ -253,17 +253,17 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -1 -1 0;
 #X obj 910 19 hradio 15 1 0 10 s_gen5 r_gen5 empty 0 -8 0 10 -203904
 -1 -1 0;
-#X obj 747 41 hradio 15 1 0 7 s_fx4 r_fx4 empty 0 -8 0 10 -262130 -1
+#X obj 747 41 hradio 15 1 0 8 s_fx4 r_fx4 empty 0 -8 0 10 -262130 -1
 -1 0;
-#X obj 910 41 hradio 15 1 0 7 s_fx5 r_fx5 empty 0 -8 0 10 -262130 -1
+#X obj 910 41 hradio 15 1 0 8 s_fx5 r_fx5 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X obj 747 74 hradio 15 1 0 10 s_gen_b4 r_gen_b4 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 910 74 hradio 15 1 0 10 s_gen_b5 r_gen_b5 empty 0 -8 0 10 -203904
 -1 -1 0;
-#X obj 747 96 hradio 15 1 0 7 s_fx_b4 r_fx_b4 empty 0 -8 0 10 -262130
+#X obj 747 96 hradio 15 1 0 8 s_fx_b4 r_fx_b4 empty 0 -8 0 10 -262130
 -1 -1 0;
-#X obj 910 96 hradio 15 1 0 7 s_fx_b5 r_fx_b5 empty 0 -8 0 10 -262130
+#X obj 910 96 hradio 15 1 0 8 s_fx_b5 r_fx_b5 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X obj 747 128 hradio 15 1 0 6 s_mix4 r_mix4 empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -1017,9 +1017,9 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 #X obj 809 368 int;
 #X obj 929 369 int;
 #X obj 1028 369 int;
-#X obj 262 183 hradio 15 1 0 7 s_fx_output1 r_fx_output1 empty 0 -8
+#X obj 262 183 hradio 15 1 0 8 s_fx_output1 r_fx_output1 empty 0 -8
 0 10 -262130 -1 -1 0;
-#X obj 424 183 hradio 15 1 0 7 s_fx_output2 r_fx_output2 empty 0 -8
+#X obj 424 183 hradio 15 1 0 8 s_fx_output2 r_fx_output2 empty 0 -8
 0 10 -262130 -1 -1 0;
 #X text 194 180 Effect;
 #X obj 1076 -79 cnv 15 190 400 empty empty present 20 12 0 14 -204786
@@ -1149,9 +1149,9 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1 0;
 #X obj 747 205 hradio 15 1 0 4 s_fader4 r_fader4 empty 0 -8 0 10 -262144
 -1 -1 0;
-#X obj 585 182 hradio 15 1 0 7 s_fx_output3 r_fx_output3 empty 0 -8
+#X obj 585 182 hradio 15 1 0 8 s_fx_output3 r_fx_output3 empty 0 -8
 0 10 -262130 -1 -1 0;
-#X obj 747 182 hradio 15 1 0 7 s_fx_output4 r_fx_output4 empty 0 -8
+#X obj 747 182 hradio 15 1 0 8 s_fx_output4 r_fx_output4 empty 0 -8
 0 10 -262130 -1 -1 0;
 #X obj 173 18 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10
 -260097 -1 -1 1 1;
@@ -1198,7 +1198,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint;
 -1 -1 0;
 #X obj 907 205 hradio 15 1 0 4 s_faderALL empty empty 0 -8 0 10 -228856
 -1 -1 0;
-#X obj 907 182 hradio 15 1 0 7 s_fx_outputALL empty empty 0 -8 0 10
+#X obj 907 182 hradio 15 1 0 8 s_fx_outputALL empty empty 0 -8 0 10
 -228856 -1 -1 0;
 #X obj 161 449 cnv 15 220 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
