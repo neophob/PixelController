@@ -23,8 +23,6 @@ Boston, MA  02111-1307  USA
 
 package com.neophob.lib.rainbowduino;
 
-import gnu.io.PortInUseException;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -176,6 +174,7 @@ public class Rainbowduino implements Runnable {
 			sleep(1500); //give it time to initialize		
 			if(!check || ping((byte)0)) {
 				this.runner = new Thread(this);
+				this.runner.setName("ZZ Arduino Heartbeat Thread");
 				this.runner.start(); 
 				return true; //skip check			
 			}

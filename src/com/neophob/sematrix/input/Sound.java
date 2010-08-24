@@ -29,9 +29,10 @@ public class Sound implements Runnable {
 	private float sndVolumeMax=1;
 	private float sndVolumeMin=0;
 
-	public Sound() {
+	private Sound() {
 		minim = new Minim(Collector.getInstance().getPapplet());
 		in = minim.getLineIn( Minim.STEREO, 1024 );
+		//in = minim.getLineIn( Minim.MONO, 1024 );
 		
 		// a beat detection object that is FREQ_ENERGY mode that 
 		// expects buffers the length of song's buffer size
@@ -49,6 +50,7 @@ public class Sound implements Runnable {
 		
 		Collector.getInstance().getPapplet().registerDispose(this);
 		this.runner = new Thread(this);
+		this.runner.setName("ZZ Sound stuff");
 		this.runner.start();
 
 		volumeBuffer = new CircularFifoBuffer(SOUND_BUFFER_RESOLUTION);
@@ -64,8 +66,9 @@ public class Sound implements Runnable {
 	 */
 	public float getVolume() {
 		float f,m = 0;
-		for(int i = 0; i < in.bufferSize() - 1; i++) {
-			f = Math.abs(in.mix.get(i));
+		for(int i = 0; i < in.bufferSize() - 1; i++) {			
+			f = in.mix.get(i);
+			if (f<0.0f) f=0f-f;
 			if ( f > m ) {
 				m = f;
 			}

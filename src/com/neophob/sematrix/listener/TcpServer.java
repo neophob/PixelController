@@ -64,6 +64,7 @@ public class TcpServer implements Runnable {
 			serverWrapper(listeningPort);
 			log.log(Level.INFO,	"Server started at port {0}", new Object[] { listeningPort });
 			this.runner = new Thread(this);
+			this.runner.setName("ZZ TCP Server");
 			this.runner.start();
 					
 			connectToClient();
