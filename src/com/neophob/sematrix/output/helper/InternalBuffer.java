@@ -23,7 +23,7 @@ public class InternalBuffer extends PApplet {
 	static Logger log = Logger.getLogger(InternalBuffer.class.getName());
 
 	private boolean displayHoriz;
-	private int x,y;
+	private int x,y,frame;
 	private int[] buffer;
 	private PImage pImage;
 
@@ -41,6 +41,10 @@ public class InternalBuffer extends PApplet {
     }
 
 	public void draw() {
+		frame++;
+		
+		if (frame%2==1) return;
+
 		int x=0, y=0;
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
 			//get image
@@ -61,7 +65,7 @@ public class InternalBuffer extends PApplet {
 			}			
 		}
 
-		redraw();
+		//redraw();
 	}
 
 
