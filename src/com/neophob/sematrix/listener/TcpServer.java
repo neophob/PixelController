@@ -136,7 +136,7 @@ public class TcpServer implements Runnable {
 	 * @param msg
 	 */
 	private void sendMsg(String[] msg) {
-		ValidCommands response = MessageProcessor.processMsg(msg);
+		ValidCommands response = MessageProcessor.processMsg(msg, true);
 		if (response!=null) {
 			if (response == ValidCommands.STATUS) {
 				sendStatusToGui();

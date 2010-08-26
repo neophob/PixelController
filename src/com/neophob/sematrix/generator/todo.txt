@@ -7,9 +7,14 @@ fx:
 
 -config file erstellen (generator blacklist fŸr shuffler...)
 
--random mode: do not switch output if fader is running
+-twi library, patch buffer size from 32 to 100 -> recompile firmwares, should simplify code
+(http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1253048935)
+
 
 pd:
 ---
 http://www.youtube.com/user/cheetomoskeeto#g/c/12DC9A161D8DC5DC
 
+examples:
+---------
+http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1266369410/0#0

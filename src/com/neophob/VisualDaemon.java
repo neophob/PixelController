@@ -19,7 +19,7 @@ public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 
-	public static final int FPS = 30;
+	public static final int FPS = 25;
 	//96*2*25 = 4800bytes
 	
 	RainbowduinoDevice rainbowduino;

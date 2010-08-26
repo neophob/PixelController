@@ -105,6 +105,10 @@ public abstract class Fader {
 		}
 		return false;
 	}
+	
+	public void setDone() {
+		currentStep=steps;
+	}
 
 	protected int[] getNewBuffer() {
 		int[] buffer = Collector.getInstance().getVisual(newVisual).getBuffer();

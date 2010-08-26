@@ -145,10 +145,13 @@ public class Rainbowduino implements Runnable {
 	 */
 	public void initPort(String port_name, int _baud, boolean check) {
 		if(_baud > 0) this.baud = _baud;
-		openPort(port_name, check);
+		//openPort(port_name, check);
 		String[] ports = Serial.list();
 		for(int i = 0; port == null && i < ports.length; i++) {
-			if(PApplet.match(ports[i], "tty") == null) continue;
+			if (PApplet.match(ports[i], "tty") == null) continue;
+			if (PApplet.match(ports[i], "tty.Bluetooth") != null) continue;
+			if (PApplet.match(ports[i], "tty.Nokia") != null) continue;
+			
 			log.log(Level.INFO,
 					"open port: {0} "
 					, new Object[] { ports[i] });
@@ -168,11 +171,11 @@ public class Rainbowduino implements Runnable {
 	 * @return whether port could be opened sucessfully 
 	 */
 	private boolean openPort(String port_name, boolean check) {
-		if(port_name == null) return false;
+		if (port_name == null) return false;
 		try {
 			port = new Serial(app, port_name, this.baud);
 			sleep(1500); //give it time to initialize		
-			if(!check || ping((byte)0)) {
+			if (!check || ping((byte)0)) {
 				this.runner = new Thread(this);
 				this.runner.setName("ZZ Arduino Heartbeat Thread");
 				this.runner.start(); 
@@ -183,7 +186,7 @@ public class Rainbowduino implements Runnable {
 					, new Object[] { port_name });
 
 		} catch (Exception e) {	}
-		if(port != null) port.stop();        					
+		if (port != null) port.stop();        					
 		port = null;
 		return false;
 	}
@@ -207,7 +210,7 @@ public class Rainbowduino implements Runnable {
 		 */
 		byte cmdfull[] = new byte[7];
 		cmdfull[0] = START_OF_CMD;
-		cmdfull[1] = addr; //unused yet!
+		cmdfull[1] = addr; //unused here!
 		cmdfull[2] = 0x01;
 		cmdfull[3] = CMD_PING;
 		cmdfull[4] = START_OF_DATA;

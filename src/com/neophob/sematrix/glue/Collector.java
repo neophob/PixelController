@@ -101,6 +101,8 @@ public class Collector {
 	
 	private TcpServer srv;
 	
+	private boolean isLoadingPresent=false;
+	
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
 
@@ -237,6 +239,8 @@ public class Collector {
 	 *  -outputs
 	 */
 	public void updateSystem() {
+		//do not update system if presents are loading
+		if (isLoadingPresent()) return;
 		
 		//get sound volume
 		float f = Sound.getInstance().getVolumeNormalized();
@@ -345,12 +349,18 @@ public class Collector {
 		this.randomMode = randomMode;
 	}
 
+	/**
+	 * load a saved preset
+	 * @param preset
+	 */
 	public void setCurrentStatus(List<String> preset) {
+		setLoadingPresent(true);
 		for (String s: preset) {
 			s = StringUtils.trim(s);
 			s = StringUtils.removeEnd(s, ";");
-			MessageProcessor.processMsg(StringUtils.split(s, ' '));
+			MessageProcessor.processMsg(StringUtils.split(s, ' '), false);
 		}
+		setLoadingPresent(false);
 	}
 
 	/**
@@ -749,5 +759,15 @@ public class Collector {
 	public TcpServer getTcpServer() {
 		return srv;
 	}
+
+	public synchronized boolean isLoadingPresent() {
+		return isLoadingPresent;
+	}
+
+	public synchronized void setLoadingPresent(boolean isLoadingPresent) {
+		this.isLoadingPresent = isLoadingPresent;
+	}
+	
+	
 
 }

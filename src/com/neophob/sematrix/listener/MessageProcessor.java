@@ -28,7 +28,7 @@ public class MessageProcessor {
 	 * 
 	 * @param msg
 	 */
-	public static synchronized ValidCommands processMsg(String[] msg) {
+	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader) {
 		if (msg==null || msg.length<1) {
 			return null;
 		}
@@ -120,8 +120,14 @@ public class MessageProcessor {
 						int oldFx = col.getFxInputForScreen(i);
 						if(oldFx!=newFx) {
 							log.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-							//col.mapInputToScreen(0, newFxA);						
-							col.getOutputMappings(i).getFader().startFade(newFx, i);
+							//col.mapInputToScreen(0, newFxA);
+							if (startFader) {
+								//start fader to change screen
+								col.getOutputMappings(i).getFader().startFade(newFx, i);								
+							} else {
+								//do not fade if we load setting from present
+								col.mapInputToScreen(newFx, i);
+							}
 						}
 					}
 				} catch (Exception e) {
@@ -282,6 +288,7 @@ public class MessageProcessor {
 			case TEXTWR:
 				try {
 					String message = msg[1];
+//					System.out.println(message);
 					col.setText(message);
 					Textwriter txt = (Textwriter)col.getGenerator(GeneratorName.TEXTWRITER);
 					txt.createTextImage(message);
