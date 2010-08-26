@@ -43,7 +43,7 @@ public class InternalBuffer extends PApplet {
 	public void draw() {
 		frame++;
 		
-		if (frame%2==1) return;
+		//if (frame%2==1) return;
 
 		int x=0, y=0;
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
