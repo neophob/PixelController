@@ -10,6 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,7 +60,7 @@ public class Textwriter extends Generator {
 	}
 
 	/**
-	 * 
+	 * create image
 	 * @return
 	 */
 	public void createTextImage(String text) {
@@ -95,6 +96,7 @@ public class Textwriter extends Generator {
 		textBuffer=dbi.getData();
 		g2.dispose();
 
+		wait = 0;
 		xofs = 0;
 		scrollRight = false;
 	}
@@ -102,39 +104,62 @@ public class Textwriter extends Generator {
 
 	@Override
 	public void update() {
+		
+		if (wait>0) {
+			wait--;
+		} else {
+			if (maxXPos < getInternalBufferXSize()) {
+				xofs = (getInternalBufferXSize()-maxXPos)/2;
+				wait=99999;
+			} else {
+				//todo, if image < buffer
+				if (scrollRight) {
+					xofs+=4;
+					if (xofs>maxXPos-internalBufferXSize) {
+						scrollRight=false;
+						xofs=maxXPos-internalBufferXSize;
+						wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+					}			
+				} else {
+					xofs-=4;
+					if (xofs<1) {
+						scrollRight=true;
+						xofs=0;
+						wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+					}
+				}			
+			}
+		}
+		
 		int srcOfs=xofs;
 		int dstOfs=0;
 		try {
-			for (int y=0; y<internalBufferYSize; y++) {
-				System.arraycopy(textBuffer, srcOfs, tmp, dstOfs, internalBufferXSize);
-				dstOfs+=internalBufferXSize;
-				srcOfs+=maxXPos;
+
+			if (maxXPos < getInternalBufferXSize()) {
+				//text image smaller than internal buffer
+				srcOfs=0;
+				dstOfs=xofs;
+				//we need to clear the buffer first!
+				Arrays.fill(tmp, 0);
+
+				for (int y=0; y<internalBufferYSize; y++) {
+					System.arraycopy(textBuffer, srcOfs, tmp, dstOfs, maxXPos);
+					dstOfs+=internalBufferXSize;
+					srcOfs+=maxXPos;
+				}				
+			} else {
+				for (int y=0; y<internalBufferYSize; y++) {
+					System.arraycopy(textBuffer, srcOfs, tmp, dstOfs, internalBufferXSize);
+					dstOfs+=internalBufferXSize;
+					srcOfs+=maxXPos;
+				}				
 			}
-			
+
 			this.internalBuffer = tmp;			
 		} catch (Exception e) {
 			//if the image is resized, this could lead to an arrayoutofboundexception!
 		}
-
-		if (wait>0) {
-			wait--;
-		} else {
-			if (scrollRight) {
-				xofs+=4;
-				if (xofs>maxXPos-internalBufferXSize) {
-					scrollRight=false;
-					xofs=maxXPos-internalBufferXSize;
-					wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
-				}			
-			} else {
-				xofs-=4;
-				if (xofs<1) {
-					scrollRight=true;
-					xofs=0;
-					wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
-				}
-			}			
-		}
+		
 	}
 
 	@Override
