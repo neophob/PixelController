@@ -18,3 +18,46 @@ http://www.youtube.com/user/cheetomoskeeto#g/c/12DC9A161D8DC5DC
 examples:
 ---------
 http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1266369410/0#0
+
+
+leds:
+-----
+common anode
+es gibt 8 source treiber, welche je max. 0.5A liefern können. 
+das macht für eine rgb led maximal 62.5ma, die spannung kann zwischen 5-12V liegen. -> max 0.75w
+
+http://evilmadscience.com/partsmenu/89-led   -
+
+http://tobiscorner.floery.net/projects/diy-rgb-matrix/159
+
+use a  pingpong ball as light diffuser: http://www.mbeckler.org/microcontrollers/rgb_led/
+
+http://macetech.com/blog/node/36
+
+http://rgb-led-matrix.blog.de/
+-----
+led diffuser:
+led mit sandpapier aufrauhen und dann pingpong ball drüberstülpen
+http://www.uchobby.com/index.php/2008/02/25/improving-the-ping-pong-ball-led-diffuser/
+
+alternative: styrophorkugeln
+
+
+
+-----
+http://www.batsocks.co.uk/readme/art_bcm_4.htm
+
+How fast to (not) flicker:
+
+"24fps is fast enough for film, therefore 48hz is fast enough for me."
+
+I'm afraid that isn't true. A 48hz LED will be easily identifiable as flickering and, indeed, distracting.
+
+I can best describe the reason behind this by way of a thought-experiment:
+
+Consider swinging a 48hz LED slowly around in a circle at the end of your arm. Aim for about one rotation per second. In that circle, the LED will light 48 times. Each 'on' period would be larger than the size of a minute mark on a clock of a similar size. It would be very easy to see the individual on and off periods.
+Note: From personal experience, if you try this experiment in reality, make sure that the batteries for your LED device are well held - It's alarming how fast an AAA battery can travel from the end of a slingshot
+
+Even if your LED's intended application does not involve it being swung around, it will move around relative to someone's gaze. As an observer's gaze passes across the LED, the on-and-off periods will be clearly visible and are likely to be distracting.
+
+I would suggest using 240hz as a minimum for the base-frequency for any LED, and higher if the LED is expected to be moving quickly within a field-of-view, or in an environment where many eye-fixations are likely (<grouch> would designers of LED rear-lights for cars please take note</grouch>).
