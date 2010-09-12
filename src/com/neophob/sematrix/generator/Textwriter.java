@@ -114,14 +114,14 @@ public class Textwriter extends Generator {
 			} else {
 				//todo, if image < buffer
 				if (scrollRight) {
-					xofs+=4;
+					xofs++;
 					if (xofs>maxXPos-internalBufferXSize) {
 						scrollRight=false;
 						xofs=maxXPos-internalBufferXSize;
 						wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
 					}			
 				} else {
-					xofs-=4;
+					xofs--;
 					if (xofs<1) {
 						scrollRight=true;
 						xofs=0;
