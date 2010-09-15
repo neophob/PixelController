@@ -550,7 +550,9 @@ public class Collector {
 	}
 
 	public Visual getVisual(int index) {
-		return allVisuals.get(index);
+		if (index<allVisuals.size()) {
+			return allVisuals.get(index);			
+		} else return allVisuals.get(0);
 	}
 
 	public void setAllVisuals(List<Visual> allVisuals) {
