@@ -43,7 +43,7 @@ public class Rainbowduino implements Runnable {
 	public static int width = 8;
 	public static int height = width;
 
-	public final String VERSION = "2.7";
+	public final String VERSION = "1.0";
 
 	private static final byte START_OF_CMD = 0x01;
 	private static final byte CMD_PING = 0x04;
@@ -56,6 +56,42 @@ public class Rainbowduino implements Runnable {
 
 	private int baud = 57600;//115200;
 	private Serial port;
+	
+	private static int[] gammaTab = {       
+		0,      0,      0,      0,      0,      0,      0,      0,
+		0,      0,      0,      0,      0,      0,      0,      0,
+		0,      0,      0,      0,      0,      0,      0,      0,
+		0,      0,      0,      0,      0,      0,      0,      0,
+		0,      0,      0,      0,      0,      0,      0,      0,
+		0,      0,      0,      0,      16,     16,     16,     16,
+        16,     16,     16,     16,     16,     16,     16,     16, 
+        16,     16,     16,     16,     16,     16,     16,     16, 
+        16,     16,     16,     16,     16,     16,     16,     16,
+        16,     16,     16,     16,     16,     16,     16,     16,
+        32,     32,     32,     32,     32,     32,     32,     32, 
+        32,     32,     32,     32,     32,     32,     32,     32, 
+        32,     32,     32,     32,     32,     32,     32,     32, 
+        32,     32,     32,     32,     32,     32,     32,     32, 
+        32,     32,     32,     32,     48,     48,     48,     48, 
+        48,     48,     48,     48,     48,     48,     48,     48, 
+        48,     48,     48,     48,     48,     48,     48,     48, 
+        48,     48,     48,     48,     64,     64,     64,     64, 
+        64,     64,     64,     64,     64,     64,     64,     64, 
+        64,     64,     64,     64,     64,     64,     64,     64, 
+        64,     64,     64,     64,     64,     64,     64,     64, 
+        80,     80,     80,     80,     80,     80,     80,     80, 
+        80,     80,     80,     80,     80,     80,     80,     80, 
+        96,     96,     96,     96,     96,     96,     96,     96, 
+        96,     96,     96,     96,     96,     96,     96,     96, 
+        112,    112,    112,    112,    112,    112,    112,    112, 
+        128,    128,    128,    128,    128,    128,    128,    128, 
+        144,    144,    144,    144,    144,    144,    144,    144, 
+        160,    160,    160,    160,    160,    160,    160,    160, 
+        176,    176,    176,    176,    176,    176,    176,    176, 
+        192,    192,    192,    192,    192,    192,    192,    192, 
+        208,    208,    208,    208,    224,    224,    224,    224, 
+        240,    240,    240,    240,    240,    255,    255,    255 
+    };
 
 	private Thread runner;
 	private long arduinoHeartbeat;
@@ -244,9 +280,9 @@ public class Rainbowduino implements Runnable {
 	 * @param data rgb data
 	 * @param check wheter to perform sensity check
 	 */
-	public void sendRgbFrame(byte addr, int[] data, boolean check) {
+	public void sendRgbFrame(byte addr, int[] data) {
 		byte buffer[] = convertRgbToRainbowduino(data);
-		sendFrame(addr, buffer, check);
+		sendFrame(addr, buffer);
 	}
 
 	/**
@@ -256,7 +292,8 @@ public class Rainbowduino implements Runnable {
 	 * @param data byte[3][8][4]
 	 * @param check wheter to perform sensity check
 	 */
-	public synchronized void sendFrame(byte addr, byte data[], boolean check) {
+	public synchronized void sendFrame(byte addr, byte data[]) {
+		//TODO stop if connection countrer > n
 		//if (connectionErrorCounter>10000) {}
 		
 		byte cmdfull[] = new byte[6+data.length];
@@ -273,7 +310,7 @@ public class Rainbowduino implements Runnable {
 		try {
 			port.write(cmdfull);	
 		} catch (Exception e) {
-			log.warning("Failed to send data to serial port!");
+			log.warning("Failed to send data to serial port! errorcnt: "+connectionErrorCounter);
 			connectionErrorCounter++;
 		}
 	}
@@ -306,15 +343,16 @@ public class Rainbowduino implements Runnable {
 		int ofs=0;
 		int dst=0;
 
-		//step#1: split up r/g/b
+		//step#1: split up r/g/b and apply gammatab
 		for (int y=0; y<height; y++) {
 			for (int x=0; x<width; x++) {
 				//one int contains the rgb color
 				tmp = data[ofs++];
 				//the buffer on the rainbowduino takes GRB, not RGB
-				r[dst] = (int) ((tmp>>16) & 255);
-				g[dst] = (int) ((tmp>>8)  & 255);       
-				b[dst] = (int) ( tmp      & 255);
+				
+				r[dst] = gammaTab[(int) ((tmp>>16) & 255)];
+				g[dst] = gammaTab[(int) ((tmp>>8)  & 255)];
+				b[dst] = gammaTab[(int) ( tmp      & 255)];				
 				dst++;
 			}
 		}
@@ -325,10 +363,11 @@ public class Rainbowduino implements Runnable {
 		ofs=0;
 		dst=0;
 		for (int i=0; i<32;i++) {
-			//240 = 11110000 - delete the lower 4 bits, then add the (shr-ed) 2nd color			
+			//240 = 11110000 - delete the lower 4 bits, then add the (shr-ed) 2nd color
 			converted[00+dst] = (byte)(((r[ofs]&240) + (r[ofs+1]>>4))& 255); //r
 			converted[32+dst] = (byte)(((g[ofs]&240) + (g[ofs+1]>>4))& 255); //g
 			converted[64+dst] = (byte)(((b[ofs]&240) + (b[ofs+1]>>4))& 255); //b
+
 			ofs+=2;
 			dst++;
 		}

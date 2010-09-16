@@ -50,7 +50,7 @@ public class RainbowduinoDevice extends Output {
 				//draw only on available screens!
 				if (screen<size) {
 					int i2cAddr = allI2cAddress.get(screen);
-					rainbowduino.sendRgbFrame((byte)i2cAddr, super.getBufferForScreen(screen), false);					
+					rainbowduino.sendRgbFrame((byte)i2cAddr, super.getBufferForScreen(screen));					
 				}
 
 			}
