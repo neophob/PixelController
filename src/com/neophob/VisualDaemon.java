@@ -55,7 +55,7 @@ public class VisualDaemon extends PApplet {
 		if (rainbowduino!=null) {
 			long l = rainbowduino.getLatestHeartbeat();
 			if (l!=lastHeartbeat) {
-				error+=rainbowduino.getArduinoErrorCounter();
+				error=rainbowduino.getArduinoErrorCounter();
 				System.out.println("last heartbeat: "+new Date(l).toGMTString()+
 						", errorcnt: "+error+
 						", buffersize: "+rainbowduino.getArduinoBufferSize());

@@ -45,7 +45,7 @@ public class Plasma2 extends Generator {
 				float s2 = aaa + aaa * PApplet.sin(PApplet.radians(yc) * calculation2 );
 				float s3 = aaa + aaa * PApplet.sin(PApplet.radians((xc + yc + timeDisplacement * 5) / 2));  
 				float s  = (s1+ s2 + s3) / (6f*255f);
-				this.internalBuffer[y*this.getInternalBufferXSize()+x] = Color.HSBtoRGB(s, 0.8f, 0.9f);
+				this.internalBuffer[y*this.getInternalBufferXSize()+x] = Color.HSBtoRGB(s, 0.98f, 0.9f);
 			}
 		}   
 	}
