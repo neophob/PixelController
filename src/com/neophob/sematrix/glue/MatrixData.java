@@ -121,6 +121,7 @@ public class MatrixData {
 		int yStart=lm.getyStart(getBufferYSize());
 		int yWidth=lm.getyWidth(getBufferYSize());
 		
+		//TODO
 		//very UGLY and SLOW method to copy the image - im lazy!
  		PImage p = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );
 		p.loadPixels();
