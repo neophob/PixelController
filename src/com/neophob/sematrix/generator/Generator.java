@@ -30,7 +30,7 @@ public abstract class Generator {
 		SIMPLECOLORS(4),
 		FIRE(5),
 		METABALLS(6),
-		VOLUMEDISPLAY(7),
+		PIXELIMAGE(7),
 		TEXTURE_DEFORMATION(8),
 		TEXTWRITER(9);
 		

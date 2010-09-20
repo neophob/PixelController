@@ -35,7 +35,7 @@ import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
-import com.neophob.sematrix.generator.VolumeDisplay;
+import com.neophob.sematrix.generator.PixelImage;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.listener.MessageProcessor;
@@ -177,7 +177,7 @@ public class Collector {
 		new Fire();
 		new PassThruGen();
 		new Metaballs();
-		new VolumeDisplay();
+		new PixelImage();
 		this.fileTextureDeformation = PropertiesHelper.getProperty("initial.texture");
 		new TextureDeformation(fileTextureDeformation);
 		this.text = PropertiesHelper.getProperty("initial.text");
