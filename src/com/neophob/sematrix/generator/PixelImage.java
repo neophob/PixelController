@@ -9,6 +9,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.input.Sound;
 
 /**
  * @author mvogt
@@ -55,18 +56,13 @@ public class PixelImage extends Generator {
 			System.arraycopy(pimage.pixels, i*PIXELNR*PIXELNR, this.images[i].pixels, 0, PIXELNR*PIXELNR);
 			this.images[i].updatePixels();
 		}
-/*		images = new int[nrOfImages][PIXELNR*PIXELNR];
-		for (int i=0; i<nrOfImages; i++) {
-			System.arraycopy(pimage.pixels, i*PIXELNR*PIXELNR, this.images[i][0], 0, PIXELNR*PIXELNR);
-		}
-*/		pimage.updatePixels();
-		
+		pimage.updatePixels();		
 		currentImage=r.nextInt(nrOfImages);
 	}
 
 	@Override
 	public void update() {		
-		if (r.nextInt(10)==4) {
+		if (Sound.getInstance().getVolumeNormalized()>0.8f) {
 			currentImage=r.nextInt(nrOfImages);
 			
 			int ofs=0, xofs, yofs=-1, dst=0;
@@ -83,27 +79,6 @@ public class PixelImage extends Generator {
 					this.internalBuffer[dst++]=this.images[currentImage].pixels[ofs];
 				}				
 			}
-			
-			//images[currentImage].loadPixels();
-			//try {
-				//todo resize
-/*		 		PImage p = Collector.getInstance().getPapplet().createImage( internalBufferXSize, internalBufferYSize, PApplet.RGB );
-				p.loadPixels();
-				System.arraycopy(buffer, 0, p.pixels, 0, getBufferXSize()*getBufferYSize());
-
-				//copy(x, y, width, height, dx, dy, dwidth, dheight)
-				p.copy(xStart, yStart, xWidth, yWidth, 0, 0, internalBufferXSize, internalBufferYSize);
-				p.updatePixels();
-*/
-/*				PImage img = (PImage)images[currentImage].clone();
-				img.loadPixels();
-				img.resize(internalBufferXSize, internalBufferYSize);
-				System.arraycopy(img.pixels, 0, this.internalBuffer, 0, internalBufferXSize*internalBufferYSize);
-				img.updatePixels();
-			} catch (Exception e) {}
-			images[currentImage].updatePixels();
-			*/
-
 		}
 	}
 
