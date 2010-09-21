@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
