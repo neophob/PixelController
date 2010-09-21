@@ -29,6 +29,7 @@ public class PixelImage extends Generator {
 	
 	private Random r = new Random();
 	private int currentImage;
+	private int frame = 0;
 	
 	public PixelImage() throws InvalidParameterException {
 		super(GeneratorName.PIXELIMAGE);
@@ -62,8 +63,9 @@ public class PixelImage extends Generator {
 
 	@Override
 	public void update() {		
-		if (Sound.getInstance().getVolumeNormalized()>0.8f) {
+		if (frame==0 || Sound.getInstance().getVolumeNormalized()>0.5f && frame>16) {
 			currentImage=r.nextInt(nrOfImages);
+			frame=1;
 			
 			int ofs=0, xofs, yofs=-1, dst=0;
 			int xDiff = internalBufferXSize/PIXELNR;
@@ -80,6 +82,7 @@ public class PixelImage extends Generator {
 				}				
 			}
 		}
+		frame++;
 	}
 
 	@Override
