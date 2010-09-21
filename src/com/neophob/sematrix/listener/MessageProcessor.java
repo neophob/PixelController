@@ -49,16 +49,6 @@ public class MessageProcessor {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setGenerator1(tmp);
 					}
-/*					int a = Integer.parseInt(msg[1]);
-					int b = Integer.parseInt(msg[2]);
-					int c = Integer.parseInt(msg[3]);
-					int d = Integer.parseInt(msg[4]);
-					int e = Integer.parseInt(msg[5]);
-					col.getVisual(0).setGenerator1(a);
-					col.getVisual(1).setGenerator1(b);
-					col.getVisual(2).setGenerator1(c);
-					col.getVisual(3).setGenerator1(d);
-					col.getVisual(4).setGenerator1(e);*/
 				} catch (Exception e) {
 					log.log(Level.WARNING,	"Ignored command", e);
 				}
