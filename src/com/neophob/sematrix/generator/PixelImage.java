@@ -13,7 +13,6 @@ import com.neophob.sematrix.input.Sound;
 
 /**
  * @author mvogt
- * TODO: synchronize sound buffer size with fps and steps size 
  * 
  */
 public class PixelImage extends Generator {
