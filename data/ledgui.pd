@@ -1,4 +1,4 @@
-#N canvas 1 78 1276 642 10;
+#N canvas 79 38 1276 642 10;
 #X obj 4 339 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 234 58 457 607 receive 0;
@@ -218,7 +218,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 585 13 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 4;
 #X obj 262 35 hradio 15 1 0 8 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 1;
+-1 0;
 #X text 193 11 Generator1;
 #X obj 424 35 hradio 15 1 0 8 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
 -1 0;
@@ -226,7 +226,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -1 0;
 #X text 193 32 Effect1;
 #X obj 262 68 hradio 15 1 0 10 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 6;
+-1 -1 0;
 #X obj 424 68 hradio 15 1 0 10 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 585 68 hradio 15 1 0 10 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
@@ -240,16 +240,16 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X text 193 65 Generator2;
 #X text 194 87 Effect2;
 #X obj 262 122 hradio 15 1 0 6 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 2;
+-1 -1 0;
 #X obj 424 122 hradio 15 1 0 6 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 585 122 hradio 15 1 0 6 s_mix3 r_mix3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X text 194 119 Mixer;
 #X obj 747 13 hradio 15 1 0 10 s_gen4 r_gen4 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 3;
 #X obj 910 13 hradio 15 1 0 10 s_gen5 r_gen5 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 2;
 #X obj 747 35 hradio 15 1 0 8 s_fx4 r_fx4 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X obj 910 35 hradio 15 1 0 8 s_fx5 r_fx5 empty 0 -8 0 10 -262130 -1
@@ -1000,7 +1000,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 795 263 cnv 15 275 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 805 293 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 855 311;
+10 10 856 325;
 #X floatatom 809 392 5 0 0 0 - - s_tint_r;
 #X floatatom 929 392 5 0 0 0 - - s_tint_g;
 #X floatatom 1028 392 5 0 0 0 - - s_tint_b;
@@ -1199,7 +1199,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X obj 262 231 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 424 231 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 1;
 #X text 194 207 Fader;
 #X obj 262 209 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -1211,9 +1211,9 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 0 10 -262130 -1 -1 0;
 #X text 194 184 Effect;
 #X obj 585 231 hradio 15 1 0 5 s_out3 r_out3 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X obj 747 231 hradio 15 1 0 5 s_out4 r_out4 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 3;
 #X obj 585 209 hradio 15 1 0 4 s_fader3 r_fader3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 747 209 hradio 15 1 0 4 s_fader4 r_fader4 empty 0 -8 0 10 -262144
@@ -1233,7 +1233,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X obj 907 209 hradio 15 1 0 4 s_faderALL empty empty 0 -8 0 10 -228856
 -1 -1 0;
 #X obj 907 187 hradio 15 1 0 8 s_fx_outputALL empty empty 0 -8 0 10
--228856 -1 -1 0;
+-228856 -1 -1 6;
 #X text 905 168 all outputs;
 #X text 261 168 output #1;
 #X text 425 168 output #2;
@@ -1252,7 +1252,8 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 \, Simplecolors Fire \, Metaballs \, Pixelimg \, Texturedeformation
 \, Textwriter;
 #X msg 171 392 flatter_flatter.bml;
-#X msg 191 430 flatter_flatter.bml;
+#X msg 199 449 badtv.bml;
+#X msg 172 413 badtv.bml;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 46 0 45 0;
@@ -1288,3 +1289,4 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X connect 202 0 43 0;
 #X connect 204 0 41 0;
 #X connect 205 0 41 0;
+#X connect 206 0 41 0;
