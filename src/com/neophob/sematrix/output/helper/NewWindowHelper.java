@@ -33,7 +33,9 @@ public class NewWindowHelper extends Frame {
         
         log.log(Level.INFO, "create frame with size "+x+"/"+y);
         setBounds(0, 0, x, y);
-        
+        this.setResizable(false);
+        this.setSize(x, y);
+
         setLayout(new BorderLayout());
         PApplet embed = new InternalBuffer(displayHoriz, x, y);
         

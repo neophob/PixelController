@@ -1,4 +1,4 @@
-#N canvas 23 194 1274 615 10;
+#N canvas 1 78 1276 642 10;
 #X obj 4 339 cnv 15 150 190 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 234 58 457 607 receive 0;
@@ -208,17 +208,17 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 14 41 bng 30 250 50 0 s_disconnect r_disconnect Disconnect 35
 15 0 15 -257985 -1 -1;
 #X obj 15 77 tgl 29 0 empty r_connected Connected 35 15 0 15 -191407
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 160 -23 cnv 15 910 174 empty empty visuals 20 12 0 14 -204786
 -66577 0;
 #X obj 262 13 hradio 15 1 0 10 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 7;
+-1 -1 1;
 #X obj 424 13 hradio 15 1 0 10 s_gen2 r_gen2 empty 0 -8 0 10 -203904
 -1 -1 6;
 #X obj 585 13 hradio 15 1 0 10 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 4;
 #X obj 262 35 hradio 15 1 0 8 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 0;
+-1 1;
 #X text 193 11 Generator1;
 #X obj 424 35 hradio 15 1 0 8 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
 -1 0;
@@ -226,7 +226,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -1 0;
 #X text 193 32 Effect1;
 #X obj 262 68 hradio 15 1 0 10 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 6;
 #X obj 424 68 hradio 15 1 0 10 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 585 68 hradio 15 1 0 10 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
@@ -240,7 +240,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X text 193 65 Generator2;
 #X text 194 87 Effect2;
 #X obj 262 122 hradio 15 1 0 6 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X obj 424 122 hradio 15 1 0 6 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 585 122 hradio 15 1 0 6 s_mix3 r_mix3 empty 0 -8 0 10 -262144
@@ -268,12 +268,12 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -1 -1 0;
 #X obj 4 -79 cnv 15 1066 50 empty empty empty 20 12 0 14 -228856 -66577
 0;
-#X obj 160 263 cnv 15 150 180 empty empty blinken 20 12 0 14 -203904
+#X obj 160 263 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904
 -66577 0;
-#X obj 172 404 send blinkenfile;
-#X obj 316 263 cnv 15 150 180 empty empty image 20 12 0 14 -203904
+#X obj 172 500 send blinkenfile;
+#X obj 316 263 cnv 15 150 266 empty empty image 20 12 0 14 -203904
 -66577 0;
-#X obj 328 391 send image;
+#X obj 328 499 send image;
 #X obj 4 123 cnv 15 150 130 empty empty random_mode 20 12 0 14 -260097
 -66577 0;
 #X obj 16 214 send randommode;
@@ -1000,7 +1000,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 795 263 cnv 15 275 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 805 293 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 981 304;
+10 10 855 311;
 #X floatatom 809 392 5 0 0 0 - - s_tint_r;
 #X floatatom 929 392 5 0 0 0 - - s_tint_g;
 #X floatatom 1028 392 5 0 0 0 - - s_tint_b;
@@ -1144,9 +1144,9 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -260097 -1 -1 1 1;
 #X text 731 -52 Mixer: Off \, AddSat \, Multiply \, Mix \, Neg Multiply
 \, Checkb;
-#X obj 472 263 cnv 15 180 180 empty empty texturedeform 20 12 0 14
+#X obj 472 263 cnv 15 180 266 empty empty texturedeform 20 12 0 14
 -203904 -66577 0;
-#X obj 482 419 send change_lut;
+#X obj 482 496 send change_lut;
 #X obj 476 293 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
 -1 -1;
 #X obj 476 314 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
@@ -1161,14 +1161,14 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 -1;
 #X obj 633 268 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17
 7 0 10 -260097 -1 -1 1 1;
-#X obj 160 449 cnv 15 306 80 empty empty textwriter 20 12 0 14 -203904
+#X obj 658 449 cnv 15 306 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
-#X obj 175 501 send textwriter;
-#X msg 172 293 torus.bml;
-#X msg 172 316 bnf_auge.bml;
-#X msg 172 338 bb-frogskin2.bml;
-#X msg 172 360 bb-rauten2.bml;
-#X msg 172 382 bb-spiral2fast.bml;
+#X obj 673 501 send textwriter;
+#X msg 172 287 torus.bml;
+#X msg 172 308 bnf_auge.bml;
+#X msg 172 329 bb-frogskin2.bml;
+#X msg 172 350 bb-rauten2.bml;
+#X msg 172 371 bb-spiral2fast.bml;
 #X msg 328 293 circle.jpg;
 #X msg 328 317 half.jpg;
 #X msg 328 342 gradient.jpg;
@@ -1192,9 +1192,6 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X text 785 -70 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
-#X text 13 -69 Generators: Off \, Blinkenlights \, Image \, Plasma
-\, Simplecolors Fire \, Metaballs \, Equalizer \, Texturedeformation
-\, Textwriter;
 #X obj 759 268 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty
 17 7 0 10 -260097 -1 -1 1 1;
 #X obj 160 157 cnv 15 910 100 empty empty output 20 12 0 14 -204786
@@ -1202,7 +1199,7 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X obj 262 231 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 424 231 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X text 194 207 Fader;
 #X obj 262 209 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -1248,9 +1245,14 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X text 745 -5 visual #4;
 #X text 908 -5 visual #5;
 #X text 194 228 Visual;
-#X msg 175 476 X;
-#X msg 338 416 hsv.jpg;
-#X msg 388 416 hls.jpg;
+#X msg 673 476 X;
+#X msg 328 392 hsv.jpg;
+#X msg 328 418 hls.jpg;
+#X text 13 -69 Generators: Off \, Blinkenlights \, Image \, Plasma
+\, Simplecolors Fire \, Metaballs \, Pixelimg \, Texturedeformation
+\, Textwriter;
+#X msg 171 392 flatter_flatter.bml;
+#X msg 191 430 flatter_flatter.bml;
 #X connect 2 0 1 0;
 #X connect 2 1 3 0;
 #X connect 46 0 45 0;
@@ -1281,6 +1283,8 @@ shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold;
 #X connect 158 0 58 0;
 #X connect 160 0 162 0;
 #X connect 162 0 161 0;
-#X connect 201 0 142 0;
+#X connect 200 0 142 0;
+#X connect 201 0 43 0;
 #X connect 202 0 43 0;
-#X connect 203 0 43 0;
+#X connect 204 0 41 0;
+#X connect 205 0 41 0;
