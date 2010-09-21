@@ -1,13 +1,19 @@
 package com.neophob.sematrix.generator;
 
-import com.neophob.sematrix.effect.BoxFilter;
-import com.neophob.sematrix.glue.Collector;
+import java.security.InvalidParameterException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processing.core.PConstants;
 import processing.core.PImage;
 
+import com.neophob.sematrix.effect.BoxFilter;
+import com.neophob.sematrix.glue.Collector;
+
 
 public class TextureDeformation extends Generator {	
+
+	private static Logger log = Logger.getLogger(TextureDeformation.class.getName());
 
 	private int w, h;
 	private int[] mLUT;
@@ -34,8 +40,20 @@ public class TextureDeformation extends Generator {
 	}
 	
 	public void loadFile(String fileName) {
-		textureImg=Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
-		createLUT(lut);
+		try {
+			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
+			if (tmp==null || tmp.height<2) {
+				throw new InvalidParameterException("invalid data");
+			}
+			textureImg = tmp;
+			log.log(Level.INFO,
+					"Loaded texture {0} ", new Object[] { fileName });
+			createLUT(lut);
+		} catch (Exception e) {
+			log.log(Level.WARNING,
+					"Failed to load texture {0}: {1}", new Object[] { fileName, e.getCause() });
+
+		}
 	}
 	
 	@Override
