@@ -1,5 +1,6 @@
 package com.neophob.sematrix.generator;
 
+import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,11 +38,20 @@ public class Image extends Generator {
 	 * @param filename
 	 */
 	public void loadFile(String filename) {
-		PApplet parent = Collector.getInstance().getPapplet();
-		pimage = parent.loadImage(PREFIX+filename);
-		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-		//TODO still buggy!
-		pimage.resize(internalBufferXSize, internalBufferYSize);
+		try {
+			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
+			if (tmp==null || tmp.height<2) {
+				throw new InvalidParameterException("invalid data");
+			}
+			pimage = tmp;
+			log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
+			//TODO still buggy!
+			pimage.resize(internalBufferXSize, internalBufferYSize);
+		} catch (Exception e) {
+			log.log(Level.WARNING,
+					"Failed to load image {0}!", new Object[] { filename });
+		}
+		
 	}
 
 	

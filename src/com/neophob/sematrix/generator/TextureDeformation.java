@@ -51,8 +51,7 @@ public class TextureDeformation extends Generator {
 			createLUT(lut);
 		} catch (Exception e) {
 			log.log(Level.WARNING,
-					"Failed to load texture {0}: {1}", new Object[] { fileName, e.getCause() });
-
+					"Failed to load texture {0}!", new Object[] { fileName });
 		}
 	}
 	
