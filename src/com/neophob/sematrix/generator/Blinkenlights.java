@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PImage;
 import processing.lib.blinken.BlinkenLibrary;
 
 import com.neophob.sematrix.glue.Collector;
@@ -20,7 +19,6 @@ public class Blinkenlights extends Generator implements PConstants {
 	static Logger log = Logger.getLogger(Blinkenlights.class.getName());
 
 	private BlinkenLibrary blinken;
-	private PImage tmp;
 	private boolean random;
 	private Random rand = new Random();
 	private int frames;
@@ -29,7 +27,6 @@ public class Blinkenlights extends Generator implements PConstants {
 	public Blinkenlights(String filename) {
 		super(GeneratorName.BLINKENLIGHTS);
 		PApplet parent = Collector.getInstance().getPapplet();
-		tmp=parent.createImage( internalBufferXSize, internalBufferYSize, RGB);
 		random=false;
 		blinken = new BlinkenLibrary(parent, PREFIX+filename);
 		blinken.setIgnoreFileDelay(true);
@@ -60,10 +57,31 @@ public class Blinkenlights extends Generator implements PConstants {
 			blinken.jump(frames%movieFrames);
 			frames++;
 		}
-		tmp.loadPixels();
-		tmp.copy(blinken, 0, 0, blinken.width, blinken.height, 0, 0, internalBufferXSize, internalBufferYSize);
-		System.arraycopy(tmp.pixels, 0, this.internalBuffer, 0, tmp.pixels.length);
-		tmp.updatePixels();		
+
+		//resize image to 128x128
+		int ofs, dst=0, xofs, yofs=0;		
+		float xSrc,ySrc=0;
+		float xDiff = internalBufferXSize/(float)blinken.width;
+		float yDiff = internalBufferYSize/(float)blinken.height;
+		
+		for (int y=0; y<internalBufferYSize; y++) {
+			if (ySrc>yDiff) {
+				if (yofs<blinken.height) yofs++;				
+				ySrc-=yDiff;
+			}
+			xofs=0;
+			xSrc=0;
+			for (int x=0; x<internalBufferXSize; x++) {
+				if (xSrc>xDiff) {
+					if (xofs<blinken.width)xofs++;
+					xSrc-=xDiff;
+				}				
+				ofs=xofs+yofs*blinken.width;
+				this.internalBuffer[dst++]=blinken.pixels[ofs];
+				xSrc++;
+			}
+			ySrc++;
+		}
 	}
 	
 	public boolean isRandom() {
