@@ -31,13 +31,14 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
+import com.neophob.sematrix.generator.PixelImage;
 import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
-import com.neophob.sematrix.generator.PixelImage;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.TcpServer.ValidCommands;
@@ -140,7 +141,8 @@ public class Collector {
 		this.nrOfScreens = PropertiesHelper.getAllI2cAddress().size();
 		this.fps = fps;
 		
-		Sound.getInstance();
+		Sound.getInstance().setImplementation(new SoundMinim());
+//		Sound.getInstance().setImplementation(new SoundDummy());
 		new MatrixData(deviceXsize, deviceYsize);
 
 		this.initSystem();
