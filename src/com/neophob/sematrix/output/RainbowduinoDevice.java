@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.lib.rainbowduino.Rainbowduino;
 import com.neophob.sematrix.glue.Collector;
 
@@ -13,7 +14,7 @@ public class RainbowduinoDevice extends Output {
 	
 	private List<Integer> allI2cAddress;
 	private Rainbowduino rainbowduino = null;
-	private boolean ping;
+	private boolean initialized;
 	
 	/**
 	 * init the rainbowduino devices 
@@ -23,28 +24,42 @@ public class RainbowduinoDevice extends Output {
 		super(RainbowduinoDevice.class.toString());
 		this.allI2cAddress = allI2cAddress;
 		
+		this.initialized = false;
 		rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet() );
-		rainbowduino.initPort();
+		try {
+			rainbowduino.initPort();
+			this.initialized = rainbowduino.ping((byte)0);
+			log.log(Level.INFO, "ping result: "+ this.initialized);			
+		} catch (NoSerialPortFoundException e) {
+			log.log(Level.WARNING, "failed to initialize serial port!");
+		}
 		
-		ping = rainbowduino.ping((byte)0);
-		log.log(Level.INFO, "ping result: "+ ping);
 	}
 	
 
 	public long getLatestHeartbeat() {
-		return rainbowduino.getArduinoHeartbeat();
+		if (initialized) {
+			return rainbowduino.getArduinoHeartbeat();			
+		}
+		return -1;
 	}
 
 	public int getArduinoBufferSize() {
-		return rainbowduino.getArduinoBufferSize();
+		if (initialized) {
+			return rainbowduino.getArduinoBufferSize();			
+		}
+		return -1;
 	}
 
 	public int getArduinoErrorCounter() {
-		return rainbowduino.getArduinoErrorCounter();
+		if (initialized) {
+			return rainbowduino.getArduinoErrorCounter();			
+		}
+		return -1;
 	}
 
 	public void update() {
-		if (ping) {
+		if (initialized) {
 			int size=allI2cAddress.size();
 			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
 				//draw only on available screens!
@@ -59,7 +74,9 @@ public class RainbowduinoDevice extends Output {
 
 	@Override
 	public void close() {
-		rainbowduino.dispose();
+		if (initialized) {
+			rainbowduino.dispose();			
+		}
 	}
 
 }
