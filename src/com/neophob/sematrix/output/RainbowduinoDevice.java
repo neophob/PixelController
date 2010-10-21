@@ -27,7 +27,7 @@ public class RainbowduinoDevice extends Output {
 		this.initialized = false;
 		rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet() );
 		try {
-			rainbowduino.initPort();
+			rainbowduino.initPort(allI2cAddress);
 			this.initialized = rainbowduino.ping((byte)0);
 			log.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
