@@ -29,6 +29,7 @@ import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Image;
+import com.neophob.sematrix.generator.ImageZoomer;
 import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.PixelImage;
@@ -188,7 +189,8 @@ public class Collector {
 				Integer.parseInt(PropertiesHelper.getProperty("font.size")),
 				this.text
 		);
-
+		new ImageZoomer("wood.jpg");
+		
 		//create effects
 		new Inverter();
 		new PassThru();
