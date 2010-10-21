@@ -50,7 +50,6 @@ public class Image extends Generator {
 			log.log(Level.WARNING,
 					"Failed to load image {0}!", new Object[] { filename });
 		}
-		
 	}
 
 	

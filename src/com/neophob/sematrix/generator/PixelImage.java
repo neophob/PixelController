@@ -23,7 +23,6 @@ public class PixelImage extends Generator {
 	private static final String FILENAME = "8x8.png";
 	
 	private PImage[] images;
-//	private int[][] images;
 	private int nrOfImages;
 	
 	private Random r = new Random();
