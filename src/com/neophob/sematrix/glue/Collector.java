@@ -91,7 +91,8 @@ public class Collector {
 	private int r=255,g=255,b=255;
 	
 	private String fileBlinken;
-	private String fileImage;
+	private String fileImageSimple;
+	private String fileImageZoomer;
 	//private String fileTexture;
 	
 	private String fileTextureDeformation;
@@ -173,8 +174,8 @@ public class Collector {
 		//create generators
 		this.fileBlinken = PropertiesHelper.getProperty("initial.blinken");
 		new Blinkenlights(this.fileBlinken);
-		this.fileImage = PropertiesHelper.getProperty("initial.image");
-		new Image(this.fileImage);		
+		this.fileImageSimple = PropertiesHelper.getProperty("initial.image.simple");
+		new Image(this.fileImageSimple);		
 		new Plasma2();
 		new SimpleColors();
 		new Fire();
@@ -189,7 +190,8 @@ public class Collector {
 				Integer.parseInt(PropertiesHelper.getProperty("font.size")),
 				this.text
 		);
-		new ImageZoomer("wood.jpg");
+		this.fileImageZoomer = PropertiesHelper.getProperty("initial.image.zoomer");
+		new ImageZoomer(fileImageZoomer);
 		
 		//create effects
 		new Inverter();
@@ -403,7 +405,8 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
 		ret.add(ValidCommands.CHANGE_TINT+" "+r+" "+g+" "+b);
 		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
-		ret.add(ValidCommands.IMAGE+" "+fileImage);
+		ret.add(ValidCommands.IMAGE+" "+fileImageSimple);
+		ret.add(ValidCommands.IMAGE_ZOOMER+" "+fileImageZoomer);
 		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
 		ret.add(ValidCommands.TEXTDEF_FILE+" "+fileTextureDeformation);
 		ret.add(ValidCommands.TEXTDEF+" "+textureDeformationLut);
@@ -618,16 +621,24 @@ public class Collector {
 	public void setFileBlinken(String fileBlinken) {
 		this.fileBlinken = fileBlinken;
 	}
-
-	public String getFileImage() {
-		return fileImage;
-	}
-
-	public void setFileImage(String fileImage) {
-		this.fileImage = fileImage;
-	}
-
 	
+	public String getFileImageSimple() {
+		return fileImageSimple;
+	}
+
+	public void setFileImageSimple(String fileImageSimple) {
+		this.fileImageSimple = fileImageSimple;
+	}
+	
+
+	public String getFileImageZoomer() {
+		return fileImageZoomer;
+	}
+
+	public void setFileImageZoomer(String fileImageZoomer) {
+		this.fileImageZoomer = fileImageZoomer;
+	}
+
 	public String getFileTextureDeformation() {
 		return fileTextureDeformation;
 	}
