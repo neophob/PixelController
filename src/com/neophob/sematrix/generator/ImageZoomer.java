@@ -1,7 +1,6 @@
 package com.neophob.sematrix.generator;
 
 import java.security.InvalidParameterException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,7 +9,11 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 
-
+/**
+ * 
+ * @author michu
+ *
+ */
 public class ImageZoomer extends Generator {
 
 	private static Logger log = Logger.getLogger(ImageZoomer.class.getName());
@@ -20,8 +23,6 @@ public class ImageZoomer extends Generator {
 	private PImage a,p;  // Declare variable "a" of type PImage 
 	private PApplet parent;
 	
-	private int updown = 0;
-	private int leftright = 0;
 	private float zoom = 1;
 	private float endZoom = 1;
 	private float distZoom, beginZoom;
@@ -56,8 +57,7 @@ public class ImageZoomer extends Generator {
 			if (a==null || a.height<2) {
 				throw new InvalidParameterException("invalid data");
 			}
-			log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-			
+			this.updateTarget();
 		} catch (Exception e) {
 			log.log(Level.WARNING,
 					"Failed to load image {0}!", new Object[] { filename });
@@ -73,22 +73,16 @@ public class ImageZoomer extends Generator {
 		
 		doTheMove();
 		
-		parent.pushMatrix();
-		parent.scale(zoom);
-		parent.popMatrix();
-		
+		//get piece of large image		
 		a.loadPixels();
 		p.copy(a, (int)x, (int)y, internalBufferXSize, internalBufferYSize, 0, 0, internalBufferXSize, internalBufferYSize);
 		a.updatePixels();
 		
+		//save it to internal buffer
 		p.loadPixels();
 		System.arraycopy(p.pixels, 0, this.internalBuffer, 0, internalBufferXSize*internalBufferYSize);		
 		p.updatePixels();
 		
-/*		parent.pushMatrix();
-		parent.scale(zoom);
-		parent.translate (leftright, updown);
-*/
 	}
 
 	/**
@@ -96,8 +90,16 @@ public class ImageZoomer extends Generator {
 	 */
 	private void updateTarget() {
 		pct = 0.0f;
-		beginX = x;
-		beginY = y;
+		if (x>a.width-internalBufferXSize) {
+			beginX = 0;
+		} else {
+			beginX = x;			
+		}
+		if (y>a.height-internalBufferYSize) {
+			beginY = 0;
+		} else {
+			beginY = y;
+		}
 
 		endX = (float)(Math.random())*(a.width-internalBufferXSize);
 		endY = (float)Math.random()*(a.height-internalBufferYSize);
@@ -121,10 +123,9 @@ public class ImageZoomer extends Generator {
 		x = beginX + (pct * distX);
 		y = beginY + ((float)Math.pow(pct, exponent) * distY);
 		zoom = beginZoom + (pct * distZoom);
-		leftright = -(int)x;
-		updown = -(int)y;
 	}
 
+	
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub

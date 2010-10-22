@@ -9,6 +9,7 @@ import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
+import com.neophob.sematrix.generator.ImageZoomer;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
@@ -25,7 +26,7 @@ public class MessageProcessor {
 	}
 
 	/**
-	 * 
+	 * process message from gui
 	 * @param msg
 	 */
 	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader) {
@@ -245,7 +246,7 @@ public class MessageProcessor {
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
-					col.setFileImage(fileToLoad);
+					col.setFileImageSimple(fileToLoad);
 					Image img = (Image)col.getGenerator(GeneratorName.IMAGE);
 					img.loadFile(fileToLoad);
 				} catch (Exception e) {
@@ -253,6 +254,17 @@ public class MessageProcessor {
 				}
 				break;
 
+			case IMAGE_ZOOMER:
+				try {
+					String fileToLoad = msg[1];
+					col.setFileImageZoomer(fileToLoad);
+					ImageZoomer img = (ImageZoomer)col.getGenerator(GeneratorName.IMAGE_ZOOMER);
+					img.loadImage(fileToLoad);
+				} catch (Exception e) {
+					log.log(Level.WARNING,	"Ignored command", e);
+				}
+				break;
+				
 			case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
