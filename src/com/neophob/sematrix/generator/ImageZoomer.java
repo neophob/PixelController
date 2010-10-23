@@ -19,8 +19,9 @@ public class ImageZoomer extends Generator {
 	private static Logger log = Logger.getLogger(ImageZoomer.class.getName());
 
 	public static final String PREFIX = "pics/";
+	public static final int MOVE_DURATION_IN_S = 4;
 
-	private PImage a,p;  // Declare variable "a" of type PImage 
+	private PImage origImg, clipedImg;  // Declare variable "a" of type PImage 
 	private PApplet parent;
 	
 	private float zoom = 1;
@@ -33,18 +34,21 @@ public class ImageZoomer extends Generator {
 	private float endY = 0.0f;   // Final y-coordinate
 	private float distX;          // X-axis distance to move
 	private float distY;          // Y-axis distance to move
-	private float exponent = 22;   // Determines the curve
+	private float exponent = 64/2;   // Determines the curve
 	private float x = 0.0f;        // Current x-coordinate
 	private float y = 0.0f;        // Current y-coordinate
-	private float step = 0.005f;    // Size of each step along the path
+	private float step = 0.01f;    // Size of each step along the path
 	private float pct = 1.0f;      // Percentage traveled (0.0 to 1.0)
 
+	
 	public ImageZoomer(String filename) {
-		super(GeneratorName.IMAGE_ZOOMER);
-		this.loadImage(filename); 
+		super(GeneratorName.IMAGE_ZOOMER);		
 		parent = Collector.getInstance().getPapplet();
-		p = parent.createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB); 
-		log.log(Level.INFO, "IMAGE SIZE: "+a.width+" "+internalBufferXSize+", "+internalBufferYSize);
+		clipedImg = parent.createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
+		this.loadImage(filename);
+		log.log(Level.INFO, "IMAGE SIZE: "+origImg.width+" "+internalBufferXSize+", "+internalBufferYSize);
+		
+		step = (1.0f/MOVE_DURATION_IN_S)/Collector.getInstance().getFps();
 	}
 
 	/**
@@ -53,8 +57,8 @@ public class ImageZoomer extends Generator {
 	 */
 	public void loadImage(String filename) {
 		try {
-			a = Collector.getInstance().getPapplet().loadImage(PREFIX+filename);
-			if (a==null || a.height<2) {
+			origImg = Collector.getInstance().getPapplet().loadImage(PREFIX+filename);
+			if (origImg==null || origImg.height<2) {
 				throw new InvalidParameterException("invalid data");
 			}
 			this.updateTarget();
@@ -66,7 +70,7 @@ public class ImageZoomer extends Generator {
 
 	@Override
 	public void update() {
-		if (a==null) {
+		if (origImg==null) {
 			log.log(Level.WARNING, "image is null!");
 			return;
 		}
@@ -74,14 +78,14 @@ public class ImageZoomer extends Generator {
 		doTheMove();
 		
 		//get piece of large image		
-		a.loadPixels();
-		p.copy(a, (int)x, (int)y, internalBufferXSize, internalBufferYSize, 0, 0, internalBufferXSize, internalBufferYSize);
-		a.updatePixels();
+		origImg.loadPixels();
+		clipedImg.copy(origImg, (int)x, (int)y, internalBufferXSize, internalBufferYSize, 0, 0, internalBufferXSize, internalBufferYSize);
+		origImg.updatePixels();
 		
 		//save it to internal buffer
-		p.loadPixels();
-		System.arraycopy(p.pixels, 0, this.internalBuffer, 0, internalBufferXSize*internalBufferYSize);		
-		p.updatePixels();
+		clipedImg.loadPixels();
+		System.arraycopy(clipedImg.pixels, 0, this.internalBuffer, 0, internalBufferXSize*internalBufferYSize);		
+		clipedImg.updatePixels();
 		
 	}
 
@@ -90,19 +94,19 @@ public class ImageZoomer extends Generator {
 	 */
 	private void updateTarget() {
 		pct = 0.0f;
-		if (x>a.width-internalBufferXSize) {
+		if (x>origImg.width-internalBufferXSize) {
 			beginX = 0;
 		} else {
 			beginX = x;			
 		}
-		if (y>a.height-internalBufferYSize) {
+		if (y>origImg.height-internalBufferYSize) {
 			beginY = 0;
 		} else {
 			beginY = y;
 		}
 
-		endX = (float)(Math.random())*(a.width-internalBufferXSize);
-		endY = (float)Math.random()*(a.height-internalBufferYSize);
+		endX = (float)Math.random()*(origImg.width-internalBufferXSize);
+		endY = (float)Math.random()*(origImg.height-internalBufferYSize);
 		distX = endX - beginX;
 		distY = endY - beginY;
 
