@@ -24,10 +24,9 @@ public class RainbowduinoDevice extends Output {
 		super(RainbowduinoDevice.class.toString());
 		this.allI2cAddress = allI2cAddress;
 		
-		this.initialized = false;
-		rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet() );
+		this.initialized = false;		
 		try {
-			rainbowduino.initPort(allI2cAddress);
+			rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet(), allI2cAddress);
 			//rainbowduino.initPort("/dev/null", allI2cAddress);
 			this.initialized = rainbowduino.ping();
 			log.log(Level.INFO, "ping result: "+ this.initialized);			
