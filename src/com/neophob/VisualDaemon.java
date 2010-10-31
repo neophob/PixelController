@@ -28,8 +28,7 @@ public class VisualDaemon extends PApplet {
 	int error=0;
 	int frame=0;
 	MatrixEmulator osd;
-	
-	
+		
 	public void setup() {
 		Collector.getInstance().init(this, FPS, 8, 8);
 		frameRate(FPS);
@@ -53,13 +52,11 @@ public class VisualDaemon extends PApplet {
 		Collector.getInstance().updateSystem();
 		
 		if (rainbowduino!=null) {
-			long l = rainbowduino.getLatestHeartbeat();
-			if (l!=lastHeartbeat) {
+			if (rainbowduino.getArduinoErrorCounter()!=0) {
 				error=rainbowduino.getArduinoErrorCounter();
-				System.out.println("last heartbeat: "+new Date(l).toGMTString()+
+				System.out.println("error at: "+new Date(rainbowduino.getLatestHeartbeat()).toGMTString()+
 						", errorcnt: "+error+
 						", buffersize: "+rainbowduino.getArduinoBufferSize());
-				lastHeartbeat = l;
 			}			
 		}
 
