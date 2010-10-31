@@ -12,7 +12,8 @@ import com.neophob.sematrix.glue.Collector;
 /**
  * 
  * @author michu
- *
+ * TODO voluminize
+ * 
  */
 public class ImageZoomer extends Generator {
 
