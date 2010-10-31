@@ -133,8 +133,8 @@ public class Textwriter extends Generator {
 		
 		int srcOfs=xofs;
 		int dstOfs=0;
+		
 		try {
-
 			if (maxXPos < getInternalBufferXSize()) {
 				//text image smaller than internal buffer
 				srcOfs=0;
