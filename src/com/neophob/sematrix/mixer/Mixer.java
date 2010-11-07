@@ -11,7 +11,8 @@ public abstract class Mixer {
 		MULTIPLY(2),
 		MIX(3),
 		NEGATIVE_MULTIPLY(4),
-		CHECKBOX(5);
+		CHECKBOX(5),
+		VOLUMINIZER(6);
 		
 		private int id;
 		

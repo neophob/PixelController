@@ -50,6 +50,7 @@ import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.mixer.Multiply;
 import com.neophob.sematrix.mixer.NegativeMultiply;
 import com.neophob.sematrix.mixer.PassThruMixer;
+import com.neophob.sematrix.mixer.Voluminizer;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.properties.PropertiesHelper;
@@ -210,6 +211,7 @@ public class Collector {
 		new PassThruMixer();
 		new NegativeMultiply();
 		new Checkbox();
+		new Voluminizer();
 
 		//create 5 visuals
 		for (int n=0; n<nrOfScreens+1; n++) {
