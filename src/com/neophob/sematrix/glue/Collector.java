@@ -243,6 +243,9 @@ public class Collector {
 	 *  -generators
 	 *  -effects
 	 *  -outputs
+	 *  
+	 *  update the generators, if the sound is
+	 *  louder, update faster
 	 */
 	public void updateSystem() {
 		//do not update system if presents are loading
