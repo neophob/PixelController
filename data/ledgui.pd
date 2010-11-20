@@ -1,4 +1,4 @@
-#N canvas 96 26 948 630 10;
+#N canvas 140 228 948 630 10;
 #X obj 4 361 cnv 15 150 180 empty empty network 20 12 0 14 -228856
 -66577 0;
 #N canvas 234 58 457 607 receive 0;
@@ -211,9 +211,9 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 4 -3 cnv 15 940 174 empty empty visuals 20 12 0 14 -204786 -66577
 0;
 #X obj 63 32 hradio 15 1 0 11 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 2;
+-1 -1 1;
 #X obj 237 32 hradio 15 1 0 11 s_gen2 r_gen2 empty 0 -8 0 10 -203904
--1 -1 3;
+-1 -1 6;
 #X obj 408 32 hradio 15 1 0 11 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 4;
 #X obj 63 54 hradio 15 1 0 8 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
@@ -223,7 +223,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 408 54 hradio 15 1 0 8 s_fx3 r_fx3 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X obj 64 87 hradio 15 1 0 11 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 3;
 #X obj 237 87 hradio 15 1 0 11 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 408 87 hradio 15 1 0 11 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
@@ -235,7 +235,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 408 109 hradio 15 1 0 8 s_fx_b3 r_fx_b3 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X obj 65 140 hradio 15 1 0 7 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 2;
 #X obj 237 140 hradio 15 1 0 7 s_mix2 r_mix2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 408 140 hradio 15 1 0 7 s_mix3 r_mix3 empty 0 -8 0 10 -262144
@@ -264,9 +264,9 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 0;
 #X obj 315 282 cnv 15 150 130 empty empty random_mode 20 12 0 14 -260097
 -66577 0;
-#X obj 327 374 send randommode;
-#X msg 327 326 send RANDOM ON;
-#X msg 327 350 send RANDOM OFF;
+#X obj 327 364 send randommode;
+#X msg 327 316 send RANDOM ON;
+#X msg 327 340 send RANDOM OFF;
 #X obj 4 282 cnv 15 150 74 empty empty beat 20 12 0 14 -228856 -66577
 0;
 #X obj 15 310 tgl 20 0 empty r_snd_kick kick 0 30 0 10 -191407 -1 -1
@@ -1220,10 +1220,10 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X msg 178 142 hsv.jpg;
 #X msg 178 168 hls.jpg;
 #X msg 21 142 flatter_flatter.bml;
-#X msg 49 199 badtv.bml;
 #X msg 22 163 badtv.bml;
 #X msg 523 41 PWNED!;
 #X msg 178 197 right.jpg;
+#X msg 49 199 peace-love.bml;
 #X connect 17 0 1 0;
 #X connect 18 0 1 0;
 #X connect 19 0 1 0;
@@ -1241,15 +1241,15 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X connect 31 0 3 0;
 #X connect 32 0 1 0;
 #X connect 33 0 1 0;
-#X connect 34 0 1 0;
-#X connect 35 0 16 0;
-#X connect 36 0 3 0;
+#X connect 34 0 16 0;
+#X connect 35 0 3 0;
+#X connect 36 0 1 0;
 #X restore 474 308 pd gen;
-#N canvas 29 380 430 197 fx 1;
+#N canvas 29 380 430 197 fx 0;
 #X obj 145 5 cnv 15 275 180 empty empty tint_fx 20 12 0 14 -262130
 -66577 0;
 #X obj 155 35 pdp_colorgrid pdp_colorgrid1 256 0 256 50 0 50 0 1 1
-10 10 326 52;
+10 10 184 54;
 #X floatatom 159 134 3 0 255 0 - - s_tint_r;
 #X floatatom 279 134 3 0 255 0 - - s_tint_g;
 #X floatatom 378 134 3 0 255 0 - - s_tint_b;
