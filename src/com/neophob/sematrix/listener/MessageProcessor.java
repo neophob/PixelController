@@ -28,6 +28,8 @@ public class MessageProcessor {
 	/**
 	 * process message from gui
 	 * @param msg
+	 * @param startFader
+	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
 	 */
 	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader) {
 		if (msg==null || msg.length<1) {
@@ -117,7 +119,7 @@ public class MessageProcessor {
 								col.getOutputMappings(i).getFader().startFade(newFx, i);								
 							} else {
 								//do not fade if we load setting from present
-								col.mapInputToScreen(newFx, i);
+								col.mapInputToScreen(i, newFx);
 							}
 						}
 					}
