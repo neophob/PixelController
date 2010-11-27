@@ -75,6 +75,9 @@ public class SoundMinim implements SeSound, Runnable {
 		return m;
 	}
 
+	/**
+	 * 
+	 */
 	public float getVolumeNormalized() {
 		float f = getVolume();
 		f=(1/sndVolumeMax-sndVolumeMin)*f;
