@@ -16,6 +16,8 @@ public class RainbowduinoDevice extends Output {
 	private Rainbowduino rainbowduino = null;
 	private boolean initialized;
 	
+	long needUpdate, noUpdate;
+
 	/**
 	 * init the rainbowduino devices 
 	 * @param allI2COutputs a list containing all i2c slave addresses
@@ -26,8 +28,7 @@ public class RainbowduinoDevice extends Output {
 		
 		this.initialized = false;		
 		try {
-			rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet(), allI2cAddress);
-			//rainbowduino.initPort("/dev/null", allI2cAddress);
+			rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet(), allI2cAddress);			
 			this.initialized = rainbowduino.ping();
 			log.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
@@ -65,10 +66,21 @@ public class RainbowduinoDevice extends Output {
 				//draw only on available screens!
 				if (screen<size) {
 					int i2cAddr = allI2cAddress.get(screen);
-					rainbowduino.sendRgbFrame((byte)i2cAddr, super.getBufferForScreen(screen));					
+					if (!rainbowduino.sendRgbFrame((byte)i2cAddr, super.getBufferForScreen(screen))) {
+						noUpdate++;
+					} else
+						needUpdate++;
 				}
-
 			}
+			
+			if ((noUpdate+needUpdate)%100==0) {
+				float f = noUpdate+needUpdate;
+				float result = (100.0f/f)*needUpdate;
+				log.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
+						new Object[] {result, needUpdate, noUpdate, rainbowduino.getAckErrors(), 
+							rainbowduino.getArduinoErrorCounter(), rainbowduino.getArduinoBufferSize()});				
+			}
+			
 		}
 	}
 
