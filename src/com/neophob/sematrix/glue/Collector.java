@@ -376,6 +376,7 @@ public class Collector {
 
 	/**
 	 * get current state of visuals/outputs
+	 * as string list - used to save current settings
 	 */
 	public List<String> getCurrentStatus() {
 		List<String> ret = new ArrayList<String>();
@@ -406,8 +407,6 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_EFFECT_B+" "+fx2);
 		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
 		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
-		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
-		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
 		ret.add(ValidCommands.CHANGE_TINT+" "+r+" "+g+" "+b);
 		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
 		ret.add(ValidCommands.IMAGE+" "+fileImageSimple);
@@ -417,8 +416,9 @@ public class Collector {
 		ret.add(ValidCommands.TEXTDEF+" "+textureDeformationLut);
 		ret.add(ValidCommands.TEXTWR+" "+text);
 		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
-		ret.add(ValidCommands.CHANGE_TINT +" "+r+" "+g+" "+b);
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresholdValue);
+		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
+		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
 		return ret;
 	}
 
