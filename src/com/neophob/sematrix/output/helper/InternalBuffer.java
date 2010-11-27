@@ -27,12 +27,21 @@ public class InternalBuffer extends PApplet {
 	private int[] buffer;
 	private PImage pImage;
 
+	/**
+	 * 
+	 * @param displayHoriz
+	 * @param x
+	 * @param y
+	 */
 	public InternalBuffer(boolean displayHoriz, int x, int y) {
 		this.displayHoriz = displayHoriz;
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * 
+	 */
     public void setup() {
     	log.log(Level.INFO, "create frame with size "+x+"/"+y);
         size(x,y);
@@ -40,11 +49,11 @@ public class InternalBuffer extends PApplet {
         background(0,0,0);
     }
 
+    /**
+     * 
+     */
 	public void draw() {
 		frame++;
-		
-		//if (frame%2==1) return;
-
 		int x=0, y=0;
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
 			//get image
@@ -64,8 +73,6 @@ public class InternalBuffer extends PApplet {
 				y += pImage.height;
 			}			
 		}
-
-		//redraw();
 	}
 
 
