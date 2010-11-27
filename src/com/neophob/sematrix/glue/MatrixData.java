@@ -1,15 +1,14 @@
 package com.neophob.sematrix.glue;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.BufferedImage;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageObserver;
+import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
+import java.awt.image.ReplicateScaleFilter;
 import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,34 +142,6 @@ public class MatrixData {
 
 
 	/**
-	 * workarround until processing resize works 
-	 * 
-	 * @param image
-	 * @param width
-	 * @param height
-	 * @return
-	 */
-	private static BufferedImage resize2(BufferedImage image, int width, int height) {
-		int type = image.getType() == 0? BufferedImage.TYPE_INT_RGB : image.getType();
-		BufferedImage resizedImage = new BufferedImage(width, height, type);
-		Graphics2D g = resizedImage.createGraphics();
-		g.setComposite(AlphaComposite.Src);
-
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_SPEED);
-
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_OFF);
-
-		g.drawImage(image, 0, 0, width, height, null);
-		g.dispose();
-		return resizedImage;
-	}
-
-	/**
 	 * TODO maybe move
 	 * convert buffer to output size
 	 * @param buffer
@@ -197,32 +168,22 @@ public class MatrixData {
 		//create buffered image out of out internal buffer
 		BufferedImage bi = new BufferedImage(getBufferXSize(), getBufferYSize(), BufferedImage.TYPE_INT_RGB);
 		bi.setRGB(0, 0, getBufferXSize(), getBufferYSize(), buffer, 0, getBufferXSize());
-		int[] pixels = new int[deviceXSize*deviceYSize];
 		
-		//do enlage image - used for internal buffer
-		if (deviceXSize==getBufferXSize() || deviceXSize>getBufferXSize()) {
-			BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
+		Image scaledImage;
+		if (deviceXSize>=getBufferXSize()) {
 			
-	        PixelGrabber pg = new PixelGrabber(resizedImage, 0, 0, deviceXSize, deviceYSize, pixels, 0, deviceXSize);
-	        try {
-	            pg.grabPixels();
-	        } catch (InterruptedException e) {
-	            log.log(Level.WARNING, "interrupted waiting for pixels!");
-	        }
-	        if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-	            log.log(Level.WARNING, "image fetch aborted or errored");
-	        }
-			
-	        return pixels;
-			
+			//enlarge image with an replicate scale filter
+			scaledImage = Toolkit.getDefaultToolkit().createImage (new FilteredImageSource (bi.getSource(),
+					new ReplicateScaleFilter(deviceXSize, deviceYSize)));		
+		} else {
+			//shrink image with an area average filter
+			scaledImage = Toolkit.getDefaultToolkit().createImage (new FilteredImageSource (bi.getSource(),
+					new AreaAveragingScaleFilter(deviceXSize, deviceYSize)));		
 		}
 		
-		//resize image with an area average filter
-		Image areaAverageFilteredImage = Toolkit.getDefaultToolkit().createImage (new FilteredImageSource (bi.getSource(),
-				new AreaAveragingScaleFilter(deviceXSize, deviceYSize)));		
-		
-		//get pixels out 
-        PixelGrabber pg = new PixelGrabber(areaAverageFilteredImage, 0, 0, deviceXSize, deviceYSize, pixels, 0, deviceXSize);
+		//get pixels out
+		int[] pixels = new int[deviceXSize*deviceYSize];
+        PixelGrabber pg = new PixelGrabber(scaledImage, 0, 0, deviceXSize, deviceYSize, pixels, 0, deviceXSize);
         try {
             pg.grabPixels();
         } catch (InterruptedException e) {
@@ -231,12 +192,9 @@ public class MatrixData {
         if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
             log.log(Level.WARNING, "image fetch aborted or errored");
         }
-		
+//		WritableRaster raster = scaledImage.getRaster();
+//		raster.getDataElements(0, 0, deviceXSize, deviceYSize, pixels);
         return pixels;
-		//BufferedImage resizedImage = resize2(bi, deviceXSize, deviceYSize);
-		//DataBufferInt dbi = (DataBufferInt)resizedImage.getRaster().getDataBuffer();
-		
-		//return dbi.getData();
 	}
 
 
