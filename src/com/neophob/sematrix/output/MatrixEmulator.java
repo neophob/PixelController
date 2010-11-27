@@ -10,6 +10,9 @@ public class MatrixEmulator extends Output {
 	private static final int LED_SIZE = 16;
 	private static final int LED_ABSTAND = 0;
 
+	/**
+	 * 
+	 */
 	public MatrixEmulator() {
 		super(MatrixEmulator.class.toString());
 
@@ -31,9 +34,18 @@ public class MatrixEmulator extends Output {
 		Collector.getInstance().getPapplet().background(33,33,33);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private int getOneMatrixXSize() {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceXSize()*(RAHMEN_SIZE+LED_SIZE);
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	private int getOneMatrixYSize() {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+LED_SIZE);
 	}
