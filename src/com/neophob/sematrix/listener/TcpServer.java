@@ -143,10 +143,8 @@ public class TcpServer implements Runnable {
 	 */
 	private void sendMsg(String[] msg) {
 		ValidCommands response = MessageProcessor.processMsg(msg, true);
-		if (response!=null) {
-			if (response == ValidCommands.STATUS) {
+		if (response!=null && response == ValidCommands.STATUS) {
 				sendStatusToGui();
-			}
 		}
 	}
 

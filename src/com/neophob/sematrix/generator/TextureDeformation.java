@@ -10,7 +10,11 @@ import processing.core.PImage;
 import com.neophob.sematrix.effect.BoxFilter;
 import com.neophob.sematrix.glue.Collector;
 
-
+/**
+ * 
+ * @author michu
+ *
+ */
 public class TextureDeformation extends Generator {	
 
 	private static Logger log = Logger.getLogger(TextureDeformation.class.getName());
@@ -99,11 +103,11 @@ public class TextureDeformation extends Generator {
 		timeDisplacement++;
 	}
 
-	static public final int constrain(int amt, int low, int high) {
+	public static final int constrain(int amt, int low, int high) {
 		return (amt < low) ? low : ((amt > high) ? high : amt);
 	}
 
-	static public final float constrain(float amt, float low, float high) {
+	public static final float constrain(float amt, float low, float high) {
 		return (amt < low) ? low : ((amt > high) ? high : amt);
 	}
 	

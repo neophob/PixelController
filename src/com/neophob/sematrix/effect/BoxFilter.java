@@ -133,6 +133,10 @@ public class BoxFilter  {
 		6,
 		2
 	};
+	
+	private BoxFilter() {
+		//util class - hide constructor
+	}
 
 	public static int[] applyBoxFilter(int art, int anz, int src[], int lineSize) {	
 		int buffertmp[] = new int[src.length];
