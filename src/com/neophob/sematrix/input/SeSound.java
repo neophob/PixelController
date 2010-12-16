@@ -1,18 +1,23 @@
 package com.neophob.sematrix.input;
 
+/**
+ * 
+ * @author michu
+ *
+ */
 public interface SeSound {
 
-	public float getVolume();
+	float getVolume();
 	
-	public float getVolumeNormalized();
+	float getVolumeNormalized();
 	
-	public boolean isKick();
+	boolean isKick();
 	
-	public boolean isSnare();
+	boolean isSnare();
 	
-	public boolean isHat();
+	boolean isHat();
 	
-	public boolean isPang();
+	boolean isPang();
 
-	public void shutdown();
+	void shutdown();
 }

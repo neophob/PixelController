@@ -21,48 +21,49 @@ public class VisualDaemon extends PApplet {
 
 	public static final int FPS = 25;
 	//96*2*25 = 4800bytes
-	
+
 	RainbowduinoDevice rainbowduino;
 	NewWindowHelper nwh;
 	long lastHeartbeat;
 	int error=0;
 	int frame=0;
 	MatrixEmulator osd;
-		
+
 	public void setup() {
+		//		ImageIcon titlebaricon = new ImageIcon(loadBytes("logo.jpg"));
+		//		super.frame.setIconImage(titlebaricon.getImage()); 
+		//		super.frame.setTitle("This is in the titlebar!");
+
 		Collector.getInstance().init(this, FPS, 8, 8);
 		frameRate(FPS);
-		
+
 		osd = new MatrixEmulator();
-		
+
 		try {
 			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());			
 		} catch (Exception e) {
 			rainbowduino = null;
 		}
-		
 		if (PropertiesHelper.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			nwh = new NewWindowHelper(true);	
 		}
 	}
-	
+
 	public void draw() { 
 		//update all generators
 
 		Collector.getInstance().updateSystem();
-		
-		if (rainbowduino!=null) {
-			if (rainbowduino.getArduinoErrorCounter()!=0) {
-				error=rainbowduino.getArduinoErrorCounter();
-				System.out.println("error at: "+new Date(rainbowduino.getLatestHeartbeat()).toGMTString()+
-						", errorcnt: "+error+
-						", buffersize: "+rainbowduino.getArduinoBufferSize());
-			}			
+
+		if (rainbowduino!=null && rainbowduino.getArduinoErrorCounter()>0) {
+			error=rainbowduino.getArduinoErrorCounter();
+			System.out.println("error at: "+new Date(rainbowduino.getLatestHeartbeat()).toGMTString()+
+					", errorcnt: "+error+
+					", buffersize: "+rainbowduino.getArduinoBufferSize());
 		}
 
 		frame++;
 	}
-	
+
 	public static void main(String args[]) {
 		PApplet.main(new String[] { "com.neophob.VisualDaemon" });
 	}
