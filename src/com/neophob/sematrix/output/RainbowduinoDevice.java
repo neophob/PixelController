@@ -68,8 +68,10 @@ public class RainbowduinoDevice extends Output {
 					int i2cAddr = allI2cAddress.get(screen);
 					if (!rainbowduino.sendRgbFrame((byte)i2cAddr, super.getBufferForScreen(screen))) {
 						noUpdate++;
-					} else
+					} else {
 						needUpdate++;
+					}
+						
 				}
 			}
 			

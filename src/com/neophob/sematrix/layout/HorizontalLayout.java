@@ -9,7 +9,12 @@ public class HorizontalLayout extends Layout {
 		super(LayoutName.HORIZONTAL, row1Size, row2Size);
 	}
 
-	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
+	/**
+	 * 
+	 * @param fxInput
+	 * @return
+	 */
+	private int howManyScreensShareThisFxOnTheXAxis(int fxInput) {
 		int ret=0;
 		for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
 			if (o.getVisualId()==fxInput) {
@@ -44,7 +49,7 @@ public class HorizontalLayout extends Layout {
 		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
 
 		return new LayoutModel(
-				this.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr), 
+				this.howManyScreensShareThisFxOnTheXAxis(fxInput), 
 				1,
 				this.getXOffsetForScreen(fxInput, screenNr),
 				0,

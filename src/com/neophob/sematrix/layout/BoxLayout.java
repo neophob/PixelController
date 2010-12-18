@@ -21,10 +21,9 @@ public class BoxLayout extends Layout {
 	/**
 	 * 
 	 * @param fxInput
-	 * @param screenNr
 	 * @return
 	 */
-	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, int screenNr) {
+	private int howManyScreensShareThisFxOnTheXAxis(int fxInput) {
 		int max=0;
 		int min=10;
 		OutputMapping o;
@@ -52,10 +51,9 @@ public class BoxLayout extends Layout {
 	/**
 	 * 
 	 * @param fxInput
-	 * @param screenNr
 	 * @return
 	 */
-	private int howManyScreensShareThisFxOnTheYAxis(int fxInput, int screenNr) {
+	private int howManyScreensShareThisFxOnTheYAxis(int fxInput) {
 		int max=0;
 		int min=10;
 		OutputMapping o;
@@ -127,8 +125,8 @@ public class BoxLayout extends Layout {
 	public LayoutModel getDataForScreen(int screenNr) {
 		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
 
-		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput, screenNr);
-		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput, screenNr);
+		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput);
+		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput);
 /*		System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
 				", posX"+this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX)+
 				", posY"+this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY)
