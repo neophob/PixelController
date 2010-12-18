@@ -20,6 +20,8 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class MessageProcessor {
 
 	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
+	
+	private static final String IGNORE_COMMAND = "Ignored command";
 
 	private MessageProcessor() {
 		//no instance
@@ -53,7 +55,7 @@ public class MessageProcessor {
 						col.getVisual(i).setGenerator1(tmp);
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -65,7 +67,7 @@ public class MessageProcessor {
 						col.getVisual(i).setGenerator2(tmp);
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -77,7 +79,7 @@ public class MessageProcessor {
 						col.getVisual(i).setEffect1(tmp);
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -89,7 +91,7 @@ public class MessageProcessor {
 						col.getVisual(i).setEffect2(tmp);
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -101,7 +103,7 @@ public class MessageProcessor {
 						col.getVisual(i).setMixer(tmp);
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -124,7 +126,7 @@ public class MessageProcessor {
 						}
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -136,7 +138,7 @@ public class MessageProcessor {
 						col.getOutputMappings(i).setEffect(col.getEffect(tmp));
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -151,7 +153,7 @@ public class MessageProcessor {
 						}
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -165,7 +167,7 @@ public class MessageProcessor {
 						col.setShufflerSelect(i, b);
 					}					
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -184,7 +186,7 @@ public class MessageProcessor {
 					Tint t = (Tint)col.getEffect(EffectName.TINT);
 					t.setColor(r, g, b);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -195,7 +197,7 @@ public class MessageProcessor {
 					col.getPresent().get(idxs).setPresent(present);
 					PropertiesHelper.savePresents();
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -208,7 +210,7 @@ public class MessageProcessor {
 					}
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -217,7 +219,7 @@ public class MessageProcessor {
 					int a = Integer.parseInt(msg[1]);
 					col.setSelectedPresent(a);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -230,7 +232,7 @@ public class MessageProcessor {
 					Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
 					t.setThreshold(a);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -241,7 +243,7 @@ public class MessageProcessor {
 					Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
 					blink.loadFile(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -252,7 +254,7 @@ public class MessageProcessor {
 					Image img = (Image)col.getGenerator(GeneratorName.IMAGE);
 					img.loadFile(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -263,7 +265,7 @@ public class MessageProcessor {
 					ImageZoomer img = (ImageZoomer)col.getGenerator(GeneratorName.IMAGE_ZOOMER);
 					img.loadImage(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -274,7 +276,7 @@ public class MessageProcessor {
 					TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 					df.changeLUT(lut);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 			
@@ -285,7 +287,7 @@ public class MessageProcessor {
 					TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 					df.loadFile(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 			
@@ -297,7 +299,7 @@ public class MessageProcessor {
 					Textwriter txt = (Textwriter)col.getGenerator(GeneratorName.TEXTWRITER);
 					txt.createTextImage(message);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -312,13 +314,15 @@ public class MessageProcessor {
 						return ValidCommands.STATUS;
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	"Ignored command", e);
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
 			default:
 				String s="";
-				for (int i=0; i<msg.length;i++) s+=msg[i]+"; ";
+				for (int i=0; i<msg.length;i++) {
+					s+=msg[i]+"; ";
+				}
 				log.log(Level.INFO,	"Ignored command <{0}>", s);
 				break;
 			}

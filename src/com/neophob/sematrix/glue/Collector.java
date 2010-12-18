@@ -564,7 +564,8 @@ public class Collector {
 	public Visual getVisual(int index) {
 		if (index<allVisuals.size()) {
 			return allVisuals.get(index);			
-		} else return allVisuals.get(0);
+		} 
+		return allVisuals.get(0);
 	}
 
 	public void setAllVisuals(List<Visual> allVisuals) {
