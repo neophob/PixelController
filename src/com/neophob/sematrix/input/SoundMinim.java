@@ -50,12 +50,12 @@ public class SoundMinim implements SeSound, Runnable {
 		beat.setSensitivity(300); 
 		bl = new BeatListener(beat, in);
 		
+		volumeBuffer = new CircularFifoBuffer(SOUND_BUFFER_RESOLUTION);
+
 		Collector.getInstance().getPapplet().registerDispose(this);
 		this.runner = new Thread(this);
 		this.runner.setName("ZZ Sound stuff");
 		this.runner.start();
-
-		volumeBuffer = new CircularFifoBuffer(SOUND_BUFFER_RESOLUTION);
 	}
 	
 	
