@@ -29,9 +29,7 @@ public class Blinkenlights extends Generator implements PConstants {
 		PApplet parent = Collector.getInstance().getPapplet();
 		random=false;
 		blinken = new BlinkenLibrary(parent, PREFIX+filename);
-		blinken.setIgnoreFileDelay(true);
-		blinken.loop();
-		movieFrames = blinken.getNrOfFrames();
+		blinkenSettings();
 	}
 
 	/**
@@ -40,9 +38,15 @@ public class Blinkenlights extends Generator implements PConstants {
 	 */
 	public void loadFile(String file) {
 		blinken.loadFile(PREFIX+file);
+		blinkenSettings();
+	}
+	
+	private void blinkenSettings() {
 		blinken.setIgnoreFileDelay(true);
-		blinken.loop();
+		blinken.noLoop();
+		blinken.stop();
 		movieFrames = blinken.getNrOfFrames();
+		//frames=0;
 	}
 	
 	@Override
@@ -52,8 +56,12 @@ public class Blinkenlights extends Generator implements PConstants {
 					rand.nextInt(blinken.getNrOfFrames())
 			);
 		} else {
-//			blinken.jump(frames%movieFrames);
-			frames++;
+			try {
+				blinken.jump(frames%movieFrames);
+				frames++;				
+			} catch (Exception e) {
+				//a npe exception might happen if a new file is loaded!
+			}
 		}
 
 		//resize image to 128x128
