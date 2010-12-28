@@ -1,13 +1,5 @@
 package com.neophob.sematrix.glue;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageObserver;
-import java.awt.image.PixelGrabber;
-import java.awt.image.ReplicateScaleFilter;
 import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +8,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.glue.image.ResizeImageHelper;
 import com.neophob.sematrix.layout.LayoutModel;
 
 /**
@@ -139,61 +132,23 @@ public class MatrixData {
 		return resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
 	}
 
+	
+	
 
 	/**
-	 * TODO maybe move
-	 * convert buffer to output size
+	 * resize internal buffer to output size
 	 * @param buffer
 	 * @return RESIZED image
 	 */
 	public int[] resizeBufferForDevice(int[] buffer, int deviceXSize, int deviceYSize) {
 		
-		//Processing resize is buggy!
-/*		int[] ret = new int[deviceXSize*deviceYSize];
- 		PImage pImage = Collector.getInstance().getPapplet().createImage
- 			( getBufferXSize(), getBufferYSize(), PApplet.RGB );
-		pImage.loadPixels();
-		System.arraycopy(buffer, 0, pImage.pixels, 0, buffer.length);
-		pImage.updatePixels();
-
-		pImage.resize(deviceXSize, deviceYSize);
+		//processing RESIZE is buggy!
+		//return ResizeImageHelper.processingResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 		
-		pImage.loadPixels();
-		ret = pImage.pixels;
-		pImage.updatePixels();
+		//Area Average Filter - nice output but slow!
+		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 		
-		return ret;*/
-		
-		//create buffered image out of out internal buffer
-		BufferedImage bi = new BufferedImage(getBufferXSize(), getBufferYSize(), BufferedImage.TYPE_INT_RGB);
-		bi.setRGB(0, 0, getBufferXSize(), getBufferYSize(), buffer, 0, getBufferXSize());
-		
-		Image scaledImage;
-		if (deviceXSize>=getBufferXSize()) {
-			
-			//enlarge image with an replicate scale filter
-			scaledImage = Toolkit.getDefaultToolkit().createImage (new FilteredImageSource (bi.getSource(),
-					new ReplicateScaleFilter(deviceXSize, deviceYSize)));		
-		} else {
-			//shrink image with an area average filter
-			scaledImage = Toolkit.getDefaultToolkit().createImage (new FilteredImageSource (bi.getSource(),
-					new AreaAveragingScaleFilter(deviceXSize, deviceYSize)));		
-		}
-		
-		//get pixels out
-		int[] pixels = new int[deviceXSize*deviceYSize];
-        PixelGrabber pg = new PixelGrabber(scaledImage, 0, 0, deviceXSize, deviceYSize, pixels, 0, deviceXSize);
-        try {
-            pg.grabPixels();
-        } catch (InterruptedException e) {
-            log.log(Level.WARNING, "interrupted waiting for pixels!");
-        }
-        if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-            log.log(Level.WARNING, "image fetch aborted or errored");
-        }
-//		WritableRaster raster = scaledImage.getRaster();
-//		raster.getDataElements(0, 0, deviceXSize, deviceYSize, pixels);
-        return pixels;
+		return ResizeImageHelper.multiStepBilinearResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 	}
 
 
