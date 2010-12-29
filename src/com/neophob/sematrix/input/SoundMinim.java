@@ -3,8 +3,6 @@ package com.neophob.sematrix.input;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.collections.buffer.CircularFifoBuffer;
-
 import com.neophob.sematrix.glue.Collector;
 
 import ddf.minim.AudioInput;
@@ -13,10 +11,11 @@ import ddf.minim.analysis.BeatDetect;
 
 public class SoundMinim implements SeSound, Runnable {
 
+	//samples per 1/4s
+	private static final int SOUND_BUFFER_RESOLUTION = 8;
+	
 	private static Logger log = Logger.getLogger(SoundMinim.class.getName());
-
-	private static final int SOUND_BUFFER_RESOLUTION = 64;
-
+	
 	private Minim minim;
 	private AudioInput in;
 	private BeatDetect beat;
@@ -25,15 +24,12 @@ public class SoundMinim implements SeSound, Runnable {
 	
 	/* thread to collect volume information */
 	private Thread runner;
-	private CircularFifoBuffer volumeBuffer;
 
-	private float sndVolumeMax=1;
-	private float sndVolumeMin=0;
-
+	private float sndVolumeMax=0;
 
 	public SoundMinim() {
 		minim = new Minim(Collector.getInstance().getPapplet());
-		in = minim.getLineIn( Minim.STEREO, 1024 );
+		in = minim.getLineIn( Minim.STEREO, 512 );
 		//in = minim.getLineIn( Minim.MONO, 1024 );
 		
 		// a beat detection object that is FREQ_ENERGY mode that 
@@ -50,8 +46,6 @@ public class SoundMinim implements SeSound, Runnable {
 		beat.setSensitivity(300); 
 		bl = new BeatListener(beat, in);
 		
-		volumeBuffer = new CircularFifoBuffer(SOUND_BUFFER_RESOLUTION);
-
 		Collector.getInstance().getPapplet().registerDispose(this);
 		this.runner = new Thread(this);
 		this.runner.setName("ZZ Sound stuff");
@@ -60,53 +54,24 @@ public class SoundMinim implements SeSound, Runnable {
 	
 	
 	/**
-	 * get current volume
-	 * @return
+	 * Gets the current level of the buffer. It is calculated as 
+	 * the root-mean-squared of all the samples in the buffer.
+	 * @return the RMS amplitude of the buffer
 	 */
 	public float getVolume() {
-		float f,m = 0;
-		for(int i = 0; i < in.bufferSize() - 1; i++) {			
-			f = in.mix.get(i);
-			if (f<0.0f) f=0f-f;
-			if ( f > m ) {
-				m = f;
-			}
-		}
-		return m;
+		return getVolumeNormalized();
 	}
 
 	/**
 	 * 
 	 */
 	public float getVolumeNormalized() {
-		float f = getVolume();
-		f=(1/sndVolumeMax-sndVolumeMin)*f;
-		if (f>1f) f=1f;
-		return f;
+		float f = in.mix.level();
+		float norm=(1.0f/getSndVolumeMax())*f;	
+		System.out.println(",max: "+(int)(sndVolumeMax*10000)+", val: "+(int)(f*10000)+"->"+norm);
+		//if (norm>1f) norm=1f;		
+		return norm;
 	}
-	
-	/**
-	 * 
-	 * @param count: slit up result in n pieces
-	 * @return
-	 */
-	/*public float[] getVolume(int count) {
-		float m = 0;
-		float result[] = new float[count];
-		int sequenze = in.bufferSize()/count;
-		
-		int ofs=0;
-		for (int s=0; s<count; s++) {
-			for (int i=0; i<sequenze; i++) {
-				if ( Math.abs(in.mix.get(i+ofs)) > m ) {
-					m = Math.abs(in.mix.get(i));
-				}		
-			}
-			result[s] = m;
-			ofs+=sequenze;
-		}
-		return result;
-	}*/
 
 	public boolean isKick() {
 		return beat.isKick();
@@ -129,43 +94,41 @@ public class SoundMinim implements SeSound, Runnable {
 		minim.stop();
 	}
 	
-	public void dispose() {
+	public void dispose() {		
 		runner = null;
+		//XXX this.shutdown();
 	}
 
 	/**
 	 * the thread runner
 	 */
 	public void run() {
-		int sleep = (1000 / SOUND_BUFFER_RESOLUTION/3);
-		int cnt=0;
+		long sleep = (int)(250/SOUND_BUFFER_RESOLUTION);
 		log.log(Level.INFO,	"Sound thread started...");
+		int loop=0;
 		while (Thread.currentThread() == runner) {
 			try {
 				Thread.sleep(sleep);
 			} catch (InterruptedException e) {}
-
-			float f = this.getVolume();
-			volumeBuffer.add(f);
 			
-			if (cnt%(SOUND_BUFFER_RESOLUTION)==0) {
-				float max=0;
-				float min=1;
-				for (Object o: volumeBuffer) {
-					max = Math.max(max, (Float)o);
-					min = Math.min(min, (Float)o);
-				}
-				if (max-min<0.002f) {
-					sndVolumeMax=1;
-					sndVolumeMin=0;
-				} else {
-					sndVolumeMax=max;
-					sndVolumeMin=min;					
-				}
+			//decrement max volume after 1s
+			if (loop>SOUND_BUFFER_RESOLUTION) {
+				sndVolumeMax*=.93f;
 			}
-			
-			cnt++;
+
+			float f = in.mix.level();
+			if (f>sndVolumeMax) {
+				sndVolumeMax=f;
+				loop=0;
+			}
+						
+			loop++;
 		}
 	}
 
+
+	public synchronized float getSndVolumeMax() {
+		return sndVolumeMax;
+	}
+	
 }
