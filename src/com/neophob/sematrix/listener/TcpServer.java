@@ -43,7 +43,7 @@ public class TcpServer implements Runnable {
 		RANDOM
 	}
 
-	private static final long CONNECT_RETRY_IN_MS = 8000;
+	private static final long CONNECT_RETRY_IN_MS = 16000;
 
 	private static Logger log = Logger.getLogger(TcpServer.class.getName());
 
@@ -59,8 +59,8 @@ public class TcpServer implements Runnable {
 	private long lastConnectTimestamp;
 	private boolean pdClientConnected=false;
 
-	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {
-		this.app = app;
+	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {		
+		this.app = app;  
 		app.registerDispose(this);
 
 		this.sendHost = sendHost;
@@ -95,10 +95,15 @@ public class TcpServer implements Runnable {
 
 			if (tcpServer!=null) {
 				try {
-					sendSoundStatus();
-					if (Collector.getInstance().isRandomMode() && (count%20)==2) {
-						sendStatusToGui();					
-					}
+					
+					//check if client is available
+					if (client!=null && client.active()) {
+						sendSoundStatus();
+						
+						if (Collector.getInstance().isRandomMode() && (count%20)==2) {
+							sendStatusToGui();					
+						}
+					}					
 
 					Client c = tcpServer.available();
 					if (c!=null && c.available()>0) {					
@@ -111,11 +116,12 @@ public class TcpServer implements Runnable {
 							msg = StringUtils.removeEnd(msg, ";");
 							lastMsg="";
 							sendMsg(StringUtils.split(msg, ' '));						
-							//missing end of message... save it
 						} else if (msgCount==0) {
-							lastMsg=msg;
-							//more than one message receieved, split it
+							//missing end of message... save it
+							lastMsg=msg;							
 						} else {
+							//more than one message receieved, split it
+							//TODO: reuse partial messages
 							lastMsg="";
 							String[] msgs = msg.split(";");
 							for (String s: msgs) {
@@ -218,7 +224,7 @@ public class TcpServer implements Runnable {
 		Socket socket = new Socket();
 		lastConnectTimestamp = System.currentTimeMillis();
 		try {
-			socket.connect(new InetSocketAddress(sendHost, sendPort), 4000);
+			socket.connect(new InetSocketAddress(sendHost, sendPort), 2000);
 			client = new Client(app, socket);
 			log.log(Level.INFO,	"Pure Data Client connected at "+sendHost+":"+sendPort+"!");
 			pdClientConnected=true;
