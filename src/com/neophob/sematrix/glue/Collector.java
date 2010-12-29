@@ -257,7 +257,7 @@ public class Collector {
 		
 		//get sound volume
 		float f = Sound.getInstance().getVolumeNormalized();
-		int u = (int)(0.5f+f*3);
+		int u = (int)(0.5f+f*2.5f);
 		//check for silence - in this case update slowly
 		if (u<1) {
 			if (frames%2==1) {
