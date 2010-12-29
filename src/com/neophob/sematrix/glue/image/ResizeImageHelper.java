@@ -100,7 +100,13 @@ public class ResizeImageHelper {
 			//downscale - used to send to device
 			bi = Scalr.resize(bi, Scalr.Method.QUALITY, deviceXSize, deviceYSize, false, false);	
 		}		              
-		return getPixelsFromImage(bi, deviceXSize, deviceYSize);
+		
+		int[] ret = getPixelsFromImage(bi, deviceXSize, deviceYSize);
+		
+		//destroy image
+		bi.flush();
+		
+		return ret;
 	}
 
 
@@ -124,6 +130,13 @@ public class ResizeImageHelper {
 		return grabPixels(scaledImage, deviceXSize, deviceYSize);
 	}
 
+	/**
+	 * 
+	 * @param scaledImage
+	 * @param deviceXSize
+	 * @param deviceYSize
+	 * @return
+	 */
 	private static int[] grabPixels(Image scaledImage, int deviceXSize, int deviceYSize) {		
 		int[] pixels = new int[deviceXSize*deviceYSize];
 		PixelGrabber pg = new PixelGrabber(scaledImage, 0, 0, deviceXSize, deviceYSize, pixels, 0, deviceXSize);
@@ -139,7 +152,15 @@ public class ResizeImageHelper {
 	}
 
 
-
+	/**
+	 * 
+	 * @param buffer
+	 * @param deviceXSize
+	 * @param deviceYSize
+	 * @param currentXSize
+	 * @param currentYSize
+	 * @return
+	 */
 	public static int[] resizeBicubic(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		int height = currentYSize;
 		int width = currentXSize;
@@ -215,6 +236,11 @@ public class ResizeImageHelper {
 		return dest;
 	}
 
+	/**
+	 * 
+	 * @param x
+	 * @return
+	 */
 	private static double BiCubicKernel(double x) {
 		if (x > 2.0d) {
 			return 0.0d;
