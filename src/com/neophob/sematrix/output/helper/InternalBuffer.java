@@ -25,7 +25,7 @@ public class InternalBuffer extends PApplet {
 	private boolean displayHoriz;
 	private int x,y;
 	private int[] buffer;
-	private PImage pImage;
+	private PImage pImage=null;
 
 	/**
 	 * 
@@ -50,7 +50,7 @@ public class InternalBuffer extends PApplet {
     }
 
     /**
-     * 
+     * draw the whole internal buffer on screen
      */
 	public void draw() {
 		int x=0, y=0;
@@ -58,8 +58,10 @@ public class InternalBuffer extends PApplet {
 			//get image
 			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), BFR_X, BFR_Y);
 			
-			//create an image out of the buffer
-	 		pImage = Collector.getInstance().getPapplet().createImage( BFR_X, BFR_Y, PApplet.RGB );
+			if (pImage==null) {
+				//create an image out of the buffer
+		 		pImage = Collector.getInstance().getPapplet().createImage( BFR_X, BFR_Y, PApplet.RGB );				
+			}
 			pImage.loadPixels();
 			System.arraycopy(buffer, 0, pImage.pixels, 0, BFR_X*BFR_Y);
 			pImage.updatePixels();
