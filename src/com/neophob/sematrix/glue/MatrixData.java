@@ -32,6 +32,8 @@ public class MatrixData {
 	private int deviceXSize;
 	private int deviceYSize;
 	private int deviceSize;
+	
+	private PImage tmpImage;
 
 	/**
 	 * init matrix data
@@ -117,17 +119,18 @@ public class MatrixData {
 		int yStart=lm.getyStart(getBufferYSize());
 		int yWidth=lm.getyWidth(getBufferYSize());
 		
-		//TODO
-		//very UGLY and SLOW method to copy the image - im lazy!
- 		PImage p = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );
-		p.loadPixels();
-		System.arraycopy(buffer, 0, p.pixels, 0, getBufferXSize()*getBufferYSize());
+		if (tmpImage==null || tmpImage.width != getBufferXSize()) {
+			tmpImage = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );			
+		} 
+		tmpImage.loadPixels();
+		System.arraycopy(buffer, 0, tmpImage.pixels, 0, getBufferXSize()*getBufferYSize());
 
+		//TODO very UGLY and SLOW method to copy the image - im lazy!
 		//copy(x, y, width, height, dx, dy, dwidth, dheight)
-		p.copy(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize());
+		tmpImage.blend(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize(), PImage.REPLACE);
 		
-		int[] bfr2 = p.pixels;
-		p.updatePixels();
+		int[] bfr2 = tmpImage.pixels;
+		tmpImage.updatePixels();
 
 		return resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
 	}
@@ -147,7 +150,9 @@ public class MatrixData {
 		
 		//Area Average Filter - nice output but slow!
 		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
-		
+//	return new int[deviceXSize* deviceYSize];	
+
+//		return ResizeImageHelper.resizeBicubic(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());	
 		return ResizeImageHelper.multiStepBilinearResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 	}
 
