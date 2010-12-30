@@ -86,6 +86,23 @@ public class RainbowduinoDevice extends Output {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	public void printAvailableI2cAdr() {
+		if (initialized) {
+			List<Integer> list = rainbowduino.scanI2cBus();
+			String foundDevices="";
+			for (int i: list) {
+				foundDevices+=i+" ";
+			}
+			log.log(Level.INFO, "Found i2c devices: <{0}>", foundDevices);
+		} else {
+			log.log(Level.INFO, "I2C scan aborted - not connected to arduino!");
+		}
+	}
+	
+	
 	@Override
 	public void close() {
 		if (initialized) {
