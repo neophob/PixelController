@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>neophob.com</groupId>
+  <artifactId>sematrix</artifactId>
+  <name>sematrix</name>
+  <version>0.5</version>
+  <build>
+        <sourceDirectory>src/com/neophob</sourceDirectory>
+        <outputDirectory>bin/com/neophob</outputDirectory>
+        <plugins>
+           <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>1.5</source>
+                  <target>1.5</target>
+                  <excludes>
+                      <exclude>**/*.*</exclude>
+                  </excludes>
+              </configuration>
+           </plugin>
+           <plugin>
+              <groupId>org.codehaus.mojo</groupId>
+              <artifactId>build-helper-maven-plugin</artifactId>
+              <version>1.1</version>
+              <executions>
+                <execution>
+                  <id>add-source</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                      <goal>add-source</goal>
+                  </goals>
+                  <configuration>
+                      <sources>
+                          <source>[YOUR SOURCE DIRECTORY 2]</source>
+                          <source>[YOUR SOURCE DIRECTORY 3]</source>
+                      </sources>
+                  </configuration>
+                </execution>
+              </executions>
+           </plugin>
+        </plugins>
+  </build>
+  <properties>
+        <sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+        <sonar.phase>generate-sources</sonar.phase>
+  </properties>
+</project>
