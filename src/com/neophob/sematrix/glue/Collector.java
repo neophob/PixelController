@@ -12,6 +12,7 @@ import processing.core.PApplet;
 import com.neophob.sematrix.effect.BeatHorizShift;
 import com.neophob.sematrix.effect.BeatVerticalShift;
 import com.neophob.sematrix.effect.Effect;
+import com.neophob.sematrix.effect.Emboss;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
 import com.neophob.sematrix.effect.RotoZoom;
@@ -205,6 +206,7 @@ public class Collector {
 		new Voluminize();
 		new Tint();
 		new Threshold();
+		new Emboss();
 
 		//create mixer
 		new AddSat();
