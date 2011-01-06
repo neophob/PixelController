@@ -14,7 +14,8 @@ public abstract class Effect {
 		BEAT_VERTICAL_SHIFT(4),
 		VOLUMINIZE(5),
 		TINT(6),
-		THRESHOLD(7);
+		THRESHOLD(7),
+		EMBOSS(8);
 		
 		private int id;
 		
