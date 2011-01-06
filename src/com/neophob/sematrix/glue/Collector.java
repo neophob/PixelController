@@ -45,6 +45,7 @@ import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.TcpServer.ValidCommands;
 import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Checkbox;
+import com.neophob.sematrix.mixer.MinusHalf;
 import com.neophob.sematrix.mixer.Mix;
 import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.mixer.Multiply;
@@ -214,6 +215,7 @@ public class Collector {
 		new Checkbox();
 		new Voluminizer();
 		new Xor();
+		new MinusHalf();
 
 		//create 5 visuals
 		for (int n=0; n<nrOfScreens+1; n++) {
