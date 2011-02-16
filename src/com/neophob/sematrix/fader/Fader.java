@@ -50,6 +50,11 @@ public abstract class Fader {
 	protected int currentStep;
 	private boolean started;
 
+	/**
+	 * 
+	 * @param faderName
+	 * @param fadeTime
+	 */
 	public Fader(FaderName faderName, int fadeTime) {
 		this.faderName = faderName;
 		this.fadeTime = fadeTime;

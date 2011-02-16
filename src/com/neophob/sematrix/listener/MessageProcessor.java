@@ -14,7 +14,6 @@ import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.listener.TcpServer.ValidCommands;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class MessageProcessor {
@@ -23,6 +22,31 @@ public class MessageProcessor {
 	
 	private static final String IGNORE_COMMAND = "Ignored command";
 
+	public enum ValidCommands {
+		STATUS,
+		CHANGE_GENERATOR_A,
+		CHANGE_GENERATOR_B,
+		CHANGE_EFFECT_A,
+		CHANGE_EFFECT_B,
+		CHANGE_MIXER,
+		CHANGE_OUTPUT,
+		CHANGE_OUTPUT_EFFECT,
+		CHANGE_FADER,
+		CHANGE_TINT,
+		CHANGE_PRESENT,
+		CHANGE_SHUFFLER_SELECT,
+		CHANGE_THRESHOLD_VALUE,
+		SAVE_PRESENT,
+		LOAD_PRESENT,
+		BLINKEN,
+		IMAGE,
+		IMAGE_ZOOMER,
+		TEXTDEF,
+		TEXTDEF_FILE,
+		TEXTWR,
+		RANDOM
+	}
+	
 	private MessageProcessor() {
 		//no instance
 	}
@@ -30,7 +54,7 @@ public class MessageProcessor {
 	/**
 	 * process message from gui
 	 * @param msg
-	 * @param startFader
+	 * @param startFader - should be true iif messge comes from the gui, if loading a present this should be false
 	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
 	 */
 	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader) {
@@ -115,7 +139,6 @@ public class MessageProcessor {
 						int oldFx = col.getFxInputForScreen(i);
 						if(oldFx!=newFx) {
 							log.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-							//col.mapInputToScreen(0, newFxA);
 							if (startFader) {
 								//start fader to change screen
 								col.getOutputMappings(i).getFader().startFade(newFx, i);								
