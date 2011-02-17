@@ -1,5 +1,6 @@
 package com.neophob.sematrix.glue;
 
+import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -41,7 +42,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.listener.OscServer;
+import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Checkbox;
@@ -105,7 +106,7 @@ public class Collector {
 	
 	private int thresholdValue=128;
 	
-	private OscServer oscSrv;
+	private TcpServer pdSrv;
 	
 	private boolean isLoadingPresent=false;
 	
@@ -161,13 +162,14 @@ public class Collector {
 		//Start tcp server
 		int listeningPort = Integer.parseInt( PropertiesHelper.getProperty("net.listening.port", "3449") );
 		int sendPort = Integer.parseInt( PropertiesHelper.getProperty("net.send.port", "3445") );
-/*		try {
+		
+		try {
 			pdSrv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);
 		} catch (BindException e) {
-			System.out.println("IIIKS");
-		}	*/		
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		oscSrv = new OscServer(papplet, listeningPort, sendPort, "127.0.0.1");
 		init=true;
 	}
 

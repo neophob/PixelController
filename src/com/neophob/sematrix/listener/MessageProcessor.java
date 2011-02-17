@@ -18,10 +18,6 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class MessageProcessor {
 
-	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
-	
-	private static final String IGNORE_COMMAND = "Ignored command";
-
 	public enum ValidCommands {
 		STATUS,
 		CHANGE_GENERATOR_A,
@@ -46,7 +42,11 @@ public class MessageProcessor {
 		TEXTWR,
 		RANDOM
 	}
+
+	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
 	
+	private static final String IGNORE_COMMAND = "Ignored command";
+
 	private MessageProcessor() {
 		//no instance
 	}
@@ -54,7 +54,7 @@ public class MessageProcessor {
 	/**
 	 * process message from gui
 	 * @param msg
-	 * @param startFader - should be true iif messge comes from the gui, if loading a present this should be false
+	 * @param startFader
 	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
 	 */
 	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader) {
