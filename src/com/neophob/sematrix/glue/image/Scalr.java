@@ -240,7 +240,10 @@ public class Scalr {
 		BufferedImage result = null;
 
 		if (src != null) {
-			long startTime = System.currentTimeMillis();
+			long startTime = 0;
+			if (printElapseTimes) {
+				startTime = System.currentTimeMillis();
+			}
 			int currentWidth = src.getWidth();
 			int currentHeight = src.getHeight();
 			float ratio = ((float) currentHeight / (float) currentWidth);
