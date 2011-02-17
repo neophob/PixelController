@@ -255,7 +255,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 4 282 cnv 15 150 74 empty empty beat 20 12 0 14 -228856 -66577
 0;
 #X obj 15 310 tgl 20 0 empty r_snd_kick kick 0 30 0 10 -191407 -1 -1
-1 1;
+0 1;
 #X obj 66 310 tgl 20 0 empty r_snd_hat hat 0 30 0 10 -191407 -1 -1
 0 1;
 #X obj 116 310 tgl 20 0 empty r_snd_snare snare 0 30 0 10 -191407 -1
@@ -1206,7 +1206,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 8 5 cnv 15 120 180 empty empty threshold 20 12 0 14 -262130
 -66577 0;
 #X obj 23 39 vsl 15 96 0 255 0 0 s_threshold r_threshold empty 0 -9
-0 10 -228856 -1 -1 3800 0;
+0 10 -228856 -1 -1 4769 0;
 #X floatatom 50 148 5 0 0 0 - - -;
 #X obj 23 147 int;
 #X text 45 32 max;
@@ -1986,6 +1986,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 // Textwriter;
 #X text 306 -68 Effects: Off // Inverter // Rotozoom // Beat horizontal
 shift // Beat vertical shift // Voluminize // Tint // Threshold;
+#X msg 353 436 send RANDOMIZE;
 #X connect 36 0 35 0;
 #X connect 37 0 35 0;
 #X connect 43 0 153 0;
@@ -1993,3 +1994,4 @@ shift // Beat vertical shift // Voluminize // Tint // Threshold;
 #X connect 152 1 2 0;
 #X connect 153 0 42 0;
 #X connect 156 0 157 0;
+#X connect 160 0 35 0;

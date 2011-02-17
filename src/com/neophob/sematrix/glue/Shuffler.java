@@ -14,30 +14,98 @@ import com.neophob.sematrix.glue.Collector.ShufflerOffset;
 import com.neophob.sematrix.input.Sound;
 
 /**
- * create random outputs
+ * create random settings 
  * @author michu
  *
  */
 public class Shuffler {
 
+	/**
+	 * 
+	 */
 	private Shuffler() {
 		//no instance allowed
 	}
-	
+
+	/**
+	 * heavy shuffler!
+	 */
+	public static void manualShuffleStuff() {
+		Collector col = Collector.getInstance(); 
+
+		Random rand = new Random();
+
+		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
+			int size = col.getAllGenerators().size();
+			for (Visual v: col.getAllVisuals()) {
+				v.setGenerator1(rand.nextInt(size-1)+1);
+			}
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {
+			int size = col.getAllGenerators().size();
+			for (Visual v: col.getAllVisuals()) {
+				v.setGenerator2(rand.nextInt(size));
+			}
+
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
+			int size = col.getAllEffects().size();
+			for (Visual v: col.getAllVisuals()) {
+				v.setEffect1(rand.nextInt(size));
+			}
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.EFFECT_B)) {
+			int size = col.getAllEffects().size();
+			for (Visual v: col.getAllVisuals()) {
+				v.setEffect2(rand.nextInt(size));
+			}
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
+			int size = rand.nextInt()%255;
+			Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
+			t.setThreshold(size);
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.MIXER)) {
+			int size = col.getAllMixer().size();
+			for (Visual v: col.getAllVisuals()) {
+				if (v.getGenerator2Idx()==0) {
+					//no 2nd generator - use passthru mixer
+					v.setMixer(0);						
+				} else {
+					v.setMixer(rand.nextInt(size));						
+				}
+			}
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+			TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
+			df.changeLUT(rand.nextInt(12));
+		}
+
+	}
+
+	/**
+	 * used for randomized mode, rarly change stuff
+	 */
 	public static void shuffleStuff() {
 		boolean kick = Sound.getInstance().isKick();
 		boolean hat = Sound.getInstance().isHat();
 		boolean snare = Sound.getInstance().isSnare();
-		
+
 		if (!hat && !kick && !snare) {
 			return;
 		}
-		
+
 		Collector col = Collector.getInstance(); 
-		
+
 		Random rand = new Random();
 		int blah = rand.nextInt(15);
-		
+
 		if (snare) {
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
 				int size = col.getAllGenerators().size();
@@ -53,7 +121,7 @@ public class Shuffler {
 				}
 
 			}
-			
+
 			if (blah == 3 && col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
 				int size = col.getAllEffects().size();
 				for (Visual v: col.getAllVisuals()) {
@@ -75,7 +143,7 @@ public class Shuffler {
 			}
 
 		}
-		
+
 		if (hat) {
 			if (blah == 5 && col.getShufflerSelect(ShufflerOffset.MIXER)) {
 				int size = col.getAllMixer().size();
@@ -98,7 +166,7 @@ public class Shuffler {
 					}
 				}
 			}
-			
+
 			if (blah == 11 && col.getShufflerSelect(ShufflerOffset.TINT)) {
 				int r = rand.nextInt(256);
 				int g = rand.nextInt(256);
@@ -107,8 +175,8 @@ public class Shuffler {
 				t.setColor(r, g, b);
 			}
 		}
-		
-		
+
+
 		if (kick) {
 			if (blah == 7 && col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
 				int nrOfVisuals = col.getAllVisuals().size();
@@ -143,7 +211,7 @@ public class Shuffler {
 				Image img = (Image)col.getGenerator(GeneratorName.IMAGE);
 				img.loadFile(fileToLoad);
 			}
-			
+
 			if (blah == 9 && col.getShufflerSelect(ShufflerOffset.BLINKEN)) {
 				int nr = rand.nextInt(5);
 				String fileToLoad="";
@@ -167,7 +235,7 @@ public class Shuffler {
 				Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
 				blink.loadFile(fileToLoad);
 			}
-			
+
 			if (blah == 12 && col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
 				TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 				df.changeLUT(rand.nextInt(12));
@@ -198,6 +266,6 @@ public class Shuffler {
 			}
 
 		}
-		
+
 	}
 }
