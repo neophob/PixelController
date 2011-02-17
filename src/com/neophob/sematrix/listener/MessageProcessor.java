@@ -14,6 +14,7 @@ import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class MessageProcessor {
@@ -40,7 +41,10 @@ public class MessageProcessor {
 		TEXTDEF,
 		TEXTDEF_FILE,
 		TEXTWR,
-		RANDOM
+		//used for enable/disable random mode
+		RANDOM,
+		//used as a one shot randomizer
+		RANDOMIZE
 	}
 
 	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
@@ -341,6 +345,15 @@ public class MessageProcessor {
 				}
 				break;
 
+			case RANDOMIZE:
+				try {
+					Shuffler.manualShuffleStuff();
+					return ValidCommands.STATUS;
+				} catch (Exception e) {
+					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+				
 			default:
 				String s="";
 				for (int i=0; i<msg.length;i++) {
@@ -350,7 +363,8 @@ public class MessageProcessor {
 				break;
 			}
 		} catch (IllegalArgumentException e) {
-			log.log(Level.INFO,	"Illegal argument: <{0}>", new Object[] { msg[0] });			
+			log.log(Level.INFO,	"Illegal argument <{0}>: {1}", new Object[] { msg[0], e });
+			e.printStackTrace();
 		}		
 
 		return null;
