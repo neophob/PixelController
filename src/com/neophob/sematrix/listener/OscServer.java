@@ -8,6 +8,7 @@ import netP5.NetAddress;
 import org.apache.commons.lang.StringUtils;
 
 import oscP5.OscArgument;
+import oscP5.OscBundle;
 import oscP5.OscMessage;
 import oscP5.OscP5;
 import processing.core.PApplet;
@@ -17,6 +18,7 @@ import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
 public class OscServer {
 
+	public static final String OSC_PREFIX = "/neo/";
 	private static Logger log = Logger.getLogger(OscServer.class.getName());
 
 	private OscP5 oscP5;
@@ -64,7 +66,6 @@ public class OscServer {
 	void oscEvent(OscMessage oscMessage) {
 		/* check if theOscMessage has the address pattern we are looking for. */
 
-		
 		try {
 			String s = oscMessage.addrPattern();			
 			System.out.println("MSG!"+s);
@@ -95,14 +96,28 @@ public class OscServer {
 	 * 
 	 */
 	private void sendStatusToGui() {
+		OscBundle myBundle = new OscBundle();
+		
 		for (String s:Collector.getInstance().getCurrentStatus()) {
-			sendOscMsg(s);
+			
+			String[] msgArray = s.split(" ");		
+			OscMessage myMessage = new OscMessage(OSC_PREFIX+msgArray[0]);
+			for (int n=1; n<msgArray.length; n++) {
+				try {
+					int param = Integer.parseInt(msgArray[n]);
+					myMessage.add(param);				
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+			myBundle.add(myMessage);
 		}
+		oscP5.send(myBundle, myRemoteLocation);
 	}
 
-	private void sendOscMsg(String msg) {
-		String[] msgArray = msg.split(" ");
-		OscMessage myMessage = new OscMessage("/neo/"+msgArray[0]);
+/*	private void sendOscMsg(String msg) {
+		String[] msgArray = msg.split(" ");		
+		OscMessage myMessage = new OscMessage(OSC_PREFIX+msgArray[0]);
 		for (int n=1; n<msgArray.length; n++) {
 			try {
 				int param = Integer.parseInt(msgArray[n]);
@@ -114,5 +129,5 @@ public class OscServer {
 		System.out.println("MSG:"+msg);
 		oscP5.send(myMessage, myRemoteLocation);
 		
-	}
+	}*/
 }
