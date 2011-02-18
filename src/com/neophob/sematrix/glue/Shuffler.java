@@ -82,11 +82,58 @@ public class Shuffler {
 			}
 		}
 
+		if (col.getShufflerSelect(ShufflerOffset.BLINKEN)) {
+			int nr = rand.nextInt(5);
+			String fileToLoad="";
+			switch (nr) {
+			case 0:
+				fileToLoad="torus.bml";
+				break;
+			case 1:
+				fileToLoad="bnf_auge.bml";
+				break;
+			case 2:
+				fileToLoad="bb-frogskin2.bml";
+				break;
+			case 3:
+				fileToLoad="bb-rauten2.bml";
+				break;
+			case 4:
+				fileToLoad="bb-spiral2fast.bml";
+				break;
+			}
+			Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
+			blink.loadFile(fileToLoad);
+		}
+		
 		if (col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
 			TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 			df.changeLUT(rand.nextInt(12));
 		}
 
+		if (col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+			TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
+			int nr = rand.nextInt(5);
+			String fileToLoad="";
+			switch (nr) {
+			case 0:
+				fileToLoad="1316.jpg";
+				break;
+			case 1:
+				fileToLoad="ceiling.jpg";
+				break;
+			case 2:
+				fileToLoad="circle.jpg";
+				break;
+			case 3:
+				fileToLoad="gradient.jpg";
+				break;
+			case 4:
+				fileToLoad="check.jpg";
+				break;
+			}
+			df.loadFile(fileToLoad);
+		}
 	}
 
 	/**
