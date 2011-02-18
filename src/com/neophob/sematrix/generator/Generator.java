@@ -33,7 +33,8 @@ public abstract class Generator {
 		PIXELIMAGE(7),
 		TEXTURE_DEFORMATION(8),
 		TEXTWRITER(9),
-		IMAGE_ZOOMER(10);
+		IMAGE_ZOOMER(10),
+		CELL(11);
 		
 		private int id;
 		

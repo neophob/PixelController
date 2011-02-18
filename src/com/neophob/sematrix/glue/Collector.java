@@ -27,6 +27,7 @@ import com.neophob.sematrix.fader.SlideUpsideDown;
 import com.neophob.sematrix.fader.Switch;
 import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Blinkenlights;
+import com.neophob.sematrix.generator.Cell;
 import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Image;
@@ -198,6 +199,7 @@ public class Collector {
 		);
 		this.fileImageZoomer = PropertiesHelper.getProperty("initial.image.zoomer");
 		new ImageZoomer(fileImageZoomer);
+		new Cell();
 		
 		//create effects
 		new Inverter();
