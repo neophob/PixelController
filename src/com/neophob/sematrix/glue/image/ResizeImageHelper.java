@@ -16,6 +16,11 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 
+/**
+ * 
+ * @author michu
+ *
+ */
 public class ResizeImageHelper {
 
 	private ResizeImageHelper() {
@@ -95,12 +100,12 @@ public class ResizeImageHelper {
 
 		if (deviceXSize > currentXSize) {
 			//upscale - used for debug view
-			bi = Scalr.resize(bi, Scalr.Method.SPEED, deviceXSize, deviceYSize, false, false);
+//			bi = Scalr.resize(bi, Scalr.Method.SPEED, deviceXSize, deviceYSize, false, false);
 		} else {
 			//downscale - used to send to device
-			bi = Scalr.resize(bi, Scalr.Method.QUALITY, deviceXSize, deviceYSize, false, false);	
+//			bi = Scalr.resize(bi, Scalr.Method.QUALITY, deviceXSize, deviceYSize, false, false);	
 		}		              
-		
+		bi = Scalr.resize(bi, Scalr.Method.QUALITY, deviceXSize, deviceYSize);		
 		int[] ret = getPixelsFromImage(bi, deviceXSize, deviceYSize);
 		
 		//destroy image
@@ -111,7 +116,15 @@ public class ResizeImageHelper {
 
 
 
-
+	/**
+	 * 
+	 * @param buffer
+	 * @param deviceXSize
+	 * @param deviceYSize
+	 * @param currentXSize
+	 * @param currentYSize
+	 * @return
+	 */
 	public static int[] oldResize(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
 
