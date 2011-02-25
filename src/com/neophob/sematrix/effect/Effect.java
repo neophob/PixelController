@@ -5,7 +5,11 @@ import com.neophob.sematrix.glue.MatrixData;
 
 public abstract class Effect {
 	
-
+	/**
+	 * 
+	 * @author michu
+	 *
+	 */
 	public enum EffectName {
 		PASSTHRU(0),
 		INVERTER(1),
