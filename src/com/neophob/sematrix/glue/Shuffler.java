@@ -10,7 +10,6 @@ import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
-import com.neophob.sematrix.glue.Collector.ShufflerOffset;
 import com.neophob.sematrix.input.Sound;
 
 /**
@@ -29,6 +28,7 @@ public class Shuffler {
 
 	/**
 	 * heavy shuffler!
+	 * used by manual RANDOMIZE 
 	 */
 	public static void manualShuffleStuff() {
 		Collector col = Collector.getInstance(); 
@@ -105,14 +105,23 @@ public class Shuffler {
 			Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
 			blink.loadFile(fileToLoad);
 		}
-		
+
+		if (col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
+			col.setThresholdValue(rand.nextInt(255));
+		}
+
+		if (col.getShufflerSelect(ShufflerOffset.TINT)) {
+			col.setRGB(
+					rand.nextInt(255),
+					rand.nextInt(255),
+					rand.nextInt(255)
+			);
+		}
+			
 		if (col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
 			TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 			df.changeLUT(rand.nextInt(12));
-		}
 
-		if (col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
-			TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
 			int nr = rand.nextInt(5);
 			String fileToLoad="";
 			switch (nr) {
