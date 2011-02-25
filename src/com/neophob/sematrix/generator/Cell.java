@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Cell extends Generator {
 
-	private static final int BUBBLES=7;
+	private static final int BUBBLES=8;
 	private static final int RENDERSIZE=2;
 
 	private Random die=new Random();
@@ -38,16 +38,13 @@ public class Cell extends Generator {
 
 	@Override
 	public void update() {
-		//background(0);   // Set the background to black
-		//fill(255);
-
 		for (int x=0;x<internalBufferXSize/RENDERSIZE;x+=RENDERSIZE) {
 			for (int y=0;y<internalBufferYSize/RENDERSIZE;y+=RENDERSIZE) {
 
 				int nearest=0;
 				float closest=1000.0f;      
 
-				for (int p=0;p<points.size();p++) {
+				for (int p=0; p<points.size(); p++) {
 					Attractor a=(Attractor)points.get(p);
 					float dist=a.distanceTo(x,y);
 					if (dist<closest) {
@@ -57,15 +54,26 @@ public class Cell extends Generator {
 				}
 
 				Attractor a=(Attractor)points.get(nearest);
-				int l= (int)(255-6*closest);
-				//fill(a.r/2+l/2,a.g/2+l/2,a.b/2+l/2);      
-				//		      fill(a.r,a.g,a.b);      
-				//		      fill(l-a.r,l-a.g,l-a.b);      
+				int l = (int)(255-4*closest);
 
-				//		      int l= (int)(255-8*closest);
-				//		      fill(l,l,l);
-
-				int col = ((a.r/2+l/2) << 16) | ((a.g/2+l/2) << 8) | (a.b/2+l/2);
+				int r = l-a.r;
+				if (r<0) {
+					r=0;
+				}
+				int g = l-a.g;
+				if (g<0) {
+					g=0;
+				}
+				int b = l-a.b;
+				if (b<0) {
+					b=0;
+				}
+				
+				//int col = (a.r << 16) | (a.g << 8) | a.b;
+				//int col = ((a.r/2+l/2) << 16) | ((a.g/2+l/2) << 8) | (a.b/2+l/2);
+				//int col = (l << 16) | (l << 8) | l;
+				//int col = (r << 16) | (g << 8) | b;
+				int col = (r << 16) | (r << 8) | r;
 				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, col);				
 			}
 		}
@@ -76,7 +84,7 @@ public class Cell extends Generator {
 	}
 
 	/**
-	 * 
+	 * draw rectangle in buffer
 	 * @param xofs
 	 * @param yofs
 	 * @param xsize
@@ -96,7 +104,6 @@ public class Cell extends Generator {
 				this.internalBuffer[ofs++] = col;
 			}
 		}
-		
 	}
 	
 	@Override
@@ -124,6 +131,7 @@ public class Cell extends Generator {
 			this.r=die.nextInt(255);
 			this.g=die.nextInt(255);
 			this.b=die.nextInt(255);
+//			mixColors();
 		}
 
 		public void move() {
@@ -137,7 +145,15 @@ public class Cell extends Generator {
 			if (r==3) this.r=die.nextInt(255);
 			if (r==44) this.g=die.nextInt(255);
 			if (r==99) this.b=die.nextInt(255);
-
+//			if (r==44)
+//				mixColors();
+		}
+		
+		private void mixColors() {
+			int col = die.nextInt(255);
+			this.r=col;
+			this.g=col;
+			this.b=col;
 		}
 
 		public float distanceTo(int xx,int yy) {
