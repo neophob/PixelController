@@ -143,6 +143,20 @@ public class Shuffler {
 			}
 			df.loadFile(fileToLoad);
 		}
+		
+		if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
+			int nrOfVisuals = col.getAllVisuals().size();
+			int screenNr = 0;
+			for (OutputMapping om: col.getAllOutputMappings()) {
+				Fader f=om.getFader();
+				if (!f.isStarted()) {
+					//start fader only if not another one is started
+					f.startFade(rand.nextInt(nrOfVisuals), screenNr);
+				}
+				screenNr++;
+			}
+		}
+
 	}
 
 	/**
