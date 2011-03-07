@@ -3,9 +3,9 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.lib.rainbowduino.Lpd6803;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.lpd6803.Lpd6803;
 
 public class Lpd6803Device extends Output {
 
