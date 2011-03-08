@@ -290,7 +290,7 @@ public class Lpd6803 {
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(byte ofs, int[] data) {
-		return sendFrame(ofs, RainbowduinoHelper.convertRgbTo15bit(data));
+		return sendFrame(ofs, convertRgbTo15bit(data));
 	}
 
 
@@ -344,8 +344,8 @@ public class Lpd6803 {
 		System.arraycopy(data, 0, frameOne, 0, 64);
 		System.arraycopy(data, 64, frameTwo, 0, 64);
 		
-		byte sendlen = 71;
-		byte cmdfull[] = new byte[sendlen];
+		byte sendlen = 64;
+		byte cmdfull[] = new byte[sendlen+7];
 		
 		cmdfull[0] = START_OF_CMD;
 		//cmdfull[1] = ofs;
@@ -361,9 +361,8 @@ public class Lpd6803 {
 		if (didFrameChange(ofsOne, frameOne)) {
 			cmdfull[1] = ofsOne;
 			
-			for (int i=0; i<64; i++) {
-				cmdfull[5+i] = frameOne[i];
-			}
+			flipSecondScanline(cmdfull, frameOne);
+			
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
@@ -375,9 +374,8 @@ public class Lpd6803 {
 		if (didFrameChange(ofsTwo, frameTwo)) {
 			cmdfull[1] = ofsTwo;
 			
-			for (int i=0; i<64; i++) {
-				cmdfull[5+i] = frameTwo[i];
-			}
+			flipSecondScanline(cmdfull, frameOne);
+			
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
@@ -385,6 +383,31 @@ public class Lpd6803 {
 			}
 		}
 		return returnValue;
+	}
+	
+	/**
+	 * this function feed the framebufferdata (32 pixels ˆ 2bytes (aka 16bit)
+	 * to the send array. each second scanline gets inverteds
+	 * 
+	 * @param cmdfull
+	 * @param frameData
+	 */
+	private void flipSecondScanline(byte cmdfull[], byte frameData[]) {
+		int toggler=14;
+		for (int i=0; i<16; i++) {
+			cmdfull[   5+i] = frameData[i];
+			cmdfull[32+5+i] = frameData[i+32];
+			
+			cmdfull[16+5+i] = frameData[16+toggler];				
+			cmdfull[48+5+i] = frameData[48+toggler];
+			
+			if (i%2==0) {
+				toggler++;
+			} else {
+				toggler-=3;
+			}
+		}			
+
 	}
 
 	/**
@@ -539,6 +562,57 @@ public class Lpd6803 {
 		catch(InterruptedException e) {
 		}
 	}
+	
+	private static final int BUFFERSIZE = 64;
+	public static byte[] convertRgbTo15bit(int[] data) throws IllegalArgumentException {
+		if (data.length!=BUFFERSIZE) {
+			throw new IllegalArgumentException("data lenght must be 64 bytes!");
+		}
+
+		int[] r = new int[BUFFERSIZE];
+		int[] g = new int[BUFFERSIZE];
+		int[] b = new int[BUFFERSIZE];
+		int tmp;
+		int ofs=0;
+
+		//step#1: split up r/g/b 
+		for (int n=0; n<BUFFERSIZE; n++) {
+			//one int contains the rgb color
+			tmp = data[ofs];
+				
+			r[ofs] = (int) ((tmp>>16) & 255);
+			g[ofs] = (int) ((tmp>>8)  & 255);
+			b[ofs] = (int) ( tmp      & 255);		
+			ofs++;
+		}
+
+		return convertTo15Bit(r,g,b);
+	}
+
+	/**
+	 * 
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @return
+	 */
+	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
+		int dst=0;
+		byte[] converted = new byte[128];
+		//convert to 24bpp to 15(16)bpp 
+		//output format: RRRRRGGG GGGBBBBB (64x)
+		for (int i=0; i<64;i++) {
+			byte b1 = (byte)(r[i]>>3);
+			byte b2 = (byte)(g[i]>>3);
+			byte b3 = (byte)(b[i]>>3);
+
+			converted[dst++] = (byte)((b1<<2) | (b2>>3));
+			converted[dst++] = (byte)(((b2&7)<<5) | b3);
+		}
+		
+		return converted;
+	}
+
 
 
 }
