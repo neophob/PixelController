@@ -1,7 +1,19 @@
 package com.neophob.sematrix.fader;
 
+/**
+ * 
+ * @author michu
+ *
+ */
 public class CrossfaderHelper {
 
+	/**
+	 * 
+	 * @param f
+	 * @param oldBuffer
+	 * @param newBuffer
+	 * @return
+	 */
 	public static int[] getBuffer(float f, int[] oldBuffer, int[] newBuffer) {
 
 		int[] ret = new int[oldBuffer.length];
