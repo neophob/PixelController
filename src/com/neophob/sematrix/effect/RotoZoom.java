@@ -1,5 +1,8 @@
 package com.neophob.sematrix.effect;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.fader.CrossfaderHelper;
 
 
@@ -13,12 +16,15 @@ import com.neophob.sematrix.fader.CrossfaderHelper;
  */
 public class RotoZoom extends Effect {
 	
+	private static Logger log = Logger.getLogger(RotoZoom.class.getName());
+	
 	public enum WORKMODE {
 		PINGPONG,
 		ZOOM
 	}
 	
 	private float angle;
+	private float angleDiff;
 	private float scale, scale2;
 	private float scaleOrig;
 	private float faderPos;
@@ -38,11 +44,32 @@ public class RotoZoom extends Effect {
 		this.scale = scale;
 		this.scaleOrig = scale;
 		this.angle = angle;
-		this.faderPos = 0.0f;		
+		this.faderPos = 0.0f;
+		this.angleDiff = 0.02f;
 	}
 
 
-	
+	/**
+	 * 
+	 * @param angle from -127 to 127
+	 */
+	public void setAngle(int angle) {
+		if (angle != 0) {
+			float f = 1.0f / (float)angle;
+			this.angleDiff = f;			
+		} else {
+			this.angleDiff = 0.01f;
+		}
+/*		if (angle>0) {
+			this.angleDiff = 0.02f;			
+		} else {
+			this.angleDiff = -0.02f;			
+		}*/
+		log.log(Level.INFO, "anglediff: "+ angleDiff +" / angle: "+angle);
+	}
+
+
+
 	/**
 	 * 
 	 */
@@ -66,7 +93,7 @@ public class RotoZoom extends Effect {
 	 * 
 	 */
 	public void update() {
-		angle+=0.02f;
+		angle+=this.angleDiff;
 		scale-=dscalee;
 
 		if (workmode == WORKMODE.ZOOM) {

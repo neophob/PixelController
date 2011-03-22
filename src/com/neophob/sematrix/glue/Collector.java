@@ -94,6 +94,7 @@ public class Collector {
 	private int selectedPresent;
 	private List<PresentSettings> present;
 	private int r=255,g=255,b=255;
+	private int rotoZoomAngle=0;
 	
 	private String fileBlinken;
 	private String fileImageSimple;
@@ -204,7 +205,7 @@ public class Collector {
 		//create effects
 		new Inverter();
 		new PassThru();
-		new RotoZoom(0.7f, 2.3f);
+		new RotoZoom(1.5f, 2.3f);
 		new BeatVerticalShift();
 		new BeatHorizShift();
 		new Voluminize();
@@ -418,6 +419,7 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
 		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
 		ret.add(ValidCommands.CHANGE_TINT+" "+r+" "+g+" "+b);
+		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+rotoZoomAngle);
 		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
 		ret.add(ValidCommands.IMAGE+" "+fileImageSimple);
 		ret.add(ValidCommands.IMAGE_ZOOMER+" "+fileImageZoomer);
@@ -596,6 +598,15 @@ public class Collector {
 	/* 
 	 * PRESENT ======================================================
 	 */
+	
+	public synchronized int getRotoZoomAngle() {
+		return rotoZoomAngle;
+	}
+
+	public synchronized void setRotoZoomAngle(int rotoZoomAngle) {
+		this.rotoZoomAngle = rotoZoomAngle;
+	}
+
 	public int getSelectedPresent() {
 		return selectedPresent;
 	}
