@@ -1,8 +1,5 @@
 package com.neophob.sematrix.effect;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.neophob.sematrix.fader.CrossfaderHelper;
 
 
@@ -15,25 +12,23 @@ import com.neophob.sematrix.fader.CrossfaderHelper;
  * ripped from http://www.openprocessing.org/visuals/?visualID=8030
  */
 public class RotoZoom extends Effect {
-	
-	private static Logger log = Logger.getLogger(RotoZoom.class.getName());
-	
+
 	public enum WORKMODE {
 		PINGPONG,
 		ZOOM
 	}
-	
+
 	private float angle;
 	private float angleDiff;
 	private float scale, scale2;
 	private float scaleOrig;
 	private float faderPos;
 	private float dscalee=0.03f;
-	
+
 	private WORKMODE workmode = WORKMODE.ZOOM;
 
 	private int[] rotoZoomedBuffer=null;
-	
+
 	/**
 	 * 
 	 * @param scale
@@ -54,19 +49,25 @@ public class RotoZoom extends Effect {
 	 * @param angle from -127 to 127
 	 */
 	public void setAngle(int angle) {
-		if (angle != 0) {
-			float f = 1.0f / (float)angle;
-			this.angleDiff = f;			
+		if (angle > 127) angle = 127;
+		if (angle < -127) angle = -127;
+		
+		//137 sound funny - but correct
+		//using 137 - the max value is 10 used for the diff!
+		if (angle>0) {
+			angle=137-angle;				
 		} else {
-			this.angleDiff = 0.01f;
+			angle=-137-angle;
 		}
-/*		if (angle>0) {
-			this.angleDiff = 0.02f;			
+		
+		if (angle != 0) {
+			float f = (1.0f / (float)angle)*2;
+			this.angleDiff = f;	
 		} else {
-			this.angleDiff = -0.02f;			
-		}*/
-		log.log(Level.INFO, "anglediff: "+ angleDiff +" / angle: "+angle);
+			this.angleDiff = 0.0f;
+		}
 	}
+
 
 
 
@@ -78,16 +79,15 @@ public class RotoZoom extends Effect {
 		if (this.rotoZoomedBuffer==null) {
 			this.rotoZoomedBuffer = new int[buffer.length];				
 		}
-		
+
 		this.rotoZoomedBuffer = rotoZoom(scale, angle, buffer);
-		
-		
+
 		if (workmode == WORKMODE.ZOOM && faderPos>0.0f) {			
 			return CrossfaderHelper.getBuffer(faderPos, this.rotoZoomedBuffer, rotoZoom(scale2, angle, buffer));
 		}
 		return this.rotoZoomedBuffer;
 	}
-	
+
 
 	/**
 	 * 
@@ -100,7 +100,7 @@ public class RotoZoom extends Effect {
 			if (this.scale < 0.4f) {
 				faderPos += 0.04f;
 				scale2-=dscalee;
-							
+
 				if (faderPos>0.98f) {
 					//finished fading - reset values
 					this.faderPos = 0.0f;
@@ -109,6 +109,7 @@ public class RotoZoom extends Effect {
 				}			
 			}			
 		} else {
+			//WORKMODE.PINGPONG
 			if (scale<0.13f || scale>1.6f) {
 				dscalee*=-1;
 			}			
@@ -116,7 +117,7 @@ public class RotoZoom extends Effect {
 
 	}
 
-	
+
 	/**
 	 * do the actual roto zooming
 	 * 
@@ -128,13 +129,13 @@ public class RotoZoom extends Effect {
 		int[] tmp = new int[bufferP.length];
 		int x,y,offs=0,soffs;
 		float tx,ty;
-		
+
 		float ca=(float)(scaleP*Math.cos(angleP));//cosAng);
 		float sa=(float)(scaleP*Math.sin(angleP));//sinAng);
 
 		float txx=0-(internalBufferXSize/2)*sa;
 		float tyy=0+(internalBufferYSize/2)*ca;
-		
+
 		for (y=0;y<internalBufferYSize;y++) {
 			txx-=sa;
 			tyy+=ca;
@@ -147,7 +148,7 @@ public class RotoZoom extends Effect {
 				tmp[offs++]=bufferP[soffs&(bufferP.length-1)];
 			}
 		}
-		
+
 		return tmp;
 	}
 
