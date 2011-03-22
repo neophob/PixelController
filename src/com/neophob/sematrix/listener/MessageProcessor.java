@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
@@ -33,6 +34,7 @@ public class MessageProcessor {
 		CHANGE_PRESENT,
 		CHANGE_SHUFFLER_SELECT,
 		CHANGE_THRESHOLD_VALUE,
+		CHANGE_ROTOZOOM,
 		SAVE_PRESENT,
 		LOAD_PRESENT,
 		BLINKEN,
@@ -195,6 +197,17 @@ public class MessageProcessor {
 					}					
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+				
+			case CHANGE_ROTOZOOM:
+				try {					
+					int val = Integer.parseInt(msg[1]);
+					RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
+					r.setAngle(val);
+					col.setRotoZoomAngle(val);
+				} catch (Exception e) {
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
