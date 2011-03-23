@@ -1,6 +1,7 @@
 package com.neophob.sematrix.generator;
 
 import java.util.Random;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import processing.core.PApplet;
@@ -70,23 +71,27 @@ public class Blinkenlights extends Generator implements PConstants {
 		float xDiff = internalBufferXSize/(float)blinken.width;
 		float yDiff = internalBufferYSize/(float)blinken.height;
 		
-		for (int y=0; y<internalBufferYSize; y++) {
-			if (ySrc>yDiff) {
-				if (yofs<blinken.height) yofs++;				
-				ySrc-=yDiff;
-			}
-			xofs=0;
-			xSrc=0;
-			for (int x=0; x<internalBufferXSize; x++) {
-				if (xSrc>xDiff) {
-					if (xofs<blinken.width)xofs++;
-					xSrc-=xDiff;
-				}				
-				ofs=xofs+yofs*blinken.width;
-				this.internalBuffer[dst++]=blinken.pixels[ofs];
-				xSrc++;
-			}
-			ySrc++;
+		try {
+			for (int y=0; y<internalBufferYSize; y++) {
+				if (ySrc>yDiff) {
+					if (yofs<blinken.height) yofs++;				
+					ySrc-=yDiff;
+				}
+				xofs=0;
+				xSrc=0;
+				for (int x=0; x<internalBufferXSize; x++) {
+					if (xSrc>xDiff) {
+						if (xofs<blinken.width)xofs++;
+						xSrc-=xDiff;
+					}				
+					ofs=xofs+yofs*blinken.width;
+					this.internalBuffer[dst++]=blinken.pixels[ofs];
+					xSrc++;
+				}
+				ySrc++;
+			}			
+		} catch (ArrayIndexOutOfBoundsException e) {
+			log.log(Level.SEVERE, "Failed to update internal buffer", e);
 		}
 	}
 	
