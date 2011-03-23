@@ -61,8 +61,13 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class Collector {
 
-	/** nr of shuffler entries. enable/disable option for random mode */
-	private static final int SHUFFLER_OPTIONS = 13;
+	/** 
+	 * TODO make dynamic
+	 * nr of shuffler entries. enable/disable option for random mode 
+	 * 
+	 */
+	
+	private static final int SHUFFLER_OPTIONS = 14;
 	
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
@@ -112,6 +117,7 @@ public class Collector {
 	
 	private boolean isLoadingPresent=false;
 	
+	//TODO maybe a map instead of a list wozld be better...
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
 
