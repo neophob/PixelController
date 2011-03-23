@@ -5,24 +5,29 @@ import java.util.Date;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
-import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.helper.NewWindowHelper;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * 
  * @author michu
+ * 
+ * TODO:
+ * make image resize option (speed/quality) user selectable
+ * make zoom option, usefull for one screen
  *
  */
 public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 
-	public static final int FPS = 25;
+	public static final int FPS = 15;
 	//96*2*25 = 4800bytes
 
-	RainbowduinoDevice rainbowduino;
+	//Output rainbowduino;
+	Lpd6803Device lpd6803;
 	NewWindowHelper nwh;
 	long lastHeartbeat;
 	int error=0;
@@ -36,14 +41,21 @@ public class VisualDaemon extends PApplet {
 
 		Collector.getInstance().init(this, FPS, 8, 8);
 		frameRate(FPS);
-
+		noSmooth();
+		
 		osd = new MatrixEmulator();
 
-		try {
-			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());			
+/*		try {
+			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());
 		} catch (Exception e) {
 			rainbowduino = null;
+		}*/
+		try {
+			lpd6803 = new Lpd6803Device();
+		} catch (Exception e) {
+			lpd6803 = null;
 		}
+		
 		if (PropertiesHelper.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			nwh = new NewWindowHelper(true);	
 		}
@@ -51,14 +63,14 @@ public class VisualDaemon extends PApplet {
 
 	public void draw() { 
 		//update all generators
-
+ 
 		Collector.getInstance().updateSystem();
 
-		if (rainbowduino!=null && rainbowduino.getArduinoErrorCounter()>0) {
-			error=rainbowduino.getArduinoErrorCounter();
-			System.out.println("error at: "+new Date(rainbowduino.getLatestHeartbeat()).toGMTString()+
+		if (lpd6803!=null && lpd6803.getArduinoErrorCounter()>0) {
+			error=lpd6803.getArduinoErrorCounter();
+			System.out.println("error at: "+new Date(lpd6803.getLatestHeartbeat()).toGMTString()+
 					", errorcnt: "+error+
-					", buffersize: "+rainbowduino.getArduinoBufferSize());
+					", buffersize: "+lpd6803.getArduinoBufferSize());
 		}
 
 		frame++;

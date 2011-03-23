@@ -204,8 +204,8 @@ public class MessageProcessor {
 				try {					
 					int val = Integer.parseInt(msg[1]);
 					RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
-					r.setAngle(val);
-					col.setRotoZoomAngle(val);
+					int angle = r.setAngle(val);
+					col.setRotoZoomAngle(angle);
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}

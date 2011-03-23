@@ -13,7 +13,10 @@ public enum ShufflerOffset {
 	IMAGE(9),
 	TINT(10),
 	TEXTURE_DEFORMATION(11),
-	THRESHOLD_VALUE(12);
+	THRESHOLD_VALUE(12),
+	ROTOZOOMER(13);
+	
+	
 	
 	int ofs;
 	ShufflerOffset(int ofs) {

@@ -2,6 +2,7 @@ package com.neophob.sematrix.glue;
 
 import java.util.Random;
 
+import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
@@ -69,6 +70,12 @@ public class Shuffler {
 			Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
 			t.setThreshold(size);
 		}
+
+		if (col.getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
+			int angle = rand.nextInt()%255;
+			RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
+			r.setAngle(angle-127);
+		} 
 
 		if (col.getShufflerSelect(ShufflerOffset.MIXER)) {
 			int size = col.getAllMixer().size();
@@ -174,7 +181,7 @@ public class Shuffler {
 		Collector col = Collector.getInstance(); 
 
 		Random rand = new Random();
-		int blah = rand.nextInt(15);
+		int blah = rand.nextInt(16);
 
 		if (snare) {
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
@@ -244,6 +251,13 @@ public class Shuffler {
 				Tint t = (Tint)col.getEffect(EffectName.TINT);
 				t.setColor(r, g, b);
 			}
+			
+			if (blah == 15 && col.getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
+				int angle = rand.nextInt()%255;
+				RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
+				r.setAngle(angle-128);
+			}
+
 		}
 
 

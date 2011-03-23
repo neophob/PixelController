@@ -48,14 +48,14 @@ public class RotoZoom extends Effect {
 	 * 
 	 * @param angle from -127 to 127
 	 */
-	public void setAngle(int angle) {
+	public int setAngle(int angle) {
 		if (angle > 127) angle = 127;
 		if (angle < -127) angle = -127;
 		
 		//137 sound funny - but correct
 		//using 137 - the max value is 10 used for the diff!
 		if (angle>0) {
-			angle=137-angle;				
+			angle=137-angle;			
 		} else {
 			angle=-137-angle;
 		}
@@ -66,6 +66,7 @@ public class RotoZoom extends Effect {
 		} else {
 			this.angleDiff = 0.0f;
 		}
+		return angle;
 	}
 
 
