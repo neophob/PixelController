@@ -135,13 +135,10 @@ public class TcpServer implements Runnable {
 	 * send beat detection to gui
 	 */
 	private void sendSoundStatus() {
-		boolean bhat = Sound.getInstance().isHat();
-		boolean bkick = Sound.getInstance().isKick();
-		boolean bsnare = Sound.getInstance().isSnare();
 		int hat=0, kick=0, snare=0;
-		if (bhat) hat=1;
-		if (bkick) kick=1;
-		if (bsnare) snare=1;
+		if (Sound.getInstance().isHat()) hat=1;
+		if (Sound.getInstance().isKick()) kick=1;
+		if (Sound.getInstance().isSnare()) snare=1;
 		sendFudiMsg("SND_HAT "+hat);
 		sendFudiMsg("SND_KICK "+kick);
 		sendFudiMsg("SND_SNARE "+snare);
