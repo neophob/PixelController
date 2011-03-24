@@ -71,13 +71,15 @@ public class TcpServer implements Runnable {
 		while (Thread.currentThread() == runner) {
 
 			if (tcpServer!=null) {
-				try {
+				try {					
 					
 					//check if client is available
 					if (client!=null && client.active()) {
-						sendSoundStatus();
 						
-						if (Collector.getInstance().isRandomMode() && (count%20)==2) {
+						//do not send sound status to gui - very cpu intensive!
+						//sendSoundStatus();
+						
+						if ((count%20)==2 && Collector.getInstance().isRandomMode()) {
 							sendStatusToGui();					
 						}
 					}					
@@ -115,6 +117,7 @@ public class TcpServer implements Runnable {
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
+				//Ignored
 			}
 
 		}
