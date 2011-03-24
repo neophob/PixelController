@@ -9,6 +9,8 @@ public class MatrixEmulator extends Output {
 	private static final int RAHMEN_SIZE = 4;
 	private static final int LED_SIZE = 16;
 	private static final int LED_ABSTAND = 0;
+	
+	private int frame = 0;
 
 	/**
 	 * 
@@ -52,6 +54,13 @@ public class MatrixEmulator extends Output {
 
 	@Override
 	public void update() {
+		frame++;
+		
+		//show only each 2nd frame to reduce cpu load
+		if (frame%2==1) {
+			return;
+		}
+		
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
