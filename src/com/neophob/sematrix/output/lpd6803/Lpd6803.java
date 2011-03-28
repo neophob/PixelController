@@ -374,14 +374,14 @@ public class Lpd6803 {
 		if (didFrameChange(ofsTwo, frameTwo)) {
 			cmdfull[1] = ofsTwo;
 			
-			flipSecondScanline(cmdfull, frameOne);
+			flipSecondScanline(cmdfull, frameTwo);
 			
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
 				lastDataMap.put(ofsTwo, "");
 			}
-		}
+		}/**/
 		return returnValue;
 	}
 	
@@ -481,7 +481,7 @@ public class Lpd6803 {
 			throw new SerialPortException("port is not ready!");
 		}
 		
-		log.log(Level.INFO, "Serial Wire Size: {0}", cmdfull.length);
+		//log.log(Level.INFO, "Serial Wire Size: {0}", cmdfull.length);
 
 		try {
 			port.output.write(cmdfull);
@@ -505,7 +505,7 @@ public class Lpd6803 {
 		int timeout=4; //wait up to 50ms
 		//log.log(Level.INFO, "wait for ack");
 		while (timeout > 0 && port.available() < 2) {
-			sleep(6); //in ms
+			sleep(10); //in ms
 			timeout--;
 		}
 
@@ -515,9 +515,11 @@ public class Lpd6803 {
 			return false;
 		}
 		byte[] msg = port.readBytes();
-		log.log(Level.INFO, "got ACK! data length: {0}", msg.length);
-		
-		//INFO: MEEE [0, 0, 65, 67, 75, 0, 0]
+/*		log.log(Level.INFO, "got ACK! data length: {0}", msg.length);
+		for (byte b:msg)
+			System.out.print(Integer.toHexString(b)+' ');
+		System.out.println();
+*/		//INFO: MEEE [0, 0, 65, 67, 75, 0, 0]
 		for (int i=0; i<msg.length-1; i++) {
 			if (msg[i]== 'A' && msg[i+1]== 'K') {
 				try {
@@ -535,6 +537,7 @@ public class Lpd6803 {
 				}
 				ackErrors++;
 				return false;
+				//TODO inconsisten logging!
 			}			
 		}
 		
@@ -542,7 +545,7 @@ public class Lpd6803 {
 		for (byte b: msg) {
 			s+=(char)b;
 		}
-		log.log(Level.INFO, "Invalid serial data {0}, duration: {1}ms", 
+		log.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", 
 				new String[] {s, ""+(System.currentTimeMillis()-start)});
 		ackErrors++;
 		return false;		
