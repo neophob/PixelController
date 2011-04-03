@@ -3,6 +3,12 @@ package com.neophob.sematrix.mixer;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 
+/**
+ * mix two buffers together
+ * 
+ * @author michu
+ *
+ */
 public abstract class Mixer {
 
 	public enum MixerName {
