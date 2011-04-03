@@ -8,7 +8,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.fader.Fader;
-import com.neophob.sematrix.glue.image.ResizeImageHelper;
 import com.neophob.sematrix.layout.LayoutModel;
 
 /**
@@ -152,8 +151,7 @@ public class MatrixData {
 		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 //	return new int[deviceXSize* deviceYSize];	
 
-//		return ResizeImageHelper.resizeBicubic(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());	
-		return ResizeImageHelper.multiStepBilinearResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
+		return Collector.getInstance().getAllResizers().get(1).getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 	}
 
 

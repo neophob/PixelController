@@ -58,6 +58,10 @@ import com.neophob.sematrix.mixer.Xor;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.resize.QualityResize;
+import com.neophob.sematrix.resize.Resize;
+import com.neophob.sematrix.resize.SpeedResize;
+import com.neophob.sematrix.resize.ZoomResize;
 
 public class Collector {
 
@@ -86,6 +90,7 @@ public class Collector {
 	private List<Effect> allEffects;
 	private List<Mixer> allMixer;
 	private List<Visual> allVisuals;
+	private List<Resize> allResizers;
 	private List<Boolean> shufflerSelect;
 
 	/** fx to screen mapping */
@@ -126,6 +131,7 @@ public class Collector {
 		allMixer = new CopyOnWriteArrayList<Mixer>();
 
 		allVisuals = new CopyOnWriteArrayList<Visual>();
+		allResizers = new CopyOnWriteArrayList<Resize>();
 
 		this.nrOfScreens = 0;
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
@@ -253,6 +259,11 @@ public class Collector {
 				break;
 			}
 		}
+		
+		//create resizer
+		new SpeedResize();
+		new QualityResize();
+		new ZoomResize();
 		
 		PropertiesHelper.loadPresents();
 	}
@@ -589,6 +600,20 @@ public class Collector {
 	public void setAllVisuals(List<Visual> allVisuals) {
 		this.allVisuals = allVisuals;
 	}
+
+	/*
+	 * MIXER ======================================================
+	 */
+	
+	public List<Resize> getAllResizers() {
+		return allResizers;
+	}
+	
+	public void addResize(Resize resize) {
+		allResizers.add(resize);
+	}
+
+
 
 	/*
 	 * OUTPUT MAPPING ======================================================
