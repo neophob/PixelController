@@ -2,7 +2,7 @@ package com.neophob.sematrix.resize;
 
 import java.awt.image.BufferedImage;
 
-import com.neophob.sematrix.glue.image.ScalrOld;
+import com.neophob.sematrix.resize.util.ScalrOld;
 
 /**
  * 
