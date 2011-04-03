@@ -107,7 +107,7 @@ public class ResizeImageHelper {
 		}	*/	              
 //		bi = Scalr.resize(bi, Scalr.Method.QUALITY, deviceXSize, deviceYSize);
 //		bi = Scalr.resize(bi, Scalr.Method.SPEED, deviceXSize, deviceYSize);		
-		bi = Scalr.resize(bi, Scalr.Method.BALANCED, deviceXSize, deviceYSize);		
+//		bi = Scalr.resize(bi, Scalr.Method.BALANCED, deviceXSize, deviceYSize);		
 
 		int[] ret = getPixelsFromImage(bi, deviceXSize, deviceYSize);
 		
