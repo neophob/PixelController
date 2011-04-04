@@ -5,15 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.effect.RotoZoom;
-import com.neophob.sematrix.effect.Threshold;
-import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
-import com.neophob.sematrix.generator.Blinkenlights;
-import com.neophob.sematrix.generator.Image;
-import com.neophob.sematrix.generator.ImageZoomer;
-import com.neophob.sematrix.generator.TextureDeformation;
-import com.neophob.sematrix.generator.Textwriter;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.properties.PropertiesHelper;
@@ -204,6 +196,7 @@ public class MessageProcessor {
 				try {					
 					int val = Integer.parseInt(msg[1]);
 					col.setRotoZoomAngle(val);
+					//TODO
 					log.log(Level.WARNING,	"rotozoom value: "+val);
 					RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
 					r.setAngle(val);					
@@ -224,8 +217,6 @@ public class MessageProcessor {
 					if (g<0) g=0;
 					if (b<0) b=0;
 					col.setRGB(r, g, b);
-					Tint t = (Tint)col.getEffect(EffectName.TINT);
-					t.setColor(r, g, b);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -270,8 +261,6 @@ public class MessageProcessor {
 					if (a>255) a=255;
 					if (a<0) a=0;
 					col.setThresholdValue(a);
-					Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
-					t.setThreshold(a);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -281,8 +270,6 @@ public class MessageProcessor {
 				try {
 					String fileToLoad = msg[1];
 					col.setFileBlinken(fileToLoad);
-					Blinkenlights blink = (Blinkenlights)col.getGenerator(GeneratorName.BLINKENLIGHTS);
-					blink.loadFile(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -292,8 +279,6 @@ public class MessageProcessor {
 				try {
 					String fileToLoad = msg[1];
 					col.setFileImageSimple(fileToLoad);
-					Image img = (Image)col.getGenerator(GeneratorName.IMAGE);
-					img.loadFile(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -303,8 +288,6 @@ public class MessageProcessor {
 				try {
 					String fileToLoad = msg[1];
 					col.setFileImageZoomer(fileToLoad);
-					ImageZoomer img = (ImageZoomer)col.getGenerator(GeneratorName.IMAGE_ZOOMER);
-					img.loadImage(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -314,8 +297,6 @@ public class MessageProcessor {
 				try {
 					int lut = Integer.parseInt(msg[1]);
 					col.setTextureDeformationLut(lut);
-					TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
-					df.changeLUT(lut);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -325,8 +306,6 @@ public class MessageProcessor {
 				try {
 					String fileToLoad = msg[1];
 					col.setFileTextureDeformation(fileToLoad);
-					TextureDeformation df = (TextureDeformation)col.getGenerator(GeneratorName.TEXTURE_DEFORMATION);
-					df.loadFile(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -335,10 +314,7 @@ public class MessageProcessor {
 			case TEXTWR:
 				try {
 					String message = msg[1];
-//					System.out.println(message);
 					col.setText(message);
-					Textwriter txt = (Textwriter)col.getGenerator(GeneratorName.TEXTWRITER);
-					txt.createTextImage(message);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}

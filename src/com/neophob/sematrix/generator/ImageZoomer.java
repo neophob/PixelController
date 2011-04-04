@@ -4,6 +4,8 @@ import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -42,6 +44,7 @@ public class ImageZoomer extends Generator {
 	private float step = 0.01f;    // Size of each step along the path
 	private float pct = 1.0f;      // Percentage traveled (0.0 to 1.0)
 
+	private String filename;
 	
 	public ImageZoomer(String filename) {
 		super(GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);		
@@ -58,6 +61,12 @@ public class ImageZoomer extends Generator {
 	 * @param filename
 	 */
 	public void loadImage(String filename) {
+		//only load if needed
+		if (StringUtils.equals(filename, this.filename)) {
+			return;
+		}
+
+		this.filename = filename;
 		try {
 			origImg = Collector.getInstance().getPapplet().loadImage(PREFIX+filename);
 			if (origImg==null || origImg.height<2) {
@@ -132,6 +141,10 @@ public class ImageZoomer extends Generator {
 	}
 
 	
+	public String getFilename() {
+		return filename;
+	}
+
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
