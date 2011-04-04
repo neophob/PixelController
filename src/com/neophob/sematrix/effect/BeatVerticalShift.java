@@ -1,13 +1,14 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class BeatVerticalShift extends Effect {
 
 	int ammount=0;
 	
 	public BeatVerticalShift() {
-		super(EffectName.BEAT_VERTICAL_SHIFT);
+		super(EffectName.BEAT_VERTICAL_SHIFT, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(int[] buffer) {

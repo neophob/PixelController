@@ -1,12 +1,14 @@
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 
 public class Tint extends Effect {
 
 	private int r,g,b;
 	
 	public Tint() {
-		super(EffectName.TINT);
+		super(EffectName.TINT, ResizeName.QUALITY_RESIZE);
 		r=255;
 		g=255;
 		b=255;

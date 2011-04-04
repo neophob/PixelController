@@ -17,8 +17,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
-public class TcpServer implements Runnable {
-
+public final class TcpServer implements Runnable {
 
 	private static final long CONNECT_RETRY_IN_MS = 16000;
 

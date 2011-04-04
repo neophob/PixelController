@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
+import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.layout.LayoutModel;
 import com.neophob.sematrix.properties.PropertiesHelper;
@@ -57,13 +58,11 @@ public abstract class Output {
 		OutputMapping map = c.getOutputMappings(screenNr);
 		
 		if (lm.screenDoesNotNeedStretching()) {
-			return matrixData.getScreenBufferForDevice(c.getVisual(lm.getFxInput()).getBuffer(), map);
+			Visual v = c.getVisual(lm.getFxInput());
+			return matrixData.getScreenBufferForDevice(v, map);
 		} else {
-			return matrixData.getScreenBufferForDevice(
-					c.getVisual(lm.getFxInput()).getBuffer(),
-					lm,
-					map 									//total
-			);
+			Visual v = c.getVisual(lm.getFxInput());
+			return matrixData.getScreenBufferForDevice(v, lm, map);
 		}
 	}
 	

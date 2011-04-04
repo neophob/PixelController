@@ -8,14 +8,13 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * matrix display buffer class
  * 
  * the internal buffer is much larger than the actual device. the buffer for the matrix is recalculated
  * each frame. reason: better display quality 
- * 
- * TODO: Layout (horiz/vertical/cube)
  * 
  * @author mvogt
  *
@@ -51,6 +50,8 @@ public abstract class Generator {
 
 	private GeneratorName name;
 	
+	private ResizeName resizeOption;
+	
 	//internal, larger buffer
 	public int[] internalBuffer;
 	protected int internalBufferXSize;
@@ -60,8 +61,9 @@ public abstract class Generator {
 	 * 
 	 * @param name
 	 */
-	public Generator(GeneratorName name) {
+	public Generator(GeneratorName name, ResizeName resizeOption) {
 		this.name = name;
+		this.resizeOption = resizeOption;
 		MatrixData matrix = Collector.getInstance().getMatrix();
 		this.internalBufferXSize = matrix.getBufferXSize();
 		this.internalBufferYSize = matrix.getBufferYSize();
@@ -93,6 +95,10 @@ public abstract class Generator {
 
 	public GeneratorName getName() {
 		return name;
+	}
+	
+	public ResizeName getResizeOption() {
+		return resizeOption;
 	}
 
 	public int[] getBuffer() {

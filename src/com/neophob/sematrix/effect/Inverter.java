@@ -1,10 +1,12 @@
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 
 public class Inverter extends Effect {
 
 	public Inverter() {
-		super(EffectName.INVERTER);
+		super(EffectName.INVERTER, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(int[] buffer) {

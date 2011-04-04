@@ -2,6 +2,8 @@ package com.neophob.sematrix.generator;
 
 import java.awt.Color;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 import processing.core.PApplet;
 
 
@@ -16,7 +18,7 @@ public class Plasma2 extends Generator {
 	private int frameCount;
 	
 	public Plasma2() {
-		super(GeneratorName.PLASMA);
+		super(GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 	}
 

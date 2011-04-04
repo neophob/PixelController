@@ -1,6 +1,10 @@
 package com.neophob.sematrix.generator;
 
+import java.util.Random;
+
 import processing.core.PConstants;
+
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * @author mvogt
@@ -11,11 +15,13 @@ public class Fire extends Generator implements PConstants {
 	/* paletter */
 	private int[] colors;
 	
+	private Random r;
+	
 	/* fire buffer, contains 0..255 */
 	private int[] buffer;
 
 	public Fire() {
-		super(GeneratorName.FIRE);
+		super(GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
 		//Setup palette
 		colors = new int[256];
@@ -38,6 +44,7 @@ public class Fire extends Generator implements PConstants {
 			colors[i + 224]=getColor(255, 255, 224+i);
 		} 
 
+		r = new Random();
 	}
 
 	private int getColor(int r, int g, int b) {
@@ -50,9 +57,9 @@ public class Fire extends Generator implements PConstants {
 
 		int random;
 		for (int i = 0; i < this.getInternalBufferXSize(); i++) {
-			random = 1 + (int)(16.f * (Math.random()));
+			random = r.nextInt(16);
 			/* the lower the value, the intense the fire, compensate a lower value with a higher decay value*/
-			if (random > 9) {
+			if (random > 8) {
 				/*maximum heat*/
 				this.buffer[j + i] = 255; 
 			} else {

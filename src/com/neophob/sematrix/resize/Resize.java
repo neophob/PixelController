@@ -15,9 +15,8 @@ import com.neophob.sematrix.glue.Collector;
 public abstract class Resize {
 
 	public enum ResizeName {
-		SPEED_RESIZE(0),
-		QUALITY_RESIZE(1),
-		ZOOM_RESIZE(2);
+		PIXEL_RESIZE(0),
+		QUALITY_RESIZE(1);
 		
 		private int id;
 		

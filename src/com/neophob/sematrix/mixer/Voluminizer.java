@@ -3,6 +3,7 @@ package com.neophob.sematrix.mixer;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * mix src/dst accoring to volume of sound!
@@ -13,7 +14,7 @@ import com.neophob.sematrix.input.Sound;
 public class Voluminizer extends Mixer {
 
 	public Voluminizer() {
-		super(MixerName.VOLUMINIZER);
+		super(MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

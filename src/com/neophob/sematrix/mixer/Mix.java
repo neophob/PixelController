@@ -2,11 +2,12 @@ package com.neophob.sematrix.mixer;
 
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Mix extends Mixer {
 
 	public Mix() {
-		super(MixerName.MIX);
+		super(MixerName.MIX, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

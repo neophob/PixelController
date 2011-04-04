@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * @author mvogt
@@ -44,7 +45,7 @@ public class Textwriter extends Generator {
 	 * @param filename
 	 */
 	public Textwriter(String fontName, int fontSize, String text) {
-		super(GeneratorName.TEXTWRITER);
+		super(GeneratorName.TEXTWRITER, ResizeName.QUALITY_RESIZE);
 		color = new Color(255,255,255);
 		xpos=0;
 		ypos=getInternalBufferYSize();

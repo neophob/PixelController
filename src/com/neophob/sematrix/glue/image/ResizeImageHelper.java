@@ -39,7 +39,7 @@ public class ResizeImageHelper {
 	 * @return
 	 */
 	public static int[] processingResize(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
-		int[] ret = new int[deviceXSize*deviceYSize];
+		int[] ret;// = new int[deviceXSize*deviceYSize];
 
 		PImage pImage = Collector.getInstance().getPapplet().createImage( currentXSize, currentYSize, PApplet.RGB );
 		pImage.loadPixels();

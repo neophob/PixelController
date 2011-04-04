@@ -58,7 +58,7 @@ public class MatrixEmulator extends Output {
 		
 		//show only each 2nd frame to reduce cpu load
 		if (frame%2==1) {
-			return;
+			//return;
 		}
 		
 		switch (layout.getLayoutName()) {

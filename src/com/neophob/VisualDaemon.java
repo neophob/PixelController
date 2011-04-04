@@ -22,6 +22,8 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class VisualDaemon extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
+	
+	private static final int DEVICE_SIZE = 8;
 
 	public static final int FPS = 15;
 	//96*2*25 = 4800bytes
@@ -39,7 +41,7 @@ public class VisualDaemon extends PApplet {
 		//		super.frame.setIconImage(titlebaricon.getImage()); 
 		//		super.frame.setTitle("This is in the titlebar!");
 
-		Collector.getInstance().init(this, FPS, 8, 8);
+		Collector.getInstance().init(this, FPS, DEVICE_SIZE, DEVICE_SIZE);
 		frameRate(FPS);
 		noSmooth();
 		

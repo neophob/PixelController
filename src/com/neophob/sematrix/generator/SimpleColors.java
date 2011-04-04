@@ -1,12 +1,14 @@
 package com.neophob.sematrix.generator;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 
 public class SimpleColors extends Generator {
 
 	private int rotate = 0;
 
 	public SimpleColors() {
-		super(GeneratorName.SIMPLECOLORS);
+		super(GeneratorName.SIMPLECOLORS, ResizeName.QUALITY_RESIZE);
 	}
 	
 	@Override

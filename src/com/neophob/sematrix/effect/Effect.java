@@ -2,6 +2,7 @@ package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public abstract class Effect {
 	
@@ -33,12 +34,15 @@ public abstract class Effect {
 	}
 	
 	private EffectName effectName;
+	private ResizeName resizeOption;
+	
 	protected int internalBufferXSize;
 	protected int internalBufferYSize;
 
 	
-	public Effect(EffectName effectName) {
+	public Effect(EffectName effectName, ResizeName resizeOption) {
 		this.effectName = effectName;
+		this.resizeOption = resizeOption;
 		MatrixData matrix = Collector.getInstance().getMatrix();
 		this.internalBufferXSize = matrix.getBufferXSize();
 		this.internalBufferYSize = matrix.getBufferYSize();
@@ -51,6 +55,10 @@ public abstract class Effect {
 	 * @return the buffer
 	 */
 	public abstract int[] getBuffer(int[] buffer);
+	
+	public ResizeName getResizeOption() {
+		return resizeOption;
+	}
 	
 	/**
 	 * update an effect 
