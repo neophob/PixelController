@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 
 /**
  * @author mvogt
@@ -19,7 +21,7 @@ public class Cell extends Generator {
 	private float[][] distlookup;
 
 	public Cell() {
-		super(GeneratorName.CELL);
+		super(GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
 		int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
 		distlookup=new float[hsize][hsize];
@@ -149,12 +151,12 @@ public class Cell extends Generator {
 //				mixColors();
 		}
 		
-		private void mixColors() {
+		/*private void mixColors() {
 			int col = die.nextInt(255);
 			this.r=col;
 			this.g=col;
 			this.b=col;
-		}
+		}*/
 
 		public float distanceTo(int xx,int yy) {
 			// Euclidian Distance

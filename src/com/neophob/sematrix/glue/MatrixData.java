@@ -9,6 +9,8 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.layout.LayoutModel;
+import com.neophob.sematrix.resize.Resize;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * matrix display buffer class
@@ -86,7 +88,8 @@ public class MatrixData {
 	 * @param screenNr select physical screen/matrix 
 	 * @return
 	 */
-	public int[] getScreenBufferForDevice(int buffer[], OutputMapping map) {
+	public int[] getScreenBufferForDevice(Visual visual, OutputMapping map) {				
+		int[] buffer = visual.getBuffer();
 		//apply output specific effect
 		buffer = map.getEffect().getBuffer(buffer);
 		
@@ -94,7 +97,7 @@ public class MatrixData {
 		buffer = doTheFaderBaby(buffer, map);
 		
 		//resize to the ouput buffer return image
-		return resizeBufferForDevice(buffer, deviceXSize, deviceYSize);
+		return resizeBufferForDevice(buffer, visual.getResizeOption(), deviceXSize, deviceYSize);
 	}
 	
 
@@ -106,7 +109,9 @@ public class MatrixData {
 	 * @param fxOnHowMayScreens 
 	 * @return
 	 */
-	public int[] getScreenBufferForDevice(int buffer[], LayoutModel lm, OutputMapping map) {
+	public int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map) {
+		int[] buffer = visual.getBuffer();
+		
 		//apply output specific effect
 		buffer = map.getEffect().getBuffer(buffer);
 		
@@ -118,6 +123,7 @@ public class MatrixData {
 		int yStart=lm.getyStart(getBufferYSize());
 		int yWidth=lm.getyWidth(getBufferYSize());
 		
+		//lazy creation of the pimage
 		if (tmpImage==null || tmpImage.width != getBufferXSize()) {
 			tmpImage = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );			
 		} 
@@ -131,7 +137,7 @@ public class MatrixData {
 		int[] bfr2 = tmpImage.pixels;
 		tmpImage.updatePixels();
 
-		return resizeBufferForDevice(bfr2, deviceXSize, deviceYSize);
+		return resizeBufferForDevice(bfr2, visual.getResizeOption(), deviceXSize, deviceYSize);
 	}
 
 	
@@ -142,7 +148,7 @@ public class MatrixData {
 	 * @param buffer
 	 * @return RESIZED image
 	 */
-	public int[] resizeBufferForDevice(int[] buffer, int deviceXSize, int deviceYSize) {
+	public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize) {
 		
 		//processing RESIZE is buggy!
 		//return ResizeImageHelper.processingResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
@@ -151,7 +157,8 @@ public class MatrixData {
 		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 //	return new int[deviceXSize* deviceYSize];	
 
-		return Collector.getInstance().getAllResizers().get(1).getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
+		Resize r = Collector.getInstance().getResize(resizeName);
+		return r.getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 	}
 
 

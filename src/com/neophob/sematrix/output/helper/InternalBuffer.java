@@ -56,7 +56,7 @@ public class InternalBuffer extends PApplet {
 		int x=0, y=0;
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
 			//get image
-			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), BFR_X, BFR_Y);
+			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), BFR_X, BFR_Y);
 			
 			if (pImage==null) {
 				//create an image out of the buffer

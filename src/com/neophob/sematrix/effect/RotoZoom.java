@@ -1,6 +1,7 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.fader.CrossfaderHelper;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
 /**
@@ -35,7 +36,7 @@ public class RotoZoom extends Effect {
 	 * @param angle
 	 */
 	public RotoZoom(float scale, float angle) {
-		super(EffectName.ROTOZOOM);
+		super(EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
 		this.scale = scale;
 		this.scaleOrig = scale;
 		this.angle = angle;
@@ -134,8 +135,8 @@ public class RotoZoom extends Effect {
 		float ca=(float)(scaleP*Math.cos(angleP));//cosAng);
 		float sa=(float)(scaleP*Math.sin(angleP));//sinAng);
 
-		float txx=0-(internalBufferXSize/2)*sa;
-		float tyy=0+(internalBufferYSize/2)*ca;
+		float txx=0-(internalBufferXSize/2.0f)*sa;
+		float tyy=0+(internalBufferYSize/2.0f)*ca;
 
 		for (y=0;y<internalBufferYSize;y++) {
 			txx-=sa;

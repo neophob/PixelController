@@ -12,6 +12,7 @@ import processing.core.PApplet;
 import com.neophob.sematrix.effect.BeatHorizShift;
 import com.neophob.sematrix.effect.BeatVerticalShift;
 import com.neophob.sematrix.effect.Effect;
+import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.Emboss;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
@@ -19,17 +20,17 @@ import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Voluminize;
-import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Crossfader;
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.fader.SlideLeftRight;
 import com.neophob.sematrix.fader.SlideUpsideDown;
 import com.neophob.sematrix.fader.Switch;
-import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Cell;
 import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.ImageZoomer;
 import com.neophob.sematrix.generator.Metaballs;
@@ -39,29 +40,28 @@ import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Checkbox;
 import com.neophob.sematrix.mixer.MinusHalf;
 import com.neophob.sematrix.mixer.Mix;
 import com.neophob.sematrix.mixer.Mixer;
+import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.mixer.Multiply;
 import com.neophob.sematrix.mixer.NegativeMultiply;
 import com.neophob.sematrix.mixer.PassThruMixer;
 import com.neophob.sematrix.mixer.Voluminizer;
 import com.neophob.sematrix.mixer.Xor;
-import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.resize.PixelResize;
 import com.neophob.sematrix.resize.QualityResize;
 import com.neophob.sematrix.resize.Resize;
-import com.neophob.sematrix.resize.SpeedResize;
-import com.neophob.sematrix.resize.ZoomResize;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Collector {
 
@@ -261,9 +261,8 @@ public class Collector {
 		}
 		
 		//create resizer
-		new SpeedResize();
+		new PixelResize();
 		new QualityResize();
-		new ZoomResize();
 		
 		PropertiesHelper.loadPresents();
 	}
@@ -607,6 +606,15 @@ public class Collector {
 	
 	public List<Resize> getAllResizers() {
 		return allResizers;
+	}
+	
+	public Resize getResize(ResizeName name) {
+		for (Resize r: allResizers) {
+			if (r.getId() == name.getId()) {
+				return r;
+			}
+		}
+		return null;
 	}
 	
 	public void addResize(Resize resize) {

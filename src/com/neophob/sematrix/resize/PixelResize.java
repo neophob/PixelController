@@ -10,10 +10,10 @@ import com.neophob.sematrix.resize.util.ScalrOld;
  * @author michu
  *
  */
-public class SpeedResize extends Resize {
+public class PixelResize extends Resize {
 
-	public SpeedResize() {
-		super(ResizeName.SPEED_RESIZE);
+	public PixelResize() {
+		super(ResizeName.PIXEL_RESIZE);
 	}
 	
 	public int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {

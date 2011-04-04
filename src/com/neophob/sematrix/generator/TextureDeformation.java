@@ -9,6 +9,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.effect.BoxFilter;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class TextureDeformation extends Generator {
 	private int lut;
 
 	public TextureDeformation(String filename) {
-		super(GeneratorName.TEXTURE_DEFORMATION);
+		super(GeneratorName.TEXTURE_DEFORMATION, ResizeName.QUALITY_RESIZE);
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
 		mLUT =  new int[3 * w * h];

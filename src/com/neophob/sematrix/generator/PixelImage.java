@@ -6,8 +6,11 @@ import java.util.Random;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
+ * Space Invader Generator
+ * 
  * @author mvogt
  * 
  */
@@ -25,7 +28,7 @@ public class PixelImage extends Generator {
 	private int frame = 0;
 
 	public PixelImage() throws InvalidParameterException {
-		super(GeneratorName.PIXELIMAGE);
+		super(GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
 
 		//populate known images
 		images[0][0]=0x1537; 

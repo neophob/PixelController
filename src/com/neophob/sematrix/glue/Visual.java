@@ -6,7 +6,13 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * this model holds 2 generators, 2 effects and a mixer instance
+ * @author mvogt
+ *
+ */
 public class Visual {
 
 	private Generator generator1;
@@ -37,6 +43,17 @@ public class Visual {
 		return false;
 	}
 
+	//check the resize option to return
+	public ResizeName getResizeOption() {
+		if (this.generator1.getResizeOption() == ResizeName.PIXEL_RESIZE || this.generator2.getResizeOption() == ResizeName.PIXEL_RESIZE ||
+				this.effect1.getResizeOption() == ResizeName.PIXEL_RESIZE || this.effect2.getResizeOption() == ResizeName.PIXEL_RESIZE ||
+				this.mixer.getResizeOption() == ResizeName.PIXEL_RESIZE) {
+			return ResizeName.PIXEL_RESIZE;
+		}
+		
+		return ResizeName.QUALITY_RESIZE;
+	}
+	
 	public Generator getGenerator1() {
 		return generator1;
 	}

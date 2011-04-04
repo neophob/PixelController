@@ -9,6 +9,7 @@ import processing.core.PConstants;
 import processing.lib.blinken.BlinkenLibrary;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * @author mvogt
@@ -26,7 +27,7 @@ public class Blinkenlights extends Generator implements PConstants {
 	private int movieFrames;
 
 	public Blinkenlights(String filename) {
-		super(GeneratorName.BLINKENLIGHTS);
+		super(GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
 		PApplet parent = Collector.getInstance().getPapplet();
 		random=false;
 		blinken = new BlinkenLibrary(parent, PREFIX+filename);

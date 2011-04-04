@@ -2,11 +2,12 @@ package com.neophob.sematrix.mixer;
 
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class NegativeMultiply extends Mixer {
 
 	public NegativeMultiply() {
-		super(MixerName.NEGATIVE_MULTIPLY);
+		super(MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

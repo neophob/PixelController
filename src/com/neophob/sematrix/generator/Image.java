@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * @author mvogt
@@ -24,7 +25,7 @@ public class Image extends Generator {
 	 * @param filename
 	 */
 	public Image(String filename) {
-		super(GeneratorName.IMAGE);
+		super(GeneratorName.IMAGE, ResizeName.PIXEL_RESIZE);
 /*		PApplet parent = Collector.getInstance().getPapplet();
 		pimage = parent.loadImage(filename);
 		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);

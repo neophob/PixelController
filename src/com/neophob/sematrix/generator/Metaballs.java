@@ -1,5 +1,7 @@
 package com.neophob.sematrix.generator;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 
 public class Metaballs extends Generator {	
 
@@ -16,7 +18,7 @@ public class Metaballs extends Generator {
 	private int a=1;
 
 	public Metaballs() {
-		super(GeneratorName.METABALLS);
+		super(GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
 		vy = new int[NUM_BLOBS][getInternalBufferYSize()];
 		vx = new int[NUM_BLOBS][getInternalBufferXSize()];
 	}

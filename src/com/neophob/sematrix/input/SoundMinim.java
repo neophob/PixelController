@@ -9,7 +9,7 @@ import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 
-public class SoundMinim implements SeSound, Runnable {
+public final class SoundMinim implements SeSound, Runnable {
 
 	//samples per 1/4s
 	private static final int SOUND_BUFFER_RESOLUTION = 8;

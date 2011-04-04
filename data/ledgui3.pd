@@ -75,7 +75,7 @@
 #X obj 268 229 hradio 15 1 0 4 s_fader2 r_fader2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 106 207 hradio 15 1 0 9 s_fx_output1 r_fx_output1 empty 0 -8
-0 10 -262130 -1 -1 1;
+0 10 -262130 -1 -1 0;
 #X obj 268 207 hradio 15 1 0 9 s_fx_output2 r_fx_output2 empty 0 -8
 0 10 -262130 -1 -1 0;
 #X text 38 204 Effect;

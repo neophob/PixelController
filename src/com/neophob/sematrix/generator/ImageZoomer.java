@@ -8,6 +8,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * 
@@ -43,7 +44,7 @@ public class ImageZoomer extends Generator {
 
 	
 	public ImageZoomer(String filename) {
-		super(GeneratorName.IMAGE_ZOOMER);		
+		super(GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);		
 		parent = Collector.getInstance().getPapplet();
 		clipedImg = parent.createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
 		this.loadImage(filename);

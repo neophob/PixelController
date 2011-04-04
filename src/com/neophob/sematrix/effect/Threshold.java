@@ -1,12 +1,14 @@
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.resize.Resize.ResizeName;
+
 
 public class Threshold extends Effect {
 
 	private short threshold;
 	
 	public Threshold() {
-		super(EffectName.THRESHOLD);
+		super(EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
 		this.threshold = 128;
 	}
 
