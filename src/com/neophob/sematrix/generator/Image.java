@@ -4,6 +4,8 @@ import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
@@ -19,6 +21,8 @@ public class Image extends Generator {
 	private static Logger log = Logger.getLogger(Image.class.getName());
 	
 	private PImage pimage;
+	
+	private String filename;
 	
 	/**
 	 * 
@@ -38,6 +42,12 @@ public class Image extends Generator {
 	 * @param filename
 	 */
 	public void loadFile(String filename) {
+		//only load if needed
+		if (StringUtils.equals(filename, this.filename)) {
+			return;
+		}
+		
+		this.filename = filename;
 		try {
 			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
 			if (tmp==null || tmp.height<2) {
@@ -61,9 +71,13 @@ public class Image extends Generator {
 		pimage.updatePixels();
 	}
 
+	
+	public String getFilename() {
+		return filename;
+	}
+
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-
 	}
 }

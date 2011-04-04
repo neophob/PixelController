@@ -26,6 +26,8 @@ public class TextureDeformation extends Generator {
 	private PImage textureImg;
 	private int timeDisplacement;
 	private int lut;
+	
+	private String filename;
 
 	public TextureDeformation(String filename) {
 		super(GeneratorName.TEXTURE_DEFORMATION, ResizeName.QUALITY_RESIZE);
@@ -45,6 +47,7 @@ public class TextureDeformation extends Generator {
 	}
 	
 	public void loadFile(String fileName) {
+		this.filename = fileName;
 		try {
 			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
 			if (tmp==null || tmp.height<2) {
@@ -197,6 +200,16 @@ public class TextureDeformation extends Generator {
 		}
 	}
 
+	
+
+	public String getFilename() {
+		return filename;
+	}
+	
+
+	public int getLut() {
+		return lut;
+	}
 
 	@Override
 	public void close() {

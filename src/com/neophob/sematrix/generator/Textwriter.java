@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -39,6 +41,8 @@ public class Textwriter extends Generator {
 
 	private int[] textBuffer;
 	private int[] tmp;
+	
+	private String text;
 
 	/**
 	 * 
@@ -64,7 +68,14 @@ public class Textwriter extends Generator {
 	 * create image
 	 * @return
 	 */
-	public void createTextImage(String text) {
+	public void createTextImage(String text) {	
+		//only load if needed
+		if (StringUtils.equals(text, this.text)) {
+			return;
+		}
+
+		this.text = text;
+		
 		BufferedImage img = 
 			new BufferedImage( TEXT_BUFFER_X_SIZE, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
 
@@ -161,6 +172,10 @@ public class Textwriter extends Generator {
 			//if the image is resized, this could lead to an arrayoutofboundexception!
 		}
 		
+	}	
+
+	public String getText() {
+		return text;
 	}
 
 	@Override

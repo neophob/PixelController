@@ -36,6 +36,9 @@ public class Threshold extends Effect {
 	public void setThreshold(int threshold) {
 		this.threshold = (short)threshold;
 	}
-	
 
+	public short getThreshold() {
+		return threshold;
+	}
+	
 }

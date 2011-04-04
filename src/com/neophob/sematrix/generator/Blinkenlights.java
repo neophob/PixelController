@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.lib.blinken.BlinkenLibrary;
@@ -25,9 +27,12 @@ public class Blinkenlights extends Generator implements PConstants {
 	private Random rand = new Random();
 	private int frames;
 	private int movieFrames;
+	
+	private String filename="";
 
 	public Blinkenlights(String filename) {
 		super(GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
+		this.filename = filename;
 		PApplet parent = Collector.getInstance().getPapplet();
 		random=false;
 		blinken = new BlinkenLibrary(parent, PREFIX+filename);
@@ -39,7 +44,13 @@ public class Blinkenlights extends Generator implements PConstants {
 	 * @param file
 	 */
 	public void loadFile(String file) {
-		blinken.loadFile(PREFIX+file);
+		//only load if needed
+		if (!StringUtils.equals(file, this.filename)) {
+			log.log(Level.INFO, "Load blinkenlights file "+file);
+			this.filename = file;
+			blinken.loadFile(PREFIX+file);
+			log.log(Level.INFO, "Load blinkenlights done!");
+		}
 		blinkenSettings();
 	}
 	
@@ -108,6 +119,12 @@ public class Blinkenlights extends Generator implements PConstants {
 		} else {
 			blinken.loop();
 		}
+	}
+	
+	
+
+	public String getFilename() {
+		return filename;
 	}
 
 	@Override

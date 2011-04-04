@@ -103,20 +103,19 @@ public class Collector {
 	/** present settings */
 	private int selectedPresent;
 	private List<PresentSettings> present;
-	private int r=255,g=255,b=255;
+	//track r/g/b
+	private Tint tint;
 	private int rotoZoomAngle=0;
 	
-	private String fileBlinken;
-	private String fileImageSimple;
-	private String fileImageZoomer;
-	//private String fileTexture;
+	private Blinkenlights blinkenlights;
+	private Image image;
+	private ImageZoomer imageZoomer;
 	
-	private String fileTextureDeformation;
-	private int textureDeformationLut;
+	private TextureDeformation textureDeformation;
 	
-	private String text;
+	private Textwriter textwriter;
 	
-	private int thresholdValue=128;
+	private Threshold thresold;
 	
 	private TcpServer pdSrv;
 	
@@ -192,26 +191,26 @@ public class Collector {
 	 */
 	private void initSystem() {
 		//create generators
-		this.fileBlinken = PropertiesHelper.getProperty("initial.blinken");
-		new Blinkenlights(this.fileBlinken);
-		this.fileImageSimple = PropertiesHelper.getProperty("initial.image.simple");
-		new Image(this.fileImageSimple);		
+		String fileBlinken = PropertiesHelper.getProperty("initial.blinken");
+		blinkenlights = new Blinkenlights(fileBlinken);
+		String fileImageSimple = PropertiesHelper.getProperty("initial.image.simple");
+		image = new Image(fileImageSimple);		
 		new Plasma2();
 		new SimpleColors();
 		new Fire();
 		new PassThruGen();
 		new Metaballs();
 		new PixelImage();
-		this.fileTextureDeformation = PropertiesHelper.getProperty("initial.texture");
-		new TextureDeformation(fileTextureDeformation);
-		this.text = PropertiesHelper.getProperty("initial.text");
-		new Textwriter(
+		String fileTextureDeformation = PropertiesHelper.getProperty("initial.texture");
+		textureDeformation = new TextureDeformation(fileTextureDeformation);
+		String text = PropertiesHelper.getProperty("initial.text");
+		textwriter = new Textwriter(
 				PropertiesHelper.getProperty("font.filename"), 
 				Integer.parseInt(PropertiesHelper.getProperty("font.size")),
-				this.text
+				text
 		);
-		this.fileImageZoomer = PropertiesHelper.getProperty("initial.image.zoomer");
-		new ImageZoomer(fileImageZoomer);
+		String fileImageZoomer = PropertiesHelper.getProperty("initial.image.zoomer");
+		imageZoomer = new ImageZoomer(fileImageZoomer);
 		new Cell();
 		
 		//create effects
@@ -221,8 +220,8 @@ public class Collector {
 		new BeatVerticalShift();
 		new BeatHorizShift();
 		new Voluminize();
-		new Tint();
-		new Threshold();
+		tint = new Tint();
+		thresold = new Threshold();
 		new Emboss();
 
 		//create mixer
@@ -434,17 +433,17 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_EFFECT_B+" "+fx2);
 		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
 		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
-		ret.add(ValidCommands.CHANGE_TINT+" "+r+" "+g+" "+b);
+		ret.add(ValidCommands.CHANGE_TINT+" "+tint.getR()+" "+tint.getG()+" "+tint.getB());
 		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+rotoZoomAngle);
-		ret.add(ValidCommands.BLINKEN+" "+fileBlinken);
-		ret.add(ValidCommands.IMAGE+" "+fileImageSimple);
-		ret.add(ValidCommands.IMAGE_ZOOMER+" "+fileImageZoomer);
+		ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
+		ret.add(ValidCommands.IMAGE+" "+image.getFilename());
+		ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
 		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
-		ret.add(ValidCommands.TEXTDEF_FILE+" "+fileTextureDeformation);
-		ret.add(ValidCommands.TEXTDEF+" "+textureDeformationLut);
-		ret.add(ValidCommands.TEXTWR+" "+text);
+		ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
+		ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
+		ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
 		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
-		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresholdValue);
+		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresold.getThreshold());
 		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
 		return ret;
@@ -663,71 +662,69 @@ public class Collector {
 	}
 
 	public void setRGB(int r, int g, int b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
+		tint.setColor(r, g, b);
 	}
 
 	public int getR() {
-		return r;
+		return tint.getR();
 	}
 
 	public int getG() {
-		return g;
+		return tint.getG();
 	}
 
 	public int getB() {
-		return b;
+		return tint.getB();
 	}
 	
 	public String getFileBlinken() {
-		return fileBlinken;
+		return blinkenlights.getFilename();
 	}
 
 	public void setFileBlinken(String fileBlinken) {
-		this.fileBlinken = fileBlinken;
+		blinkenlights.loadFile(fileBlinken);
 	}
 	
 	public String getFileImageSimple() {
-		return fileImageSimple;
+		return image.getFilename();
 	}
 
 	public void setFileImageSimple(String fileImageSimple) {
-		this.fileImageSimple = fileImageSimple;
+		image.loadFile(fileImageSimple);
+
 	}
 	
 
 	public String getFileImageZoomer() {
-		return fileImageZoomer;
+		return imageZoomer.getFilename();
 	}
 
 	public void setFileImageZoomer(String fileImageZoomer) {
-		this.fileImageZoomer = fileImageZoomer;
+		imageZoomer.loadImage(fileImageZoomer);
 	}
 
 	public String getFileTextureDeformation() {
-		return fileTextureDeformation;
+		return textureDeformation.getFilename();
 	}
 
 	public void setFileTextureDeformation(String fileTextureDeformation) {
-		this.fileTextureDeformation = fileTextureDeformation;
+		textureDeformation.loadFile(fileTextureDeformation);
 	}
 
-	
 	public int getTextureDeformationLut() {
-		return textureDeformationLut;
+		return textureDeformation.getLut();
 	}
 
 	public void setTextureDeformationLut(int textureDeformationLut) {
-		this.textureDeformationLut = textureDeformationLut;
+		textureDeformation.changeLUT(textureDeformationLut);
 	}
 
 	public String getText() {
-		return text;
+		return textwriter.getText();
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		textwriter.createTextImage(text);
 	}
 
 		
@@ -806,7 +803,7 @@ public class Collector {
 	
 
 	public void setThresholdValue(int thresholdValue) {
-		this.thresholdValue = thresholdValue;
+		thresold.setThreshold(thresholdValue);
 	}
 
 	//TODO static is NOT sexy!
