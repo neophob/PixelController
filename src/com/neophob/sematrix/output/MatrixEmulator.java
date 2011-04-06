@@ -100,13 +100,13 @@ public class MatrixEmulator extends Output {
 				g = (int) ((tmp>>8)  & 255);       
 				b = (int) ( tmp      & 255);
 
-				//simulate 4bit color
-				r >>= 4;
-				g >>= 4;
-				b >>= 4;
-				r <<= 4;
-				g <<= 4;
-				b <<= 4;
+				//simulate 5bit color
+				r >>= 3;
+				g >>= 3;
+				b >>= 3;
+				r <<= 3;
+				g <<= 3;
+				b <<= 3;
 
 				parent.fill(r,g,b);
 				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+LED_SIZE),
