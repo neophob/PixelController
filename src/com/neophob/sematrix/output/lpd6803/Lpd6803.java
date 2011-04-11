@@ -467,7 +467,7 @@ public class Lpd6803 {
 	 * how may times the serial response was missing / invalid
 	 * @return
 	 */
-	public synchronized long getAckErrors() {
+	public long getAckErrors() {
 		return ackErrors;
 	}
 
