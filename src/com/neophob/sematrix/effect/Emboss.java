@@ -10,7 +10,7 @@ public class Emboss extends Effect {
 	}
 
 	public int[] getBuffer(int[] buffer) {
-		return BoxFilter.applyBoxFilter(6, 1, buffer, this.internalBufferXSize);
+		return BoxFilter.applyBoxFilter(8, 1, buffer, this.internalBufferXSize);
 	}
 	
 
