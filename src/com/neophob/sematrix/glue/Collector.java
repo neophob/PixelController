@@ -157,7 +157,7 @@ public class Collector {
 	public void init(PApplet papplet, int fps, int deviceXsize, int deviceYsize) {
 		if (init) return;
 		this.papplet = papplet;
-		this.nrOfScreens = PropertiesHelper.getAllI2cAddress().size();
+		this.nrOfScreens = PropertiesHelper.getInstance().getNrOfScreens();
 		this.fps = fps;
 		
 		Sound.getInstance().setImplementation(new SoundMinim());
@@ -173,8 +173,8 @@ public class Collector {
 		}
 
 		//Start tcp server
-		int listeningPort = Integer.parseInt( PropertiesHelper.getProperty("net.listening.port", "3449") );
-		int sendPort = Integer.parseInt( PropertiesHelper.getProperty("net.send.port", "3445") );
+		int listeningPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.listening.port", "3449") );
+		int sendPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.send.port", "3445") );
 		
 		try {
 			pdSrv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);
@@ -191,9 +191,9 @@ public class Collector {
 	 */
 	private void initSystem() {
 		//create generators
-		String fileBlinken = PropertiesHelper.getProperty("initial.blinken");
+		String fileBlinken = PropertiesHelper.getInstance().getProperty("initial.blinken");
 		blinkenlights = new Blinkenlights(fileBlinken);
-		String fileImageSimple = PropertiesHelper.getProperty("initial.image.simple");
+		String fileImageSimple = PropertiesHelper.getInstance().getProperty("initial.image.simple");
 		image = new Image(fileImageSimple);		
 		new Plasma2();
 		new SimpleColors();
@@ -201,15 +201,15 @@ public class Collector {
 		new PassThruGen();
 		new Metaballs();
 		new PixelImage();
-		String fileTextureDeformation = PropertiesHelper.getProperty("initial.texture");
+		String fileTextureDeformation = PropertiesHelper.getInstance().getProperty("initial.texture");
 		textureDeformation = new TextureDeformation(fileTextureDeformation);
-		String text = PropertiesHelper.getProperty("initial.text");
+		String text = PropertiesHelper.getInstance().getProperty("initial.text");
 		textwriter = new Textwriter(
-				PropertiesHelper.getProperty("font.filename"), 
-				Integer.parseInt(PropertiesHelper.getProperty("font.size")),
+				PropertiesHelper.getInstance().getProperty("font.filename"), 
+				Integer.parseInt(PropertiesHelper.getInstance().getProperty("font.size")),
 				text
 		);
-		String fileImageZoomer = PropertiesHelper.getProperty("initial.image.zoomer");
+		String fileImageZoomer = PropertiesHelper.getInstance().getProperty("initial.image.zoomer");
 		imageZoomer = new ImageZoomer(fileImageZoomer);
 		new Cell();
 		
@@ -263,7 +263,7 @@ public class Collector {
 		new PixelResize();
 		new QualityResize();
 		
-		PropertiesHelper.loadPresents();
+		PropertiesHelper.getInstance().loadPresents();
 	}
 
 	/**

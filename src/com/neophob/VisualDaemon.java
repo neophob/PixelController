@@ -58,7 +58,8 @@ public class VisualDaemon extends PApplet {
 			lpd6803 = null;
 		}
 		
-		if (PropertiesHelper.getProperty("show.debug.window").equalsIgnoreCase("true")) {
+		
+		if (PropertiesHelper.getInstance().getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			nwh = new NewWindowHelper(true);	
 		}
 	}

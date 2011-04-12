@@ -196,7 +196,7 @@ public class MessageProcessor {
 				try {					
 					int val = Integer.parseInt(msg[1]);
 					col.setRotoZoomAngle(val);
-					//TODO
+					
 					log.log(Level.WARNING,	"rotozoom value: "+val);
 					RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
 					r.setAngle(val);					
@@ -227,7 +227,7 @@ public class MessageProcessor {
 					int idxs = col.getSelectedPresent();
 					List<String> present = col.getCurrentStatus();
 					col.getPresent().get(idxs).setPresent(present);
-					PropertiesHelper.savePresents();
+					PropertiesHelper.getInstance().savePresents();
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
