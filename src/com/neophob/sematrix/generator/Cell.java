@@ -71,11 +71,10 @@ public class Cell extends Generator {
 					b=0;
 				}
 				
-				//int col = (a.r << 16) | (a.g << 8) | a.b;
 				//int col = ((a.r/2+l/2) << 16) | ((a.g/2+l/2) << 8) | (a.b/2+l/2);
-				//int col = (l << 16) | (l << 8) | l;
+				int col = (a.r << 16) | (a.g << 8) | a.b;
 				//int col = (r << 16) | (g << 8) | b;
-				int col = (r << 16) | (r << 8) | r;
+				//int col = (r << 16) | (g << 8) | b;
 				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, col);				
 			}
 		}
@@ -143,10 +142,10 @@ public class Cell extends Generator {
 			if (this.x<0 || this.x>internalBufferXSize/RENDERSIZE) this.dx=-this.dx;
 			if (this.y<0 || this.y>internalBufferYSize/RENDERSIZE) this.dy=-this.dy;
 
-			int r = die.nextInt(111);
-			if (r==3) this.r=die.nextInt(255);
-			if (r==44) this.g=die.nextInt(255);
-			if (r==99) this.b=die.nextInt(255);
+			int rnd = die.nextInt(111);
+			if (rnd==3) this.r=die.nextInt(255);
+			if (rnd==44) this.g=die.nextInt(255);
+			if (rnd==99) this.b=die.nextInt(255);
 //			if (r==44)
 //				mixColors();
 		}
