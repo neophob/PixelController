@@ -84,12 +84,13 @@ public class Lpd6803Device extends Output {
 	public void update() {
 		
 		if (initialized) {			
-			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
+			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
 				//draw only on available screens!
-				if (!lpd6803.sendRgbFrame((byte)screen, super.getBufferForScreen(screen))) {
-					noUpdate++;
-				} else {
+				//TODO flip, rotate....
+				if (lpd6803.sendRgbFrame((byte)ofs, super.getBufferForScreen(ofs))) {
 					needUpdate++;
+				} else {
+					noUpdate++;
 				}
 			}
 			

@@ -240,4 +240,23 @@ public class PropertiesHelper {
 		return new HorizontalLayout(devicesInRow1, devicesInRow2);
 	}
 
+	/**
+	 * 
+	 * @return i2c address for rainbowduino devices
+	 */
+	public List<Integer> getI2cAddr() {
+		return i2cAddr;
+	}
+
+	/**
+	 * 
+	 * @return options to display lpd6803 displays
+	 */
+	public List<DeviceConfig> getLpdDevice() {
+		return lpdDevice;
+	}
+	
+	
+	
+
 }
