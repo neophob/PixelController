@@ -59,6 +59,8 @@ public class Lpd6803 {
 	 */
 	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
 
+	private static final int BUFFERSIZE = 64;
+	
 	/** 
 	 * internal lib version
 	 */
@@ -566,7 +568,12 @@ public class Lpd6803 {
 		}
 	}
 	
-	private static final int BUFFERSIZE = 64;
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public static byte[] convertRgbTo15bit(int[] data) throws IllegalArgumentException {
 		if (data.length!=BUFFERSIZE) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
