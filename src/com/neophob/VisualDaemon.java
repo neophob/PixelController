@@ -53,7 +53,7 @@ public class VisualDaemon extends PApplet {
 			rainbowduino = null;
 		}*/
 		try {
-			lpd6803 = new Lpd6803Device();
+			lpd6803 = new Lpd6803Device(PropertiesHelper.getInstance().getLpdDevice());
 		} catch (Exception e) {
 			lpd6803 = null;
 		}

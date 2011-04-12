@@ -1,11 +1,13 @@
 package com.neophob.sematrix.output;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
+import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
  * Send data to Lpd6803 Device
@@ -17,6 +19,8 @@ public class Lpd6803Device extends Output {
 
 	private static Logger log = Logger.getLogger(Lpd6803Device.class.getName());
 		
+	private List<DeviceConfig> displayOptions;
+	
 	private Lpd6803 lpd6803 = null;
 	private boolean initialized;
 	
@@ -27,9 +31,10 @@ public class Lpd6803Device extends Output {
 	 * @param allI2COutputs a list containing all i2c slave addresses
 	 * 
 	 */
-	public Lpd6803Device() {
+	public Lpd6803Device(List<DeviceConfig> displayOptions) {
 		super(Lpd6803Device.class.toString());
 		
+		this.displayOptions = displayOptions;
 		this.initialized = false;		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet() );			
