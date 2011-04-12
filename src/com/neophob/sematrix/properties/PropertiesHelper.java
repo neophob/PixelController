@@ -28,43 +28,59 @@ public class PropertiesHelper {
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
 	private static Properties config=null;
+	
 	private static List<Integer> i2cAddr=null;
-	private static int devicesInRow1 = -1;
-	private static int devicesInRow2 = -1;
+	private static List<DeviceConfig> lpdDevice=null;
+	
+	private static int devicesInRow1 = 0;
+	private static int devicesInRow2 = 0;
 	
 	private static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
-	private PropertiesHelper() {
-		//no instance
-	}
+	private static PropertiesHelper instance = new PropertiesHelper();
 
 	/**
-	 * load config file
-	 * @return
+	 * 
 	 */
-	public static synchronized Properties loadConfig() {
-		//cache config
-		if (config!=null) {
-			return config;
-		}
-		
+	private PropertiesHelper() {
 		config = new Properties();		
 		try {
 			InputStream input = Collector.getInstance().getPapplet().createInput(CONFIG_FILENAME);
 			config.load(input);
+						
 			log.log(Level.INFO, "Config loaded");
 		} catch (Exception e) {
-			log.log(Level.WARNING,
-					"Failed to load Config", e );
+			log.log(Level.SEVERE, "Failed to load Config", e);
+			throw new IllegalArgumentException("Configuration error!", e);
 		}
-		
-		return config;
+
+		int rainbowduinoDevices = parseI2cAddress();
+		int lpdDevices = parseLpdAddress();
+
+		if (rainbowduinoDevices>0 && lpdDevices>0) {
+			log.log(Level.SEVERE, "Multiple devices configured, illegal configuration!");
+			throw new IllegalArgumentException("Multiple devices configured, illegal configuration!");
+		}
+
+		if (devicesInRow1==0 && devicesInRow2==0) {
+			log.log(Level.SEVERE, "No devices configured, illegal configuration!");
+			throw new IllegalArgumentException("No devices configured, illegal configuration!");
+		}
 	}
 	
 	/**
 	 * 
+	 * @return
 	 */
-	public static void loadPresents() {
+	public static PropertiesHelper getInstance() {
+		return instance;
+	}
+
+	
+	/**
+	 * 
+	 */
+	public void loadPresents() {
 		Properties props = new Properties();
 		try {
 			InputStream input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
@@ -92,7 +108,7 @@ public class PropertiesHelper {
 	/**
 	 * 
 	 */
-	public static void savePresents() {
+	public void savePresents() {
 		Properties props = new Properties();
 		List<PresentSettings> presents = Collector.getInstance().getPresent();
 		int idx=0;
@@ -118,21 +134,59 @@ public class PropertiesHelper {
 	 * 
 	 * @return
 	 */
-	public static List<Integer> getAllI2cAddress() {
-		if (config == null) {
-			loadConfig();
+	private int parseLpdAddress() {
+		int found = 0;
+		lpdDevice = new ArrayList<DeviceConfig>();
+		
+		String value = config.getProperty("layout.row1");
+		if (StringUtils.isNotBlank(value)) {
+			for (String s: value.split(",")) {
+				try {
+					DeviceConfig cfg = DeviceConfig.valueOf(s);
+					lpdDevice.add(cfg);
+					devicesInRow1++;
+					found++;					
+				} catch (Exception e) {
+					log.log(Level.WARNING,
+							"Failed to parse {0}", s);
+
+				}
+			}
 		}
-		if (i2cAddr!=null) {
-			return i2cAddr;
+
+		value = config.getProperty("layout.row2");
+		if (StringUtils.isNotBlank(value)) {
+			for (String s: value.split(",")) {
+				try {
+					DeviceConfig cfg = DeviceConfig.valueOf(s);
+					lpdDevice.add(cfg);
+					devicesInRow2++;
+					found++;					
+				} catch (Exception e) {
+					log.log(Level.WARNING,
+							"Failed to parse {0}", s);
+
+				}
+			}
 		}
-		devicesInRow1=0;
-		devicesInRow2=0;
+
+		return found;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private int parseI2cAddress() {
+		int found = 0;
+
 		i2cAddr = new ArrayList<Integer>();
 		String rawConfig = config.getProperty("layout.row1.i2c.addr");
 		if (StringUtils.isNotBlank(rawConfig)) {
 			for (String s: rawConfig.split(",")) {
 				i2cAddr.add( Integer.parseInt(s));
 				devicesInRow1++;
+				found++;
 			}
 		}
 		rawConfig = config.getProperty("layout.row2.i2c.addr");
@@ -140,20 +194,27 @@ public class PropertiesHelper {
 			for (String s: rawConfig.split(",")) {
 				i2cAddr.add( Integer.parseInt(s));
 				devicesInRow2++;
+				found++;
 			}
 		}
-		return i2cAddr;
+		
+		return found;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNrOfScreens() {
+		return devicesInRow1+devicesInRow2;
+	}
+	
 	/**
 	 * 
 	 * @param key
 	 * @return
 	 */
-	public static String getProperty(String key) {
-		if (config == null) {
-			loadConfig();
-		}
+	public String getProperty(String key) {
 		return config.getProperty(key);
 	}
 
@@ -163,10 +224,7 @@ public class PropertiesHelper {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static String getProperty(String key, String defaultValue) {
-		if (config == null) {
-			loadConfig();
-		}
+	public String getProperty(String key, String defaultValue) {
 		return config.getProperty(key, defaultValue);
 	}
 	
@@ -174,15 +232,7 @@ public class PropertiesHelper {
 	 * 
 	 * @return
 	 */
-	public static Layout getLayout() {
-		if (config == null) {
-			loadConfig();
-		}
-		
-		if (i2cAddr==null) {
-			getAllI2cAddress();
-		}
-
+	public Layout getLayout() {
 		if (devicesInRow2>0) {
 			return new BoxLayout(devicesInRow1, devicesInRow2);
 		}

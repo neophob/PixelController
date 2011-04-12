@@ -32,7 +32,7 @@ public abstract class Output {
 		this.name = name;
 				
 		this.matrixData = Collector.getInstance().getMatrix();
-		this.layout = PropertiesHelper.getLayout();
+		this.layout = PropertiesHelper.getInstance().getLayout();
 
 		log.log(Level.INFO,
 				"Output created: {0}, Layout: {1}"
