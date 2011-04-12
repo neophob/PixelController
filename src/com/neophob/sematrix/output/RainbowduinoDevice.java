@@ -8,6 +8,12 @@ import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.lib.rainbowduino.Rainbowduino;
 import com.neophob.sematrix.glue.Collector;
 
+/**
+ * Send data to Rainbowduino
+ * 
+ * @author michu
+ *
+ */
 public class RainbowduinoDevice extends Output {
 
 	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
