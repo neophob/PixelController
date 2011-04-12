@@ -7,6 +7,12 @@ import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
 
+/**
+ * Send data to Lpd6803 Device
+ * 
+ * @author michu
+ *
+ */
 public class Lpd6803Device extends Output {
 
 	private static Logger log = Logger.getLogger(Lpd6803Device.class.getName());
@@ -17,8 +23,9 @@ public class Lpd6803Device extends Output {
 	long needUpdate, noUpdate;
 
 	/**
-	 * init the rainbowduino devices 
+	 * init the lpd6803 devices 
 	 * @param allI2COutputs a list containing all i2c slave addresses
+	 * 
 	 */
 	public Lpd6803Device() {
 		super(Lpd6803Device.class.toString());
@@ -33,7 +40,10 @@ public class Lpd6803Device extends Output {
 		}
 	}
 	
-
+	/**
+	 * 
+	 * @return
+	 */
 	public long getLatestHeartbeat() {
 		if (initialized) {
 			return lpd6803.getArduinoHeartbeat();			
@@ -41,6 +51,10 @@ public class Lpd6803Device extends Output {
 		return -1;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getArduinoBufferSize() {
 		if (initialized) {
 			return lpd6803.getArduinoBufferSize();			
@@ -48,6 +62,10 @@ public class Lpd6803Device extends Output {
 		return -1;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public int getArduinoErrorCounter() {
 		if (initialized) {
 			return lpd6803.getArduinoErrorCounter();			
