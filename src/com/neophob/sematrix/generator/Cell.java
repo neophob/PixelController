@@ -8,6 +8,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
 /**
+ * moving cell
+ * 
  * @author mvogt
  * 
  */
@@ -16,13 +18,17 @@ public class Cell extends Generator {
 	private static final int BUBBLES=8;
 	private static final int RENDERSIZE=2;
 
-	private Random die=new Random();
+	private Random random=new Random();
 	private List<Attractor> points=new ArrayList<Attractor>();
 	private float[][] distlookup;
 
+	/**
+	 * 
+	 */
 	public Cell() {
 		super(GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
+		//create LUT
 		int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
 		distlookup=new float[hsize][hsize];
 		for (int i=0;i<hsize;i++) {
@@ -56,7 +62,7 @@ public class Cell extends Generator {
 				}
 
 				Attractor a=(Attractor)points.get(nearest);
-				int l = (int)(255-4*closest);
+				/*int l = (int)(255-4*closest);
 
 				int r = l-a.r;
 				if (r<0) {
@@ -69,12 +75,10 @@ public class Cell extends Generator {
 				int b = l-a.b;
 				if (b<0) {
 					b=0;
-				}
-				
+				}*/				
 				//int col = ((a.r/2+l/2) << 16) | ((a.g/2+l/2) << 8) | (a.b/2+l/2);
+				
 				int col = (a.r << 16) | (a.g << 8) | a.b;
-				//int col = (r << 16) | (g << 8) | b;
-				//int col = (r << 16) | (g << 8) | b;
 				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, col);				
 			}
 		}
@@ -86,6 +90,7 @@ public class Cell extends Generator {
 
 	/**
 	 * draw rectangle in buffer
+	 * 
 	 * @param xofs
 	 * @param yofs
 	 * @param xsize
@@ -111,7 +116,12 @@ public class Cell extends Generator {
 	public void close() {
 	}
 
-
+	/**
+	 * helper class
+	 * 
+	 * @author michu
+	 *
+	 */
 	class Attractor {
 
 		public int x;
@@ -120,21 +130,26 @@ public class Cell extends Generator {
 		public int dy;
 		public int r,g,b;
 
+		/**
+		 * 
+		 */
 		public Attractor() {
-			this.x=die.nextInt(internalBufferXSize/RENDERSIZE);
-			this.y=die.nextInt(internalBufferYSize/RENDERSIZE);
+			this.x=random.nextInt(internalBufferXSize/RENDERSIZE);
+			this.y=random.nextInt(internalBufferYSize/RENDERSIZE);
 			while (this.dx==0) {
-				this.dx=-2+die.nextInt(4);
+				this.dx=-2+random.nextInt(4);
 			}
 			while (this.dy==0) {
-				this.dy=-2+die.nextInt(4); 
+				this.dy=-2+random.nextInt(4); 
 			}
-			this.r=die.nextInt(255);
-			this.g=die.nextInt(255);
-			this.b=die.nextInt(255);
-//			mixColors();
+			this.r=random.nextInt(255);
+			this.g=random.nextInt(255);
+			this.b=random.nextInt(255);
 		}
 
+		/**
+		 * 
+		 */
 		public void move() {
 			// move with wrap-around
 			this.x+=this.dx;
@@ -142,21 +157,18 @@ public class Cell extends Generator {
 			if (this.x<0 || this.x>internalBufferXSize/RENDERSIZE) this.dx=-this.dx;
 			if (this.y<0 || this.y>internalBufferYSize/RENDERSIZE) this.dy=-this.dy;
 
-			int rnd = die.nextInt(111);
-			if (rnd==3) this.r=die.nextInt(255);
-			if (rnd==44) this.g=die.nextInt(255);
-			if (rnd==99) this.b=die.nextInt(255);
-//			if (r==44)
-//				mixColors();
+			int rnd = random.nextInt(111);
+			if (rnd==3) this.r=random.nextInt(255);
+			if (rnd==44) this.g=random.nextInt(255);
+			if (rnd==99) this.b=random.nextInt(255);
 		}
 		
-		/*private void mixColors() {
-			int col = die.nextInt(255);
-			this.r=col;
-			this.g=col;
-			this.b=col;
-		}*/
-
+		/**
+		 * 
+		 * @param xx
+		 * @param yy
+		 * @return
+		 */
 		public float distanceTo(int xx,int yy) {
 			// Euclidian Distance
 			return distlookup[Math.abs(xx-this.x)][Math.abs(yy-this.y)]; 
