@@ -37,18 +37,20 @@ public class RotateBuffer {
 	 * @param buffer
 	 * @return
 	 */
-	private static int[] rotate180(int[] buffer) {
+	private static int[] flipY(int[] buffer) {
 		int[] ret = new int[deviceXSize*deviceXSize];
 		int ofs=0;
 		for (int x=0; x<deviceXSize; x++) {			
 			for (int y=0; y<deviceXSize; y++) {
-				ret[deviceXSize*x+deviceXSize-1-y] = buffer[ofs++];
+				//flipX
+				//ret[deviceXSize-1-y+x*deviceXSize] = buffer[ofs++];
+				ret[(deviceXSize-1-x)*deviceXSize+y] = buffer[ofs++];
 			}
 		}
 		return ret;
 	}
-/*	
-	static void print(int[] buffer) {
+	
+	/*static void print(int[] buffer) {
 		int ofs=0;
 		for (int x=0; x<8; x++) {			
 			for (int y=0; y<8; y++) {
@@ -66,7 +68,7 @@ public class RotateBuffer {
 			aa[x] = x;
 		
 		print(aa);
-		int ret[] = rotate270(aa);
+		int ret[] = flipY(aa);
 		print(ret);		
 	}*/
 
@@ -104,19 +106,20 @@ public class RotateBuffer {
 		switch (deviceConfig) {
 		case ROTATE_270:
 			return rotate270(buffer);
-			//break;
 
 		case ROTATE_270_FLIPPED:
-			
-			break;
+			return flipY(
+						rotate270(buffer)
+					);
 
 		case ROTATE_90:
 			return rotate90(buffer);
 			
 		
 		case ROTATE_90_FLIPPED:
-			
-			break;
+			return flipY(
+					rotate90(buffer)
+				);
 
 		default:
 			break;
