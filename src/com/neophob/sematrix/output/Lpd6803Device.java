@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
+import com.neophob.sematrix.output.lpd6803.RotateBuffer;
 import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
@@ -87,7 +88,11 @@ public class Lpd6803Device extends Output {
 			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
 				//draw only on available screens!
 				//TODO flip, rotate....
-				if (lpd6803.sendRgbFrame((byte)ofs, super.getBufferForScreen(ofs))) {
+				
+				int[] transformedBuffer = 
+					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs));
+				
+				if (lpd6803.sendRgbFrame((byte)ofs, transformedBuffer)) {
 					needUpdate++;
 				} else {
 					noUpdate++;
