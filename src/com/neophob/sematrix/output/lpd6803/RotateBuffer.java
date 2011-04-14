@@ -37,7 +37,7 @@ public class RotateBuffer {
 	 * @param buffer
 	 * @return
 	 */
-	private static int[] flipY(int[] buffer) {
+	private static int[] rotate180(int[] buffer) {
 		int[] ret = new int[deviceXSize*deviceXSize];
 		int ofs=0;
 		for (int x=0; x<deviceXSize; x++) {			
@@ -97,7 +97,7 @@ public class RotateBuffer {
 	 * @param deviceConfig
 	 * @return
 	 */
-	public static int[] transformImage(int [] buffer, DeviceConfig deviceConfig) {
+	public static int[] transformImage(int[] buffer, DeviceConfig deviceConfig) {
 		
 		if (deviceXSize==0) {
 			deviceXSize = Collector.getInstance().getMatrix().getDeviceXSize();
@@ -111,18 +111,18 @@ public class RotateBuffer {
 			return rotate90(buffer);			
 		
 		case ROTATE_90_FLIPPED:
-			return flipY(
+			return rotate180(
 					rotate90(buffer)
 				);
 
 		case ROTATE_180:
-			return flipY(buffer);
+			return rotate180(buffer);
 			
 		case ROTATE_270:
 			return rotate270(buffer);
 
 		case ROTATE_270_FLIPPED:
-			return flipY(
+			return rotate180(
 						rotate270(buffer)
 					);
 
