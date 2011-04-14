@@ -59,7 +59,7 @@ public class Lpd6803 {
 	 */
 	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
 
-	private static final int BUFFERSIZE = 64;
+	private static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
 	
 	/** 
 	 * internal lib version
