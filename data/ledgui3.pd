@@ -1,34 +1,35 @@
-#N canvas 166 54 1057 664 10;
+#N canvas 419 22 1057 664 10;
+#X declare -lib mrpeach;
 #X obj 4 -3 cnv 15 1020 174 empty empty visuals 20 12 0 14 -204786
 -66577 0;
 #X obj 63 32 hradio 15 1 0 12 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 3;
 #X obj 254 32 hradio 15 1 0 12 s_gen2 r_gen2 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 8;
 #X obj 445 32 hradio 15 1 0 12 s_gen3 r_gen3 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 63 54 hradio 15 1 0 9 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 0;
+-1 4;
 #X obj 254 54 hradio 15 1 0 9 s_fx2 r_fx2 empty 0 -8 0 10 -262130 -1
--1 0;
+-1 2;
 #X obj 445 54 hradio 15 1 0 9 s_fx3 r_fx3 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X obj 64 87 hradio 15 1 0 12 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 5;
 #X obj 254 87 hradio 15 1 0 12 s_gen_b2 r_gen_b2 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 3;
 #X obj 445 87 hradio 15 1 0 12 s_gen_b3 r_gen_b3 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 64 109 hradio 15 1 0 9 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 0;
+-1 -1 1;
 #X obj 254 109 hradio 15 1 0 9 s_fx_b2 r_fx_b2 empty 0 -8 0 10 -262130
--1 -1 0;
+-1 -1 5;
 #X obj 445 109 hradio 15 1 0 9 s_fx_b3 r_fx_b3 empty 0 -8 0 10 -262130
 -1 -1 0;
 #X obj 65 140 hradio 15 1 0 9 s_mix1 r_mix1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 6;
 #X obj 254 140 hradio 15 1 0 9 s_mix2 r_mix2 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 4;
 #X obj 445 140 hradio 15 1 0 9 s_mix3 r_mix3 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 637 32 hradio 15 1 0 12 s_gen4 r_gen4 empty 0 -8 0 10 -203904
@@ -38,7 +39,7 @@
 #X obj 637 54 hradio 15 1 0 9 s_fx4 r_fx4 empty 0 -8 0 10 -262130 -1
 -1 0;
 #X obj 830 54 hradio 15 1 0 9 s_fx5 r_fx5 empty 0 -8 0 10 -262130 -1
--1 0;
+-1 4;
 #X obj 637 87 hradio 15 1 0 12 s_gen_b4 r_gen_b4 empty 0 -8 0 10 -203904
 -1 -1 0;
 #X obj 830 87 hradio 15 1 0 12 s_gen_b5 r_gen_b5 empty 0 -8 0 10 -203904
@@ -50,19 +51,19 @@
 #X obj 637 140 hradio 15 1 0 9 s_mix4 r_mix4 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 830 140 hradio 15 1 0 9 s_mix5 r_mix5 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 4;
 #X obj 4 -79 cnv 15 1020 70 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #X obj 17 32 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 17 54 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 17 87 tgl 15 0 s_rndsel_gen2 r_rndsel_gen2 empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 17 109 tgl 15 0 s_rndsel_fx2 r_rndsel_fx2 empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 17 140 tgl 15 0 s_rndsel_mix r_rndsel_mix empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X obj 4 177 cnv 15 730 100 empty empty output 20 12 0 14 -204786 -66577
 0;
 #X obj 106 251 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
@@ -71,7 +72,7 @@
 -1 -1 0;
 #X text 38 227 Fader;
 #X obj 106 229 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 1;
 #X obj 268 229 hradio 15 1 0 4 s_fader2 r_fader2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 106 207 hradio 15 1 0 9 s_fx_output1 r_fx_output1 empty 0 -8
@@ -92,11 +93,11 @@
 #X obj 591 207 hradio 15 1 0 9 s_fx_output4 r_fx_output4 empty 0 -8
 0 10 -262130 -1 -1 0;
 #X obj 17 207 tgl 15 0 s_rndsel_mixout r_rndsel_mixout empty 17 7 0
-10 -260097 -1 -1 0 1;
+10 -260097 -1 -1 1 1;
 #X obj 17 228 tgl 15 0 s_rndsel_faderout r_rndsel_faderout empty 17
-7 0 10 -260097 -1 -1 0 1;
+7 0 10 -260097 -1 -1 1 1;
 #X obj 17 250 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X text 105 188 output #1;
 #X text 269 188 output #2;
 #X text 429 188 output #3;
@@ -122,9 +123,9 @@
 0;
 #X obj 178 249 send image;
 #X obj 141 17 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17 7
-0 10 -260097 -1 -1 0 1;
+0 10 -260097 -1 -1 1 1;
 #X obj 296 18 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0 10
--260097 -1 -1 0 1;
+-260097 -1 -1 1 1;
 #X obj 322 13 cnv 15 180 266 empty empty texturedeform 20 12 0 14 -203904
 -66577 0;
 #X obj 332 246 send change_lut;
@@ -141,7 +142,7 @@
 #X obj 456 64 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
 -1;
 #X obj 483 18 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17 7
-0 10 -260097 -1 -1 0 1;
+0 10 -260097 -1 -1 1 1;
 #X obj 508 14 cnv 15 306 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
 #X obj 523 66 send textwriter;
@@ -202,33 +203,33 @@
 #X floatatom 116 68 5 0 0 0 - - s_threshold;
 #X obj 89 67 int;
 #X obj 154 37 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty
-17 7 0 10 -260097 -1 -1 0 1;
+17 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 61 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 0 1;
+-262144 -1 -1 2164 1;
 #X obj 33 104 cnv 15 140 160 empty empty //colorize 20 12 0 14 -262130
 -66577 0;
 #X obj 49 137 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 0 1;
+-33289 -1 1228 1;
 #X floatatom 116 145 5 0 255 0 - - s_tint_r;
 #X obj 89 144 int;
 #X obj 49 177 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 0 1;
+-33289 -1 2310 1;
 #X floatatom 116 184 5 0 255 0 - - s_tint_g;
 #X obj 89 184 int;
 #X obj 49 217 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 200 1;
+-33289 -1 1678 1;
 #X floatatom 116 224 5 0 255 0 - - s_tint_b;
 #X obj 89 224 int;
 #X obj 153 110 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
--260097 -1 -1 0 1;
+-260097 -1 -1 1 1;
 #X obj 33 259 cnv 15 140 70 empty empty //rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 285 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 0 1;
+16 64 12 -262144 -33289 -1 2734 1;
 #X floatatom 114 292 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 292 int;
 #X obj 153 263 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
-7 0 10 -260097 -1 -1 0 1;
+7 0 10 -260097 -1 -1 1 1;
 #X connect 2 0 1 0;
 #X connect 4 0 2 0;
 #X connect 6 0 8 0;
@@ -241,7 +242,7 @@
 #X connect 19 0 18 0;
 #X coords 0 -1 1 1 140 290 1 33 33;
 #X restore 211 283 pd fx;
-#N canvas 8 22 994 557 midi 0;
+#N canvas 234 204 994 557 midi 0;
 #X obj 55 340 notein;
 #X floatatom 55 374 5 0 0 0 - - -;
 #X floatatom 71 404 5 0 0 0 - - -;
@@ -259,19 +260,16 @@
 #X obj 779 211 send r_tint_g;
 #X obj 879 211 send r_tint_b;
 #X obj 476 156 spigot;
-#X obj 476 183 div 12;
 #X obj 565 183 * 2;
 #X obj 678 183 * 2;
 #X obj 779 183 * 2;
 #X obj 879 183 * 2;
 #X obj 375 157 spigot;
-#X obj 375 184 div 12;
 #X obj 286 156 spigot;
 #X obj 196 156 spigot;
 #X obj 196 183 div 15;
 #X obj 286 183 div 15;
 #X obj 108 156 spigot;
-#X obj 108 183 div 18;
 #X floatatom 476 210 5 0 0 0 - - -;
 #X obj 499 234 !=;
 #X obj 476 256 spigot;
@@ -747,10 +745,13 @@
 #X connect 27 0 25 0;
 #X connect 29 0 28 0;
 #X restore 520 404 pd midiSetup;
+#X obj 375 184 div 11;
+#X obj 108 183 div 15;
+#X obj 476 183 div 11;
 #X connect 0 0 1 0;
 #X connect 0 1 2 0;
 #X connect 0 2 3 0;
-#X connect 1 0 48 0;
+#X connect 1 0 45 0;
 #X connect 4 0 5 0;
 #X connect 4 1 6 0;
 #X connect 4 2 7 0;
@@ -759,80 +760,80 @@
 #X connect 5 0 10 0;
 #X connect 5 0 12 0;
 #X connect 5 0 13 0;
+#X connect 5 0 21 0;
+#X connect 5 0 23 0;
 #X connect 5 0 22 0;
-#X connect 5 0 25 0;
-#X connect 5 0 24 0;
-#X connect 5 0 28 0;
-#X connect 6 0 52 0;
-#X connect 6 0 54 0;
-#X connect 6 0 62 0;
+#X connect 5 0 26 0;
+#X connect 6 0 49 0;
+#X connect 6 0 51 0;
+#X connect 6 0 59 0;
+#X connect 6 0 60 0;
 #X connect 6 0 63 0;
-#X connect 6 0 66 0;
+#X connect 6 0 64 0;
+#X connect 6 0 65 0;
 #X connect 6 0 67 0;
-#X connect 6 0 68 0;
-#X connect 6 0 70 0;
-#X connect 6 0 53 0;
-#X connect 9 0 18 0;
-#X connect 10 0 19 0;
-#X connect 12 0 20 0;
-#X connect 13 0 21 0;
-#X connect 16 0 17 0;
-#X connect 17 0 30 0;
-#X connect 17 0 31 1;
-#X connect 18 0 8 0;
-#X connect 19 0 11 0;
-#X connect 20 0 14 0;
-#X connect 21 0 15 0;
-#X connect 22 0 23 0;
-#X connect 23 0 39 0;
-#X connect 23 0 40 1;
-#X connect 24 0 27 0;
-#X connect 25 0 26 0;
-#X connect 26 0 33 0;
-#X connect 26 0 34 1;
-#X connect 27 0 36 0;
-#X connect 27 0 37 1;
-#X connect 28 0 29 0;
-#X connect 29 0 42 0;
-#X connect 29 0 43 1;
+#X connect 6 0 50 0;
+#X connect 9 0 17 0;
+#X connect 10 0 18 0;
+#X connect 12 0 19 0;
+#X connect 13 0 20 0;
+#X connect 16 0 78 0;
+#X connect 17 0 8 0;
+#X connect 18 0 11 0;
+#X connect 19 0 14 0;
+#X connect 20 0 15 0;
+#X connect 21 0 76 0;
+#X connect 22 0 25 0;
+#X connect 23 0 24 0;
+#X connect 24 0 30 0;
+#X connect 24 0 31 1;
+#X connect 25 0 33 0;
+#X connect 25 0 34 1;
+#X connect 26 0 77 0;
+#X connect 27 0 28 0;
+#X connect 27 0 29 0;
+#X connect 28 0 29 1;
+#X connect 29 0 71 0;
 #X connect 30 0 31 0;
 #X connect 30 0 32 0;
 #X connect 31 0 32 1;
-#X connect 32 0 74 0;
+#X connect 32 0 55 0;
 #X connect 33 0 34 0;
 #X connect 33 0 35 0;
 #X connect 34 0 35 1;
-#X connect 35 0 58 0;
+#X connect 35 0 56 0;
 #X connect 36 0 37 0;
 #X connect 36 0 38 0;
 #X connect 37 0 38 1;
-#X connect 38 0 59 0;
+#X connect 38 0 69 0;
 #X connect 39 0 40 0;
 #X connect 39 0 41 0;
 #X connect 40 0 41 1;
-#X connect 41 0 72 0;
-#X connect 42 0 43 0;
-#X connect 42 0 44 0;
-#X connect 43 0 44 1;
-#X connect 44 0 76 0;
-#X connect 49 0 52 1;
-#X connect 50 0 53 1;
-#X connect 52 0 10 1;
-#X connect 53 0 12 1;
-#X connect 54 0 13 1;
-#X connect 55 0 54 1;
-#X connect 56 0 70 1;
-#X connect 60 0 67 1;
-#X connect 61 0 68 1;
-#X connect 62 0 28 1;
-#X connect 63 0 25 1;
-#X connect 64 0 63 1;
-#X connect 65 0 66 1;
-#X connect 66 0 24 1;
-#X connect 67 0 22 1;
-#X connect 68 0 16 1;
-#X connect 69 0 62 1;
-#X connect 70 0 9 1;
+#X connect 41 0 73 0;
+#X connect 46 0 49 1;
+#X connect 47 0 50 1;
+#X connect 49 0 10 1;
+#X connect 50 0 12 1;
+#X connect 51 0 13 1;
+#X connect 52 0 51 1;
+#X connect 53 0 67 1;
+#X connect 57 0 64 1;
+#X connect 58 0 65 1;
+#X connect 59 0 26 1;
+#X connect 60 0 23 1;
+#X connect 61 0 60 1;
+#X connect 62 0 63 1;
+#X connect 63 0 22 1;
+#X connect 64 0 21 1;
+#X connect 65 0 16 1;
+#X connect 66 0 59 1;
+#X connect 67 0 9 1;
+#X connect 76 0 36 0;
+#X connect 76 0 37 1;
+#X connect 77 0 39 0;
+#X connect 77 0 40 1;
+#X connect 78 0 27 0;
+#X connect 78 0 28 1;
 #X restore 366 337 pd midi;
 #X text 652 -77 Fader: Off // Crossfade // UpsideDown // LeftToRight
 ;
@@ -1676,7 +1677,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 1;
 #X msg 640 380 send STATUS;
 #X obj 641 413 route 1;
-#N canvas 111 118 1169 645 basicGui 1;
+#N canvas 111 118 1169 645 basicGui 0;
 #X obj 84 -21 receive s_gen1;
 #X obj 183 -21 receive s_gen2;
 #X obj 282 -21 receive s_gen3;
