@@ -104,6 +104,20 @@ public class RotateBuffer {
 		}
 		
 		switch (deviceConfig) {
+		case NO_ROTATE:
+			return buffer;
+
+		case ROTATE_90:
+			return rotate90(buffer);			
+		
+		case ROTATE_90_FLIPPED:
+			return flipY(
+					rotate90(buffer)
+				);
+
+		case ROTATE_180:
+			return flipY(buffer);
+			
 		case ROTATE_270:
 			return rotate270(buffer);
 
@@ -111,15 +125,6 @@ public class RotateBuffer {
 			return flipY(
 						rotate270(buffer)
 					);
-
-		case ROTATE_90:
-			return rotate90(buffer);
-			
-		
-		case ROTATE_90_FLIPPED:
-			return flipY(
-					rotate90(buffer)
-				);
 
 		default:
 			break;
