@@ -281,14 +281,15 @@ public class Collector {
 		
 		//get sound volume
 		float f = Sound.getInstance().getVolumeNormalized();
-		int u = (int)(0.5f+f*2.5f);
+		int u = (int)(0.5f+f*1.5f);
 		//check for silence - in this case update slowly
 		if (u<1) {
-			if (frames%2==1) {
+			if (frames%3==1) {
 				u=1;
 			}
 		}
-		if (Sound.getInstance().isKick()) u+=2;
+		if (Sound.getInstance().isKick()) u+=3;
+		if (Sound.getInstance().isHat()) u+=1;
 		
 		//update generator depending on the input sound
 		for (Generator m: allGenerators) {
@@ -637,11 +638,11 @@ public class Collector {
 	 * PRESENT ======================================================
 	 */
 	
-	public synchronized int getRotoZoomAngle() {
+	public int getRotoZoomAngle() {
 		return rotoZoomAngle;
 	}
 
-	public synchronized void setRotoZoomAngle(int rotoZoomAngle) {
+	public void setRotoZoomAngle(int rotoZoomAngle) {
 		this.rotoZoomAngle = rotoZoomAngle;
 	}
 

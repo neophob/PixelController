@@ -87,8 +87,6 @@ public class Lpd6803Device extends Output {
 		if (initialized) {			
 			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
 				//draw only on available screens!
-				//TODO flip, rotate....
-				
 				int[] transformedBuffer = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs));
 				
