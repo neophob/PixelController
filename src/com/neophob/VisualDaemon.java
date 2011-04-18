@@ -25,7 +25,7 @@ public class VisualDaemon extends PApplet {
 	
 	private static final int DEVICE_SIZE = 8;
 
-	public static final int FPS = 15;
+	public static final int FPS = 25;
 	//96*2*25 = 4800bytes
 
 	//Output rainbowduino;
@@ -33,7 +33,7 @@ public class VisualDaemon extends PApplet {
 	NewWindowHelper nwh;
 	long lastHeartbeat;
 	int error=0;
-	int frame=0;
+	int frameCounter=0;
 	MatrixEmulator osd;
 
 	public void setup() {
@@ -76,7 +76,7 @@ public class VisualDaemon extends PApplet {
 					", buffersize: "+lpd6803.getArduinoBufferSize());
 		}
 
-		frame++;
+		frameCounter++;
 	}
 
 	public static void main(String args[]) {

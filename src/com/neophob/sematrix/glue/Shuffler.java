@@ -169,7 +169,7 @@ public class Shuffler {
 	}
 
 	/**
-	 * used for randomized mode, rarly change stuff
+	 * used for randomized mode, rarely change stuff
 	 */
 	public static void shuffleStuff() {
 		boolean kick = Sound.getInstance().isKick();

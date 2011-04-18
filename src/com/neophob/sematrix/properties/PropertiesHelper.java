@@ -24,20 +24,21 @@ import com.neophob.sematrix.layout.Layout;
  */
 public class PropertiesHelper {
 
-	private static final String PRESENTS_FILENAME = "data/presents.led";
-	private static final String CONFIG_FILENAME = "data/config.properties";
-	
-	private static Properties config=null;
-	
-	private static List<Integer> i2cAddr=null;
-	private static List<DeviceConfig> lpdDevice=null;
-	
-	private static int devicesInRow1 = 0;
-	private static int devicesInRow2 = 0;
-	
 	private static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
 	private static PropertiesHelper instance = new PropertiesHelper();
+
+	private static final String PRESENTS_FILENAME = "data/presents.led";
+	private static final String CONFIG_FILENAME = "data/config.properties";
+	
+	private Properties config=null;
+	
+	private List<Integer> i2cAddr=null;
+	private List<DeviceConfig> lpdDevice=null;
+	
+	private int devicesInRow1 = 0;
+	private int devicesInRow2 = 0;
+	
 
 	/**
 	 * 
