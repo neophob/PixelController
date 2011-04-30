@@ -19,7 +19,7 @@
  * 	
  */
 
-#include <TimerOne.h>
+#include <TimerOne.h>  
 #include "LPD6803.h"
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
@@ -32,10 +32,11 @@
 #define CMD_SENDFRAME 0x03
 #define CMD_PING  0x04
 
-#define START_OF_DATA 0x10
+#define START_OF_DATA 0x10 
 #define END_OF_DATA 0x20
 
 //frame size for specific color resolution
+//32pixels * 2 byte per color (15bit - one bit wasted)
 #define COLOR_5BIT_FRAME_SIZE 64
 #define SERIAL_HEADER_SIZE 5
 //--- protocol data end
@@ -84,6 +85,7 @@ static void sendAck() {
   serialResonse[2] = Serial.available();
   serialResonse[3] = g_errorCounter;
   Serial.write(serialResonse, SERIALBUFFERSIZE);
+  Serial.send_now();
 }
 
 
@@ -118,6 +120,7 @@ unsigned int Wheel(byte WheelPos)
   return(Color(r,g,b));
 }
 
+//create initial image
 void showInitImage() {
     for (int i=0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel( i % 96));
@@ -129,7 +132,7 @@ void showInitImage() {
 //      setup
 // --------------------------------------------
 void setup() {
-  pinMode(13, OUTPUT);
+  //pinMode(13, OUTPUT);
   
   memset(serialResonse, 0, SERIALBUFFERSIZE);
 
@@ -137,7 +140,7 @@ void setup() {
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
 
-  strip.setCPUmax(80);  // start with 50% CPU usage. up this if the strand flickers or is slow
+  strip.setCPUmax(90);  // start with 50% CPU usage. up this if the strand flickers or is slow
 
   // Start up the LED counter
   strip.begin();
@@ -158,25 +161,27 @@ void loop() {
   // digitalWrite(13, LOW);
   // see if we got a proper command string yet
   if (readCommand(serInStr) == 0) {
+    if (g_errorCounter!=0 && g_errorCounter!=102) {
+      sendAck();
+    }
     return;
   }
 
   //digitalWrite(13, HIGH);
   
-    //i2c addres of device
+  //led offset
   byte ofs    = serInStr[1];
   //how many bytes we're sending
   byte sendlen = serInStr[2];
   //what kind of command we send
   byte type = serInStr[3];
-  //parameter
+  //get the image data
   byte* cmd    = serInStr+5;
   
    switch (type) {
    case CMD_SENDFRAME:
-    	//the size of an image must be exactly 96 bytes (12bit) or 128 bytes (15bit)
+    	//the size of an image must be exactly 64bytes for 8*4 pixels
         if (sendlen == COLOR_5BIT_FRAME_SIZE) {
-        //  g_errorCounter = BlinkM_sendBuffer(addr, cmd, sendlen);
           updatePixels(ofs, cmd);
         } else {
 	  g_errorCounter=100;
@@ -247,21 +252,35 @@ byte readCommand(byte *str) {
   }
 
   //read header  
-  i = SERIAL_DELAY_LOOP;
+/*  i = SERIAL_DELAY_LOOP;
   while (Serial.available() < SERIAL_HEADER_SIZE-1) {   // wait for the rest
     delay(SERIAL_WAIT_DELAY); 
     if (i-- == 0) {
+      g_errorCounter = 103;
       return 0;        //no data available!
     }
   }
   for (i=1; i<SERIAL_HEADER_SIZE; i++) {
     str[i] = Serial.read();       // fill it up
+  }*/
+  i=1;
+  b=SERIAL_DELAY_LOOP;
+  while (i<SERIAL_HEADER_SIZE) {
+    if (Serial.available()) {
+      str[i++] = Serial.read();
+    } else {
+      delay(SERIAL_WAIT_DELAY); 
+      if (b-- == 0) {
+        g_errorCounter = 103;
+        return 0;        //no data available!
+      }      
+    }
   }
 
   // --- START HEADER CHECK    
   //check if data is correct, 0x10 = START_OF_DATA
   if (str[4] != START_OF_DATA) {
-    g_errorCounter = 103;
+    g_errorCounter = 104;
     return 0;
   }
 
@@ -270,23 +289,37 @@ byte readCommand(byte *str) {
   // --- END HEADER CHECK
 
   //read data  
-  i = SERIAL_DELAY_LOOP;
+/*  i = SERIAL_DELAY_LOOP;
   // wait for the final part, +1 for END_OF_DATA
   while (Serial.available() < sendlen+1) {
     delay(SERIAL_WAIT_DELAY); 
     if( i-- == 0 ) {
-      g_errorCounter = 104;
+      g_errorCounter = 105;
       return 0;
     }
   }
-
   for (i=SERIAL_HEADER_SIZE; i<SERIAL_HEADER_SIZE+sendlen+1; i++) {
     str[i] = Serial.read();       // fill it up
+  }*/
+  
+  i=0;
+  b=SERIAL_DELAY_LOOP;
+  while (i<sendlen+1) {
+    if (Serial.available()) {
+      str[SERIAL_HEADER_SIZE+i++] = Serial.read();
+    } else {
+      delay(SERIAL_WAIT_DELAY); 
+      if (b-- == 0) {
+        g_errorCounter = 105;
+        return 0;        //no data available!
+      }      
+    }
   }
+
 
   //check if data is correct, 0x20 = END_OF_DATA
   if (str[SERIAL_HEADER_SIZE+sendlen] != END_OF_DATA) {
-    g_errorCounter = 105;
+    g_errorCounter = 106;
     return 0;
   }
 
