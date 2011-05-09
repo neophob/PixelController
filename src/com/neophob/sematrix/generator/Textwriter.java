@@ -27,7 +27,9 @@ public class Textwriter extends Generator {
 
 	private static final int TEXT_BUFFER_X_SIZE=128;
 	private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT=12;
-
+	
+	private static final int SCROLL_AMMOUNT = 4;
+	
 	private static Logger log = Logger.getLogger(Textwriter.class.getName());
 
 	private int xpos,ypos;
@@ -53,8 +55,8 @@ public class Textwriter extends Generator {
 		color = new Color(255,255,255);
 		xpos=0;
 		ypos=getInternalBufferYSize();
-		InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
 		try {
+			InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
 			tmp = new int[internalBuffer.length];
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
@@ -121,19 +123,20 @@ public class Textwriter extends Generator {
 			wait--;
 		} else {
 			if (maxXPos < getInternalBufferXSize()) {
+				//no need to scroll
 				xofs = (getInternalBufferXSize()-maxXPos)/2;
 				wait=99999;
 			} else {
 				//todo, if image < buffer
 				if (scrollRight) {
-					xofs++;
+					xofs+=SCROLL_AMMOUNT;
 					if (xofs>maxXPos-internalBufferXSize) {
 						scrollRight=false;
 						xofs=maxXPos-internalBufferXSize;
 						wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
 					}			
 				} else {
-					xofs--;
+					xofs-=SCROLL_AMMOUNT;
 					if (xofs<1) {
 						scrollRight=true;
 						xofs=0;
