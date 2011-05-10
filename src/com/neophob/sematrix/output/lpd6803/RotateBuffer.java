@@ -10,7 +10,7 @@ import com.neophob.sematrix.properties.DeviceConfig;
  */
 public class RotateBuffer {
 
-	private static int deviceXSize = 0;
+	private static int deviceXSize = 8;
 	
 	private RotateBuffer() {
 		//no instance

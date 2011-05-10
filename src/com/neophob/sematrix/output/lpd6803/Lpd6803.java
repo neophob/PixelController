@@ -501,7 +501,7 @@ public class Lpd6803 {
 	 * read data from serial port, wait for ACK
 	 * @return true if ack received, false if not
 	 */
-	private synchronized boolean waitForAck() {
+	private synchronized boolean waitForAck() {		
 		//TODO some more tuning is needed here.
 		long start = System.currentTimeMillis();
 		int timeout=4; //wait up to 50ms
@@ -516,6 +516,7 @@ public class Lpd6803 {
 			ackErrors++;
 			return false;
 		}
+		//TODO: next method is not very speed/memory efficient!
 		byte[] msg = port.readBytes();
 /*		log.log(Level.INFO, "got ACK! data length: {0}", msg.length);
 		for (byte b:msg)
