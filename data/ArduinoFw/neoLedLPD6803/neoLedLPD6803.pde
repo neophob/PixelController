@@ -73,7 +73,7 @@ LPD6803 strip = LPD6803(PIXELS_PER_PANEL*NR_OF_PANELS, dataPin, clockPin);
 //64 -> rate: 24.22577, long: 3,     totalTime: 33685     16.84ms     20.89ms
 //-> I use 16b - not the fastest variant but more accurate
 
-#define SERIALBUFFERSIZE 16
+#define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
 
 byte g_errorCounter;
