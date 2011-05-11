@@ -1,8 +1,6 @@
 package com.neophob.sematrix.glue;
 
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Threshold;
@@ -22,7 +20,7 @@ import com.neophob.sematrix.input.Sound;
  */
 public class Shuffler {
 
-	private static Logger log = Logger.getLogger(Shuffler.class.getName());
+	//private static Logger log = Logger.getLogger(Shuffler.class.getName());
 	
 	/**
 	 * 
@@ -70,13 +68,14 @@ public class Shuffler {
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-			int size = rand.nextInt()%255;
+			int size = rand.nextInt(255);
 			col.setThresholdValue(size);
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
-			int angle = rand.nextInt()%255;
-			col.setRotoZoomAngle(angle-127);
+			RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
+			int angle = (rand.nextInt(255))-128;
+			r.setAngle(angle);
 		} 
 
 		if (col.getShufflerSelect(ShufflerOffset.MIXER)) {
@@ -216,7 +215,7 @@ public class Shuffler {
 			}
 
 			if (blah == 14 && col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-				int size = rand.nextInt()%255;
+				int size = rand.nextInt(255);
 				Threshold t = (Threshold)col.getEffect(EffectName.THRESHOLD);
 				t.setThreshold(size);
 			}
@@ -256,10 +255,9 @@ public class Shuffler {
 			
 	
 			if (blah == 15 && col.getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
-				int angle = rand.nextInt()%255;
+				int angle = rand.nextInt(255);
 				RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
-				r.setAngle(angle-128);
-				
+				r.setAngle(angle-128);				
 			}
 
 		}

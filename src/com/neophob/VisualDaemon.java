@@ -25,7 +25,7 @@ public class VisualDaemon extends PApplet {
 	
 	private static final int DEVICE_SIZE = 8;
 
-	public static final int FPS = 25;
+	public static final int FPS = 20;
 	//96*2*25 = 4800bytes
 
 	//Output rainbowduino;

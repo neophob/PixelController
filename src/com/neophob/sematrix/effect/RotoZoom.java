@@ -8,9 +8,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * 
  * @author michu
  * 
- * TODO: endless zoom, nachdem der zoom weit im bild ist, ein crossfade auf das ursprŸngliche bild
- * 
  * ripped from http://www.openprocessing.org/visuals/?visualID=8030
+ * 
  */
 public class RotoZoom extends Effect {
 
@@ -20,6 +19,7 @@ public class RotoZoom extends Effect {
 	}
 
 	private float angle;
+	private int angleOrig;
 	private float angleDiff;
 	private float scale, scale2;
 	private float scaleOrig;
@@ -44,6 +44,9 @@ public class RotoZoom extends Effect {
 		this.angleDiff = 0.02f;
 	}
 
+	public int getAngle() {
+		return angleOrig;
+	}
 
 	/**
 	 * 
@@ -52,6 +55,8 @@ public class RotoZoom extends Effect {
 	public int setAngle(int angle) {
 		if (angle > 127) angle = 127;
 		if (angle < -127) angle = -127;
+		
+		this.angleOrig = angle;
 		
 		//137 sound funny - but correct
 		//using 137 - the max value is 10 used for the diff!
@@ -70,7 +75,10 @@ public class RotoZoom extends Effect {
 		return angle;
 	}
 
-
+	
+	public int setZoom(int zoom) {
+		return 0;
+	}
 
 
 	/**

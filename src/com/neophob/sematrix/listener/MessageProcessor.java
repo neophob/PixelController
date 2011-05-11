@@ -194,10 +194,9 @@ public class MessageProcessor {
 				
 			case CHANGE_ROTOZOOM:
 				try {					
-					int val = Integer.parseInt(msg[1]);
-					col.setRotoZoomAngle(val);
-					
-					log.log(Level.WARNING,	"rotozoom value: "+val);
+					int val = Integer.parseInt(msg[1]);		
+					//col.setRotoZoomAngle(val);			
+					//log.log(Level.WARNING,	"rotozoom value: "+val);
 					RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
 					r.setAngle(val);					
 				} catch (Exception e) {
