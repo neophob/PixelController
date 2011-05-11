@@ -1,6 +1,9 @@
 
 
--lpd output, rotate image, flip
 -rotozoom, add zoom option
 -textwriter, change font, more readable
--refactoring gui, only one visual is active (also ranom mode)
+-refactoring gui, only one visual is active (also random mode)
+
+Done:
+-----
+-lpd output, rotate image, flip
