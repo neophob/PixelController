@@ -12,7 +12,6 @@ import processing.core.PApplet;
 import com.neophob.sematrix.effect.BeatHorizShift;
 import com.neophob.sematrix.effect.BeatVerticalShift;
 import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.Emboss;
 import com.neophob.sematrix.effect.Inverter;
 import com.neophob.sematrix.effect.PassThru;
@@ -20,17 +19,17 @@ import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Voluminize;
+import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Crossfader;
 import com.neophob.sematrix.fader.Fader;
-import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.fader.SlideLeftRight;
 import com.neophob.sematrix.fader.SlideUpsideDown;
 import com.neophob.sematrix.fader.Switch;
+import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Cell;
 import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.ImageZoomer;
 import com.neophob.sematrix.generator.Metaballs;
@@ -40,22 +39,23 @@ import com.neophob.sematrix.generator.Plasma2;
 import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.listener.TcpServer;
+import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.AddSat;
 import com.neophob.sematrix.mixer.Checkbox;
 import com.neophob.sematrix.mixer.MinusHalf;
 import com.neophob.sematrix.mixer.Mix;
 import com.neophob.sematrix.mixer.Mixer;
-import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.mixer.Multiply;
 import com.neophob.sematrix.mixer.NegativeMultiply;
 import com.neophob.sematrix.mixer.PassThruMixer;
 import com.neophob.sematrix.mixer.Voluminizer;
 import com.neophob.sematrix.mixer.Xor;
+import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelResize;
@@ -105,7 +105,6 @@ public class Collector {
 	private List<PresentSettings> present;
 	//track r/g/b
 	private Tint tint;
-	private int rotoZoomAngle=0;
 	
 	private Blinkenlights blinkenlights;
 	private Image image;
@@ -435,7 +434,7 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
 		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
 		ret.add(ValidCommands.CHANGE_TINT+" "+tint.getR()+" "+tint.getG()+" "+tint.getB());
-		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+rotoZoomAngle);
+		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
 		ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
 		ret.add(ValidCommands.IMAGE+" "+image.getFilename());
 		ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
@@ -638,14 +637,6 @@ public class Collector {
 	 * PRESENT ======================================================
 	 */
 	
-	public int getRotoZoomAngle() {
-		return rotoZoomAngle;
-	}
-
-	public void setRotoZoomAngle(int rotoZoomAngle) {
-		this.rotoZoomAngle = rotoZoomAngle;
-	}
-
 	public int getSelectedPresent() {
 		return selectedPresent;
 	}
