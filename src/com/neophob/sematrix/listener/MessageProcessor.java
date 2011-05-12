@@ -38,7 +38,9 @@ public class MessageProcessor {
 		//used for enable/disable random mode
 		RANDOM,
 		//used as a one shot randomizer
-		RANDOMIZE
+		RANDOMIZE,
+		//select a saved entrys
+		PRESET_RANDOM
 	}
 
 	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
@@ -60,8 +62,8 @@ public class MessageProcessor {
 			return null;
 		}
 
-		int tmp;
-		
+		int msgLength = msg.length-1;
+		int tmp;		
 		try {			
 			ValidCommands cmd = ValidCommands.valueOf(msg[0]);
 			Collector col = Collector.getInstance();
@@ -72,6 +74,7 @@ public class MessageProcessor {
 			case CHANGE_GENERATOR_A:
 				try {
 					int size = col.getAllVisuals().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setGenerator1(tmp);
@@ -84,6 +87,7 @@ public class MessageProcessor {
 			case CHANGE_GENERATOR_B:
 				try {
 					int size = col.getAllVisuals().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setGenerator2(tmp);
@@ -96,6 +100,7 @@ public class MessageProcessor {
 			case CHANGE_EFFECT_A:
 				try {
 					int size = col.getAllVisuals().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setEffect1(tmp);
@@ -108,6 +113,7 @@ public class MessageProcessor {
 			case CHANGE_EFFECT_B:
 				try {					
 					int size = col.getAllVisuals().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setEffect2(tmp);
@@ -120,6 +126,7 @@ public class MessageProcessor {
 			case CHANGE_MIXER:
 				try {
 					int size = col.getAllVisuals().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setMixer(tmp);
@@ -132,6 +139,7 @@ public class MessageProcessor {
 			case CHANGE_OUTPUT:
 				try {
 					int size = col.getAllOutputMappings().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						int newFx = Integer.parseInt(msg[i+1]);
 						int oldFx = col.getFxInputForScreen(i);
@@ -154,6 +162,7 @@ public class MessageProcessor {
 			case CHANGE_OUTPUT_EFFECT:
 				try {
 					int size = col.getAllOutputMappings().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getOutputMappings(i).setEffect(col.getEffect(tmp));
@@ -166,6 +175,7 @@ public class MessageProcessor {
 			case CHANGE_FADER:
 				try {
 					int size = col.getAllOutputMappings().size();
+					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						//do not start a new fader while the old one is still running
@@ -181,6 +191,7 @@ public class MessageProcessor {
 			case CHANGE_SHUFFLER_SELECT:
 				try {					
 					int size = col.getShufflerSelect().size();
+					if (size>msgLength) size=msgLength;
 					boolean b;
 					for (int i=0; i<size; i++) {
 						b = false;
@@ -188,7 +199,7 @@ public class MessageProcessor {
 						col.setShufflerSelect(i, b);
 					}					
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -315,7 +326,7 @@ public class MessageProcessor {
 					String message = msg[1];
 					col.setText(message);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -330,7 +341,7 @@ public class MessageProcessor {
 						return ValidCommands.STATUS;
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -339,10 +350,19 @@ public class MessageProcessor {
 					Shuffler.manualShuffleStuff();
 					return ValidCommands.STATUS;
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
+			case PRESET_RANDOM:
+				try {
+					Shuffler.presentShuffler();
+					return ValidCommands.STATUS;					
+				} catch (Exception e) {
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				break;
+
 			default:
 				String s="";
 				for (int i=0; i<msg.length;i++) {

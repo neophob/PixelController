@@ -1,5 +1,6 @@
 package com.neophob.sematrix.glue;
 
+import java.util.List;
 import java.util.Random;
 
 import com.neophob.sematrix.effect.RotoZoom;
@@ -21,14 +22,35 @@ import com.neophob.sematrix.input.Sound;
 public class Shuffler {
 
 	//private static Logger log = Logger.getLogger(Shuffler.class.getName());
-	
+
 	/**
 	 * 
 	 */
 	private Shuffler() {
 		//no instance allowed
+		
 	}
 
+	/**
+	 * load a random preset
+	 */
+	public static void presentShuffler() {
+		Collector col = Collector.getInstance();
+		Random rand = new Random();
+		
+		boolean done=false;
+		while (!done) {
+			int idx = rand.nextInt(64);
+			List<String> present = col.getPresent().get(idx).getPresent();
+			if (present!=null && present.size()>0) { 
+				col.setCurrentStatus(present);
+				col.setSelectedPresent(idx);
+				done = true;
+			}
+			
+		}
+	}
+	
 	/**
 	 * heavy shuffler!
 	 * used by manual RANDOMIZE 
