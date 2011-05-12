@@ -33,7 +33,8 @@ public abstract class Generator {
 		TEXTURE_DEFORMATION(8),
 		TEXTWRITER(9),
 		IMAGE_ZOOMER(10),
-		CELL(11);
+		CELL(11),
+		PLASMA_ADVANCED(12);
 		
 		private int id;
 		
