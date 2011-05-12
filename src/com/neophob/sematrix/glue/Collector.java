@@ -36,6 +36,7 @@ import com.neophob.sematrix.generator.Metaballs;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.generator.PixelImage;
 import com.neophob.sematrix.generator.Plasma2;
+import com.neophob.sematrix.generator.PlasmaAdvanced;
 import com.neophob.sematrix.generator.SimpleColors;
 import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Textwriter;
@@ -195,6 +196,7 @@ public class Collector {
 		String fileImageSimple = PropertiesHelper.getInstance().getProperty("initial.image.simple");
 		image = new Image(fileImageSimple);		
 		new Plasma2();
+		new PlasmaAdvanced();
 		new SimpleColors();
 		new Fire();
 		new PassThruGen();
