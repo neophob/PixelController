@@ -6,8 +6,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
 /**
- * TODO: multiple palettes
- * 		 various sizes
+ * ripped from http://stachelig.de/
+ * 		 
  * @author mvogt
  *
  */
@@ -44,6 +44,9 @@ public class PlasmaAdvanced extends Generator {
 	private int frameCount;
 	private Random r;
 
+	/**
+	 * 
+	 */
 	public PlasmaAdvanced() {
 		super(GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
@@ -58,14 +61,14 @@ public class PlasmaAdvanced extends Generator {
 
 		if (frameCount%55==3) {
 			makeGradient();
-			makeSwingCurve();
-			//println("make gradient");
 		}
-
 		if (fadeColorSteps>0) {
 			fadeColorGradient();
 		}
 
+		if (frameCount%57==33) {
+			makeSwingCurve();
+		}
 		if (fadeSwingSteps>0) {
 			fadeSwingCurve();
 		}
@@ -90,14 +93,16 @@ public class PlasmaAdvanced extends Generator {
 	@Override
 	public void close() {	}
 
-
+	//TODO make them configable
+	final static int MIN_FACTOR = 4;
+	final static int MAX_FACTOR = 10;
 	// fill the given array with a nice swingin' curve
 	// three cos waves are layered together for that
 	// the wave "wraps" smoothly around, uh, if you know what i mean ;-)
-	void makeSwingCurve() {
-		int factor1=r.nextInt(6)+1;
-		int factor2=r.nextInt(6)+1;
-		int factor3=r.nextInt(6)+1;
+	void makeSwingCurve() {		
+		int factor1=r.nextInt(MAX_FACTOR)+MIN_FACTOR;
+		int factor2=r.nextInt(MAX_FACTOR)+MIN_FACTOR;
+		int factor3=r.nextInt(MAX_FACTOR)+MIN_FACTOR;
 
 		int halfmax = SWINGMAX/factor1;
 
