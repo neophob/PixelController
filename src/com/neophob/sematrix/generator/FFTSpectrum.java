@@ -33,13 +33,13 @@ public class FFTSpectrum extends Generator {
 		int col;
 		
 		for (int i = 0; i < avg; i++) {
-			fftSmooth[i] = 0.4f * fftSmooth[i] + 0.6f * sound.getFftAvg(i);
 			
-		    int h = (int)(Math.log(fftSmooth[i]*3.0f)*30);		    
+			fftSmooth[i] = 0.3f * fftSmooth[i] + 0.7f * sound.getFftAvg(i);			
+		    int h = (int)(Math.log(fftSmooth[i]*3.0f)*30);
 
 		    h=255+h;
 		    if (h>255) h=255;
-
+		    h = h*h/255;
 		    col = (h << 16) | (h << 8) | h;
 		    rect(col, 0, i*yBlock, this.internalBufferXSize, i*yBlock+yBlock);
 		}		
