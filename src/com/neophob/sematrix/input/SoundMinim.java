@@ -113,6 +113,9 @@ public final class SoundMinim implements SeSound, Runnable {
 	 * @return
 	 */
 	public int getFftAvg() {
+		// perform a forward FFT on the samples 
+		fft.forward(in.mix);
+
 		return fft.avgSize();
 	}
 	
@@ -148,8 +151,8 @@ public final class SoundMinim implements SeSound, Runnable {
 				Thread.sleep(sleep);
 			} catch (InterruptedException e) {}
 
-			//correct??
-			fft.forward(in.mix);
+			// perform a forward FFT on the samples 
+//			fft.forward(in.mix);
 			
 			//decrement max volume after 1/4s
 			if (loop>SOUND_BUFFER_RESOLUTION) {
