@@ -28,6 +28,7 @@ import com.neophob.sematrix.fader.Switch;
 import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Cell;
+import com.neophob.sematrix.generator.FFTSpectrum;
 import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Image;
@@ -213,6 +214,8 @@ public class Collector {
 		String fileImageZoomer = PropertiesHelper.getInstance().getProperty("initial.image.zoomer");
 		imageZoomer = new ImageZoomer(fileImageZoomer);
 		new Cell();
+		new FFTSpectrum();
+
 		
 		//create effects
 		new Inverter();

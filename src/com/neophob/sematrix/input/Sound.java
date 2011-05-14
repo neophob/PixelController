@@ -55,4 +55,13 @@ public class Sound implements SeSound {
 		implementation.shutdown();
 	}
 
+	@Override
+	public int getFftAvg() {		
+		return implementation.getFftAvg();
+	}
+	
+	public float getFftAvg(int i) {
+		return implementation.getFftAvg(i);
+	}
+
 }
