@@ -102,6 +102,8 @@ public class Collector {
 	private int fps;
 	private int frames;
 	
+	private int currentVisual;
+	
 	/** present settings */
 	private int selectedPresent;
 	private List<PresentSettings> present;
@@ -404,6 +406,24 @@ public class Collector {
 		}
 		setLoadingPresent(false);
 	}
+	
+	public List<String> getCurrentMiniStatus() {
+		List<String> ret = new ArrayList<String>();
+		
+		String gen1=getAllVisuals().get(currentVisual).getGenerator1Idx()+"";
+		String gen2=getAllVisuals().get(currentVisual).getGenerator2Idx()+"";
+		String fx1=getAllVisuals().get(currentVisual).getEffect1Idx()+"";
+		String fx2=getAllVisuals().get(currentVisual).getEffect2Idx()+"";
+		String mix=getAllVisuals().get(currentVisual).getMixerIdx()+"";
+		
+		ret.add(ValidCommands.CHANGE_GENERATOR_A+" "+gen1);
+		ret.add(ValidCommands.CHANGE_GENERATOR_B+" "+gen2);
+		ret.add(ValidCommands.CHANGE_EFFECT_A+" "+fx1);
+		ret.add(ValidCommands.CHANGE_EFFECT_B+" "+fx2);
+		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
+
+		return ret;
+	}
 
 	/**
 	 * get current state of visuals/outputs
@@ -411,6 +431,7 @@ public class Collector {
 	 */
 	public List<String> getCurrentStatus() {
 		List<String> ret = new ArrayList<String>();
+		
 		String gen1="";
 		String gen2="";
 		String fx1="";
@@ -424,6 +445,7 @@ public class Collector {
 			mix+=v.getMixerIdx()+" ";					
 		}
 
+		
 		String fader="";
 		String output="";
 		String outputEffect="";
@@ -451,6 +473,7 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresold.getThreshold());
 		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
+//		ret.add(ValidCommands.CURRENT_VISUAL+" "+currentVisual);
 		return ret;
 	}
 
@@ -806,6 +829,16 @@ public class Collector {
 	//TODO static is NOT sexy!
 	public int getFaderCount() {
 		return 4;
+	}
+
+	
+	
+	public int getCurrentVisual() {
+		return currentVisual;
+	}
+
+	public void setCurrentVisual(int currentVisual) {
+		this.currentVisual = currentVisual;
 	}
 
 	public synchronized boolean isLoadingPresent() {

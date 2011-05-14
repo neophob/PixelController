@@ -17,6 +17,11 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
+/**
+ * 
+ * @author michu
+ *
+ */
 public final class TcpServer implements Runnable {
 
 	private static final long CONNECT_RETRY_IN_MS = 16000;
@@ -131,6 +136,9 @@ public final class TcpServer implements Runnable {
 		if (response!=null && response == ValidCommands.STATUS) {
 				sendStatusToGui();
 		}
+		if (response!=null && response == ValidCommands.STATUS_MINI) {
+			sendStatusToGuiMini();
+		}
 	}
 
 	/**
@@ -192,6 +200,16 @@ public final class TcpServer implements Runnable {
 		}
 	}
 
+	
+	/**
+	 * refresh gui if we selected a new visual
+	 */
+	public void sendStatusToGuiMini() {
+		for (String s:Collector.getInstance().getCurrentMiniStatus()) {
+			sendFudiMsg(s);
+		}
+		
+	}
 
 	/**
 	 * 

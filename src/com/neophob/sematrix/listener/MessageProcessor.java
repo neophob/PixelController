@@ -13,7 +13,10 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class MessageProcessor {
 
 	public enum ValidCommands {
+		//refresh whole gui
 		STATUS,
+		//just refresh the gui
+		STATUS_MINI,
 		CHANGE_GENERATOR_A,
 		CHANGE_GENERATOR_B,
 		CHANGE_EFFECT_A,
@@ -40,7 +43,8 @@ public class MessageProcessor {
 		//used as a one shot randomizer
 		RANDOMIZE,
 		//select a saved entrys
-		PRESET_RANDOM
+		PRESET_RANDOM,
+		CURRENT_VISUAL
 	}
 
 	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
@@ -73,25 +77,32 @@ public class MessageProcessor {
 
 			case CHANGE_GENERATOR_A:
 				try {
-					int size = col.getAllVisuals().size();
+/*					int size = col.getAllVisuals().size();
 					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setGenerator1(tmp);
-					}
+					}*/
+					int nr = col.getCurrentVisual();
+					tmp=Integer.parseInt(msg[1]);
+					col.getVisual(nr).setGenerator1(tmp);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
 			case CHANGE_GENERATOR_B:
 				try {
-					int size = col.getAllVisuals().size();
+/*					int size = col.getAllVisuals().size();
 					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setGenerator2(tmp);
-					}
+					}*/
+					int nr = col.getCurrentVisual();
+					tmp=Integer.parseInt(msg[1]);
+					col.getVisual(nr).setGenerator2(tmp);
+
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -99,12 +110,16 @@ public class MessageProcessor {
 
 			case CHANGE_EFFECT_A:
 				try {
-					int size = col.getAllVisuals().size();
+/*					int size = col.getAllVisuals().size();
 					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setEffect1(tmp);
-					}
+					}*/
+					int nr = col.getCurrentVisual();
+					tmp=Integer.parseInt(msg[1]);
+					col.getVisual(nr).setEffect1(tmp);
+
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -112,27 +127,35 @@ public class MessageProcessor {
 
 			case CHANGE_EFFECT_B:
 				try {					
-					int size = col.getAllVisuals().size();
+/*					int size = col.getAllVisuals().size();
 					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setEffect2(tmp);
-					}
+					}*/
+					int nr = col.getCurrentVisual();
+					tmp=Integer.parseInt(msg[1]);
+					col.getVisual(nr).setEffect2(tmp);
+
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
 			case CHANGE_MIXER:
 				try {
-					int size = col.getAllVisuals().size();
+/*					int size = col.getAllVisuals().size();
 					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
 						col.getVisual(i).setMixer(tmp);
-					}
+					}*/
+					int nr = col.getCurrentVisual();
+					tmp=Integer.parseInt(msg[1]);
+					col.getVisual(nr).setMixer(tmp);
+
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -363,6 +386,16 @@ public class MessageProcessor {
 				}
 				break;
 
+			case CURRENT_VISUAL:
+				try {
+					int a = Integer.parseInt(msg[1]);
+					Collector.getInstance().setCurrentVisual(a);
+					return ValidCommands.STATUS_MINI;
+				} catch (Exception e) {
+					log.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				break;
+				
 			default:
 				String s="";
 				for (int i=0; i<msg.length;i++) {
