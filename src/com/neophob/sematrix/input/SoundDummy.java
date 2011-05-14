@@ -38,6 +38,14 @@ public class SoundDummy implements SeSound {
 		return random.nextBoolean();
 	}
 	
+	public int getFftAvg() {		
+		return 1;
+	}
+	
+	public float getFftAvg(int i) {
+		return 1.0f;
+	}
+
 	public void shutdown() {
 	}
 	

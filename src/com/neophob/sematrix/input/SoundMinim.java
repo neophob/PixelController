@@ -8,20 +8,23 @@ import com.neophob.sematrix.glue.Collector;
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
+import ddf.minim.analysis.FFT;
 
 public final class SoundMinim implements SeSound, Runnable {
 
 	//samples per 1/4s
 	private static final int SOUND_BUFFER_RESOLUTION = 8;
-	
+
 	private static Logger log = Logger.getLogger(SoundMinim.class.getName());
-	
+
 	private Minim minim;
 	private AudioInput in;
 	private BeatDetect beat;
 	@SuppressWarnings("unused")
 	private BeatListener bl;
-	
+
+	private FFT fft;
+
 	/* thread to collect volume information */
 	private Thread runner;
 
@@ -31,12 +34,12 @@ public final class SoundMinim implements SeSound, Runnable {
 		minim = new Minim(Collector.getInstance().getPapplet());
 		in = minim.getLineIn( Minim.STEREO, 512 );
 		//in = minim.getLineIn( Minim.MONO, 1024 );
-		
+
 		// a beat detection object that is FREQ_ENERGY mode that 
 		// expects buffers the length of song's buffer size
 		// and samples captured at songs's sample rate
 		beat = new BeatDetect(in.bufferSize(), in.sampleRate());
-		
+
 		// set the sensitivity to 300 milliseconds
 		// After a beat has been detected, the algorithm will wait for 300 milliseconds 
 		// before allowing another beat to be reported. You can use this to dampen the 
@@ -44,15 +47,21 @@ public final class SoundMinim implements SeSound, Runnable {
 		// which is essentially no damping. If you try to set the sensitivity to a negative value, 
 		// an error will be reported and it will be set to 10 instead. 
 		beat.setSensitivity(300); 
-		bl = new BeatListener(beat, in);
-		
+		beat.detectMode(BeatDetect.FREQ_ENERGY);
+
+		bl = new BeatListener(beat, in);		 
+
+		fft = new FFT(in.bufferSize(), in.sampleRate());
+		fft.window(FFT.HAMMING);
+		fft.logAverages(120,4); // 32 bands
+
 		Collector.getInstance().getPapplet().registerDispose(this);
 		this.runner = new Thread(this);
 		this.runner.setName("ZZ Sound stuff");
 		this.runner.start();
 	}
-	
-	
+
+
 	/**
 	 * Gets the current level of the buffer. It is calculated as 
 	 * the root-mean-squared of all the samples in the buffer.
@@ -75,7 +84,7 @@ public final class SoundMinim implements SeSound, Runnable {
 		if (norm>1f) {
 			norm=1f;		
 		}
-		
+
 		//if the sound volume is very low, limit the normalized volume
 		if (max<0.004f) {
 			norm/=2;
@@ -94,16 +103,34 @@ public final class SoundMinim implements SeSound, Runnable {
 	public boolean isHat() {
 		return beat.isHat();
 	}
-	
+
 	public boolean isPang() {
 		return beat.isHat() || beat.isKick() || beat.isSnare();
 	}
+
+	/**
+	 * Returns the number of averages currently being calculated
+	 * @return
+	 */
+	public int getFftAvg() {
+		return fft.avgSize();
+	}
+	
+	/**
+	 * Gets the value of the ith average.
+	 * @param i
+	 * @return
+	 */
+	public float getFftAvg(int i) {
+		return fft.getAvg(i);
+	}
+
 	
 	public void shutdown() {
 		in.close();
 		minim.stop();
 	}
-	
+
 	public void dispose() {		
 		runner = null;
 		//XXX this.shutdown();
@@ -120,6 +147,9 @@ public final class SoundMinim implements SeSound, Runnable {
 			try {
 				Thread.sleep(sleep);
 			} catch (InterruptedException e) {}
+
+			//correct??
+			fft.forward(in.mix);
 			
 			//decrement max volume after 1/4s
 			if (loop>SOUND_BUFFER_RESOLUTION) {
@@ -131,7 +161,7 @@ public final class SoundMinim implements SeSound, Runnable {
 				sndVolumeMax=f;
 				loop=0;
 			}
-						
+
 			loop++;
 		}
 	}
@@ -140,5 +170,5 @@ public final class SoundMinim implements SeSound, Runnable {
 	public synchronized float getSndVolumeMax() {
 		return sndVolumeMax;
 	}
-	
+
 }

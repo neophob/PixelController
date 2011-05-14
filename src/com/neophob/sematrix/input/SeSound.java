@@ -20,4 +20,8 @@ public interface SeSound {
 	boolean isPang();
 
 	void shutdown();
+	
+	int getFftAvg();
+	
+	public float getFftAvg(int i);
 }

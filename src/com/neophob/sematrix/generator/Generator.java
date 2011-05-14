@@ -34,7 +34,8 @@ public abstract class Generator {
 		TEXTWRITER(9),
 		IMAGE_ZOOMER(10),
 		CELL(11),
-		PLASMA_ADVANCED(12);
+		PLASMA_ADVANCED(12),
+		FFT(13);
 		
 		private int id;
 		
