@@ -77,15 +77,20 @@ public class MessageProcessor {
 
 			case CHANGE_GENERATOR_A:
 				try {
-/*					int size = col.getAllVisuals().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
-						col.getVisual(i).setGenerator1(tmp);
-					}*/
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setGenerator1(tmp);
+					if (msg.length==2) {
+						//the new method - used by the gui
+						int nr = col.getCurrentVisual();
+						tmp=Integer.parseInt(msg[1]);
+						col.getVisual(nr).setGenerator1(tmp);
+					} else {
+						int size = col.getAllVisuals().size();
+						if (size>msgLength) size=msgLength;
+						for (int i=0; i<size; i++) {
+							tmp=Integer.parseInt(msg[i+1]);
+							col.getVisual(i).setGenerator1(tmp);
+						}						
+					}
+
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -93,15 +98,19 @@ public class MessageProcessor {
 				
 			case CHANGE_GENERATOR_B:
 				try {
-/*					int size = col.getAllVisuals().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
-						col.getVisual(i).setGenerator2(tmp);
-					}*/
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setGenerator2(tmp);
+					if (msg.length==2) {
+						//the new method - used by the gui
+						int nr = col.getCurrentVisual();
+						tmp=Integer.parseInt(msg[1]);
+						col.getVisual(nr).setGenerator2(tmp);
+					} else {
+						int size = col.getAllVisuals().size();
+						if (size>msgLength) size=msgLength;
+						for (int i=0; i<size; i++) {
+							tmp=Integer.parseInt(msg[i+1]);
+							col.getVisual(i).setGenerator2(tmp);
+						}						
+					}
 
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -110,33 +119,42 @@ public class MessageProcessor {
 
 			case CHANGE_EFFECT_A:
 				try {
-/*					int size = col.getAllVisuals().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
-						col.getVisual(i).setEffect1(tmp);
-					}*/
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setEffect1(tmp);
-
+					if (msg.length==2) {
+						//the new method - used by the gui
+						int nr = col.getCurrentVisual();
+						tmp=Integer.parseInt(msg[1]);
+				
+						col.getVisual(nr).setEffect1(tmp);						
+					} else {
+						//the "old" method - used by the saved presents
+						int size = col.getAllVisuals().size();
+						if (size>msgLength) size=msgLength;
+						for (int i=0; i<size; i++) {
+							tmp=Integer.parseInt(msg[i+1]);
+							col.getVisual(i).setEffect1(tmp);
+						}						
+					}
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
 			case CHANGE_EFFECT_B:
-				try {					
-/*					int size = col.getAllVisuals().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
-						col.getVisual(i).setEffect2(tmp);
-					}*/
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setEffect2(tmp);
-
+				try {
+					if (msg.length==2) {
+						//the new method - used by the gui
+						int nr = col.getCurrentVisual();
+						tmp=Integer.parseInt(msg[1]);
+						col.getVisual(nr).setEffect2(tmp);						
+					} else {
+						int size = col.getAllVisuals().size();
+						if (size>msgLength) size=msgLength;
+						for (int i=0; i<size; i++) {
+							tmp=Integer.parseInt(msg[i+1]);
+							col.getVisual(i).setEffect2(tmp);
+						}						
+					}
+ 
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -144,15 +162,19 @@ public class MessageProcessor {
 
 			case CHANGE_MIXER:
 				try {
-/*					int size = col.getAllVisuals().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
-						col.getVisual(i).setMixer(tmp);
-					}*/
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setMixer(tmp);
+					if (msg.length==2) {
+						//the new method - used by the gui
+						int nr = col.getCurrentVisual();
+						tmp=Integer.parseInt(msg[1]);
+						col.getVisual(nr).setMixer(tmp);
+					} else {
+						int size = col.getAllVisuals().size();
+						if (size>msgLength) size=msgLength;
+						for (int i=0; i<size; i++) {
+							tmp=Integer.parseInt(msg[i+1]);
+							col.getVisual(i).setMixer(tmp);
+						}						
+					}
 
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
