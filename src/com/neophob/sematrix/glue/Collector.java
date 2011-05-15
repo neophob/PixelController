@@ -124,7 +124,7 @@ public class Collector {
 	
 	private boolean isLoadingPresent=false;
 	
-	//TODO maybe a map instead of a list wozld be better...
+	//TODO maybe a map instead of a list would be better...
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
 
@@ -399,7 +399,7 @@ public class Collector {
 	 */
 	public void setCurrentStatus(List<String> preset) {
 		setLoadingPresent(true);
-		for (String s: preset) {
+		for (String s: preset) {		
 			s = StringUtils.trim(s);
 			s = StringUtils.removeEnd(s, ";");
 			MessageProcessor.processMsg(StringUtils.split(s, ' '), false);
@@ -407,6 +407,10 @@ public class Collector {
 		setLoadingPresent(false);
 	}
 	
+	/**
+	 * update the visual setting in the gui
+	 * @return
+	 */
 	public List<String> getCurrentMiniStatus() {
 		List<String> ret = new ArrayList<String>();
 		
@@ -473,7 +477,7 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresold.getThreshold());
 		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
-//		ret.add(ValidCommands.CURRENT_VISUAL+" "+currentVisual);
+		ret.add(ValidCommands.CURRENT_VISUAL+" "+currentVisual);
 		return ret;
 	}
 
