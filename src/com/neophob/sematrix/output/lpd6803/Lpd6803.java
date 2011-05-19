@@ -330,11 +330,15 @@ public class Lpd6803 {
 	 * @param data byte[3*8*4]
 	 * @return true if send was successful
 	 */
-	public boolean sendFrame(byte ofs, byte data[]) {
+	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {
 		//TODO stop if connection counter > n
 		if (data.length!=128) {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
+
+/*		if (connectionErrorCounter>) {
+			return false;
+		}*/
 
 		//0=0/1   1=2+3   2=4+5
 		byte ofsOne = (byte)(ofs*2);
@@ -493,7 +497,7 @@ public class Lpd6803 {
 		} catch (Exception e) {
 			log.log(Level.INFO, "Error sending serial data!", e);
 			connectionErrorCounter++;
-			throw new SerialPortException("cannot send serial data: "+e);
+			throw new SerialPortException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+e);
 		}		
 	}
 	
