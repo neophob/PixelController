@@ -1,3 +1,0 @@
-set JAVA_OPT=-Dsun.java2d.opengl=True -Djava.library.path=lib\serial
-
-java %JAVA_OPT% -classpath bin;lib\core.jar;lib\minim\library\jl1.0.jar;lib\minim\library\jsminim.jar;lib\minim\library\minim-spi.jar;lib\minim\library\minim.jar;lib\minim\library\tritonus_aos.jar;lib\minim\library\tritonus_share.jar;lib\blinkenlights.jar;lib\serial\RXTXcomm.jar;lib\serial\serial.jar;lib\net.jar;lib\commons-lang-2.5.jar;lib\commons-collections-3.2.1.jar;lib\neorainbowduino.jar com.neophob.VisualDaemon
