@@ -19,7 +19,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * make zoom option, usefull for one screen
  *
  */
-public class VisualDaemon extends PApplet {
+public class PixelController extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 	
@@ -80,6 +80,6 @@ public class VisualDaemon extends PApplet {
 	}
 
 	public static void main(String args[]) {
-		PApplet.main(new String[] { "com.neophob.VisualDaemon" });
+		PApplet.main(new String[] { "com.neophob.PixelController" });
 	}
 }
