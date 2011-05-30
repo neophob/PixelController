@@ -114,19 +114,22 @@ public class Geometrics extends Generator {
 			int ofs=px+py*internalBufferXSize;
 
 			for (int x=0; x<thick; x++) {
-				if (x+px+1 > internalBufferXSize || x+px<0) break;
-				for (int y=0; y<thick; y++) {
-					if (y+py+1 > internalBufferYSize || y+py<0) break;
+				//check boundaries
+				if (x+px < internalBufferXSize && x+px>0) {
 
-					int pos = ofs+x+y*internalBufferXSize;
-					
-					if (pos>0 && pos < internalBuffer.length)
-					try {
-						internalBuffer[pos]=col;						
-					} catch (Exception e) {
-						e.printStackTrace();
-						System.out.println("POS:"+pos);
-						// TODO: handle exception
+					for (int y=0; y<thick; y++) {
+						
+						//check boundaries
+						if (y+py < internalBufferYSize && y+py>0) {
+							int pos = ofs+x+y*internalBufferXSize;
+							
+							if (pos>0 && pos < internalBuffer.length)
+							try {
+								internalBuffer[pos]=col;						
+							} catch (Exception e) {
+								e.printStackTrace();
+							}							
+						}
 					}
 				}
 			}

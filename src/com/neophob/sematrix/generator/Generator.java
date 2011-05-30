@@ -35,7 +35,8 @@ public abstract class Generator {
 		IMAGE_ZOOMER(10),
 		CELL(11),
 		PLASMA_ADVANCED(12),
-		FFT(13);
+		FFT(13),
+		GEOMETRICS(14);
 		
 		private int id;
 		
