@@ -21,7 +21,8 @@ public abstract class Mixer {
 		CHECKBOX(5),
 		VOLUMINIZER(6),
 		XOR(7),
-		MINUS_HALF(8);
+		MINUS_HALF(8),
+		EITHER(9);
 		
 		private int id;
 		
