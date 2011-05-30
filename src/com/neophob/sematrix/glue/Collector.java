@@ -31,6 +31,7 @@ import com.neophob.sematrix.generator.Cell;
 import com.neophob.sematrix.generator.FFTSpectrum;
 import com.neophob.sematrix.generator.Fire;
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.generator.Geometrics;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.ImageZoomer;
 import com.neophob.sematrix.generator.Metaballs;
@@ -217,6 +218,7 @@ public class Collector {
 		imageZoomer = new ImageZoomer(fileImageZoomer);
 		new Cell();
 		new FFTSpectrum();
+		new Geometrics();
 
 		
 		//create effects
