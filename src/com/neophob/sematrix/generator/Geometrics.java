@@ -55,8 +55,8 @@ public class Geometrics extends Generator {
 		if (sound.isKick() || drops.size()==0) {
 			drops.add(
 					new Drop(
-							random(THICKNESS, internalBufferXSize-THICKNESS), 
-							random(THICKNESS, internalBufferYSize-THICKNESS), dropHue)
+							random(THICKNESS, internalBufferXSize/*-THICKNESS*/), 
+							random(THICKNESS, internalBufferYSize/*-THICKNESS*/), dropHue)
 			);
 			dropHue += 4;
 			if (dropHue > 100) {
