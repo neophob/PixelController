@@ -10,14 +10,18 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
+ * create some drops
+ * 
+ * some code is ripped from macetech
  * 
  * @author michu
  *
  */
 public class Geometrics extends Generator {
 
+	private static final int THICKNESS = 12;
+	
 	private List<Drop> drops;
-	//private int dropWallSize = 30;
 	private int dropHue = 0;
 
 	private Sound sound;
@@ -50,7 +54,9 @@ public class Geometrics extends Generator {
 		Arrays.fill(this.internalBuffer, 0);
 		if (sound.isKick() || drops.size()==0) {
 			drops.add(
-					new Drop(random(12, 52), random(12, 52), dropHue)
+					new Drop(
+							random(THICKNESS, internalBufferXSize-THICKNESS), 
+							random(THICKNESS, internalBufferYSize-THICKNESS), dropHue)
 			);
 			dropHue += 4;
 			if (dropHue > 100) {
@@ -73,17 +79,26 @@ public class Geometrics extends Generator {
 
 
 
-	// Class for Raindrops effect
+	/**
+	 * Class for Raindrops effect
+	 * 
+	 * @author michu
+	 *
+	 */
 	private class Drop {
 
 		int xpos, ypos, dropcolor, dropSize;
 		boolean finished;
 
+		/**
+		 * 
+		 * @param x
+		 * @param y
+		 * @param c
+		 */
 		private Drop (int x, int y, int c) {
 			xpos = x;
 			ypos = y;
-			//todo c is hsv, not rgb!
-			//dropcolor = c << 16 | c << 8 | c;
 			dropcolor = Color.HSBtoRGB(255f/(float)c, 0.98f, 0.9f);
 			finished = false;
 		}
@@ -127,6 +142,7 @@ public class Geometrics extends Generator {
 							try {
 								internalBuffer[pos]=col;						
 							} catch (Exception e) {
+								//just to be sure...
 								e.printStackTrace();
 							}							
 						}
@@ -137,7 +153,8 @@ public class Geometrics extends Generator {
 		}
 
 		/**
-		 * 
+		 * Bresenham Circle
+		 * ripped from http://actionsnippet.com/?p=492
 		 * @param xp
 		 * @param yp
 		 * @param radius
@@ -150,19 +167,17 @@ public class Geometrics extends Generator {
 			balance=- radius;
 
 			while (xoff <= yoff) {
-				setPixel(12, xp+xoff, yp+yoff, col);
-				setPixel(12, xp-xoff, yp+yoff, col);
-				setPixel(12, xp-xoff, yp-yoff, col);
-				setPixel(12, xp+xoff, yp-yoff, col);
-				setPixel(12, xp+yoff, yp+xoff, col);
-				setPixel(12, xp-yoff, yp+xoff, col);
-				setPixel(12, xp-yoff, yp-xoff, col);
-				setPixel(12, xp+yoff, yp-xoff, col);
+				setPixel(THICKNESS, xp+xoff, yp+yoff, col);
+				setPixel(THICKNESS, xp-xoff, yp+yoff, col);
+				setPixel(THICKNESS, xp-xoff, yp-yoff, col);
+				setPixel(THICKNESS, xp+xoff, yp-yoff, col);
+				setPixel(THICKNESS, xp+yoff, yp+xoff, col);
+				setPixel(THICKNESS, xp-yoff, yp+xoff, col);
+				setPixel(THICKNESS, xp-yoff, yp-xoff, col);
+				setPixel(THICKNESS, xp+yoff, yp-xoff, col);
 
 				balance += xoff++;
-
 				if (balance+xoff >= 0) {
-//				if ((balance += xoff++ + xoff)>= 0) {
 					balance-=--yoff+yoff;
 				}
 			}
