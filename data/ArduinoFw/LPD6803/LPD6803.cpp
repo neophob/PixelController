@@ -26,12 +26,12 @@ enum lpd6803mode {
 
 static lpd6803mode SendMode;   // Used in interrupt 0=start,1=header,2=data,3=data done
 static byte  BitCount;   // Used in interrupt
-static byte  LedIndex;   // Used in interrupt - Which LED we are sending.
+static uint16_t  LedIndex;   // Used in interrupt - Which LED we are sending.
 static byte  BlankCounter;  //Used in interrupt.
 
 static byte lastdata = 0;
 //todo: make an int out of that byte - maximal refresh 255 leds!
-static byte swapAsap = 0;   //flag to indicate that the colors need an update asap
+static uint16_t swapAsap = 0;   //flag to indicate that the colors need an update asap
 
 //Interrupt routine.
 //Frequency was set in setup(). Called once for every bit of data sent
@@ -163,7 +163,7 @@ void LPD6803::show(void) {
 }
 
 //---
-void LPD6803::doSwapBuffersAsap(uint8_t idx) {
+void LPD6803::doSwapBuffersAsap(uint16_t idx) {
   swapAsap = idx;
 }
 
