@@ -17,7 +17,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class PixelImage extends Generator {
 
 	private static final int PIXELNR = 8;
-	private static final int NR_OF_IMAGES = 12;
+	private static final int NR_OF_IMAGES = 14;
 
 	private int xDiff,yDiff;
 
@@ -55,6 +55,22 @@ public class PixelImage extends Generator {
 		images[10][1]=0x8316;       //big eye alien
 		images[11][0]=0x4413; 
 		images[11][1]=0xA610;       //skull
+		images[12][0]=0xFACA; 
+		images[12][1]=0x645D;       //pixelinvaders logo
+		images[13][0]=0x52C0; 
+		images[13][1]=0x0CE1;       //ninja
+/*
+gelesen von der mitte!
+		1010 ....   -> 0xa  -> 0xacaf  .. ganz rechts (F) ist oben
+		1100 ....	-> 0xc
+		1010 ....	-> 0xa
+		1111 ....	-> 0xf
+		
+		1101 ....	-> 0xd	->0x45d9
+		0101 ....	-> 0x5
+		0100 ....	-> 0x4
+		0110 ....	-> 0x6
+*/	
 
 		xDiff = internalBufferXSize/PIXELNR;
 		yDiff = internalBufferYSize/PIXELNR;
@@ -90,7 +106,7 @@ public class PixelImage extends Generator {
 	 */
 	private void doInvader() {
 		int r = rnd.nextInt(7);
-
+		
 		switch (r) {
 		case 0: //mix prestored
 		case 5:  
@@ -126,8 +142,9 @@ public class PixelImage extends Generator {
 		}
 	}
 
+	
 	/**
-	 * 
+	 * create a random mutation
 	 */
 	private void mutateInvader() {
 		for (int y=1; y<7; y++) { // i = columns
@@ -142,11 +159,13 @@ public class PixelImage extends Generator {
 
 
 	/**
+	 * draw an invader
 	 * 
 	 * @param nr1
 	 * @param nr2
 	 */
 	private void invader(int nr1, int nr2) {
+		//sabity checks
 		if (nr1>0xffff) {
 			nr1=0xffff;
 		}
@@ -154,6 +173,7 @@ public class PixelImage extends Generator {
 			nr2=0xffff;
 		}
 
+		//init stuff
 		int[] value = new int[4*8];
 		int ofs=0;
 
