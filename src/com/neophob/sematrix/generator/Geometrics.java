@@ -19,7 +19,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Geometrics extends Generator {
 
-	private static final int THICKNESS = 12;
+	private static final int THICKNESS = 10;
 	
 	private List<Drop> drops;
 	private int dropHue = 0;
@@ -52,12 +52,13 @@ public class Geometrics extends Generator {
 	public void update() {
 
 		Arrays.fill(this.internalBuffer, 0);
-		if (sound.isKick() || drops.size()==0) {
+		//maximal 4 actice drops
+		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {
 			drops.add(
 					new Drop(
-							random(THICKNESS, internalBufferXSize/*-THICKNESS*/), 
-							random(THICKNESS, internalBufferYSize/*-THICKNESS*/), dropHue)
-			);
+							random(THICKNESS, internalBufferXSize), 
+							random(THICKNESS, internalBufferYSize), dropHue)
+					);
 			dropHue += 4;
 			if (dropHue > 100) {
 				dropHue -= 100;
@@ -106,7 +107,7 @@ public class Geometrics extends Generator {
 		private void update() {
 			if (!finished) {
 				drawCircle(xpos,ypos, dropSize, dropcolor);
-				if (dropSize < internalBufferXSize) {
+				if (dropSize < internalBufferXSize*2) {
 					dropSize ++;
 				} else {
 					finished = true;
