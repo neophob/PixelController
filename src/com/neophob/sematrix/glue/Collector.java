@@ -141,6 +141,7 @@ public class Collector {
 	
 	private Threshold thresold;
 	
+	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
 	private boolean isLoadingPresent=false;
