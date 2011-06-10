@@ -33,7 +33,6 @@ import processing.net.Client;
 import processing.net.Server;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
 /**
@@ -163,7 +162,7 @@ public final class TcpServer implements Runnable {
 	/**
 	 * send beat detection to gui
 	 */
-	private void sendSoundStatus() {
+/*	private void sendSoundStatus() {
 		int hat=0, kick=0, snare=0;
 		if (Sound.getInstance().isHat()) hat=1;
 		if (Sound.getInstance().isKick()) kick=1;
@@ -171,7 +170,7 @@ public final class TcpServer implements Runnable {
 		sendFudiMsg("SND_HAT "+hat);
 		sendFudiMsg("SND_KICK "+kick);
 		sendFudiMsg("SND_SNARE "+snare);
-	}
+	}*/
 
 
 
