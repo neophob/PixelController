@@ -31,6 +31,12 @@ import processing.core.PApplet;
  */
 public class TestRoundtrip extends PApplet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5014930687650644180L;
+	
+	
 	Lpd6803 r;
 	int [] frame1;
 	byte [] frame2;
