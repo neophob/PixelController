@@ -1,9 +1,13 @@
 
-
 -rotozoom, add zoom option
 -textwriter, change font, more readable
--refactoring gui, only one visual is active (also random mode)
+
+effects: palette modification (rgb to hsv, gradient, dither
+more generators from mactech.com
+
+simplify gui
 
 Done:
 -----
 -lpd output, rotate image, flip
+-refactoring gui, only one visual is active (also random mode)
