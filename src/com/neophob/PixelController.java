@@ -83,6 +83,7 @@ public class PixelController extends PApplet {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void draw() { 
 		//update all generators
  
