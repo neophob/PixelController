@@ -377,7 +377,7 @@ public class Scalr {
 					return src;
 
 				// Save for detailed logging (this is cheap).
-				int originalTargetHeight = targetHeight;
+				//int originalTargetHeight = targetHeight;
 
 				/*
 				 * Landscape or Square Orientation: Ignore the given height and
@@ -392,7 +392,7 @@ public class Scalr {
 					return src;
 
 				// Save for detailed logging (this is cheap).
-				int originalTargetWidth = targetWidth;
+				//int originalTargetWidth = targetWidth;
 
 				/*
 				 * Portrait Orientation: Ignore the given width and re-calculate
