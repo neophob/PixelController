@@ -1,0 +1,3 @@
+apply license checks:
+
+mvn license:format -Dyear=2011 -Demail=michu@neophob.com
