@@ -45,10 +45,7 @@ import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.properties.PropertiesHelper;
-import com.neophob.sematrix.resize.PixelResize;
-import com.neophob.sematrix.resize.QualityResize;
-import com.neophob.sematrix.resize.Resize;
-import com.neophob.sematrix.resize.Resize.ResizeName;
+import com.neophob.sematrix.resize.PixelControllerResize;
 
 public class Collector {
 
@@ -74,7 +71,6 @@ public class Collector {
 
 	/** all input elements*/	
 	private List<Visual> allVisuals;
-	private List<Resize> allResizers;
 	private List<Boolean> shufflerSelect;
 
 	/** fx to screen mapping */
@@ -93,7 +89,8 @@ public class Collector {
 	private PixelControllerGenerator pixelControllerGenerator;
 	private PixelControllerMixer pixelControllerMixer;
 	private PixelControllerEffect pixelControllerEffect;
-			
+	private PixelControllerResize pixelControllerResize;
+	
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
@@ -104,9 +101,7 @@ public class Collector {
 	 */
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
-
 		allVisuals = new CopyOnWriteArrayList<Visual>();
-		allResizers = new CopyOnWriteArrayList<Resize>();
 
 		this.nrOfScreens = 0;
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
@@ -201,9 +196,8 @@ public class Collector {
 			}
 		}
 		
-		//create resizer
-		new PixelResize();
-		new QualityResize();
+		pixelControllerResize = new PixelControllerResize();
+		pixelControllerResize.initAll();
 		
 		PropertiesHelper.getInstance().loadPresents();
 	}
@@ -462,28 +456,6 @@ public class Collector {
 		this.allVisuals = allVisuals;
 	}
 
-	/*
-	 * RESIZER ======================================================
-	 */
-	
-	public List<Resize> getAllResizers() {
-		return allResizers;
-	}
-	
-	public Resize getResize(ResizeName name) {
-		for (Resize r: allResizers) {
-			if (r.getId() == name.getId()) {
-				return r;
-			}
-		}
-		return null;
-	}
-	
-	public void addResize(Resize resize) {
-		allResizers.add(resize);
-	}
-
-
 
 	/*
 	 * OUTPUT MAPPING ======================================================
@@ -626,6 +598,10 @@ public class Collector {
 	
 	public PixelControllerGenerator getPixelControllerGenerator() {
 		return pixelControllerGenerator;
+	}
+	
+	public PixelControllerResize getPixelControllerResize() {
+		return pixelControllerResize;
 	}
 
 }
