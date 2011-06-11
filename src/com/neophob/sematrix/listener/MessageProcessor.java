@@ -229,7 +229,7 @@ public class MessageProcessor {
 					if (size>msgLength) size=msgLength;
 					for (int i=0; i<size; i++) {
 						tmp=Integer.parseInt(msg[i+1]);
-						col.getOutputMappings(i).setEffect(col.getEffect(tmp));
+						col.getOutputMappings(i).setEffect(col.getPixelControllerEffect().getEffect(tmp));
 					}
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -272,7 +272,7 @@ public class MessageProcessor {
 					int val = Integer.parseInt(msg[1]);		
 					//col.setRotoZoomAngle(val);			
 					//log.log(Level.WARNING,	"rotozoom value: "+val);
-					RotoZoom r = (RotoZoom)col.getEffect(EffectName.ROTOZOOM);
+					RotoZoom r = (RotoZoom)col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM);
 					r.setAngle(val);					
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -290,7 +290,7 @@ public class MessageProcessor {
 					if (r<0) r=0;
 					if (g<0) g=0;
 					if (b<0) b=0;
-					col.setRGB(r, g, b);
+					col.getPixelControllerEffect().setRGB(r, g, b);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -334,7 +334,7 @@ public class MessageProcessor {
 					int a = Integer.parseInt(msg[1]);
 					if (a>255) a=255;
 					if (a<0) a=0;
-					col.setThresholdValue(a);
+					col.getPixelControllerEffect().setThresholdValue(a);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -343,7 +343,7 @@ public class MessageProcessor {
 			case BLINKEN:
 				try {
 					String fileToLoad = msg[1];
-					col.setFileBlinken(fileToLoad);
+					col.getPixelControllerGenerator().setFileBlinken(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -352,7 +352,7 @@ public class MessageProcessor {
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
-					col.setFileImageSimple(fileToLoad);
+					col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -361,7 +361,7 @@ public class MessageProcessor {
 			case IMAGE_ZOOMER:
 				try {
 					String fileToLoad = msg[1];
-					col.setFileImageZoomer(fileToLoad);
+					col.getPixelControllerGenerator().setFileImageZoomer(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -370,7 +370,7 @@ public class MessageProcessor {
 			case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
-					col.setTextureDeformationLut(lut);
+					col.getPixelControllerGenerator().setTextureDeformationLut(lut);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -379,7 +379,7 @@ public class MessageProcessor {
 			case TEXTDEF_FILE:
 				try {
 					String fileToLoad = msg[1];
-					col.setFileTextureDeformation(fileToLoad);
+					col.getPixelControllerGenerator().setFileTextureDeformation(fileToLoad);
 				} catch (Exception e) {
 					log.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -388,7 +388,7 @@ public class MessageProcessor {
 			case TEXTWR:
 				try {
 					String message = msg[1];
-					col.setText(message);
+					col.getPixelControllerGenerator().setText(message);
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
 				}

@@ -31,8 +31,8 @@ public class PassThruGen extends Generator {
 
 	static Logger log = Logger.getLogger(PassThruGen.class.getName());
 	
-	public PassThruGen() {
-		super(GeneratorName.PASSTHRU, ResizeName.QUALITY_RESIZE);
+	public PassThruGen(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.PASSTHRU, ResizeName.QUALITY_RESIZE);
 	}
 	
 	@Override

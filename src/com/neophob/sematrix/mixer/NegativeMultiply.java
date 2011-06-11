@@ -25,8 +25,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class NegativeMultiply extends Mixer {
 
-	public NegativeMultiply() {
-		super(MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
+	public NegativeMultiply(PixelControllerMixer controller) {
+		super(controller, MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

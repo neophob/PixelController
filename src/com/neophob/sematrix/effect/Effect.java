@@ -59,13 +59,13 @@ public abstract class Effect {
 	protected int internalBufferYSize;
 
 	
-	public Effect(EffectName effectName, ResizeName resizeOption) {
+	public Effect(PixelControllerEffect controller, EffectName effectName, ResizeName resizeOption) {
 		this.effectName = effectName;
 		this.resizeOption = resizeOption;
 		MatrixData matrix = Collector.getInstance().getMatrix();
 		this.internalBufferXSize = matrix.getBufferXSize();
 		this.internalBufferYSize = matrix.getBufferYSize();
-		Collector.getInstance().addEffect(this);
+		controller.addEffect(this);
 	}
 	
 	/**
@@ -88,5 +88,9 @@ public abstract class Effect {
 	
 	public int getId() {
 		return this.effectName.getId();
+	}
+	
+	public static void initAllEffects() {
+		
 	}
 }

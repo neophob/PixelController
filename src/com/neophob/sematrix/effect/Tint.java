@@ -26,8 +26,8 @@ public class Tint extends Effect {
 
 	private int r,g,b;
 	
-	public Tint() {
-		super(EffectName.TINT, ResizeName.QUALITY_RESIZE);
+	public Tint(PixelControllerEffect controller) {
+		super(controller, EffectName.TINT, ResizeName.QUALITY_RESIZE);
 		r=255;
 		g=255;
 		b=255;

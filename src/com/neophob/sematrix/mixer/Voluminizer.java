@@ -32,8 +32,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Voluminizer extends Mixer {
 
-	public Voluminizer() {
-		super(MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
+	public Voluminizer(PixelControllerMixer controller) {
+		super(controller, MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

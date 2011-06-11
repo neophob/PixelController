@@ -25,8 +25,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Multiply extends Mixer {
 
-	public Multiply() {
-		super(MixerName.MULTIPLY, ResizeName.QUALITY_RESIZE);
+	public Multiply(PixelControllerMixer controller) {
+		super(controller, MixerName.MULTIPLY, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

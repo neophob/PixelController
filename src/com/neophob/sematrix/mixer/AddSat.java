@@ -25,8 +25,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class AddSat extends Mixer {
 
-	public AddSat() {
-		super(MixerName.ADDSAT, ResizeName.QUALITY_RESIZE);
+	public AddSat(PixelControllerMixer controller) {
+		super(controller, MixerName.ADDSAT, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

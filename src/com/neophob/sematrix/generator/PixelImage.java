@@ -46,8 +46,8 @@ public class PixelImage extends Generator {
 	private Random rnd = new Random();
 	private int frame = 0;
 
-	public PixelImage() throws InvalidParameterException {
-		super(GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
+	public PixelImage(PixelControllerGenerator controller) throws InvalidParameterException {
+		super(controller, GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
 
 		//populate known images
 		images[0][0]=0x1537; 

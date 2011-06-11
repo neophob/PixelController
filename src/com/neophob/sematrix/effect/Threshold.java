@@ -26,8 +26,8 @@ public class Threshold extends Effect {
 
 	private short threshold;
 	
-	public Threshold() {
-		super(EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
+	public Threshold(PixelControllerEffect controller) {
+		super(controller, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
 		this.threshold = 128;
 	}
 

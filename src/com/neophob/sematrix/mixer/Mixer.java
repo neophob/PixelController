@@ -19,7 +19,6 @@
 
 package com.neophob.sematrix.mixer;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -57,10 +56,10 @@ public abstract class Mixer {
 	private MixerName mixerName;
 	private ResizeName resizeOption;
 	
-	public Mixer(MixerName mixerName, ResizeName resizeOption) {
+	public Mixer(PixelControllerMixer controller, MixerName mixerName, ResizeName resizeOption) {
 		this.mixerName = mixerName;
 		this.resizeOption = resizeOption;
-		Collector.getInstance().addMixer(this);
+		controller.addMixer(this);
 	}
 	
 	public abstract int[] getBuffer(Visual visual);
@@ -72,4 +71,5 @@ public abstract class Mixer {
 	public int getId() {
 		return this.mixerName.getId();
 	}
+	
 }

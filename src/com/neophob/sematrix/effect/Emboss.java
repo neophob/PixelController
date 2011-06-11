@@ -24,8 +24,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Emboss extends Effect {
 
-	public Emboss() {
-		super(EffectName.EMBOSS, ResizeName.QUALITY_RESIZE);
+	public Emboss(PixelControllerEffect controller) {
+		super(controller, EffectName.EMBOSS, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(int[] buffer) {

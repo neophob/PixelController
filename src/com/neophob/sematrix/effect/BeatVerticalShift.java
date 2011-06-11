@@ -26,8 +26,8 @@ public class BeatVerticalShift extends Effect {
 
 	int ammount=0;
 	
-	public BeatVerticalShift() {
-		super(EffectName.BEAT_VERTICAL_SHIFT, ResizeName.QUALITY_RESIZE);
+	public BeatVerticalShift(PixelControllerEffect controller) {
+		super(controller, EffectName.BEAT_VERTICAL_SHIFT, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(int[] buffer) {

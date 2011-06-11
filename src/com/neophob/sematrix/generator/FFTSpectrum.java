@@ -36,8 +36,8 @@ public class FFTSpectrum extends Generator {
 	
 	private int yBlock;
 
-	public FFTSpectrum() {
-		super(GeneratorName.FFT, ResizeName.PIXEL_RESIZE);
+	public FFTSpectrum(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.FFT, ResizeName.PIXEL_RESIZE);
 		sound = Sound.getInstance();
 		
 		int bands = sound.getFftAvg();

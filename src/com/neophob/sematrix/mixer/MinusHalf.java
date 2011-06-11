@@ -25,8 +25,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class MinusHalf extends Mixer {
 
-	public MinusHalf() {
-		super(MixerName.MINUS_HALF, ResizeName.QUALITY_RESIZE);
+	public MinusHalf(PixelControllerMixer controller) {
+		super(controller, MixerName.MINUS_HALF, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

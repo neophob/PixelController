@@ -36,8 +36,8 @@ public class Metaballs extends Generator {
 
 	private int a=1;
 
-	public Metaballs() {
-		super(GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
+	public Metaballs(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
 		vy = new int[NUM_BLOBS][getInternalBufferYSize()];
 		vx = new int[NUM_BLOBS][getInternalBufferXSize()];
 	}

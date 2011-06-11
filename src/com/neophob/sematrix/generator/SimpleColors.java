@@ -26,8 +26,8 @@ public class SimpleColors extends Generator {
 
 	private int rotate = 0;
 
-	public SimpleColors() {
-		super(GeneratorName.SIMPLECOLORS, ResizeName.QUALITY_RESIZE);
+	public SimpleColors(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.SIMPLECOLORS, ResizeName.QUALITY_RESIZE);
 	}
 	
 	@Override

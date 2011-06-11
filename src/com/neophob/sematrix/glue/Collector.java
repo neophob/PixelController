@@ -28,57 +28,21 @@ import org.apache.commons.lang.StringUtils;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.effect.BeatHorizShift;
-import com.neophob.sematrix.effect.BeatVerticalShift;
-import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.Emboss;
-import com.neophob.sematrix.effect.Inverter;
-import com.neophob.sematrix.effect.PassThru;
-import com.neophob.sematrix.effect.RotoZoom;
-import com.neophob.sematrix.effect.Threshold;
-import com.neophob.sematrix.effect.Tint;
-import com.neophob.sematrix.effect.Voluminize;
-import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Crossfader;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.SlideLeftRight;
 import com.neophob.sematrix.fader.SlideUpsideDown;
 import com.neophob.sematrix.fader.Switch;
 import com.neophob.sematrix.fader.Fader.FaderName;
-import com.neophob.sematrix.generator.Blinkenlights;
-import com.neophob.sematrix.generator.Cell;
-import com.neophob.sematrix.generator.FFTSpectrum;
-import com.neophob.sematrix.generator.Fire;
-import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.generator.Geometrics;
-import com.neophob.sematrix.generator.Image;
-import com.neophob.sematrix.generator.ImageZoomer;
-import com.neophob.sematrix.generator.Metaballs;
-import com.neophob.sematrix.generator.PassThruGen;
-import com.neophob.sematrix.generator.PixelImage;
-import com.neophob.sematrix.generator.Plasma2;
-import com.neophob.sematrix.generator.PlasmaAdvanced;
-import com.neophob.sematrix.generator.SimpleColors;
-import com.neophob.sematrix.generator.TextureDeformation;
-import com.neophob.sematrix.generator.Textwriter;
+import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
-import com.neophob.sematrix.mixer.AddSat;
-import com.neophob.sematrix.mixer.Checkbox;
-import com.neophob.sematrix.mixer.Either;
-import com.neophob.sematrix.mixer.MinusHalf;
-import com.neophob.sematrix.mixer.Mix;
-import com.neophob.sematrix.mixer.Mixer;
-import com.neophob.sematrix.mixer.Multiply;
-import com.neophob.sematrix.mixer.NegativeMultiply;
-import com.neophob.sematrix.mixer.PassThruMixer;
-import com.neophob.sematrix.mixer.Voluminizer;
-import com.neophob.sematrix.mixer.Xor;
-import com.neophob.sematrix.mixer.Mixer.MixerName;
+import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelResize;
@@ -108,10 +72,7 @@ public class Collector {
 
 	private List<Output> allOutputs;
 
-	/** all input elements*/
-	private List<Generator> allGenerators;		
-	private List<Effect> allEffects;
-	private List<Mixer> allMixer;
+	/** all input elements*/	
 	private List<Visual> allVisuals;
 	private List<Resize> allResizers;
 	private List<Boolean> shufflerSelect;
@@ -128,31 +89,21 @@ public class Collector {
 	/** present settings */
 	private int selectedPresent;
 	private List<PresentSettings> present;
-	//track r/g/b
-	private Tint tint;
 	
-	private Blinkenlights blinkenlights;
-	private Image image;
-	private ImageZoomer imageZoomer;
-	
-	private TextureDeformation textureDeformation;
-	
-	private Textwriter textwriter;
-	
-	private Threshold thresold;
-	
+	private PixelControllerGenerator pixelControllerGenerator;
+	private PixelControllerMixer pixelControllerMixer;
+	private PixelControllerEffect pixelControllerEffect;
+			
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
 	private boolean isLoadingPresent=false;
-	
-	//TODO maybe a map instead of a list would be better...
+
+	/**
+	 * 
+	 */
 	private Collector() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
-
-		allGenerators = new CopyOnWriteArrayList<Generator>();			
-		allEffects = new CopyOnWriteArrayList<Effect>();
-		allMixer = new CopyOnWriteArrayList<Mixer>();
 
 		allVisuals = new CopyOnWriteArrayList<Visual>();
 		allResizers = new CopyOnWriteArrayList<Resize>();
@@ -216,55 +167,16 @@ public class Collector {
 	 */
 	private void initSystem() {
 		//create generators
-		String fileBlinken = PropertiesHelper.getInstance().getProperty("initial.blinken");
-		blinkenlights = new Blinkenlights(fileBlinken);
-		String fileImageSimple = PropertiesHelper.getInstance().getProperty("initial.image.simple");
-		image = new Image(fileImageSimple);		
-		new Plasma2();
-		new PlasmaAdvanced();
-		new SimpleColors();
-		new Fire();
-		new PassThruGen();
-		new Metaballs();
-		new PixelImage();
-		String fileTextureDeformation = PropertiesHelper.getInstance().getProperty("initial.texture");
-		textureDeformation = new TextureDeformation(fileTextureDeformation);
-		String text = PropertiesHelper.getInstance().getProperty("initial.text");
-		textwriter = new Textwriter(
-				PropertiesHelper.getInstance().getProperty("font.filename"), 
-				Integer.parseInt(PropertiesHelper.getInstance().getProperty("font.size")),
-				text
-		);
-		String fileImageZoomer = PropertiesHelper.getInstance().getProperty("initial.image.zoomer");
-		imageZoomer = new ImageZoomer(fileImageZoomer);
-		new Cell();
-		new FFTSpectrum();
-		new Geometrics();
-
 		
-		//create effects
-		new Inverter();
-		new PassThru();
-		new RotoZoom(1.5f, 2.3f);
-		new BeatVerticalShift();
-		new BeatHorizShift();
-		new Voluminize();
-		tint = new Tint();
-		thresold = new Threshold();
-		new Emboss();
+		pixelControllerGenerator = new PixelControllerGenerator();
+		pixelControllerGenerator.initAll();
+		
+		pixelControllerEffect = new PixelControllerEffect();
+		pixelControllerEffect.initAll();
 
-		//create mixer
-		new AddSat();
-		new Multiply();
-		new Mix();
-		new PassThruMixer();
-		new NegativeMultiply();
-		new Checkbox();
-		new Voluminizer();
-		new Xor();
-		new MinusHalf();
-		new Either();
-
+		pixelControllerMixer = new PixelControllerMixer();
+		pixelControllerMixer.initAll();
+		
 		//create 5 visuals
 		for (int n=0; n<nrOfScreens+1; n++) {
 			switch (n%5) {
@@ -322,14 +234,11 @@ public class Collector {
 		if (Sound.getInstance().isHat()) u+=1;
 		
 		//update generator depending on the input sound
-		for (Generator m: allGenerators) {
-			for (int i=0; i<u; i++) {
-				m.update();	
-			}			
+		for (int i=0; i<u; i++) {
+			pixelControllerGenerator.update();			
 		}
-		for (Effect e: allEffects) {
-			e.update();
-		}
+		pixelControllerEffect.update();
+		
 		for (Output o: allOutputs) {
 			o.update();
 		}
@@ -472,7 +381,6 @@ public class Collector {
 			fx2+=v.getEffect2Idx()+" ";
 			mix+=v.getMixerIdx()+" ";					
 		}
-
 		
 		String fader="";
 		String output="";
@@ -487,18 +395,15 @@ public class Collector {
 		ret.add(ValidCommands.CHANGE_EFFECT_A+" "+fx1);
 		ret.add(ValidCommands.CHANGE_EFFECT_B+" "+fx2);
 		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
-		ret.add(ValidCommands.CHANGE_FADER+" "+fader);
-		ret.add(ValidCommands.CHANGE_TINT+" "+tint.getR()+" "+tint.getG()+" "+tint.getB());
-		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
-		ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
-		ret.add(ValidCommands.IMAGE+" "+image.getFilename());
-		ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
+		ret.add(ValidCommands.CHANGE_FADER+" "+fader);		
+
+		//add element status
+		ret.addAll(pixelControllerEffect.getCurrentState());
+		ret.addAll(pixelControllerGenerator.getCurrentState());
+
 		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
-		ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
-		ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
-		ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
+
 		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
-		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+thresold.getThreshold());
 		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
 		ret.add(ValidCommands.CURRENT_VISUAL+" "+currentVisual);
@@ -517,106 +422,8 @@ public class Collector {
 		this.matrix = matrix;
 	}
 
-	/*
-	 * EFFECT ======================================================
-	 */
-
-	public Effect getEffect(EffectName name) {
-		for (Effect fx: allEffects) {
-			if (fx.getId() == name.getId()) {
-				return fx;
-			}
-		}
-		return null;
-	}
 
 
-	public List<Effect> getAllEffects() {
-		return allEffects;
-	}
-
-	public Effect getEffect(int index) {
-		for (Effect fx: allEffects) {
-			if (fx.getId() == index) {
-				return fx;
-			}
-		}
-		return null;
-	}
-
-	public void addEffect(Effect effect) {
-		allEffects.add(effect);
-	}
-
-
-	/*
-	 * MIXER ======================================================
-	 */
-
-	public Mixer getMixer(MixerName name) {
-		for (Mixer mix: allMixer) {
-			if (mix.getId() == name.getId()) {
-				return mix;
-			}
-		}
-		return null;
-	}
-
-	public List<Mixer> getAllMixer() {
-		return allMixer;
-	}
-
-	public Mixer getMixer(int index) {
-		for (Mixer mix: allMixer) {
-			if (mix.getId() == index) {
-				return mix;
-			}
-		}
-		return null;
-	}
-
-	public void addMixer(Mixer mixer) {
-		allMixer.add(mixer);
-	}
-
-
-	/*
-	 * GENERATOR ======================================================
-	 */
-
-	public Generator getGenerator(GeneratorName name) {
-		for (Generator gen: allGenerators) {
-			if (gen.getId() == name.getId()) {
-				return gen;
-			}
-		}
-		return null;
-	}
-
-	public List<Generator> getAllGenerators() {
-		return allGenerators;
-	}
-
-	public Generator getGenerator(int index) {
-		for (Generator gen: allGenerators) {
-			if (gen.getId() == index) {
-				return gen;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * how many screens 
-	 * @return
-	 */
-	public int getAllInputsSize() {
-		return allGenerators.size();
-	}
-
-	public void addInput(Generator input) {
-		allGenerators.add(input);
-	}
 
 
 	/*
@@ -656,7 +463,7 @@ public class Collector {
 	}
 
 	/*
-	 * MIXER ======================================================
+	 * RESIZER ======================================================
 	 */
 	
 	public List<Resize> getAllResizers() {
@@ -708,72 +515,7 @@ public class Collector {
 	public void setPresent(List<PresentSettings> present) {
 		this.present = present;
 	}
-
-	public void setRGB(int r, int g, int b) {
-		tint.setColor(r, g, b);
-	}
-
-	public int getR() {
-		return tint.getR();
-	}
-
-	public int getG() {
-		return tint.getG();
-	}
-
-	public int getB() {
-		return tint.getB();
-	}
 	
-	public String getFileBlinken() {
-		return blinkenlights.getFilename();
-	}
-
-	public void setFileBlinken(String fileBlinken) {
-		blinkenlights.loadFile(fileBlinken);
-	}
-	
-	public String getFileImageSimple() {
-		return image.getFilename();
-	}
-
-	public void setFileImageSimple(String fileImageSimple) {
-		image.loadFile(fileImageSimple);
-
-	}
-	
-
-	public String getFileImageZoomer() {
-		return imageZoomer.getFilename();
-	}
-
-	public void setFileImageZoomer(String fileImageZoomer) {
-		imageZoomer.loadImage(fileImageZoomer);
-	}
-
-	public String getFileTextureDeformation() {
-		return textureDeformation.getFilename();
-	}
-
-	public void setFileTextureDeformation(String fileTextureDeformation) {
-		textureDeformation.loadFile(fileTextureDeformation);
-	}
-
-	public int getTextureDeformationLut() {
-		return textureDeformation.getLut();
-	}
-
-	public void setTextureDeformationLut(int textureDeformationLut) {
-		textureDeformation.changeLUT(textureDeformationLut);
-	}
-
-	public String getText() {
-		return textwriter.getText();
-	}
-
-	public void setText(String text) {
-		textwriter.createTextImage(text);
-	}
 
 		
 	/* 
@@ -849,11 +591,6 @@ public class Collector {
 		return null;
 	}
 	
-
-	public void setThresholdValue(int thresholdValue) {
-		thresold.setThreshold(thresholdValue);
-	}
-
 	//TODO static is NOT sexy!
 	public int getFaderCount() {
 		return 4;
@@ -876,7 +613,19 @@ public class Collector {
 	public synchronized void setLoadingPresent(boolean isLoadingPresent) {
 		this.isLoadingPresent = isLoadingPresent;
 	}
+
 	
 	
+	public PixelControllerMixer getPixelControllerMixer() {
+		return pixelControllerMixer;
+	}
+	
+	public PixelControllerEffect getPixelControllerEffect() {
+		return pixelControllerEffect;
+	}
+	
+	public PixelControllerGenerator getPixelControllerGenerator() {
+		return pixelControllerGenerator;
+	}
 
 }

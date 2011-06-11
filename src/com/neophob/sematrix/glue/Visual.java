@@ -40,14 +40,20 @@ public class Visual {
 	private Effect effect2;
 	private Mixer mixer;
 
+	/**
+	 * initialize default
+	 * @param generatorName
+	 */
 	public Visual(GeneratorName generatorName) {
-		this.generator1 = Collector.getInstance().getGenerator(generatorName);
-		this.generator2 = Collector.getInstance().getGenerator(GeneratorName.PASSTHRU);
-		this.effect1 = Collector.getInstance().getEffect(EffectName.PASSTHRU);
-		this.effect2 = Collector.getInstance().getEffect(EffectName.PASSTHRU);
-		this.mixer = Collector.getInstance().getMixer(MixerName.PASSTHRU);
+		Collector col = Collector.getInstance();
+		
+		this.generator1 = col.getPixelControllerGenerator().getGenerator(generatorName);
+		this.generator2 = col.getPixelControllerGenerator().getGenerator(GeneratorName.PASSTHRU);		
+		this.effect1 = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
+		this.effect2 = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
+		this.mixer = col.getPixelControllerMixer().getMixer(MixerName.PASSTHRU);
 
-		Collector.getInstance().addVisual(this);
+		col.addVisual(this);
 	}
 
 	public int[] getBuffer() {
@@ -86,7 +92,7 @@ public class Visual {
 	}
 
 	public void setGenerator1(int index) {
-		this.generator1 = Collector.getInstance().getGenerator(index);
+		this.generator1 = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
 	}
 
 	public Generator getGenerator2() {
@@ -102,7 +108,7 @@ public class Visual {
 	}
 
 	public void setGenerator2(int index) {
-		this.generator2 = Collector.getInstance().getGenerator(index);
+		this.generator2 = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
 	}
 
 	public Effect getEffect1() {
@@ -122,7 +128,7 @@ public class Visual {
 	}
 
 	public void setEffect1(int index) {
-		this.effect1 = Collector.getInstance().getEffect(index);
+		this.effect1 = Collector.getInstance().getPixelControllerEffect().getEffect(index);
 	}
 
 	public Effect getEffect2() {
@@ -142,7 +148,7 @@ public class Visual {
 	}
 
 	public void setEffect2(int index) {
-		this.effect2 = Collector.getInstance().getEffect(index);
+		this.effect2 = Collector.getInstance().getPixelControllerEffect().getEffect(index);
 	}
 
 	public Mixer getMixer() {
@@ -162,7 +168,7 @@ public class Visual {
 	}
 
 	public void setMixer(int index) {
-		this.mixer = Collector.getInstance().getMixer(index);
+		this.mixer = Collector.getInstance().getPixelControllerMixer().getMixer(index);
 	}
 
 

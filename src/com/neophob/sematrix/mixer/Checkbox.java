@@ -34,8 +34,9 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Checkbox extends Mixer {
 
 	private int pixelsPerLine;
-	public Checkbox() {
-		super(MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
+	
+	public Checkbox(PixelControllerMixer controller) {
+		super(controller, MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
 		pixelsPerLine = Collector.getInstance().getMatrix().getDeviceXSize();
 	}
 

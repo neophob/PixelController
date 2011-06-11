@@ -48,8 +48,8 @@ public class TextureDeformation extends Generator {
 	
 	private String filename;
 
-	public TextureDeformation(String filename) {
-		super(GeneratorName.TEXTURE_DEFORMATION, ResizeName.PIXEL_RESIZE);
+	public TextureDeformation(PixelControllerGenerator controller, String filename) {
+		super(controller, GeneratorName.TEXTURE_DEFORMATION, ResizeName.PIXEL_RESIZE);
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
 		mLUT =  new int[3 * w * h];

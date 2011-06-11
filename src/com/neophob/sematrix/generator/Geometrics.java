@@ -49,8 +49,8 @@ public class Geometrics extends Generator {
 	/**
 	 * 
 	 */
-	public Geometrics() {
-		super(GeneratorName.GEOMETRICS, ResizeName.QUALITY_RESIZE);
+	public Geometrics(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.GEOMETRICS, ResizeName.QUALITY_RESIZE);
 		drops = new CopyOnWriteArrayList<Drop>();
 		sound = Sound.getInstance();
 	}

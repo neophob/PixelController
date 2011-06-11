@@ -54,8 +54,8 @@ public class RotoZoom extends Effect {
 	 * @param scale
 	 * @param angle
 	 */
-	public RotoZoom(float scale, float angle) {
-		super(EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
+	public RotoZoom(PixelControllerEffect controller, float scale, float angle) {
+		super(controller, EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
 		this.scale = scale;
 		this.scaleOrig = scale;
 		this.angle = angle;
