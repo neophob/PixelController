@@ -31,7 +31,6 @@ import processing.core.PApplet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
@@ -168,26 +167,7 @@ public class Collector {
 		
 		//create 5 visuals
 		for (int n=0; n<nrOfScreens+1; n++) {
-			switch (n%5) {
-			case 0:
-				new Visual(GeneratorName.BLINKENLIGHTS);
-				break;
-			case 1:
-				new Visual(GeneratorName.METABALLS);
-				break;
-			case 2:
-				new Visual(GeneratorName.SIMPLECOLORS);
-				break;
-			case 3:
-				new Visual(GeneratorName.PLASMA);
-				break;
-			case 4:
-				new Visual(GeneratorName.IMAGE);
-				break;
-			case 5:
-				new Visual(GeneratorName.FIRE);
-				break;
-			}
+			Visual.initializeVisuals(n);
 		}
 		
 		pixelControllerResize = new PixelControllerResize();
