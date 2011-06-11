@@ -171,5 +171,33 @@ public class Visual {
 		this.mixer = Collector.getInstance().getPixelControllerMixer().getMixer(index);
 	}
 
+	/**
+	 * initialize the visuals...
+	 * 
+	 * @param n
+	 */
+	public static void initializeVisuals(int n) {
+		switch (n%5) {
+		case 0:
+			new Visual(GeneratorName.BLINKENLIGHTS);
+			break;
+		case 1:
+			new Visual(GeneratorName.METABALLS);
+			break;
+		case 2:
+			new Visual(GeneratorName.SIMPLECOLORS);
+			break;
+		case 3:
+			new Visual(GeneratorName.PLASMA);
+			break;
+		case 4:
+			new Visual(GeneratorName.IMAGE);
+			break;
+		case 5:
+			new Visual(GeneratorName.FIRE);
+			break;
+		}
+		
+	}
 
 }
