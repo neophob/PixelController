@@ -467,6 +467,10 @@ public class Collector {
 		return pixelControllerShufflerSelect.getShufflerSelect(ofs);	
 	}
 	
+	public PixelControllerShufflerSelect getPixelControllerShufflerSelect() {
+		return pixelControllerShufflerSelect;
+	}
+
 	/**
 	 * 
 	 * @return
