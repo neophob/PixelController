@@ -47,7 +47,11 @@ public abstract class Output {
 	
 	protected Layout layout;
 	
-	public Output(String name) {
+	/**
+	 * 
+	 * @param name
+	 */
+	public Output(PixelControllerOutput controller, String name) {
 		this.name = name;
 				
 		this.matrixData = Collector.getInstance().getMatrix();
@@ -58,7 +62,7 @@ public abstract class Output {
 				, new Object[] { this.name, layout.getLayoutName() });
 	
 		//add to list
-		Collector.getInstance().addOutput(this);
+		controller.addOutput(this);
 	}
 	
 	public abstract void update();

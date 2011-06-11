@@ -47,8 +47,8 @@ public class RainbowduinoDevice extends Output {
 	 * init the rainbowduino devices 
 	 * @param allI2COutputs a list containing all i2c slave addresses
 	 */
-	public RainbowduinoDevice(List<Integer> allI2cAddress) {
-		super(RainbowduinoDevice.class.toString());
+	public RainbowduinoDevice(PixelControllerOutput controller, List<Integer> allI2cAddress) {
+		super(controller, RainbowduinoDevice.class.toString());
 		this.allI2cAddress = allI2cAddress;
 		
 		this.initialized = false;		

@@ -60,11 +60,12 @@ public class PixelController extends PApplet {
 		//		super.frame.setIconImage(titlebaricon.getImage()); 
 		//		super.frame.setTitle("This is in the titlebar!");
 
-		Collector.getInstance().init(this, FPS, DEVICE_SIZE, DEVICE_SIZE);
+		Collector col = Collector.getInstance(); 
+		col.init(this, FPS, DEVICE_SIZE, DEVICE_SIZE);
 		frameRate(FPS);
 		noSmooth();
 		
-		osd = new MatrixEmulator();
+		osd = new MatrixEmulator(col.getPixelControllerOutput());
 
 /*		try {
 			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());
@@ -72,7 +73,7 @@ public class PixelController extends PApplet {
 			rainbowduino = null;
 		}*/
 		try {
-			lpd6803 = new Lpd6803Device(PropertiesHelper.getInstance().getLpdDevice());
+			lpd6803 = new Lpd6803Device(col.getPixelControllerOutput(), PropertiesHelper.getInstance().getLpdDevice());
 		} catch (Exception e) {
 			lpd6803 = null;
 		}
