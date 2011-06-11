@@ -23,8 +23,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
 
-import com.neophob.sematrix.glue.Collector;
-
 /**
  * resize a larger buffer for a smaller buffer
  * 
@@ -50,9 +48,9 @@ public abstract class Resize {
 	
 	private ResizeName resizeName;
 	
-	public Resize(ResizeName resizeName) {
+	public Resize(PixelControllerResize controller, ResizeName resizeName) {
 		this.resizeName = resizeName;
-		Collector.getInstance().addResize(this);
+		controller.addResize(this);
 	}
 	
 	public abstract int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize);

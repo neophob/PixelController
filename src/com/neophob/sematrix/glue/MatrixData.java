@@ -176,7 +176,7 @@ public class MatrixData {
 		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 //	return new int[deviceXSize* deviceYSize];	
 
-		Resize r = Collector.getInstance().getResize(resizeName);
+		Resize r = Collector.getInstance().getPixelControllerResize().getResize(resizeName);
 		return r.getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 	}
 
