@@ -22,6 +22,7 @@ package com.neophob.sematrix.glue;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.fader.Fader.FaderName;
 
 /**
@@ -50,8 +51,8 @@ public class OutputMapping {
 		this.visualId = 0;
 		this.screenNr = 0;
 		
-		Collector col = Collector.getInstance();
-		this.fader = col.getFader(FaderName.SWITCH);
+		Collector col = Collector.getInstance();		
+		this.fader = PixelControllerFader.getFader(FaderName.SWITCH);
 		this.effect = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
 	}
 

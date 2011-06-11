@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.properties.PropertiesHelper;
@@ -244,7 +245,7 @@ public class MessageProcessor {
 						tmp=Integer.parseInt(msg[i+1]);
 						//do not start a new fader while the old one is still running
 						if (!col.getOutputMappings(i).getFader().isStarted()) {
-							col.getOutputMappings(i).setFader(col.getFader(tmp));							
+							col.getOutputMappings(i).setFader(PixelControllerFader.getFader(tmp));							
 						}
 					}
 				} catch (Exception e) {

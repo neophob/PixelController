@@ -66,20 +66,21 @@ public class PixelController extends PApplet {
 		noSmooth();
 		
 		osd = new MatrixEmulator(col.getPixelControllerOutput());
-
+		PropertiesHelper ph = PropertiesHelper.getInstance();
+		
 /*		try {
 			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());
 		} catch (Exception e) {
 			rainbowduino = null;
 		}*/
 		try {
-			lpd6803 = new Lpd6803Device(col.getPixelControllerOutput(), PropertiesHelper.getInstance().getLpdDevice());
+			lpd6803 = new Lpd6803Device(col.getPixelControllerOutput(), ph.getLpdDevice());
 		} catch (Exception e) {
 			lpd6803 = null;
 		}
 		
 		
-		if (PropertiesHelper.getInstance().getProperty("show.debug.window").equalsIgnoreCase("true")) {
+		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			nwh = new NewWindowHelper(true);	
 		}
 	}

@@ -29,12 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.effect.PixelControllerEffect;
-import com.neophob.sematrix.fader.Crossfader;
 import com.neophob.sematrix.fader.Fader;
-import com.neophob.sematrix.fader.SlideLeftRight;
-import com.neophob.sematrix.fader.SlideUpsideDown;
-import com.neophob.sematrix.fader.Switch;
-import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
@@ -43,7 +38,6 @@ import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
-//import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelControllerResize;
@@ -99,8 +93,7 @@ public class Collector {
 	/**
 	 * 
 	 */
-	private Collector() {
-		
+	private Collector() {	
 		allVisuals = new CopyOnWriteArrayList<Visual>();
 
 		this.nrOfScreens = 0;
@@ -131,6 +124,7 @@ public class Collector {
 		this.nrOfScreens = PropertiesHelper.getInstance().getNrOfScreens();
 		this.fps = fps;
 		
+		//choose sound implementation
 		Sound.getInstance().setImplementation(new SoundMinim());
 //		Sound.getInstance().setImplementation(new SoundDummy());
 		new MatrixData(deviceXsize, deviceYsize);
@@ -513,49 +507,6 @@ public class Collector {
 
 	
 	
-	/* 
-	 * FADER ======================================================
-	 */
-
-	/**
-	 * return a NEW INSTANCE of a fader
-	 * @param faderName
-	 * @return
-	 */
-	public Fader getFader(FaderName faderName) {
-		switch (faderName) {
-		case CROSSFADE:
-			return new Crossfader();
-		case SWITCH:
-			return new Switch();
-		case SLIDE_UPSIDE_DOWN:
-			return new SlideUpsideDown();
-		case SLIDE_LEFT_RIGHT:
-			return new SlideLeftRight();
-		}
-		return null;
-	}
-
-
-	public Fader getFader(int index) {
-		switch (index) {
-		case 0:
-			return new Switch();
-		case 1:
-			return new Crossfader();
-		case 2:
-			return new SlideUpsideDown();
-		case 3:
-			return new SlideLeftRight();
-		}
-		return null;
-	}
-	
-	//TODO static is NOT sexy!
-	public int getFaderCount() {
-		return 4;
-	}
-
 	
 	
 	public int getCurrentVisual() {

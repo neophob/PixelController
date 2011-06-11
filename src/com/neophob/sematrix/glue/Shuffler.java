@@ -27,6 +27,7 @@ import com.neophob.sematrix.effect.Threshold;
 import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.Blinkenlights;
 import com.neophob.sematrix.generator.Image;
 import com.neophob.sematrix.generator.TextureDeformation;
@@ -278,11 +279,13 @@ public class Shuffler {
 			}			
 
 			if (blah == 6 && col.getShufflerSelect(ShufflerOffset.FADER_OUTPUT)) {
-				int size = col.getFaderCount();
+				int size = PixelControllerFader.getFaderCount();
 				for (OutputMapping om: col.getAllOutputMappings()) {
 					Fader f=om.getFader();
 					if (!f.isStarted()) {
-						om.setFader(col.getFader(rand.nextInt(size)));	
+						om.setFader(
+								PixelControllerFader.getFader(rand.nextInt(size))
+						);	
 					}
 				}
 			}
