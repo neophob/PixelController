@@ -51,8 +51,8 @@ public class Lpd6803Device extends Output {
 	 * @param allI2COutputs a list containing all i2c slave addresses
 	 * 
 	 */
-	public Lpd6803Device(List<DeviceConfig> displayOptions) {
-		super(Lpd6803Device.class.toString());
+	public Lpd6803Device(PixelControllerOutput controller, List<DeviceConfig> displayOptions) {
+		super(controller, Lpd6803Device.class.toString());
 		
 		this.displayOptions = displayOptions;
 		this.initialized = false;		

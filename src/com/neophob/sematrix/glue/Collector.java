@@ -43,7 +43,8 @@ import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
-import com.neophob.sematrix.output.Output;
+//import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
@@ -67,8 +68,6 @@ public class Collector {
 	private PApplet papplet;
 	private MatrixData matrix;
 
-	private List<Output> allOutputs;
-
 	/** all input elements*/	
 	private List<Visual> allVisuals;
 	private List<Boolean> shufflerSelect;
@@ -90,6 +89,7 @@ public class Collector {
 	private PixelControllerMixer pixelControllerMixer;
 	private PixelControllerEffect pixelControllerEffect;
 	private PixelControllerResize pixelControllerResize;
+	private PixelControllerOutput pixelControllerOutput;
 	
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
@@ -100,7 +100,7 @@ public class Collector {
 	 * 
 	 */
 	private Collector() {
-		allOutputs = new CopyOnWriteArrayList<Output>();
+		
 		allVisuals = new CopyOnWriteArrayList<Visual>();
 
 		this.nrOfScreens = 0;
@@ -199,6 +199,9 @@ public class Collector {
 		pixelControllerResize = new PixelControllerResize();
 		pixelControllerResize.initAll();
 		
+		pixelControllerOutput = new PixelControllerOutput();
+		pixelControllerOutput.initAll();
+		
 		PropertiesHelper.getInstance().loadPresents();
 	}
 
@@ -213,7 +216,9 @@ public class Collector {
 	 */
 	public void updateSystem() {
 		//do not update system if presents are loading
-		if (isLoadingPresent()) return;
+		if (isLoadingPresent()) {
+			return;
+		}
 		
 		//get sound volume
 		float f = Sound.getInstance().getVolumeNormalized();
@@ -232,10 +237,8 @@ public class Collector {
 			pixelControllerGenerator.update();			
 		}
 		pixelControllerEffect.update();
+		pixelControllerOutput.update();
 		
-		for (Output o: allOutputs) {
-			o.update();
-		}
 		//cleanup faders
 		for (OutputMapping om: ioMapping) {
 			Fader fader = om.getFader();
@@ -417,22 +420,6 @@ public class Collector {
 	}
 
 
-
-
-
-	/*
-	 * OUTPUT ======================================================
-	 */
-
-	public List<Output> getAllOutputs() {
-		return allOutputs;
-	}
-
-	public void addOutput(Output output) {
-		allOutputs.add(output);
-	}
-
-
 	/*
 	 * VISUAL ======================================================
 	 */
@@ -457,17 +444,6 @@ public class Collector {
 	}
 
 
-	/*
-	 * OUTPUT MAPPING ======================================================
-	 */
-	public List<OutputMapping> getAllOutputMappings() {
-		return ioMapping;
-	}
-
-	public OutputMapping getOutputMappings(int index) {
-		return ioMapping.get(index);
-	}
-
 	/* 
 	 * PRESENT ======================================================
 	 */
@@ -488,6 +464,18 @@ public class Collector {
 		this.present = present;
 	}
 	
+	
+	/*
+	 * OUTPUT MAPPING ======================================================
+	 */
+	
+	public List<OutputMapping> getAllOutputMappings() {
+		return ioMapping;
+	}
+
+	public OutputMapping getOutputMappings(int index) {
+		return ioMapping.get(index);
+	}
 
 		
 	/* 
@@ -602,6 +590,10 @@ public class Collector {
 	
 	public PixelControllerResize getPixelControllerResize() {
 		return pixelControllerResize;
+	}
+
+	public PixelControllerOutput getPixelControllerOutput() {
+		return pixelControllerOutput;
 	}
 
 }

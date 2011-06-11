@@ -34,8 +34,8 @@ public class MatrixEmulator extends Output {
 	/**
 	 * 
 	 */
-	public MatrixEmulator() {
-		super(MatrixEmulator.class.toString());
+	public MatrixEmulator(PixelControllerOutput controller) {
+		super(controller, MatrixEmulator.class.toString());
 
 		int x,y;
 		switch (layout.getLayoutName()) {
