@@ -83,7 +83,7 @@ public abstract class Generator {
 	 * 
 	 * @param name
 	 */
-	public Generator(GeneratorName name, ResizeName resizeOption) {
+	public Generator(PixelControllerGenerator controller, GeneratorName name, ResizeName resizeOption) {
 		this.name = name;
 		this.resizeOption = resizeOption;
 		MatrixData matrix = Collector.getInstance().getMatrix();
@@ -96,7 +96,7 @@ public abstract class Generator {
 				, new Object[] { internalBuffer.length, name });
 		
 		//add to list
-		Collector.getInstance().addInput(this);
+		controller.addInput(this);
 	}
 
 	public abstract void update();

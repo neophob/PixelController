@@ -69,11 +69,11 @@ public class Textwriter extends Generator {
 	 * 
 	 * @param filename
 	 */
-	public Textwriter(String fontName, int fontSize, String text) {
-		super(GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
+	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text) {
+		super(controller, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
 		color = new Color(255,255,255);
 		xpos=0;
-		ypos=getInternalBufferYSize();
+		ypos=internalBufferYSize;
 		try {
 			InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
 			tmp = new int[internalBuffer.length];

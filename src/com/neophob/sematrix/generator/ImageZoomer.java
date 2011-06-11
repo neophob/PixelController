@@ -65,8 +65,8 @@ public class ImageZoomer extends Generator {
 
 	private String filename;
 	
-	public ImageZoomer(String filename) {
-		super(GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);		
+	public ImageZoomer(PixelControllerGenerator controller, String filename) {
+		super(controller, GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);		
 		parent = Collector.getInstance().getPapplet();
 		clipedImg = parent.createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
 		this.loadImage(filename);

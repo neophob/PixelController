@@ -26,8 +26,8 @@ public class BeatHorizShift extends Effect {
 
 	int ammount=0;
 	
-	public BeatHorizShift() {
-		super(EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
+	public BeatHorizShift(PixelControllerEffect controller) {
+		super(controller, EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(int[] buffer) {

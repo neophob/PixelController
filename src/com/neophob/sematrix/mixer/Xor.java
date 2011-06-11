@@ -25,8 +25,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Xor extends Mixer {
 
-	public Xor() {
-		super(MixerName.XOR, ResizeName.QUALITY_RESIZE);
+	public Xor(PixelControllerMixer controller) {
+		super(controller, MixerName.XOR, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

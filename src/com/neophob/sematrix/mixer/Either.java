@@ -30,8 +30,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Either extends Mixer {
 
-	public Either() {
-		super(MixerName.EITHER, ResizeName.QUALITY_RESIZE);
+	public Either(PixelControllerMixer controller) {
+		super(controller, MixerName.EITHER, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

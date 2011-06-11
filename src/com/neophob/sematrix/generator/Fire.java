@@ -39,8 +39,8 @@ public class Fire extends Generator implements PConstants {
 	/* fire buffer, contains 0..255 */
 	private int[] buffer;
 
-	public Fire() {
-		super(GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
+	public Fire(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
 		//Setup palette
 		colors = new int[256];

@@ -24,8 +24,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Voluminize extends Effect {
 
-	public Voluminize() {
-		super(EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
+	public Voluminize(PixelControllerEffect controller) {
+		super(controller, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(int[] buffer) {

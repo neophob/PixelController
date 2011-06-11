@@ -43,11 +43,16 @@ public class OutputMapping {
 	private Fader fader;
 	private Effect effect;
 	
+	/**
+	 * default setting
+	 */
 	public OutputMapping() {
 		this.visualId = 0;
 		this.screenNr = 0;
-		this.fader = Collector.getInstance().getFader(FaderName.SWITCH);
-		this.effect = Collector.getInstance().getEffect(EffectName.PASSTHRU);
+		
+		Collector col = Collector.getInstance();
+		this.fader = col.getFader(FaderName.SWITCH);
+		this.effect = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
 	}
 
 	public OutputMapping(int visualId, int screenNr) {

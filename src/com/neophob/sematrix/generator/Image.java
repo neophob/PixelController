@@ -47,8 +47,8 @@ public class Image extends Generator {
 	 * 
 	 * @param filename
 	 */
-	public Image(String filename) {
-		super(GeneratorName.IMAGE, ResizeName.PIXEL_RESIZE);
+	public Image(PixelControllerGenerator controller, String filename) {
+		super(controller, GeneratorName.IMAGE, ResizeName.PIXEL_RESIZE);
 /*		PApplet parent = Collector.getInstance().getPapplet();
 		pimage = parent.loadImage(filename);
 		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);

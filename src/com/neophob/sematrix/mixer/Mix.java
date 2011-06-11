@@ -25,8 +25,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 public class Mix extends Mixer {
 
-	public Mix() {
-		super(MixerName.MIX, ResizeName.QUALITY_RESIZE);
+	public Mix(PixelControllerMixer controller) {
+		super(controller, MixerName.MIX, ResizeName.QUALITY_RESIZE);
 	}
 
 	public int[] getBuffer(Visual visual) {

@@ -66,8 +66,8 @@ public class PlasmaAdvanced extends Generator {
 	/**
 	 * 
 	 */
-	public PlasmaAdvanced() {
-		super(GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
+	public PlasmaAdvanced(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 		r = new Random();
 		makeGradient();

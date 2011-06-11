@@ -36,8 +36,8 @@ public class Plasma2 extends Generator {
 
 	private int frameCount;
 	
-	public Plasma2() {
-		super(GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
+	public Plasma2(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 	}
 

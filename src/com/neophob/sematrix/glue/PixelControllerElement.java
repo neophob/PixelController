@@ -17,19 +17,31 @@
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.neophob.sematrix.mixer;
+package com.neophob.sematrix.glue;
 
-import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.resize.Resize.ResizeName;
+import java.util.List;
 
-public class PassThruMixer extends Mixer {
+/**
+ * 
+ * @author michu
+ *
+ */
+public interface PixelControllerElement {
 
-	public PassThruMixer(PixelControllerMixer controller) {
-		super(controller, MixerName.PASSTHRU, ResizeName.QUALITY_RESIZE);
-	}
+	/**
+	 * initialize all elements
+	 */
+	public void initAll();
+	
+	/**
+	 * get current status of all childs
+	 * 
+	 * @return
+	 */
+	public List<String> getCurrentState();
 
-	public int[] getBuffer(Visual visual) {
-		return visual.getEffect1Buffer();
-	}
-
+	/**
+	 * update the element if needed
+	 */
+	public void update();
 }

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
 
 
@@ -67,6 +68,10 @@ public abstract class Fader {
 	
 	protected int steps;
 	protected int currentStep;
+	
+	protected int internalBufferXSize;
+	protected int internalBufferYSize;
+
 	private boolean started;
 
 	/**
@@ -87,6 +92,10 @@ public abstract class Fader {
 			this.fadeTime = timePerFrame;
 		}
 		
+		MatrixData matrix = Collector.getInstance().getMatrix();
+		this.internalBufferXSize = matrix.getBufferXSize();
+		this.internalBufferYSize = matrix.getBufferYSize();
+
 		steps = (int)(fadeTime/timePerFrame);
 		started=false;
 	}

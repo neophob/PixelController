@@ -44,8 +44,8 @@ public class Cell extends Generator {
 	/**
 	 * 
 	 */
-	public Cell() {
-		super(GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
+	public Cell(PixelControllerGenerator controller) {
+		super(controller, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
 		//create LUT
 		int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));

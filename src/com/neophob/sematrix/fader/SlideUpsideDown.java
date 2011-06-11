@@ -19,8 +19,6 @@
 
 package com.neophob.sematrix.fader;
 
-import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.glue.Collector;
 
 public class SlideUpsideDown extends Fader {
 
@@ -42,9 +40,8 @@ public class SlideUpsideDown extends Fader {
 
 			float f = getCurrentStep();
 
-			Generator g = Collector.getInstance().getGenerator(0);
-			int ammount=(int)(g.getInternalBufferYSize()*f)*g.getInternalBufferXSize();
-			int totalSize=g.getInternalBufferYSize()*g.getInternalBufferXSize();
+			int ammount=(int)(internalBufferYSize*f)*internalBufferXSize;
+			int totalSize=internalBufferYSize*internalBufferXSize;
 			for (int y=0; y<ammount; y++) {
 				ret[y]=newBuffer[totalSize-ammount+y];
 			}

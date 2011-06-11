@@ -39,7 +39,7 @@ public class NewWindowHelper extends Frame {
         super("debug buffer");
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         //MatrixData matrix = Collector.getInstance().getMatrix();
-        Generator g = Collector.getInstance().getGenerator(0);
+        Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         int x = g.getInternalBufferXSize()*2;
         int y = g.getInternalBufferYSize()*2;
         

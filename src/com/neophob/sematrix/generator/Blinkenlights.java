@@ -49,8 +49,8 @@ public class Blinkenlights extends Generator implements PConstants {
 	
 	private String filename="";
 
-	public Blinkenlights(String filename) {
-		super(GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
+	public Blinkenlights(PixelControllerGenerator controller, String filename) {
+		super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
 		this.filename = filename;
 		PApplet parent = Collector.getInstance().getPapplet();
 		random=false;
