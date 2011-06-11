@@ -255,13 +255,13 @@ public class MessageProcessor {
 				
 			case CHANGE_SHUFFLER_SELECT:
 				try {					
-					int size = col.getShufflerSelect().size();
+					int size = col.getPixelControllerShufflerSelect().getShufflerSelect().size();
 					if (size>msgLength) size=msgLength;
 					boolean b;
 					for (int i=0; i<size; i++) {
 						b = false;
 						if (msg[i+1].equals("1")) b = true;
-						col.setShufflerSelect(i, b);
+						col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
 					}					
 				} catch (Exception e) {
 					log.log(Level.WARNING, IGNORE_COMMAND, e);
