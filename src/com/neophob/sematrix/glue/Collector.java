@@ -49,8 +49,6 @@ public class Collector {
 	 * 
 	 */
 	
-	private static final int SHUFFLER_OPTIONS = 14;
-	
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
 	private static Collector instance = new Collector();
@@ -63,7 +61,6 @@ public class Collector {
 
 	/** all input elements*/	
 	private List<Visual> allVisuals;
-	private List<Boolean> shufflerSelect;
 
 	/** fx to screen mapping */
 	private List<OutputMapping> ioMapping;
@@ -83,6 +80,7 @@ public class Collector {
 	private PixelControllerEffect pixelControllerEffect;
 	private PixelControllerResize pixelControllerResize;
 	private PixelControllerOutput pixelControllerOutput;
+	private PixelControllerShufflerSelect pixelControllerShufflerSelect;
 	
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
@@ -105,11 +103,8 @@ public class Collector {
 			present.add(new PresentSettings());
 		}
 
-		shufflerSelect = new CopyOnWriteArrayList<Boolean>();
-		for (int n=0; n<SHUFFLER_OPTIONS; n++) {
-			shufflerSelect.add(true);
-		}
-
+		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
+		pixelControllerShufflerSelect.initAll();
 	}
 
 	/**
@@ -369,9 +364,8 @@ public class Collector {
 		//add element status
 		ret.addAll(pixelControllerEffect.getCurrentState());
 		ret.addAll(pixelControllerGenerator.getCurrentState());
-
-		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
-
+		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
+		
 		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
 		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
@@ -450,42 +444,6 @@ public class Collector {
 	}
 
 		
-	/* 
-	 * SHUFFLER OPTIONS ======================================================
-	 */
-
-	
-	/**
-	 * returns string for current status. the order is fix and
-	 * defined by gui
-	 */
-	private String getShufflerStatus() {
-		String s="";
-		int value;
-		
-		for (int i=0; i<shufflerSelect.size(); i++) {
-			value=0;
-			if (shufflerSelect.get(i)) value=1;
-			s+=" "+value;			
-		}
-		return s;
-	}
-
-	public List<Boolean> getShufflerSelect() {
-		return shufflerSelect;
-	}
-
-	public boolean getShufflerSelect(ShufflerOffset ofs) {
-		return shufflerSelect.get(ofs.getOffset());
-	}
-
-	public void setShufflerSelect(int ofs, Boolean value) {
-		this.shufflerSelect.set(ofs, value);
-	}
-
-	
-	
-	
 	
 	public int getCurrentVisual() {
 		return currentVisual;
@@ -503,7 +461,16 @@ public class Collector {
 		this.isLoadingPresent = isLoadingPresent;
 	}
 
+	//getShufflerSelect
 	
+	public boolean getShufflerSelect(ShufflerOffset ofs) {
+		return pixelControllerShufflerSelect.getShufflerSelect(ofs);	
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	
 	public PixelControllerMixer getPixelControllerMixer() {
 		return pixelControllerMixer;
