@@ -166,9 +166,7 @@ public class Collector {
 		pixelControllerMixer.initAll();
 		
 		//create 5 visuals
-		for (int n=0; n<nrOfScreens+1; n++) {
-			Visual.initializeVisuals(n);
-		}
+		Visual.initializeVisuals(nrOfScreens);
 		
 		pixelControllerResize = new PixelControllerResize();
 		pixelControllerResize.initAll();
