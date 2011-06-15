@@ -19,7 +19,6 @@
 
 package com.neophob.sematrix.generator;
 
-import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,31 +27,30 @@ import org.apache.commons.lang.StringUtils;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
+ * display an image
+ * 
  * @author mvogt
  *
  */
 public class Image extends Generator {
 
 	public static final String PREFIX = "pics/";
-	private static Logger log = Logger.getLogger(Image.class.getName());
 	
-	private PImage pimage;
+	private static final ResizeName RESIZE_TYP = ResizeName.PIXEL_RESIZE;	
+	private static Logger LOG = Logger.getLogger(Image.class.getName());
 	
-	private String filename;
+	private String filename="http://neophob.com";
 	
 	/**
 	 * 
 	 * @param filename
 	 */
 	public Image(PixelControllerGenerator controller, String filename) {
-		super(controller, GeneratorName.IMAGE, ResizeName.PIXEL_RESIZE);
-/*		PApplet parent = Collector.getInstance().getPapplet();
-		pimage = parent.loadImage(filename);
-		log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-		pimage.resize(internalBufferXSize, internalBufferYSize);*/
+		super(controller, GeneratorName.IMAGE, RESIZE_TYP);
 		this.loadFile(filename);
 	}
 	
@@ -63,6 +61,7 @@ public class Image extends Generator {
 	public void loadFile(String filename) {
 		//only load if needed
 		if (StringUtils.equals(filename, this.filename)) {
+			LOG.log(Level.INFO, "new filename does not differ from old: "+Image.PREFIX+filename);
 			return;
 		}
 		
@@ -70,24 +69,30 @@ public class Image extends Generator {
 		try {
 			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
 			if (tmp==null || tmp.height<2) {
-				throw new InvalidParameterException("invalid data");
+				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename+" "+tmp);
+				return;
 			}
-			pimage = tmp;
-			log.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-			//TODO still buggy!
-			pimage.resize(internalBufferXSize, internalBufferYSize);
+			LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
+
+			PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
+			
+			tmp.loadPixels();
+			this.internalBuffer = res.resizeImage(RESIZE_TYP, tmp.pixels, 
+					tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
+			tmp.updatePixels();
+			
+			//pimage.resize(internalBufferXSize, internalBufferYSize);
 		} catch (Exception e) {
-			log.log(Level.WARNING,
-					"Failed to load image {0}!", new Object[] { filename });
+			e.printStackTrace();
+			LOG.log(Level.WARNING,
+					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
 		}
 	}
 
 	
 	@Override
 	public void update() {
-		pimage.loadPixels();
-		System.arraycopy(pimage.pixels, 0, this.internalBuffer, 0, internalBufferXSize*internalBufferYSize);
-		pimage.updatePixels();
+		//just relax here...
 	}
 
 	
@@ -97,6 +102,6 @@ public class Image extends Generator {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+		// nothing todo
 	}
 }
