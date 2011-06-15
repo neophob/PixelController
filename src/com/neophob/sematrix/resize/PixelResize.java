@@ -31,10 +31,17 @@ import com.neophob.sematrix.resize.util.ScalrOld;
  */
 public class PixelResize extends Resize {
 
+	/**
+	 * 
+	 * @param controller
+	 */
 	public PixelResize(PixelControllerResize controller) {
 		super(controller, ResizeName.PIXEL_RESIZE);
 	}
 	
+	/**
+	 * 
+	 */
 	public int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
 		
