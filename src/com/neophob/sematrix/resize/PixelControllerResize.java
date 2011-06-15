@@ -22,12 +22,22 @@ package com.neophob.sematrix.resize;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * 
+ * 
+ * @author michu
+ *
+ */
 public class PixelControllerResize implements PixelControllerElement {
 
+	private static Logger LOG = Logger.getLogger(PixelControllerResize.class.getName());
+	
 	private List<Resize> allResizers;
 	
 	/**
@@ -60,6 +70,29 @@ public class PixelControllerResize implements PixelControllerElement {
 		List<String> ret = new ArrayList<String>();
 				
 		return ret;
+	}
+	
+	/**
+	 * 
+	 * @param resizeTyp
+	 * @param inputBuffer
+	 * @param currentX
+	 * @param currentY
+	 * @param newX
+	 * @param newY
+	 * @return
+	 */
+	public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY, int newX, int newY) {
+		
+		Resize r=null;
+		r = getResize(resizeTyp);
+
+		if (r==null) {
+			LOG.log(Level.WARNING, "invalid resize typ selected: "+resizeTyp);
+			return null;
+		}
+		
+		return r.getBuffer(inputBuffer, newX, newY, currentX, currentY);		
 	}
 
 	/*

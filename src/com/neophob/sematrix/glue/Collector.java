@@ -149,8 +149,10 @@ public class Collector {
 	 * initialize generators, mixer, effects....
 	 */
 	private void initSystem() {
+		pixelControllerResize = new PixelControllerResize();
+		pixelControllerResize.initAll();
+
 		//create generators
-		
 		pixelControllerGenerator = new PixelControllerGenerator();
 		pixelControllerGenerator.initAll();
 		
@@ -162,10 +164,7 @@ public class Collector {
 		
 		//create 5 visuals
 		Visual.initializeVisuals(nrOfScreens);
-		
-		pixelControllerResize = new PixelControllerResize();
-		pixelControllerResize.initAll();
-		
+				
 		pixelControllerOutput = new PixelControllerOutput();
 		pixelControllerOutput.initAll();
 		
