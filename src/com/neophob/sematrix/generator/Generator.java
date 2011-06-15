@@ -35,6 +35,9 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * the internal buffer is much larger than the actual device. the buffer for the matrix is recalculated
  * each frame. reason: better display quality 
  * 
+ * TODO:
+ *  -need a color concept, some generators provide colors, some not, some change colors, some not...
+ * 
  * @author mvogt
  *
  */
