@@ -194,6 +194,22 @@ public class PropertiesHelper {
 	}
 	
 	/**
+	 * get the size of the software emulated matrix
+	 * @return the size or -1 if nothing was defined
+	 */
+	public int getLedPixelSize() {
+		int ret=-1;
+		
+		String tmp = config.getProperty("led.pixel.size");
+		try {
+			ret = Integer.parseInt(tmp);
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+		}
+		return ret;
+		
+	}
+	/**
 	 * 
 	 * @return
 	 */

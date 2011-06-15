@@ -22,21 +22,24 @@ package com.neophob.sematrix.output;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 public class MatrixEmulator extends Output {
 
 	private static final int RAHMEN_SIZE = 4;
-	private static final int LED_SIZE = 16;
+	private static final int LED_SIZE = 32;
 	private static final int LED_ABSTAND = 0;
 	
 	private int frame = 0;
+	private int ledSize = LED_SIZE;
 
 	/**
 	 * 
 	 */
 	public MatrixEmulator(PixelControllerOutput controller) {
 		super(controller, MatrixEmulator.class.toString());
-
+		ledSize = PropertiesHelper.getInstance().getLedPixelSize();
+		
 		int x,y;
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
@@ -60,7 +63,7 @@ public class MatrixEmulator extends Output {
 	 * @return
 	 */
 	private int getOneMatrixXSize() {
-		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceXSize()*(RAHMEN_SIZE+LED_SIZE);
+		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceXSize()*(RAHMEN_SIZE+ledSize);
 	}
 	
 	/**
@@ -68,7 +71,7 @@ public class MatrixEmulator extends Output {
 	 * @return
 	 */
 	private int getOneMatrixYSize() {
-		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+LED_SIZE);
+		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+ledSize);
 	}
 
 	@Override
@@ -128,9 +131,9 @@ public class MatrixEmulator extends Output {
 				b <<= 3;
 
 				parent.fill(r,g,b);
-				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+LED_SIZE),
-							yOfs+RAHMEN_SIZE+y*(RAHMEN_SIZE+LED_SIZE),
-							LED_SIZE,LED_SIZE);
+				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+ledSize),
+							yOfs+RAHMEN_SIZE+y*(RAHMEN_SIZE+ledSize),
+							ledSize,ledSize);
 			}		
 		}
 	}

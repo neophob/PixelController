@@ -37,16 +37,15 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 * 
 	 */
 	public void initAll() {
-
+		//nothing to init here
 	}
 	
 	/**
 	 * 
 	 */
 	public List<String> getCurrentState() {
-		List<String> ret = new ArrayList<String>();
-		
-		return ret;
+		//no status to store
+		return new ArrayList<String>();
 	}
 
 	@Override
