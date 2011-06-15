@@ -26,7 +26,7 @@ import processing.core.PApplet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
-import com.neophob.sematrix.output.helper.NewWindowHelper;
+import com.neophob.sematrix.output.emulatorhelper.NewWindowHelper;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**

@@ -17,7 +17,7 @@
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.neophob.sematrix.output.helper;
+package com.neophob.sematrix.output.emulatorhelper;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;

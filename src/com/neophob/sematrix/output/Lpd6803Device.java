@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
-import com.neophob.sematrix.output.lpd6803.RotateBuffer;
 import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
