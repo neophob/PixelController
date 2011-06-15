@@ -265,7 +265,11 @@ public class ScalrOld {
 			 * of 1600 will have to be corrected for and the height of 20 used
 			 * as the primary constraint.
 			 */
-			if (targetHeight <= targetWidth) {
+/*			
+
+			I DONT WANT TO USE THAT CODE - the resize does not work as expected.
+
+ 			if (targetHeight <= targetWidth) {
 				// Height is smaller or equal to width, so calculate a new width
 				// using the height, maintaining the known ratio.
 				targetWidth = Math.round((float) targetHeight / ratio);
@@ -284,7 +288,7 @@ public class ScalrOld {
 							+ targetHeight
 							+ " in order to maintain image proportions");
 			}
-
+*/
 			/*
 			 * Using an AUTOMATIC method we look at the image and see if either
 			 * of its dimensions are larger than our threshold value we
