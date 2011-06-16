@@ -25,7 +25,6 @@ import com.neophob.sematrix.properties.DeviceConfig;
 /**
  * this class will transform a buffer
  * 
- * TODO move out of lpd6803 package
  * @author michu
  *
  */
@@ -126,6 +125,7 @@ public class RotateBuffer {
 	}
 
 	/**
+	 * TODO add x/y options
 	 * 
 	 * @param buffer
 	 * @param deviceConfig
