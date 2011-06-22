@@ -16,37 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.neophob.sematrix.glue;
 
 /**
- * 
+ * every class which implements this interface needs
+ * to provide a function to shuffle its state.
+ *  
  * @author michu
  *
  */
-public enum ShufflerOffset {
-	GENERATOR_A(0),
-	GENERATOR_B(1),
-	EFFECT_A(2),
-	EFFECT_B(3),
-	MIXER(4),
-	MIXER_OUTPUT(5),
-	FADER_OUTPUT(6),
-	OUTPUT(7),
-	BLINKEN(8),
-	IMAGE(9),
-	TINT(10),
-	TEXTURE_DEFORMATION(11),
-	THRESHOLD_VALUE(12),
-	ROTOZOOMER(13);
+public interface RandomizeState {
+
+	/**
+	 * randomize its state
+	 */
+	void shuffle();
 	
-	
-	int ofs;
-	ShufflerOffset(int ofs) {
-		this.ofs = ofs;
-	}
-	
-	int getOffset() {
-		return ofs;
-	}
 }

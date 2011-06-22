@@ -330,6 +330,7 @@ public class Collector {
 	 * as string list - used to save current settings
 	 */
 	public List<String> getCurrentStatus() {
+		final String EMPTY_CHAR = " ";
 		List<String> ret = new ArrayList<String>();
 		
 		String gen1="";
@@ -338,37 +339,37 @@ public class Collector {
 		String fx2="";
 		String mix="";
 		for (Visual v: getAllVisuals()) {
-			gen1+=v.getGenerator1Idx()+" ";
-			gen2+=v.getGenerator2Idx()+" ";
-			fx1+=v.getEffect1Idx()+" ";
-			fx2+=v.getEffect2Idx()+" ";
-			mix+=v.getMixerIdx()+" ";					
+			gen1+=v.getGenerator1Idx()+EMPTY_CHAR;
+			gen2+=v.getGenerator2Idx()+EMPTY_CHAR;
+			fx1+=v.getEffect1Idx()+EMPTY_CHAR;
+			fx2+=v.getEffect2Idx()+EMPTY_CHAR;
+			mix+=v.getMixerIdx()+EMPTY_CHAR;				
 		}
 		
 		String fader="";
 		String output="";
 		String outputEffect="";
 		for (OutputMapping o: getAllOutputMappings()) {
-			fader+=o.getFader().getId()+" ";
-			output+=o.getVisualId()+" ";
-			outputEffect+=o.getEffect().getId()+" ";
+			fader+=o.getFader().getId()+EMPTY_CHAR;
+			output+=o.getVisualId()+EMPTY_CHAR;
+			outputEffect+=o.getEffect().getId()+EMPTY_CHAR;
 		}
-		ret.add(ValidCommands.CHANGE_GENERATOR_A+" "+gen1);
-		ret.add(ValidCommands.CHANGE_GENERATOR_B+" "+gen2);
-		ret.add(ValidCommands.CHANGE_EFFECT_A+" "+fx1);
-		ret.add(ValidCommands.CHANGE_EFFECT_B+" "+fx2);
-		ret.add(ValidCommands.CHANGE_MIXER+" "+mix);
-		ret.add(ValidCommands.CHANGE_FADER+" "+fader);		
+		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+gen1);
+		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+gen2);
+		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+fx1);
+		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+fx2);
+		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+mix);
+		ret.add(ValidCommands.CHANGE_FADER+EMPTY_CHAR+fader);		
 
 		//add element status
 		ret.addAll(pixelControllerEffect.getCurrentState());
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
-		ret.add(ValidCommands.CHANGE_PRESENT +" "+selectedPresent);
-		ret.add(ValidCommands.CHANGE_OUTPUT+" "+output);
-		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+" "+outputEffect);
-		ret.add(ValidCommands.CURRENT_VISUAL+" "+currentVisual);
+		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);
+		ret.add(ValidCommands.CHANGE_OUTPUT+EMPTY_CHAR+output);
+		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+outputEffect);
+		ret.add(ValidCommands.CURRENT_VISUAL+EMPTY_CHAR+currentVisual);
 		return ret;
 	}
 

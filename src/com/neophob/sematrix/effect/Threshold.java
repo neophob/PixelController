@@ -19,13 +19,25 @@
 
 package com.neophob.sematrix.effect;
 
+import java.util.Random;
+
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
-
+/**
+ * 
+ * @author michu
+ *
+ */
 public class Threshold extends Effect {
 
 	private short threshold;
 	
+	/**
+	 * 
+	 * @param controller
+	 */
 	public Threshold(PixelControllerEffect controller) {
 		super(controller, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
 		this.threshold = 128;
@@ -52,10 +64,18 @@ public class Threshold extends Effect {
 		return BoxFilter.applyBoxFilter(0, 1, ret, this.internalBufferXSize);
 	}
 	
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
+			this.threshold = (short)new Random().nextInt(255);
+		}		
+	}
+	
+	
 	public void setThreshold(int threshold) {
 		this.threshold = (short)threshold;
-	}
-
+	}	
+	
 	public short getThreshold() {
 		return threshold;
 	}

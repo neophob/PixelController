@@ -21,9 +21,10 @@ package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
+import com.neophob.sematrix.glue.RandomizeState;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
-public abstract class Effect {
+public abstract class Effect implements RandomizeState {
 	
 	/**
 	 * 
@@ -90,7 +91,9 @@ public abstract class Effect {
 		return this.effectName.getId();
 	}
 	
-	public static void initAllEffects() {
+	//default shuffle method - do nothing
+	public void shuffle() {
 		
 	}
+	
 }

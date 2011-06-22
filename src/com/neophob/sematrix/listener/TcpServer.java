@@ -43,6 +43,8 @@ import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 public final class TcpServer implements Runnable {
 
 	private static final long CONNECT_RETRY_IN_MS = 16000;
+	private static final String FUDI_MSG_END_MARKER = ";";
+	private static final int FLOODING_TIME = 300;
 
 	private static Logger log = Logger.getLogger(TcpServer.class.getName());
 
@@ -56,8 +58,18 @@ public final class TcpServer implements Runnable {
 	private String sendHost;
 	private int count=0;
 	private long lastConnectTimestamp;
+	private long lastMessageSentTimestamp;
 	private boolean pdClientConnected=false;
 
+	/**
+	 * Start listening server, receieves fudi messages
+	 * 
+	 * @param app
+	 * @param listeningPort
+	 * @param sendHost
+	 * @param sendPort
+	 * @throws BindException
+	 */
 	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {		
 		this.app = app;  
 		app.registerDispose(this);
@@ -86,7 +98,7 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * 
+	 * tcp server thread
 	 */
 	public void run() {
 		log.log(Level.INFO,	"Ready receiving messages...");
@@ -96,27 +108,40 @@ public final class TcpServer implements Runnable {
 				try {					
 					
 					//check if client is available
-					if (client!=null && client.active()) {
-						
+					if (client!=null && client.active()) {						
 						//do not send sound status to gui - very cpu intensive!
 						//sendSoundStatus();
 						
 						if ((count%20)==2 && Collector.getInstance().isRandomMode()) {
-							sendStatusToGui();					
+							sendStatusToGui();
 						}
 					}					
 
 					Client c = tcpServer.available();
 					if (c!=null && c.available()>0) {					
+						
+						//clean message
 						String msg = lastMsg+StringUtils.replace(c.readString(), "\n", "");
 						msg = StringUtils.trim(msg);
-						int msgCount = StringUtils.countMatches(msg, ";");
+						
+						int msgCount = StringUtils.countMatches(msg, FUDI_MSG_END_MARKER);
 						log.log(Level.INFO,	"Got Message: {0}, cnt: {1}", new Object[] {msg, msgCount});
+						
+						//work around bug - the puredata gui sends back a message as soon we send one
+						long delta = System.currentTimeMillis() - lastMessageSentTimestamp;											
+						if (delta < FLOODING_TIME) {
+							log.log(Level.INFO,	"Ignore message, flooding protection ({0}<{1})", 
+									new String[] { ""+delta, ""+FLOODING_TIME });
+							//delete message
+							msgCount=0;
+							msg="";
+						}
+						
 						//ideal, one message receieved
 						if (msgCount==1) {
-							msg = StringUtils.removeEnd(msg, ";");
+							msg = StringUtils.removeEnd(msg, FUDI_MSG_END_MARKER);
 							lastMsg="";
-							sendMsg(StringUtils.split(msg, ' '));						
+							processMessage(StringUtils.split(msg, ' '));						
 						} else if (msgCount==0) {
 							//missing end of message... save it
 							lastMsg=msg;							
@@ -124,11 +149,11 @@ public final class TcpServer implements Runnable {
 							//more than one message receieved, split it
 							//TODO: reuse partial messages
 							lastMsg="";
-							String[] msgs = msg.split(";");
+							String[] msgs = msg.split(FUDI_MSG_END_MARKER);
 							for (String s: msgs) {
 								s = StringUtils.trim(s);
-								s = StringUtils.removeEnd(s, ";");
-								sendMsg(StringUtils.split(s, ' '));
+								s = StringUtils.removeEnd(s, FUDI_MSG_END_MARKER);
+								processMessage(StringUtils.split(s, ' '));
 							}
 						}
 					}												
@@ -149,13 +174,26 @@ public final class TcpServer implements Runnable {
 	 * 
 	 * @param msg
 	 */
-	private void sendMsg(String[] msg) {
+	private void processMessage(String[] msg) {
 		ValidCommands response = MessageProcessor.processMsg(msg, true);
-		if (response!=null && response == ValidCommands.STATUS) {
+
+		if (response != null) {
+			switch (response) {
+			case STATUS:
 				sendStatusToGui();
-		}
-		if (response!=null && response == ValidCommands.STATUS_MINI) {
-			sendStatusToGuiMini();
+				break;
+
+			case STATUS_MINI:
+				sendStatusToGuiMini();
+				break;
+
+			default:
+				break;
+			}
+			try {
+				Thread.sleep(100);				
+			} catch (Exception e) {}
+			
 		}
 	}
 
@@ -187,7 +225,7 @@ public final class TcpServer implements Runnable {
 			}
 
 			if (client!=null && client.active()) {
-				writeToClient(msg+";");	
+				writeToClient(msg+FUDI_MSG_END_MARKER);	
 			}
 		} catch (Exception e) {
 			//client disconnected!
@@ -207,14 +245,18 @@ public final class TcpServer implements Runnable {
 	 */
 	private void writeToClient(String s) throws Exception {
 		client.output.write(s.getBytes());
+		lastMessageSentTimestamp = System.currentTimeMillis();
 	}
 
 	/**
 	 * 
 	 */
 	public void sendStatusToGui() {
+		
 		for (String s:Collector.getInstance().getCurrentStatus()) {
 			sendFudiMsg(s);
+			//x
+			System.out.println(s);
 		}
 	}
 

@@ -88,7 +88,7 @@ public class MessageProcessor {
 
 		int msgLength = msg.length-1;
 		int tmp;		
-		try {			
+		try {
 			ValidCommands cmd = ValidCommands.valueOf(msg[0]);
 			Collector col = Collector.getInstance();
 			switch (cmd) {
@@ -395,7 +395,7 @@ public class MessageProcessor {
 				}
 				break;
 				
-			case RANDOM:
+			case RANDOM:	//enable or disable random mode
 				try {
 					String onOrOff = msg[1];
 					if (onOrOff.equalsIgnoreCase("ON")) {
@@ -410,7 +410,7 @@ public class MessageProcessor {
 				}
 				break;
 
-			case RANDOMIZE:
+			case RANDOMIZE:	//one shot randomizer for current visual
 				try {
 					Shuffler.manualShuffleStuff();
 					return ValidCommands.STATUS;
@@ -419,7 +419,7 @@ public class MessageProcessor {
 				}
 				break;
 				
-			case PRESET_RANDOM:
+			case PRESET_RANDOM:	//one shot randomizer for current visual, use a pre-stored present
 				try {
 					Shuffler.presentShuffler();
 					return ValidCommands.STATUS;					
@@ -429,6 +429,8 @@ public class MessageProcessor {
 				break;
 
 			case CURRENT_VISUAL:
+				//change the selected visual, need to update
+				//some of the gui elements 
 				try {
 					int a = Integer.parseInt(msg[1]);
 					Collector.getInstance().setCurrentVisual(a);

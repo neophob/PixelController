@@ -30,6 +30,7 @@ import processing.core.PConstants;
 import processing.lib.blinken.BlinkenLibrary;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -144,6 +145,16 @@ public class Blinkenlights extends Generator implements PConstants {
 
 	public String getFilename() {
 		return filename;
+	}
+	
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
+			//TODO should be dynamic someday
+			String files[] = new String[] {"torus.bml", "bnf_auge.bml", "bb-frogskin2.bml", "bb-rauten2.bml", "bb-spiral2fast.bml"};
+			int nr = rand.nextInt(files.length);
+			loadFile(files[nr]);
+		}
 	}
 
 	@Override
