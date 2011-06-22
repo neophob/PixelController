@@ -21,16 +21,12 @@ package com.neophob.sematrix.glue;
 
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.neophob.sematrix.effect.RotoZoom;
-import com.neophob.sematrix.effect.Threshold;
-import com.neophob.sematrix.effect.Tint;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.PixelControllerFader;
-import com.neophob.sematrix.generator.Blinkenlights;
-import com.neophob.sematrix.generator.Image;
-import com.neophob.sematrix.generator.TextureDeformation;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 
@@ -41,7 +37,7 @@ import com.neophob.sematrix.input.Sound;
  */
 public class Shuffler {
 
-	//private static Logger log = Logger.getLogger(Shuffler.class.getName());
+	private static Logger log = Logger.getLogger(Shuffler.class.getName());
 
 	/**
 	 * 
@@ -52,11 +48,13 @@ public class Shuffler {
 	}
 
 	/**
-	 * load a random preset
+	 * load a prestored preset, randomly
 	 */
 	public static void presentShuffler() {
 		Collector col = Collector.getInstance();
 		Random rand = new Random();
+		
+		log.log(Level.INFO, "Present Shuffler");
 		
 		boolean done=false;
 		while (!done) {
@@ -72,127 +70,61 @@ public class Shuffler {
 	}
 	
 	/**
-	 * heavy shuffler!
+	 * heavy shuffler! shuffle the current selected visual
 	 * used by manual RANDOMIZE 
 	 */
-	public static void manualShuffleStuff() {
+	public static void manualShuffleStuff() {		
 		Collector col = Collector.getInstance(); 
 
 		Random rand = new Random();
+		int currentVisual = col.getCurrentVisual();
+		int totalNrGenerator = col.getPixelControllerGenerator().getSize();
+		int totalNrEffect = col.getPixelControllerEffect().getSize();
+		int totalNrMixer = col.getPixelControllerMixer().getSize();
+
+		log.log(Level.INFO, "Manaual Shuffle for Visual {0}", currentVisual);
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
-			int size = col.getPixelControllerGenerator().getSize();
 			for (Visual v: col.getAllVisuals()) {
-				v.setGenerator1(rand.nextInt(size-1)+1);
+				//why -1 +1? the first effect is passthrough - so no effect
+				v.setGenerator1(rand.nextInt(totalNrGenerator-1)+1);
 			}
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {
-			int size = col.getPixelControllerGenerator().getSize();
 			for (Visual v: col.getAllVisuals()) {
-				v.setGenerator2(rand.nextInt(size));
+				v.setGenerator2(rand.nextInt(totalNrGenerator-1)+1);
 			}
-
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
-			int size = col.getPixelControllerEffect().getSize();
 			for (Visual v: col.getAllVisuals()) {
-				v.setEffect1(rand.nextInt(size));
+				v.setEffect1(rand.nextInt(totalNrEffect));
 			}
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.EFFECT_B)) {
-			int size = col.getPixelControllerEffect().getSize();
 			for (Visual v: col.getAllVisuals()) {
-				v.setEffect2(rand.nextInt(size));
+				v.setEffect2(rand.nextInt(totalNrEffect));
 			}
 		}
-
-		if (col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-			int size = rand.nextInt(255);
-			col.getPixelControllerEffect().setThresholdValue(size);
-		}
-
-		if (col.getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
-			RotoZoom r = (RotoZoom)col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM);
-			int angle = (rand.nextInt(255))-128;
-			r.setAngle(angle);
-		} 
-
+		
 		if (col.getShufflerSelect(ShufflerOffset.MIXER)) {
-			
-			int size = col.getPixelControllerMixer().getSize();
 			for (Visual v: col.getAllVisuals()) {
 				if (v.getGenerator2Idx()==0) {
 					//no 2nd generator - use passthru mixer
 					v.setMixer(0);						
 				} else {
-					v.setMixer(rand.nextInt(size));						
+					v.setMixer(rand.nextInt(totalNrMixer));						
 				}
 			}
 		}
 
-		if (col.getShufflerSelect(ShufflerOffset.BLINKEN)) {
-			int nr = rand.nextInt(5);
-			String fileToLoad="";
-			switch (nr) {
-			case 0:
-				fileToLoad="torus.bml";
-				break;
-			case 1:
-				fileToLoad="bnf_auge.bml";
-				break;
-			case 2:
-				fileToLoad="bb-frogskin2.bml";
-				break;
-			case 3:
-				fileToLoad="bb-rauten2.bml";
-				break;
-			case 4:
-				fileToLoad="bb-spiral2fast.bml";
-				break;
-			}
-			Blinkenlights blink = (Blinkenlights)col.getPixelControllerGenerator().getGenerator(GeneratorName.BLINKENLIGHTS);
-			blink.loadFile(fileToLoad);
+		for (RandomizeState r: col.getPixelControllerGenerator().getAllGenerators()) {
+			r.shuffle();
 		}
-
-		if (col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-			col.getPixelControllerEffect().setThresholdValue(rand.nextInt(255));
-		}
-
-		if (col.getShufflerSelect(ShufflerOffset.TINT)) {
-			col.getPixelControllerEffect().setRGB(
-					rand.nextInt(255),
-					rand.nextInt(255),
-					rand.nextInt(255)
-			);
-		}
-			
-		if (col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
-			TextureDeformation df = (TextureDeformation)col.getPixelControllerGenerator().getGenerator(GeneratorName.TEXTURE_DEFORMATION);
-			df.changeLUT(rand.nextInt(12));
-
-			int nr = rand.nextInt(5);
-			String fileToLoad="";
-			switch (nr) {
-			case 0:
-				fileToLoad="1316.jpg";
-				break;
-			case 1:
-				fileToLoad="ceiling.jpg";
-				break;
-			case 2:
-				fileToLoad="circle.jpg";
-				break;
-			case 3:
-				fileToLoad="gradient.jpg";
-				break;
-			case 4:
-				fileToLoad="check.jpg";
-				break;
-			}
-			df.loadFile(fileToLoad);
+		for (RandomizeState r: col.getPixelControllerEffect().getAllEffects()) {
+			r.shuffle();
 		}
 		
 		if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
@@ -226,8 +158,9 @@ public class Shuffler {
 
 		Random rand = new Random();
 		int blah = rand.nextInt(16);
+		log.log(Level.INFO, "Automatic Shuffler {0}", blah);
 
-		if (snare) {
+		if (snare) {			
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
 				int size = col.getPixelControllerGenerator().getSize();
 				for (Visual v: col.getAllVisuals()) {
@@ -257,10 +190,8 @@ public class Shuffler {
 				}
 			}
 
-			if (blah == 14 && col.getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
-				int size = rand.nextInt(255);
-				Threshold t = (Threshold)col.getPixelControllerEffect().getEffect(EffectName.THRESHOLD);
-				t.setThreshold(size);
+			if (blah == 14) {
+				col.getPixelControllerEffect().getEffect(EffectName.THRESHOLD).shuffle();
 			}
 
 		}
@@ -290,19 +221,13 @@ public class Shuffler {
 				}
 			}
 
-			if (blah == 11 && col.getShufflerSelect(ShufflerOffset.TINT)) {
-				int r = rand.nextInt(256);
-				int g = rand.nextInt(256);
-				int b = rand.nextInt(256);
-				Tint t = (Tint)col.getPixelControllerEffect().getEffect(EffectName.TINT);
-				t.setColor(r, g, b);
+			if (blah == 11) {
+				col.getPixelControllerEffect().getEffect(EffectName.TINT).shuffle();
 			}
 			
 	
-			if (blah == 15 && col.getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
-				int angle = rand.nextInt(255);
-				RotoZoom r = (RotoZoom)col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM);
-				r.setAngle(angle-128);				
+			if (blah == 15) {
+				col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM).shuffle();
 			}
 
 		}
@@ -322,78 +247,16 @@ public class Shuffler {
 				}
 			}
 
-			if (blah == 8 && col.getShufflerSelect(ShufflerOffset.IMAGE)) {
-				int nr = rand.nextInt(4);
-				String fileToLoad="";
-				switch (nr) {
-				case 0:
-					fileToLoad="circle.jpg";
-					break;
-				case 1:
-					fileToLoad="half.jpg";
-					break;
-				case 2:
-					fileToLoad="gradient.jpg";
-					break;
-				case 3:
-					fileToLoad="check.jpg";
-					break;
-				}
-				Image img = (Image)col.getPixelControllerGenerator().getGenerator(GeneratorName.IMAGE);
-				img.loadFile(fileToLoad);
+			if (blah == 8) {
+				col.getPixelControllerGenerator().getGenerator(GeneratorName.IMAGE).shuffle();
 			}
 
-			if (blah == 9 && col.getShufflerSelect(ShufflerOffset.BLINKEN)) {
-				int nr = rand.nextInt(5);
-				String fileToLoad="";
-				switch (nr) {
-				case 0:
-					fileToLoad="torus.bml";
-					break;
-				case 1:
-					fileToLoad="bnf_auge.bml";
-					break;
-				case 2:
-					fileToLoad="bb-frogskin2.bml";
-					break;
-				case 3:
-					fileToLoad="bb-rauten2.bml";
-					break;
-				case 4:
-					fileToLoad="bb-spiral2fast.bml";
-					break;
-				}
-				Blinkenlights blink = (Blinkenlights)col.getPixelControllerGenerator().getGenerator(GeneratorName.BLINKENLIGHTS);
-				blink.loadFile(fileToLoad);
+			if (blah == 9) {
+				col.getPixelControllerGenerator().getGenerator(GeneratorName.BLINKENLIGHTS).shuffle();
 			}
 
-			if (blah == 12 && col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
-				TextureDeformation df = (TextureDeformation)col.getPixelControllerGenerator().getGenerator(GeneratorName.TEXTURE_DEFORMATION);
-				df.changeLUT(rand.nextInt(12));
-			}
-
-			if (blah == 13 && col.getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
-				TextureDeformation df = (TextureDeformation)col.getPixelControllerGenerator().getGenerator(GeneratorName.TEXTURE_DEFORMATION);
-				int nr = rand.nextInt(5);
-				String fileToLoad="";
-				switch (nr) {
-				case 0:
-					fileToLoad="1316.jpg";
-					break;
-				case 1:
-					fileToLoad="ceiling.jpg";
-					break;
-				case 2:
-					fileToLoad="circle.jpg";
-					break;
-				case 3:
-					fileToLoad="gradient.jpg";
-					break;
-				case 4:
-					fileToLoad="check.jpg";
-					break;
-				}
-				df.loadFile(fileToLoad);
+			if (blah == 12) {
+				col.getPixelControllerGenerator().getGenerator(GeneratorName.TEXTURE_DEFORMATION).shuffle();
 			}
 
 		}

@@ -115,7 +115,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		allEffects.add(effect);
 	}
 
-
+	
 	public void setThresholdValue(int val) {
 		this.threshold.setThreshold(val);
 	}
@@ -140,6 +140,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 	public int getB() {
 		return tint.getB();
 	}
+
+
 
 
 }

@@ -20,6 +20,7 @@
 package com.neophob.sematrix.generator;
 
 import java.security.InvalidParameterException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +29,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.effect.BoxFilter;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -48,6 +50,11 @@ public class TextureDeformation extends Generator {
 	
 	private String filename;
 
+	/**
+	 * 
+	 * @param controller
+	 * @param filename
+	 */
 	public TextureDeformation(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.TEXTURE_DEFORMATION, ResizeName.PIXEL_RESIZE);
 		w = getInternalBufferXSize();
@@ -219,7 +226,18 @@ public class TextureDeformation extends Generator {
 		}
 	}
 
-	
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+			Random rand = new Random();
+			this.changeLUT(rand.nextInt(12));
+
+			//TODO should be dynamic someday
+			String files[] = new String[] {"1316.jpg", "ceiling.jpg", "circle.jpg", "gradient.jpg", "check.jpg"};
+			int nr = rand.nextInt(files.length);
+			loadFile(files[nr]);		
+		}
+	}
 
 	public String getFilename() {
 		return filename;

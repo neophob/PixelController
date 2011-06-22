@@ -22,6 +22,8 @@ package com.neophob.sematrix.generator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.PixelControllerElement;
@@ -35,6 +37,9 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  */
 public class PixelControllerGenerator implements PixelControllerElement {
 
+	private static Logger log = Logger.getLogger(PixelControllerGenerator.class.getName());
+
+	
 	private List<Generator> allGenerators;
 	
 	private Blinkenlights blinkenlights;
@@ -127,6 +132,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
 				return gen;
 			}
 		}
+		
+		log.log(Level.INFO, "Invalid Generator index selected: {0}", index);
 		return null;
 	}
 

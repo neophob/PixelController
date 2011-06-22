@@ -19,7 +19,11 @@
 
 package com.neophob.sematrix.effect;
 
+import java.util.Random;
+
 import com.neophob.sematrix.fader.CrossfaderHelper;
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -32,6 +36,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class RotoZoom extends Effect {
 
+	//endless zooming or zoomin-zoomout...
 	public enum WORKMODE {
 		PINGPONG,
 		ZOOM
@@ -179,6 +184,14 @@ public class RotoZoom extends Effect {
 		}
 
 		return tmp;
+	}
+
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
+			int angle = (new Random().nextInt(255))-128;
+			this.setAngle(angle);					
+		}
 	}
 	
 	

@@ -19,6 +19,7 @@
 
 package com.neophob.sematrix.generator;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -95,6 +97,15 @@ public class Image extends Generator {
 		//just relax here...
 	}
 
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+			//TODO should be dynamic someday
+			String files[] = new String[] {"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif"};
+			int nr = new Random().nextInt(files.length);
+			loadFile(files[nr]);		
+		}
+	}
 	
 	public String getFilename() {
 		return filename;

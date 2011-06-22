@@ -27,6 +27,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
+import com.neophob.sematrix.glue.RandomizeState;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -41,7 +42,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  *
  */
-public abstract class Generator {
+public abstract class Generator implements RandomizeState {
 
 	public enum GeneratorName {
 		PASSTHRU(0),
@@ -141,6 +142,11 @@ public abstract class Generator {
 		System.arraycopy(internalBuffer, 0, pImage.pixels, 0, internalBuffer.length);
 		pImage.updatePixels();
 		return pImage;
+	}
+	
+	//default shuffle method - do nothing
+	public void shuffle() {
+		
 	}
 
 	public int getId() {

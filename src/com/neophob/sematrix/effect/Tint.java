@@ -19,6 +19,10 @@
 
 package com.neophob.sematrix.effect;
 
+import java.util.Random;
+
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -79,6 +83,16 @@ public class Tint extends Effect {
 
 	public int getB() {
 		return b;
+	}
+
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TINT)) {
+			Random rand = new Random();
+			r = rand.nextInt(255);
+			g = rand.nextInt(255);
+			b = rand.nextInt(255);					
+		}
 	}
 	
 

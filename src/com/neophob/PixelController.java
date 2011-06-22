@@ -55,6 +55,9 @@ public class PixelController extends PApplet {
 	int frameCounter=0;
 	MatrixEmulator osd;
 
+	/**
+	 * prepare
+	 */
 	public void setup() {
 		//		ImageIcon titlebaricon = new ImageIcon(loadBytes("logo.jpg"));
 		//		super.frame.setIconImage(titlebaricon.getImage()); 
