@@ -1,14 +1,14 @@
 /*
- * arduino serial-i2c-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
+ * arduino serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
  *  
- * This file is part of neorainbowduino. WORKING!
+ * This file is part of PixelController. WORKING!
  *
- * neorainbowduino is free software; you can redistribute it and/or modify
+ * PixelController is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
- * neorainbowduino is distributed in the hope that it will be useful,
+ * PixelController is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -217,10 +217,16 @@ void updatePixels(byte ofs, byte* buffer) {
   strip.doSwapBuffersAsap(ofs*PIXELS_PER_PANEL);   // write all the pixels out
 }
 
-//read a string from the serial and store it in an array
-//you must supply the str array variable
-//returns number of bytes read, or zero if fail
-/* example ping command:
+/* 
+ --------------------------------------------
+     read serial command
+ --------------------------------------------
+
+read a string from the serial and store it in an array
+you must supply the str array variable
+returns number of bytes read, or zero if fail
+
+example ping command:
  		cmdfull[0] = START_OF_CMD (marker);
  		cmdfull[1] = addr;
  		cmdfull[2] = 0x01; 
@@ -229,10 +235,7 @@ void updatePixels(byte ofs, byte* buffer) {
  		cmdfull[5] = 0x02;
  		cmdfull[6] = END_OF_DATA (marker);
  */
-
-// --------------------------------------------
-//     read serial command
-// --------------------------------------------
+ 
 byte readCommand(byte *str) {
   byte b,i,sendlen;
 

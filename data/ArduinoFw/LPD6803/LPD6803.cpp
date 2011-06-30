@@ -30,7 +30,6 @@ static uint16_t  LedIndex;   // Used in interrupt - Which LED we are sending.
 static byte  BlankCounter;  //Used in interrupt.
 
 static byte lastdata = 0;
-//todo: make an int out of that byte - maximal refresh 255 leds!
 static uint16_t swapAsap = 0;   //flag to indicate that the colors need an update asap
 
 //Interrupt routine.
