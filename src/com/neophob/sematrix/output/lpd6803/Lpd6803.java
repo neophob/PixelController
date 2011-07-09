@@ -53,6 +53,7 @@ import processing.serial.Serial;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.lib.rainbowduino.RainbowduinoHelper;
 import com.neophob.lib.rainbowduino.SerialPortException;
+import com.neophob.sematrix.properties.ColorFormat;
 
 /**
  * library to communicate with an LPD6803 stripes via serial port<br>
@@ -275,7 +276,7 @@ public class Lpd6803 {
 	public boolean ping() {		
 		/*
 		 *  0   <startbyte>
-		 *  1   <i2c_addr>
+		 *  1   <i2c_addr>/<offset>
 		 *  2   <num_bytes_to_send>
 		 *  3   command type, was <num_bytes_to_receive>
 		 *  4   data marker
@@ -311,7 +312,12 @@ public class Lpd6803 {
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(byte ofs, int[] data) {
-		return sendFrame(ofs, convertRgbTo15bit(data));
+		if (ofs==0) {
+			return sendFrame(ofs, convertBufferTo15bit(data, ColorFormat.RGB));			
+		}
+		
+		return sendFrame(ofs, convertBufferTo15bit(data, ColorFormat.RBG));
+
 	}
 
 
@@ -527,10 +533,10 @@ public class Lpd6803 {
 	private synchronized boolean waitForAck() {		
 		//TODO some more tuning is needed here.
 		long start = System.currentTimeMillis();
-		int timeout=4; //wait up to 50ms
+		int timeout=8; //wait up to 50ms
 		//log.log(Level.INFO, "wait for ack");
 		while (timeout > 0 && port.available() < 2) {
-			sleep(10); //in ms
+			sleep(4); //in ms
 			timeout--;
 		}
 
@@ -598,7 +604,7 @@ public class Lpd6803 {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public static byte[] convertRgbTo15bit(int[] data) throws IllegalArgumentException {
+	public static byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
 		if (data.length!=BUFFERSIZE) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
@@ -613,10 +619,21 @@ public class Lpd6803 {
 		for (int n=0; n<BUFFERSIZE; n++) {
 			//one int contains the rgb color
 			tmp = data[ofs];
+
+			switch (colorFormat) {
+			case RGB:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				g[ofs] = (int) ((tmp>>8)  & 255);
+				b[ofs] = (int) ( tmp      & 255);		
 				
-			r[ofs] = (int) ((tmp>>16) & 255);
-			g[ofs] = (int) ((tmp>>8)  & 255);
-			b[ofs] = (int) ( tmp      & 255);		
+				break;
+			case RBG:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				b[ofs] = (int) ((tmp>>8)  & 255);
+				g[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			}
 			ofs++;
 		}
 
