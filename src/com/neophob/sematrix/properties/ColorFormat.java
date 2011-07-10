@@ -20,6 +20,7 @@
 package com.neophob.sematrix.properties;
 
 /**
+ * color format of a hardware device
  * 
  * @author michu
  *
