@@ -89,6 +89,7 @@ public class PropertiesHelper {
 			throw new IllegalArgumentException("No devices configured, illegal configuration!");
 		}
 		
+		//check that at least one device is configured,,
 		int totalDevices = rainbowduinoDevices;
 		if (totalDevices==0) {
 			totalDevices = lpdDevices;
@@ -99,6 +100,7 @@ public class PropertiesHelper {
 			throw new IllegalArgumentException("No devices configured, illegal configuration!");
 		}
 
+		//add default color format RGB is nothing is configured
 		int nrOfColorFormat = getColorFormatFromCfg();
 		if (nrOfColorFormat==0) {
 			for (int i=0; i<totalDevices; i++) {
