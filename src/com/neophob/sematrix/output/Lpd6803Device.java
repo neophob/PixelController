@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
+import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
@@ -38,7 +39,10 @@ public class Lpd6803Device extends Output {
 
 	private static Logger log = Logger.getLogger(Lpd6803Device.class.getName());
 		
+	//does the buffer needs to be flipped? rotated?
 	private List<DeviceConfig> displayOptions;
+	//output format
+	private List<ColorFormat> colorFormat;
 	
 	private Lpd6803 lpd6803 = null;
 	private boolean initialized;
@@ -50,10 +54,12 @@ public class Lpd6803Device extends Output {
 	 * @param allI2COutputs a list containing all i2c slave addresses
 	 * 
 	 */
-	public Lpd6803Device(PixelControllerOutput controller, List<DeviceConfig> displayOptions) {
+	public Lpd6803Device(PixelControllerOutput controller, List<DeviceConfig> displayOptions,
+			List<ColorFormat> colorFormat) {
 		super(controller, Lpd6803Device.class.toString());
 		
 		this.displayOptions = displayOptions;
+		this.colorFormat = colorFormat;
 		this.initialized = false;		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet() );			
@@ -108,7 +114,7 @@ public class Lpd6803Device extends Output {
 				int[] transformedBuffer = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs));
 				
-				if (lpd6803.sendRgbFrame((byte)ofs, transformedBuffer)) {
+				if (lpd6803.sendRgbFrame((byte)ofs, transformedBuffer, colorFormat.get(ofs))) {
 					needUpdate++;
 				} else {
 					noUpdate++;

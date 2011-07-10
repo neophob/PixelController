@@ -54,6 +54,8 @@ public class PropertiesHelper {
 	
 	private List<Integer> i2cAddr=null;
 	private List<DeviceConfig> lpdDevice=null;
+	private List<ColorFormat> colorFormat=null;
+
 	
 	private int devicesInRow1 = 0;
 	private int devicesInRow2 = 0;
@@ -85,6 +87,23 @@ public class PropertiesHelper {
 		if (devicesInRow1==0 && devicesInRow2==0) {
 			log.log(Level.SEVERE, "No devices configured, illegal configuration!");
 			throw new IllegalArgumentException("No devices configured, illegal configuration!");
+		}
+		
+		int totalDevices = rainbowduinoDevices;
+		if (totalDevices==0) {
+			totalDevices = lpdDevices;
+		}
+
+		if (totalDevices==0) {
+			log.log(Level.SEVERE, "No devices configured, illegal configuration!");
+			throw new IllegalArgumentException("No devices configured, illegal configuration!");
+		}
+
+		int nrOfColorFormat = getColorFormatFromCfg();
+		if (nrOfColorFormat==0) {
+			for (int i=0; i<totalDevices; i++) {
+				colorFormat.add(ColorFormat.RBG);
+			}
 		}
 	}
 	
@@ -155,7 +174,6 @@ public class PropertiesHelper {
 	 * @return
 	 */
 	private int parseLpdAddress() {
-		int found = 0;
 		lpdDevice = new ArrayList<DeviceConfig>();
 		
 		String value = config.getProperty("layout.row1");
@@ -165,7 +183,6 @@ public class PropertiesHelper {
 					DeviceConfig cfg = DeviceConfig.valueOf(s);
 					lpdDevice.add(cfg);
 					devicesInRow1++;
-					found++;					
 				} catch (Exception e) {
 					log.log(Level.WARNING,
 							"Failed to parse {0}", s);
@@ -180,8 +197,7 @@ public class PropertiesHelper {
 				try {
 					DeviceConfig cfg = DeviceConfig.valueOf(s);
 					lpdDevice.add(cfg);
-					devicesInRow2++;
-					found++;					
+					devicesInRow2++;				
 				} catch (Exception e) {
 					log.log(Level.WARNING,
 							"Failed to parse {0}", s);
@@ -190,7 +206,7 @@ public class PropertiesHelper {
 			}
 		}
 
-		return found;
+		return lpdDevice.size();
 	}
 	
 	/**
@@ -209,20 +225,41 @@ public class PropertiesHelper {
 		return ret;
 		
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private int getColorFormatFromCfg() {
+		colorFormat = new ArrayList<ColorFormat>();
+		String rawConfig = config.getProperty("panel.color.order");
+		
+		if (StringUtils.isNotBlank(rawConfig)) {
+			for (String s: rawConfig.split(",")) {
+				try {
+					ColorFormat cf = ColorFormat.valueOf(s);
+					colorFormat.add(cf);					
+				} catch (Exception e) {
+					log.log(Level.WARNING, "Failed to parse {0}", s);
+				}
+			}			
+		}
+		
+		return colorFormat.size();
+	}
+	
 	/**
 	 * 
 	 * @return
 	 */
 	private int parseI2cAddress() {
-		int found = 0;
-
 		i2cAddr = new ArrayList<Integer>();
+		
 		String rawConfig = config.getProperty("layout.row1.i2c.addr");
 		if (StringUtils.isNotBlank(rawConfig)) {
 			for (String s: rawConfig.split(",")) {
 				i2cAddr.add( Integer.parseInt(s));
 				devicesInRow1++;
-				found++;
 			}
 		}
 		rawConfig = config.getProperty("layout.row2.i2c.addr");
@@ -230,11 +267,10 @@ public class PropertiesHelper {
 			for (String s: rawConfig.split(",")) {
 				i2cAddr.add( Integer.parseInt(s));
 				devicesInRow2++;
-				found++;
 			}
 		}
 		
-		return found;
+		return i2cAddr.size();
 	}
 
 	/**
@@ -290,6 +326,10 @@ public class PropertiesHelper {
 	 */
 	public List<DeviceConfig> getLpdDevice() {
 		return lpdDevice;
+	}
+
+	public List<ColorFormat> getColorFormat() {
+		return colorFormat;
 	}
 	
 	

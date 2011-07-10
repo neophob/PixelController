@@ -311,13 +311,8 @@ public class Lpd6803 {
 	 * @param data rgb data (int[64], each int contains one RGB pixel)
 	 * @return true if send was successful
 	 */
-	public boolean sendRgbFrame(byte ofs, int[] data) {
-		if (ofs==0) {
-			return sendFrame(ofs, convertBufferTo15bit(data, ColorFormat.RGB));			
-		}
-		
-		return sendFrame(ofs, convertBufferTo15bit(data, ColorFormat.RBG));
-
+	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
+		return sendFrame(ofs, convertBufferTo15bit(data, colorFormat));
 	}
 
 

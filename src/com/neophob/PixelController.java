@@ -77,7 +77,8 @@ public class PixelController extends PApplet {
 			rainbowduino = null;
 		}*/
 		try {
-			lpd6803 = new Lpd6803Device(col.getPixelControllerOutput(), ph.getLpdDevice());
+			lpd6803 = new Lpd6803Device(
+					col.getPixelControllerOutput(), ph.getLpdDevice(), ph.getColorFormat() );
 		} catch (Exception e) {
 			lpd6803 = null;
 		}
