@@ -20,10 +20,10 @@
 package com.neophob.sematrix.generator;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -41,6 +41,8 @@ public class Geometrics extends Generator {
 	private static final int THICKNESS = 10;
 	
 	private List<Drop> drops;
+	private List<Drop> tmp;
+	
 	private int dropHue = 0;
 
 	private Sound sound;
@@ -51,7 +53,9 @@ public class Geometrics extends Generator {
 	 */
 	public Geometrics(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.GEOMETRICS, ResizeName.QUALITY_RESIZE);
-		drops = new CopyOnWriteArrayList<Drop>();
+		//drops = new CopyOnWriteArrayList<Drop>();
+		drops = new ArrayList<Drop>();
+		tmp = new ArrayList<Drop>();
 		sound = Sound.getInstance();
 	}
 
@@ -84,11 +88,17 @@ public class Geometrics extends Generator {
 			}
 		}
 
+		tmp.clear();
 		for (Drop d: drops) {
 			d.update();
 			if (d.done()) {
-				drops.remove(d); 
+				//drops.remove(d);
+				tmp.add(d);
 			}
+		}
+		
+		if (tmp.size()>0) {
+			drops.removeAll(tmp);			
 		}
 	}
 
