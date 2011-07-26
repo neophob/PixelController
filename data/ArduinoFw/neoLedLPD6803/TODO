@@ -1,0 +1,5 @@
+PixelInvaders Firmware TODO:
+ -initial image
+ -animation instead of static image until initial image
+ -make serial connection between java and uP flexible (for 15bit until 24bit)
+ 
