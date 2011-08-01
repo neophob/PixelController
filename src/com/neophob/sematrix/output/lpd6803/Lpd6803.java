@@ -350,27 +350,26 @@ public class Lpd6803 {
 	 * @param data byte[3*8*4]
 	 * @return true if send was successful
 	 */
-	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {
-		//TODO stop if connection counter > n
+	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
 		if (data.length!=128) {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
-
-/*		if (connectionErrorCounter>) {
+		
+/*		//TODO stop if connection counter > n
+ 		if (connectionErrorCounter>) {
 			return false;
 		}*/
 
-		//0=0/1   1=2+3   2=4+5
 		byte ofsOne = (byte)(ofs*2);
 		byte ofsTwo = (byte)(ofsOne+1);
-		byte frameOne[] = new byte[64];
-		byte frameTwo[] = new byte[64];
+		byte frameOne[] = new byte[BUFFERSIZE];
+		byte frameTwo[] = new byte[BUFFERSIZE];
 		boolean returnValue = false;
 		
-		System.arraycopy(data, 0, frameOne, 0, 64);
-		System.arraycopy(data, 64, frameTwo, 0, 64);
+		System.arraycopy(data, 0, frameOne, 0, BUFFERSIZE);
+		System.arraycopy(data, BUFFERSIZE, frameTwo, 0, BUFFERSIZE);
 		
-		byte sendlen = 64;
+		byte sendlen = BUFFERSIZE;
 		byte cmdfull[] = new byte[sendlen+7];
 		
 		cmdfull[0] = START_OF_CMD;
@@ -387,11 +386,13 @@ public class Lpd6803 {
 		if (didFrameChange(ofsOne, frameOne)) {
 			cmdfull[1] = ofsOne;
 			
+			//this is needed due the hardware-wirings 
 			flipSecondScanline(cmdfull, frameOne);
 			
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
+				//in case of an error, make sure we send it the next time!
 				lastDataMap.put(ofsOne, "");
 			}
 		}
