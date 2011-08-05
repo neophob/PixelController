@@ -11,6 +11,14 @@
 		<maven>2.2.1</maven>
 	</prerequisites>
 	
+	<properties>
+		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
+		<sonar.phase>generate-sources</sonar.phase>
+		
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>		
+	</properties>	
+	
 	<developers>
 		<developer>
 			<name>Michael Vogt</name>
@@ -96,54 +104,6 @@
 				</executions>
 			</plugin>
 			
-			<plugin>
-				<!-- This plugin provides the capability to build and sign jars. -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Main-Class>
-								com.neophob.PixelController
-							</Main-Class>
-							<Built-By>${user.name}</Built-By>
-							<Built-With>
-								Java ${java.version} (${java.vendor})
-							</Built-With>
-							<Specification-Title>
-								${project.name}
-							</Specification-Title>
-							<Specification-Version>
-								${project.currentVersion}
-							</Specification-Version>
-							<Specification-Vendor>
-								${project.organization.name}
-							</Specification-Vendor>
-							<Implementation-Title>
-								${project.name}
-							</Implementation-Title>
-							<Implementation-Version>
-								${project.version}
-							</Implementation-Version>
-							<Implementation-Vendor>
-								${project.organization.name}
-							</Implementation-Vendor>
-							<Implementation-Vendor-Id>
-								neophob.com
-							</Implementation-Vendor-Id>
-						</manifestEntries>
-					</archive>
-					<forceCreation>true</forceCreation>
-				</configuration>
-			</plugin>
 			
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
@@ -154,22 +114,66 @@
 				</configuration>
 			</plugin>
 			
+			<!-- Build classpath strings to insert into scripts -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+ 				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>build-classpath-win</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<prefix>.\\lib\</prefix>
+							<fileSeparator>\\</fileSeparator>
+							<pathSeparator>;</pathSeparator>
+							<outputFilterFile>true</outputFilterFile>
+							<outputFile>
+								${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-win.properties
+							</outputFile>
+							<excludeGroupIds>
+								junit
+							</excludeGroupIds>
+							<includeArtifactIds>${project.artifactId}-${project.version}</includeArtifactIds>
+						</configuration>
+					</execution>
+  
+					<execution>
+						<id>build-classpath-unix</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>build-classpath</goal>
+						</goals>
+						<configuration>
+							<prefix>./lib</prefix>
+							<fileSeparator>/</fileSeparator>
+							<pathSeparator>:</pathSeparator>
+							<outputFilterFile>true</outputFilterFile>
+							<outputFile>
+								${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-unix.properties
+							</outputFile>
+							<excludeGroupIds>
+								junit
+							</excludeGroupIds>
+							
+						</configuration>
+					</execution>
+				
+				</executions>
+			</plugin>			
+			
 		</plugins>
 	</build>
-	
-	<properties>
-		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
-		<sonar.phase>generate-sources</sonar.phase>
-		
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>		
-	</properties>
 	
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.2</version>
+            <scope>test</scope>
         </dependency>
         
    		<dependency>
@@ -238,8 +242,30 @@
 			<version>2.0.2</version>
 		</dependency>
 		
-		
+   		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>jsminim</artifactId>
+			<version>2.0.2</version>
+		</dependency>
 
+   		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>minim-spi</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>tritonus_aos</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>tritonus_share</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		
    		<dependency>
 			<groupId>neophob.com</groupId>
 			<artifactId>processing-blinkenlight</artifactId>

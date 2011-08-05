@@ -47,12 +47,13 @@
 	
 	<files>
  		<file>
-			<source>${basedir}/PixelController.sh</source>
+			<source>${basedir}/src/build/PixelController.sh</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
+			<fileMode>0755</fileMode>
 		</file>
  		<file>
-			<source>${basedir}/PixelController.cmd</source>
+			<source>${basedir}/src/build/PixelController.cmd</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 		</file>
