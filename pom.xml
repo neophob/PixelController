@@ -4,8 +4,21 @@
 	<groupId>neophob.com</groupId>
 	<artifactId>PixelController</artifactId>
 	<name>PixelController</name>
+	<packaging>jar</packaging>	
 	<version>0.9</version>
-
+	<description>PixelController Driver</description>
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
+	
+	<developers>
+		<developer>
+			<name>Michael Vogt</name>
+			<id>michu</id>
+			<email>michu@neophob.com</email>
+		</developer>
+	</developers>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mc-release</id>
@@ -21,51 +34,217 @@
 	</pluginRepositories>
 
 	<build>
+<!--
+ 		<testResources>
+			<testResource>
+				<directory>src/test/config</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+			</testResource>
+		</testResources>
+-->
 		<sourceDirectory>src/com/neophob</sourceDirectory>
 		<outputDirectory>bin/com/neophob</outputDirectory>
 		<plugins>
+		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<excludes>
-						<exclude>**/*.*</exclude>
-					</excludes>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
+			
+			<!-- Package all files together -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.1</version>
+				<artifactId>maven-assembly-plugin</artifactId>
+  				<version>2.2.1</version>
 				<executions>
 					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
+						<phase>package</phase>
 						<goals>
-							<goal>add-source</goal>
+							<goal>assembly</goal>
 						</goals>
 						<configuration>
-							<sources>
-								<source>[YOUR SOURCE DIRECTORY 2]</source>
-								<source>[YOUR SOURCE DIRECTORY 3]</source>
-							</sources>
+							<finalName>
+								${project.artifactId}-${project.version}
+							</finalName>
+							<!-- 
+								<appendAssembly>false</appendAssembly>
+							-->
+							<outputDirectory>
+								${project.build.directory}
+							</outputDirectory>
+							<descriptors>
+								<descriptor>
+									${basedir}/src/build/assembly.xml
+								</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			
+			<plugin>
+				<!-- This plugin provides the capability to build and sign jars. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Main-Class>
+								com.neophob.PixelController
+							</Main-Class>
+							<Built-By>${user.name}</Built-By>
+							<Built-With>
+								Java ${java.version} (${java.vendor})
+							</Built-With>
+							<Specification-Title>
+								${project.name}
+							</Specification-Title>
+							<Specification-Version>
+								${project.currentVersion}
+							</Specification-Version>
+							<Specification-Vendor>
+								${project.organization.name}
+							</Specification-Vendor>
+							<Implementation-Title>
+								${project.name}
+							</Implementation-Title>
+							<Implementation-Version>
+								${project.version}
+							</Implementation-Version>
+							<Implementation-Vendor>
+								${project.organization.name}
+							</Implementation-Vendor>
+							<Implementation-Vendor-Id>
+								neophob.com
+							</Implementation-Vendor-Id>
+						</manifestEntries>
+					</archive>
+					<forceCreation>true</forceCreation>
+				</configuration>
+			</plugin>
+			
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
 				<configuration>
-					<header>src/etc/header.txt</header>
+					<header>src/build/header.txt</header>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
+	
 	<properties>
 		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
+		
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>		
 	</properties>
+	
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+        </dependency>
+        
+   		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+        
+   		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>processing.org</groupId>
+			<artifactId>serial</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>qbang.org</groupId>
+			<artifactId>rxtx</artifactId>
+			<version>2.2pre5</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>neophob.com</groupId>
+			<artifactId>neorainbowduino</artifactId>
+			<version>0.82</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>processing.org</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>processing.org</groupId>
+			<artifactId>ecj</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>processing.org</groupId>
+			<artifactId>jna</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>processing.org</groupId>
+			<artifactId>net</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>processing.org</groupId>
+			<artifactId>pde</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>minim</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		
+		
+
+   		<dependency>
+			<groupId>neophob.com</groupId>
+			<artifactId>processing-blinkenlight</artifactId>
+			<version>0.5</version>
+		</dependency>
+        
+    </dependencies>
 </project>

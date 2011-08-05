@@ -1,5 +1,0 @@
-apply license checks:
-
-mvn license:format -Dyear=2011 -Demail=michu@neophob.com
-
-src: http://code.google.com/p/maven-license-plugin/wiki/HowTo
