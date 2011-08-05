@@ -413,7 +413,7 @@ public class Lpd6803 {
 	}
 	
 	/**
-	 * this function feed the framebufferdata (32 pixels ˆ 2bytes (aka 16bit)
+	 * this function feed the framebufferdata (32 pixels a 2bytes (aka 16bit)
 	 * to the send array. each second scanline gets inverteds
 	 * 
 	 * @param cmdfull
