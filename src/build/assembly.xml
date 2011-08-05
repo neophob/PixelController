@@ -1,0 +1,65 @@
+<!--
+
+    Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+
+    This file is part of PixelController.
+
+    PixelController is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PixelController is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<assembly>
+	<id>distribution</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+ 
+	<!-- collect external libs -->
+	<dependencySets>
+		<dependencySet>
+			<excludes>
+			</excludes>
+			<unpack>false</unpack>
+			<outputDirectory>/lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+
+	<!-- Overlay with files from "src/build/dist" -->
+	<fileSets>
+		<!-- Copy all files, including binary (without conversion) -->
+		<fileSet>
+			<directory>${basedir}/data</directory>
+			<outputDirectory>/data</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+	</fileSets>
+	
+	<files>
+ 		<file>
+			<source>${basedir}/PixelController.sh</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</file>
+ 		<file>
+			<source>${basedir}/PixelController.cmd</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</file>
+		<file>
+			<source>${basedir}/target/${project.artifactId}-${project.version}.jar</source>
+			<outputDirectory>/lib</outputDirectory>
+			<filtered>false</filtered>
+		</file>
+	</files>
+</assembly>
