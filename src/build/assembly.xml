@@ -57,10 +57,24 @@
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 		</file>
+		<!-- silly hack for the startscript -->
 		<file>
 			<source>${basedir}/target/${project.artifactId}-${project.version}.jar</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
+			<destName>${project.artifactId}.jar</destName>
 		</file>
+		
+ 		<file>
+			<source>${basedir}/lib/serial/librxtxSerial.jnilib</source>
+			<outputDirectory>/lib</outputDirectory>
+			<filtered>false</filtered>
+		</file>
+ 		<file>
+			<source>${basedir}/lib/serial/librxtxSerial.so</source>
+			<outputDirectory>/lib</outputDirectory>
+			<filtered>false</filtered>
+		</file>
+		
 	</files>
 </assembly>

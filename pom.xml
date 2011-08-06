@@ -86,7 +86,7 @@
 						</goals>
 						<configuration>
 							<finalName>
-								${project.artifactId}-${project.version}
+ 								${project.artifactId}-${project.version}
 							</finalName>
 							<!-- 
 								<appendAssembly>false</appendAssembly>
@@ -137,7 +137,6 @@
 							<excludeGroupIds>
 								junit
 							</excludeGroupIds>
-							<includeArtifactIds>${project.artifactId}-${project.version}</includeArtifactIds>
 						</configuration>
 					</execution>
   
@@ -148,7 +147,7 @@
 							<goal>build-classpath</goal>
 						</goals>
 						<configuration>
-							<prefix>./lib</prefix>
+							<prefix>lib</prefix>
 							<fileSeparator>/</fileSeparator>
 							<pathSeparator>:</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
@@ -157,8 +156,7 @@
 							</outputFile>
 							<excludeGroupIds>
 								junit
-							</excludeGroupIds>
-							
+							</excludeGroupIds>						
 						</configuration>
 					</execution>
 				
