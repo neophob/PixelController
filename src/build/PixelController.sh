@@ -19,7 +19,9 @@
 
 #/bin/bash
 
-export JAVA_OPT="-Dcom.apple.hwaccel=false -Djava.library.path=lib/serial -server"
+#TODO add cd into current dir...
+
+export JAVA_OPT="-Dcom.apple.hwaccel=false -Djava.library.path=lib -server"
 source ./classpath-unix.properties
 echo classpath: $classpath
-java $JAVA_OPT -classpath $classpath:./lib/PixelController-0.9.jar com.neophob.PixelController
+java $JAVA_OPT -classpath $classpath:./lib/PixelController.jar com.neophob.PixelController
