@@ -20,5 +20,5 @@
 set JAVA_OPT=-Dsun.java2d.opengl=True -Djava.library.path=lib
 
 source ./classpath-win.properties
-echo classpath: $classpath
-java $JAVA_OPT -classpath $classpath:./lib/PixelController.jar com.neophob.PixelController
+echo classpath: %classpath%
+java %JAVA_OPT% -classpath %classpath%;lib/PixelController.jar com.neophob.PixelController
