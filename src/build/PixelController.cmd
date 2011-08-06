@@ -17,8 +17,10 @@
 @REM along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
 @REM
 
+setlocal
 set JAVA_OPT=-Dsun.java2d.opengl=True -Djava.library.path=lib
 
-source ./classpath-win.properties
-echo classpath: %classpath%
-java %JAVA_OPT% -classpath %classpath%;lib/PixelController.jar com.neophob.PixelController
+for /f "tokens=*" %%i in ('type classpath-win.properties') do echo set %%i > cp.cmd
+call cp.cmd
+
+java %JAVA_OPT% -classpath \lib\PixelController.jar;%classpath% com.neophob.PixelController
