@@ -127,7 +127,7 @@
 							<goal>build-classpath</goal>
 						</goals>
 						<configuration>
-							<prefix>\lib\</prefix>
+							<prefix>lib\</prefix>
 							<fileSeparator>\</fileSeparator>
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
