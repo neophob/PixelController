@@ -41,7 +41,7 @@ import com.neophob.sematrix.layout.Layout;
  * @author michu
  *
  */
-public class PropertiesHelper {
+public final class PropertiesHelper {
 
 	private static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	

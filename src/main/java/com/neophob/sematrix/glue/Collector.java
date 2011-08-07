@@ -41,7 +41,7 @@ import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
-public class Collector {
+public final class Collector {
 
 	/** 
 	 * TODO make dynamic
