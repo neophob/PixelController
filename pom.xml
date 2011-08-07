@@ -51,25 +51,18 @@
 	</pluginRepositories>
 
 	<build>
-<!--
+
  		<testResources>
 			<testResource>
-				<directory>src/test/config</directory>
-				<includes>
-					<include>**/*.properties</include>
-					<include>**/*.xml</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<directory>src/test/java</directory>
+				<directory>src/test</directory>
 				<includes>
 					<include>**/*.properties</include>
 					<include>**/*.xml</include>
 				</includes>
 			</testResource>
 		</testResources>
--->
-		<sourceDirectory>src/com/neophob</sourceDirectory>
+
+		<sourceDirectory>src/main/com/neophob</sourceDirectory>
 		<outputDirectory>bin/com/neophob</outputDirectory>
 		<plugins>
 		
