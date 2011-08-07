@@ -27,6 +27,15 @@
 		</developer>
 	</developers>
 	
+	<repositories>
+		<repository>
+  			<id>maven2-repository.java.net</id>
+  			<name>Java.net Repository for Maven</name>
+  			<url>http://download.java.net/maven/2/</url>
+  			<layout>default</layout>
+		</repository>
+  	</repositories>
+  
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mc-release</id>
@@ -127,7 +136,7 @@
 							<goal>build-classpath</goal>
 						</goals>
 						<configuration>
-							<prefix>lib\</prefix>
+							<prefix>lib</prefix>
 							<fileSeparator>\</fileSeparator>
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
@@ -167,6 +176,8 @@
 	</build>
 	
     <dependencies>
+    
+    <!-- dependencies from repos -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -186,52 +197,50 @@
 			<version>2.5</version>
 		</dependency>
 
-   		<dependency>
-			<groupId>processing.org</groupId>
-			<artifactId>serial</artifactId>
-			<version>1.0</version>
+		<dependency>
+    		<groupId>org.eclipse.jdt.core.compiler</groupId>
+    		<artifactId>ecj</artifactId>
+    		<version>3.5.1</version>
 		</dependency>
 
    		<dependency>
-			<groupId>qbang.org</groupId>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.2.7</version>
+		</dependency>
+
+		<!-- local deps -->
+		
+		<!-- processing -->
+   		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>core</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>net</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>pde</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+   		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>serial</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+		<!-- processing deps -->
+   		<dependency>
+			<groupId>org.qbang</groupId>
 			<artifactId>rxtx</artifactId>
 			<version>2.2pre5</version>
-		</dependency>
-
-   		<dependency>
-			<groupId>neophob.com</groupId>
-			<artifactId>neorainbowduino</artifactId>
-			<version>0.82</version>
-		</dependency>
-
-   		<dependency>
-			<groupId>processing.org</groupId>
-			<artifactId>core</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-   		<dependency>
-			<groupId>processing.org</groupId>
-			<artifactId>ecj</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-   		<dependency>
-			<groupId>processing.org</groupId>
-			<artifactId>jna</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-   		<dependency>
-			<groupId>processing.org</groupId>
-			<artifactId>net</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-   		<dependency>
-			<groupId>processing.org</groupId>
-			<artifactId>pde</artifactId>
-			<version>1.0</version>
 		</dependency>
 
    		<dependency>
@@ -263,9 +272,17 @@
 			<artifactId>tritonus_share</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-		
+
+		<!-- src: http://code.google.com/p/neorainbowduino/ -->
    		<dependency>
-			<groupId>neophob.com</groupId>
+			<groupId>com.neophob</groupId>
+			<artifactId>neorainbowduino</artifactId>
+			<version>0.82</version>
+		</dependency>
+
+		<!-- src: https://github.com/neophob/processing-blinkenlights -->
+   		<dependency>
+			<groupId>com.neophob</groupId>
 			<artifactId>processing-blinkenlight</artifactId>
 			<version>0.5</version>
 		</dependency>
