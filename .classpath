@@ -17,10 +17,14 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ZZ_SeMAtrix/lib/serial"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/serial/serial.jar"/>
 	<classpathentry kind="lib" path="lib/net.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/neorainbowduino.jar"/>
+	<classpathentry kind="lib" path="lib/neorainbowduino.jar" sourcepath="/neorainbowduino"/>
+	<classpathentry kind="lib" path="lib/serial/serial.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ZZ_SeMAtrix/lib/serial"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
