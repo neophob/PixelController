@@ -1,0 +1,28 @@
+PixelController - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2011
+
+
+HOWTO USE PIXELCONTROLLER
+-------------------------
+Prerequisite:
+-Java Runtime, v1.6+
+-PureData (http://puredata.info/)
+
+Run PixelController.cmd on Windows and PixelController.sh on OSX/Linux to start the application.
+Make sure your led matrix connected to you coputer before the application is started! 
+
+
+
+HOWTO BUILD PIXELCONTROLLER
+---------------------------
+Prerequisite:
+-Maven2
+-JDK 1.6+
+
+Install the needed libraries to your local repo (lib/install.sh). this is needed as some packages like processing are
+not available in a public repo. 
+
+Then 
+# mvn clean package
+should build PixelController
+
+

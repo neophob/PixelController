@@ -209,7 +209,7 @@
 			<version>3.2.7</version>
 		</dependency>
 
-		<!-- local deps -->
+		<!-- local deps, make sure you installed them in your local repo! -->
 		
 		<!-- processing -->
    		<dependency>
