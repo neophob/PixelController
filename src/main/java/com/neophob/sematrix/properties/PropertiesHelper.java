@@ -70,7 +70,7 @@ public final class PropertiesHelper {
 			InputStream input = Collector.getInstance().getPapplet().createInput(CONFIG_FILENAME);
 			config.load(input);
 						
-			log.log(Level.INFO, "Config loaded");
+			log.log(Level.INFO, "Config loaded, {0} entries", config.size());
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Failed to load Config", e);
 			throw new IllegalArgumentException("Configuration error!", e);
