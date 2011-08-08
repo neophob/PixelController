@@ -19,6 +19,9 @@
 
 package com.neophob.sematrix.output;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.DeviceConfig;
 
@@ -28,14 +31,17 @@ import com.neophob.sematrix.properties.DeviceConfig;
  * @author michu
  *
  */
-public class RotateBuffer {
+public final class RotateBuffer {
 
+	//TODO baaad!
 	private static int deviceXSize = 8;
-	
+
+	private static Logger LOG = Logger.getLogger(RotateBuffer.class.getName());
+
 	private RotateBuffer() {
 		//no instance
 	}
-	
+
 	/**
 	 * 
 	 * @param buffer
@@ -75,35 +81,11 @@ public class RotateBuffer {
 		int ofs=0;
 		for (int x=0; x<deviceXSize; x++) {			
 			for (int y=0; y<deviceXSize; y++) {
-				//flipX
-				ret[deviceXSize-1-y+x*deviceXSize] = buffer[ofs++];
-				//ret[(deviceXSize-1-x)*deviceXSize+y] = buffer[ofs++];
+				ret[deviceXSize-1-y + (deviceXSize-1-x)*deviceXSize] = buffer[ofs++];
 			}
 		}
 		return ret;
 	}
-
-	/*static void print(int[] buffer) {
-		int ofs=0;
-		for (int x=0; x<8; x++) {			
-			for (int y=0; y<8; y++) {
-				System.out.print(buffer[ofs++]+" ");
-			}
-			System.out.println();
-		}
-		System.out.println("---");
-	}
-	
-	public static void main(String args[]) {
-		deviceXSize=8;
-		int aa[] = new int[64];
-		for (int x=0; x<64; x++)
-			aa[x] = x;
-		
-		print(aa);
-		int ret[] = flipY(aa);
-		print(ret);		
-	}*/
 
 
 	/**
@@ -132,41 +114,41 @@ public class RotateBuffer {
 	 * @return
 	 */
 	public static int[] transformImage(int[] buffer, DeviceConfig deviceConfig) {
-		
+
 		if (deviceXSize==0) {
 			deviceXSize = Collector.getInstance().getMatrix().getDeviceXSize();
 		}
-		
+
 		switch (deviceConfig) {
 		case NO_ROTATE:
 			return buffer;
 
 		case ROTATE_90:
 			return rotate90(buffer);			
-		
-		case ROTATE_90_FLIPPED:
+
+		case ROTATE_90_FLIPPEDY:
 			return flipY(
 					rotate90(buffer)
-				);
+			);
 
 		case ROTATE_180:
-			return flipY(buffer);
-			
-		case ROTATE_180_FLIPPED:
-			return rotate180(
-					flipY(buffer)
-					//buffer
-					);
+			return rotate180(buffer);
+
+		case ROTATE_180_FLIPPEDY:
+			return flipY( 
+					rotate180(buffer) 
+			);
 
 		case ROTATE_270:
 			return rotate270(buffer);
 
-		case ROTATE_270_FLIPPED:
+		case ROTATE_270_FLIPPEDY:
 			return flipY(
-						rotate270(buffer)
-					);
+					rotate270(buffer)
+			);
 
 		default:
+			LOG.log(Level.SEVERE, "invalid device config: {0}", deviceConfig);			
 			break;
 		}
 		return null;
