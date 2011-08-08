@@ -1,37 +1,37 @@
 package com.neophob;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import com.neophob.sematrix.effect.PixelControllerEffect;
-import com.neophob.sematrix.generator.PixelControllerGenerator;
-import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.mixer.PixelControllerMixer;
-import com.neophob.sematrix.output.PixelControllerOutput;
-import com.neophob.sematrix.properties.PropertiesHelper;
-import com.neophob.sematrix.resize.PixelControllerResize;
+import processing.core.PApplet;
 
-public class PixelControllerTest {
+import com.neophob.sematrix.glue.Collector;
+
+/**
+ * test start
+ * @author michu
+ *
+ */
+public class PixelControllerTest extends PApplet {
 
 	@Test
 	public void testMain() {
-		PixelControllerResize pixelControllerResize = new PixelControllerResize();
-		pixelControllerResize.initAll();
-
-		//create generators
-		PixelControllerGenerator pixelControllerGenerator = new PixelControllerGenerator();
-		pixelControllerGenerator.initAll();
+		PApplet.main(new String[] { "com.neophob.PixelControllerTest" });
 		
-		PixelControllerEffect pixelControllerEffect = new PixelControllerEffect();
-		pixelControllerEffect.initAll();
-
-		PixelControllerMixer pixelControllerMixer = new PixelControllerMixer();
-		pixelControllerMixer.initAll();
-		
-		//create 5 visuals
-		Visual.initializeVisuals(5);
-				
-		PixelControllerOutput pixelControllerOutput = new PixelControllerOutput();
-		pixelControllerOutput.initAll();
+		assertTrue(Collector.getInstance().getPresent().size() > 0);		
+		assertTrue(Collector.getInstance().getPixelControllerGenerator().getSize() > 0);
+		assertTrue(Collector.getInstance().getPixelControllerEffect().getSize() > 0);
+		assertTrue(Collector.getInstance().getPixelControllerMixer().getSize() > 0);
+		assertTrue(Collector.getInstance().getPixelControllerResize().getAllResizers().size() > 0);
+	}
+	
+	public void setup() { 
+		Collector.getInstance().init(this, 10, 8, 8);			
+	}
+	
+	public void draw() {
 		
 	}
+	
 }

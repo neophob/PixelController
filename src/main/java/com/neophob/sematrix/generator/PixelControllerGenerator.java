@@ -53,14 +53,16 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	}
 	
 	/**
-	 * 
+	 * initialize all generators
 	 */
 	public void initAll() {
+		
 		String fileBlinken = PropertiesHelper.getInstance().getProperty("initial.blinken");
-
 		blinkenlights = new Blinkenlights(this, fileBlinken);
+		
 		String fileImageSimple = PropertiesHelper.getInstance().getProperty("initial.image.simple");
-		image = new Image(this, fileImageSimple);		
+		image = new Image(this, fileImageSimple);
+		
 		new Plasma2(this);
 		new PlasmaAdvanced(this);
 		new SimpleColors(this);
