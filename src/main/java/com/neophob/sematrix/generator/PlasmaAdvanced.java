@@ -32,18 +32,23 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class PlasmaAdvanced extends Generator {
 
-	private static float TWO_PI = 6.283185307f;
+	private static final float TWO_PI = 6.283185307f;
 
-	private static int GRADIENTLEN = 900;//1500;
+	private static final int GRADIENTLEN = 900;//1500;
 	// use this factor to make things faster, esp. for high resolutions
-	private static int SPEEDUP = 3;
+	private static final int SPEEDUP = 3;
 
-	private static int FADE_STEPS = 50;
+	private static final int FADE_STEPS = 50;
 
 	// swing/wave function parameters
-	private static int SWINGLEN = GRADIENTLEN*3;
-	private static int SWINGMAX = GRADIENTLEN / 2 - 1;
+	private static final int SWINGLEN = GRADIENTLEN*3;
+	private static final int SWINGMAX = GRADIENTLEN / 2 - 1;
 
+	//TODO make them configable
+	private static final int MIN_FACTOR = 4;
+	private static final int MAX_FACTOR = 10;
+
+	
 	private int rf = 4;
 	private int gf = 2;
 	private int bf = 1;
@@ -61,7 +66,7 @@ public class PlasmaAdvanced extends Generator {
 	private int[] swingCurveTmp = new int[SWINGLEN];
 
 	private int frameCount;
-	private Random r;
+	private Random random;
 
 	/**
 	 * 
@@ -69,7 +74,7 @@ public class PlasmaAdvanced extends Generator {
 	public PlasmaAdvanced(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
-		r = new Random();
+		random = new Random();
 		makeGradient();
 		makeSwingCurve();		
 	}
@@ -112,16 +117,13 @@ public class PlasmaAdvanced extends Generator {
 	@Override
 	public void close() {	}
 
-	//TODO make them configable
-	final static int MIN_FACTOR = 4;
-	final static int MAX_FACTOR = 10;
 	// fill the given array with a nice swingin' curve
 	// three cos waves are layered together for that
 	// the wave "wraps" smoothly around, uh, if you know what i mean ;-)
 	void makeSwingCurve() {		
-		int factor1=r.nextInt(MAX_FACTOR)+MIN_FACTOR;
-		int factor2=r.nextInt(MAX_FACTOR)+MIN_FACTOR;
-		int factor3=r.nextInt(MAX_FACTOR)+MIN_FACTOR;
+		int factor1=random.nextInt(MAX_FACTOR)+MIN_FACTOR;
+		int factor2=random.nextInt(MAX_FACTOR)+MIN_FACTOR;
+		int factor3=random.nextInt(MAX_FACTOR)+MIN_FACTOR;
 
 		int halfmax = SWINGMAX/factor1;
 
@@ -136,19 +138,19 @@ public class PlasmaAdvanced extends Generator {
 
 	// create a smooth, colorful gradient by cosinus curves in the RGB channels
 	private void makeGradient() {
-		int val = r.nextInt(12);
+		int val = random.nextInt(12);
 		switch (val) {
-		case 0: rf = r.nextInt(4)+1;
+		case 0: rf = random.nextInt(4)+1;
 		break;
-		case 1: gf = r.nextInt(4)+1;
+		case 1: gf = random.nextInt(4)+1;
 		break;
-		case 2: bf = r.nextInt(4)+1;
+		case 2: bf = random.nextInt(4)+1;
 		break;
-		case 3: rd = r.nextInt(GRADIENTLEN);
+		case 3: rd = random.nextInt(GRADIENTLEN);
 		break;
-		case 4: gd = r.nextInt(GRADIENTLEN);
+		case 4: gd = random.nextInt(GRADIENTLEN);
 		break;
-		case 5: bd = r.nextInt(GRADIENTLEN);
+		case 5: bd = random.nextInt(GRADIENTLEN);
 		break;
 		}
 		//System.out.println("Gradient factors("+rf+","+gf+","+bf+"), displacement("+rd+","+gd+","+bd+")");
@@ -178,10 +180,8 @@ public class PlasmaAdvanced extends Generator {
 		fadeColorSteps--;
 
 		if (fadeColorSteps==0) {
-			for (int i = 0; i < GRADIENTLEN; i++) {
-				colorGrad[i] = colorGradTmp[i];
-			}
-
+			//arraycopy(Object src, int srcPos, Object dest, int destPos, int length) 
+			System.arraycopy(colorGradTmp, 0, colorGrad, 0, GRADIENTLEN);
 			return;
 		}
 
@@ -205,9 +205,9 @@ public class PlasmaAdvanced extends Generator {
 	private void fadeSwingCurve() {
 		fadeSwingSteps--;
 		if (fadeSwingSteps==0) {
-			for (int i = 0; i < SWINGLEN; i++) {
-				swingCurve[i] = swingCurveTmp[i];
-			}
+			//arraycopy(Object src, int srcPos, Object dest, int destPos, int length) 
+			System.arraycopy(swingCurveTmp, 0, swingCurve, 0, SWINGLEN);
+
 
 			return;
 		}
@@ -235,9 +235,9 @@ public class PlasmaAdvanced extends Generator {
 	}
 
 	public final int color(int x, int y, int z) {
-		if (x > 255) x = 255; else if (x < 0) x = 0;
-		if (y > 255) y = 255; else if (y < 0) y = 0;
-		if (z > 255) z = 255; else if (z < 0) z = 0;
+		if (x > 255) {x = 255;} else if (x < 0) {x = 0;}
+		if (y > 255) {y = 255;} else if (y < 0) {y = 0;}
+		if (z > 255) {z = 255;} else if (z < 0) {z = 0;}
 
 		return 0xff000000 | (x << 16) | (y << 8) | z;
 	}

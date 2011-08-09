@@ -50,6 +50,9 @@ public final class PropertiesHelper {
 	private static final String PRESENTS_FILENAME = "data/presents.led";
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
+	private static final String ERROR_NO_DEVICES_CONFIGURATED = "No devices configured, illegal configuration!";
+	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
+	
 	private Properties config=null;
 	
 	private List<Integer> i2cAddr=null;
@@ -80,13 +83,13 @@ public final class PropertiesHelper {
 		int lpdDevices = parseLpdAddress();
 
 		if (rainbowduinoDevices>0 && lpdDevices>0) {
-			log.log(Level.SEVERE, "Multiple devices configured, illegal configuration!");
-			throw new IllegalArgumentException("Multiple devices configured, illegal configuration!");
+			log.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED);
+			throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
 		}
 
 		if (devicesInRow1==0 && devicesInRow2==0) {
-			log.log(Level.SEVERE, "No devices configured, illegal configuration!");
-			throw new IllegalArgumentException("No devices configured, illegal configuration!");
+			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
+			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
 		}
 		
 		//check that at least one device is configured,,
@@ -96,8 +99,8 @@ public final class PropertiesHelper {
 		}
 
 		if (totalDevices==0) {
-			log.log(Level.SEVERE, "No devices configured, illegal configuration!");
-			throw new IllegalArgumentException("No devices configured, illegal configuration!");
+			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
+			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
 		}
 
 		//add default color format RGB is nothing is configured

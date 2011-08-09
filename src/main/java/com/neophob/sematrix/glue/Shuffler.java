@@ -35,7 +35,7 @@ import com.neophob.sematrix.input.Sound;
  * @author michu
  *
  */
-public class Shuffler {
+public final class Shuffler {
 
 	private static Logger log = Logger.getLogger(Shuffler.class.getName());
 

@@ -1,11 +1,12 @@
 package com.neophob;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
 
 /**
@@ -24,7 +25,15 @@ public class PixelControllerTest extends PApplet {
 		assertTrue(Collector.getInstance().getPixelControllerEffect().getSize() > 0);
 		assertTrue(Collector.getInstance().getPixelControllerMixer().getSize() > 0);
 		assertTrue(Collector.getInstance().getPixelControllerResize().getAllResizers().size() > 0);
+		
+		assertTrue(PixelControllerFader.getFaderCount()>3);
 	}
+	
+/*	@Test
+	public void testMixer() {
+		Mixer mix = Collector.getInstance().getPixelControllerMixer().getMixer(MixerName.PASSTHRU);
+		
+	}*/
 	
 	public void setup() { 
 		Collector.getInstance().init(this, 10, 8, 8);			

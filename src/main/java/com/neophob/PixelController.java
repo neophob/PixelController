@@ -20,6 +20,8 @@
 package com.neophob;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
@@ -39,6 +41,8 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  *
  */
 public class PixelController extends PApplet {
+
+	private static Logger log = Logger.getLogger(PixelController.class.getName());
 
 	private static final long serialVersionUID = -1336765543826338205L;
 	
@@ -96,10 +100,13 @@ public class PixelController extends PApplet {
 		Collector.getInstance().updateSystem();
 
 		if (lpd6803!=null && lpd6803.getArduinoErrorCounter()>0) {
-			error=lpd6803.getArduinoErrorCounter();
-			System.out.println("error at: "+new Date(lpd6803.getLatestHeartbeat()).toGMTString()+
-					", errorcnt: "+error+
-					", buffersize: "+lpd6803.getArduinoBufferSize());
+			error=lpd6803.getArduinoErrorCounter();			
+			log.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}", 
+					new Object[] {
+						new Date(lpd6803.getLatestHeartbeat()).toGMTString(),
+						error,
+						lpd6803.getArduinoBufferSize()
+					});
 		}
 
 		frameCounter++;

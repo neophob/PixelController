@@ -30,7 +30,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
-public class MessageProcessor {
+public final class MessageProcessor {
 
 	public enum ValidCommands {
 		//refresh whole gui

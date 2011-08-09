@@ -255,8 +255,6 @@ public final class TcpServer implements Runnable {
 		
 		for (String s:Collector.getInstance().getCurrentStatus()) {
 			sendFudiMsg(s);
-			//x
-			System.out.println(s);
 		}
 	}
 

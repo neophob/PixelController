@@ -43,7 +43,7 @@ public class TextureDeformation extends Generator {
 
 	private int w, h;
 	private int[] mLUT;
-	private int[] tmp;
+	private int[] tmpArray;
 	private PImage textureImg;
 	private int timeDisplacement;
 	private int lut;
@@ -60,26 +60,34 @@ public class TextureDeformation extends Generator {
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
 		mLUT =  new int[3 * w * h];
-		tmp = new int[this.internalBuffer.length];
+		tmpArray = new int[this.internalBuffer.length];
 		// use higher resolution textures if things get to pixelated
 
 		this.lut=9;
 		loadFile(filename);
 	}
 
+	/**
+	 * 
+	 * @param lut
+	 */
 	public void changeLUT(int lut) {
 		this.lut = lut;
 		createLUT(lut);
 	}
 	
+	/**
+	 * 
+	 * @param fileName
+	 */
 	public void loadFile(String fileName) {
 		this.filename = fileName;
 		try {
-			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
-			if (tmp==null || tmp.height<2) {
+			PImage tmpImage = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
+			if (tmpImage==null || tmpImage.height<2) {
 				throw new InvalidParameterException("invalid data");
 			}
-			textureImg = tmp;
+			textureImg = tmpImage;
 			log.log(Level.INFO,
 					"Loaded texture {0} ", new Object[] { fileName });
 			createLUT(lut);
@@ -126,10 +134,10 @@ public class TextureDeformation extends Generator {
 			}
 
 			// put texture pixel on buffer screen
-			tmp[pixelCount] = currentPixel;
+			tmpArray[pixelCount] = currentPixel;
 		}
 		textureImg.updatePixels();
-		this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, tmp, getInternalBufferXSize());
+		this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, tmpArray, getInternalBufferXSize());
 		timeDisplacement++;
 	}
 

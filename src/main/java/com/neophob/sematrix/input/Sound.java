@@ -20,14 +20,14 @@
 package com.neophob.sematrix.input;
 
 
-public class Sound implements SeSound {
+public final class Sound implements SeSound {
 
 	private static Sound instance = new Sound();
 
 	private SeSound implementation=null;
 	
 	private Sound() {
-		
+		//no instance allowed
 	}
 
 	/**

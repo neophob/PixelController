@@ -26,6 +26,10 @@ package com.neophob.sematrix.fader;
  */
 public class CrossfaderHelper {
 
+	private CrossfaderHelper() {
+		//no instance allowed
+	}
+	
 	/**
 	 * 
 	 * @param f

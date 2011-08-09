@@ -86,9 +86,7 @@ public final class ResizeImageHelper {
 	 * @param deviceYSize
 	 * @return
 	 */
-	private static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
-		//painfull slow!
-		//return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0, deviceXSize);
+	private static int[] getPixelsFromImage(BufferedImage scaledImage) {
 		DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();
 		return buf.getData();
 	}
@@ -133,7 +131,7 @@ public final class ResizeImageHelper {
 //		bi = Scalr.resize(bi, Scalr.Method.SPEED, deviceXSize, deviceYSize);		
 //		bi = Scalr.resize(bi, Scalr.Method.BALANCED, deviceXSize, deviceYSize);		
 
-		int[] ret = getPixelsFromImage(bi, deviceXSize, deviceYSize);
+		int[] ret = getPixelsFromImage(bi);
 		
 		//destroy image
 		bi.flush();
@@ -241,7 +239,7 @@ public final class ResizeImageHelper {
 				for (int n = -1; n < 3; n++)
 				{
 					// get Y cooefficient
-					k1 = BiCubicKernel(dy - (double)n);
+					k1 = biCubicKernel(dy - (double)n);
 
 					oy2 = oy1 + n;
 					if (oy2 < 0)
@@ -252,7 +250,7 @@ public final class ResizeImageHelper {
 					for (int m = -1; m < 3; m++)
 					{
 						// get X cooefficient
-						k2 = k1 * BiCubicKernel((double)m - dx);
+						k2 = k1 * biCubicKernel((double)m - dx);
 
 						ox2 = ox1 + m;
 						if (ox2 < 0)
@@ -281,7 +279,7 @@ public final class ResizeImageHelper {
 	 * @param x
 	 * @return
 	 */
-	private static double BiCubicKernel(double x) {
+	private static double biCubicKernel(double x) {
 		if (x > 2.0d) {
 			return 0.0d;
 		}

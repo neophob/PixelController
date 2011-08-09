@@ -21,7 +21,7 @@ package com.neophob.sematrix.effect;
 
 
 
-public class BoxFilter  {
+public final class BoxFilter  {
 
 	private static float[] boxfiltr = new float[]{
 		0.0f,  0.0f,  0.0f,  0.0f,  0.0f,		//0
