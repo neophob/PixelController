@@ -31,17 +31,17 @@ public interface PixelControllerElement {
 	/**
 	 * initialize all elements
 	 */
-	public void initAll();
+	void initAll();
 	
 	/**
 	 * get current status of all childs
 	 * 
 	 * @return
 	 */
-	public List<String> getCurrentState();
+	List<String> getCurrentState();
 
 	/**
 	 * update the element if needed
 	 */
-	public void update();
+	void update();
 }
