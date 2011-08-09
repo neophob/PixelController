@@ -42,5 +42,5 @@ public interface SeSound {
 	
 	int getFftAvg();
 	
-	public float getFftAvg(int i);
+	float getFftAvg(int i);
 }

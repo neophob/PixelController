@@ -29,19 +29,24 @@ import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
 import java.awt.image.ReplicateScaleFilter;
 import java.awt.image.WritableRaster;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.RainbowduinoDevice;
 
 /**
  * 
  * @author michu
  *
  */
-public class ResizeImageHelper {
+public final class ResizeImageHelper {
 
+	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
+	
 	private ResizeImageHelper() {
 		//no instance allowed, util class
 	}
@@ -178,10 +183,10 @@ public class ResizeImageHelper {
 		try {
 			pg.grabPixels();
 		} catch (InterruptedException e) {
-			//            log.log(Level.WARNING, "interrupted waiting for pixels!");
+			log.log(Level.WARNING, "interrupted waiting for pixels!");
 		}
 		if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-			//          log.log(Level.WARNING, "image fetch aborted or errored");
+			log.log(Level.WARNING, "image fetch aborted or errored");
 		}
 		return pixels;
 	}

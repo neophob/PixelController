@@ -35,11 +35,18 @@ public class Checkbox extends Mixer {
 
 	private int pixelsPerLine;
 	
+	/**
+	 * 
+	 * @param controller
+	 */
 	public Checkbox(PixelControllerMixer controller) {
 		super(controller, MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
 		pixelsPerLine = Collector.getInstance().getMatrix().getDeviceXSize();
 	}
 
+	/**
+	 * 
+	 */
 	public int[] getBuffer(Visual visual) {
 		
 		if (visual.getEffect2() == null) {
