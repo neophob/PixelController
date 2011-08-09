@@ -24,7 +24,7 @@ package com.neophob.sematrix.fader;
  * @author michu
  *
  */
-public class CrossfaderHelper {
+public final class CrossfaderHelper {
 
 	private CrossfaderHelper() {
 		//no instance allowed

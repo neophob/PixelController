@@ -43,7 +43,6 @@ public class InternalBuffer extends PApplet {
 
 	private boolean displayHoriz;
 	private int x,y;
-	private int[] buffer;
 	private PImage pImage=null;
 
 	/**
@@ -73,6 +72,8 @@ public class InternalBuffer extends PApplet {
      */
 	public void draw() {
 		int localX=0, localY=0;
+		int[] buffer;
+		
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
 			//get image
 			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), BFR_X, BFR_Y);

@@ -122,7 +122,7 @@ public final class BoxFilter  {
 	};
 
 	//add this value to the result
-	private static short[] bf_offset = new short[]{  
+	private static short[] bfOffset = new short[]{  
 		0,
 		0,
 		0,
@@ -141,7 +141,7 @@ public final class BoxFilter  {
 	};
 
 	//divide the result with this value
-	private static short[] bf_divide = new short[] {  
+	private static short[] bfDivide = new short[] {  
 		1,
 		1,
 		1,
@@ -186,9 +186,9 @@ public final class BoxFilter  {
 			index=0;
 			for (int y=0; y<lineSize; y++) {
 				for (int x=0; x<lineSize; x++) {
-					valr = bf_offset[art];
-					valg = bf_offset[art];
-					valb = bf_offset[art];
+					valr = bfOffset[art];
+					valg = bfOffset[art];
+					valb = bfOffset[art];
 					
 					for (int ofsn=0; ofsn< 25; ofsn++){
 						f = boxfiltr[ofsn+art*25];
@@ -198,9 +198,9 @@ public final class BoxFilter  {
 						valb += (short)(f * ((val    ) & 255));
 					}      
 					
-					valr /= bf_divide[art];
-					valg /= bf_divide[art];
-					valb /= bf_divide[art];
+					valr /= bfDivide[art];
+					valg /= bfDivide[art];
+					valb /= bfDivide[art];
 					
 					if (valr>255) valr = 255;
 					if (valg>255) valg = 255;

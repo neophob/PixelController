@@ -36,7 +36,7 @@ public final class RotateBuffer {
 	//TODO baaad!
 	private static int deviceXSize = 8;
 
-	private static Logger LOG = Logger.getLogger(RotateBuffer.class.getName());
+	private static final Logger LOG = Logger.getLogger(RotateBuffer.class.getName());
 
 	private RotateBuffer() {
 		//no instance

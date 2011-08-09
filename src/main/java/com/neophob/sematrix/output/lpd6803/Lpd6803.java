@@ -121,8 +121,8 @@ public class Lpd6803 {
 	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
-	public Lpd6803(PApplet _app) throws NoSerialPortFoundException {
-		this(_app, null, 0);
+	public Lpd6803(PApplet app) throws NoSerialPortFoundException {
+		this(app, null, 0);
 	}
 
 	/**
