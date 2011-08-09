@@ -44,7 +44,6 @@ public final class Shuffler {
 	 */
 	private Shuffler() {
 		//no instance allowed
-		
 	}
 
 	/**

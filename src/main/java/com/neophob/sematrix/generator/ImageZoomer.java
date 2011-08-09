@@ -45,16 +45,12 @@ public class ImageZoomer extends Generator {
 	public static final int MOVE_DURATION_IN_S = 4;
 
 	private PImage origImg, clipedImg;  // Declare variable "a" of type PImage 
-	private PApplet parent;
 	
 	private float zoom = 1;
-	private float endZoom = 1;
 	private float distZoom, beginZoom;
 
 	private float beginX = 0.0f;  // Initial x-coordinate
 	private float beginY = 0.0f;  // Initial y-coordinate
-	private float endX = 0.0f;   // Final x-coordinate
-	private float endY = 0.0f;   // Final y-coordinate
 	private float distX;          // X-axis distance to move
 	private float distY;          // Y-axis distance to move
 	private float exponent = 64/2;   // Determines the curve
@@ -66,9 +62,8 @@ public class ImageZoomer extends Generator {
 	private String filename;
 	
 	public ImageZoomer(PixelControllerGenerator controller, String filename) {
-		super(controller, GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);		
-		parent = Collector.getInstance().getPapplet();
-		clipedImg = parent.createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
+		super(controller, GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);				
+		clipedImg = Collector.getInstance().getPapplet().createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
 		this.loadImage(filename);
 		log.log(Level.INFO, "IMAGE SIZE: "+origImg.width+" "+internalBufferXSize+", "+internalBufferYSize);
 		
@@ -135,13 +130,13 @@ public class ImageZoomer extends Generator {
 			beginY = y;
 		}
 
-		endX = (float)Math.random()*(origImg.width-internalBufferXSize);
-		endY = (float)Math.random()*(origImg.height-internalBufferYSize);
+		float endX = (float)Math.random()*(origImg.width-internalBufferXSize);
+		float endY = (float)Math.random()*(origImg.height-internalBufferYSize);
 		distX = endX - beginX;
 		distY = endY - beginY;
 
 		beginZoom = zoom;
-		endZoom = 1.0f+(float)Math.random()*1.5f;
+		float endZoom = 1.0f+(float)Math.random()*1.5f;
 		distZoom = endZoom-beginZoom;
 	}
 

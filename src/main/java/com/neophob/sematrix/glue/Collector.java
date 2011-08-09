@@ -49,6 +49,8 @@ public final class Collector {
 	 * 
 	 */
 	
+	private static final String EMPTY_CHAR = " ";
+	
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
 	private static Collector instance = new Collector();
@@ -329,8 +331,7 @@ public final class Collector {
 	 * get current state of visuals/outputs
 	 * as string list - used to save current settings
 	 */
-	public List<String> getCurrentStatus() {
-		final String EMPTY_CHAR = " ";
+	public List<String> getCurrentStatus() {		
 		List<String> ret = new ArrayList<String>();
 		
 		String gen1="";

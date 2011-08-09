@@ -43,7 +43,7 @@ public class Image extends Generator {
 	public static final String PREFIX = "pics/";
 	
 	private static final ResizeName RESIZE_TYP = ResizeName.PIXEL_RESIZE;	
-	private static Logger LOG = Logger.getLogger(Image.class.getName());
+	private static final Logger LOG = Logger.getLogger(Image.class.getName());
 	
 	private String filename="http://neophob.com";
 	
