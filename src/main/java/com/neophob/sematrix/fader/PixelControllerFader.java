@@ -21,8 +21,17 @@ package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.fader.Fader.FaderName;
 
-public class PixelControllerFader {
+/**
+ * 
+ * @author michu
+ *
+ */
+public final class PixelControllerFader {
 
+	private PixelControllerFader() {
+		//no instance allowed
+	}
+	
 	/* 
 	 * FADER ======================================================
 	 */
@@ -46,7 +55,11 @@ public class PixelControllerFader {
 		return null;
 	}
 
-
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public static Fader getFader(int index) {
 		switch (index) {
 		case 0:
@@ -60,10 +73,13 @@ public class PixelControllerFader {
 		}
 		return null;
 	}
-	
-	//TODO static is NOT sexy!
+
+	/**
+	 * 
+	 * @return
+	 */
 	public static int getFaderCount() {
-		return 4;
+		return FaderName.values().length;
 	}
 
 

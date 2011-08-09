@@ -115,7 +115,7 @@ public class Geometrics extends Generator {
 	 * @author michu
 	 *
 	 */
-	private class Drop {
+	private final class Drop {
 
 		int xpos, ypos, dropcolor, dropSize;
 		boolean finished;
