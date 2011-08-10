@@ -22,6 +22,14 @@ package com.neophob.sematrix.layout;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 
+/**
+ * Box Layout, features:
+ *  -"unlimited" width
+ *  -exact two panels height
+ * 
+ * @author michu
+ *
+ */
 public class BoxLayout extends Layout {
 
 	private int ioMappingSize;
@@ -146,11 +154,7 @@ public class BoxLayout extends Layout {
 
 		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput);
 		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput);
-/*		System.out.println(screenNr+" howman: "+fxOnHowMayScreensX+", "+fxOnHowMayScreensY+
-				", posX"+this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX)+
-				", posY"+this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY)
-		);
-*/
+
 		return new LayoutModel(
 				fxOnHowMayScreensX, 
 				fxOnHowMayScreensY,

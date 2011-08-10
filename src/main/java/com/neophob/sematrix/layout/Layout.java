@@ -22,7 +22,12 @@ package com.neophob.sematrix.layout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * this class defines how multiple panels are arranged
+ * 
+ * @author michu
+ *
+ */
 public abstract class Layout {
 
 	public enum LayoutName {
