@@ -23,6 +23,8 @@ import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -32,6 +34,7 @@ import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
@@ -48,6 +51,7 @@ public final class Collector {
 	 * nr of shuffler entries. enable/disable option for random mode 
 	 * 
 	 */
+	private static Logger LOG = Logger.getLogger(Collector.class.getName());
 	
 	private static final String EMPTY_CHAR = " ";
 	
@@ -121,8 +125,13 @@ public final class Collector {
 		this.fps = fps;
 		
 		//choose sound implementation
-		Sound.getInstance().setImplementation(new SoundMinim());
-//		Sound.getInstance().setImplementation(new SoundDummy());
+		try {
+			Sound.getInstance().setImplementation(new SoundMinim());			
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE, Exception: {0}.", e);
+			Sound.getInstance().setImplementation(new SoundDummy());
+		}
+		
 		new MatrixData(deviceXsize, deviceYsize);
 
 		this.initSystem();
