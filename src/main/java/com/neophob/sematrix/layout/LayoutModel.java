@@ -19,6 +19,11 @@
 
 package com.neophob.sematrix.layout;
 
+/**
+ * helper class used to layout panels
+ * @author michu
+ *
+ */
 public class LayoutModel {
 	private int sameFxOnX;
 	private int sameFxOnY;
@@ -86,15 +91,19 @@ public class LayoutModel {
 	public int getSameFxOnX() {
 		return sameFxOnX;
 	}
+	
 	public int getSameFxOnY() {
 		return sameFxOnY;
 	}
+	
 	public int getOfsX() {
 		return ofsX;
 	}
+	
 	public int getOfsY() {
 		return ofsY;
 	}
+	
 	public int getFxInput() {
 		return fxInput;
 	}

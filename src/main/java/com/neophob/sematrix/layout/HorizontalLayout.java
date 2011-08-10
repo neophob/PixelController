@@ -22,8 +22,21 @@ package com.neophob.sematrix.layout;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 
+/**
+ * Horizontal Layout, features:
+ *  -"unlimited" width
+ *  -exact one panels height
+ * 
+ * @author michu
+ *
+ */
 public class HorizontalLayout extends Layout {
 
+	/**
+	 * 
+	 * @param row1Size
+	 * @param row2Size
+	 */
 	public HorizontalLayout(int row1Size, int row2Size) {
 		super(LayoutName.HORIZONTAL, row1Size, row2Size);
 	}
