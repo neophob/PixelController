@@ -57,6 +57,15 @@
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 		</file>
+
+		<!-- copy the pure data gui -->
+ 		<file>
+			<source>${basedir}/data/ledgui4.pd</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>PixelController.pd</destName>
+		</file>
+
 		<!-- silly hack for the startscript -->
 		<file>
 			<source>${basedir}/target/${project.artifactId}-${project.version}.jar</source>
