@@ -51,11 +51,15 @@ public class OutputMapping {
 		this.visualId = 0;
 		this.screenNr = 0;
 		
-		Collector col = Collector.getInstance();		
 		this.fader = PixelControllerFader.getFader(FaderName.SWITCH);
-		this.effect = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
+		this.effect = Collector.getInstance().getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
 	}
 
+	/**
+	 * initialize the mapping
+	 * @param visualId
+	 * @param screenNr
+	 */
 	public OutputMapping(int visualId, int screenNr) {
 		this();
 		this.visualId = visualId;

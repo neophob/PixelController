@@ -61,7 +61,7 @@ public final class Collector {
 
 	private boolean randomMode = false;
 
-	private boolean init;
+	private boolean initialized;
 	private PApplet papplet;
 	private MatrixData matrix;
 
@@ -101,7 +101,7 @@ public final class Collector {
 
 		this.nrOfScreens = 0;
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
-		init=false;
+		initialized=false;
 
 		selectedPresent=0;
 		present = new CopyOnWriteArrayList<PresentSettings>();
@@ -119,7 +119,7 @@ public final class Collector {
 	 * @param nrOfScreens
 	 */
 	public void init(PApplet papplet, int fps, int deviceXsize, int deviceYsize) {
-		if (init) return;
+		if (initialized) return;
 		this.papplet = papplet;
 		this.nrOfScreens = PropertiesHelper.getInstance().getNrOfScreens();
 		this.fps = fps;
@@ -134,32 +134,6 @@ public final class Collector {
 		
 		new MatrixData(deviceXsize, deviceYsize);
 
-		this.initSystem();
-
-		//create an empty mapping
-		ioMapping.clear();
-		for (int n=0; n<nrOfScreens; n++) {
-			ioMapping.add(new OutputMapping(n, 0));			
-		}
-
-		//Start tcp server
-		int listeningPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.listening.port", "3449") );
-		int sendPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.send.port", "3445") );
-		
-		try {
-			pdSrv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);
-		} catch (BindException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		init=true;
-	}
-
-	/**
-	 * initialize generators, mixer, effects....
-	 */
-	private void initSystem() {
 		pixelControllerResize = new PixelControllerResize();
 		pixelControllerResize.initAll();
 
@@ -180,6 +154,25 @@ public final class Collector {
 		pixelControllerOutput.initAll();
 		
 		PropertiesHelper.getInstance().loadPresents();
+
+		//create an empty mapping
+		ioMapping.clear();
+		for (int n=0; n<nrOfScreens; n++) {
+			ioMapping.add(new OutputMapping(n, 0));			
+		}
+
+		//Start tcp server
+		int listeningPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.listening.port", "3449") );
+		int sendPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.send.port", "3445") );
+		
+		try {
+			pdSrv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);
+		} catch (BindException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		initialized=true;
 	}
 
 	/**
