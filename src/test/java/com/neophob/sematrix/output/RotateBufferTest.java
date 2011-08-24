@@ -53,7 +53,7 @@ public class RotateBufferTest {
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270);
 		assertEquals(1, ret[56]);
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270_FLIPPEDY);
-		assertEquals(ret[0], 1);
+		assertEquals(1, ret[0]);
 
 	}
 }
