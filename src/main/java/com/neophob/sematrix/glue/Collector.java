@@ -119,7 +119,10 @@ public final class Collector {
 	 * @param nrOfScreens
 	 */
 	public void init(PApplet papplet, int fps, int deviceXsize, int deviceYsize) {
-		if (initialized) return;
+		if (initialized) {
+			return;
+		}
+		
 		this.papplet = papplet;
 		this.nrOfScreens = PropertiesHelper.getInstance().getNrOfScreens();
 		this.fps = fps;
