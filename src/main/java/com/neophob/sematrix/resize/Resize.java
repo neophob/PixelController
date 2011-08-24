@@ -31,6 +31,11 @@ import java.awt.image.WritableRaster;
  */
 public abstract class Resize {
 
+	/**
+	 * 
+	 * @author michu
+	 *
+	 */
 	public enum ResizeName {
 		PIXEL_RESIZE(0),
 		QUALITY_RESIZE(1);
@@ -48,13 +53,31 @@ public abstract class Resize {
 	
 	private ResizeName resizeName;
 	
+	/**
+	 * 
+	 * @param controller
+	 * @param resizeName
+	 */
 	public Resize(PixelControllerResize controller, ResizeName resizeName) {
 		this.resizeName = resizeName;
 		controller.addResize(this);
 	}
 	
+	/**
+	 * 
+	 * @param buffer
+	 * @param deviceXSize
+	 * @param deviceYSize
+	 * @param currentXSize
+	 * @param currentYSize
+	 * @return
+	 */
 	public abstract int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize);
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getId() {
 		return this.resizeName.getId();
 	}

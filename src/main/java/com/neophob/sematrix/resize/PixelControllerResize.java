@@ -30,6 +30,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * 
+ * collector class which holds a reference to different resizer.
  * 
  * @author michu
  *
@@ -56,8 +57,6 @@ public class PixelControllerResize implements PixelControllerElement {
 	 */
 	@Override
 	public void initAll() {
-		//create effects
-		//create resizer
 		new PixelResize(this);
 		new QualityResize(this);
 	}

@@ -25,6 +25,7 @@ import com.neophob.sematrix.resize.util.ScalrOld;
 
 /**
  * 
+ * This filter is optimized for pixel oriented images
  * 
  * @author michu
  *

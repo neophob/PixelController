@@ -25,6 +25,7 @@ import com.neophob.sematrix.resize.util.ScalrOld;
 
 /**
  * 
+ * This filter is more like an area average filter
  * 
  * @author michu
  *

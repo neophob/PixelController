@@ -23,6 +23,10 @@ import java.util.List;
 
 /**
  * 
+ * interface for all collectors. used to initialize all elements during startup,
+ * get the current state from all elements (used to store presents) and update 
+ * the elements. 
+ * 
  * @author michu
  *
  */
