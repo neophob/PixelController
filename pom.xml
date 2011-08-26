@@ -335,6 +335,20 @@
 							<goal>install-file</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>artnet4j-0001.jar</id>
+						<configuration>
+							<file>lib/artnet4j-0001.jar</file>
+							<groupId>artnet4j</groupId>
+							<artifactId>artnet4j</artifactId>
+							<version>0001</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		
@@ -452,6 +466,13 @@
 			<groupId>com.neophob</groupId>
 			<artifactId>processing-blinkenlight</artifactId>
 			<version>0.5</version>
+		</dependency>
+
+		<!-- src: http://code.google.com/p/artnet4j/ -->
+   		<dependency>
+			<groupId>artnet4j</groupId>
+			<artifactId>artnet4j</artifactId>
+			<version>0001</version>
 		</dependency>
         
     </dependencies>
