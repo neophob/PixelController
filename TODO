@@ -1,2 +1,3 @@
 -Move message handling and randomizer handling out to effective classes
 -Color concept, currently we're mixing b/w, rgb and hsv, plus there is a tint effect
+-add output switching mechanism (properties helper)
