@@ -20,17 +20,11 @@
 
 package com.neophob.sematrix.output;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import artnet4j.ArtNet;
-import artnet4j.ArtNetException;
 import artnet4j.packets.ArtDmxPacket;
-
-import com.neophob.sematrix.glue.Collector;
 
 public class ArtnetOutput extends Output {
 
