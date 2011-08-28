@@ -26,11 +26,23 @@ import java.util.logging.Logger;
 import artnet4j.ArtNet;
 import artnet4j.packets.ArtDmxPacket;
 
+/**
+ * 
+ * @author michu
+ * @author Rainer Ostendorf <mail@linlab.de>
+ * 
+ * TODO:
+ *  -support for multiple devices
+ *  -support for buffer rotation
+ *  -more options in the config file
+ */
 public class ArtnetDevice extends Output {
 
 	private static Logger log = Logger.getLogger(ArtnetDevice.class.getName());
+	
 	private int sequenceID = 0;
 	private ArtNet artnet;
+	private boolean initialized;
 
 	/**
 	 * 
@@ -38,10 +50,14 @@ public class ArtnetDevice extends Output {
 	 */
 	public ArtnetDevice(PixelControllerOutput controller) {
 		super(controller, ArtnetDevice.class.toString());
+		
+		initialized = false;
 		artnet = new ArtNet();
 		artnet.init();
 		try {
 			artnet.start();
+			initialized = true;
+			log.log(Level.INFO, "ArtNet device initialized");
 		} catch (Exception e) {
 			log.log(Level.WARNING, "failed to initialize ArtNet port!");
 		}
@@ -49,30 +65,33 @@ public class ArtnetDevice extends Output {
 
 	@Override
 	public void update() {
-		sendBufferToArtnetReceiver(0, super.getBufferForScreen(0) );		
-	}
-
-	/**
-	 * 
-	 * @param artnetReceiver
-	 * @param frameBuf
-	 */
-	private void sendBufferToArtnetReceiver(int artnetReceiver, int[] frameBuf) {
-		ArtDmxPacket dmx = new ArtDmxPacket();
-		dmx.setUniverse(0, 0);
-		dmx.setSequenceID(sequenceID % 255);
-		byte[] buffer = new byte[frameBuf.length *3 ];
-		for (int i = 0; i < frameBuf.length; i++) {
-			buffer[i*3]     = (byte) ((frameBuf[i]>>16) & 0xff);
-			buffer[(i*3)+1] = (byte) ((frameBuf[i]>>8) & 0xff);
-			buffer[(i*3)+2] = (byte) ( frameBuf[i] & 0xff);
+		if (initialized) {
+			sendBufferToArtnetReceiver(0, super.getBufferForScreen(0));
 		}
-		dmx.setDMX(buffer, buffer.length);
-		artnet.unicastPacket(dmx, "192.168.2.151");
-		sequenceID++;
 	}
+	
 
-	@Override
-	public void close()	{}
+/**
+ * 
+ * @param artnetReceiver
+ * @param frameBuf
+ */
+private void sendBufferToArtnetReceiver(int artnetReceiver, int[] frameBuf) {
+	ArtDmxPacket dmx = new ArtDmxPacket();
+	dmx.setUniverse(0, 0);
+	dmx.setSequenceID(sequenceID % 255);
+	byte[] buffer = new byte[frameBuf.length *3 ];
+	for (int i = 0; i < frameBuf.length; i++) {
+		buffer[i*3]     = (byte) ((frameBuf[i]>>16) & 0xff);
+		buffer[(i*3)+1] = (byte) ((frameBuf[i]>>8) & 0xff);
+		buffer[(i*3)+2] = (byte) ( frameBuf[i] & 0xff);
+	}
+	dmx.setDMX(buffer, buffer.length);
+	artnet.unicastPacket(dmx, "192.168.2.151");
+	sequenceID++;
+}
+
+@Override
+public void close()	{}
 }
 
