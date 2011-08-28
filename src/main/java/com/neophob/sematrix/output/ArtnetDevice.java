@@ -26,16 +26,18 @@ import java.util.logging.Logger;
 import artnet4j.ArtNet;
 import artnet4j.packets.ArtDmxPacket;
 
-public class ArtnetOutput extends Output {
+public class ArtnetDevice extends Output {
 
-	private static Logger log = Logger.getLogger(ArtnetOutput.class.getName());
-
+	private static Logger log = Logger.getLogger(ArtnetDevice.class.getName());
 	private int sequenceID = 0;
-
 	private ArtNet artnet;
 
-	public ArtnetOutput(PixelControllerOutput controller) {
-		super(controller, ArtnetOutput.class.toString());
+	/**
+	 * 
+	 * @param controller
+	 */
+	public ArtnetDevice(PixelControllerOutput controller) {
+		super(controller, ArtnetDevice.class.toString());
 		artnet = new ArtNet();
 		artnet.init();
 		try {
@@ -50,6 +52,11 @@ public class ArtnetOutput extends Output {
 		sendBufferToArtnetReceiver(0, super.getBufferForScreen(0) );		
 	}
 
+	/**
+	 * 
+	 * @param artnetReceiver
+	 * @param frameBuf
+	 */
 	private void sendBufferToArtnetReceiver(int artnetReceiver, int[] frameBuf) {
 		ArtDmxPacket dmx = new ArtDmxPacket();
 		dmx.setUniverse(0, 0);

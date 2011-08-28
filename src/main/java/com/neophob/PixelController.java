@@ -53,7 +53,7 @@ public class PixelController extends PApplet {
 
 	//Output rainbowduino;
 	Lpd6803Device lpd6803;
-	//ArtnetOutput artnet;
+	//ArtnetDevice artnet;
 	
 	NewWindowHelper nwh;
 	long lastHeartbeat;
@@ -89,7 +89,7 @@ public class PixelController extends PApplet {
 			lpd6803 = null;
 		}
 		
-		//artnet = new ArtnetOutput(col.getPixelControllerOutput() );
+		//artnet = new ArtnetDevice(col.getPixelControllerOutput() );
 
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
