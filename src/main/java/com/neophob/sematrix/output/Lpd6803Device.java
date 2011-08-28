@@ -50,9 +50,10 @@ public class Lpd6803Device extends Output {
 	long needUpdate, noUpdate;
 
 	/**
-	 * init the lpd6803 devices 
-	 * @param allI2COutputs a list containing all i2c slave addresses
-	 * 
+	 * init the lpd6803 devices
+	 * @param controller
+	 * @param displayOptions
+	 * @param colorFormat
 	 */
 	public Lpd6803Device(PixelControllerOutput controller, List<DeviceConfig> displayOptions,
 			List<ColorFormat> colorFormat) {
