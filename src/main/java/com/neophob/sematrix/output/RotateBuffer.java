@@ -33,9 +33,6 @@ import com.neophob.sematrix.properties.DeviceConfig;
  */
 public final class RotateBuffer {
 
-	//TODO baaad!
-	private static int deviceXSize = 8;
-
 	private static final Logger LOG = Logger.getLogger(RotateBuffer.class.getName());
 
 	private RotateBuffer() {
@@ -47,11 +44,11 @@ public final class RotateBuffer {
 	 * @param buffer
 	 * @return
 	 */
-	private static int[] rotate90(int[] buffer) {
-		int[] ret = new int[deviceXSize*deviceXSize];
+	private static int[] rotate90(int[] buffer, int deviceXSize, int deviceYSize) {
+		int[] ret = new int[deviceXSize*deviceYSize];
 		int ofs=0;
 		for (int x=0; x<deviceXSize; x++) {			
-			for (int y=0; y<deviceXSize; y++) {
+			for (int y=0; y<deviceYSize; y++) {
 				ret[deviceXSize*y+deviceXSize-1-x] = buffer[ofs++];
 			}
 		}
@@ -63,25 +60,33 @@ public final class RotateBuffer {
 	 * @param buffer
 	 * @return
 	 */
-	private static int[] flipY(int[] buffer) {
-		int[] ret = new int[deviceXSize*deviceXSize];
-		int ofs=0;
-		for (int x=0; x<deviceXSize; x++) {			
-			for (int y=0; y<deviceXSize; y++) {
-				//flipX
-				//ret[deviceXSize-1-y+x*deviceXSize] = buffer[ofs++];
-				ret[(deviceXSize-1-x)*deviceXSize+y] = buffer[ofs++];
+	private static int[] flipY(int[] buffer, int deviceXSize, int deviceYSize) {
+		int[] ret = new int[deviceXSize*deviceYSize];
+		for (int y=0; y<deviceYSize; y++) {
+			int ofsSrc=y*deviceXSize;
+			int ofsDst=(deviceYSize-1-y)*deviceXSize;
+			for (int x=0; x<deviceXSize; x++) {							
+				ret[x+ofsDst] = buffer[x+ofsSrc];
 			}
 		}
 		return ret;
 	}
 
-	private static int[] rotate180(int[] buffer) {
-		int[] ret = new int[deviceXSize*deviceXSize];
+	/**
+	 * 
+	 * @param buffer
+	 * @param deviceXSize
+	 * @param deviceYSize
+	 * @return
+	 */
+	private static int[] rotate180(int[] buffer, int deviceXSize, int deviceYSize) {
+		int[] ret = new int[deviceXSize*deviceYSize];
 		int ofs=0;
+		int dst=deviceXSize*deviceYSize-1;
 		for (int x=0; x<deviceXSize; x++) {			
-			for (int y=0; y<deviceXSize; y++) {
-				ret[deviceXSize-1-y + (deviceXSize-1-x)*deviceXSize] = buffer[ofs++];
+			for (int y=0; y<deviceYSize; y++) {
+//				ret[deviceXSize-1-y + (deviceXSize-1-x)*deviceXSize] = buffer[ofs++];
+				ret[dst--] = buffer[ofs++];
 			}
 		}
 		return ret;
@@ -93,14 +98,12 @@ public final class RotateBuffer {
 	 * @param buffer
 	 * @return
 	 */
-	private static int[] rotate270(int[] buffer) {
-		int[] ret = new int[deviceXSize*deviceXSize];
+	private static int[] rotate270(int[] buffer, int deviceXSize, int deviceYSize) {
+		int[] ret = new int[deviceXSize*deviceYSize];
 		int ofs=0;
 		for (int x=0; x<deviceXSize; x++) {			
-			for (int y=0; y<deviceXSize; y++) {
+			for (int y=0; y<deviceYSize; y++) {
 				ret[x+deviceXSize*(deviceXSize-1-y)] = buffer[ofs++];
-				//flip at 0.0
-				//ret[x+deviceXSize*y] = buffer[ofs++];
 			}
 		}
 		return ret;
@@ -111,9 +114,11 @@ public final class RotateBuffer {
 	 * 
 	 * @param buffer
 	 * @param deviceConfig
+	 * @param deviceXSize the device size of the matrix
+	 * @param deviceYSize
 	 * @return
 	 */
-	public static int[] transformImage(int[] buffer, DeviceConfig deviceConfig) {
+	public static int[] transformImage(int[] buffer, DeviceConfig deviceConfig, int deviceXSize, int deviceYSize) {
 
 		if (deviceXSize==0) {
 			deviceXSize = Collector.getInstance().getMatrix().getDeviceXSize();
@@ -124,27 +129,30 @@ public final class RotateBuffer {
 			return buffer;
 
 		case ROTATE_90:
-			return rotate90(buffer);			
+			return rotate90(buffer, deviceXSize, deviceYSize);			
 
 		case ROTATE_90_FLIPPEDY:
-			return flipY(
-					rotate90(buffer)
+/*			return flipY(
+					rotate90(buffer, deviceXSize, deviceYSize), 
+					deviceXSize, deviceYSize
 			);
-
+*/
 		case ROTATE_180:
-			return rotate180(buffer);
+			return rotate180(buffer, deviceXSize, deviceYSize);
 
 		case ROTATE_180_FLIPPEDY:
 			return flipY( 
-					rotate180(buffer) 
+					rotate180(buffer, deviceXSize, deviceYSize),
+					deviceXSize, deviceYSize
 			);
 
 		case ROTATE_270:
-			return rotate270(buffer);
+			return rotate270(buffer, deviceXSize, deviceYSize);
 
 		case ROTATE_270_FLIPPEDY:
 			return flipY(
-					rotate270(buffer)
+					rotate270(buffer, deviceXSize, deviceYSize),
+					deviceXSize, deviceYSize
 			);
 
 		default:

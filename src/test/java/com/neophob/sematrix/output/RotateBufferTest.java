@@ -24,7 +24,7 @@ public class RotateBufferTest {
 	}
 	
 	@Test
-	public void rotateTest() {
+	public void rotateTest8x8() {
 		int[] ret;
 		int[] buffer = new int[] {
 			1,2,3,0,0,0,0,0,
@@ -37,23 +37,52 @@ public class RotateBufferTest {
 			0,0,0,0,0,0,0,4
 		};
 		
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.NO_ROTATE);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.NO_ROTATE, 8, 8);
 		assertEquals(1, ret[0]);
 
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90, 8, 8);
 		assertEquals(1, ret[7]);
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90_FLIPPEDY);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90_FLIPPEDY, 8, 8);
 		assertEquals(1, ret[63]);
 
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180, 8, 8);
 		assertEquals(1, ret[63]);
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180_FLIPPEDY);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180_FLIPPEDY, 8, 8);
 		assertEquals(1, ret[7]);
 
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270, 8, 8);
 		assertEquals(1, ret[56]);
-		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270_FLIPPEDY);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270_FLIPPEDY, 8, 8);
+		assertEquals(1, ret[0]);
+	}
+
+	@Test
+	public void rotateTest8x4() {
+		int[] ret;
+		int[] buffer = new int[] {
+			1,2,3,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,4
+		};
+		
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.NO_ROTATE, 8, 4);
 		assertEquals(1, ret[0]);
 
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90, 8, 4);
+		assertEquals(1, ret[7]);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90_FLIPPEDY, 8, 4);
+		assertEquals(1, ret[31]);
+
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180, 8, 4);
+		assertEquals(1, ret[31]);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180_FLIPPEDY, 8, 4);
+		assertEquals(1, ret[7]);
+
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270, 8, 4);
+		assertEquals(1, ret[24]);
+		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270_FLIPPEDY, 8, 4);
+		assertEquals(1, ret[0]);
 	}
+
 }
