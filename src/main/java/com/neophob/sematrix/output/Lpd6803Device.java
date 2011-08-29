@@ -47,7 +47,7 @@ public class Lpd6803Device extends Output {
 	private Lpd6803 lpd6803 = null;
 	private boolean initialized;
 	
-	long needUpdate, noUpdate;
+	private long needUpdate, noUpdate;
 
 	/**
 	 * init the lpd6803 devices
