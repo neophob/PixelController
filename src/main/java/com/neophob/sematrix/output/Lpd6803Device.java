@@ -113,7 +113,8 @@ public class Lpd6803Device extends Output {
 			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
 				//draw only on available screens!
 				int[] transformedBuffer = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs));
+					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs),
+							Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
 				if (lpd6803.sendRgbFrame((byte)ofs, transformedBuffer, colorFormat.get(ofs))) {
 					needUpdate++;
