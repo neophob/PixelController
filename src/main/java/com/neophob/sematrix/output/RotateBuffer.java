@@ -85,7 +85,6 @@ public final class RotateBuffer {
 		int dst=deviceXSize*deviceYSize-1;
 		for (int x=0; x<deviceXSize; x++) {			
 			for (int y=0; y<deviceYSize; y++) {
-//				ret[deviceXSize-1-y + (deviceXSize-1-x)*deviceXSize] = buffer[ofs++];
 				ret[dst--] = buffer[ofs++];
 			}
 		}
@@ -99,14 +98,17 @@ public final class RotateBuffer {
 	 * @return
 	 */
 	private static int[] rotate270(int[] buffer, int deviceXSize, int deviceYSize) {
-		int[] ret = new int[deviceXSize*deviceYSize];
+/*		int[] ret = new int[deviceXSize*deviceYSize];
 		int ofs=0;
 		for (int x=0; x<deviceXSize; x++) {			
 			for (int y=0; y<deviceYSize; y++) {
 				ret[x+deviceXSize*(deviceXSize-1-y)] = buffer[ofs++];
 			}
 		}
-		return ret;
+		return ret;*/
+		return rotate180(
+				rotate90(buffer, deviceXSize, deviceYSize),
+				deviceXSize, deviceYSize);
 	}
 
 	/**
