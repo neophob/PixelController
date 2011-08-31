@@ -299,10 +299,10 @@ public class MiniDmxSerial {
 	/**
 	 * send a frame to the miniDMX device. 
 	 * 
-	 *   $5A - Blockstart 
-	 *   $A0 - Befehl: DMX-Out mit 96 Kanäle 
-	 *   96 Bytes für die Kanäle 1 bis 96 
-	 *   $A5 - Blockende 
+	 *   0x5A - start of block 
+	 *   0xA0 - DMX-Out using 96 channels 
+	 *          96 Bytes payload
+	 *   0xA5 - end of block 
 	 *   
 	 *   instead of a0h (96b):
 	 *    -a1h: 256b
