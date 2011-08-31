@@ -115,10 +115,9 @@ public class Lpd6803 {
 	
 	
 	/**
-	 * Create a new instance to communicate with the rainbowduino.
+	 * Create a new instance to communicate with the lpd6803 device.
 	 * 
 	 * @param _app
-	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
 	public Lpd6803(PApplet app) throws NoSerialPortFoundException {
@@ -126,10 +125,9 @@ public class Lpd6803 {
 	}
 
 	/**
-	 * Create a new instance to communicate with the rainbowduino.
+	 * Create a new instance to communicate with the lpd6803 device.
 	 * 
 	 * @param _app
-	 * @param rainbowduinoAddr
 	 * @param baud
 	 * @throws NoSerialPortFoundException
 	 */
@@ -138,10 +136,9 @@ public class Lpd6803 {
 	}
 
 	/**
-	 * Create a new instance to communicate with the rainbowduino.
+	 * Create a new instance to communicate with the lpd6803 device.
 	 * 
 	 * @param _app
-	 * @param rainbowduinoAddr
 	 * @param portName
 	 * @throws NoSerialPortFoundException
 	 */
@@ -151,12 +148,11 @@ public class Lpd6803 {
 
 
 	/**
-	 * Create a new instance to communicate with the rainbowduino.
+	 * Create a new instance to communicate with the lpd6803 device.
 	 * 
 	 * @param _app
 	 * @param portName
 	 * @param baud
-	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
 	public Lpd6803(PApplet _app, String portName, int baud) throws NoSerialPortFoundException {
@@ -224,7 +220,7 @@ public class Lpd6803 {
 	/**
 	 * return connection state of lib 
 	 * 
-	 * @return wheter rainbowudino is connected
+	 * @return whether a lpd6803 device is connected
 	 */
 	public boolean connected() {
 		return (port != null);
@@ -303,8 +299,8 @@ public class Lpd6803 {
 	
 	
 	/**
-	 * wrapper class to send a RGB image to the rainbowduino.
-	 * the rgb image gets converted to the rainbowduino compatible
+	 * wrapper class to send a RGB image to the lpd6803 device.
+	 * the rgb image gets converted to the lpd6803 device compatible
 	 * "image format"
 	 * 
 	 * @param ofs the image ofs
@@ -343,8 +339,7 @@ public class Lpd6803 {
 	}
 	
 	/**
-	 * send a frame to the active rainbowduino the data needs to be in this format:
-	 * buffer[3][8][4], The array to be sent formatted as [color][row][dots]   
+	 * send a frame to the active lpd6803 device. 
 	 * 
 	 * @param ofs - the offset get multiplied by 32 on the arduino!
 	 * @param data byte[3*8*4]
