@@ -34,24 +34,30 @@ public class RotateBufferTest {
 			0,0,0,0,0,0,0,0,
 			0,0,0,0,0,0,0,0,
 			0,0,0,0,0,0,0,0,
-			0,0,0,0,0,0,0,4
+			9,0,0,0,0,0,0,4
 		};
 		
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.NO_ROTATE, 8, 8);
 		assertEquals(1, ret[0]);
+		assertEquals(2, ret[1]);
 
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90, 8, 8);
 		assertEquals(1, ret[7]);
+		assertEquals(2, ret[15]);
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_90_FLIPPEDY, 8, 8);
 		assertEquals(1, ret[63]);
+		assertEquals(2, ret[55]);
 
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180, 8, 8);
 		assertEquals(1, ret[63]);
+		assertEquals(2, ret[62]);
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_180_FLIPPEDY, 8, 8);
 		assertEquals(1, ret[7]);
+		assertEquals(2, ret[6]);
 
 		ret = RotateBuffer.transformImage(buffer, DeviceConfig.ROTATE_270, 8, 8);
 		assertEquals(1, ret[56]);
+		assertEquals(2, ret[48]);
 	}
 
 	@Test
