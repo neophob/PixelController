@@ -134,11 +134,11 @@ public final class RotateBuffer {
 			return rotate90(buffer, deviceXSize, deviceYSize);			
 
 		case ROTATE_90_FLIPPEDY:
-/*			return flipY(
+			return flipY(
 					rotate90(buffer, deviceXSize, deviceYSize), 
 					deviceXSize, deviceYSize
 			);
-*/
+
 		case ROTATE_180:
 			return rotate180(buffer, deviceXSize, deviceYSize);
 
@@ -151,14 +151,8 @@ public final class RotateBuffer {
 		case ROTATE_270:
 			return rotate270(buffer, deviceXSize, deviceYSize);
 
-		case ROTATE_270_FLIPPEDY:
-			return flipY(
-					rotate270(buffer, deviceXSize, deviceYSize),
-					deviceXSize, deviceYSize
-			);
-
 		default:
-			LOG.log(Level.SEVERE, "invalid device config: {0}", deviceConfig);			
+			LOG.log(Level.SEVERE, "Invalid device config: {0}", deviceConfig);			
 			break;
 		}
 		return null;
