@@ -338,13 +338,13 @@ public class MiniDmxSerial {
 			break;
 		default:
 			log.log(Level.WARNING, "Invalid targetBuffersize: {0}", targetBuffersize);
-			break;
+			return false;
 		}
 		System.arraycopy(data, 0, cmdfull, 2, targetBuffersize);
 		cmdfull[targetBuffersize+2] = END_OF_BLOCK;
 
+		//send frame only if needed
 		if (didFrameChange(data)) {
-			
 			if (sendSerialData(cmdfull)) {
 				return true;
 			} else {
@@ -589,6 +589,21 @@ public class MiniDmxSerial {
 		return converted;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public int getConnectionErrorCounter() {
+		return connectionErrorCounter;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public long getAckErrors() {
+		return ackErrors;
+	}
 
 
 }
