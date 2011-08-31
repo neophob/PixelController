@@ -58,7 +58,7 @@ import com.neophob.sematrix.properties.ColorFormat;
  * created for ledstyles.de 
  * <br><br>
  * 
- * TODO: does not work yet
+ * TODO: guess it does not work yet, as its untested
  * 
  * @author Michael Vogt / neophob.com
  *
@@ -72,8 +72,21 @@ public class MiniDmxSerial {
 	 */
 	public static final String VERSION = "1.0";
 
+	private static final byte START_OF_BLOCK = (byte)0x5a;
+	private static final byte END_OF_BLOCK   = (byte)0xa5;
+
+	private static final byte REPLY_SUCCESS  = (byte)0xc1;
+	private static final byte REPLY_ERROR    = (byte)0xc0;
+	
+	private static final byte SEND_96_BYTES    = (byte)0xa0;
+	private static final byte SEND_256_BYTES   = (byte)0xa1;
+	private static final byte SEND_512_BYTES   = (byte)0xa2;
+	private static final byte SEND_768_BYTES   = (byte)0xa3;
+	private static final byte SEND_3072_BYTES  = (byte)0xa4;
+	
 	//connection errors to arduino, TODO: use it!
 	private int connectionErrorCounter;
+	private long ackErrors = 0;
 
 	private int targetBuffersize;
 	
@@ -130,8 +143,13 @@ public class MiniDmxSerial {
 		
 		lastDataMap = "";
 		
-		String serialPortName="";
-		this.targetBuffersize = targetBuffersize;
+		String serialPortName="";	
+		if (targetBuffersize == 96 || targetBuffersize == 256 || targetBuffersize == 512 || targetBuffersize == 768 || targetBuffersize == 3072) {
+			this.targetBuffersize = targetBuffersize;
+		} else {
+			log.log(Level.SEVERE, "Invalid buffer size selected: {0}"+targetBuffersize);
+			throw new NoSerialPortFoundException("Invalid buffer size selected: "+targetBuffersize);
+		}
 		
 		if (portName!=null && !portName.trim().isEmpty()) {
 			//open specific port
@@ -249,7 +267,7 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(int[] data, ColorFormat colorFormat) {
-		return sendFrame(convertBufferTo15bit(data, colorFormat));
+		return sendFrame(convertBufferTo24bit(data, colorFormat));
 	}
 
 
@@ -279,14 +297,62 @@ public class MiniDmxSerial {
 	}
 	
 	/**
-	 * send a frame to the miniDMX device.   
+	 * send a frame to the miniDMX device. 
+	 * 
+	 *   $5A - Blockstart 
+	 *   $A0 - Befehl: DMX-Out mit 96 Kanäle 
+	 *   96 Bytes für die Kanäle 1 bis 96 
+	 *   $A5 - Blockende 
+	 *   
+	 *   instead of a0h (96b):
+	 *    -a1h: 256b
+	 *    -a2h: 512b
+	 *    -
 	 * 
 	 * @param ofs - the offset get multiplied by 32 on the arduino!
 	 * @param data byte[3*8*4]
 	 * @return true if send was successful
 	 */
 	public boolean sendFrame(byte data[]) throws IllegalArgumentException {		
-		//TODO
+		if (data.length!=targetBuffersize) {
+			throw new IllegalArgumentException("data lenght must be "+targetBuffersize+" bytes!");
+		}
+		byte cmdfull[] = new byte[targetBuffersize+3];
+		
+		cmdfull[0] = START_OF_BLOCK;
+		switch (targetBuffersize) {
+		case 96:
+			cmdfull[1] = SEND_96_BYTES;
+			break;
+		case 256:
+			cmdfull[1] = SEND_256_BYTES;
+			break;
+		case 512:
+			cmdfull[1] = SEND_512_BYTES;
+			break;
+		case 768:
+			cmdfull[1] = SEND_768_BYTES;
+			break;
+		case 3072:
+			cmdfull[1] = SEND_3072_BYTES;
+			break;
+		default:
+			log.log(Level.WARNING, "Invalid targetBuffersize: {0}", targetBuffersize);
+			break;
+		}
+		System.arraycopy(data, 0, cmdfull, 2, targetBuffersize);
+		cmdfull[targetBuffersize+2] = END_OF_BLOCK;
+
+		if (didFrameChange(data)) {
+			
+			if (sendSerialData(cmdfull)) {
+				return true;
+			} else {
+				//in case of an error, make sure we send it the next time!
+				lastDataMap="";
+			}
+		}
+
 		return false;
 	}
 	
@@ -319,8 +385,6 @@ public class MiniDmxSerial {
 			throw new SerialPortException("port is not ready!");
 		}
 		
-		//log.log(Level.INFO, "Serial Wire Size: {0}", cmdfull.length);
-
 		try {
 			port.output.write(cmdfull);
 			//port.output.flush();
@@ -334,11 +398,60 @@ public class MiniDmxSerial {
 	}
 	
 	/**
-	 * read data from serial port, wait for ACK
+	 * read data from serial port, wait for ACK, miniDMX should send 
+	 * 
+	 * 0x5A - start of block 
+	 * 0xC1 - success 
+	 * 0xA5 - end of block
+	 *
+	 * 0x5A - start of block 
+	 * 0xC0 - ERROR 
+	 * 0xA5 - end of block
+	 * 
+	 * after 100ms
+	 * 
 	 * @return true if ack received, false if not
 	 */
 	private synchronized boolean waitForAck() {		
-		//TODO
+
+		long start = System.currentTimeMillis();
+		int timeout=8; //wait up to 24ms
+		while (timeout > 0 && port.available() < 2) {
+			sleep(4); //in ms
+			timeout--;
+		}
+
+		if (timeout == 0 && port.available() < 2) {
+			log.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);
+			ackErrors++;
+			return false;
+		}
+		
+		//we need at least 3 bytes for a correct reply
+		byte[] msg = port.readBytes();
+		if (msg.length<3) {
+			log.log(Level.INFO, "#### less than 3 bytes of data receieved: {0}ms ###", System.currentTimeMillis()-start);
+			ackErrors++;
+			return false;
+		}
+		
+		int ofs=0;
+		for (byte b:msg) {
+			if (b==START_OF_BLOCK && msg.length-ofs>2 && msg[ofs+2]==END_OF_BLOCK) {
+				byte ack = msg[ofs+1];
+				if (ack==REPLY_SUCCESS) {
+					return true;
+				}
+				if (ack==REPLY_ERROR) {
+					log.log(Level.INFO, "#### Invalid reply: {0}ms ###", System.currentTimeMillis()-start);
+					return true;
+				}
+				log.log(Level.INFO, "#### Unknown reply: {0} ###", ack);
+				
+			}
+			ofs++;
+		}
+		
 		return false;		
 	}
 
@@ -356,6 +469,59 @@ public class MiniDmxSerial {
 		catch(InterruptedException e) {
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * @param data
+	 * @param colorFormat
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
+		if (data.length!=targetBuffersize) {
+			throw new IllegalArgumentException("data lenght must be "+targetBuffersize+" bytes!");
+		}
+
+		int[] r = new int[targetBuffersize];
+		int[] g = new int[targetBuffersize];
+		int[] b = new int[targetBuffersize];
+		int tmp;
+		int ofs=0;
+
+		//step#1: split up r/g/b 
+		for (int n=0; n<targetBuffersize; n++) {
+			//one int contains the rgb color
+			tmp = data[ofs];
+
+			switch (colorFormat) {
+			case RGB:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				g[ofs] = (int) ((tmp>>8)  & 255);
+				b[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			case RBG:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				b[ofs] = (int) ((tmp>>8)  & 255);
+				g[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			}
+			ofs++;
+		}
+
+		ofs=0;
+		byte[] buffer = new byte[targetBuffersize*3];
+		for (int i=0; i<targetBuffersize; i++) {
+			buffer[ofs++] = (byte)r[i];
+			buffer[ofs++] = (byte)g[i];
+			buffer[ofs++] = (byte)b[i];
+		}
+		
+		return buffer;
+	}
+
 	
 	/**
 	 * 

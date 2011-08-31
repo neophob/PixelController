@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
+import com.neophob.sematrix.properties.ColorFormat;
 
 /**
  * Send data to a miniDMX Device via serial line
@@ -40,8 +41,6 @@ public class MiniDmxDevice extends Output {
 	
 	MiniDmxSerial miniDmx;
 	
-	private static final byte START_BYTE = 0x5A;
-		
 	private boolean initialized;
 	private int xSize;
 	private int ySize;
@@ -72,19 +71,9 @@ public class MiniDmxDevice extends Output {
 	 */
 	public void update() {
 		
-		if (initialized) {			
-/*			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
-				//draw only on available screens!
-				int[] transformedBuffer = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs));
-				
-				if (lpd6803.sendRgbFrame((byte)ofs, transformedBuffer, colorFormat.get(ofs))) {
-					needUpdate++;
-				} else {
-					noUpdate++;
-				}
-			}			
-		}*/
+		if (initialized) {	
+			miniDmx.sendRgbFrame(super.getBufferForScreen(0), ColorFormat.RBG);
+		}
 	}
 
 
