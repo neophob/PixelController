@@ -33,15 +33,12 @@ import com.neophob.sematrix.glue.Collector;
  * @author michu
  *
  */
-public class RainbowduinoDevice extends Output {
+public class RainbowduinoDevice extends ArduinoOutput {
 
 	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
 	
 	private List<Integer> allI2cAddress;
 	private Rainbowduino rainbowduino = null;
-	private boolean initialized;
-	
-	long needUpdate, noUpdate;
 
 	/**
 	 * init the rainbowduino devices 
@@ -61,7 +58,6 @@ public class RainbowduinoDevice extends Output {
 		}
 		
 	}
-	
 
 	public long getLatestHeartbeat() {
 		if (initialized) {
