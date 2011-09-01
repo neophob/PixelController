@@ -35,7 +35,7 @@ import com.neophob.sematrix.properties.DeviceConfig;
  * @author michu
  *
  */
-public class Lpd6803Device extends Output {
+public class Lpd6803Device extends ArduinoOutput {
 
 	private static Logger log = Logger.getLogger(Lpd6803Device.class.getName());
 		
@@ -45,9 +45,6 @@ public class Lpd6803Device extends Output {
 	private List<ColorFormat> colorFormat;
 	
 	private Lpd6803 lpd6803 = null;
-	private boolean initialized;
-	
-	private long needUpdate, noUpdate;
 
 	/**
 	 * init the lpd6803 devices
@@ -71,10 +68,6 @@ public class Lpd6803Device extends Output {
 		}
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
 	public long getLatestHeartbeat() {
 		if (initialized) {
 			return lpd6803.getArduinoHeartbeat();			
@@ -82,10 +75,6 @@ public class Lpd6803Device extends Output {
 		return -1;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int getArduinoBufferSize() {
 		if (initialized) {
 			return lpd6803.getArduinoBufferSize();			
@@ -93,10 +82,6 @@ public class Lpd6803Device extends Output {
 		return -1;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public int getArduinoErrorCounter() {
 		if (initialized) {
 			return lpd6803.getArduinoErrorCounter();			

@@ -26,8 +26,13 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.ArduinoOutput;
+import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
+import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.OutputDeviceEnum;
+import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.emulatorhelper.NewWindowHelper;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
@@ -51,9 +56,7 @@ public class PixelController extends PApplet {
 	public static final int FPS = 20;
 	//96*2*25 = 4800bytes
 
-	//Output rainbowduino;
-	Lpd6803Device lpd6803;
-	//ArtnetDevice artnet;
+	Output output;
 	
 	NewWindowHelper nwh;
 	long lastHeartbeat;
@@ -77,20 +80,24 @@ public class PixelController extends PApplet {
 		osd = new MatrixEmulator(col.getPixelControllerOutput());
 		PropertiesHelper ph = PropertiesHelper.getInstance();
 		
-/*		try {
-			rainbowduino = new RainbowduinoDevice(PropertiesHelper.getAllI2cAddress());
-		} catch (Exception e) {
-			rainbowduino = null;
-		}*/
+		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
 		try {
-			lpd6803 = new Lpd6803Device(
-					col.getPixelControllerOutput(), ph.getLpdDevice(), ph.getColorFormat() );
+			switch (outputDeviceEnum) {
+			case LPD6803:
+				this.output = new Lpd6803Device(col.getPixelControllerOutput(), ph.getLpdDevice(), ph.getColorFormat());
+				break;
+			case RAINBOWDUINO:
+				this.output = new RainbowduinoDevice(col.getPixelControllerOutput(), ph.getI2cAddr());
+				break;
+			case ARTNET:
+				this.output = new ArtnetDevice(col.getPixelControllerOutput());
+				break;
+			default:
+				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
+			}
 		} catch (Exception e) {
-			lpd6803 = null;
+			log.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
-		
-		//artnet = new ArtnetDevice(col.getPixelControllerOutput() );
-
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			nwh = new NewWindowHelper(true);	
@@ -103,16 +110,19 @@ public class PixelController extends PApplet {
  
 		Collector.getInstance().updateSystem();
 
-		if (lpd6803!=null && lpd6803.getArduinoErrorCounter()>0) {
-			error=lpd6803.getArduinoErrorCounter();			
-			log.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}", 
-					new Object[] {
-						new Date(lpd6803.getLatestHeartbeat()).toGMTString(),
-						error,
-						lpd6803.getArduinoBufferSize()
-					});
+		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
+			ArduinoOutput arduinoOutput = (ArduinoOutput) this.output;
+			if (arduinoOutput.getArduinoErrorCounter() > 0) {
+				this.error = arduinoOutput.getArduinoErrorCounter();
+				log.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
+						new Object[] {
+							new Date(arduinoOutput.getLatestHeartbeat()).toGMTString(),
+							this.error,
+							arduinoOutput.getArduinoBufferSize()
+						}
+				);
+			}
 		}
-
 		frameCounter++;
 	}
 
