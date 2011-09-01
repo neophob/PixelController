@@ -328,12 +328,24 @@ public final class PropertiesHelper {
 	}
 
 	/**
+	 * get configured artnet ip
+	 * @return
+	 */
+	public String getArtNetIp() {
+		return config.getProperty("artnet.ip");
+	}
+	
+	/**
 	 * 
 	 * @return
 	 */
 	private int parseArtNetDevices() {
-		//TODO
-		//devicesInRow1=1;
+		//minimal ip length 1.1.1.1
+		if (StringUtils.length(getArtNetIp())>6) {
+			devicesInRow1=1;
+			return 1;
+		}
+		
 		return 0;
 	}
 
