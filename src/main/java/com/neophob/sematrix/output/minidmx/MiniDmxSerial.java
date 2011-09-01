@@ -252,8 +252,10 @@ public class MiniDmxSerial {
 	 * @return wheter ping was successfull (arduino reachable) or not
 	 */
 	public boolean ping() {		
-		//TODO
-		return false;
+		byte data[] = new byte[512];
+		
+		//just send a frame
+		return sendFrame(data);
 	}
 	
 	
