@@ -82,38 +82,47 @@ public final class PropertiesHelper {
 		}
 
 		int rainbowduinoDevices = parseI2cAddress();
-		int lpdDevices = parseLpdAddress();
+		int pixelInvadersDevices = parseLpdAddress();
+		int artnetDevices = parseArtNetDevices();
+		int miniDmxDevices = parseMiniDmxDevices();
 
-		if (rainbowduinoDevices>0 && lpdDevices>0) {
-			log.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED);
+		//track how many output systems are enabled
+		int enabledOutputs = 0;
+		
+		//track how many ouput devices are configured
+		int totalDevices = 0;
+		
+		if (rainbowduinoDevices > 0) {
+			enabledOutputs++;
+			totalDevices = rainbowduinoDevices;
+			this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
+		}  
+		if (pixelInvadersDevices > 0) {
+			enabledOutputs++;
+			totalDevices = pixelInvadersDevices;
+			this.outputDeviceEnum = OutputDeviceEnum.LPD6803;
+		}
+		if (artnetDevices > 0) {
+			enabledOutputs++;
+			totalDevices = artnetDevices;
+			this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
+		}
+		if (miniDmxDevices > 0) {
+			enabledOutputs++;
+			totalDevices = miniDmxDevices;
+			this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
+		} 
+		
+		if (enabledOutputs>1) {
+			log.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
 			throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
 		}
 
-		if (devicesInRow1==0 && devicesInRow2==0) {
+		if (enabledOutputs==0 || totalDevices==0 || devicesInRow1==0 && devicesInRow2==0) {
 			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
 			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
 		}
-		
-		if (rainbowduinoDevices > 0) {
-			this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
-		} else if (lpdDevices > 0) {
-			this.outputDeviceEnum = OutputDeviceEnum.LPD6803;
-		// TODO: Artnet device detection / configuration values
-		} else {
-			throw new IllegalArgumentException(ERROR_UNKNOWN_DEVICES_CONFIGURATED);
-		}
-		
-		//check that at least one device is configured,,
-		int totalDevices = rainbowduinoDevices;
-		if (totalDevices==0) {
-			totalDevices = lpdDevices;
-		}
-
-		if (totalDevices==0) {
-			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
-			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
-		}
-
+				
 		//add default color format RGB is nothing is configured
 		int nrOfColorFormat = getColorFormatFromCfg();
 		if (nrOfColorFormat==0) {
@@ -289,6 +298,25 @@ public final class PropertiesHelper {
 		return i2cAddr.size();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	private int parseArtNetDevices() {
+		//TODO
+		return 0;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private int parseMiniDmxDevices() {
+		//TODO
+		return 0;
+	}
+
+	
 	/**
 	 * 
 	 * @return
