@@ -36,14 +36,16 @@ public class InternalBuffer extends PApplet {
 	 */
 	private static final long serialVersionUID = 2344499301021L;
 
-	private static final int BFR_X = 128;
-	private static final int BFR_Y = 128;
+	//private static final int BFR_X = 128;
+	//private static final int BFR_Y = 128;
 	
 	static Logger log = Logger.getLogger(InternalBuffer.class.getName());
 
 	private boolean displayHoriz;
 	private int x,y;
 	private PImage pImage=null;
+	
+	private int targetXSize, targetYSize;
 
 	/**
 	 * 
@@ -51,10 +53,12 @@ public class InternalBuffer extends PApplet {
 	 * @param x
 	 * @param y
 	 */
-	public InternalBuffer(boolean displayHoriz, int x, int y) {
+	public InternalBuffer(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
 		this.displayHoriz = displayHoriz;
 		this.x = x;
 		this.y = y;
+		this.targetXSize = targetXSize;
+		this.targetYSize = targetYSize;
 	}
 	
 	/**
@@ -63,6 +67,7 @@ public class InternalBuffer extends PApplet {
     public void setup() {
     	log.log(Level.INFO, "create frame with size "+x+"/"+y);
         size(x,y);
+        noSmooth();
         frameRate(Collector.getInstance().getFps());
         background(0,0,0);
     }
@@ -76,18 +81,18 @@ public class InternalBuffer extends PApplet {
 		
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
 			//get image
-			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), BFR_X, BFR_Y);
+			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
 			
 			if (pImage==null) {
 				//create an image out of the buffer
-		 		pImage = Collector.getInstance().getPapplet().createImage( BFR_X, BFR_Y, PApplet.RGB );				
+		 		pImage = Collector.getInstance().getPapplet().createImage(targetXSize, targetYSize, PApplet.RGB );				
 			}
 			pImage.loadPixels();
-			System.arraycopy(buffer, 0, pImage.pixels, 0, BFR_X*BFR_Y);
+			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
 			pImage.updatePixels();
 
 			//display it
-			image(pImage,localX,localY);
+			image(pImage, localX, localY);
 			if (displayHoriz) {
 				localX += pImage.width;
 			} else {

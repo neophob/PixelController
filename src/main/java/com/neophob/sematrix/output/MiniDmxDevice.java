@@ -26,6 +26,7 @@ import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
 import com.neophob.sematrix.properties.ColorFormat;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * Send data to a miniDMX Device via serial line
@@ -50,14 +51,14 @@ public class MiniDmxDevice extends Output {
 	 * @param allI2COutputs a list containing all i2c slave addresses
 	 * 
 	 */
-	public MiniDmxDevice(PixelControllerOutput controller, int xSize, int ySize) {
+	public MiniDmxDevice(PixelControllerOutput controller) {
 		super(controller, MiniDmxDevice.class.toString());
 		
 		this.initialized = false;
-		this.xSize = xSize;
-		this.ySize = ySize;
+		this.xSize = PropertiesHelper.getInstance().parseMiniDmxDevicesX();
+		this.ySize = PropertiesHelper.getInstance().parseMiniDmxDevicesY();
 		try {
-			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize);			
+			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize*3);			
 			this.initialized = miniDmx.ping();
 			log.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {

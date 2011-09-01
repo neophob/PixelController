@@ -34,7 +34,7 @@ import com.neophob.sematrix.output.MiniDmxDevice;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.RainbowduinoDevice;
-import com.neophob.sematrix.output.emulatorhelper.NewWindowHelper;
+import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -52,14 +52,14 @@ public class PixelController extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 	
-	private static final int DEVICE_SIZE = 8;
+	//private static final int DEVICE_SIZE = 8;
 
 	public static final int FPS = 20;
 	//96*2*25 = 4800bytes
 
 	Output output;
 	
-	NewWindowHelper nwh;
+	InternalDebugWindow nwh;
 	long lastHeartbeat;
 	int error=0;
 	int frameCounter=0;
@@ -73,12 +73,12 @@ public class PixelController extends PApplet {
 		//		super.frame.setIconImage(titlebaricon.getImage()); 
 		//		super.frame.setTitle("This is in the titlebar!");
 
-		Collector col = Collector.getInstance(); 
-		col.init(this, FPS, DEVICE_SIZE, DEVICE_SIZE);
+		Collector col = Collector.getInstance(); 				
+		col.init(this, FPS);
 		frameRate(FPS);
 		noSmooth();
 		
-		osd = new MatrixEmulator(col.getPixelControllerOutput());
+		osd = new MatrixEmulator(col.getPixelControllerOutput());		
 		PropertiesHelper ph = PropertiesHelper.getInstance();
 		
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
@@ -94,7 +94,7 @@ public class PixelController extends PApplet {
 				this.output = new ArtnetDevice(col.getPixelControllerOutput());
 				break;
 			case MINIDMX:
-				this.output = new MiniDmxDevice(col.getPixelControllerOutput(), 16, 8);
+				this.output = new MiniDmxDevice(col.getPixelControllerOutput());
 				break;				
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
@@ -104,7 +104,7 @@ public class PixelController extends PApplet {
 		}
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
-			nwh = new NewWindowHelper(true);	
+			nwh = new InternalDebugWindow(true);	
 		}
 	}
 

@@ -78,11 +78,12 @@ public class MiniDmxSerial {
 	private static final byte REPLY_SUCCESS  = (byte)0xc1;
 	private static final byte REPLY_ERROR    = (byte)0xc0;
 	
-	private static final byte SEND_96_BYTES    = (byte)0xa0;
-	private static final byte SEND_256_BYTES   = (byte)0xa1;
-	private static final byte SEND_512_BYTES   = (byte)0xa2;
-	private static final byte SEND_768_BYTES   = (byte)0xa3;
-	private static final byte SEND_3072_BYTES  = (byte)0xa4;
+	private static final byte SEND_96_BYTES    = (byte)0xa0; //32 pixel
+	private static final byte SEND_256_BYTES   = (byte)0xa1; //85 pixel??
+	private static final byte SEND_512_BYTES   = (byte)0xa2; //170 pixel??
+	private static final byte SEND_768_BYTES   = (byte)0xb0; //256 pixel, for example 16x16 pixel
+	private static final byte SEND_1536_BYTES  = (byte)0xb1; //512 pixel, for example 32x16 pixel
+	private static final byte SEND_3072_BYTES  = (byte)0xb2; //1024 pixel, for example 32x32 pixel
 	
 	//connection errors to arduino, TODO: use it!
 	private int connectionErrorCounter;

@@ -48,23 +48,30 @@ public final class PropertiesHelper {
 	
 	private static PropertiesHelper instance = new PropertiesHelper();
 
+	//define config files
 	private static final String PRESENTS_FILENAME = "data/presents.led";
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
+	//define common error messages
 	private static final String ERROR_NO_DEVICES_CONFIGURATED = "No devices configured, illegal configuration!";
 	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
-	private static final String ERROR_UNKNOWN_DEVICES_CONFIGURATED = "Unknown devices configured, illegal configuration!";
 	
 	private Properties config=null;
 	
 	private OutputDeviceEnum outputDeviceEnum = null;
 	
+	//output specific settings
 	private List<Integer> i2cAddr=null;
 	private List<DeviceConfig> lpdDevice=null;
 	private List<ColorFormat> colorFormat=null;
 	
+	//how many output screens are used? needed to define layouts
 	private int devicesInRow1 = 0;
 	private int devicesInRow2 = 0;
+	
+	//Resolution of the output device
+	private int deviceXResolution = 8;
+	private int deviceYResolution = 8;
 	
 	/**
 	 * 
@@ -95,21 +102,25 @@ public final class PropertiesHelper {
 		if (rainbowduinoDevices > 0) {
 			enabledOutputs++;
 			totalDevices = rainbowduinoDevices;
+			log.log(Level.INFO, "found Rainbowduino device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
 		}  
 		if (pixelInvadersDevices > 0) {
 			enabledOutputs++;
 			totalDevices = pixelInvadersDevices;
+			log.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.LPD6803;
 		}
 		if (artnetDevices > 0) {
 			enabledOutputs++;
 			totalDevices = artnetDevices;
+			log.log(Level.INFO, "found Artnet device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
 		}
 		if (miniDmxDevices > 0) {
 			enabledOutputs++;
 			totalDevices = miniDmxDevices;
+			log.log(Level.INFO, "found miniDMX device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
 		} 
 		
@@ -118,7 +129,7 @@ public final class PropertiesHelper {
 			throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
 		}
 
-		if (enabledOutputs==0 || totalDevices==0 || devicesInRow1==0 && devicesInRow2==0) {
+		if (enabledOutputs==0 || totalDevices==0) {
 			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
 			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
 		}
@@ -139,6 +150,24 @@ public final class PropertiesHelper {
 	public static PropertiesHelper getInstance() {
 		return instance;
 	}
+	
+	/**
+	 * get a int value from the config file
+	 * @param property
+	 * @return
+	 */
+	private int parseInt(String property) {
+		String rawConfig = config.getProperty(property);
+		if (StringUtils.isNotBlank(rawConfig)) {
+			try {
+				return Integer.parseInt(rawConfig);
+			} catch (Exception e) {
+				log.log(Level.WARNING, "Failed to parse {0}", rawConfig);
+			}
+		}
+		return 0;		
+	}
+
 
 	
 	/**
@@ -304,6 +333,7 @@ public final class PropertiesHelper {
 	 */
 	private int parseArtNetDevices() {
 		//TODO
+		//devicesInRow1=1;
 		return 0;
 	}
 
@@ -312,10 +342,30 @@ public final class PropertiesHelper {
 	 * @return
 	 */
 	private int parseMiniDmxDevices() {
-		//TODO
+		if (parseMiniDmxDevicesX()>0 && parseMiniDmxDevicesY()>0) {
+			this.devicesInRow1=1;
+			this.deviceXResolution = parseMiniDmxDevicesX();
+			this.deviceYResolution = parseMiniDmxDevicesY();
+			return 1;
+		}
 		return 0;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int parseMiniDmxDevicesX() {
+		return parseInt("minidmx.resolution.x");
+	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public int parseMiniDmxDevicesY() {
+		return parseInt("minidmx.resolution.y");
+	}
 	
 	/**
 	 * 
@@ -372,6 +422,10 @@ public final class PropertiesHelper {
 		return lpdDevice;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public List<ColorFormat> getColorFormat() {
 		return colorFormat;
 	}
@@ -382,4 +436,22 @@ public final class PropertiesHelper {
 	public OutputDeviceEnum getOutputDevice() {
 		return this.outputDeviceEnum;
 	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getDeviceXResolution() {
+		return deviceXResolution;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getDeviceYResolution() {
+		return deviceYResolution;
+	}
+	
+	
 }

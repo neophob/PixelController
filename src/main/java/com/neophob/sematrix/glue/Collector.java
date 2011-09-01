@@ -118,7 +118,7 @@ public final class Collector {
 	 * @param papplet
 	 * @param nrOfScreens
 	 */
-	public void init(PApplet papplet, int fps, int deviceXsize, int deviceYsize) {
+	public void init(PApplet papplet, int fps) {
 		if (initialized) {
 			return;
 		}
@@ -135,7 +135,8 @@ public final class Collector {
 			Sound.getInstance().setImplementation(new SoundDummy());
 		}
 		
-		new MatrixData(deviceXsize, deviceYsize);
+		new MatrixData(PropertiesHelper.getInstance().getDeviceXResolution(), 
+				PropertiesHelper.getInstance().getDeviceYResolution());
 
 		pixelControllerResize = new PixelControllerResize();
 		pixelControllerResize.initAll();

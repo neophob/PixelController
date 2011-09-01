@@ -29,19 +29,23 @@ import processing.core.PApplet;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 
-public class NewWindowHelper extends Frame {
+/**
+ * 
+ * @author michu
+ *
+ */
+public class InternalDebugWindow extends Frame {
 
 	private static final long serialVersionUID = 2946906663946781980L;
 
-	static Logger log = Logger.getLogger(NewWindowHelper.class.getName());
+	static Logger log = Logger.getLogger(InternalDebugWindow.class.getName());
 
-	public NewWindowHelper(boolean displayHoriz) {
+	public InternalDebugWindow(boolean displayHoriz) {
         super("debug buffer");
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
-        //MatrixData matrix = Collector.getInstance().getMatrix();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         int x = g.getInternalBufferXSize()*2;
-        int y = g.getInternalBufferYSize()*2;
+        int y = g.getInternalBufferYSize()*2;        
         
         if (displayHoriz) {
         	x*=nrOfScreens;
@@ -56,7 +60,8 @@ public class NewWindowHelper extends Frame {
         this.setSize(x, y);
 
         setLayout(new BorderLayout());
-        PApplet embed = new InternalBuffer(displayHoriz, x, y);
+        PApplet embed = new InternalBuffer(displayHoriz, x, y, 
+        		g.getInternalBufferXSize()*2, g.getInternalBufferYSize()*2);
         
         add(embed, BorderLayout.CENTER);
 
