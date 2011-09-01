@@ -34,6 +34,7 @@ import com.neophob.sematrix.glue.PresentSettings;
 import com.neophob.sematrix.layout.BoxLayout;
 import com.neophob.sematrix.layout.HorizontalLayout;
 import com.neophob.sematrix.layout.Layout;
+import com.neophob.sematrix.output.OutputDeviceEnum;
 
 /**
  * load and save properties files
@@ -52,18 +53,19 @@ public final class PropertiesHelper {
 	
 	private static final String ERROR_NO_DEVICES_CONFIGURATED = "No devices configured, illegal configuration!";
 	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
+	private static final String ERROR_UNKNOWN_DEVICES_CONFIGURATED = "Unknown devices configured, illegal configuration!";
 	
 	private Properties config=null;
+	
+	private OutputDeviceEnum outputDeviceEnum = null;
 	
 	private List<Integer> i2cAddr=null;
 	private List<DeviceConfig> lpdDevice=null;
 	private List<ColorFormat> colorFormat=null;
-
 	
 	private int devicesInRow1 = 0;
 	private int devicesInRow2 = 0;
 	
-
 	/**
 	 * 
 	 */
@@ -90,6 +92,15 @@ public final class PropertiesHelper {
 		if (devicesInRow1==0 && devicesInRow2==0) {
 			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
 			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
+		}
+		
+		if (rainbowduinoDevices > 0) {
+			this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
+		} else if (lpdDevices > 0) {
+			this.outputDeviceEnum = OutputDeviceEnum.LPD6803;
+		// TODO: Artnet device detection / configuration values
+		} else {
+			throw new IllegalArgumentException(ERROR_UNKNOWN_DEVICES_CONFIGURATED);
 		}
 		
 		//check that at least one device is configured,,
@@ -337,7 +348,10 @@ public final class PropertiesHelper {
 		return colorFormat;
 	}
 	
-	
-	
-
+	/**
+	 * @return the configured output device
+	 */
+	public OutputDeviceEnum getOutputDevice() {
+		return this.outputDeviceEnum;
+	}
 }
