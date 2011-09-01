@@ -52,18 +52,12 @@ public class PixelController extends PApplet {
 
 	private static final long serialVersionUID = -1336765543826338205L;
 	
-	//private static final int DEVICE_SIZE = 8;
-
 	public static final int FPS = 20;
-	//96*2*25 = 4800bytes
 
-	Output output;
+	private Output output;
 	
-	InternalDebugWindow nwh;
-	long lastHeartbeat;
-	int error=0;
-	int frameCounter=0;
-	MatrixEmulator osd;
+	private int error;
+	private int frameCounter=0;
 
 	/**
 	 * prepare
@@ -78,7 +72,7 @@ public class PixelController extends PApplet {
 		frameRate(FPS);
 		noSmooth();
 		
-		osd = new MatrixEmulator(col.getPixelControllerOutput());		
+		new MatrixEmulator(col.getPixelControllerOutput());		
 		PropertiesHelper ph = PropertiesHelper.getInstance();
 		
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
@@ -104,7 +98,7 @@ public class PixelController extends PApplet {
 		}
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
-			nwh = new InternalDebugWindow(true);	
+			new InternalDebugWindow(true);	
 		}
 	}
 

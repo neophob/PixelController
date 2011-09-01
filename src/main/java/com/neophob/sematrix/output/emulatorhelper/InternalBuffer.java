@@ -36,9 +36,6 @@ public class InternalBuffer extends PApplet {
 	 */
 	private static final long serialVersionUID = 2344499301021L;
 
-	//private static final int BFR_X = 128;
-	//private static final int BFR_Y = 128;
-	
 	static Logger log = Logger.getLogger(InternalBuffer.class.getName());
 
 	private boolean displayHoriz;

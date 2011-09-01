@@ -59,6 +59,7 @@ import com.neophob.sematrix.properties.ColorFormat;
  * <br><br>
  * 
  * TODO: guess it does not work yet, as its untested
+ * TODO: padding
  * 
  * @author Michael Vogt / neophob.com
  *
@@ -78,9 +79,9 @@ public class MiniDmxSerial {
 	private static final byte REPLY_SUCCESS  = (byte)0xc1;
 	private static final byte REPLY_ERROR    = (byte)0xc0;
 	
-	private static final byte SEND_96_BYTES    = (byte)0xa0; //32 pixel
-	private static final byte SEND_256_BYTES   = (byte)0xa1; //85 pixel??
-	private static final byte SEND_512_BYTES   = (byte)0xa2; //170 pixel??
+	private static final byte SEND_96_BYTES    = (byte)0xa0; //32 pixel, for example 8x4 pixel
+	private static final byte SEND_256_BYTES   = (byte)0xa1; //85 pixel, for example 8x8 pixel and padding
+	private static final byte SEND_512_BYTES   = (byte)0xa2; //170 pixel, for example 16x8 pixel and padding
 	private static final byte SEND_768_BYTES   = (byte)0xb0; //256 pixel, for example 16x16 pixel
 	private static final byte SEND_1536_BYTES  = (byte)0xb1; //512 pixel, for example 32x16 pixel
 	private static final byte SEND_3072_BYTES  = (byte)0xb2; //1024 pixel, for example 32x32 pixel
@@ -336,6 +337,9 @@ public class MiniDmxSerial {
 		case 768:
 			cmdfull[1] = SEND_768_BYTES;
 			break;
+		case 1536:
+			cmdfull[1] = SEND_1536_BYTES;
+			break;			
 		case 3072:
 			cmdfull[1] = SEND_3072_BYTES;
 			break;
