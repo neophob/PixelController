@@ -36,7 +36,7 @@ public class PixelControllerTest extends PApplet {
 	}*/
 	
 	public void setup() { 
-		Collector.getInstance().init(this, 10, 8, 8);			
+		Collector.getInstance().init(this, 10);
 	}
 	
 	public void draw() {

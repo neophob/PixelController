@@ -14,10 +14,9 @@
 	<properties>
 		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
-		
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>		
-	</properties>	
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	
 	<developers>
 		<developer>
@@ -29,13 +28,13 @@
 	
 	<repositories>
 		<repository>
-  			<id>maven2-repository.java.net</id>
-  			<name>Java.net Repository for Maven</name>
-  			<url>http://download.java.net/maven/2/</url>
-  			<layout>default</layout>
+			<id>maven2-repository.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
 		</repository>
-  	</repositories>
-  
+	</repositories>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mc-release</id>
@@ -51,8 +50,8 @@
 	</pluginRepositories>
 
 	<build>
- 		<plugins>
-		
+
+		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -60,40 +59,32 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+					<compilerVersion>1.6</compilerVersion>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			
 			<!-- Package all files together -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-  				<version>2.2.1</version>
+				<version>2.2.1</version><!--$NO-MVN-MAN-VER$-->
 				<executions>
 					<execution>
+						<id>assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>assembly</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>
- 								${project.artifactId}-${project.version}
-							</finalName>
-							<!-- 
-								<appendAssembly>false</appendAssembly>
-							-->
-							<outputDirectory>
-								${project.build.directory}
-							</outputDirectory>
+							<finalName>${project.artifactId}-${project.version}</finalName>
+							<outputDirectory>${project.build.directory}</outputDirectory>
 							<descriptors>
-								<descriptor>
-									${basedir}/src/build/assembly.xml
-								</descriptor>
+								<descriptor>${basedir}/src/build/assembly.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			
-			
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
@@ -102,16 +93,15 @@
 					<header>src/build/header.txt</header>
 				</configuration>
 			</plugin>
-			
 			<!-- Build classpath strings to insert into scripts -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
- 				<version>2.3</version>
+				<version>2.3</version><!--$NO-MVN-MAN-VER$-->
 				<executions>
 					<execution>
 						<id>build-classpath-win</id>
-						<phase>generate-resources</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>build-classpath</goal>
 						</goals>
@@ -120,18 +110,13 @@
 							<fileSeparator>\</fileSeparator>
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>
-								${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-win.properties
-							</outputFile>
-							<excludeGroupIds>
-								junit
-							</excludeGroupIds>
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
+							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
-  
 					<execution>
 						<id>build-classpath-unix</id>
-						<phase>generate-resources</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>build-classpath</goal>
 						</goals>
@@ -140,18 +125,12 @@
 							<fileSeparator>/</fileSeparator>
 							<pathSeparator>:</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>
-								${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-unix.properties
-							</outputFile>
-							<excludeGroupIds>
-								junit
-							</excludeGroupIds>						
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
+							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
-				
 				</executions>
-			</plugin>			
-			
+			</plugin>
 			<plugin>
 				<!-- The Surefire Plugin is used during the test phase of the build lifecycle to 
 				execute the unit tests of an application. It generates reports in 2 different file 
@@ -160,7 +139,11 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.9</version>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.0</version>
+			</plugin>
 			<!-- use the Maven Install Plugin to deploy needed jars to the local
 			repository since they aren't available in the public Maven repositories. -->
 			<plugin>
@@ -176,7 +159,7 @@
 							<version>0.5</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -190,7 +173,7 @@
 							<version>0.82</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -204,7 +187,7 @@
 							<version>1.2.1</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -218,7 +201,7 @@
 							<version>1.2.1</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -232,7 +215,7 @@
 							<version>1.2.1</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -246,7 +229,7 @@
 							<version>1.2.1</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -260,7 +243,7 @@
 							<version>2.2pre5</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -274,7 +257,7 @@
 							<version>2.0.2</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -288,7 +271,7 @@
 							<version>2.0.2</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -302,7 +285,7 @@
 							<version>2.0.2</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -316,7 +299,7 @@
 							<version>2.0.2</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -330,7 +313,7 @@
 							<version>2.0.2</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
@@ -344,136 +327,199 @@
 							<version>0001</version>
 							<packaging>jar</packaging>
 						</configuration>
-						<phase>validate</phase>
+						<phase>initialize</phase>
 						<goals>
 							<goal>install-file</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
-		
-			
 		</plugins>
+		
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-install-plugin</artifactId>
+										<versionRange>[2.3.1,)</versionRange>
+										<goals>
+											<goal>install-file</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
 	</build>
-	
-    <dependencies>
-    
-    <!-- dependencies from repos -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        
-   		<dependency>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<targetJdk>1.6</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<dependencies>
+		<!-- dependencies from repos -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-        
-   		<dependency>
+		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.5</version>
 		</dependency>
-
 		<dependency>
-    		<groupId>org.eclipse.jdt.core.compiler</groupId>
-    		<artifactId>ecj</artifactId>
-    		<version>3.5.1</version>
+			<groupId>org.eclipse.jdt.core.compiler</groupId>
+			<artifactId>ecj</artifactId>
+			<version>3.5.1</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>3.2.7</version>
 		</dependency>
-
-		<!-- local deps, make sure you installed them in your local repo! -->
 		
+		<!-- local deps, make sure you installed them in your local repo! -->
 		<!-- processing -->
-   		<dependency>
+		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>core</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>net</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>pde</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>serial</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-
 		<!-- processing deps -->
-   		<dependency>
+		<dependency>
 			<groupId>org.qbang</groupId>
 			<artifactId>rxtx</artifactId>
 			<version>2.2pre5</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>minim</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-		
-   		<dependency>
+		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>jsminim</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>minim-spi</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>tritonus_aos</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-
-   		<dependency>
+		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>tritonus_share</artifactId>
 			<version>2.0.2</version>
 		</dependency>
-
 		<!-- src: http://code.google.com/p/neorainbowduino/ -->
-   		<dependency>
+		<dependency>
 			<groupId>com.neophob</groupId>
 			<artifactId>neorainbowduino</artifactId>
 			<version>0.82</version>
 		</dependency>
-
 		<!-- src: https://github.com/neophob/processing-blinkenlights -->
-   		<dependency>
+		<dependency>
 			<groupId>com.neophob</groupId>
 			<artifactId>processing-blinkenlight</artifactId>
 			<version>0.5</version>
 		</dependency>
-
 		<!-- src: http://code.google.com/p/artnet4j/ -->
-   		<dependency>
+		<dependency>
 			<groupId>artnet4j</groupId>
 			<artifactId>artnet4j</artifactId>
 			<version>0001</version>
 		</dependency>
-        
-    </dependencies>
+	</dependencies>
+
 </project>
