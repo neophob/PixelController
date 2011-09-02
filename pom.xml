@@ -111,6 +111,7 @@
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
 							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
+							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
 					<execution>
@@ -125,6 +126,7 @@
 							<pathSeparator>:</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
 							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
+							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
 				</executions>
