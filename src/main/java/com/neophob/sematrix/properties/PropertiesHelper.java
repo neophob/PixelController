@@ -150,6 +150,23 @@ public final class PropertiesHelper {
 	public static PropertiesHelper getInstance() {
 		return instance;
 	}
+
+	/**
+	 * 
+	 * @param property
+	 * @return
+	 */
+	private boolean parseBoolean(String property) {
+		String rawConfig = config.getProperty(property);
+		if (StringUtils.isNotBlank(rawConfig)) {
+			try {
+				return Boolean.parseBoolean(rawConfig);
+			} catch (Exception e) {
+				log.log(Level.WARNING, "Failed to parse {0}", rawConfig);
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * get a int value from the config file
@@ -169,6 +186,25 @@ public final class PropertiesHelper {
 	}
 
 
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public String getProperty(String key) {
+		return config.getProperty(key);
+	}
+
+	/**
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public String getProperty(String key, String defaultValue) {
+		return config.getProperty(key, defaultValue);
+	}
+	
 	
 	/**
 	 * 
@@ -383,28 +419,18 @@ public final class PropertiesHelper {
 	 * 
 	 * @return
 	 */
-	public int getNrOfScreens() {
-		return devicesInRow1+devicesInRow2;
+	public boolean startRandommode() {
+		return parseBoolean("startup.in.randommode");
 	}
 	
 	/**
 	 * 
-	 * @param key
 	 * @return
 	 */
-	public String getProperty(String key) {
-		return config.getProperty(key);
+	public int getNrOfScreens() {
+		return devicesInRow1+devicesInRow2;
 	}
-
-	/**
-	 * 
-	 * @param key
-	 * @param defaultValue
-	 * @return
-	 */
-	public String getProperty(String key, String defaultValue) {
-		return config.getProperty(key, defaultValue);
-	}
+	
 	
 	/**
 	 * 

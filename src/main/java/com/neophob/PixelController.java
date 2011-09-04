@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
@@ -41,9 +42,6 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * 
  * @author michu
  * 
- * TODO:
- * make image resize option (speed/quality) user selectable
- * make zoom option, usefull for one screen
  *
  */
 public class PixelController extends PApplet {
@@ -99,6 +97,13 @@ public class PixelController extends PApplet {
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			new InternalDebugWindow(true);	
+		}
+		
+		//start in random mode?
+		if (ph.startRandommode()) {
+			log.log(Level.INFO,"Random Mode enabled");
+			Shuffler.manualShuffleStuff();
+			col.setRandomMode(true);
 		}
 	}
 

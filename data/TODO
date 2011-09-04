@@ -1,8 +1,7 @@
 
--rotozoom, add zoom option
--textwriter, change font, more readable
-
-palette concept (greyscale, rgb, hsv...)
+-palette concept (greyscale, rgb, hsv...)
+-rewrite output selection/configuration
+-add option for a zoomed screen
 
 Done:
 -----
