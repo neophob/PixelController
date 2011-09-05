@@ -19,8 +19,6 @@
 
 package com.neophob.sematrix.output;
 
-import java.util.logging.Logger;
-
 /**
  * Send data to Lpd6803 Device.
  *
@@ -28,15 +26,10 @@ import java.util.logging.Logger;
  */
 public class NullDevice extends Output {
 
-	/** The log. */
-	private static Logger log = Logger.getLogger(NullDevice.class.getName());
-		
 	/**
 	 * init the null devices.
 	 *
 	 * @param controller the controller
-	 * @param displayOptions the display options
-	 * @param colorFormat the color format
 	 */
 	public NullDevice(PixelControllerOutput controller) {
 		super(controller, NullDevice.class.toString());		
