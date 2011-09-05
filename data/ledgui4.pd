@@ -3,15 +3,15 @@
 #X obj 5 -25 cnv 15 700 295 empty empty visuals 20 12 0 14 -204786
 -66577 0;
 #X obj 58 54 hradio 15 1 0 15 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 5;
+-1 -1 12;
 #X obj 58 76 hradio 15 1 0 9 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 8;
+-1 2;
 #X obj 59 139 hradio 15 1 0 15 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 2;
+-1 -1 5;
 #X obj 59 161 hradio 15 1 0 9 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 4;
-#X obj 60 224 hradio 15 1 0 10 s_mix1 r_mix1 empty 0 -8 0 10 -203904
 -1 -1 0;
+#X obj 60 224 hradio 15 1 0 10 s_mix1 r_mix1 empty 0 -8 0 10 -203904
+-1 -1 3;
 #X obj 12 54 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 12 76 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
@@ -22,15 +22,15 @@
 -1 -1 1 1;
 #X obj 12 224 tgl 15 0 s_rndsel_mix r_rndsel_mix empty 17 7 0 10 -260097
 -1 -1 1 1;
-#X obj 5 274 cnv 15 730 110 empty empty output 20 12 0 14 -204786 -66577
+#X obj 5 274 cnv 15 730 110 empty empty output 20 12 0 14 -228856 -66577
 0;
 #X obj 80 346 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 1;
+-1 -1 0;
 #X obj 242 346 hradio 15 1 0 5 s_out2 r_out2 empty 0 -8 0 10 -262144
--1 -1 2;
+-1 -1 1;
 #X text 35 322 Fader;
 #X obj 80 324 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 1;
 #X obj 242 324 hradio 15 1 0 4 s_fader2 r_fader2 empty 0 -8 0 10 -262144
 -1 -1 0;
 #X obj 80 302 hradio 15 1 0 9 s_fx_output1 r_fx_output1 empty 0 -8
@@ -160,19 +160,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 2820 1;
+-262144 -1 -1 681 1;
 #X obj 33 71 cnv 15 140 160 empty empty //colorize 20 12 0 14 -262130
 -66577 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 1070 1;
+-33289 -1 158 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 887 1;
+-33289 -1 438 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 2407 1;
+-33289 -1 1751 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -180,7 +180,7 @@
 #X obj 33 226 cnv 15 140 70 empty empty //rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 2368 1;
+16 64 12 -262144 -33289 -1 2136 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -2158,7 +2158,7 @@ Emboss;
 #X text 79 365 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
 #X obj 342 -17 hradio 15 1 0 5 s_current_visual r_current_visual VisualNr
--60 8 0 10 -262144 -1 -1 2;
+-60 8 0 10 -262144 -1 -1 0;
 #X text 58 6 Generators: Off \, Blinken \, ImagePlasma \, Simplecolors
 \, Fire \, Metaballs \, PixelimgTexturedeformation \, Textwriter \,
 Cell \, Plasma2 \, Frequency \, Drops;
