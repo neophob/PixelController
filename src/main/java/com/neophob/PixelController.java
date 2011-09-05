@@ -97,6 +97,7 @@ public class PixelController extends PApplet {
 				break;
 			case NULL:
 				this.output = new NullDevice(col.getPixelControllerOutput());
+				break;
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
 			}
