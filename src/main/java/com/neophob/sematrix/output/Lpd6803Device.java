@@ -30,27 +30,30 @@ import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
- * Send data to Lpd6803 Device
- * 
- * @author michu
+ * Send data to Lpd6803 Device.
  *
+ * @author michu
  */
 public class Lpd6803Device extends ArduinoOutput {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(Lpd6803Device.class.getName());
 		
-	//does the buffer needs to be flipped? rotated?
+	/** The display options, does the buffer needs to be flipped? rotated? */
 	private List<DeviceConfig> displayOptions;
-	//output format
+	
+	/** The output color format. */
 	private List<ColorFormat> colorFormat;
 	
+	/** The lpd6803. */
 	private Lpd6803 lpd6803 = null;
 
 	/**
-	 * init the lpd6803 devices
-	 * @param controller
-	 * @param displayOptions
-	 * @param colorFormat
+	 * init the lpd6803 devices.
+	 *
+	 * @param controller the controller
+	 * @param displayOptions the display options
+	 * @param colorFormat the color format
 	 */
 	public Lpd6803Device(PixelControllerOutput controller, List<DeviceConfig> displayOptions,
 			List<ColorFormat> colorFormat) {
@@ -68,6 +71,9 @@ public class Lpd6803Device extends ArduinoOutput {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.ArduinoOutput#getLatestHeartbeat()
+	 */
 	public long getLatestHeartbeat() {
 		if (initialized) {
 			return lpd6803.getArduinoHeartbeat();			
@@ -75,6 +81,9 @@ public class Lpd6803Device extends ArduinoOutput {
 		return -1;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoBufferSize()
+	 */
 	public int getArduinoBufferSize() {
 		if (initialized) {
 			return lpd6803.getArduinoBufferSize();			
@@ -82,6 +91,9 @@ public class Lpd6803Device extends ArduinoOutput {
 		return -1;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoErrorCounter()
+	 */
 	public int getArduinoErrorCounter() {
 		if (initialized) {
 			return lpd6803.getArduinoErrorCounter();			
@@ -89,8 +101,8 @@ public class Lpd6803Device extends ArduinoOutput {
 		return -1;
 	}
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#update()
 	 */
 	public void update() {
 		
@@ -121,6 +133,9 @@ public class Lpd6803Device extends ArduinoOutput {
 
 
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#close()
+	 */
 	@Override
 	public void close() {
 		if (initialized) {

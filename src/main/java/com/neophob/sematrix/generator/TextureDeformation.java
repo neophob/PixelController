@@ -33,27 +33,41 @@ import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * 
- * @author michu
+ * The Class TextureDeformation.
  *
+ * @author michu
  */
 public class TextureDeformation extends Generator {	
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(TextureDeformation.class.getName());
 
+	/** The h. */
 	private int w, h;
+	
+	/** The m lut. */
 	private int[] mLUT;
+	
+	/** The tmp array. */
 	private int[] tmpArray;
+	
+	/** The texture img. */
 	private PImage textureImg;
+	
+	/** The time displacement. */
 	private int timeDisplacement;
+	
+	/** The lut. */
 	private int lut;
 	
+	/** The filename. */
 	private String filename;
 
 	/**
-	 * 
-	 * @param controller
-	 * @param filename
+	 * Instantiates a new texture deformation.
+	 *
+	 * @param controller the controller
+	 * @param filename the filename
 	 */
 	public TextureDeformation(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.TEXTURE_DEFORMATION, ResizeName.PIXEL_RESIZE);
@@ -68,8 +82,9 @@ public class TextureDeformation extends Generator {
 	}
 
 	/**
-	 * 
-	 * @param lut
+	 * Change lut.
+	 *
+	 * @param lut the lut
 	 */
 	public void changeLUT(int lut) {
 		this.lut = lut;
@@ -77,8 +92,9 @@ public class TextureDeformation extends Generator {
 	}
 	
 	/**
-	 * 
-	 * @param fileName
+	 * Load file.
+	 *
+	 * @param fileName the file name
 	 */
 	public void loadFile(String fileName) {
 		this.filename = fileName;
@@ -97,6 +113,9 @@ public class TextureDeformation extends Generator {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		textureImg.loadPixels();
@@ -141,14 +160,35 @@ public class TextureDeformation extends Generator {
 		timeDisplacement++;
 	}
 
+	/**
+	 * Constrain.
+	 *
+	 * @param amt the amt
+	 * @param low the low
+	 * @param high the high
+	 * @return the int
+	 */
 	public static final int constrain(int amt, int low, int high) {
 		return (amt < low) ? low : ((amt > high) ? high : amt);
 	}
 
+	/**
+	 * Constrain.
+	 *
+	 * @param amt the amt
+	 * @param low the low
+	 * @param high the high
+	 * @return the float
+	 */
 	public static final float constrain(float amt, float low, float high) {
 		return (amt < low) ? low : ((amt > high) ? high : amt);
 	}
 	
+	/**
+	 * Creates the lut.
+	 *
+	 * @param effectStyle the effect style
+	 */
 	private void createLUT(int effectStyle){
 		// increment placeholder
 		int k = 0;
@@ -234,6 +274,9 @@ public class TextureDeformation extends Generator {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#shuffle()
+	 */
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
@@ -247,11 +290,21 @@ public class TextureDeformation extends Generator {
 		}
 	}
 
+	/**
+	 * Gets the filename.
+	 *
+	 * @return the filename
+	 */
 	public String getFilename() {
 		return filename;
 	}
 	
 
+	/**
+	 * Gets the lut.
+	 *
+	 * @return the lut
+	 */
 	public int getLut() {
 		return lut;
 	}

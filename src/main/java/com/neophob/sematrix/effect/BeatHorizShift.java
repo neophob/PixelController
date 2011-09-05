@@ -22,14 +22,26 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class BeatHorizShift.
+ */
 public class BeatHorizShift extends Effect {
 
+	/** The ammount. */
 	int ammount=0;
 	
+	/**
+	 * Instantiates a new beat horiz shift.
+	 *
+	 * @param controller the controller
+	 */
 	public BeatHorizShift(PixelControllerEffect controller) {
 		super(controller, EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 		if (Sound.getInstance().isPang()) {
 			ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferXSize);
@@ -38,6 +50,13 @@ public class BeatHorizShift extends Effect {
 		return doHorizShift(buffer, ammount);
 	}
 	
+	/**
+	 * Do horiz shift.
+	 *
+	 * @param buffer the buffer
+	 * @param ammount the ammount
+	 * @return the int[]
+	 */
 	private int[] doHorizShift(int[] buffer, int ammount) {
 		int[] ret = new int[buffer.length];
 

@@ -23,34 +23,64 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * this class defines how multiple panels are arranged
- * 
- * @author michu
+ * this class defines how multiple panels are arranged.
  *
+ * @author michu
  */
 public abstract class Layout {
 
+	/**
+	 * The Enum LayoutName.
+	 */
 	public enum LayoutName {
+		
+		/** The HORIZONTAL. */
 		HORIZONTAL(0),
+		
+		/** The BOX. */
 		BOX(1);
 		
+		/** The id. */
 		private int id;
 		
+		/**
+		 * Instantiates a new layout name.
+		 *
+		 * @param id the id
+		 */
 		LayoutName(int id) {
 			this.id = id;
 		}
 		
+		/**
+		 * Gets the id.
+		 *
+		 * @return the id
+		 */
 		public int getId() {
 			return id;
 		}
 	}
 	
+	/** The log. */
 	private static Logger log = Logger.getLogger(Layout.class.getName());
+	
+	/** The layout name. */
 	private LayoutName layoutName;
 	
+	/** The row1 size. */
 	protected int row1Size;
+	
+	/** The row2 size. */
 	protected int row2Size;
 	
+	/**
+	 * Instantiates a new layout.
+	 *
+	 * @param layoutName the layout name
+	 * @param row1Size the row1 size
+	 * @param row2Size the row2 size
+	 */
 	public Layout(LayoutName layoutName, int row1Size, int row2Size) {
 		this.layoutName = layoutName;
 		this.row1Size = row1Size;
@@ -61,16 +91,37 @@ public abstract class Layout {
 				, new Object[] { layoutName.toString(), row1Size, row2Size });
 	}
 	
+	/**
+	 * Gets the data for screen.
+	 *
+	 * @param screenNr the screen nr
+	 * @return the data for screen
+	 */
 	public abstract LayoutModel getDataForScreen(int screenNr);
 	
+	/**
+	 * Gets the row1 size.
+	 *
+	 * @return the row1 size
+	 */
 	public int getRow1Size() {
 		return row1Size;
 	}
 
+	/**
+	 * Gets the row2 size.
+	 *
+	 * @return the row2 size
+	 */
 	public int getRow2Size() {
 		return row2Size;
 	}
 
+	/**
+	 * Gets the layout name.
+	 *
+	 * @return the layout name
+	 */
 	public LayoutName getLayoutName() {
 		return layoutName;
 	}

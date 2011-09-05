@@ -31,25 +31,29 @@ import com.neophob.sematrix.layout.LayoutModel;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
- * parent output class
- * 
- * 
- * @author michu
+ * parent output class.
  *
+ * @author michu
  */
 public abstract class Output {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(Output.class.getName());
 
+	/** The name. */
 	private String name;
 	
+	/** The matrix data. */
 	protected MatrixData matrixData;
 	
+	/** The layout. */
 	protected Layout layout;
 	
 	/**
-	 * 
-	 * @param name
+	 * Instantiates a new output.
+	 *
+	 * @param controller the controller
+	 * @param name the name
 	 */
 	public Output(PixelControllerOutput controller, String name) {
 		this.name = name;
@@ -65,15 +69,21 @@ public abstract class Output {
 		controller.addOutput(this);
 	}
 	
+	/**
+	 * Update.
+	 */
 	public abstract void update();
 	
+	/**
+	 * Close.
+	 */
 	public abstract void close(); 
 
 	/**
-	 * get buffer for a output, this method respect the mapping
-	 * 
-	 * @param screenNr
-	 * @return
+	 * get buffer for a output, this method respect the mapping.
+	 *
+	 * @param screenNr the screen nr
+	 * @return the buffer for screen
 	 */
 	public int[] getBufferForScreen(int screenNr) {
 		Collector c = Collector.getInstance();
@@ -89,6 +99,9 @@ public abstract class Output {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return name;
 	}

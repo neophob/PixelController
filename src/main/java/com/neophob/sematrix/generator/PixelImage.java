@@ -28,24 +28,39 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * Space Invader Generator
- * 
+ * Space Invader Generator.
+ *
  * @author mvogt
- * 
  */
 public class PixelImage extends Generator {
 
+	/** The Constant PIXELNR. */
 	private static final int PIXELNR = 8;
+	
+	/** The Constant NR_OF_IMAGES. */
 	private static final int NR_OF_IMAGES = 14;
 
+	/** The y diff. */
 	private int xDiff,yDiff;
 
+	/** The grid. */
 	private int[][] grid = new int[PIXELNR][PIXELNR];
+	
+	/** The images. */
 	private int[][] images = new int[15][2];
 
+	/** The rnd. */
 	private Random rnd = new Random();
+	
+	/** The frame. */
 	private int frame = 0;
 
+	/**
+	 * Instantiates a new pixel image.
+	 *
+	 * @param controller the controller
+	 * @throws InvalidParameterException the invalid parameter exception
+	 */
 	public PixelImage(PixelControllerGenerator controller) throws InvalidParameterException {
 		super(controller, GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
 
@@ -95,6 +110,9 @@ gelesen von der mitte!
 		yDiff = internalBufferYSize/PIXELNR;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {		
 		if (frame==0 || Sound.getInstance().getVolumeNormalized()>0.5f && frame>8 || 
@@ -119,7 +137,7 @@ gelesen von der mitte!
 
 
 	/**
-	 * 
+	 * Do invader.
 	 */
 	private void doInvader() {
 		int r = rnd.nextInt(7);
@@ -146,9 +164,11 @@ gelesen von der mitte!
 			break;
 		}
 	}
+	
 	/**
-	 * 
-	 * @param grid
+	 * Mirror invader.
+	 *
+	 * @param grid the grid
 	 */
 	private void mirrorInvader(int[][] grid) {
 		for (int y=0; y<8; y++) {
@@ -161,7 +181,7 @@ gelesen von der mitte!
 
 	
 	/**
-	 * create a random mutation
+	 * create a random mutation.
 	 */
 	private void mutateInvader() {
 		for (int y=1; y<7; y++) { // i = columns
@@ -176,10 +196,10 @@ gelesen von der mitte!
 
 
 	/**
-	 * draw an invader
-	 * 
-	 * @param nr1
-	 * @param nr2
+	 * draw an invader.
+	 *
+	 * @param nr1 the nr1
+	 * @param nr2 the nr2
 	 */
 	private void invader(int nr1, int nr2) {
 		//sabity checks

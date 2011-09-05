@@ -20,25 +20,48 @@
 package com.neophob.sematrix.layout;
 
 /**
- * helper class used to layout panels
- * @author michu
+ * helper class used to layout panels.
  *
+ * @author michu
  */
 public class LayoutModel {
+	
+	/** The same fx on x. */
 	private int sameFxOnX;
+	
+	/** The same fx on y. */
 	private int sameFxOnY;
 	
+	/** The ofs x. */
 	private int ofsX;
+	
+	/** The ofs y. */
 	private int ofsY;
 	
+	/** The fx input. */
 	private int fxInput;
 	
+	/** The screen fragment x. */
 	private float screenFragmentX;
+	
+	/** The screen fragment y. */
 	private float screenFragmentY;
 	
+	/** The x width. */
 	private float xStart,xWidth;
+	
+	/** The y width. */
 	private float yStart,yWidth;
 	
+	/**
+	 * Instantiates a new layout model.
+	 *
+	 * @param sameFxOnX the same fx on x
+	 * @param sameFxOnY the same fx on y
+	 * @param ofsX the ofs x
+	 * @param ofsY the ofs y
+	 * @param fxInput the fx input
+	 */
 	public LayoutModel(int sameFxOnX, int sameFxOnY, int ofsX, int ofsY, int fxInput) {
 		this.sameFxOnX = sameFxOnX;
 		this.sameFxOnY = sameFxOnY;
@@ -67,43 +90,97 @@ public class LayoutModel {
 		}
 	}
 	
+	/**
+	 * Screen does not need stretching.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean screenDoesNotNeedStretching() {
 		return (sameFxOnX==1 && sameFxOnY==1);
 	}
 	
 	
+	/**
+	 * Gets the x start.
+	 *
+	 * @param length the length
+	 * @return the x start
+	 */
 	public int getxStart(int length) {
 		return (int)(xStart*length);
 	}
 
+	/**
+	 * Gets the x width.
+	 *
+	 * @param length the length
+	 * @return the x width
+	 */
 	public int getxWidth(int length) {
 		return (int)(xWidth*length);
 	}
 
+	/**
+	 * Gets the y start.
+	 *
+	 * @param length the length
+	 * @return the y start
+	 */
 	public int getyStart(int length) {
 		return (int)(yStart*length);
 	}
 
+	/**
+	 * Gets the y width.
+	 *
+	 * @param length the length
+	 * @return the y width
+	 */
 	public int getyWidth(int length) {
 		return (int)(yWidth*length);
 	}
 
+	/**
+	 * Gets the same fx on x.
+	 *
+	 * @return the same fx on x
+	 */
 	public int getSameFxOnX() {
 		return sameFxOnX;
 	}
 	
+	/**
+	 * Gets the same fx on y.
+	 *
+	 * @return the same fx on y
+	 */
 	public int getSameFxOnY() {
 		return sameFxOnY;
 	}
 	
+	/**
+	 * Gets the ofs x.
+	 *
+	 * @return the ofs x
+	 */
 	public int getOfsX() {
 		return ofsX;
 	}
 	
+	/**
+	 * Gets the ofs y.
+	 *
+	 * @return the ofs y
+	 */
 	public int getOfsY() {
 		return ofsY;
 	}
 	
+	/**
+	 * Gets the fx input.
+	 *
+	 * @return the fx input
+	 */
 	public int getFxInput() {
 		return fxInput;
 	}

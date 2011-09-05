@@ -38,46 +38,83 @@ import com.neophob.sematrix.glue.OutputMapping;
  */
 public abstract class Fader {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(Fader.class.getName());
 
+	/**
+	 * The Enum FaderName.
+	 */
 	public enum FaderName {
+		
+		/** The SWITCH. */
 		SWITCH(0),
+		
+		/** The CROSSFADE. */
 		CROSSFADE(1),
+		
+		/** The SLIDE upside down. */
 		SLIDE_UPSIDE_DOWN(2),
+		
+		/** The SLIDE left right. */
 		SLIDE_LEFT_RIGHT(3);
 		
+		/** The id. */
 		private int id;
 		
+		/**
+		 * Instantiates a new fader name.
+		 *
+		 * @param id the id
+		 */
 		FaderName(int id) {
 			this.id = id;
 		}
 		
+		/**
+		 * Gets the id.
+		 *
+		 * @return the id
+		 */
 		public int getId() {
 			return id;
 		}
 	}
 	
+	/** The fader name. */
 	private FaderName faderName;
+	
+	/** The output mapping. */
 	private OutputMapping outputMapping;
 	
-	/** fade time in ms */
+	/** fade time in ms. */
 	protected int fadeTime;
 	
+	/** The new visual. */
 	protected int newVisual;
+	
+	/** The screen output. */
 	protected int screenOutput;
 	
+	/** The steps. */
 	protected int steps;
+	
+	/** The current step. */
 	protected int currentStep;
 	
+	/** The internal buffer x size. */
 	protected int internalBufferXSize;
+	
+	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 
+	/** The started. */
 	private boolean started;
 
 	/**
-	 * 
-	 * @param faderName
-	 * @param fadeTime
+	 * Instantiates a new fader.
+	 *
+	 * @param faderName the fader name
+	 * @param fadeTime the fade time
 	 */
 	public Fader(FaderName faderName, int fadeTime) {
 		this.faderName = faderName;
@@ -100,8 +137,20 @@ public abstract class Fader {
 		started=false;
 	}
 
+	/**
+	 * Gets the buffer.
+	 *
+	 * @param buffer the buffer
+	 * @return the buffer
+	 */
 	public abstract int[] getBuffer(int[] buffer);
 	
+	/**
+	 * Start fade.
+	 *
+	 * @param newVisual the new visual
+	 * @param screenNr the screen nr
+	 */
 	public void startFade(int newVisual, int screenNr) {
 		this.newVisual = newVisual;
 		this.screenOutput = screenNr;
@@ -115,7 +164,7 @@ public abstract class Fader {
 	}
 	
 	/**
-	 * switch the output and stop the fading
+	 * switch the output and stop the fading.
 	 */
 	public void cleanUp() {
 		if (!started) {
@@ -129,8 +178,9 @@ public abstract class Fader {
 	}
 	
 	/**
-	 * is fading still running
-	 * @return
+	 * is fading still running.
+	 *
+	 * @return true, if is done
 	 */
 	public boolean isDone() {
 		if (currentStep>=steps) {
@@ -139,23 +189,46 @@ public abstract class Fader {
 		return false;
 	}
 	
+	/**
+	 * Sets the done.
+	 */
 	public void setDone() {
 		currentStep=steps;
 	}
 
+	/**
+	 * Gets the new buffer.
+	 *
+	 * @return the new buffer
+	 */
 	protected int[] getNewBuffer() {
 		int[] buffer = Collector.getInstance().getVisual(newVisual).getBuffer();
 		return outputMapping.getEffect().getBuffer(buffer);
 	}
 
+	/**
+	 * Gets the current step.
+	 *
+	 * @return the current step
+	 */
 	protected float getCurrentStep() {
 		return currentStep/(float)steps;
 	}
 	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public int getId() {
 		return this.faderName.getId();
 	}
 
+	/**
+	 * Checks if is started.
+	 *
+	 * @return true, if is started
+	 */
 	public boolean isStarted() {
 		return started;
 	}

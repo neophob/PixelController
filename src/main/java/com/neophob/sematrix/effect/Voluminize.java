@@ -22,12 +22,23 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class Voluminize.
+ */
 public class Voluminize extends Effect {
 
+	/**
+	 * Instantiates a new voluminize.
+	 *
+	 * @param controller the controller
+	 */
 	public Voluminize(PixelControllerEffect controller) {
 		super(controller, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
 		

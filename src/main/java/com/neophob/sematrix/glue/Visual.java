@@ -28,21 +28,31 @@ import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * this model holds 2 generators, 2 effects and a mixer instance
- * @author mvogt
+ * this model holds 2 generators, 2 effects and a mixer instance.
  *
+ * @author mvogt
  */
 public class Visual {
 
+	/** The generator1. */
 	private Generator generator1;
+	
+	/** The generator2. */
 	private Generator generator2;
+	
+	/** The effect1. */
 	private Effect effect1;
+	
+	/** The effect2. */
 	private Effect effect2;
+	
+	/** The mixer. */
 	private Mixer mixer;
 
 	/**
-	 * initialize default
-	 * @param generatorName
+	 * initialize default.
+	 *
+	 * @param generatorName the generator name
 	 */
 	public Visual(GeneratorName generatorName) {
 		Collector col = Collector.getInstance();
@@ -56,10 +66,21 @@ public class Visual {
 		col.addVisual(this);
 	}
 
+	/**
+	 * Gets the buffer.
+	 *
+	 * @return the buffer
+	 */
 	public int[] getBuffer() {
 		return this.getMixerBuffer();
 	}
 
+	/**
+	 * Checks if is visual on screen.
+	 *
+	 * @param screenNr the screen nr
+	 * @return true, if is visual on screen
+	 */
 	public boolean isVisualOnScreen(int screenNr) {
 		int fxInput = Collector.getInstance().getFxInputForScreen(screenNr);
 		if (fxInput == getGenerator1Idx()) {
@@ -69,6 +90,11 @@ public class Visual {
 	}
 
 	//check the resize option to return
+	/**
+	 * Gets the resize option.
+	 *
+	 * @return the resize option
+	 */
 	public ResizeName getResizeOption() {
 		if (this.generator1.getResizeOption() == ResizeName.PIXEL_RESIZE || this.generator2.getResizeOption() == ResizeName.PIXEL_RESIZE ||
 				this.effect1.getResizeOption() == ResizeName.PIXEL_RESIZE || this.effect2.getResizeOption() == ResizeName.PIXEL_RESIZE ||
@@ -79,102 +105,217 @@ public class Visual {
 		return ResizeName.QUALITY_RESIZE;
 	}
 	
+	/**
+	 * Gets the generator1.
+	 *
+	 * @return the generator1
+	 */
 	public Generator getGenerator1() {
 		return generator1;
 	}
 
+	/**
+	 * Gets the generator1 idx.
+	 *
+	 * @return the generator1 idx
+	 */
 	public int getGenerator1Idx() {
 		return generator1.getId();
 	}
 
+	/**
+	 * Sets the generator1.
+	 *
+	 * @param generator1 the new generator1
+	 */
 	public void setGenerator1(Generator generator1) {
 		this.generator1 = generator1;
 	}
 
+	/**
+	 * Sets the generator1.
+	 *
+	 * @param index the new generator1
+	 */
 	public void setGenerator1(int index) {
 		this.generator1 = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
 	}
 
+	/**
+	 * Gets the generator2.
+	 *
+	 * @return the generator2
+	 */
 	public Generator getGenerator2() {
 		return generator2;
 	}
 
+	/**
+	 * Gets the generator2 idx.
+	 *
+	 * @return the generator2 idx
+	 */
 	public int getGenerator2Idx() {
 		return generator2.getId();
 	}
 
+	/**
+	 * Sets the generator2.
+	 *
+	 * @param generator2 the new generator2
+	 */
 	public void setGenerator2(Generator generator2) {
 		this.generator2 = generator2;
 	}
 
+	/**
+	 * Sets the generator2.
+	 *
+	 * @param index the new generator2
+	 */
 	public void setGenerator2(int index) {
 		this.generator2 = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
 	}
 
+	/**
+	 * Gets the effect1.
+	 *
+	 * @return the effect1
+	 */
 	public Effect getEffect1() {
 		return effect1;
 	}
 
+	/**
+	 * Gets the effect1 idx.
+	 *
+	 * @return the effect1 idx
+	 */
 	public int getEffect1Idx() {
 		return effect1.getId();
 	}
 
+	/**
+	 * Gets the effect1 buffer.
+	 *
+	 * @return the effect1 buffer
+	 */
 	public int[] getEffect1Buffer() {
 		return effect1.getBuffer(generator1.getBuffer());
 	}
 
+	/**
+	 * Sets the effect1.
+	 *
+	 * @param effect1 the new effect1
+	 */
 	public void setEffect1(Effect effect1) {
 		this.effect1 = effect1;
 	}
 
+	/**
+	 * Sets the effect1.
+	 *
+	 * @param index the new effect1
+	 */
 	public void setEffect1(int index) {
 		this.effect1 = Collector.getInstance().getPixelControllerEffect().getEffect(index);
 	}
 
+	/**
+	 * Gets the effect2.
+	 *
+	 * @return the effect2
+	 */
 	public Effect getEffect2() {
 		return effect2;
 	}
 
+	/**
+	 * Gets the effect2 idx.
+	 *
+	 * @return the effect2 idx
+	 */
 	public int getEffect2Idx() {
 		return effect2.getId();
 	}
 
+	/**
+	 * Gets the effect2 buffer.
+	 *
+	 * @return the effect2 buffer
+	 */
 	public int[] getEffect2Buffer() {
 		return effect2.getBuffer(generator2.getBuffer());
 	}
 
+	/**
+	 * Sets the effect2.
+	 *
+	 * @param effect2 the new effect2
+	 */
 	public void setEffect2(Effect effect2) {
 		this.effect2 = effect2;
 	}
 
+	/**
+	 * Sets the effect2.
+	 *
+	 * @param index the new effect2
+	 */
 	public void setEffect2(int index) {
 		this.effect2 = Collector.getInstance().getPixelControllerEffect().getEffect(index);
 	}
 
+	/**
+	 * Gets the mixer.
+	 *
+	 * @return the mixer
+	 */
 	public Mixer getMixer() {
 		return mixer;
 	}
 
+	/**
+	 * Gets the mixer buffer.
+	 *
+	 * @return the mixer buffer
+	 */
 	public int[] getMixerBuffer() {
 		return mixer.getBuffer(this);
 	}
 
+	/**
+	 * Gets the mixer idx.
+	 *
+	 * @return the mixer idx
+	 */
 	public int getMixerIdx() {
 		return mixer.getId();
 	}
 
+	/**
+	 * Sets the mixer.
+	 *
+	 * @param mixer1 the new mixer
+	 */
 	public void setMixer(Mixer mixer1) {
 		this.mixer = mixer1;
 	}
 
+	/**
+	 * Sets the mixer.
+	 *
+	 * @param index the new mixer
+	 */
 	public void setMixer(int index) {
 		this.mixer = Collector.getInstance().getPixelControllerMixer().getMixer(index);
 	}
 
 	/**
 	 * initialize the visuals...
-	 * 
-	 * @param n
+	 *
+	 * @param nrOfScreens the nr of screens
 	 */
 	public static void initializeVisuals(int nrOfScreens) {
 		for (int n=0; n<nrOfScreens+1; n++) {

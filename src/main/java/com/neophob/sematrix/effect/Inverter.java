@@ -22,12 +22,23 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
+/**
+ * The Class Inverter.
+ */
 public class Inverter extends Effect {
 
+	/**
+	 * Instantiates a new inverter.
+	 *
+	 * @param controller the controller
+	 */
 	public Inverter(PixelControllerEffect controller) {
 		super(controller, EffectName.INVERTER, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
 		

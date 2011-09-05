@@ -20,22 +20,26 @@
 package com.neophob.sematrix.fader;
 
 /**
- * 
- * @author michu
+ * The Class CrossfaderHelper.
  *
+ * @author michu
  */
 public final class CrossfaderHelper {
 
+	/**
+	 * Instantiates a new crossfader helper.
+	 */
 	private CrossfaderHelper() {
 		//no instance allowed
 	}
 	
 	/**
-	 * 
-	 * @param f
-	 * @param oldBuffer
-	 * @param newBuffer
-	 * @return
+	 * Gets the buffer.
+	 *
+	 * @param f the f
+	 * @param oldBuffer the old buffer
+	 * @param newBuffer the new buffer
+	 * @return the buffer
 	 */
 	public static int[] getBuffer(float f, int[] oldBuffer, int[] newBuffer) {
 

@@ -24,17 +24,30 @@ import processing.core.PApplet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
+/**
+ * The Class MatrixEmulator.
+ */
 public class MatrixEmulator extends Output {
 
+	/** The Constant RAHMEN_SIZE. */
 	private static final int RAHMEN_SIZE = 4;
+	
+	/** The Constant LED_SIZE. */
 	private static final int LED_SIZE = 32;
+	
+	/** The Constant LED_ABSTAND. */
 	private static final int LED_ABSTAND = 0;
 	
+	/** The frame. */
 	private int frame = 0;
+	
+	/** The led size. */
 	private int ledSize = LED_SIZE;
 
 	/**
-	 * 
+	 * Instantiates a new matrix emulator.
+	 *
+	 * @param controller the controller
 	 */
 	public MatrixEmulator(PixelControllerOutput controller) {
 		super(controller, MatrixEmulator.class.toString());
@@ -59,21 +72,26 @@ public class MatrixEmulator extends Output {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the one matrix x size.
+	 *
+	 * @return the one matrix x size
 	 */
 	private int getOneMatrixXSize() {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceXSize()*(RAHMEN_SIZE+ledSize);
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the one matrix y size.
+	 *
+	 * @return the one matrix y size
 	 */
 	private int getOneMatrixYSize() {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+ledSize);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#update()
+	 */
 	@Override
 	public void update() {
 		frame++;
@@ -104,8 +122,10 @@ public class MatrixEmulator extends Output {
 	}
 
 	/**
-	 * draw the matrix simulation onscreen
-	 * @param n - x offset nr (0..n)
+	 * draw the matrix simulation onscreen.
+	 *
+	 * @param nrX the nr x
+	 * @param nrY the nr y
 	 * @param buffer - the buffer to draw
 	 */
 	private void drawOutput(int nrX, int nrY, int buffer[]) {
@@ -138,6 +158,9 @@ public class MatrixEmulator extends Output {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#close()
+	 */
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub

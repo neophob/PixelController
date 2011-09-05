@@ -26,23 +26,29 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
- * this class will transform a buffer
- * 
- * @author michu
+ * this class will transform a buffer.
  *
+ * @author michu
  */
 public final class RotateBuffer {
 
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(RotateBuffer.class.getName());
 
+	/**
+	 * Instantiates a new rotate buffer.
+	 */
 	private RotateBuffer() {
 		//no instance
 	}
 
 	/**
-	 * 
-	 * @param buffer
-	 * @return
+	 * Rotate90.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @return the int[]
 	 */
 	private static int[] rotate90(int[] buffer, int deviceXSize, int deviceYSize) {
 		int[] ret = new int[deviceXSize*deviceYSize];
@@ -56,9 +62,12 @@ public final class RotateBuffer {
 	}
 
 	/**
-	 * 
-	 * @param buffer
-	 * @return
+	 * Flip y.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @return the int[]
 	 */
 	private static int[] flipY(int[] buffer, int deviceXSize, int deviceYSize) {
 		int[] ret = new int[deviceXSize*deviceYSize];
@@ -73,11 +82,12 @@ public final class RotateBuffer {
 	}
 
 	/**
-	 * 
-	 * @param buffer
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @return
+	 * Rotate180.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @return the int[]
 	 */
 	private static int[] rotate180(int[] buffer, int deviceXSize, int deviceYSize) {
 		int[] ret = new int[deviceXSize*deviceYSize];
@@ -93,9 +103,12 @@ public final class RotateBuffer {
 
 
 	/**
-	 * 
-	 * @param buffer
-	 * @return
+	 * Rotate270.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @return the int[]
 	 */
 	private static int[] rotate270(int[] buffer, int deviceXSize, int deviceYSize) {
 /*		int[] ret = new int[deviceXSize*deviceYSize];
@@ -112,13 +125,13 @@ public final class RotateBuffer {
 	}
 
 	/**
-	 * TODO add x/y options
-	 * 
-	 * @param buffer
-	 * @param deviceConfig
+	 * TODO add x/y options.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceConfig the device config
 	 * @param deviceXSize the device size of the matrix
-	 * @param deviceYSize
-	 * @return
+	 * @param deviceYSize the device y size
+	 * @return the int[]
 	 */
 	public static int[] transformImage(int[] buffer, DeviceConfig deviceConfig, int deviceXSize, int deviceYSize) {
 

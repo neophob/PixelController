@@ -31,29 +31,43 @@ import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
- * 
- * @author michu
+ * The Class PixelControllerGenerator.
  *
+ * @author michu
  */
 public class PixelControllerGenerator implements PixelControllerElement {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(PixelControllerGenerator.class.getName());
 
 	
+	/** The all generators. */
 	private List<Generator> allGenerators;
 	
+	/** The blinkenlights. */
 	private Blinkenlights blinkenlights;
+	
+	/** The image. */
 	private Image image;
+	
+	/** The image zoomer. */
 	private ImageZoomer imageZoomer;
+	
+	/** The texture deformation. */
 	private TextureDeformation textureDeformation;	
+	
+	/** The textwriter. */
 	private Textwriter textwriter;
 
+	/**
+	 * Instantiates a new pixel controller generator.
+	 */
 	public PixelControllerGenerator() {
 		allGenerators = new CopyOnWriteArrayList<Generator>();					
 	}
 	
 	/**
-	 * initialize all generators
+	 * initialize all generators.
 	 */
 	public void initAll() {
 		
@@ -85,8 +99,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
 		new Geometrics(this);
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#getCurrentState()
 	 */
 	public List<String> getCurrentState() {
 		List<String> ret = new ArrayList<String>();
@@ -101,6 +115,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
 		return ret;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
+	 */
 	@Override
 	public void update() {
 		for (Generator m: allGenerators) {			
@@ -115,6 +132,12 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	 * GENERATOR ======================================================
 	 */
 
+	/**
+	 * Gets the generator.
+	 *
+	 * @param name the name
+	 * @return the generator
+	 */
 	public Generator getGenerator(GeneratorName name) {
 		for (Generator gen: allGenerators) {
 			if (gen.getId() == name.getId()) {
@@ -124,10 +147,21 @@ public class PixelControllerGenerator implements PixelControllerElement {
 		return null;
 	}
 
+	/**
+	 * Gets the all generators.
+	 *
+	 * @return the all generators
+	 */
 	public List<Generator> getAllGenerators() {
 		return allGenerators;
 	}
 
+	/**
+	 * Gets the generator.
+	 *
+	 * @param index the index
+	 * @return the generator
+	 */
 	public Generator getGenerator(int index) {
 		for (Generator gen: allGenerators) {
 			if (gen.getId() == index) {
@@ -139,60 +173,130 @@ public class PixelControllerGenerator implements PixelControllerElement {
 		return null;
 	}
 
+	/**
+	 * Gets the size.
+	 *
+	 * @return the size
+	 */
 	public int getSize() {
 		return allGenerators.size();
 	}
 
+	/**
+	 * Adds the input.
+	 *
+	 * @param input the input
+	 */
 	public void addInput(Generator input) {
 		allGenerators.add(input);
 	}
 
 	
+	/**
+	 * Gets the file blinken.
+	 *
+	 * @return the file blinken
+	 */
 	public String getFileBlinken() {
 		return blinkenlights.getFilename();
 	}
 
+	/**
+	 * Sets the file blinken.
+	 *
+	 * @param fileBlinken the new file blinken
+	 */
 	public void setFileBlinken(String fileBlinken) {
 		blinkenlights.loadFile(fileBlinken);
 	}
 	
+	/**
+	 * Gets the file image simple.
+	 *
+	 * @return the file image simple
+	 */
 	public String getFileImageSimple() {
 		return image.getFilename();
 	}
 
+	/**
+	 * Sets the file image simple.
+	 *
+	 * @param fileImageSimple the new file image simple
+	 */
 	public void setFileImageSimple(String fileImageSimple) {
 		image.loadFile(fileImageSimple);
 
 	}	
 
+	/**
+	 * Gets the file image zoomer.
+	 *
+	 * @return the file image zoomer
+	 */
 	public String getFileImageZoomer() {
 		return imageZoomer.getFilename();
 	}
 
+	/**
+	 * Sets the file image zoomer.
+	 *
+	 * @param fileImageZoomer the new file image zoomer
+	 */
 	public void setFileImageZoomer(String fileImageZoomer) {
 		imageZoomer.loadImage(fileImageZoomer);
 	}
 
+	/**
+	 * Gets the file texture deformation.
+	 *
+	 * @return the file texture deformation
+	 */
 	public String getFileTextureDeformation() {
 		return textureDeformation.getFilename();
 	}
 
+	/**
+	 * Sets the file texture deformation.
+	 *
+	 * @param fileTextureDeformation the new file texture deformation
+	 */
 	public void setFileTextureDeformation(String fileTextureDeformation) {
 		textureDeformation.loadFile(fileTextureDeformation);
 	}
 
+	/**
+	 * Gets the texture deformation lut.
+	 *
+	 * @return the texture deformation lut
+	 */
 	public int getTextureDeformationLut() {
 		return textureDeformation.getLut();
 	}
 
+	/**
+	 * Sets the texture deformation lut.
+	 *
+	 * @param textureDeformationLut the new texture deformation lut
+	 */
 	public void setTextureDeformationLut(int textureDeformationLut) {
 		textureDeformation.changeLUT(textureDeformationLut);
 	}
 
+	/**
+	 * Gets the text.
+	 *
+	 * @return the text
+	 */
 	public String getText() {
 		return textwriter.getText();
 	}
 
+	/**
+	 * Sets the text.
+	 *
+	 * @param text the new text
+	 */
 	public void setText(String text) {
 		textwriter.createTextImage(text);
 	}

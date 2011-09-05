@@ -22,12 +22,23 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
+/**
+ * The Class Emboss.
+ */
 public class Emboss extends Effect {
 
+	/**
+	 * Instantiates a new emboss.
+	 *
+	 * @param controller the controller
+	 */
 	public Emboss(PixelControllerEffect controller) {
 		super(controller, EffectName.EMBOSS, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 //		return BoxFilter.applyBoxFilter(8, 1, buffer, this.internalBufferXSize);
 		int []a = BoxFilter.applyBoxFilter(8, 1, buffer, this.internalBufferXSize);

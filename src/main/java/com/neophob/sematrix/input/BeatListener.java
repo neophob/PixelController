@@ -23,21 +23,48 @@ import ddf.minim.AudioInput;
 import ddf.minim.AudioListener;
 import ddf.minim.analysis.BeatDetect;
 
+/**
+ * The listener interface for receiving beat events.
+ * The class that is interested in processing a beat
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addBeatListener<code> method. When
+ * the beat event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see BeatEvent
+ */
 public class BeatListener implements AudioListener {
-	  private BeatDetect beat;
-	  private AudioInput source;
 	  
-	  BeatListener(BeatDetect beat, AudioInput source) {
+  	/** The beat. */
+  	private BeatDetect beat;
+	  
+  	/** The source. */
+  	private AudioInput source;
+	  
+	  /**
+  	 * Instantiates a new beat listener.
+  	 *
+  	 * @param beat the beat
+  	 * @param source the source
+  	 */
+  	BeatListener(BeatDetect beat, AudioInput source) {
 	    this.source = source;
 	    this.source.addListener(this);
 	    this.beat = beat;
 	  }
 	  
-	  public void samples(float[] samps) {
+	  /* (non-Javadoc)
+  	 * @see ddf.minim.AudioListener#samples(float[])
+  	 */
+  	public void samples(float[] samps) {
 	    beat.detect(source.mix);
 	  }
 	  
-	  public void samples(float[] sampsL, float[] sampsR) {
+	  /* (non-Javadoc)
+  	 * @see ddf.minim.AudioListener#samples(float[], float[])
+  	 */
+  	public void samples(float[] sampsL, float[] sampsR) {
 	    beat.detect(source.mix);
 	  }
 

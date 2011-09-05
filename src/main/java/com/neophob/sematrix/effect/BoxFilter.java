@@ -21,8 +21,12 @@ package com.neophob.sematrix.effect;
 
 
 
+/**
+ * The Class BoxFilter.
+ */
 public final class BoxFilter  {
 
+	/** The boxfiltr. */
 	private static float[] boxfiltr = new float[]{
 		0.0f,  0.0f,  0.0f,  0.0f,  0.0f,		//0
 		0.0f,  0.0f,  0.125f,  0.0f,  0.0f,     //smooth h+v
@@ -121,7 +125,8 @@ public final class BoxFilter  {
 		0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  
 	};
 
-	//add this value to the result
+
+	/** add this value to the result. */
 	private static short[] bfOffset = new short[]{  
 		0,
 		0,
@@ -140,7 +145,7 @@ public final class BoxFilter  {
 		0
 	};
 
-	//divide the result with this value
+	/** divide the result with this value. */
 	private static short[] bfDivide = new short[] {  
 		1,
 		1,
@@ -159,10 +164,22 @@ public final class BoxFilter  {
 		2
 	};
 	
+	/**
+	 * Instantiates a new box filter.
+	 */
 	private BoxFilter() {
 		//util class - hide constructor
 	}
 
+	/**
+	 * Apply box filter.
+	 *
+	 * @param art the art
+	 * @param anz the anz
+	 * @param src the src
+	 * @param lineSize the line size
+	 * @return the int[]
+	 */
 	public static int[] applyBoxFilter(int art, int anz, int src[], int lineSize) {	
 		int buffertmp[] = new int[src.length];
 

@@ -23,51 +23,110 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * mix two buffers together
- * 
- * @author michu
+ * mix two buffers together.
  *
+ * @author michu
  */
 public abstract class Mixer {
 
+	/**
+	 * The Enum MixerName.
+	 */
 	public enum MixerName {
+		
+		/** The PASSTHRU. */
 		PASSTHRU(0),
+		
+		/** The ADDSAT. */
 		ADDSAT(1),		
+		
+		/** The MULTIPLY. */
 		MULTIPLY(2),
+		
+		/** The MIX. */
 		MIX(3),
+		
+		/** The NEGATIV e_ multiply. */
 		NEGATIVE_MULTIPLY(4),
+		
+		/** The CHECKBOX. */
 		CHECKBOX(5),
+		
+		/** The VOLUMINIZER. */
 		VOLUMINIZER(6),
+		
+		/** The XOR. */
 		XOR(7),
+		
+		/** The MINU s_ half. */
 		MINUS_HALF(8),
+		
+		/** The EITHER. */
 		EITHER(9);
 		
+		/** The id. */
 		private int id;
 		
+		/**
+		 * Instantiates a new mixer name.
+		 *
+		 * @param id the id
+		 */
 		MixerName(int id) {
 			this.id = id;
 		}
 		
+		/**
+		 * Gets the id.
+		 *
+		 * @return the id
+		 */
 		public int getId() {
 			return id;
 		}
 	}
 	
+	/** The mixer name. */
 	private MixerName mixerName;
+	
+	/** The resize option. */
 	private ResizeName resizeOption;
 	
+	/**
+	 * Instantiates a new mixer.
+	 *
+	 * @param controller the controller
+	 * @param mixerName the mixer name
+	 * @param resizeOption the resize option
+	 */
 	public Mixer(PixelControllerMixer controller, MixerName mixerName, ResizeName resizeOption) {
 		this.mixerName = mixerName;
 		this.resizeOption = resizeOption;
 		controller.addMixer(this);
 	}
 	
+	/**
+	 * Gets the buffer.
+	 *
+	 * @param visual the visual
+	 * @return the buffer
+	 */
 	public abstract int[] getBuffer(Visual visual);
 	
+	/**
+	 * Gets the resize option.
+	 *
+	 * @return the resize option
+	 */
 	public ResizeName getResizeOption() {
 		return resizeOption;
 	}
 	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public int getId() {
 		return this.mixerName.getId();
 	}

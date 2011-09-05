@@ -44,6 +44,9 @@ import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
+/**
+ * The Class Collector.
+ */
 public final class Collector {
 
 	/** 
@@ -53,48 +56,78 @@ public final class Collector {
 	 */
 	private static Logger LOG = Logger.getLogger(Collector.class.getName());
 	
+	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";
 	
+	/** The Constant NR_OF_PRESENT_SLOTS. */
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
+	/** The instance. */
 	private static Collector instance = new Collector();
 
+	/** The random mode. */
 	private boolean randomMode = false;
 
+	/** The initialized. */
 	private boolean initialized;
+	
+	/** The papplet. */
 	private PApplet papplet;
+	
+	/** The matrix. */
 	private MatrixData matrix;
 
-	/** all input elements*/	
+	/** all input elements. */	
 	private List<Visual> allVisuals;
 
-	/** fx to screen mapping */
+	/** fx to screen mapping. */
 	private List<OutputMapping> ioMapping;
 
+	/** The nr of screens. */
 	private int nrOfScreens;
+	
+	/** The fps. */
 	private int fps;
+	
+	/** The frames. */
 	private int frames;
 	
+	/** The current visual. */
 	private int currentVisual;
 	
-	/** present settings */
+	/** present settings. */
 	private int selectedPresent;
+	
+	/** The present. */
 	private List<PresentSettings> present;
 	
+	/** The pixel controller generator. */
 	private PixelControllerGenerator pixelControllerGenerator;
+	
+	/** The pixel controller mixer. */
 	private PixelControllerMixer pixelControllerMixer;
+	
+	/** The pixel controller effect. */
 	private PixelControllerEffect pixelControllerEffect;
+	
+	/** The pixel controller resize. */
 	private PixelControllerResize pixelControllerResize;
+	
+	/** The pixel controller output. */
 	private PixelControllerOutput pixelControllerOutput;
+	
+	/** The pixel controller shuffler select. */
 	private PixelControllerShufflerSelect pixelControllerShufflerSelect;
 	
+	/** The pd srv. */
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
+	/** The is loading present. */
 	private boolean isLoadingPresent=false;
 
 	/**
-	 * 
+	 * Instantiates a new collector.
 	 */
 	private Collector() {	
 		allVisuals = new CopyOnWriteArrayList<Visual>();
@@ -114,9 +147,10 @@ public final class Collector {
 	}
 
 	/**
-	 * initialize the collector
-	 * @param papplet
-	 * @param nrOfScreens
+	 * initialize the collector.
+	 *
+	 * @param papplet the papplet
+	 * @param fps the fps
 	 */
 	public void init(PApplet papplet, int fps) {
 		if (initialized) {
@@ -181,12 +215,12 @@ public final class Collector {
 
 	/**
 	 * update the whole system:
-	 *  -generators
-	 *  -effects
-	 *  -outputs
-	 *  
-	 *  update the generators, if the sound is
-	 *  louder, update faster
+	 * -generators
+	 * -effects
+	 * -outputs
+	 * 
+	 * update the generators, if the sound is
+	 * louder, update faster.
 	 */
 	public void updateSystem() {
 		//do not update system if presents are loading
@@ -230,22 +264,29 @@ public final class Collector {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the single instance of Collector.
+	 *
+	 * @return single instance of Collector
 	 */
 	public static Collector getInstance() {
 		return instance;
 	}
 
 
+	/**
+	 * Gets the nr of screens.
+	 *
+	 * @return the nr of screens
+	 */
 	public int getNrOfScreens() {
 		return nrOfScreens;
 	}
 
 
 	/**
-	 * which fx for screenOutput?
-	 * @param screenOutput
+	 * which fx for screenOutput?.
+	 *
+	 * @param screenOutput the screen output
 	 * @return fx nr.
 	 */
 	public int getFxInputForScreen(int screenOutput) {
@@ -253,8 +294,9 @@ public final class Collector {
 	}
 
 	/**
-	 * define which fx is shown on which screen, without fading
-	 * @param screenOutput which screen nr 
+	 * define which fx is shown on which screen, without fading.
+	 *
+	 * @param screenOutput which screen nr
 	 * @param visualInput which visual
 	 */
 	public void mapInputToScreen(int screenOutput, int visualInput) {
@@ -265,9 +307,10 @@ public final class Collector {
 
 	/**
 	 * get all screens with a specific visual
-	 * used for crossfading
-	 * @param oldVisual
-	 * @return
+	 * used for crossfading.
+	 *
+	 * @param oldVisual the old visual
+	 * @return the all screens with visual
 	 */
 	public List<Integer> getAllScreensWithVisual(int oldVisual) {
 		List<Integer> ret = new ArrayList<Integer>();
@@ -281,25 +324,46 @@ public final class Collector {
 		return ret;
 	}
 
+	/**
+	 * Gets the papplet.
+	 *
+	 * @return the papplet
+	 */
 	public PApplet getPapplet() {
 		return papplet;
 	}
 
+	/**
+	 * Gets the fps.
+	 *
+	 * @return the fps
+	 */
 	public int getFps() {
 		return fps;
 	}
 
+	/**
+	 * Checks if is random mode.
+	 *
+	 * @return true, if is random mode
+	 */
 	public boolean isRandomMode() {
 		return randomMode;
 	}
 
+	/**
+	 * Sets the random mode.
+	 *
+	 * @param randomMode the new random mode
+	 */
 	public void setRandomMode(boolean randomMode) {
 		this.randomMode = randomMode;
 	}
 
 	/**
-	 * load a saved preset
-	 * @param preset
+	 * load a saved preset.
+	 *
+	 * @param preset the new current status
 	 */
 	public void setCurrentStatus(List<String> preset) {
 		setLoadingPresent(true);
@@ -312,8 +376,9 @@ public final class Collector {
 	}
 	
 	/**
-	 * update the visual setting in the gui
-	 * @return
+	 * update the visual setting in the gui.
+	 *
+	 * @return the current mini status
 	 */
 	public List<String> getCurrentMiniStatus() {
 		List<String> ret = new ArrayList<String>();
@@ -335,7 +400,9 @@ public final class Collector {
 
 	/**
 	 * get current state of visuals/outputs
-	 * as string list - used to save current settings
+	 * as string list - used to save current settings.
+	 *
+	 * @return the current status
 	 */
 	public List<String> getCurrentStatus() {		
 		List<String> ret = new ArrayList<String>();
@@ -384,10 +451,20 @@ public final class Collector {
 	 * MATRIX ======================================================
 	 */
 
+	/**
+	 * Gets the matrix.
+	 *
+	 * @return the matrix
+	 */
 	public MatrixData getMatrix() {
 		return matrix;
 	}
 
+	/**
+	 * Sets the matrix.
+	 *
+	 * @param matrix the new matrix
+	 */
 	public void setMatrix(MatrixData matrix) {
 		this.matrix = matrix;
 	}
@@ -397,14 +474,30 @@ public final class Collector {
 	 * VISUAL ======================================================
 	 */
 
+	/**
+	 * Adds the visual.
+	 *
+	 * @param visual the visual
+	 */
 	public void addVisual(Visual visual) {
 		allVisuals.add(visual);
 	}
 
+	/**
+	 * Gets the all visuals.
+	 *
+	 * @return the all visuals
+	 */
 	public List<Visual> getAllVisuals() {
 		return allVisuals;
 	}
 
+	/**
+	 * Gets the visual.
+	 *
+	 * @param index the index
+	 * @return the visual
+	 */
 	public Visual getVisual(int index) {
 		if (index<allVisuals.size()) {
 			return allVisuals.get(index);			
@@ -412,6 +505,11 @@ public final class Collector {
 		return allVisuals.get(0);
 	}
 
+	/**
+	 * Sets the all visuals.
+	 *
+	 * @param allVisuals the new all visuals
+	 */
 	public void setAllVisuals(List<Visual> allVisuals) {
 		this.allVisuals = allVisuals;
 	}
@@ -421,18 +519,38 @@ public final class Collector {
 	 * PRESENT ======================================================
 	 */
 	
+	/**
+	 * Gets the selected present.
+	 *
+	 * @return the selected present
+	 */
 	public int getSelectedPresent() {
 		return selectedPresent;
 	}
 
+	/**
+	 * Sets the selected present.
+	 *
+	 * @param selectedPresent the new selected present
+	 */
 	public void setSelectedPresent(int selectedPresent) {
 		this.selectedPresent = selectedPresent;
 	}
 
+	/**
+	 * Gets the present.
+	 *
+	 * @return the present
+	 */
 	public List<PresentSettings> getPresent() {
 		return present;
 	}
 
+	/**
+	 * Sets the present.
+	 *
+	 * @param present the new present
+	 */
 	public void setPresent(List<PresentSettings> present) {
 		this.present = present;
 	}
@@ -442,63 +560,126 @@ public final class Collector {
 	 * OUTPUT MAPPING ======================================================
 	 */
 	
+	/**
+	 * Gets the all output mappings.
+	 *
+	 * @return the all output mappings
+	 */
 	public List<OutputMapping> getAllOutputMappings() {
 		return ioMapping;
 	}
 
+	/**
+	 * Gets the output mappings.
+	 *
+	 * @param index the index
+	 * @return the output mappings
+	 */
 	public OutputMapping getOutputMappings(int index) {
 		return ioMapping.get(index);
 	}
 
 		
 	
+	/**
+	 * Gets the current visual.
+	 *
+	 * @return the current visual
+	 */
 	public int getCurrentVisual() {
 		return currentVisual;
 	}
 
+	/**
+	 * Sets the current visual.
+	 *
+	 * @param currentVisual the new current visual
+	 */
 	public void setCurrentVisual(int currentVisual) {
 		this.currentVisual = currentVisual;
 	}
 
+	/**
+	 * Checks if is loading present.
+	 *
+	 * @return true, if is loading present
+	 */
 	public synchronized boolean isLoadingPresent() {
 		return isLoadingPresent;
 	}
 
+	/**
+	 * Sets the loading present.
+	 *
+	 * @param isLoadingPresent the new loading present
+	 */
 	public synchronized void setLoadingPresent(boolean isLoadingPresent) {
 		this.isLoadingPresent = isLoadingPresent;
 	}
 
 	//getShufflerSelect
 	
+	/**
+	 * Gets the shuffler select.
+	 *
+	 * @param ofs the ofs
+	 * @return the shuffler select
+	 */
 	public boolean getShufflerSelect(ShufflerOffset ofs) {
 		return pixelControllerShufflerSelect.getShufflerSelect(ofs);	
 	}
 	
+	/**
+	 * Gets the pixel controller shuffler select.
+	 *
+	 * @return the pixel controller shuffler select
+	 */
 	public PixelControllerShufflerSelect getPixelControllerShufflerSelect() {
 		return pixelControllerShufflerSelect;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the pixel controller mixer.
+	 *
+	 * @return the pixel controller mixer
 	 */
 	
 	public PixelControllerMixer getPixelControllerMixer() {
 		return pixelControllerMixer;
 	}
 	
+	/**
+	 * Gets the pixel controller effect.
+	 *
+	 * @return the pixel controller effect
+	 */
 	public PixelControllerEffect getPixelControllerEffect() {
 		return pixelControllerEffect;
 	}
 	
+	/**
+	 * Gets the pixel controller generator.
+	 *
+	 * @return the pixel controller generator
+	 */
 	public PixelControllerGenerator getPixelControllerGenerator() {
 		return pixelControllerGenerator;
 	}
 	
+	/**
+	 * Gets the pixel controller resize.
+	 *
+	 * @return the pixel controller resize
+	 */
 	public PixelControllerResize getPixelControllerResize() {
 		return pixelControllerResize;
 	}
 
+	/**
+	 * Gets the pixel controller output.
+	 *
+	 * @return the pixel controller output
+	 */
 	public PixelControllerOutput getPixelControllerOutput() {
 		return pixelControllerOutput;
 	}

@@ -32,44 +32,80 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class PlasmaAdvanced extends Generator {
 
+	/** The Constant TWO_PI. */
 	private static final float TWO_PI = 6.283185307f;
 
+	/** The Constant GRADIENTLEN. */
 	private static final int GRADIENTLEN = 900;//1500;
 	// use this factor to make things faster, esp. for high resolutions
+	/** The Constant SPEEDUP. */
 	private static final int SPEEDUP = 3;
 
+	/** The Constant FADE_STEPS. */
 	private static final int FADE_STEPS = 50;
 
 	// swing/wave function parameters
+	/** The Constant SWINGLEN. */
 	private static final int SWINGLEN = GRADIENTLEN*3;
+	
+	/** The Constant SWINGMAX. */
 	private static final int SWINGMAX = GRADIENTLEN / 2 - 1;
 
 	//TODO make them configable
+	/** The Constant MIN_FACTOR. */
 	private static final int MIN_FACTOR = 4;
+	
+	/** The Constant MAX_FACTOR. */
 	private static final int MAX_FACTOR = 10;
 
 	
+	/** The rf. */
 	private int rf = 4;
+	
+	/** The gf. */
 	private int gf = 2;
+	
+	/** The bf. */
 	private int bf = 1;
+	
+	/** The rd. */
 	private int rd = 0;
+	
+	/** The gd. */
 	private int gd = GRADIENTLEN / gf;
+	
+	/** The bd. */
 	private int bd = GRADIENTLEN / bf / 2;
 
 	// gradient & swing curve arrays
+	/** The fade color steps. */
 	private int fadeColorSteps = 0;
+	
+	/** The color grad. */
 	private int[] colorGrad  = new int[GRADIENTLEN];
+	
+	/** The color grad tmp. */
 	private int[] colorGradTmp  = new int[GRADIENTLEN];
 
+	/** The fade swing steps. */
 	private int fadeSwingSteps = 0;
+	
+	/** The swing curve. */
 	private int[] swingCurve = new int[SWINGLEN];
+	
+	/** The swing curve tmp. */
 	private int[] swingCurveTmp = new int[SWINGLEN];
 
+	/** The frame count. */
 	private int frameCount;
+	
+	/** The random. */
 	private Random random;
 
 	/**
-	 * 
+	 * Instantiates a new plasma advanced.
+	 *
+	 * @param controller the controller
 	 */
 	public PlasmaAdvanced(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
@@ -79,6 +115,9 @@ public class PlasmaAdvanced extends Generator {
 		makeSwingCurve();		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		frameCount++;
@@ -117,6 +156,9 @@ public class PlasmaAdvanced extends Generator {
 	// fill the given array with a nice swingin' curve
 	// three cos waves are layered together for that
 	// the wave "wraps" smoothly around, uh, if you know what i mean ;-)
+	/**
+	 * Make swing curve.
+	 */
 	void makeSwingCurve() {		
 		int factor1=random.nextInt(MAX_FACTOR)+MIN_FACTOR;
 		int factor2=random.nextInt(MAX_FACTOR)+MIN_FACTOR;
@@ -134,6 +176,9 @@ public class PlasmaAdvanced extends Generator {
 
 
 	// create a smooth, colorful gradient by cosinus curves in the RGB channels
+	/**
+	 * Make gradient.
+	 */
 	private void makeGradient() {
 		int val = random.nextInt(12);
 		switch (val) {
@@ -162,17 +207,40 @@ public class PlasmaAdvanced extends Generator {
 		}
 	}
 
+	/**
+	 * Gets the r.
+	 *
+	 * @param col the col
+	 * @return the r
+	 */
 	private int getR(int col) {
 		return (col>>16)&255;
 	}
+	
+	/**
+	 * Gets the g.
+	 *
+	 * @param col the col
+	 * @return the g
+	 */
 	private int getG(int col) {
 		return (col>>8)&255;
 	}
+	
+	/**
+	 * Gets the b.
+	 *
+	 * @param col the col
+	 * @return the b
+	 */
 	private int getB(int col) {
 		return (col&255);
 	}
 
 	//---------------------------
+	/**
+	 * Fade color gradient.
+	 */
 	private void fadeColorGradient() {
 		fadeColorSteps--;
 
@@ -197,7 +265,7 @@ public class PlasmaAdvanced extends Generator {
 	}
 
 	/**
-	 * 
+	 * Fade swing curve.
 	 */
 	private void fadeSwingCurve() {
 		fadeSwingSteps--;
@@ -217,20 +285,47 @@ public class PlasmaAdvanced extends Generator {
 	}
 
 	// helper: get cosinus sample normalized to 0..255
+	/**
+	 * Cos256.
+	 *
+	 * @param amplitude the amplitude
+	 * @param x the x
+	 * @return the int
+	 */
 	private int cos256(int amplitude, int x) {
 		return (int) (Math.cos(x * TWO_PI / amplitude) * 127 + 127);
 	}
 
 	// helper: get a swing curve sample
+	/**
+	 * Swing.
+	 *
+	 * @param i the i
+	 * @return the int
+	 */
 	private int swing(int i) {
 		return swingCurve[i % SWINGLEN];
 	}
 
 	// helper: get a gradient sample
+	/**
+	 * Gradient.
+	 *
+	 * @param i the i
+	 * @return the int
+	 */
 	private int gradient(int i) {
 		return colorGrad[i % GRADIENTLEN];
 	}
 
+	/**
+	 * Color.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param z the z
+	 * @return the int
+	 */
 	public final int color(int x, int y, int z) {
 		if (x > 255) {x = 255;} else if (x < 0) {x = 0;}
 		if (y > 255) {y = 255;} else if (y < 0) {y = 0;}

@@ -37,9 +37,10 @@ public final class PixelControllerFader {
 	 */
 
 	/**
-	 * return a NEW INSTANCE of a fader
-	 * @param faderName
-	 * @return
+	 * return a NEW INSTANCE of a fader.
+	 *
+	 * @param faderName the fader name
+	 * @return the fader
 	 */
 	public static Fader getFader(FaderName faderName) {
 		switch (faderName) {

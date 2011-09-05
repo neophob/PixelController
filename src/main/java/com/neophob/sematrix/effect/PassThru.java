@@ -22,12 +22,23 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
+/**
+ * The Class PassThru.
+ */
 public class PassThru extends Effect {
 
+	/**
+	 * Instantiates a new pass thru.
+	 *
+	 * @param controller the controller
+	 */
 	public PassThru(PixelControllerEffect controller) {
 		super(controller, EffectName.PASSTHRU, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 		return buffer;
 	}

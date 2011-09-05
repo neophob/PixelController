@@ -25,27 +25,27 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * checkbox mixer
- * 
- * 
- * @author mvogt
+ * checkbox mixer.
  *
+ * @author mvogt
  */
 public class Checkbox extends Mixer {
 
+	/** The pixels per line. */
 	private int pixelsPerLine;
 	
 	/**
-	 * 
-	 * @param controller
+	 * Instantiates a new checkbox.
+	 *
+	 * @param controller the controller
 	 */
 	public Checkbox(PixelControllerMixer controller) {
 		super(controller, MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
 		pixelsPerLine = Collector.getInstance().getMatrix().getDeviceXSize();
 	}
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
 	 */
 	public int[] getBuffer(Visual visual) {
 		

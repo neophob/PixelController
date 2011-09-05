@@ -58,67 +58,77 @@ import com.neophob.sematrix.properties.ColorFormat;
 /**
  * library to communicate with an LPD6803 stripes via serial port<br>
  * <br><br>
- * part of the neorainbowduino library
- * 
- * @author Michael Vogt / neophob.com
+ * part of the neorainbowduino library.
  *
+ * @author Michael Vogt / neophob.com
  */
 public class Lpd6803 {
 		
+	/** The log. */
 	private static Logger log = Logger.getLogger(Lpd6803.class.getName());
 
-	/**
-	 * number of leds horizontal<br>
-	 * TODO: should be dynamic, someday
-	 */
+	/** number of leds horizontal<br> TODO: should be dynamic, someday. */
 	public static final int NR_OF_LED_HORIZONTAL = 8;
 
-	/**
-	 * number of leds vertical<br>
-	 * TODO: should be dynamic, someday
-	 */
+	/** number of leds vertical<br> TODO: should be dynamic, someday. */
 	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
 
+	/** The Constant BUFFERSIZE. */
 	private static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
 	
-	/** 
-	 * internal lib version
-	 */
+	/** internal lib version. */
 	public static final String VERSION = "1.0";
 
+	/** The Constant START_OF_CMD. */
 	private static final byte START_OF_CMD = 0x01;
+	
+	/** The Constant CMD_SENDFRAME. */
 	private static final byte CMD_SENDFRAME = 0x03;
+	
+	/** The Constant CMD_PING. */
 	private static final byte CMD_PING = 0x04;
 
+	/** The Constant START_OF_DATA. */
 	private static final byte START_OF_DATA = 0x10;
+	
+	/** The Constant END_OF_DATA. */
 	private static final byte END_OF_DATA = 0x20;
 
+	/** The app. */
 	private PApplet app;
 
+	/** The baud. */
 	private int baud = 115200;
+	
+	/** The port. */
 	private Serial port;
 	
+	/** The arduino heartbeat. */
 	private long arduinoHeartbeat;
+	
+	/** The ack errors. */
 	private long ackErrors = 0;
+	
+	/** The arduino buffer size. */
 	private int arduinoBufferSize;
 	
 	//logical errors reported by arduino, TODO: rename to lastErrorCode
+	/** The arduino last error. */
 	private int arduinoLastError;
 	
 	//connection errors to arduino, TODO: use it!
+	/** The connection error counter. */
 	private int connectionErrorCounter;
 		
-	/**
-	 * map to store checksum of image
-	 */
+	/** map to store checksum of image. */
 	private Map<Byte, String> lastDataMap;
 	
 	
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
-	 * 
-	 * @param _app
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param app the app
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public Lpd6803(PApplet app) throws NoSerialPortFoundException {
 		this(app, null, 0);
@@ -126,10 +136,10 @@ public class Lpd6803 {
 
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
-	 * 
-	 * @param _app
-	 * @param baud
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param _app the _app
+	 * @param baud the baud
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public Lpd6803(PApplet _app, int baud) throws NoSerialPortFoundException {
 		this(_app, null, baud);
@@ -137,10 +147,10 @@ public class Lpd6803 {
 
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
-	 * 
-	 * @param _app
-	 * @param portName
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param _app the _app
+	 * @param portName the port name
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public Lpd6803(PApplet _app, String portName) throws NoSerialPortFoundException {
 		this(_app, portName, 0);
@@ -149,11 +159,11 @@ public class Lpd6803 {
 
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
-	 * 
-	 * @param _app
-	 * @param portName
-	 * @param baud
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param _app the _app
+	 * @param portName the port name
+	 * @param baud the baud
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public Lpd6803(PApplet _app, String portName, int baud) throws NoSerialPortFoundException {
 		
@@ -198,7 +208,7 @@ public class Lpd6803 {
 
 
 	/**
-	 * clean up library
+	 * clean up library.
 	 */
 	public void dispose() {
 		if (connected()) {
@@ -218,8 +228,8 @@ public class Lpd6803 {
 	}
 
 	/**
-	 * return connection state of lib 
-	 * 
+	 * return connection state of lib.
+	 *
 	 * @return whether a lpd6803 device is connected
 	 */
 	public boolean connected() {
@@ -229,11 +239,11 @@ public class Lpd6803 {
 	
 
 	/**
- 	 * 
- 	 * Open serial port with given name. Send ping to check if port is working.
+	 * Open serial port with given name. Send ping to check if port is working.
 	 * If not port is closed and set back to null
-	 * 
-	 * @param portName
+	 *
+	 * @param portName the port name
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	private void openPort(String portName) throws NoSerialPortFoundException {
 		if (portName == null) {
@@ -302,9 +312,10 @@ public class Lpd6803 {
 	 * wrapper class to send a RGB image to the lpd6803 device.
 	 * the rgb image gets converted to the lpd6803 device compatible
 	 * "image format"
-	 * 
+	 *
 	 * @param ofs the image ofs
 	 * @param data rgb data (int[64], each int contains one RGB pixel)
+	 * @param colorFormat the color format
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
@@ -315,8 +326,9 @@ public class Lpd6803 {
 	
 	/**
 	 * get md5 hash out of an image. used to check if the image changed
-	 * @param addr
-	 * @param data
+	 *
+	 * @param ofs the ofs
+	 * @param data the data
 	 * @return true if send was successful
 	 */
 	private boolean didFrameChange(byte ofs, byte data[]) {
@@ -339,11 +351,12 @@ public class Lpd6803 {
 	}
 	
 	/**
-	 * send a frame to the active lpd6803 device. 
-	 * 
+	 * send a frame to the active lpd6803 device.
+	 *
 	 * @param ofs - the offset get multiplied by 32 on the arduino!
 	 * @param data byte[3*8*4]
 	 * @return true if send was successful
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
 		if (data.length!=128) {
@@ -410,9 +423,9 @@ public class Lpd6803 {
 	/**
 	 * this function feed the framebufferdata (32 pixels a 2bytes (aka 16bit)
 	 * to the send array. each second scanline gets inverteds
-	 * 
-	 * @param cmdfull
-	 * @param frameData
+	 *
+	 * @param cmdfull the cmdfull
+	 * @param frameData the frame data
 	 */
 	private void flipSecondScanline(byte cmdfull[], byte frameData[]) {
 		int toggler=14;
@@ -433,9 +446,10 @@ public class Lpd6803 {
 	}
 
 	/**
-	 * 
-	 * @param cmdfull
-	 * @return
+	 * Send serial data.
+	 *
+	 * @param cmdfull the cmdfull
+	 * @return true, if successful
 	 */
 	private boolean sendSerialData(byte cmdfull[]) {
 		try {
@@ -466,9 +480,9 @@ public class Lpd6803 {
 	 * return the serial buffer size of the arduino
 	 * 
 	 * the buffer is by default 128 bytes - if the buffer is most of the
-	 * time almost full (>110 bytes) you probabely send too much serial data 
-	 * 
-	 * @return arduino filled serial buffer size 
+	 * time almost full (>110 bytes) you probabely send too much serial data.
+	 *
+	 * @return arduino filled serial buffer size
 	 */
 	public int getArduinoBufferSize() {
 		return arduinoBufferSize;
@@ -486,16 +500,19 @@ public class Lpd6803 {
 	
 	
 	/**
-	 * how may times the serial response was missing / invalid
-	 * @return
+	 * how may times the serial response was missing / invalid.
+	 *
+	 * @return the ack errors
 	 */
 	public long getAckErrors() {
 		return ackErrors;
 	}
 
 	/**
-	 * send the data to the serial port
-	 * @param cmdfull
+	 * send the data to the serial port.
+	 *
+	 * @param cmdfull the cmdfull
+	 * @throws SerialPortException the serial port exception
 	 */
 	private synchronized void writeSerialData(byte[] cmdfull) throws SerialPortException {
 		//TODO handle the 128 byte buffer limit!
@@ -518,7 +535,8 @@ public class Lpd6803 {
 	}
 	
 	/**
-	 * read data from serial port, wait for ACK
+	 * read data from serial port, wait for ACK.
+	 *
 	 * @return true if ack received, false if not
 	 */
 	private synchronized boolean waitForAck() {		
@@ -578,8 +596,9 @@ public class Lpd6803 {
 
 
 	/**
-	 * Sleep wrapper
-	 * @param ms
+	 * Sleep wrapper.
+	 *
+	 * @param ms the ms
 	 */
 	private void sleep(int ms) {
 		try {
@@ -590,10 +609,12 @@ public class Lpd6803 {
 	}
 	
 	/**
-	 * 
-	 * @param data
-	 * @return
-	 * @throws IllegalArgumentException
+	 * Convert buffer to15bit.
+	 *
+	 * @param data the data
+	 * @param colorFormat the color format
+	 * @return the byte[]
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public static byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
 		if (data.length!=BUFFERSIZE) {
@@ -632,11 +653,12 @@ public class Lpd6803 {
 	}
 
 	/**
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @return
+	 * Convert to15 bit.
+	 *
+	 * @param r the r
+	 * @param g the g
+	 * @param b the b
+	 * @return the byte[]
 	 */
 	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
 		int dst=0;

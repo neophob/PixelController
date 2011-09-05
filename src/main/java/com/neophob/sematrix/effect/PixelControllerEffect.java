@@ -27,19 +27,30 @@ import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
+/**
+ * The Class PixelControllerEffect.
+ */
 public class PixelControllerEffect implements PixelControllerElement {
 
+	/** The all effects. */
 	private List<Effect> allEffects;
+	
+	/** The tint. */
 	private Tint tint;
+	
+	/** The threshold. */
 	private Threshold threshold;
 	
 	/**
-	 * 
+	 * Instantiates a new pixel controller effect.
 	 */
 	public PixelControllerEffect() {
 		allEffects = new CopyOnWriteArrayList<Effect>();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
+	 */
 	@Override
 	public void update() {
 		for (Effect e: allEffects) {
@@ -48,7 +59,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 	}
 	
 	/**
-	 * initialize all effects
+	 * initialize all effects.
 	 */
 	@Override
 	public void initAll() {
@@ -65,8 +76,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#getCurrentState()
 	 */
 	@Override
 	public List<String> getCurrentState() {
@@ -84,10 +95,21 @@ public class PixelControllerEffect implements PixelControllerElement {
 	 * EFFECT ======================================================
 	 */
 	
+	/**
+	 * Gets the size.
+	 *
+	 * @return the size
+	 */
 	public int getSize() {
 		return allEffects.size();
 	}
 
+	/**
+	 * Gets the effect.
+	 *
+	 * @param name the name
+	 * @return the effect
+	 */
 	public Effect getEffect(EffectName name) {
 		for (Effect fx: allEffects) {
 			if (fx.getId() == name.getId()) {
@@ -98,10 +120,21 @@ public class PixelControllerEffect implements PixelControllerElement {
 	}
 
 
+	/**
+	 * Gets the all effects.
+	 *
+	 * @return the all effects
+	 */
 	public List<Effect> getAllEffects() {
 		return allEffects;
 	}
 
+	/**
+	 * Gets the effect.
+	 *
+	 * @param index the index
+	 * @return the effect
+	 */
 	public Effect getEffect(int index) {
 		for (Effect fx: allEffects) {
 			if (fx.getId() == index) {
@@ -111,32 +144,69 @@ public class PixelControllerEffect implements PixelControllerElement {
 		return null;
 	}
 
+	/**
+	 * Adds the effect.
+	 *
+	 * @param effect the effect
+	 */
 	public void addEffect(Effect effect) {
 		allEffects.add(effect);
 	}
 
 	
+	/**
+	 * Sets the threshold value.
+	 *
+	 * @param val the new threshold value
+	 */
 	public void setThresholdValue(int val) {
 		this.threshold.setThreshold(val);
 	}
 	
+	/**
+	 * Gets the threshold value.
+	 *
+	 * @return the threshold value
+	 */
 	public int getThresholdValue() {
 		return this.threshold.getThreshold();
 	}
 	
 	
+	/**
+	 * Sets the rgb.
+	 *
+	 * @param r the r
+	 * @param g the g
+	 * @param b the b
+	 */
 	public void setRGB(int r, int g, int b) {
 		tint.setColor(r, g, b);
 	}
 
+	/**
+	 * Gets the r.
+	 *
+	 * @return the r
+	 */
 	public int getR() {
 		return tint.getR();
 	}
 
+	/**
+	 * Gets the g.
+	 *
+	 * @return the g
+	 */
 	public int getG() {
 		return tint.getG();
 	}
 
+	/**
+	 * Gets the b.
+	 *
+	 * @return the b
+	 */
 	public int getB() {
 		return tint.getB();
 	}

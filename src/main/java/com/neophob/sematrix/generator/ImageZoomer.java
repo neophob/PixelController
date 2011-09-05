@@ -32,35 +32,67 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * 
+ * The Class ImageZoomer.
+ *
  * @author michu
  * TODO voluminize
- * 
  */
 public class ImageZoomer extends Generator {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(ImageZoomer.class.getName());
 
+	/** The Constant PREFIX. */
 	public static final String PREFIX = "pics/";
+	
+	/** The Constant MOVE_DURATION_IN_S. */
 	public static final int MOVE_DURATION_IN_S = 4;
 
+	/** The cliped img. */
 	private PImage origImg, clipedImg;  // Declare variable "a" of type PImage 
 	
+	/** The zoom. */
 	private float zoom = 1;
+	
+	/** The begin zoom. */
 	private float distZoom, beginZoom;
 
+	/** The begin x. */
 	private float beginX = 0.0f;  // Initial x-coordinate
+	
+	/** The begin y. */
 	private float beginY = 0.0f;  // Initial y-coordinate
+	
+	/** The dist x. */
 	private float distX;          // X-axis distance to move
+	
+	/** The dist y. */
 	private float distY;          // Y-axis distance to move
+	
+	/** The exponent. */
 	private float exponent = 64/2;   // Determines the curve
+	
+	/** The x. */
 	private float x = 0.0f;        // Current x-coordinate
+	
+	/** The y. */
 	private float y = 0.0f;        // Current y-coordinate
+	
+	/** The step. */
 	private float step = 0.01f;    // Size of each step along the path
+	
+	/** The pct. */
 	private float pct = 1.0f;      // Percentage traveled (0.0 to 1.0)
 
+	/** The filename. */
 	private String filename;
 	
+	/**
+	 * Instantiates a new image zoomer.
+	 *
+	 * @param controller the controller
+	 * @param filename the filename
+	 */
 	public ImageZoomer(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);				
 		clipedImg = Collector.getInstance().getPapplet().createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
@@ -71,8 +103,9 @@ public class ImageZoomer extends Generator {
 	}
 
 	/**
-	 * load a new file
-	 * @param filename
+	 * load a new file.
+	 *
+	 * @param filename the filename
 	 */
 	public void loadImage(String filename) {
 		//only load if needed
@@ -93,6 +126,9 @@ public class ImageZoomer extends Generator {
 		}	
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		if (origImg==null) {
@@ -115,7 +151,7 @@ public class ImageZoomer extends Generator {
 	}
 
 	/**
-	 * 
+	 * Update target.
 	 */
 	private void updateTarget() {
 		pct = 0.0f;
@@ -141,7 +177,7 @@ public class ImageZoomer extends Generator {
 	}
 
 	/**
-	 * 
+	 * Do the move.
 	 */
 	private void doTheMove() {
 		pct += step;
@@ -155,6 +191,11 @@ public class ImageZoomer extends Generator {
 	}
 
 	
+	/**
+	 * Gets the filename.
+	 *
+	 * @return the filename
+	 */
 	public String getFilename() {
 		return filename;
 	}

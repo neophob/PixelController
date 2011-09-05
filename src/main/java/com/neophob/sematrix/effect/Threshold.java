@@ -26,23 +26,28 @@ import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * 
- * @author michu
+ * The Class Threshold.
  *
+ * @author michu
  */
 public class Threshold extends Effect {
 
+	/** The threshold. */
 	private short threshold;
 	
 	/**
-	 * 
-	 * @param controller
+	 * Instantiates a new threshold.
+	 *
+	 * @param controller the controller
 	 */
 	public Threshold(PixelControllerEffect controller) {
 		super(controller, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
 		this.threshold = 128;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
 		
@@ -64,6 +69,9 @@ public class Threshold extends Effect {
 		return BoxFilter.applyBoxFilter(0, 1, ret, this.internalBufferXSize);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#shuffle()
+	 */
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.THRESHOLD_VALUE)) {
@@ -72,10 +80,20 @@ public class Threshold extends Effect {
 	}
 	
 	
+	/**
+	 * Sets the threshold.
+	 *
+	 * @param threshold the new threshold
+	 */
 	public void setThreshold(int threshold) {
 		this.threshold = (short)threshold;
 	}	
 	
+	/**
+	 * Gets the threshold.
+	 *
+	 * @return the threshold
+	 */
 	public short getThreshold() {
 		return threshold;
 	}

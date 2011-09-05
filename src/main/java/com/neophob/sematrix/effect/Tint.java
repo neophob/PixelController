@@ -26,10 +26,19 @@ import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
+/**
+ * The Class Tint.
+ */
 public class Tint extends Effect {
 
+	/** The b. */
 	private int r,g,b;
 	
+	/**
+	 * Instantiates a new tint.
+	 *
+	 * @param controller the controller
+	 */
 	public Tint(PixelControllerEffect controller) {
 		super(controller, EffectName.TINT, ResizeName.QUALITY_RESIZE);
 		r=255;
@@ -38,10 +47,11 @@ public class Tint extends Effect {
 	}
 
 	/**
-	 * update tint color
-	 * @param r
-	 * @param g
-	 * @param b
+	 * update tint color.
+	 *
+	 * @param r the r
+	 * @param g the g
+	 * @param b the b
 	 */
 	public void setColor(int r, int g, int b) {
 		this.r = r;
@@ -49,8 +59,8 @@ public class Tint extends Effect {
 		this.b = b;
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
@@ -73,18 +83,36 @@ public class Tint extends Effect {
 
 	}
 
+	/**
+	 * Gets the r.
+	 *
+	 * @return the r
+	 */
 	public int getR() {
 		return r;
 	}
 
+	/**
+	 * Gets the g.
+	 *
+	 * @return the g
+	 */
 	public int getG() {
 		return g;
 	}
 
+	/**
+	 * Gets the b.
+	 *
+	 * @return the b
+	 */
 	public int getB() {
 		return b;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#shuffle()
+	 */
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TINT)) {

@@ -20,27 +20,71 @@
 package com.neophob.sematrix.input;
 
 /**
- * 
- * @author michu
+ * The Interface SeSound.
  *
+ * @author michu
  */
 public interface SeSound {
 
+	/**
+	 * Gets the volume.
+	 *
+	 * @return the volume
+	 */
 	float getVolume();
 	
+	/**
+	 * Gets the volume normalized.
+	 *
+	 * @return the volume normalized
+	 */
 	float getVolumeNormalized();
 	
+	/**
+	 * Checks if is kick.
+	 *
+	 * @return true, if is kick
+	 */
 	boolean isKick();
 	
+	/**
+	 * Checks if is snare.
+	 *
+	 * @return true, if is snare
+	 */
 	boolean isSnare();
 	
+	/**
+	 * Checks if is hat.
+	 *
+	 * @return true, if is hat
+	 */
 	boolean isHat();
 	
+	/**
+	 * Checks if is pang.
+	 *
+	 * @return true, if is pang
+	 */
 	boolean isPang();
 
+	/**
+	 * Shutdown.
+	 */
 	void shutdown();
 	
+	/**
+	 * Gets the fft avg.
+	 *
+	 * @return the fft avg
+	 */
 	int getFftAvg();
 	
+	/**
+	 * Gets the fft avg.
+	 *
+	 * @param i the i
+	 * @return the fft avg
+	 */
 	float getFftAvg(int i);
 }

@@ -33,19 +33,19 @@ import java.util.List;
 public interface PixelControllerElement {
 
 	/**
-	 * initialize all elements
+	 * initialize all elements.
 	 */
 	void initAll();
 	
 	/**
-	 * get current status of all childs
-	 * 
-	 * @return
+	 * get current status of all childs.
+	 *
+	 * @return the current state
 	 */
 	List<String> getCurrentState();
 
 	/**
-	 * update the element if needed
+	 * update the element if needed.
 	 */
 	void update();
 }

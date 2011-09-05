@@ -33,23 +33,29 @@ import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * display an image
- * 
- * @author mvogt
+ * display an image.
  *
+ * @author mvogt
  */
 public class Image extends Generator {
 
+	/** The Constant PREFIX. */
 	public static final String PREFIX = "pics/";
 	
+	/** The Constant RESIZE_TYP. */
 	private static final ResizeName RESIZE_TYP = ResizeName.PIXEL_RESIZE;	
+	
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(Image.class.getName());
 	
+	/** The filename. */
 	private String filename="http://neophob.com";
 	
 	/**
-	 * 
-	 * @param filename
+	 * Instantiates a new image.
+	 *
+	 * @param controller the controller
+	 * @param filename the filename
 	 */
 	public Image(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.IMAGE, RESIZE_TYP);
@@ -57,8 +63,9 @@ public class Image extends Generator {
 	}
 	
 	/**
-	 * load a new file
-	 * @param filename
+	 * load a new file.
+	 *
+	 * @param filename the filename
 	 */
 	public void loadFile(String filename) {
 		//only load if needed
@@ -92,11 +99,17 @@ public class Image extends Generator {
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		//just relax here...
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#shuffle()
+	 */
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
@@ -107,6 +120,11 @@ public class Image extends Generator {
 		}
 	}
 	
+	/**
+	 * Gets the filename.
+	 *
+	 * @return the filename
+	 */
 	public String getFilename() {
 		return filename;
 	}

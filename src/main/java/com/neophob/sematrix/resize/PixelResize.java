@@ -24,24 +24,23 @@ import java.awt.image.BufferedImage;
 import com.neophob.sematrix.resize.util.ScalrOld;
 
 /**
- * 
- * This filter is optimized for pixel oriented images
- * 
- * @author michu
+ * This filter is optimized for pixel oriented images.
  *
+ * @author michu
  */
 public class PixelResize extends Resize {
 
 	/**
-	 * 
-	 * @param controller
+	 * Instantiates a new pixel resize.
+	 *
+	 * @param controller the controller
 	 */
 	public PixelResize(PixelControllerResize controller) {
 		super(controller, ResizeName.PIXEL_RESIZE);
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.resize.Resize#getBuffer(int[], int, int, int, int)
 	 */
 	public int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);

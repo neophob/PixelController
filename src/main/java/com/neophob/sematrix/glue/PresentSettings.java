@@ -23,21 +23,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * simple class to store present set's
- * @author michu
+ * simple class to store present set's.
  *
+ * @author michu
  */
 public class PresentSettings {
+	
+	/** The present. */
 	private List<String> present;
 
+	/**
+	 * Gets the present.
+	 *
+	 * @return the present
+	 */
 	public List<String> getPresent() {
 		return present;
 	}
 
+	/**
+	 * Sets the present.
+	 *
+	 * @param present the new present
+	 */
 	public void setPresent(List<String> present) {
 		this.present = present;
 	}
 	
+	/**
+	 * Sets the present.
+	 *
+	 * @param present the new present
+	 */
 	public void setPresent(String[] present) {
 		List<String> list=new ArrayList<String>();
 		for (String s: present) {
@@ -46,6 +63,11 @@ public class PresentSettings {
 		this.present=list;
 	}
 	
+	/**
+	 * Gets the settings as string.
+	 *
+	 * @return the settings as string
+	 */
 	public String getSettingsAsString() {		
 		if (present==null) {
 			return "";

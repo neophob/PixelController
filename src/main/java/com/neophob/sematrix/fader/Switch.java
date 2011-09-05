@@ -20,17 +20,29 @@
 package com.neophob.sematrix.fader;
 
 
+/**
+ * The Class Switch.
+ */
 public class Switch extends Fader {
 
+	/**
+	 * Instantiates a new switch.
+	 */
 	public Switch() {
 		super(FaderName.SWITCH, 50);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
+	 */
 	@Override
 	public int[] getBuffer(int[] buffer) {
 		return buffer;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.fader.Fader#isDone()
+	 */
 	@Override
 	public boolean isDone() {
 		return true;

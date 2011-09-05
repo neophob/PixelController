@@ -21,50 +21,82 @@ package com.neophob.sematrix.input;
 
 import java.util.Random;
 
+/**
+ * The Class SoundDummy.
+ */
 public class SoundDummy implements SeSound {
 
+	/** The random. */
 	private Random random;
 	
+	/**
+	 * Instantiates a new sound dummy.
+	 */
 	public SoundDummy() {
 		random = new Random();
 	}
 	
 	/**
-	 * get current volume
-	 * @return
+	 * get current volume.
+	 *
+	 * @return the volume
 	 */
 	public float getVolume() {
 		return random.nextFloat();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#getVolumeNormalized()
+	 */
 	public float getVolumeNormalized() {
 		return getVolume();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isKick()
+	 */
 	public boolean isKick() {
 		return random.nextBoolean();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isSnare()
+	 */
 	public boolean isSnare() {
 		return random.nextBoolean();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isHat()
+	 */
 	public boolean isHat() {
 		return random.nextBoolean();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isPang()
+	 */
 	public boolean isPang() {
 		return random.nextBoolean();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#getFftAvg()
+	 */
 	public int getFftAvg() {		
 		return 1;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#getFftAvg(int)
+	 */
 	public float getFftAvg(int i) {
 		return 1.0f;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#shutdown()
+	 */
 	public void shutdown() {
 	}
 	

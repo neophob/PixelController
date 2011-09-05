@@ -22,14 +22,26 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class BeatVerticalShift.
+ */
 public class BeatVerticalShift extends Effect {
 
+	/** The ammount. */
 	int ammount=0;
 	
+	/**
+	 * Instantiates a new beat vertical shift.
+	 *
+	 * @param controller the controller
+	 */
 	public BeatVerticalShift(PixelControllerEffect controller) {
 		super(controller, EffectName.BEAT_VERTICAL_SHIFT, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
 	public int[] getBuffer(int[] buffer) {
 		if (Sound.getInstance().isPang()) {
 			ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferYSize);
@@ -38,10 +50,11 @@ public class BeatVerticalShift extends Effect {
 	}
 	
 	/**
-	 * shift a image buffer vertical
-	 * @param ammount
-	 * @param generator
-	 * @return
+	 * shift a image buffer vertical.
+	 *
+	 * @param buffer the buffer
+	 * @param ammount the ammount
+	 * @return the int[]
 	 */
 	private int[] doVerticalShift(int[] buffer, int ammount) {
 		int[] ret = new int[buffer.length];

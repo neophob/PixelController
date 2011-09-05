@@ -24,18 +24,24 @@ import java.awt.image.BufferedImage;
 import com.neophob.sematrix.resize.util.ScalrOld;
 
 /**
- * 
- * This filter is more like an area average filter
- * 
- * @author michu
+ * This filter is more like an area average filter.
  *
+ * @author michu
  */
 public class QualityResize extends Resize {
 
+	/**
+	 * Instantiates a new quality resize.
+	 *
+	 * @param controller the controller
+	 */
 	public QualityResize(PixelControllerResize controller) {
 		super(controller, ResizeName.QUALITY_RESIZE);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.resize.Resize#getBuffer(int[], int, int, int, int)
+	 */
 	public int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
 		

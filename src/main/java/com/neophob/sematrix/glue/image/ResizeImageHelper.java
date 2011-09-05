@@ -39,28 +39,32 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 
 /**
- * 
- * @author michu
+ * The Class ResizeImageHelper.
  *
+ * @author michu
  */
 public final class ResizeImageHelper {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
 	
+	/**
+	 * Instantiates a new resize image helper.
+	 */
 	private ResizeImageHelper() {
 		//no instance allowed, util class
 	}
 
 
 	/**
-	 * DO not use processing resize - its BUGGY!
-	 * 
-	 * @param buffer
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
+	 * DO not use processing resize - its BUGGY!.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @param currentXSize the current x size
+	 * @param currentYSize the current y size
+	 * @return the int[]
 	 */
 	public static int[] processingResize(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		int[] ret;// = new int[deviceXSize*deviceYSize];
@@ -80,11 +84,10 @@ public final class ResizeImageHelper {
 
 
 	/**
-	 * internal use - get buffer from image
-	 * @param scaledImage
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @return
+	 * internal use - get buffer from image.
+	 *
+	 * @param scaledImage the scaled image
+	 * @return the pixels from image
 	 */
 	private static int[] getPixelsFromImage(BufferedImage scaledImage) {
 		DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();
@@ -92,11 +95,12 @@ public final class ResizeImageHelper {
 	}
 
 	/**
-	 * 
-	 * @param buffer
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
+	 * Creates the image.
+	 *
+	 * @param buffer the buffer
+	 * @param currentXSize the current x size
+	 * @param currentYSize the current y size
+	 * @return the buffered image
 	 */
 	public static BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize) {
 		BufferedImage bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
@@ -109,13 +113,14 @@ public final class ResizeImageHelper {
 	}
 
 	/**
-	 * Resize Image using Scalr lib
-	 * @param buffer
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
+	 * Resize Image using Scalr lib.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @param currentXSize the current x size
+	 * @param currentYSize the current y size
+	 * @return the int[]
 	 */
 	public static int[] multiStepBilinearResize(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
@@ -142,13 +147,14 @@ public final class ResizeImageHelper {
 
 
 	/**
-	 * 
-	 * @param buffer
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
+	 * Old resize.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @param currentXSize the current x size
+	 * @param currentYSize the current y size
+	 * @return the int[]
 	 */
 	public static int[] oldResize(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
@@ -169,11 +175,12 @@ public final class ResizeImageHelper {
 	}
 
 	/**
-	 * 
-	 * @param scaledImage
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @return
+	 * Grab pixels.
+	 *
+	 * @param scaledImage the scaled image
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @return the int[]
 	 */
 	private static int[] grabPixels(Image scaledImage, int deviceXSize, int deviceYSize) {		
 		int[] pixels = new int[deviceXSize*deviceYSize];
@@ -191,13 +198,14 @@ public final class ResizeImageHelper {
 
 
 	/**
-	 * 
-	 * @param buffer
-	 * @param deviceXSize
-	 * @param deviceYSize
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
+	 * Resize bicubic.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @param currentXSize the current x size
+	 * @param currentYSize the current y size
+	 * @return the int[]
 	 */
 	public static int[] resizeBicubic(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		int height = currentYSize;
@@ -275,9 +283,10 @@ public final class ResizeImageHelper {
 	}
 
 	/**
-	 * 
-	 * @param x
-	 * @return
+	 * Bi cubic kernel.
+	 *
+	 * @param x the x
+	 * @return the double
 	 */
 	private static double biCubicKernel(double x) {
 		if (x > 2.0d) {

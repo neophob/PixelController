@@ -20,12 +20,15 @@
 package com.neophob.sematrix.properties;
 
 /**
- * color format of a hardware device
- * 
- * @author michu
+ * color format of a hardware device.
  *
+ * @author michu
  */
 public enum ColorFormat {
+	
+	/** The RGB. */
 	RGB,
+	
+	/** The RBG. */
 	RBG
 }

@@ -28,21 +28,26 @@ import com.neophob.lib.rainbowduino.Rainbowduino;
 import com.neophob.sematrix.glue.Collector;
 
 /**
- * Send data to Rainbowduino
- * 
- * @author michu
+ * Send data to Rainbowduino.
  *
+ * @author michu
  */
 public class RainbowduinoDevice extends ArduinoOutput {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
 	
+	/** The all i2c address. */
 	private List<Integer> allI2cAddress;
+	
+	/** The rainbowduino. */
 	private Rainbowduino rainbowduino = null;
 
 	/**
-	 * init the rainbowduino devices 
-	 * @param allI2COutputs a list containing all i2c slave addresses
+	 * init the rainbowduino devices.
+	 *
+	 * @param controller the controller
+	 * @param allI2cAddress the all i2c address
 	 */
 	public RainbowduinoDevice(PixelControllerOutput controller, List<Integer> allI2cAddress) {
 		super(controller, RainbowduinoDevice.class.toString());
@@ -59,6 +64,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.ArduinoOutput#getLatestHeartbeat()
+	 */
 	public long getLatestHeartbeat() {
 		if (initialized) {
 			return rainbowduino.getArduinoHeartbeat();			
@@ -66,6 +74,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 		return -1;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoBufferSize()
+	 */
 	public int getArduinoBufferSize() {
 		if (initialized) {
 			return rainbowduino.getArduinoBufferSize();			
@@ -73,6 +84,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 		return -1;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoErrorCounter()
+	 */
 	public int getArduinoErrorCounter() {
 		if (initialized) {
 			return rainbowduino.getArduinoErrorCounter();			
@@ -80,6 +94,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 		return -1;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#update()
+	 */
 	public void update() {
 		if (initialized) {
 			int size=allI2cAddress.size();
@@ -108,7 +125,7 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	}
 
 	/**
-	 * 
+	 * Prints the available i2c adr.
 	 */
 	public void printAvailableI2cAdr() {
 		if (initialized) {
@@ -124,6 +141,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#close()
+	 */
 	@Override
 	public void close() {
 		if (initialized) {

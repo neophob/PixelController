@@ -24,16 +24,24 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * 
- * @author michu
+ * The Class Either.
  *
+ * @author michu
  */
 public class Either extends Mixer {
 
+	/**
+	 * Instantiates a new either.
+	 *
+	 * @param controller the controller
+	 */
 	public Either(PixelControllerMixer controller) {
 		super(controller, MixerName.EITHER, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+	 */
 	public int[] getBuffer(Visual visual) {
 		short cr_s,cg_s,cb_s;
 		short cr_d,cg_d,cb_d;

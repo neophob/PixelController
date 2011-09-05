@@ -23,12 +23,23 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class NegativeMultiply.
+ */
 public class NegativeMultiply extends Mixer {
 
+	/**
+	 * Instantiates a new negative multiply.
+	 *
+	 * @param controller the controller
+	 */
 	public NegativeMultiply(PixelControllerMixer controller) {
 		super(controller, MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+	 */
 	public int[] getBuffer(Visual visual) {
 		short cr_s,cg_s,cb_s;
 		short cr_d,cg_d,cb_d;

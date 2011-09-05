@@ -36,39 +36,65 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
 /**
- * 
- * @author michu
+ * The Class TcpServer.
  *
+ * @author michu
  */
 public final class TcpServer implements Runnable {
 
+	/** The Constant CONNECT_RETRY_IN_MS. */
 	private static final long CONNECT_RETRY_IN_MS = 16000;
+	
+	/** The Constant FUDI_MSG_END_MARKER. */
 	private static final String FUDI_MSG_END_MARKER = ";";
+	
+	/** The Constant FLOODING_TIME. */
 	private static final int FLOODING_TIME = 300;
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(TcpServer.class.getName());
 
+	/** The tcp server. */
 	private Server tcpServer=null;
+	
+	/** The client. */
 	private Client client;
+	
+	/** The last msg. */
 	private String lastMsg="";
 
+	/** The runner. */
 	private Thread runner;
+	
+	/** The app. */
 	private PApplet app;
+	
+	/** The send port. */
 	private int sendPort;
+	
+	/** The send host. */
 	private String sendHost;
+	
+	/** The count. */
 	private int count=0;
+	
+	/** The last connect timestamp. */
 	private long lastConnectTimestamp;
+	
+	/** The last message sent timestamp. */
 	private long lastMessageSentTimestamp;
+	
+	/** The pd client connected. */
 	private boolean pdClientConnected=false;
 
 	/**
-	 * Start listening server, receieves fudi messages
-	 * 
-	 * @param app
-	 * @param listeningPort
-	 * @param sendHost
-	 * @param sendPort
-	 * @throws BindException
+	 * Start listening server, receieves fudi messages.
+	 *
+	 * @param app the app
+	 * @param listeningPort the listening port
+	 * @param sendHost the send host
+	 * @param sendPort the send port
+	 * @throws BindException the bind exception
 	 */
 	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {		
 		this.app = app;  
@@ -93,12 +119,15 @@ public final class TcpServer implements Runnable {
 		}				
 	}
 
+	/**
+	 * Dispose.
+	 */
 	public void dispose() {
 		runner = null;
 	}
 
 	/**
-	 * tcp server thread
+	 * tcp server thread.
 	 */
 	public void run() {
 		log.log(Level.INFO,	"Ready receiving messages...");
@@ -171,8 +200,9 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param msg
+	 * Process message.
+	 *
+	 * @param msg the msg
 	 */
 	private void processMessage(String[] msg) {
 		ValidCommands response = MessageProcessor.processMsg(msg, true);
@@ -198,7 +228,9 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * send beat detection to gui
+	 * send beat detection to gui.
+	 *
+	 * @param msg the msg
 	 */
 /*	private void sendSoundStatus() {
 		int hat=0, kick=0, snare=0;
@@ -239,9 +271,10 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * send data to client and handle exceptions!
-	 * @param s
-	 * @throws Exception
+	 * send data to client and handle exceptions!.
+	 *
+	 * @param s the s
+	 * @throws Exception the exception
 	 */
 	private void writeToClient(String s) throws Exception {
 		client.output.write(s.getBytes());
@@ -249,7 +282,7 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * 
+	 * Send status to gui.
 	 */
 	public void sendStatusToGui() {
 		
@@ -260,7 +293,7 @@ public final class TcpServer implements Runnable {
 
 	
 	/**
-	 * refresh gui if we selected a new visual
+	 * refresh gui if we selected a new visual.
 	 */
 	public void sendStatusToGuiMini() {
 		for (String s:Collector.getInstance().getCurrentMiniStatus()) {
@@ -270,7 +303,7 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * 
+	 * Connect to client.
 	 */
 	private void connectToClient() {
 		Socket socket = new Socket();
@@ -293,8 +326,11 @@ public final class TcpServer implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param listeningPort
+	 * Server wrapper.
+	 *
+	 * @param listeningPort the listening port
+	 * @throws ConnectException the connect exception
+	 * @throws BindException the bind exception
 	 */
 	private void serverWrapper(int listeningPort) throws ConnectException, BindException {
 		tcpServer = new Server(app, listeningPort);

@@ -23,12 +23,23 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class Xor.
+ */
 public class Xor extends Mixer {
 
+	/**
+	 * Instantiates a new xor.
+	 *
+	 * @param controller the controller
+	 */
 	public Xor(PixelControllerMixer controller) {
 		super(controller, MixerName.XOR, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+	 */
 	public int[] getBuffer(Visual visual) {
 		short redSource, greenSource, blueSource;
 		short redDest, greenDest, blueDest;

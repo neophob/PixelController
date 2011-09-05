@@ -24,20 +24,21 @@ import com.neophob.sematrix.glue.OutputMapping;
 
 /**
  * Box Layout, features:
- *  -"unlimited" width
- *  -exact two panels height
- * 
- * @author michu
+ * -"unlimited" width
+ * -exact two panels height.
  *
+ * @author michu
  */
 public class BoxLayout extends Layout {
 
+	/** The io mapping size. */
 	private int ioMappingSize;
 
 	/**
-	 * 
-	 * @param row1Size
-	 * @param row2Size
+	 * Instantiates a new box layout.
+	 *
+	 * @param row1Size the row1 size
+	 * @param row2Size the row2 size
 	 */
 	public BoxLayout(int row1Size, int row2Size) {
 		super(LayoutName.BOX, row1Size, row2Size);
@@ -46,9 +47,10 @@ public class BoxLayout extends Layout {
 
 
 	/**
-	 * 
-	 * @param fxInput
-	 * @return
+	 * How many screens share this fx on the x axis.
+	 *
+	 * @param fxInput the fx input
+	 * @return the int
 	 */
 	private int howManyScreensShareThisFxOnTheXAxis(int fxInput) {
 		int max=0;
@@ -76,9 +78,10 @@ public class BoxLayout extends Layout {
 	}
 
 	/**
-	 * 
-	 * @param fxInput
-	 * @return
+	 * How many screens share this fx on the y axis.
+	 *
+	 * @param fxInput the fx input
+	 * @return the int
 	 */
 	private int howManyScreensShareThisFxOnTheYAxis(int fxInput) {
 		int max=0;
@@ -110,7 +113,10 @@ public class BoxLayout extends Layout {
 	/**
 	 * return y offset of screen position
 	 * (0=first row, 1=second row...)
-	 * 
+	 *
+	 * @param screenNr the screen nr
+	 * @param fxOnHowMayScreens the fx on how may screens
+	 * @return the x offset for screen
 	 */
 	private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
 		if (fxOnHowMayScreens==1 || screenNr==0) {
@@ -128,10 +134,13 @@ public class BoxLayout extends Layout {
 	 * return y offset of screen position if a visual is spread
 	 * acros MULTIPLE outputs.
 	 * 
-	 * return 0 if the visuial is only shown on one screen 
+	 * return 0 if the visuial is only shown on one screen
 	 * 
 	 * (0=first row, 1=second row...)
-	 * 
+	 *
+	 * @param screenNr the screen nr
+	 * @param fxOnHowMayScreens the fx on how may screens
+	 * @return the y offset for screen
 	 */
 	private int getYOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
 		if (fxOnHowMayScreens==1 || screenNr==0) {
@@ -146,8 +155,8 @@ public class BoxLayout extends Layout {
 		return 0;
 	}
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.layout.Layout#getDataForScreen(int)
 	 */
 	public LayoutModel getDataForScreen(int screenNr) {
 		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();

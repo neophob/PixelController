@@ -26,16 +26,23 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 
+/**
+ * The Class PixelControllerMixer.
+ */
 public class PixelControllerMixer implements PixelControllerElement {
 
+	/** The all mixer. */
 	private List<Mixer> allMixer;
 	
+	/**
+	 * Instantiates a new pixel controller mixer.
+	 */
 	public PixelControllerMixer() {
 		allMixer = new CopyOnWriteArrayList<Mixer>();
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#initAll()
 	 */
 	public void initAll() {
 		//create mixer
@@ -51,8 +58,8 @@ public class PixelControllerMixer implements PixelControllerElement {
 		new Either(this);
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#getCurrentState()
 	 */
 	public List<String> getCurrentState() {
 		List<String> ret = new ArrayList<String>();
@@ -60,6 +67,9 @@ public class PixelControllerMixer implements PixelControllerElement {
 		return ret;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
+	 */
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
@@ -70,10 +80,21 @@ public class PixelControllerMixer implements PixelControllerElement {
 	 * MIXER ======================================================
 	 */
 
+	/**
+	 * Gets the size.
+	 *
+	 * @return the size
+	 */
 	public int getSize() {
 		return allMixer.size();
 	}
 	
+	/**
+	 * Gets the mixer.
+	 *
+	 * @param name the name
+	 * @return the mixer
+	 */
 	public Mixer getMixer(MixerName name) {
 		for (Mixer mix: allMixer) {
 			if (mix.getId() == name.getId()) {
@@ -83,10 +104,21 @@ public class PixelControllerMixer implements PixelControllerElement {
 		return null;
 	}
 
+	/**
+	 * Gets the all mixer.
+	 *
+	 * @return the all mixer
+	 */
 	public List<Mixer> getAllMixer() {
 		return allMixer;
 	}
 
+	/**
+	 * Gets the mixer.
+	 *
+	 * @param index the index
+	 * @return the mixer
+	 */
 	public Mixer getMixer(int index) {
 		for (Mixer mix: allMixer) {
 			if (mix.getId() == index) {
@@ -96,6 +128,11 @@ public class PixelControllerMixer implements PixelControllerElement {
 		return null;
 	}
 
+	/**
+	 * Adds the mixer.
+	 *
+	 * @param mixer the mixer
+	 */
 	public void addMixer(Mixer mixer) {
 		allMixer.add(mixer);
 	}

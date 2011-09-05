@@ -25,17 +25,24 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * mix src/dst accoring to volume of sound!
- * 
- * @author michu
+ * mix src/dst accoring to volume of sound!.
  *
+ * @author michu
  */
 public class Voluminizer extends Mixer {
 
+	/**
+	 * Instantiates a new voluminizer.
+	 *
+	 * @param controller the controller
+	 */
 	public Voluminizer(PixelControllerMixer controller) {
 		super(controller, MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+	 */
 	public int[] getBuffer(Visual visual) {
 		if (visual.getEffect2() == null) {
 			return visual.getEffect1Buffer();

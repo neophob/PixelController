@@ -37,23 +37,28 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class PixelControllerResize implements PixelControllerElement {
 
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerResize.class.getName());
 	
+	/** The all resizers. */
 	private List<Resize> allResizers;
 	
 	/**
-	 * 
+	 * Instantiates a new pixel controller resize.
 	 */
 	public PixelControllerResize() {
 		allResizers = new CopyOnWriteArrayList<Resize>();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
+	 */
 	@Override
 	public void update() {
 	}
 	
 	/**
-	 * initialize all effects
+	 * initialize all effects.
 	 */
 	@Override
 	public void initAll() {
@@ -61,8 +66,8 @@ public class PixelControllerResize implements PixelControllerElement {
 		new QualityResize(this);
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#getCurrentState()
 	 */
 	@Override
 	public List<String> getCurrentState() {
@@ -72,14 +77,15 @@ public class PixelControllerResize implements PixelControllerElement {
 	}
 	
 	/**
-	 * 
-	 * @param resizeTyp
-	 * @param inputBuffer
-	 * @param currentX
-	 * @param currentY
-	 * @param newX
-	 * @param newY
-	 * @return
+	 * Resize image.
+	 *
+	 * @param resizeTyp the resize typ
+	 * @param inputBuffer the input buffer
+	 * @param currentX the current x
+	 * @param currentY the current y
+	 * @param newX the new x
+	 * @param newY the new y
+	 * @return the int[]
 	 */
 	public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY, int newX, int newY) {
 		
@@ -98,10 +104,21 @@ public class PixelControllerResize implements PixelControllerElement {
 	 * RESIZER ======================================================
 	 */
 	
+	/**
+	 * Gets the all resizers.
+	 *
+	 * @return the all resizers
+	 */
 	public List<Resize> getAllResizers() {
 		return allResizers;
 	}
 	
+	/**
+	 * Gets the resize.
+	 *
+	 * @param name the name
+	 * @return the resize
+	 */
 	public Resize getResize(ResizeName name) {
 		for (Resize r: allResizers) {
 			if (r.getId() == name.getId()) {
@@ -111,6 +128,11 @@ public class PixelControllerResize implements PixelControllerElement {
 		return null;
 	}
 	
+	/**
+	 * Adds the resize.
+	 *
+	 * @param resize the resize
+	 */
 	public void addResize(Resize resize) {
 		allResizers.add(resize);
 	}

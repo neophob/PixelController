@@ -27,22 +27,31 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
 /**
- * moving cell
- * 
+ * moving cell.
+ *
  * @author mvogt
- * 
  */
 public class Cell extends Generator {
 
+	/** The Constant BUBBLES. */
 	private static final int BUBBLES=8;
+	
+	/** The Constant RENDERSIZE. */
 	private static final int RENDERSIZE=2;
 
+	/** The random. */
 	private Random random=new Random();
+	
+	/** The points. */
 	private List<Attractor> points=new ArrayList<Attractor>();
+	
+	/** The distlookup. */
 	private float[][] distlookup;
 
 	/**
-	 * 
+	 * Instantiates a new cell.
+	 *
+	 * @param controller the controller
 	 */
 	public Cell(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
@@ -63,6 +72,9 @@ public class Cell extends Generator {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		for (int x=0;x<internalBufferXSize/RENDERSIZE;x+=RENDERSIZE) {
@@ -108,13 +120,13 @@ public class Cell extends Generator {
 	}
 
 	/**
-	 * draw rectangle in buffer
-	 * 
-	 * @param xofs
-	 * @param yofs
-	 * @param xsize
-	 * @param ysize
-	 * @param col
+	 * draw rectangle in buffer.
+	 *
+	 * @param xofs the xofs
+	 * @param yofs the yofs
+	 * @param xsize the xsize
+	 * @param ysize the ysize
+	 * @param col the col
 	 */
 	private void rect(int xofs, int yofs, int xsize, int ysize, int col) {
 		if (ysize+yofs>internalBufferYSize) {
@@ -132,21 +144,29 @@ public class Cell extends Generator {
 	}
 	
 	/**
-	 * helper class
-	 * 
-	 * @author michu
+	 * helper class.
 	 *
+	 * @author michu
 	 */
 	class Attractor {
 
+		/** The x. */
 		public int x;
+		
+		/** The y. */
 		public int y;
+		
+		/** The dx. */
 		public int dx;
+		
+		/** The dy. */
 		public int dy;
+		
+		/** The b. */
 		public int r,g,b;
 
 		/**
-		 * 
+		 * Instantiates a new attractor.
 		 */
 		public Attractor() {
 			this.x=random.nextInt(internalBufferXSize/RENDERSIZE);
@@ -163,7 +183,7 @@ public class Cell extends Generator {
 		}
 
 		/**
-		 * 
+		 * Move.
 		 */
 		public void move() {
 			// move with wrap-around
@@ -179,10 +199,11 @@ public class Cell extends Generator {
 		}
 		
 		/**
-		 * 
-		 * @param xx
-		 * @param yy
-		 * @return
+		 * Distance to.
+		 *
+		 * @param xx the xx
+		 * @param yy the yy
+		 * @return the float
 		 */
 		public float distanceTo(int xx,int yy) {
 			// Euclidian Distance

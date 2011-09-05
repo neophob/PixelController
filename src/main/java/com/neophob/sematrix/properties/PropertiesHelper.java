@@ -37,44 +37,64 @@ import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 
 /**
- * load and save properties files
- * 
- * @author michu
+ * load and save properties files.
  *
+ * @author michu
  */
 public final class PropertiesHelper {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
 	
+	/** The instance. */
 	private static PropertiesHelper instance = new PropertiesHelper();
 
 	//define config files
+	/** The Constant PRESENTS_FILENAME. */
 	private static final String PRESENTS_FILENAME = "data/presents.led";
+	
+	/** The Constant CONFIG_FILENAME. */
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
 	//define common error messages
+	/** The Constant ERROR_NO_DEVICES_CONFIGURATED. */
 	private static final String ERROR_NO_DEVICES_CONFIGURATED = "No devices configured, illegal configuration!";
+	
+	/** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
 	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
 	
+	/** The config. */
 	private Properties config=null;
 	
+	/** The output device enum. */
 	private OutputDeviceEnum outputDeviceEnum = null;
 	
 	//output specific settings
+	/** The i2c addr. */
 	private List<Integer> i2cAddr=null;
+	
+	/** The lpd device. */
 	private List<DeviceConfig> lpdDevice=null;
+	
+	/** The color format. */
 	private List<ColorFormat> colorFormat=null;
 	
 	//how many output screens are used? needed to define layouts
+	/** The devices in row1. */
 	private int devicesInRow1 = 0;
+	
+	/** The devices in row2. */
 	private int devicesInRow2 = 0;
 	
 	//Resolution of the output device
+	/** The device x resolution. */
 	private int deviceXResolution = 8;
+	
+	/** The device y resolution. */
 	private int deviceYResolution = 8;
 	
 	/**
-	 * 
+	 * Instantiates a new properties helper.
 	 */
 	private PropertiesHelper() {
 		config = new Properties();		
@@ -144,17 +164,19 @@ public final class PropertiesHelper {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the single instance of PropertiesHelper.
+	 *
+	 * @return single instance of PropertiesHelper
 	 */
 	public static PropertiesHelper getInstance() {
 		return instance;
 	}
 
 	/**
-	 * 
-	 * @param property
-	 * @return
+	 * Parses the boolean.
+	 *
+	 * @param property the property
+	 * @return true, if successful
 	 */
 	private boolean parseBoolean(String property) {
 		String rawConfig = config.getProperty(property);
@@ -169,9 +191,10 @@ public final class PropertiesHelper {
 	}
 	
 	/**
-	 * get a int value from the config file
-	 * @param property
-	 * @return
+	 * get a int value from the config file.
+	 *
+	 * @param property the property
+	 * @return the int
 	 */
 	private int parseInt(String property) {
 		String rawConfig = config.getProperty(property);
@@ -187,19 +210,21 @@ public final class PropertiesHelper {
 
 
 	/**
-	 * 
-	 * @param key
-	 * @return
+	 * Gets the property.
+	 *
+	 * @param key the key
+	 * @return the property
 	 */
 	public String getProperty(String key) {
 		return config.getProperty(key);
 	}
 
 	/**
-	 * 
-	 * @param key
-	 * @param defaultValue
-	 * @return
+	 * Gets the property.
+	 *
+	 * @param key the key
+	 * @param defaultValue the default value
+	 * @return the property
 	 */
 	public String getProperty(String key, String defaultValue) {
 		return config.getProperty(key, defaultValue);
@@ -207,7 +232,7 @@ public final class PropertiesHelper {
 	
 	
 	/**
-	 * 
+	 * Load presents.
 	 */
 	public void loadPresents() {
 		Properties props = new Properties();
@@ -235,7 +260,7 @@ public final class PropertiesHelper {
 	}
 		
 	/**
-	 * 
+	 * Save presents.
 	 */
 	public void savePresents() {
 		Properties props = new Properties();
@@ -260,8 +285,9 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Parses the lpd address.
+	 *
+	 * @return the int
 	 */
 	private int parseLpdAddress() {
 		lpdDevice = new ArrayList<DeviceConfig>();
@@ -300,7 +326,8 @@ public final class PropertiesHelper {
 	}
 	
 	/**
-	 * get the size of the software emulated matrix
+	 * get the size of the software emulated matrix.
+	 *
 	 * @return the size or -1 if nothing was defined
 	 */
 	public int getLedPixelSize() {
@@ -317,8 +344,9 @@ public final class PropertiesHelper {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the color format from cfg.
+	 *
+	 * @return the color format from cfg
 	 */
 	private int getColorFormatFromCfg() {
 		colorFormat = new ArrayList<ColorFormat>();
@@ -339,8 +367,9 @@ public final class PropertiesHelper {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Parses the i2c address.
+	 *
+	 * @return the int
 	 */
 	private int parseI2cAddress() {
 		i2cAddr = new ArrayList<Integer>();
@@ -364,16 +393,18 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * get configured artnet ip
-	 * @return
+	 * get configured artnet ip.
+	 *
+	 * @return the art net ip
 	 */
 	public String getArtNetIp() {
 		return config.getProperty("artnet.ip");
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Parses the art net devices.
+	 *
+	 * @return the int
 	 */
 	private int parseArtNetDevices() {
 		//minimal ip length 1.1.1.1
@@ -386,8 +417,9 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Parses the mini dmx devices.
+	 *
+	 * @return the int
 	 */
 	private int parseMiniDmxDevices() {
 		if (parseMiniDmxDevicesX()>0 && parseMiniDmxDevicesY()>0) {
@@ -400,32 +432,36 @@ public final class PropertiesHelper {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Parses the mini dmx devices x.
+	 *
+	 * @return the int
 	 */
 	public int parseMiniDmxDevicesX() {
 		return parseInt("minidmx.resolution.x");
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Parses the mini dmx devices y.
+	 *
+	 * @return the int
 	 */
 	public int parseMiniDmxDevicesY() {
 		return parseInt("minidmx.resolution.y");
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Start randommode.
+	 *
+	 * @return true, if successful
 	 */
 	public boolean startRandommode() {
 		return parseBoolean("startup.in.randommode");
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the nr of screens.
+	 *
+	 * @return the nr of screens
 	 */
 	public int getNrOfScreens() {
 		return devicesInRow1+devicesInRow2;
@@ -433,8 +469,9 @@ public final class PropertiesHelper {
 	
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the layout.
+	 *
+	 * @return the layout
 	 */
 	public Layout getLayout() {
 		if (devicesInRow2>0) {
@@ -445,7 +482,8 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * 
+	 * Gets the i2c addr.
+	 *
 	 * @return i2c address for rainbowduino devices
 	 */
 	public List<Integer> getI2cAddr() {
@@ -453,7 +491,8 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * 
+	 * Gets the lpd device.
+	 *
 	 * @return options to display lpd6803 displays
 	 */
 	public List<DeviceConfig> getLpdDevice() {
@@ -461,14 +500,17 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the color format.
+	 *
+	 * @return the color format
 	 */
 	public List<ColorFormat> getColorFormat() {
 		return colorFormat;
 	}
 	
 	/**
+	 * Gets the output device.
+	 *
 	 * @return the configured output device
 	 */
 	public OutputDeviceEnum getOutputDevice() {
@@ -476,16 +518,18 @@ public final class PropertiesHelper {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the device x resolution.
+	 *
+	 * @return the device x resolution
 	 */
 	public int getDeviceXResolution() {
 		return deviceXResolution;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the device y resolution.
+	 *
+	 * @return the device y resolution
 	 */
 	public int getDeviceYResolution() {
 		return deviceYResolution;

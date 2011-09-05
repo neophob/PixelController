@@ -26,19 +26,29 @@ import processing.core.PConstants;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
+ * The Class Fire.
+ *
  * @author mvogt
  * ripped from http://demo-effects.cvs.sourceforge.net/viewvc/demo-effects/demo-effects/FIRE/fire.c?revision=1.5&content-type=text%2Fplain
  */
 public class Fire extends Generator implements PConstants {
 
 	/* paletter */
+	/** The colors. */
 	private int[] colors;
 	
+	/** The r. */
 	private Random r;
 	
 	/* fire buffer, contains 0..255 */
+	/** The buffer. */
 	private int[] buffer;
 
+	/**
+	 * Instantiates a new fire.
+	 *
+	 * @param controller the controller
+	 */
 	public Fire(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
@@ -66,10 +76,21 @@ public class Fire extends Generator implements PConstants {
 		r = new Random();
 	}
 
+	/**
+	 * Gets the color.
+	 *
+	 * @param r the r
+	 * @param g the g
+	 * @param b the b
+	 * @return the color
+	 */
 	private int getColor(int r, int g, int b) {
 		return (r << 16) | (g << 8) | (b);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()- 1);

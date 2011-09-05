@@ -20,12 +20,21 @@
 package com.neophob.sematrix.fader;
 
 
+/**
+ * The Class SlideLeftRight.
+ */
 public class SlideLeftRight extends Fader {
 
+	/**
+	 * Instantiates a new slide left right.
+	 */
 	public SlideLeftRight() {
 		super(FaderName.SLIDE_LEFT_RIGHT, 1500);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
+	 */
 	@Override
 	public int[] getBuffer(int[] buffer) {
 		currentStep++;	

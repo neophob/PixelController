@@ -19,22 +19,49 @@
 package com.neophob.sematrix.output;
 
 /**
- * 
- * @author michu
+ * The Class ArduinoOutput.
  *
+ * @author michu
  */
 public abstract class ArduinoOutput extends Output {
+	
+	/** The initialized. */
 	protected boolean initialized;
+	
+	/** The need update. */
 	protected long needUpdate;
+	
+	/** The no update. */
 	protected long noUpdate;
 	
+	/**
+	 * Instantiates a new arduino output.
+	 *
+	 * @param controller the controller
+	 * @param name the name
+	 */
 	public ArduinoOutput(PixelControllerOutput controller, String name) {
 		super(controller, name);
 	}
 	
+	/**
+	 * Gets the arduino error counter.
+	 *
+	 * @return the arduino error counter
+	 */
 	public abstract int getArduinoErrorCounter();
 
+	/**
+	 * Gets the arduino buffer size.
+	 *
+	 * @return the arduino buffer size
+	 */
 	public abstract int getArduinoBufferSize();
 	
+	/**
+	 * Gets the latest heartbeat.
+	 *
+	 * @return the latest heartbeat
+	 */
 	public abstract long getLatestHeartbeat();
 }

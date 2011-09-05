@@ -20,12 +20,21 @@
 package com.neophob.sematrix.fader;
 
 
+/**
+ * The Class SlideUpsideDown.
+ */
 public class SlideUpsideDown extends Fader {
 
+	/**
+	 * Instantiates a new slide upside down.
+	 */
 	public SlideUpsideDown() {
 		super(FaderName.SLIDE_UPSIDE_DOWN, 1500);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
+	 */
 	@Override
 	public int[] getBuffer(int[] buffer) {
 		currentStep++;		

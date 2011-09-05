@@ -31,23 +31,24 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 
 /**
- * create random settings 
- * @author michu
+ * create random settings.
  *
+ * @author michu
  */
 public final class Shuffler {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(Shuffler.class.getName());
 
 	/**
-	 * 
+	 * Instantiates a new shuffler.
 	 */
 	private Shuffler() {
 		//no instance allowed
 	}
 
 	/**
-	 * load a prestored preset, randomly
+	 * load a prestored preset, randomly.
 	 */
 	public static void presentShuffler() {
 		Collector col = Collector.getInstance();
@@ -70,7 +71,7 @@ public final class Shuffler {
 	
 	/**
 	 * heavy shuffler! shuffle the current selected visual
-	 * used by manual RANDOMIZE 
+	 * used by manual RANDOMIZE.
 	 */
 	public static void manualShuffleStuff() {		
 		Collector col = Collector.getInstance(); 
@@ -142,7 +143,7 @@ public final class Shuffler {
 	}
 
 	/**
-	 * used for randomized mode, rarely change stuff
+	 * used for randomized mode, rarely change stuff.
 	 */
 	public static void shuffleStuff() {
 		boolean kick = Sound.getInstance().isKick();

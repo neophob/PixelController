@@ -28,7 +28,7 @@ package com.neophob.sematrix.glue;
 public interface RandomizeState {
 
 	/**
-	 * randomize its state
+	 * randomize its state.
 	 */
 	void shuffle();
 	

@@ -29,14 +29,15 @@ import artnet4j.ArtNet;
 import artnet4j.packets.ArtDmxPacket;
 
 /**
- * 
+ * The Class ArtnetDevice.
+ *
  * @author michu
  * @author Rainer Ostendorf <mail@linlab.de>
  * 
  * TODO:
- *  -support for multiple devices
- *  -support for buffer rotation
- *  -more options in the config file
+ * -support for multiple devices
+ * -support for buffer rotation
+ * -more options in the config file
  */
 public class ArtnetDevice extends Output {
 

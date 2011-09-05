@@ -29,26 +29,37 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 
 
+/**
+ * The Class InternalBuffer.
+ */
 public class InternalBuffer extends PApplet {
 	
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2344499301021L;
 
+	/** The log. */
 	static Logger log = Logger.getLogger(InternalBuffer.class.getName());
 
+	/** The display horiz. */
 	private boolean displayHoriz;
+	
+	/** The y. */
 	private int x,y;
+	
+	/** The p image. */
 	private PImage pImage=null;
 	
+	/** The target y size. */
 	private int targetXSize, targetYSize;
 
 	/**
-	 * 
-	 * @param displayHoriz
-	 * @param x
-	 * @param y
+	 * Instantiates a new internal buffer.
+	 *
+	 * @param displayHoriz the display horiz
+	 * @param x the x
+	 * @param y the y
+	 * @param targetXSize the target x size
+	 * @param targetYSize the target y size
 	 */
 	public InternalBuffer(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
 		this.displayHoriz = displayHoriz;
@@ -58,8 +69,8 @@ public class InternalBuffer extends PApplet {
 		this.targetYSize = targetYSize;
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see processing.core.PApplet#setup()
 	 */
     public void setup() {
     	log.log(Level.INFO, "create frame with size "+x+"/"+y);
@@ -70,7 +81,7 @@ public class InternalBuffer extends PApplet {
     }
 
     /**
-     * draw the whole internal buffer on screen
+     * draw the whole internal buffer on screen.
      */
 	public void draw() {
 		int localX=0, localY=0;

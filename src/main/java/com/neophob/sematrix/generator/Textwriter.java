@@ -39,35 +39,61 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * @author mvogt
+ * The Class Textwriter.
  *
+ * @author mvogt
  */
 public class Textwriter extends Generator {
 
+	/** The Constant TEXT_BUFFER_X_SIZE. */
 	private static final int TEXT_BUFFER_X_SIZE=128;
+	
+	/** The Constant CHANGE_SCROLLING_DIRECTION_TIMEOUT. */
 	private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT=12;
 	
+	/** The Constant SCROLL_AMMOUNT. */
 	private static final int SCROLL_AMMOUNT = 4;
 	
+	/** The log. */
 	private static Logger log = Logger.getLogger(Textwriter.class.getName());
 
+	/** The ypos. */
 	private int xpos,ypos;
+	
+	/** The font. */
 	private Font font;
+	
+	/** The color. */
 	private Color color;
 
+	/** The xofs. */
 	private int xofs;
+	
+	/** The max x pos. */
 	private int maxXPos;
+	
+	/** The scroll right. */
 	private boolean scrollRight=true;
+	
+	/** The wait. */
 	private int wait;
 
+	/** The text buffer. */
 	private int[] textBuffer;
+	
+	/** The tmp. */
 	private int[] tmp;
 	
+	/** The text. */
 	private String text;
 
 	/**
-	 * 
-	 * @param filename
+	 * Instantiates a new textwriter.
+	 *
+	 * @param controller the controller
+	 * @param fontName the font name
+	 * @param fontSize the font size
+	 * @param text the text
 	 */
 	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text) {
 		super(controller, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
@@ -86,8 +112,9 @@ public class Textwriter extends Generator {
 	}
 
 	/**
-	 * create image
-	 * @return
+	 * create image.
+	 *
+	 * @param text the text
 	 */
 	public void createTextImage(String text) {	
 		//only load if needed
@@ -135,6 +162,9 @@ public class Textwriter extends Generator {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		
@@ -196,6 +226,11 @@ public class Textwriter extends Generator {
 		
 	}	
 
+	/**
+	 * Gets the text.
+	 *
+	 * @return the text
+	 */
 	public String getText() {
 		return text;
 	}

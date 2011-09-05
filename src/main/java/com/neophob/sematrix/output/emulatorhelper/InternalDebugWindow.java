@@ -30,16 +30,23 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 
 /**
- * 
- * @author michu
+ * The Class InternalDebugWindow.
  *
+ * @author michu
  */
 public class InternalDebugWindow extends Frame {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2946906663946781980L;
 
+	/** The log. */
 	static Logger log = Logger.getLogger(InternalDebugWindow.class.getName());
 
+	/**
+	 * Instantiates a new internal debug window.
+	 *
+	 * @param displayHoriz the display horiz
+	 */
 	public InternalDebugWindow(boolean displayHoriz) {
         super("debug buffer");
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();

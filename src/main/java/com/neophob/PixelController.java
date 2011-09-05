@@ -39,26 +39,32 @@ import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
- * 
- * @author michu
- * 
+ * The Class PixelController.
  *
+ * @author michu
  */
 public class PixelController extends PApplet {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(PixelController.class.getName());
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
 	
+	/** The Constant FPS. */
 	public static final int FPS = 20;
 
+	/** The output. */
 	private Output output;
 	
+	/** The error. */
 	private int error;
+	
+	/** The frame counter. */
 	private int frameCounter=0;
 
 	/**
-	 * prepare
+	 * prepare.
 	 */
 	public void setup() {
 		//		ImageIcon titlebaricon = new ImageIcon(loadBytes("logo.jpg"));
@@ -107,6 +113,9 @@ public class PixelController extends PApplet {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see processing.core.PApplet#draw()
+	 */
 	@SuppressWarnings("deprecation")
 	public void draw() { 
 		//update all generators
@@ -129,6 +138,11 @@ public class PixelController extends PApplet {
 		frameCounter++;
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String args[]) {
 		PApplet.main(new String[] { "com.neophob.PixelController" });
 	}

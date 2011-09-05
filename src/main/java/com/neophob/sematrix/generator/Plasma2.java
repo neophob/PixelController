@@ -28,19 +28,28 @@ import processing.core.PApplet;
 
 /**
  * TODO: multiple palettes
- * 		 various sizes
- * @author mvogt
+ * various sizes.
  *
+ * @author mvogt
  */
 public class Plasma2 extends Generator {
 
+	/** The frame count. */
 	private int frameCount;
 	
+	/**
+	 * Instantiates a new plasma2.
+	 *
+	 * @param controller the controller
+	 */
 	public Plasma2(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		float  xc = 20;

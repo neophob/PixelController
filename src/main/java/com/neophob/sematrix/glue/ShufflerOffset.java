@@ -20,32 +20,72 @@
 package com.neophob.sematrix.glue;
 
 /**
- * 
- * @author michu
+ * The Enum ShufflerOffset.
  *
+ * @author michu
  */
 public enum ShufflerOffset {
+	
+	/** The GENERATOR a. */
 	GENERATOR_A(0),
+	
+	/** The GENERATOR b. */
 	GENERATOR_B(1),
+	
+	/** The EFFECT a. */
 	EFFECT_A(2),
+	
+	/** The EFFECT b. */
 	EFFECT_B(3),
+	
+	/** The MIXER. */
 	MIXER(4),
+	
+	/** The MIXER output. */
 	MIXER_OUTPUT(5),
+	
+	/** The FADER output. */
 	FADER_OUTPUT(6),
+	
+	/** The OUTPUT. */
 	OUTPUT(7),
+	
+	/** The BLINKEN. */
 	BLINKEN(8),
+	
+	/** The IMAGE. */
 	IMAGE(9),
+	
+	/** The TINT. */
 	TINT(10),
+	
+	/** The TEXTURE deformation. */
 	TEXTURE_DEFORMATION(11),
+	
+	/** The THRESHOLD value. */
 	THRESHOLD_VALUE(12),
+	
+	/** The ROTOZOOMER. */
 	ROTOZOOMER(13);
 	
 	
+	/** The ofs. */
 	int ofs;
+	
+	/**
+	 * Instantiates a new shuffler offset.
+	 *
+	 * @param ofs the ofs
+	 */
 	ShufflerOffset(int ofs) {
 		this.ofs = ofs;
 	}
 	
+	/**
+	 * Gets the offset.
+	 *
+	 * @return the offset
+	 */
 	int getOffset() {
 		return ofs;
 	}

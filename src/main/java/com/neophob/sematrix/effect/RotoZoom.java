@@ -28,36 +28,60 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
 /**
- * 
+ * The Class RotoZoom.
+ *
  * @author michu
  * 
  * ripped from http://www.openprocessing.org/visuals/?visualID=8030
- * 
  */
 public class RotoZoom extends Effect {
 
 	//endless zooming or zoomin-zoomout...
+	/**
+	 * The Enum WORKMODE.
+	 */
 	public enum WORKMODE {
+		
+		/** The PINGPONG. */
 		PINGPONG,
+		
+		/** The ZOOM. */
 		ZOOM
 	}
 
+	/** The angle. */
 	private float angle;
+	
+	/** The angle orig. */
 	private int angleOrig;
+	
+	/** The angle diff. */
 	private float angleDiff;
+	
+	/** The scale2. */
 	private float scale, scale2;
+	
+	/** The scale orig. */
 	private float scaleOrig;
+	
+	/** The fader pos. */
 	private float faderPos;
+	
+	/** The dscalee. */
 	private float dscalee=0.03f;
 
+	/** The workmode. */
 	private WORKMODE workmode = WORKMODE.ZOOM;
 
+	/** The roto zoomed buffer. */
 	private int[] rotoZoomedBuffer=null;
 
 	/**
-	 * 
-	 * @param scale
-	 * @param angle
+	 * Instantiates a new roto zoom.
+	 *
+	 * @param controller the controller
+	 * @param scale the scale
+	 * @param angle the angle
 	 */
 	public RotoZoom(PixelControllerEffect controller, float scale, float angle) {
 		super(controller, EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
@@ -68,13 +92,20 @@ public class RotoZoom extends Effect {
 		this.angleDiff = 0.02f;
 	}
 
+	/**
+	 * Gets the angle.
+	 *
+	 * @return the angle
+	 */
 	public int getAngle() {
 		return angleOrig;
 	}
 
 	/**
-	 * 
+	 * Sets the angle.
+	 *
 	 * @param angle from -127 to 127
+	 * @return the int
 	 */
 	public int setAngle(int angle) {
 		if (angle > 127) angle = 127;
@@ -100,13 +131,19 @@ public class RotoZoom extends Effect {
 	}
 
 	
+	/**
+	 * Sets the zoom.
+	 *
+	 * @param zoom the zoom
+	 * @return the int
+	 */
 	public int setZoom(int zoom) {
 		return 0;
 	}
 
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {		
 		//lazy init buffer
@@ -123,8 +160,8 @@ public class RotoZoom extends Effect {
 	}
 
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#update()
 	 */
 	public void update() {
 		angle+=this.angleDiff;
@@ -153,11 +190,12 @@ public class RotoZoom extends Effect {
 
 
 	/**
-	 * do the actual roto zooming
-	 * 
-	 * @param scaleP
-	 * @param angleP
-	 * @param buffer
+	 * do the actual roto zooming.
+	 *
+	 * @param scaleP the scale p
+	 * @param angleP the angle p
+	 * @param bufferP the buffer p
+	 * @return the int[]
 	 */
 	private int[] rotoZoom(float scaleP, float angleP, int bufferP[]) {
 		int[] tmp = new int[bufferP.length];
@@ -186,6 +224,9 @@ public class RotoZoom extends Effect {
 		return tmp;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#shuffle()
+	 */
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {

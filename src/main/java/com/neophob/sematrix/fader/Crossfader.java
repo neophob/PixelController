@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+˚ * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -21,28 +21,31 @@ package com.neophob.sematrix.fader;
 
 
 /**
- * crossfader
- * 
- * @author michu
+ * crossfader.
  *
+ * @author michu
  */
 public class Crossfader extends Fader {
 
 	/**
-	 * 
+	 * Instantiates a new crossfader.
 	 */
 	public Crossfader() {
 		super(FaderName.CROSSFADE, 2500);
 	}
 
 	/**
-	 * 
-	 * @param time
+	 * Instantiates a new crossfader.
+	 *
+	 * @param time the time
 	 */
 	public Crossfader(int time) {
 		super(FaderName.CROSSFADE, time);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
+	 */
 	@Override
 	public int[] getBuffer(int[] buffer) {
 		currentStep++;		

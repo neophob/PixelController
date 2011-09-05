@@ -24,27 +24,28 @@ import com.neophob.sematrix.glue.OutputMapping;
 
 /**
  * Horizontal Layout, features:
- *  -"unlimited" width
- *  -exact one panels height
- * 
- * @author michu
+ * -"unlimited" width
+ * -exact one panels height.
  *
+ * @author michu
  */
 public class HorizontalLayout extends Layout {
 
 	/**
-	 * 
-	 * @param row1Size
-	 * @param row2Size
+	 * Instantiates a new horizontal layout.
+	 *
+	 * @param row1Size the row1 size
+	 * @param row2Size the row2 size
 	 */
 	public HorizontalLayout(int row1Size, int row2Size) {
 		super(LayoutName.HORIZONTAL, row1Size, row2Size);
 	}
 
 	/**
-	 * 
-	 * @param fxInput
-	 * @return
+	 * How many screens share this fx on the x axis.
+	 *
+	 * @param fxInput the fx input
+	 * @return the int
 	 */
 	private int howManyScreensShareThisFxOnTheXAxis(int fxInput) {
 		int ret=0;
@@ -57,9 +58,11 @@ public class HorizontalLayout extends Layout {
 	}
 	
 	/**
-	 * check which offset position the fx at this screen is
-	 * @param screenOutput
-	 * @return
+	 * check which offset position the fx at this screen is.
+	 *
+	 * @param fxInput the fx input
+	 * @param screenNr the screen nr
+	 * @return the x offset for screen
 	 */
 	private int getXOffsetForScreen(int fxInput, int screenNr) {
 		int ret=0;
@@ -74,8 +77,8 @@ public class HorizontalLayout extends Layout {
 	}
 	
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.layout.Layout#getDataForScreen(int)
 	 */
 	public LayoutModel getDataForScreen(int screenNr) {
 		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();

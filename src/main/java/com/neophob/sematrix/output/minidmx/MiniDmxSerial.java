@@ -66,49 +66,71 @@ import com.neophob.sematrix.properties.ColorFormat;
  */
 public class MiniDmxSerial {
 		
+	/** The log. */
 	private static Logger log = Logger.getLogger(MiniDmxSerial.class.getName());
 	
-	/** 
-	 * internal lib version
-	 */
+	/** internal lib version. */
 	public static final String VERSION = "1.0";
 
+	/** The Constant START_OF_BLOCK. */
 	private static final byte START_OF_BLOCK = (byte)0x5a;
+	
+	/** The Constant END_OF_BLOCK. */
 	private static final byte END_OF_BLOCK   = (byte)0xa5;
 
+	/** The Constant REPLY_SUCCESS. */
 	private static final byte REPLY_SUCCESS  = (byte)0xc1;
+	
+	/** The Constant REPLY_ERROR. */
 	private static final byte REPLY_ERROR    = (byte)0xc0;
 	
+	/** The Constant SEND_96_BYTES. */
 	private static final byte SEND_96_BYTES    = (byte)0xa0; //32 pixel, for example 8x4 pixel
+	
+	/** The Constant SEND_256_BYTES. */
 	private static final byte SEND_256_BYTES   = (byte)0xa1; //85 pixel, for example 8x8 pixel and padding
+	
+	/** The Constant SEND_512_BYTES. */
 	private static final byte SEND_512_BYTES   = (byte)0xa2; //170 pixel, for example 16x8 pixel and padding
+	
+	/** The Constant SEND_768_BYTES. */
 	private static final byte SEND_768_BYTES   = (byte)0xb0; //256 pixel, for example 16x16 pixel
+	
+	/** The Constant SEND_1536_BYTES. */
 	private static final byte SEND_1536_BYTES  = (byte)0xb1; //512 pixel, for example 32x16 pixel
+	
+	/** The Constant SEND_3072_BYTES. */
 	private static final byte SEND_3072_BYTES  = (byte)0xb2; //1024 pixel, for example 32x32 pixel
 	
 	//connection errors to arduino, TODO: use it!
+	/** The connection error counter. */
 	private int connectionErrorCounter;
+	
+	/** The ack errors. */
 	private long ackErrors = 0;
 
+	/** The target buffersize. */
 	private int targetBuffersize;
 	
+	/** The app. */
 	private PApplet app;
 
+	/** The baud. */
 	private int baud = 230400;
+	
+	/** The port. */
 	private Serial port;
 
-	/**
-	 * map to store checksum of image
-	 */
+	/** map to store checksum of image. */
 	private String lastDataMap;
 	
 	
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
-	 * 
-	 * @param _app
-	 * @param rainbowduinoAddr
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param app the app
+	 * @param targetBuffersize the target buffersize
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public MiniDmxSerial(PApplet app, int targetBuffersize) throws NoSerialPortFoundException {
 		this(app, null, targetBuffersize);
@@ -116,11 +138,11 @@ public class MiniDmxSerial {
 
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
-	 * 
-	 * @param _app
-	 * @param rainbowduinoAddr
-	 * @param portName
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param _app the _app
+	 * @param targetBuffersize the target buffersize
+	 * @param portName the port name
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public MiniDmxSerial(PApplet _app, int targetBuffersize, String portName) throws NoSerialPortFoundException {
 		this(_app, portName, targetBuffersize);
@@ -129,12 +151,11 @@ public class MiniDmxSerial {
 
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
-	 * 
-	 * @param _app
-	 * @param portName
-	 * @param targetBuffersize
-	 * @param rainbowduinoAddr
-	 * @throws NoSerialPortFoundException
+	 *
+	 * @param _app the _app
+	 * @param portName the port name
+	 * @param targetBuffersize the target buffersize
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public MiniDmxSerial(PApplet _app, String portName, int targetBuffersize) throws NoSerialPortFoundException {
 		
@@ -182,7 +203,7 @@ public class MiniDmxSerial {
 
 
 	/**
-	 * clean up library
+	 * clean up library.
 	 */
 	public void dispose() {
 		if (connected()) {
@@ -202,8 +223,8 @@ public class MiniDmxSerial {
 	}
 
 	/**
-	 * return connection state of lib 
-	 * 
+	 * return connection state of lib.
+	 *
 	 * @return wheter rainbowudino is connected
 	 */
 	public boolean connected() {
@@ -213,11 +234,11 @@ public class MiniDmxSerial {
 	
 
 	/**
- 	 * 
- 	 * Open serial port with given name. Send ping to check if port is working.
+	 * Open serial port with given name. Send ping to check if port is working.
 	 * If not port is closed and set back to null
-	 * 
-	 * @param portName
+	 *
+	 * @param portName the port name
+	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	private void openPort(String portName) throws NoSerialPortFoundException {
 		if (portName == null) {
@@ -265,9 +286,9 @@ public class MiniDmxSerial {
 	 * wrapper class to send a RGB image to the miniDmx device.
 	 * the rgb image gets converted to the miniDmx compatible
 	 * "image format"
-	 * 
-	 * @param ofs the image ofs
+	 *
 	 * @param data rgb data (int[64], each int contains one RGB pixel)
+	 * @param colorFormat the color format
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(int[] data, ColorFormat colorFormat) {
@@ -278,8 +299,8 @@ public class MiniDmxSerial {
 	
 	/**
 	 * get md5 hash out of an image. used to check if the image changed
-	 * @param addr
-	 * @param data
+	 *
+	 * @param data the data
 	 * @return true if send was successful
 	 */
 	private boolean didFrameChange(byte data[]) {
@@ -301,21 +322,21 @@ public class MiniDmxSerial {
 	}
 	
 	/**
-	 * send a frame to the miniDMX device. 
+	 * send a frame to the miniDMX device.
 	 * 
-	 *   0x5A - start of block 
-	 *   0xA0 - DMX-Out using 96 channels 
-	 *          96 Bytes payload
-	 *   0xA5 - end of block 
-	 *   
-	 *   instead of a0h (96b):
-	 *    -a1h: 256b
-	 *    -a2h: 512b
-	 *    -
+	 * 0x5A - start of block
+	 * 0xA0 - DMX-Out using 96 channels
+	 * 96 Bytes payload
+	 * 0xA5 - end of block
 	 * 
-	 * @param ofs - the offset get multiplied by 32 on the arduino!
+	 * instead of a0h (96b):
+	 * -a1h: 256b
+	 * -a2h: 512b
+	 * -
+	 *
 	 * @param data byte[3*8*4]
 	 * @return true if send was successful
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public boolean sendFrame(byte data[]) throws IllegalArgumentException {		
 		if (data.length!=targetBuffersize) {
@@ -365,9 +386,10 @@ public class MiniDmxSerial {
 	
 
 	/**
-	 * 
-	 * @param cmdfull
-	 * @return
+	 * Send serial data.
+	 *
+	 * @param cmdfull the cmdfull
+	 * @return true, if successful
 	 */
 	private boolean sendSerialData(byte cmdfull[]) {
 		try {
@@ -383,8 +405,10 @@ public class MiniDmxSerial {
 	}
 	
 	/**
-	 * send the data to the serial port
-	 * @param cmdfull
+	 * send the data to the serial port.
+	 *
+	 * @param cmdfull the cmdfull
+	 * @throws SerialPortException the serial port exception
 	 */
 	private synchronized void writeSerialData(byte[] cmdfull) throws SerialPortException {
 		//TODO handle the 128 byte buffer limit!
@@ -405,18 +429,18 @@ public class MiniDmxSerial {
 	}
 	
 	/**
-	 * read data from serial port, wait for ACK, miniDMX should send 
+	 * read data from serial port, wait for ACK, miniDMX should send
 	 * 
-	 * 0x5A - start of block 
-	 * 0xC1 - success 
+	 * 0x5A - start of block
+	 * 0xC1 - success
 	 * 0xA5 - end of block
+	 * 
+	 * 0x5A - start of block
+	 * 0xC0 - ERROR
+	 * 0xA5 - end of block
+	 * 
+	 * after 100ms.
 	 *
-	 * 0x5A - start of block 
-	 * 0xC0 - ERROR 
-	 * 0xA5 - end of block
-	 * 
-	 * after 100ms
-	 * 
 	 * @return true if ack received, false if not
 	 */
 	private synchronized boolean waitForAck() {		
@@ -466,8 +490,9 @@ public class MiniDmxSerial {
 
 
 	/**
-	 * Sleep wrapper
-	 * @param ms
+	 * Sleep wrapper.
+	 *
+	 * @param ms the ms
 	 */
 	private void sleep(int ms) {
 		try {
@@ -479,11 +504,12 @@ public class MiniDmxSerial {
 	
 	
 	/**
-	 * 
-	 * @param data
-	 * @param colorFormat
-	 * @return
-	 * @throws IllegalArgumentException
+	 * Convert buffer to24bit.
+	 *
+	 * @param data the data
+	 * @param colorFormat the color format
+	 * @return the byte[]
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
 		if (data.length!=targetBuffersize) {
@@ -531,10 +557,12 @@ public class MiniDmxSerial {
 
 	
 	/**
-	 * 
-	 * @param data
-	 * @return
-	 * @throws IllegalArgumentException
+	 * Convert buffer to15bit.
+	 *
+	 * @param data the data
+	 * @param colorFormat the color format
+	 * @return the byte[]
+	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
 		if (data.length!=targetBuffersize) {
@@ -573,11 +601,12 @@ public class MiniDmxSerial {
 	}
 
 	/**
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @return
+	 * Convert to15 bit.
+	 *
+	 * @param r the r
+	 * @param g the g
+	 * @param b the b
+	 * @return the byte[]
 	 */
 	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
 		int dst=0;
@@ -597,16 +626,18 @@ public class MiniDmxSerial {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the connection error counter.
+	 *
+	 * @return the connection error counter
 	 */
 	public int getConnectionErrorCounter() {
 		return connectionErrorCounter;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the ack errors.
+	 *
+	 * @return the ack errors
 	 */
 	public long getAckErrors() {
 		return ackErrors;

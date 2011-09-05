@@ -31,25 +31,34 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 /**
  * create some drops
  * 
- * some code is ripped from macetech
- * 
- * @author michu
+ * some code is ripped from macetech.
  *
+ * @author michu
  */
 public class Geometrics extends Generator {
 
+	/** The Constant THICKNESS. */
 	private static final int THICKNESS = 10;
 	
+	/** The drops. */
 	private List<Drop> drops;
+	
+	/** The tmp. */
 	private List<Drop> tmp;
 	
+	/** The drop hue. */
 	private int dropHue = 0;
 
+	/** The sound. */
 	private Sound sound;
+	
+	/** The rnd gen. */
 	private Random rndGen=new Random();
 
 	/**
-	 * 
+	 * Instantiates a new geometrics.
+	 *
+	 * @param controller the controller
 	 */
 	public Geometrics(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.GEOMETRICS, ResizeName.QUALITY_RESIZE);
@@ -60,10 +69,11 @@ public class Geometrics extends Generator {
 	}
 
 	/**
-	 * 
-	 * @param min
-	 * @param max
-	 * @return
+	 * Random.
+	 *
+	 * @param min the min
+	 * @param max the max
+	 * @return the int
 	 */
 	private int random(int min, int max) {
 		int ret = rndGen.nextInt(max-min);
@@ -71,6 +81,9 @@ public class Geometrics extends Generator {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 
@@ -105,21 +118,24 @@ public class Geometrics extends Generator {
 
 
 	/**
-	 * Class for Raindrops effect
-	 * 
-	 * @author michu
+	 * Class for Raindrops effect.
 	 *
+	 * @author michu
 	 */
 	private final class Drop {
 
+		/** The drop size. */
 		int xpos, ypos, dropcolor, dropSize;
+		
+		/** The finished. */
 		boolean finished;
 
 		/**
-		 * 
-		 * @param x
-		 * @param y
-		 * @param c
+		 * Instantiates a new drop.
+		 *
+		 * @param x the x
+		 * @param y the y
+		 * @param c the c
 		 */
 		private Drop (int x, int y, int c) {
 			xpos = x;
@@ -128,6 +144,9 @@ public class Geometrics extends Generator {
 			finished = false;
 		}
 
+		/**
+		 * Update.
+		 */
 		private void update() {
 			if (!finished) {
 				drawCircle(xpos,ypos, dropSize, dropcolor);
@@ -139,16 +158,22 @@ public class Geometrics extends Generator {
 			}
 		}
 
+		/**
+		 * Done.
+		 *
+		 * @return true, if successful
+		 */
 		private boolean done() {
 			return finished;
 		}
 
 		/**
-		 * 
-		 * @param thick
-		 * @param px
-		 * @param py
-		 * @param col
+		 * Sets the pixel.
+		 *
+		 * @param thick the thick
+		 * @param px the px
+		 * @param py the py
+		 * @param col the col
 		 */
 		private void setPixel(int thick, int px, int py, int col) {			
 			int ofs=px+py*internalBufferXSize;
@@ -180,10 +205,11 @@ public class Geometrics extends Generator {
 		/**
 		 * Bresenham Circle
 		 * ripped from http://actionsnippet.com/?p=492
-		 * @param xp
-		 * @param yp
-		 * @param radius
-		 * @param col
+		 *
+		 * @param xp the xp
+		 * @param yp the yp
+		 * @param radius the radius
+		 * @param col the col
 		 */
 		private void drawCircle(int xp, int yp, int radius, int col) {
 			int balance;

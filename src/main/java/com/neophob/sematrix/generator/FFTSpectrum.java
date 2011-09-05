@@ -31,11 +31,20 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class FFTSpectrum extends Generator {
 
+	/** The sound. */
 	private Sound sound;
+	
+	/** The fft smooth. */
 	private float[] fftSmooth;
 	
+	/** The y block. */
 	private int yBlock;
 
+	/**
+	 * Instantiates a new fFT spectrum.
+	 *
+	 * @param controller the controller
+	 */
 	public FFTSpectrum(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.FFT, ResizeName.PIXEL_RESIZE);
 		sound = Sound.getInstance();
@@ -46,6 +55,9 @@ public class FFTSpectrum extends Generator {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		int avg = sound.getFftAvg();
@@ -65,12 +77,13 @@ public class FFTSpectrum extends Generator {
 	}
 	
 	/**
-	 * 
-	 * @param col
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
+	 * Rect.
+	 *
+	 * @param col the col
+	 * @param x1 the x1
+	 * @param y1 the y1
+	 * @param x2 the x2
+	 * @param y2 the y2
 	 */
 	private void rect(int col, int x1, int y1, int x2, int y2) {
 		int ofs;

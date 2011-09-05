@@ -24,17 +24,27 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * @author mvogt
+ * The Class PassThruGen.
  *
+ * @author mvogt
  */
 public class PassThruGen extends Generator {
 
+	/** The log. */
 	static Logger log = Logger.getLogger(PassThruGen.class.getName());
 	
+	/**
+	 * Instantiates a new pass thru gen.
+	 *
+	 * @param controller the controller
+	 */
 	public PassThruGen(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.PASSTHRU, ResizeName.QUALITY_RESIZE);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {	
 	}

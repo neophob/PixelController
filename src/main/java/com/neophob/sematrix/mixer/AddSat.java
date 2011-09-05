@@ -23,12 +23,23 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class AddSat.
+ */
 public class AddSat extends Mixer {
 
+	/**
+	 * Instantiates a new adds the sat.
+	 *
+	 * @param controller the controller
+	 */
 	public AddSat(PixelControllerMixer controller) {
 		super(controller, MixerName.ADDSAT, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+	 */
 	public int[] getBuffer(Visual visual) {
 		
 		if (visual.getEffect2() == null) {

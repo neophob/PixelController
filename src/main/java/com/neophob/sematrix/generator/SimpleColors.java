@@ -22,14 +22,26 @@ package com.neophob.sematrix.generator;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
+/**
+ * The Class SimpleColors.
+ */
 public class SimpleColors extends Generator {
 
+	/** The rotate. */
 	private int rotate = 0;
 
+	/**
+	 * Instantiates a new simple colors.
+	 *
+	 * @param controller the controller
+	 */
 	public SimpleColors(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.SIMPLECOLORS, ResizeName.QUALITY_RESIZE);
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		int col, ofs=0;

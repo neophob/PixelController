@@ -18,9 +18,20 @@
  */
 package com.neophob.sematrix.output;
 
+/**
+ * The Enum OutputDeviceEnum.
+ */
 public enum OutputDeviceEnum {
+	
+	/** The LP d6803. */
 	LPD6803,
+	
+	/** The RAINBOWDUINO. */
 	RAINBOWDUINO,
+	
+	/** The ARTNET. */
 	ARTNET,
+	
+	/** The MINIDMX. */
 	MINIDMX;
 }

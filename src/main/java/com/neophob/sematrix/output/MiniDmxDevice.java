@@ -31,25 +31,31 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 /**
  * Send data to a miniDMX Device via serial line
  * 
- * There is only ONE Matrix supported per output
- * 
- * @author michu
+ * There is only ONE Matrix supported per output.
  *
+ * @author michu
  */
 public class MiniDmxDevice extends Output {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(MiniDmxDevice.class.getName());
 	
+	/** The mini dmx. */
 	MiniDmxSerial miniDmx;
 	
+	/** The initialized. */
 	private boolean initialized;
+	
+	/** The x size. */
 	private int xSize;
+	
+	/** The y size. */
 	private int ySize;
 	
 	/**
-	 * init the mini dmx devices 
-	 * @param allI2COutputs a list containing all i2c slave addresses
-	 * 
+	 * init the mini dmx devices.
+	 *
+	 * @param controller the controller
 	 */
 	public MiniDmxDevice(PixelControllerOutput controller) {
 		super(controller, MiniDmxDevice.class.toString());
@@ -67,8 +73,8 @@ public class MiniDmxDevice extends Output {
 	}
 	
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#update()
 	 */
 	public void update() {
 		
@@ -79,6 +85,9 @@ public class MiniDmxDevice extends Output {
 
 
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#close()
+	 */
 	@Override
 	public void close() {
 		if (initialized) {

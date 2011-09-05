@@ -42,26 +42,31 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class MatrixData {
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(MatrixData.class.getName());
 
-	/** the internal buffer is 8 times larger than the output buffer */
+	/** the internal buffer is 8 times larger than the output buffer. */
 	private static final int INTERNAL_BUFFER_SIZE = 8;
 	
 
 	//output buffer
+	/** The device x size. */
 	private int deviceXSize;
+	
+	/** The device y size. */
 	private int deviceYSize;
+	
+	/** The device size. */
 	private int deviceSize;
 	
+	/** The tmp image. */
 	private PImage tmpImage;
 
 	/**
-	 * init matrix data
-	 * 
-	 * @param nrOfScreens
-	 * @param screenXSize
-	 * @param screenYSize
-	 * @param strechScreenOnAll
+	 * init matrix data.
+	 *
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
 	 */
 	public MatrixData(int deviceXSize, int deviceYSize) {
 		if (deviceXSize < 0 || deviceYSize < 0) {
@@ -79,10 +84,11 @@ public class MatrixData {
 	}
 	
 	/**
-	 * fade the buffer
-	 * @param buffer
-	 * @param map
-	 * @return
+	 * fade the buffer.
+	 *
+	 * @param buffer the buffer
+	 * @param map the map
+	 * @return the int[]
 	 */
 	private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
 		Fader fader = map.getFader();
@@ -103,9 +109,10 @@ public class MatrixData {
 	 * output: 8*8 buffer (resized from 64*64)
 	 * 
 	 * ImageUtils.java, Copyright (c) JForum Team
-	 * 
-	 * @param screenNr select physical screen/matrix 
-	 * @return
+	 *
+	 * @param visual the visual
+	 * @param map the map
+	 * @return the screen buffer for device
 	 */
 	public int[] getScreenBufferForDevice(Visual visual, OutputMapping map) {				
 		int[] buffer = visual.getBuffer();
@@ -121,12 +128,12 @@ public class MatrixData {
 	
 
 	/**
-	 * strech the image for multiple outputs
-	 * 
-	 * @param buffer
-	 * @param xOfsNr offset screen 0..n
-	 * @param fxOnHowMayScreens 
-	 * @return
+	 * strech the image for multiple outputs.
+	 *
+	 * @param visual the visual
+	 * @param lm the lm
+	 * @param map the map
+	 * @return the screen buffer for device
 	 */
 	public int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map) {
 		int[] buffer = visual.getBuffer();
@@ -163,8 +170,12 @@ public class MatrixData {
 	
 
 	/**
-	 * resize internal buffer to output size
-	 * @param buffer
+	 * resize internal buffer to output size.
+	 *
+	 * @param buffer the buffer
+	 * @param resizeName the resize name
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
 	 * @return RESIZED image
 	 */
 	public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize) {
@@ -181,8 +192,10 @@ public class MatrixData {
 	}
 
 
-	/** 
-	 * ========[ getter/setter ]====================================================================== 
+	/**
+	 * ========[ getter/setter ]======================================================================.
+	 *
+	 * @return the device x size
 	 */
 	
 	/**
@@ -194,29 +207,37 @@ public class MatrixData {
 	}
 
 	/**
-	 * return effective device pixel size
-	 * @return
+	 * return effective device pixel size.
+	 *
+	 * @return the device y size
 	 */
 	public int getDeviceYSize() {
 		return deviceYSize;
 	}
 
 	/**
-	 * return effective BUFFER size
-	 * @return
+	 * return effective BUFFER size.
+	 *
+	 * @return the buffer x size
 	 */
 	public int getBufferXSize() {
 		return deviceXSize*INTERNAL_BUFFER_SIZE;
 	}
 
 	/**
-	 * return effective BUFFER size
-	 * @return
+	 * return effective BUFFER size.
+	 *
+	 * @return the buffer y size
 	 */
 	public int getBufferYSize() {
 		return deviceYSize*INTERNAL_BUFFER_SIZE;
 	}
 
+	/**
+	 * Gets the device size.
+	 *
+	 * @return the device size
+	 */
 	public int getDeviceSize() {
 		return deviceSize;
 	}

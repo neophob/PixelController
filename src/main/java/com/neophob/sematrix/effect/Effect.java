@@ -24,42 +24,87 @@ import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.RandomizeState;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class Effect.
+ */
 public abstract class Effect implements RandomizeState {
 	
 	/**
-	 * 
-	 * @author michu
+	 * The Enum EffectName.
 	 *
+	 * @author michu
 	 */
 	public enum EffectName {
+		
+		/** The PASSTHRU. */
 		PASSTHRU(0),
+		
+		/** The INVERTER. */
 		INVERTER(1),
+		
+		/** The ROTOZOOM. */
 		ROTOZOOM(2),
+		
+		/** The BEAT horizontal shift. */
 		BEAT_HORIZONTAL_SHIFT(3),
+		
+		/** The BEAT vertical shift. */
 		BEAT_VERTICAL_SHIFT(4),
+		
+		/** The VOLUMINIZE. */
 		VOLUMINIZE(5),
+		
+		/** The TINT. */
 		TINT(6),
+		
+		/** The THRESHOLD. */
 		THRESHOLD(7),
+		
+		/** The EMBOSS. */
 		EMBOSS(8);
 		
+		/** The id. */
 		private int id;
 		
+		/**
+		 * Instantiates a new effect name.
+		 *
+		 * @param id the id
+		 */
 		EffectName(int id) {
 			this.id = id;
 		}
 		
+		/**
+		 * Gets the id.
+		 *
+		 * @return the id
+		 */
 		public int getId() {
 			return id;
 		}
 	}
 	
+	/** The effect name. */
 	private EffectName effectName;
+	
+	/** The resize option. */
 	private ResizeName resizeOption;
 	
+	/** The internal buffer x size. */
 	protected int internalBufferXSize;
+	
+	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 
 	
+	/**
+	 * Instantiates a new effect.
+	 *
+	 * @param controller the controller
+	 * @param effectName the effect name
+	 * @param resizeOption the resize option
+	 */
 	public Effect(PixelControllerEffect controller, EffectName effectName, ResizeName resizeOption) {
 		this.effectName = effectName;
 		this.resizeOption = resizeOption;
@@ -70,28 +115,42 @@ public abstract class Effect implements RandomizeState {
 	}
 	
 	/**
-	 * return the image buffer
-	 * 
+	 * return the image buffer.
+	 *
+	 * @param buffer the buffer
 	 * @return the buffer
 	 */
 	public abstract int[] getBuffer(int[] buffer);
 	
+	/**
+	 * Gets the resize option.
+	 *
+	 * @return the resize option
+	 */
 	public ResizeName getResizeOption() {
 		return resizeOption;
 	}
 	
 	/**
-	 * update an effect 
+	 * update an effect.
 	 */
 	public void update() {
 		//overwrite me if needed
 	}
 	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public int getId() {
 		return this.effectName.getId();
 	}
 	
 	//default shuffle method - do nothing
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.RandomizeState#shuffle()
+	 */
 	public void shuffle() {
 		
 	}

@@ -34,22 +34,42 @@ import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * @author mvogt
+ * The Class Blinkenlights.
  *
+ * @author mvogt
  */
 public class Blinkenlights extends Generator implements PConstants {
 
+	/** The Constant PREFIX. */
 	private static final String PREFIX = "blinken/";
+	
+	/** The log. */
 	static Logger log = Logger.getLogger(Blinkenlights.class.getName());
 
+	/** The blinken. */
 	private BlinkenLibrary blinken;
+	
+	/** The random. */
 	private boolean random;
+	
+	/** The rand. */
 	private Random rand = new Random();
+	
+	/** The frames. */
 	private int frames;
+	
+	/** The movie frames. */
 	private int movieFrames;
 	
+	/** The filename. */
 	private String filename="";
 
+	/**
+	 * Instantiates a new blinkenlights.
+	 *
+	 * @param controller the controller
+	 * @param filename the filename
+	 */
 	public Blinkenlights(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
 		this.filename = filename;
@@ -60,8 +80,9 @@ public class Blinkenlights extends Generator implements PConstants {
 	}
 
 	/**
-	 * load a new file
-	 * @param file
+	 * load a new file.
+	 *
+	 * @param file the file
 	 */
 	public void loadFile(String file) {
 		//only load if needed
@@ -74,6 +95,9 @@ public class Blinkenlights extends Generator implements PConstants {
 		blinkenSettings();
 	}
 	
+	/**
+	 * Blinken settings.
+	 */
 	private void blinkenSettings() {
 		blinken.setIgnoreFileDelay(true);
 		blinken.noLoop();
@@ -82,6 +106,9 @@ public class Blinkenlights extends Generator implements PConstants {
 		//frames=0;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#update()
+	 */
 	@Override
 	public void update() {
 		if (random) {
@@ -127,10 +154,20 @@ public class Blinkenlights extends Generator implements PConstants {
 		}
 	}
 	
+	/**
+	 * Checks if is random.
+	 *
+	 * @return true, if is random
+	 */
 	public boolean isRandom() {
 		return random;
 	}
 
+	/**
+	 * Sets the random.
+	 *
+	 * @param random the new random
+	 */
 	public void setRandom(boolean random) {
 		this.random = random;
 		if (random) {
@@ -143,10 +180,18 @@ public class Blinkenlights extends Generator implements PConstants {
 	
 	
 
+	/**
+	 * Gets the filename.
+	 *
+	 * @return the filename
+	 */
 	public String getFilename() {
 		return filename;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#shuffle()
+	 */
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
@@ -157,6 +202,9 @@ public class Blinkenlights extends Generator implements PConstants {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#close()
+	 */
 	@Override
 	public void close() {
 		blinken.dispose();

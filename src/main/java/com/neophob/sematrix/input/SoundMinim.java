@@ -29,26 +29,44 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
 import ddf.minim.analysis.FFT;
 
+/**
+ * The Class SoundMinim.
+ */
 public final class SoundMinim implements SeSound, Runnable {
 
 	//samples per 1/4s
+	/** The Constant SOUND_BUFFER_RESOLUTION. */
 	private static final int SOUND_BUFFER_RESOLUTION = 8;
 
+	/** The log. */
 	private static Logger log = Logger.getLogger(SoundMinim.class.getName());
 
+	/** The minim. */
 	private Minim minim;
+	
+	/** The in. */
 	private AudioInput in;
+	
+	/** The beat. */
 	private BeatDetect beat;
+	
+	/** The bl. */
 	@SuppressWarnings("unused")
 	private BeatListener bl;
 
+	/** The fft. */
 	private FFT fft;
 
 	/* thread to collect volume information */
+	/** The runner. */
 	private Thread runner;
 
+	/** The snd volume max. */
 	private float sndVolumeMax=0;
 
+	/**
+	 * Instantiates a new sound minim.
+	 */
 	public SoundMinim() {
 		minim = new Minim(Collector.getInstance().getPapplet());
 		in = minim.getLineIn( Minim.STEREO, 512 );
@@ -90,8 +108,8 @@ public final class SoundMinim implements SeSound, Runnable {
 		return getVolumeNormalized();
 	}
 
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#getVolumeNormalized()
 	 */
 	public float getVolumeNormalized() {
 		float f = in.mix.level();
@@ -111,25 +129,38 @@ public final class SoundMinim implements SeSound, Runnable {
 		return norm;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isKick()
+	 */
 	public boolean isKick() {
 		return beat.isKick();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isSnare()
+	 */
 	public boolean isSnare() {
 		return beat.isSnare();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isHat()
+	 */
 	public boolean isHat() {
 		return beat.isHat();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#isPang()
+	 */
 	public boolean isPang() {
 		return beat.isHat() || beat.isKick() || beat.isSnare();
 	}
 
 	/**
-	 * Returns the number of averages currently being calculated
-	 * @return
+	 * Returns the number of averages currently being calculated.
+	 *
+	 * @return the fft avg
 	 */
 	public int getFftAvg() {
 		// perform a forward FFT on the samples 
@@ -140,26 +171,33 @@ public final class SoundMinim implements SeSound, Runnable {
 	
 	/**
 	 * Gets the value of the ith average.
-	 * @param i
-	 * @return
+	 *
+	 * @param i the i
+	 * @return the fft avg
 	 */
 	public float getFftAvg(int i) {
 		return fft.getAvg(i);
 	}
 
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.input.SeSound#shutdown()
+	 */
 	public void shutdown() {
 		in.close();
 		minim.stop();
 	}
 
+	/**
+	 * Dispose.
+	 */
 	public void dispose() {		
 		runner = null;
 		//XXX this.shutdown();
 	}
 
 	/**
-	 * the thread runner
+	 * the thread runner.
 	 */
 	public void run() {
 		long sleep = (int)(250/SOUND_BUFFER_RESOLUTION);
@@ -189,6 +227,11 @@ public final class SoundMinim implements SeSound, Runnable {
 	}
 
 
+	/**
+	 * Gets the snd volume max.
+	 *
+	 * @return the snd volume max
+	 */
 	public synchronized float getSndVolumeMax() {
 		return sndVolumeMax;
 	}

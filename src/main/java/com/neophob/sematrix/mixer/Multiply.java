@@ -23,12 +23,23 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+/**
+ * The Class Multiply.
+ */
 public class Multiply extends Mixer {
 
+	/**
+	 * Instantiates a new multiply.
+	 *
+	 * @param controller the controller
+	 */
 	public Multiply(PixelControllerMixer controller) {
 		super(controller, MixerName.MULTIPLY, ResizeName.QUALITY_RESIZE);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+	 */
 	public int[] getBuffer(Visual visual) {
 		short cr_s,cg_s,cb_s;
 		short cr_d,cg_d,cb_d;

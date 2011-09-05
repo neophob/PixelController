@@ -41,48 +41,103 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public abstract class Generator implements RandomizeState {
 
+	/**
+	 * The Enum GeneratorName.
+	 */
 	public enum GeneratorName {
+		
+		/** The PASSTHRU. */
 		PASSTHRU(0),
+		
+		/** The BLINKENLIGHTS. */
 		BLINKENLIGHTS(1),
+		
+		/** The IMAGE. */
 		IMAGE(2),
+		
+		/** The PLASMA. */
 		PLASMA(3),
+		
+		/** The SIMPLECOLORS. */
 		SIMPLECOLORS(4),
+		
+		/** The FIRE. */
 		FIRE(5),
+		
+		/** The METABALLS. */
 		METABALLS(6),
+		
+		/** The PIXELIMAGE. */
 		PIXELIMAGE(7),
+		
+		/** The TEXTURE deformation. */
 		TEXTURE_DEFORMATION(8),
+		
+		/** The TEXTWRITER. */
 		TEXTWRITER(9),
+		
+		/** The IMAGE zoomer. */
 		IMAGE_ZOOMER(10),
+		
+		/** The CELL. */
 		CELL(11),
+		
+		/** The PLASMA advanced. */
 		PLASMA_ADVANCED(12),
+		
+		/** The FFT. */
 		FFT(13),
+		
+		/** The GEOMETRICS. */
 		GEOMETRICS(14);
 		
+		/** The id. */
 		private int id;
 		
+		/**
+		 * Instantiates a new generator name.
+		 *
+		 * @param id the id
+		 */
 		GeneratorName(int id) {
 			this.id = id;
 		}
 		
+		/**
+		 * Gets the id.
+		 *
+		 * @return the id
+		 */
 		public int getId() {
 			return id;
 		}
 	}
 	
+	/** The log. */
 	private static Logger log = Logger.getLogger(Generator.class.getName());
 
+	/** The name. */
 	private GeneratorName name;
 	
+	/** The resize option. */
 	private ResizeName resizeOption;
 	
 	//internal, larger buffer
+	/** The internal buffer. */
 	public int[] internalBuffer;
+	
+	/** The internal buffer x size. */
 	protected int internalBufferXSize;
+	
+	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 	
 	/**
-	 * 
-	 * @param name
+	 * Instantiates a new generator.
+	 *
+	 * @param controller the controller
+	 * @param name the name
+	 * @param resizeOption the resize option
 	 */
 	public Generator(PixelControllerGenerator controller, GeneratorName name, ResizeName resizeOption) {
 		this.name = name;
@@ -101,44 +156,75 @@ public abstract class Generator implements RandomizeState {
 	}
 
 	/**
-	 * update the generator
+	 * update the generator.
 	 */
 	public abstract void update();
 	
 	/**
-	 * deinit generator
+	 * deinit generator.
 	 */
 	public void close() {
 		//nothing todo
 	}
 
+	/**
+	 * Gets the internal buffer x size.
+	 *
+	 * @return the internal buffer x size
+	 */
 	public int getInternalBufferXSize() {
 		return internalBufferXSize;
 	}
 
+	/**
+	 * Gets the internal buffer y size.
+	 *
+	 * @return the internal buffer y size
+	 */
 	public int getInternalBufferYSize() {
 		return internalBufferYSize;
 	}
 
+	/**
+	 * Gets the internal buffer size.
+	 *
+	 * @return the internal buffer size
+	 */
 	public int getInternalBufferSize() {
 		return internalBuffer.length;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public GeneratorName getName() {
 		return name;
 	}
 	
+	/**
+	 * Gets the resize option.
+	 *
+	 * @return the resize option
+	 */
 	public ResizeName getResizeOption() {
 		return resizeOption;
 	}
 
+	/**
+	 * Gets the buffer.
+	 *
+	 * @return the buffer
+	 */
 	public int[] getBuffer() {
 		return internalBuffer;
 	}
 	
 	/**
-	 * used for debug output
-	 * @return
+	 * used for debug output.
+	 *
+	 * @return the buffer as image
 	 */
 	public PImage getBufferAsImage() {
 		PImage pImage = Collector.getInstance().getPapplet().createImage
@@ -150,10 +236,18 @@ public abstract class Generator implements RandomizeState {
 	}
 	
 	//default shuffle method - do nothing
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.glue.RandomizeState#shuffle()
+	 */
 	public void shuffle() {
 		
 	}
 
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public int getId() {
 		return this.name.getId();
 	}
