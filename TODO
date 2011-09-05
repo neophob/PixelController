@@ -1,4 +1,11 @@
+
+TODO
+----
+-palette concept (greyscale, rgb, hsv...)
+-rewrite output selection/configuration, Color concept, currently we're mixing b/w, rgb and hsv, plus there is a tint effect
+-add option for a zoomed screen
+-more generators/effects/mixer...
+-command line interface
+-update initial image in firmware
+-add null output
 -Move message handling and randomizer handling out to effective classes
--Color concept, currently we're mixing b/w, rgb and hsv, plus there is a tint effect
--add output switching mechanism (properties helper)
--support multiple outputs (for emulator and physical output)
