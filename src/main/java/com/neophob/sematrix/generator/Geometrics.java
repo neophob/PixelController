@@ -103,11 +103,6 @@ public class Geometrics extends Generator {
 	}
 
 
-	@Override
-	public void close() {}
-
-
-
 
 	/**
 	 * Class for Raindrops effect

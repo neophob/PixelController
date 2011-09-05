@@ -43,10 +43,4 @@ public class SimpleColors extends Generator {
 		rotate++;
 	}
 
-	
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-
-	}
 }

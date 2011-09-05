@@ -114,9 +114,6 @@ public class PlasmaAdvanced extends Generator {
 		}
 	}
 
-	@Override
-	public void close() {	}
-
 	// fill the given array with a nice swingin' curve
 	// three cos waves are layered together for that
 	// the wave "wraps" smoothly around, uh, if you know what i mean ;-)

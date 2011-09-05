@@ -122,7 +122,4 @@ public class Fire extends Generator implements PConstants {
 
 	}
 
-	@Override
-	public void close() {
-	}
 }

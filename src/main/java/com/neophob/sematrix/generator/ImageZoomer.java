@@ -159,11 +159,5 @@ public class ImageZoomer extends Generator {
 		return filename;
 	}
 
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-	}
-
-
 
 }

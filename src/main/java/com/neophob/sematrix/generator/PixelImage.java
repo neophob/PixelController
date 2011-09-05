@@ -117,8 +117,6 @@ gelesen von der mitte!
 		frame++;
 	}
 
-	@Override
-	public void close() {	}
 
 	/**
 	 * 

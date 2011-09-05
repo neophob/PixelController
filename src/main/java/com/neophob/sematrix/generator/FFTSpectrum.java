@@ -83,9 +83,4 @@ public class FFTSpectrum extends Generator {
 	}
 
 	
-	@Override
-	public void close() {
-	}
-
-
 }

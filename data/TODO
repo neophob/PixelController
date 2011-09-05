@@ -1,9 +1,9 @@
-
+TODO
+----
 -palette concept (greyscale, rgb, hsv...)
 -rewrite output selection/configuration
 -add option for a zoomed screen
+-more generators/effects/mixer...
+-command line interface
+-update initial image in firmware
 
-Done:
------
--lpd output, rotate image, flip
--refactoring gui, only one visual is active (also random mode)

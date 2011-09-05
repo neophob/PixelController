@@ -39,9 +39,4 @@ public class PassThruGen extends Generator {
 	public void update() {	
 	}
 
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-
-	}
 }

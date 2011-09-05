@@ -256,8 +256,4 @@ public class TextureDeformation extends Generator {
 		return lut;
 	}
 
-	@Override
-	public void close() {
-		
-	}
 }

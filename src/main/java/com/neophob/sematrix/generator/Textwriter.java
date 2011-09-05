@@ -200,9 +200,5 @@ public class Textwriter extends Generator {
 		return text;
 	}
 
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
 
-	}
 }

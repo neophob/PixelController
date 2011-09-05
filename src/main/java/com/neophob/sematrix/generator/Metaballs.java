@@ -104,9 +104,4 @@ public class Metaballs extends Generator {
 
 	}
 
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-
-	}
 }

@@ -131,10 +131,6 @@ public class Cell extends Generator {
 		}
 	}
 	
-	@Override
-	public void close() {
-	}
-
 	/**
 	 * helper class
 	 * 

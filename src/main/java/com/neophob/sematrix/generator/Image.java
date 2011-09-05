@@ -111,8 +111,4 @@ public class Image extends Generator {
 		return filename;
 	}
 
-	@Override
-	public void close() {
-		// nothing todo
-	}
 }

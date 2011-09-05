@@ -71,8 +71,4 @@ public class Plasma2 extends Generator {
 		}   
 	}
 
-	@Override
-	public void close() {	}
-
-
 }
