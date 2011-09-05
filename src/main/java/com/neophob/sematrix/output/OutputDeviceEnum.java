@@ -23,8 +23,8 @@ package com.neophob.sematrix.output;
  */
 public enum OutputDeviceEnum {
 	
-	/** The LP d6803. */
-	LPD6803,
+	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
+	PIXELINVADER,
 	
 	/** The RAINBOWDUINO. */
 	RAINBOWDUINO,
@@ -33,5 +33,8 @@ public enum OutputDeviceEnum {
 	ARTNET,
 	
 	/** The MINIDMX. */
-	MINIDMX;
+	MINIDMX,
+	
+	/** The NULL Output. */
+	NULL;
 }

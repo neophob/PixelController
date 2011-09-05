@@ -129,7 +129,7 @@ public final class PropertiesHelper {
 			enabledOutputs++;
 			totalDevices = pixelInvadersDevices;
 			log.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.LPD6803;
+			this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADER;
 		}
 		if (artnetDevices > 0) {
 			enabledOutputs++;
@@ -150,8 +150,10 @@ public final class PropertiesHelper {
 		}
 
 		if (enabledOutputs==0 || totalDevices==0) {
-			log.log(Level.SEVERE, ERROR_NO_DEVICES_CONFIGURATED);
-			throw new IllegalArgumentException(ERROR_NO_DEVICES_CONFIGURATED);
+			enabledOutputs=1;
+			totalDevices = 1;
+			log.log(Level.INFO, "no output device defined, use NULL output");
+			this.outputDeviceEnum = OutputDeviceEnum.NULL;
 		}
 				
 		//add default color format RGB is nothing is configured

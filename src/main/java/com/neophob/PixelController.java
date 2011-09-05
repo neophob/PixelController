@@ -32,6 +32,7 @@ import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
 import com.neophob.sematrix.output.MiniDmxDevice;
+import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.RainbowduinoDevice;
@@ -82,7 +83,7 @@ public class PixelController extends PApplet {
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
-			case LPD6803:
+			case PIXELINVADER:
 				this.output = new Lpd6803Device(col.getPixelControllerOutput(), ph.getLpdDevice(), ph.getColorFormat());
 				break;
 			case RAINBOWDUINO:
@@ -93,7 +94,9 @@ public class PixelController extends PApplet {
 				break;
 			case MINIDMX:
 				this.output = new MiniDmxDevice(col.getPixelControllerOutput());
-				break;				
+				break;
+			case NULL:
+				this.output = new NullDevice(col.getPixelControllerOutput());
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
 			}
