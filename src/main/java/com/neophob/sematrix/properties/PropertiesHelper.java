@@ -56,10 +56,6 @@ public final class PropertiesHelper {
 	/** The Constant CONFIG_FILENAME. */
 	private static final String CONFIG_FILENAME = "data/config.properties";
 	
-	//define common error messages
-	/** The Constant ERROR_NO_DEVICES_CONFIGURATED. */
-	private static final String ERROR_NO_DEVICES_CONFIGURATED = "No devices configured, illegal configuration!";
-	
 	/** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
 	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
 	
@@ -152,6 +148,7 @@ public final class PropertiesHelper {
 		if (enabledOutputs==0 || totalDevices==0) {
 			enabledOutputs=1;
 			totalDevices = 1;
+			devicesInRow1 = 1;
 			log.log(Level.INFO, "no output device defined, use NULL output");
 			this.outputDeviceEnum = OutputDeviceEnum.NULL;
 		}
