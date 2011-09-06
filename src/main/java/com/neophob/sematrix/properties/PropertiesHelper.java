@@ -59,6 +59,8 @@ public final class PropertiesHelper {
 	/** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
 	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
 	
+	private static final String FAILED_TO_PARSE = "Failed to parse {0}";
+	
 	/** The config. */
 	private Properties config=null;
 	
@@ -191,7 +193,7 @@ public final class PropertiesHelper {
 			try {
 				return Boolean.parseBoolean(rawConfig);
 			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Failed to parse {0}", rawConfig);
+				LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
 			}
 		}
 		return false;
@@ -209,7 +211,7 @@ public final class PropertiesHelper {
 			try {
 				return Integer.parseInt(rawConfig);
 			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Failed to parse {0}", rawConfig);
+				LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
 			}
 		}
 		return 0;		
@@ -307,8 +309,7 @@ public final class PropertiesHelper {
 					lpdDevice.add(cfg);
 					devicesInRow1++;
 				} catch (Exception e) {
-					LOG.log(Level.WARNING,
-							"Failed to parse {0}", s);
+					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
 
 				}
 			}
@@ -322,8 +323,7 @@ public final class PropertiesHelper {
 					lpdDevice.add(cfg);
 					devicesInRow2++;				
 				} catch (Exception e) {
-					LOG.log(Level.WARNING,
-							"Failed to parse {0}", s);
+					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
 
 				}
 			}
@@ -365,7 +365,7 @@ public final class PropertiesHelper {
 					ColorFormat cf = ColorFormat.valueOf(s);
 					colorFormat.add(cf);					
 				} catch (Exception e) {
-					LOG.log(Level.WARNING, "Failed to parse {0}", s);
+					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
 				}
 			}			
 		}
