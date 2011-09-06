@@ -146,13 +146,12 @@ public abstract class Effect implements RandomizeState {
 	public int getId() {
 		return this.effectName.getId();
 	}
-	
-	//default shuffle method - do nothing
+		
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.glue.RandomizeState#shuffle()
 	 */
 	public void shuffle() {
-		
+		//default shuffle method - do nothing	
 	}
 	
 }
