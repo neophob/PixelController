@@ -291,7 +291,7 @@ public final class PropertiesHelper {
 	private int parseLpdAddress() {
 		lpdDevice = new ArrayList<DeviceConfig>();
 		
-		String value = config.getProperty("layout.row1");
+		String value = config.getProperty("pixelinvaders.layout.row1");
 		if (StringUtils.isNotBlank(value)) {
 			for (String s: value.split(",")) {
 				try {
@@ -306,7 +306,7 @@ public final class PropertiesHelper {
 			}
 		}
 
-		value = config.getProperty("layout.row2");
+		value = config.getProperty("pixelinvaders.layout.row2");
 		if (StringUtils.isNotBlank(value)) {
 			for (String s: value.split(",")) {
 				try {
