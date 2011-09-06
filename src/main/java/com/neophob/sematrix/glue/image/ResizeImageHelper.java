@@ -46,7 +46,7 @@ import com.neophob.sematrix.output.RainbowduinoDevice;
 public final class ResizeImageHelper {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
+	private static final Logger LOG = Logger.getLogger(RainbowduinoDevice.class.getName());
 	
 	/**
 	 * Instantiates a new resize image helper.
@@ -188,10 +188,10 @@ public final class ResizeImageHelper {
 		try {
 			pg.grabPixels();
 		} catch (InterruptedException e) {
-			log.log(Level.WARNING, "interrupted waiting for pixels!");
+			LOG.log(Level.WARNING, "interrupted waiting for pixels!");
 		}
 		if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-			log.log(Level.WARNING, "image fetch aborted or errored");
+			LOG.log(Level.WARNING, "image fetch aborted or errored");
 		}
 		return pixels;
 	}

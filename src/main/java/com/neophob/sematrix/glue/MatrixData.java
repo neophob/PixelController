@@ -43,7 +43,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class MatrixData {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(MatrixData.class.getName());
+	private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
 	/** the internal buffer is 8 times larger than the output buffer. */
 	private static final int INTERNAL_BUFFER_SIZE = 8;
@@ -76,7 +76,7 @@ public class MatrixData {
 		this.deviceYSize = deviceYSize;
 		this.deviceSize = deviceXSize*deviceYSize;
 
-		log.log(Level.INFO,
+		LOG.log(Level.INFO,
 				"screenSize: {0} ({1} * {2}), "
 				, new Object[] { deviceSize, deviceXSize, deviceYSize });
 		

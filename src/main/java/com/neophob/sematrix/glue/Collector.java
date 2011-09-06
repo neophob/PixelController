@@ -54,7 +54,7 @@ public final class Collector {
 	 * nr of shuffler entries. enable/disable option for random mode 
 	 * 
 	 */
-	private static Logger LOG = Logger.getLogger(Collector.class.getName());
+	private static final Logger LOG = Logger.getLogger(Collector.class.getName());
 	
 	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";

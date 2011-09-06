@@ -52,7 +52,7 @@ public final class TcpServer implements Runnable {
 	private static final int FLOODING_TIME = 300;
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(TcpServer.class.getName());
+	private static final Logger LOG = Logger.getLogger(TcpServer.class.getName());
 
 	/** The tcp server. */
 	private Server tcpServer=null;
@@ -105,17 +105,17 @@ public final class TcpServer implements Runnable {
 
 		try {
 			serverWrapper(listeningPort);
-			log.log(Level.INFO,	"Server started at port {0}", new Object[] { listeningPort });
+			LOG.log(Level.INFO,	"Server started at port {0}", new Object[] { listeningPort });
 			this.runner = new Thread(this);
 			this.runner.setName("ZZ TCP Server");
 			this.runner.start();
 
 			connectToClient();
 			if (client==null) {
-				log.log(Level.INFO,	"Pure Data Client not available yet!");
+				LOG.log(Level.INFO,	"Pure Data Client not available yet!");
 			}
 		} catch (Exception e) {
-			log.log(Level.INFO,	"Failed to start TCP Server {0}", new Object[] { e });
+			LOG.log(Level.INFO,	"Failed to start TCP Server {0}", new Object[] { e });
 		}				
 	}
 
@@ -130,7 +130,7 @@ public final class TcpServer implements Runnable {
 	 * tcp server thread.
 	 */
 	public void run() {
-		log.log(Level.INFO,	"Ready receiving messages...");
+		LOG.log(Level.INFO,	"Ready receiving messages...");
 		while (Thread.currentThread() == runner) {
 
 			if (tcpServer!=null) {
@@ -154,12 +154,12 @@ public final class TcpServer implements Runnable {
 						msg = StringUtils.trim(msg);
 						
 						int msgCount = StringUtils.countMatches(msg, FUDI_MSG_END_MARKER);
-						log.log(Level.INFO,	"Got Message: {0}, cnt: {1}", new Object[] {msg, msgCount});
+						LOG.log(Level.INFO,	"Got Message: {0}, cnt: {1}", new Object[] {msg, msgCount});
 						
 						//work around bug - the puredata gui sends back a message as soon we send one
 						long delta = System.currentTimeMillis() - lastMessageSentTimestamp;											
 						if (delta < FLOODING_TIME) {
-							log.log(Level.INFO,	"Ignore message, flooding protection ({0}<{1})", 
+							LOG.log(Level.INFO,	"Ignore message, flooding protection ({0}<{1})", 
 									new String[] { ""+delta, ""+FLOODING_TIME });
 							//delete message
 							msgCount=0;
@@ -262,7 +262,7 @@ public final class TcpServer implements Runnable {
 		} catch (Exception e) {
 			//client disconnected!
 			if (pdClientConnected) {
-				log.warning("Failed to send data to the pure data client: "+e.getMessage());
+				LOG.warning("Failed to send data to the pure data client: "+e.getMessage());
 				pdClientConnected=false;
 				client.dispose();
 				client=null;
@@ -311,10 +311,10 @@ public final class TcpServer implements Runnable {
 		try {
 			socket.connect(new InetSocketAddress(sendHost, sendPort), 2000);
 			client = new Client(app, socket);
-			log.log(Level.INFO,	"Pure Data Client connected at "+sendHost+":"+sendPort+"!");
+			LOG.log(Level.INFO,	"Pure Data Client connected at "+sendHost+":"+sendPort+"!");
 			pdClientConnected=true;
 		} catch (Exception e) {
-			log.log(Level.WARNING, "Pure Data Client not found at "+sendHost+":"+sendPort);
+			LOG.log(Level.WARNING, "Pure Data Client not found at "+sendHost+":"+sendPort);
 			pdClientConnected=false;
 			client = null;
 			if (socket!=null) {

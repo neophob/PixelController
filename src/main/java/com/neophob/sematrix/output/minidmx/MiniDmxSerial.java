@@ -67,7 +67,7 @@ import com.neophob.sematrix.properties.ColorFormat;
 public class MiniDmxSerial {
 		
 	/** The log. */
-	private static Logger log = Logger.getLogger(MiniDmxSerial.class.getName());
+	private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
 	
 	/** internal lib version. */
 	public static final String VERSION = "1.0";
@@ -159,7 +159,7 @@ public class MiniDmxSerial {
 	 */
 	public MiniDmxSerial(PApplet _app, String portName, int targetBuffersize) throws NoSerialPortFoundException {
 		
-		log.log(Level.INFO,	"Initialize miniDMX lib v{0}", VERSION);
+		LOG.log(Level.INFO,	"Initialize miniDMX lib v{0}", VERSION);
 		
 		this.app = _app;
 		app.registerDispose(this);
@@ -170,20 +170,20 @@ public class MiniDmxSerial {
 		if (targetBuffersize == 96 || targetBuffersize == 256 || targetBuffersize == 512 || targetBuffersize == 768 || targetBuffersize == 3072) {
 			this.targetBuffersize = targetBuffersize;
 		} else {
-			log.log(Level.SEVERE, "Invalid buffer size selected: {0}"+targetBuffersize);
+			LOG.log(Level.SEVERE, "Invalid buffer size selected: {0}"+targetBuffersize);
 			throw new NoSerialPortFoundException("Invalid buffer size selected: "+targetBuffersize);
 		}
 		
 		if (portName!=null && !portName.trim().isEmpty()) {
 			//open specific port
-			log.log(Level.INFO,	"open port: {0}", portName);
+			LOG.log(Level.INFO,	"open port: {0}", portName);
 			serialPortName = portName;
 			openPort(portName);
 		} else {
 			//try to find the port
 			String[] ports = Serial.list();
 			for (int i=0; port==null && i<ports.length; i++) {
-				log.log(Level.INFO,	"open port: {0}", ports[i]);
+				LOG.log(Level.INFO,	"open port: {0}", ports[i]);
 				try {
 					serialPortName = ports[i];
 					openPort(ports[i]);
@@ -198,7 +198,7 @@ public class MiniDmxSerial {
 			throw new NoSerialPortFoundException("Error: no serial port found!");
 		}
 		
-		log.log(Level.INFO,	"found serial port: "+serialPortName);
+		LOG.log(Level.INFO,	"found serial port: "+serialPortName);
 	}
 
 
@@ -251,14 +251,14 @@ public class MiniDmxSerial {
 			if (ping()) {
 				return;
 			}
-			log.log(Level.WARNING, "No response from port {0}", portName);
+			LOG.log(Level.WARNING, "No response from port {0}", portName);
 			if (port != null) {
 				port.stop();        					
 			}
 			port = null;
 			throw new NoSerialPortFoundException("No response from port "+portName);
 		} catch (Exception e) {	
-			log.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});
+			LOG.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});
 			if (port != null) {
 				port.stop();        					
 			}
@@ -365,7 +365,7 @@ public class MiniDmxSerial {
 			cmdfull[1] = SEND_3072_BYTES;
 			break;
 		default:
-			log.log(Level.WARNING, "Invalid targetBuffersize: {0}", targetBuffersize);
+			LOG.log(Level.WARNING, "Invalid targetBuffersize: {0}", targetBuffersize);
 			return false;
 		}
 		System.arraycopy(data, 0, cmdfull, 2, targetBuffersize);
@@ -399,7 +399,7 @@ public class MiniDmxSerial {
 				return true;
 			}
 		} catch (Exception e) {
-			log.log(Level.WARNING, "sending serial data failed: {0}", e);
+			LOG.log(Level.WARNING, "sending serial data failed: {0}", e);
 		}
 		return false;
 	}
@@ -422,7 +422,7 @@ public class MiniDmxSerial {
 			//DO NOT flush the buffer... hmm not sure about this, processing flush also
 			//and i discovered strange "hangs"...
 		} catch (Exception e) {
-			log.log(Level.INFO, "Error sending serial data!", e);
+			LOG.log(Level.INFO, "Error sending serial data!", e);
 			connectionErrorCounter++;
 			throw new SerialPortException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+e);
 		}		
@@ -453,7 +453,7 @@ public class MiniDmxSerial {
 		}
 
 		if (timeout == 0 && port.available() < 2) {
-			log.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);
+			LOG.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);
 			ackErrors++;
 			return false;
 		}
@@ -461,7 +461,7 @@ public class MiniDmxSerial {
 		//we need at least 3 bytes for a correct reply
 		byte[] msg = port.readBytes();
 		if (msg.length<3) {
-			log.log(Level.INFO, "#### less than 3 bytes of data receieved: {0}ms ###", System.currentTimeMillis()-start);
+			LOG.log(Level.INFO, "#### less than 3 bytes of data receieved: {0}ms ###", System.currentTimeMillis()-start);
 			ackErrors++;
 			return false;
 		}
@@ -474,10 +474,10 @@ public class MiniDmxSerial {
 					return true;
 				}
 				if (ack==REPLY_ERROR) {
-					log.log(Level.INFO, "#### Invalid reply: {0}ms ###", System.currentTimeMillis()-start);
+					LOG.log(Level.INFO, "#### Invalid reply: {0}ms ###", System.currentTimeMillis()-start);
 					return true;
 				}
-				log.log(Level.INFO, "#### Unknown reply: {0} ###", ack);
+				LOG.log(Level.INFO, "#### Unknown reply: {0} ###", ack);
 				
 			}
 			ofs++;

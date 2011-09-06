@@ -38,7 +38,7 @@ import com.neophob.sematrix.input.Sound;
 public final class Shuffler {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(Shuffler.class.getName());
+	private static final Logger LOG = Logger.getLogger(Shuffler.class.getName());
 
 	/**
 	 * Instantiates a new shuffler.
@@ -54,7 +54,7 @@ public final class Shuffler {
 		Collector col = Collector.getInstance();
 		Random rand = new Random();
 		
-		log.log(Level.INFO, "Present Shuffler");
+		LOG.log(Level.INFO, "Present Shuffler");
 		
 		boolean done=false;
 		while (!done) {
@@ -82,7 +82,7 @@ public final class Shuffler {
 		int totalNrEffect = col.getPixelControllerEffect().getSize();
 		int totalNrMixer = col.getPixelControllerMixer().getSize();
 
-		log.log(Level.INFO, "Manaual Shuffle for Visual {0}", currentVisual);
+		LOG.log(Level.INFO, "Manaual Shuffle for Visual {0}", currentVisual);
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
 			for (Visual v: col.getAllVisuals()) {
@@ -158,7 +158,7 @@ public final class Shuffler {
 
 		Random rand = new Random();
 		int blah = rand.nextInt(16);
-		log.log(Level.INFO, "Automatic Shuffler {0}", blah);
+		LOG.log(Level.INFO, "Automatic Shuffler {0}", blah);
 
 		if (snare) {			
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {

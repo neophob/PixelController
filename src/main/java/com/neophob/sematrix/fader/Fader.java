@@ -39,7 +39,7 @@ import com.neophob.sematrix.glue.OutputMapping;
 public abstract class Fader {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(Fader.class.getName());
+	private static final Logger LOG = Logger.getLogger(Fader.class.getName());
 
 	/**
 	 * The Enum FaderName.
@@ -125,7 +125,7 @@ public abstract class Fader {
 		int fps = Collector.getInstance().getFps();
 		int timePerFrame = (int)(1000.0f / (float)fps);
 		if (fadeTime < timePerFrame) {			
-			log.log(Level.WARNING, "Invalid fadeTime {0} fixed to {1}", new Object[] { fadeTime, timePerFrame });
+			LOG.log(Level.WARNING, "Invalid fadeTime {0} fixed to {1}", new Object[] { fadeTime, timePerFrame });
 			this.fadeTime = timePerFrame;
 		}
 		
@@ -159,7 +159,7 @@ public abstract class Fader {
 		currentStep = 0;
 		started = true;
 		
-		log.log(Level.INFO, "Started fader {0}, duration {1}, steps {2}", 
+		LOG.log(Level.INFO, "Started fader {0}, duration {1}, steps {2}", 
 				new Object[] { faderName.toString(), fadeTime, steps });
 	}
 	
@@ -173,7 +173,7 @@ public abstract class Fader {
 		
 		started=false;
 		Collector.getInstance().mapInputToScreen(screenOutput, newVisual);
-		log.log(Level.INFO, "Cleanup {0}, new visual: {1}", 
+		LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}", 
 				new Object[] { faderName.toString(), newVisual });
 	}
 	

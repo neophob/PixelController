@@ -47,7 +47,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class PixelController extends PApplet {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(PixelController.class.getName());
+	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
@@ -102,7 +102,7 @@ public class PixelController extends PApplet {
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
 			}
 		} catch (Exception e) {
-			log.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
+			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
@@ -111,7 +111,7 @@ public class PixelController extends PApplet {
 		
 		//start in random mode?
 		if (ph.startRandommode()) {
-			log.log(Level.INFO,"Random Mode enabled");
+			LOG.log(Level.INFO,"Random Mode enabled");
 			Shuffler.manualShuffleStuff();
 			col.setRandomMode(true);
 		}
@@ -130,7 +130,7 @@ public class PixelController extends PApplet {
 			ArduinoOutput arduinoOutput = (ArduinoOutput) this.output;
 			if (arduinoOutput.getArduinoErrorCounter() > 0) {
 				this.error = arduinoOutput.getArduinoErrorCounter();
-				log.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
+				LOG.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
 						new Object[] {
 							new Date(arduinoOutput.getLatestHeartbeat()).toGMTString(),
 							this.error,

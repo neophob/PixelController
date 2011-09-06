@@ -40,7 +40,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class TextureDeformation extends Generator {	
 
 	/** The log. */
-	private static final Logger log = Logger.getLogger(TextureDeformation.class.getName());
+	private static final Logger LOG = Logger.getLogger(TextureDeformation.class.getName());
 
 	//TODO should be dynamic someday, maybe move settings to the properties file
 	private static final String files[] = new String[] {
@@ -109,11 +109,11 @@ public class TextureDeformation extends Generator {
 				throw new InvalidParameterException("invalid data");
 			}
 			textureImg = tmpImage;
-			log.log(Level.INFO,
+			LOG.log(Level.INFO,
 					"Loaded texture {0} ", new Object[] { fileName });
 			createLUT(lut);
 		} catch (Exception e) {
-			log.log(Level.WARNING,
+			LOG.log(Level.WARNING,
 					"Failed to load texture {0}!", new Object[] { fileName });
 		}
 	}

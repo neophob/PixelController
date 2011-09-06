@@ -123,7 +123,7 @@ public final class MessageProcessor {
 	}
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(MessageProcessor.class.getName());
+	private static final Logger LOG = Logger.getLogger(MessageProcessor.class.getName());
 	
 	/** The Constant IGNORE_COMMAND. */
 	private static final String IGNORE_COMMAND = "Ignored command";
@@ -173,7 +173,7 @@ public final class MessageProcessor {
 					}
 
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -194,7 +194,7 @@ public final class MessageProcessor {
 					}
 
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -216,7 +216,7 @@ public final class MessageProcessor {
 						}						
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -237,7 +237,7 @@ public final class MessageProcessor {
 					}
  
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -258,7 +258,7 @@ public final class MessageProcessor {
 					}
 
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -270,7 +270,7 @@ public final class MessageProcessor {
 						int newFx = Integer.parseInt(msg[i+1]);
 						int oldFx = col.getFxInputForScreen(i);
 						if(oldFx!=newFx) {
-							log.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
+							LOG.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
 							if (startFader) {
 								//start fader to change screen
 								col.getOutputMappings(i).getFader().startFade(newFx, i);								
@@ -281,7 +281,7 @@ public final class MessageProcessor {
 						}
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -294,7 +294,7 @@ public final class MessageProcessor {
 						col.getOutputMappings(i).setEffect(col.getPixelControllerEffect().getEffect(tmp));
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -310,7 +310,7 @@ public final class MessageProcessor {
 						}
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -325,7 +325,7 @@ public final class MessageProcessor {
 						col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
 					}					
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -337,7 +337,7 @@ public final class MessageProcessor {
 					RotoZoom r = (RotoZoom)col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM);
 					r.setAngle(val);					
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -354,7 +354,7 @@ public final class MessageProcessor {
 					if (b<0) b=0;
 					col.getPixelControllerEffect().setRGB(r, g, b);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -365,7 +365,7 @@ public final class MessageProcessor {
 					col.getPresent().get(idxs).setPresent(present);
 					PropertiesHelper.getInstance().savePresents();
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -378,7 +378,7 @@ public final class MessageProcessor {
 					}
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -387,7 +387,7 @@ public final class MessageProcessor {
 					int a = Integer.parseInt(msg[1]);
 					col.setSelectedPresent(a);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -398,7 +398,7 @@ public final class MessageProcessor {
 					if (a<0) a=0;
 					col.getPixelControllerEffect().setThresholdValue(a);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -407,7 +407,7 @@ public final class MessageProcessor {
 					String fileToLoad = msg[1];
 					col.getPixelControllerGenerator().setFileBlinken(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -416,7 +416,7 @@ public final class MessageProcessor {
 					String fileToLoad = msg[1];
 					col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -425,7 +425,7 @@ public final class MessageProcessor {
 					String fileToLoad = msg[1];
 					col.getPixelControllerGenerator().setFileImageZoomer(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -434,7 +434,7 @@ public final class MessageProcessor {
 					int lut = Integer.parseInt(msg[1]);
 					col.getPixelControllerGenerator().setTextureDeformationLut(lut);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 			
@@ -443,7 +443,7 @@ public final class MessageProcessor {
 					String fileToLoad = msg[1];
 					col.getPixelControllerGenerator().setFileTextureDeformation(fileToLoad);
 				} catch (Exception e) {
-					log.log(Level.WARNING,	IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 			
@@ -452,7 +452,7 @@ public final class MessageProcessor {
 					String message = msg[1];
 					col.getPixelControllerGenerator().setText(message);
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -467,7 +467,7 @@ public final class MessageProcessor {
 						return ValidCommands.STATUS;
 					}
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -476,7 +476,7 @@ public final class MessageProcessor {
 					Shuffler.manualShuffleStuff();
 					return ValidCommands.STATUS;
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -485,7 +485,7 @@ public final class MessageProcessor {
 					Shuffler.presentShuffler();
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
@@ -497,7 +497,7 @@ public final class MessageProcessor {
 					Collector.getInstance().setCurrentVisual(a);
 					return ValidCommands.STATUS_MINI;
 				} catch (Exception e) {
-					log.log(Level.WARNING, IGNORE_COMMAND, e);
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 				
@@ -506,11 +506,11 @@ public final class MessageProcessor {
 				for (int i=0; i<msg.length;i++) {
 					s+=msg[i]+"; ";
 				}
-				log.log(Level.INFO,	"Ignored command <{0}>", s);
+				LOG.log(Level.INFO,	"Ignored command <{0}>", s);
 				break;
 			}
 		} catch (IllegalArgumentException e) {
-			log.log(Level.INFO,	"Illegal argument <{0}>: {1}", new Object[] { msg[0], e });
+			LOG.log(Level.INFO,	"Illegal argument <{0}>: {1}", new Object[] { msg[0], e });
 			e.printStackTrace();
 		}		
 

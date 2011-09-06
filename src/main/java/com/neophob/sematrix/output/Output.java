@@ -38,7 +38,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public abstract class Output {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(Output.class.getName());
+	private static final Logger LOG = Logger.getLogger(Output.class.getName());
 
 	/** The name. */
 	private String name;
@@ -61,7 +61,7 @@ public abstract class Output {
 		this.matrixData = Collector.getInstance().getMatrix();
 		this.layout = PropertiesHelper.getInstance().getLayout();
 
-		log.log(Level.INFO,
+		LOG.log(Level.INFO,
 				"Output created: {0}, Layout: {1}"
 				, new Object[] { this.name, layout.getLayoutName() });
 	

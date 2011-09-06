@@ -38,7 +38,7 @@ public class InternalBuffer extends PApplet {
 	private static final long serialVersionUID = 2344499301021L;
 
 	/** The log. */
-	static Logger log = Logger.getLogger(InternalBuffer.class.getName());
+	private static final Logger LOG = Logger.getLogger(InternalBuffer.class.getName());
 
 	/** The display horiz. */
 	private boolean displayHoriz;
@@ -73,7 +73,7 @@ public class InternalBuffer extends PApplet {
 	 * @see processing.core.PApplet#setup()
 	 */
     public void setup() {
-    	log.log(Level.INFO, "create frame with size "+x+"/"+y);
+    	LOG.log(Level.INFO, "create frame with size "+x+"/"+y);
         size(x,y);
         noSmooth();
         frameRate(Collector.getInstance().getFps());

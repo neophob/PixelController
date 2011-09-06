@@ -38,7 +38,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class PixelControllerGenerator implements PixelControllerElement {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(PixelControllerGenerator.class.getName());
+	private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
 
 	
 	/** The all generators. */
@@ -169,7 +169,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 			}
 		}
 		
-		log.log(Level.INFO, "Invalid Generator index selected: {0}", index);
+		LOG.log(Level.INFO, "Invalid Generator index selected: {0}", index);
 		return null;
 	}
 

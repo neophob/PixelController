@@ -40,7 +40,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class ImageZoomer extends Generator {
 
 	/** The log. */
-	private static final Logger log = Logger.getLogger(ImageZoomer.class.getName());
+	private static final Logger LOG = Logger.getLogger(ImageZoomer.class.getName());
 
 	/** The Constant PREFIX. */
 	public static final String PREFIX = "pics/";
@@ -97,7 +97,7 @@ public class ImageZoomer extends Generator {
 		super(controller, GeneratorName.IMAGE_ZOOMER, ResizeName.QUALITY_RESIZE);				
 		clipedImg = Collector.getInstance().getPapplet().createImage(internalBufferXSize, internalBufferYSize, PApplet.RGB);
 		this.loadImage(filename);
-		log.log(Level.INFO, "IMAGE SIZE: "+origImg.width+" "+internalBufferXSize+", "+internalBufferYSize);
+		LOG.log(Level.INFO, "IMAGE SIZE: "+origImg.width+" "+internalBufferXSize+", "+internalBufferYSize);
 		
 		step = (1.0f/MOVE_DURATION_IN_S)/Collector.getInstance().getFps();
 	}
@@ -121,7 +121,7 @@ public class ImageZoomer extends Generator {
 			}
 			this.updateTarget();
 		} catch (Exception e) {
-			log.log(Level.WARNING,
+			LOG.log(Level.WARNING,
 					"Failed to load image {0}!", new Object[] { filename });
 		}	
 	}
@@ -132,7 +132,7 @@ public class ImageZoomer extends Generator {
 	@Override
 	public void update() {
 		if (origImg==null) {
-			log.log(Level.WARNING, "image is null!");
+			LOG.log(Level.WARNING, "image is null!");
 			return;
 		}
 		

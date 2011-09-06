@@ -37,7 +37,7 @@ import com.neophob.sematrix.properties.DeviceConfig;
 public class Lpd6803Device extends ArduinoOutput {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(Lpd6803Device.class.getName());
+	private static Logger LOG = Logger.getLogger(Lpd6803Device.class.getName());
 		
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	private List<DeviceConfig> displayOptions;
@@ -65,9 +65,9 @@ public class Lpd6803Device extends ArduinoOutput {
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet() );			
 			this.initialized = lpd6803.ping();
-			log.log(Level.INFO, "ping result: "+ this.initialized);			
+			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
-			log.log(Level.WARNING, "failed to initialize serial port!");
+			LOG.log(Level.WARNING, "failed to initialize serial port!");
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class Lpd6803Device extends ArduinoOutput {
 			if ((noUpdate+needUpdate)%100==0) {
 				float f = noUpdate+needUpdate;
 				float result = (100.0f/f)*needUpdate;
-				log.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
+				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
 						new Object[] {result, needUpdate, noUpdate, lpd6803.getAckErrors(), 
 						lpd6803.getArduinoErrorCounter(), lpd6803.getArduinoBufferSize()});				
 			}

@@ -40,7 +40,7 @@ public class InternalDebugWindow extends Frame {
 	private static final long serialVersionUID = 2946906663946781980L;
 
 	/** The log. */
-	static Logger log = Logger.getLogger(InternalDebugWindow.class.getName());
+	private static final Logger LOG = Logger.getLogger(InternalDebugWindow.class.getName());
 
 	/**
 	 * Instantiates a new internal debug window.
@@ -61,7 +61,7 @@ public class InternalDebugWindow extends Frame {
         }
         x+=20;y+=40;
         
-        log.log(Level.INFO, "create frame with size "+x+"/"+y);
+        LOG.log(Level.INFO, "create frame with size "+x+"/"+y);
         setBounds(0, 0, x, y);
         this.setResizable(false);
         this.setSize(x, y);

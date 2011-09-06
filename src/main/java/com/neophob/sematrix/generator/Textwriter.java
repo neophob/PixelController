@@ -55,7 +55,7 @@ public class Textwriter extends Generator {
 	private static final int SCROLL_AMMOUNT = 4;
 	
 	/** The log. */
-	private static final Logger log = Logger.getLogger(Textwriter.class.getName());
+	private static final Logger LOG = Logger.getLogger(Textwriter.class.getName());
 
 	/** The ypos. */
 	private int xpos,ypos;
@@ -104,10 +104,10 @@ public class Textwriter extends Generator {
 			InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
 			tmp = new int[internalBuffer.length];
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
-			log.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
+			LOG.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
 			createTextImage(text);			
 		} catch (Exception e) {
-			log.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
+			LOG.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
 		}
 	}
 
