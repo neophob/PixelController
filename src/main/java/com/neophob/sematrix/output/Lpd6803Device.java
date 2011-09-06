@@ -37,7 +37,7 @@ import com.neophob.sematrix.properties.DeviceConfig;
 public class Lpd6803Device extends ArduinoOutput {
 
 	/** The log. */
-	private static Logger LOG = Logger.getLogger(Lpd6803Device.class.getName());
+	private static final Logger LOG = Logger.getLogger(Lpd6803Device.class.getName());
 		
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	private List<DeviceConfig> displayOptions;
