@@ -235,12 +235,12 @@ public abstract class Generator implements RandomizeState {
 		return pImage;
 	}
 	
-	//default shuffle method - do nothing
+	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.glue.RandomizeState#shuffle()
 	 */
 	public void shuffle() {
-		
+		//default shuffle method - do nothing
 	}
 
 	/**

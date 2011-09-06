@@ -40,7 +40,12 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class TextureDeformation extends Generator {	
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(TextureDeformation.class.getName());
+	private static final Logger log = Logger.getLogger(TextureDeformation.class.getName());
+
+	//TODO should be dynamic someday
+	private static final String files[] = new String[] {
+			"1316.jpg", "ceiling.jpg", "circle.jpg", "gradient.jpg", 
+			"check.jpg", "hsv.jpg", "hls.jpg"};
 
 	/** The h. */
 	private int w, h;
@@ -283,8 +288,6 @@ public class TextureDeformation extends Generator {
 			Random rand = new Random();
 			this.changeLUT(rand.nextInt(12));
 
-			//TODO should be dynamic someday
-			String files[] = new String[] {"1316.jpg", "ceiling.jpg", "circle.jpg", "gradient.jpg", "check.jpg"};
 			int nr = rand.nextInt(files.length);
 			loadFile(files[nr]);		
 		}
