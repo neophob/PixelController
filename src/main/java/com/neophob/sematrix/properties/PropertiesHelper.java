@@ -108,7 +108,8 @@ public final class PropertiesHelper {
 		int pixelInvadersDevices = parseLpdAddress();
 		int artnetDevices = parseArtNetDevices();
 		int miniDmxDevices = parseMiniDmxDevices();
-
+    int nullDevices = parseNullOutputAddress();
+    
 		//track how many output systems are enabled
 		int enabledOutputs = 0;
 		
@@ -139,6 +140,13 @@ public final class PropertiesHelper {
 			log.log(Level.INFO, "found miniDMX device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
 		} 
+		if (nullDevices > 0) {
+			enabledOutputs++;
+			totalDevices = nullDevices;
+			log.log(Level.INFO, "found Null device: "+totalDevices);
+			this.outputDeviceEnum = OutputDeviceEnum.NULL;
+		} 
+		
 		
 		if (enabledOutputs>1) {
 			log.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
@@ -390,6 +398,21 @@ public final class PropertiesHelper {
 		
 		return i2cAddr.size();
 	}
+	
+	
+	/**
+	 * Parses the null output settings.
+	 *
+	 * @return the int
+	 */
+	private int parseNullOutputAddress() {		
+		devicesInRow1 = parseInt("nulloutput.devices.row1");
+		devicesInRow2 = parseInt("nulloutput.devices.row2");
+		
+		return devicesInRow1+devicesInRow2;
+	}	
+	
+	
 
 	/**
 	 * get configured artnet ip.
