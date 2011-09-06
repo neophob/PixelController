@@ -126,7 +126,7 @@ public final class PropertiesHelper {
 			enabledOutputs++;
 			totalDevices = pixelInvadersDevices;
 			log.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADER;
+			this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS;
 		}
 		if (artnetDevices > 0) {
 			enabledOutputs++;

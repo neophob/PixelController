@@ -83,7 +83,7 @@ public class PixelController extends PApplet {
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
-			case PIXELINVADER:
+			case PIXELINVADERS:
 				this.output = new Lpd6803Device(col.getPixelControllerOutput(), ph.getLpdDevice(), ph.getColorFormat());
 				break;
 			case RAINBOWDUINO:
