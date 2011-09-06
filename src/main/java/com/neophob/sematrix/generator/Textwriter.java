@@ -55,7 +55,7 @@ public class Textwriter extends Generator {
 	private static final int SCROLL_AMMOUNT = 4;
 	
 	/** The log. */
-	private static Logger log = Logger.getLogger(Textwriter.class.getName());
+	private static final Logger log = Logger.getLogger(Textwriter.class.getName());
 
 	/** The ypos. */
 	private int xpos,ypos;

@@ -40,7 +40,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class ImageZoomer extends Generator {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(ImageZoomer.class.getName());
+	private static final Logger log = Logger.getLogger(ImageZoomer.class.getName());
 
 	/** The Constant PREFIX. */
 	public static final String PREFIX = "pics/";

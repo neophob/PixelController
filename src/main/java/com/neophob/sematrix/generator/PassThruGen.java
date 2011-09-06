@@ -19,8 +19,6 @@
 
 package com.neophob.sematrix.generator;
 
-import java.util.logging.Logger;
-
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -30,9 +28,6 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class PassThruGen extends Generator {
 
-	/** The log. */
-	static Logger log = Logger.getLogger(PassThruGen.class.getName());
-	
 	/**
 	 * Instantiates a new pass thru gen.
 	 *

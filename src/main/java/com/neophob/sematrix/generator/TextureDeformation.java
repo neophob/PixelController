@@ -42,7 +42,7 @@ public class TextureDeformation extends Generator {
 	/** The log. */
 	private static final Logger log = Logger.getLogger(TextureDeformation.class.getName());
 
-	//TODO should be dynamic someday
+	//TODO should be dynamic someday, maybe move settings to the properties file
 	private static final String files[] = new String[] {
 			"1316.jpg", "ceiling.jpg", "circle.jpg", "gradient.jpg", 
 			"check.jpg", "hsv.jpg", "hls.jpg"};

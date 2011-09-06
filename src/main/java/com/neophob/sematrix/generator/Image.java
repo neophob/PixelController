@@ -42,7 +42,7 @@ public class Image extends Generator {
 	/** The Constant PREFIX. */
 	public static final String PREFIX = "pics/";
 	
-	//TODO should be dynamic someday
+	//TODO should be dynamic someday, maybe move settings to the properties file
 	public static final String files[] = new String[] {
 		"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif",
 		"hsv.jpg", "hls.jpg", "right.jpg", "ff-logo-small.jpg"};
