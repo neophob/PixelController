@@ -28,8 +28,6 @@
 	<!-- collect external libs -->
 	<dependencySets>
 		<dependencySet>
-			<excludes>
-			</excludes>
 			<unpack>false</unpack>
 			<outputDirectory>/lib</outputDirectory>
 		</dependencySet>

@@ -146,13 +146,9 @@ public class RotoZoom extends Effect {
 	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {		
-		//lazy init buffer
-		if (this.rotoZoomedBuffer==null) {
-			this.rotoZoomedBuffer = new int[buffer.length];				
-		}
-
 		this.rotoZoomedBuffer = rotoZoom(scale, angle, buffer);
 
+		//the crossfade is used for the endless zoom option
 		if (workmode == WORKMODE.ZOOM && faderPos>0.0f) {			
 			return CrossfaderHelper.getBuffer(faderPos, this.rotoZoomedBuffer, rotoZoom(scale2, angle, buffer));
 		}

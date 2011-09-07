@@ -410,26 +410,34 @@ public final class Collector {
 	public List<String> getCurrentStatus() {		
 		List<String> ret = new ArrayList<String>();
 		
-		String gen1="";
-		String gen2="";
-		String fx1="";
-		String fx2="";
-		String mix="";
+		StringBuffer gen1=new StringBuffer();
+		StringBuffer gen2=new StringBuffer();
+		StringBuffer fx1=new StringBuffer();
+		StringBuffer fx2=new StringBuffer();
+		StringBuffer mix=new StringBuffer();
 		for (Visual v: getAllVisuals()) {
-			gen1+=v.getGenerator1Idx()+EMPTY_CHAR;
-			gen2+=v.getGenerator2Idx()+EMPTY_CHAR;
-			fx1+=v.getEffect1Idx()+EMPTY_CHAR;
-			fx2+=v.getEffect2Idx()+EMPTY_CHAR;
-			mix+=v.getMixerIdx()+EMPTY_CHAR;				
+		    gen1.append(v.getGenerator1Idx());
+		    gen1.append(EMPTY_CHAR);
+		    gen2.append(v.getGenerator2Idx());
+		    gen2.append(EMPTY_CHAR); 
+		    fx1.append(v.getEffect1Idx());
+		    fx1.append(EMPTY_CHAR);
+		    fx2.append(v.getEffect2Idx());
+		    fx2.append(EMPTY_CHAR);
+		    mix.append(v.getMixerIdx());
+		    mix.append(EMPTY_CHAR);
 		}
 		
-		String fader="";
-		String output="";
-		String outputEffect="";
+		StringBuffer fader=new StringBuffer();
+		StringBuffer output=new StringBuffer();
+		StringBuffer outputEffect=new StringBuffer();
 		for (OutputMapping o: getAllOutputMappings()) {
-			fader+=o.getFader().getId()+EMPTY_CHAR;
-			output+=o.getVisualId()+EMPTY_CHAR;
-			outputEffect+=o.getEffect().getId()+EMPTY_CHAR;
+			fader.append(o.getFader().getId());
+			fader.append(EMPTY_CHAR);
+			output.append(o.getVisualId());
+			output.append(EMPTY_CHAR);
+			outputEffect.append(o.getEffect().getId());
+			outputEffect.append(EMPTY_CHAR);
 		}
 		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+gen1);
 		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+gen2);

@@ -73,12 +73,13 @@ public class PresentSettings {
 			return "";
 		}
 		
-		String ret="";
+		StringBuffer ret=new StringBuffer();
 		
 		for (String s: present) {
-			ret+=s+";";
+			ret.append(s);
+			ret.append(';');
 		}
-		return ret;
+		return ret.toString();
 	}
 	
 }
