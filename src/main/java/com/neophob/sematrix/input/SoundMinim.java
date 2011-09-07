@@ -39,7 +39,7 @@ public final class SoundMinim implements SeSound, Runnable {
 	private static final int SOUND_BUFFER_RESOLUTION = 8;
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(SoundMinim.class.getName());
+	private static final Logger LOG = Logger.getLogger(SoundMinim.class.getName());
 
 	/** The minim. */
 	private Minim minim;
@@ -201,7 +201,7 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public void run() {
 		long sleep = (int)(250/SOUND_BUFFER_RESOLUTION);
-		log.log(Level.INFO,	"Sound thread started...");
+		LOG.log(Level.INFO,	"Sound thread started...");
 		int loop=0;
 		while (Thread.currentThread() == runner) {
 			try {

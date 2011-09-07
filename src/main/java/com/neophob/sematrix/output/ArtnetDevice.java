@@ -41,7 +41,7 @@ import artnet4j.packets.ArtDmxPacket;
  */
 public class ArtnetDevice extends Output {
 
-	private static Logger log = Logger.getLogger(ArtnetDevice.class.getName());
+	private static final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
 	private int sequenceID = 0;
 	private ArtNet artnet;
@@ -63,9 +63,9 @@ public class ArtnetDevice extends Output {
 		try {
 			artnet.start();
 			initialized = true;
-			log.log(Level.INFO, "ArtNet device initialized");
+			LOG.log(Level.INFO, "ArtNet device initialized");
 		} catch (Exception e) {
-			log.log(Level.WARNING, "failed to initialize ArtNet port!");
+			LOG.log(Level.WARNING, "failed to initialize ArtNet port!");
 		}
 	}
 

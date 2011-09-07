@@ -63,7 +63,7 @@ public abstract class Layout {
 	}
 	
 	/** The log. */
-	private static Logger log = Logger.getLogger(Layout.class.getName());
+	private static final Logger LOG = Logger.getLogger(Layout.class.getName());
 	
 	/** The layout name. */
 	private LayoutName layoutName;
@@ -86,7 +86,7 @@ public abstract class Layout {
 		this.row1Size = row1Size;
 		this.row2Size = row2Size;
 		
-		log.log(Level.INFO,
+		LOG.log(Level.INFO,
 				"Layout created: {0}, size row 1: {1}, row 2: {2}"
 				, new Object[] { layoutName.toString(), row1Size, row2Size });
 	}

@@ -20,7 +20,7 @@
 package com.neophob.sematrix.output;
 
 /**
- * Send data to Lpd6803 Device.
+ * does nothin.
  *
  * @author michu
  */

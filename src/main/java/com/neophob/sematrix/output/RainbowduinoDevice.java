@@ -35,7 +35,7 @@ import com.neophob.sematrix.glue.Collector;
 public class RainbowduinoDevice extends ArduinoOutput {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(RainbowduinoDevice.class.getName());
+	private static final Logger LOG = Logger.getLogger(RainbowduinoDevice.class.getName());
 	
 	/** The all i2c address. */
 	private List<Integer> allI2cAddress;
@@ -57,9 +57,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 		try {
 			rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet(), allI2cAddress);			
 			this.initialized = rainbowduino.ping();
-			log.log(Level.INFO, "ping result: "+ this.initialized);			
+			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
-			log.log(Level.WARNING, "failed to initialize serial port!");
+			LOG.log(Level.WARNING, "failed to initialize serial port!");
 		}
 		
 	}
@@ -116,7 +116,7 @@ public class RainbowduinoDevice extends ArduinoOutput {
 			if ((noUpdate+needUpdate)%100==0) {
 				float f = noUpdate+needUpdate;
 				float result = (100.0f/f)*needUpdate;
-				log.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
+				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
 						new Object[] {result, needUpdate, noUpdate, rainbowduino.getAckErrors(), 
 							rainbowduino.getArduinoErrorCounter(), rainbowduino.getArduinoBufferSize()});				
 			}
@@ -135,9 +135,9 @@ public class RainbowduinoDevice extends ArduinoOutput {
 				foundDevices.append(i);
 				foundDevices.append(" ");
 			}
-			log.log(Level.INFO, "Found i2c devices: <{0}>", foundDevices.toString());
+			LOG.log(Level.INFO, "Found i2c devices: <{0}>", foundDevices.toString());
 		} else {
-			log.log(Level.INFO, "I2C scan aborted - not connected to arduino!");
+			LOG.log(Level.INFO, "I2C scan aborted - not connected to arduino!");
 		}
 	}
 	

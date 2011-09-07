@@ -38,10 +38,10 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 public class MiniDmxDevice extends Output {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(MiniDmxDevice.class.getName());
+	private static final Logger LOG = Logger.getLogger(MiniDmxDevice.class.getName());
 	
 	/** The mini dmx. */
-	MiniDmxSerial miniDmx;
+	private MiniDmxSerial miniDmx;
 	
 	/** The initialized. */
 	private boolean initialized;
@@ -66,9 +66,9 @@ public class MiniDmxDevice extends Output {
 		try {
 			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize*3);			
 			this.initialized = miniDmx.ping();
-			log.log(Level.INFO, "ping result: "+ this.initialized);			
+			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
-			log.log(Level.WARNING, "failed to initialize serial port!");
+			LOG.log(Level.WARNING, "failed to initialize serial port!");
 		}
 	}
 	

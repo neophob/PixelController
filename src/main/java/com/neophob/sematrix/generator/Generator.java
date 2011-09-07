@@ -114,7 +114,7 @@ public abstract class Generator implements RandomizeState {
 	}
 	
 	/** The log. */
-	private static Logger log = Logger.getLogger(Generator.class.getName());
+	private static final Logger LOG = Logger.getLogger(Generator.class.getName());
 
 	/** The name. */
 	private GeneratorName name;
@@ -147,7 +147,7 @@ public abstract class Generator implements RandomizeState {
 		this.internalBufferYSize = matrix.getBufferYSize();
 		this.internalBuffer = new int[internalBufferXSize*internalBufferYSize];
 
-		log.log(Level.INFO,
+		LOG.log(Level.INFO,
 				"SeMAtrixParent: internalBufferSize: {0} name: {1} "
 				, new Object[] { internalBuffer.length, name });
 		
@@ -235,12 +235,12 @@ public abstract class Generator implements RandomizeState {
 		return pImage;
 	}
 	
-	//default shuffle method - do nothing
+	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.glue.RandomizeState#shuffle()
 	 */
 	public void shuffle() {
-		
+		//default shuffle method - do nothing
 	}
 
 	/**

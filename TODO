@@ -7,6 +7,5 @@ TODO
 -more generators/effects/mixer...
 -command line interface
 -update initial image in firmware
--add null output
 -Move message handling and randomizer handling out to effective classes
 -Highlight the current selected Visual in the debug output

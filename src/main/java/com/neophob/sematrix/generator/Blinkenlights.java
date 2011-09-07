@@ -43,8 +43,13 @@ public class Blinkenlights extends Generator implements PConstants {
 	/** The Constant PREFIX. */
 	private static final String PREFIX = "blinken/";
 	
+	//TODO should be dynamic someday
+	private static final String files[] = new String[] {
+		"torus.bml", "bnf_auge.bml", "bb-frogskin2.bml", "bb-rauten2.bml", "bb-spiral2fast.bml",
+		"flatter_flatter.bml", "badtv.bml", "kreise-versetzt.bml", "blender.bml"};
+
 	/** The log. */
-	static Logger log = Logger.getLogger(Blinkenlights.class.getName());
+	private static final Logger LOG = Logger.getLogger(Blinkenlights.class.getName());
 
 	/** The blinken. */
 	private BlinkenLibrary blinken;
@@ -87,10 +92,10 @@ public class Blinkenlights extends Generator implements PConstants {
 	public void loadFile(String file) {
 		//only load if needed
 		if (!StringUtils.equals(file, this.filename)) {
-			log.log(Level.INFO, "Load blinkenlights file "+file);
+			LOG.log(Level.INFO, "Load blinkenlights file "+file);
 			this.filename = file;
 			blinken.loadFile(PREFIX+file);
-			log.log(Level.INFO, "Load blinkenlights done!");
+			LOG.log(Level.INFO, "Load blinkenlights done!");
 		}
 		blinkenSettings();
 	}
@@ -150,7 +155,7 @@ public class Blinkenlights extends Generator implements PConstants {
 				ySrc++;
 			}			
 		} catch (ArrayIndexOutOfBoundsException e) {
-			log.log(Level.SEVERE, "Failed to update internal buffer", e);
+			LOG.log(Level.SEVERE, "Failed to update internal buffer", e);
 		}
 	}
 	
@@ -195,8 +200,6 @@ public class Blinkenlights extends Generator implements PConstants {
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
-			//TODO should be dynamic someday
-			String files[] = new String[] {"torus.bml", "bnf_auge.bml", "bb-frogskin2.bml", "bb-rauten2.bml", "bb-spiral2fast.bml"};
 			int nr = rand.nextInt(files.length);
 			loadFile(files[nr]);
 		}

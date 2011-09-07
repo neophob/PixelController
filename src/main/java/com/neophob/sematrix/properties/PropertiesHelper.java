@@ -44,7 +44,7 @@ import com.neophob.sematrix.output.OutputDeviceEnum;
 public final class PropertiesHelper {
 
 	/** The log. */
-	private static Logger log = Logger.getLogger(PropertiesHelper.class.getName());
+	private static final Logger LOG = Logger.getLogger(PropertiesHelper.class.getName());
 	
 	/** The instance. */
 	private static PropertiesHelper instance = new PropertiesHelper();
@@ -58,6 +58,8 @@ public final class PropertiesHelper {
 	
 	/** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
 	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
+	
+	private static final String FAILED_TO_PARSE = "Failed to parse {0}";
 	
 	/** The config. */
 	private Properties config=null;
@@ -98,9 +100,9 @@ public final class PropertiesHelper {
 			InputStream input = Collector.getInstance().getPapplet().createInput(CONFIG_FILENAME);
 			config.load(input);
 						
-			log.log(Level.INFO, "Config loaded, {0} entries", config.size());
+			LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
 		} catch (Exception e) {
-			log.log(Level.SEVERE, "Failed to load Config", e);
+			LOG.log(Level.SEVERE, "Failed to load Config", e);
 			throw new IllegalArgumentException("Configuration error!", e);
 		}
 
@@ -108,7 +110,7 @@ public final class PropertiesHelper {
 		int pixelInvadersDevices = parseLpdAddress();
 		int artnetDevices = parseArtNetDevices();
 		int miniDmxDevices = parseMiniDmxDevices();
-    int nullDevices = parseNullOutputAddress();
+		int nullDevices = parseNullOutputAddress();
     
 		//track how many output systems are enabled
 		int enabledOutputs = 0;
@@ -119,37 +121,37 @@ public final class PropertiesHelper {
 		if (rainbowduinoDevices > 0) {
 			enabledOutputs++;
 			totalDevices = rainbowduinoDevices;
-			log.log(Level.INFO, "found Rainbowduino device: "+totalDevices);
+			LOG.log(Level.INFO, "found Rainbowduino device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
 		}  
 		if (pixelInvadersDevices > 0) {
 			enabledOutputs++;
 			totalDevices = pixelInvadersDevices;
-			log.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADER;
+			LOG.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
+			this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS;
 		}
 		if (artnetDevices > 0) {
 			enabledOutputs++;
 			totalDevices = artnetDevices;
-			log.log(Level.INFO, "found Artnet device: "+totalDevices);
+			LOG.log(Level.INFO, "found Artnet device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
 		}
 		if (miniDmxDevices > 0) {
 			enabledOutputs++;
 			totalDevices = miniDmxDevices;
-			log.log(Level.INFO, "found miniDMX device: "+totalDevices);
+			LOG.log(Level.INFO, "found miniDMX device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
 		} 
 		if (nullDevices > 0) {
 			enabledOutputs++;
 			totalDevices = nullDevices;
-			log.log(Level.INFO, "found Null device: "+totalDevices);
+			LOG.log(Level.INFO, "found Null device: "+totalDevices);
 			this.outputDeviceEnum = OutputDeviceEnum.NULL;
 		} 
 		
 		
 		if (enabledOutputs>1) {
-			log.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
+			LOG.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
 			throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
 		}
 
@@ -157,7 +159,7 @@ public final class PropertiesHelper {
 			enabledOutputs=1;
 			totalDevices = 1;
 			devicesInRow1 = 1;
-			log.log(Level.INFO, "no output device defined, use NULL output");
+			LOG.log(Level.INFO, "no output device defined, use NULL output");
 			this.outputDeviceEnum = OutputDeviceEnum.NULL;
 		}
 				
@@ -191,7 +193,7 @@ public final class PropertiesHelper {
 			try {
 				return Boolean.parseBoolean(rawConfig);
 			} catch (Exception e) {
-				log.log(Level.WARNING, "Failed to parse {0}", rawConfig);
+				LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
 			}
 		}
 		return false;
@@ -209,7 +211,7 @@ public final class PropertiesHelper {
 			try {
 				return Integer.parseInt(rawConfig);
 			} catch (Exception e) {
-				log.log(Level.WARNING, "Failed to parse {0}", rawConfig);
+				LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
 			}
 		}
 		return 0;		
@@ -256,11 +258,11 @@ public final class PropertiesHelper {
 					count++;
 				}
 			}
-			log.log(Level.INFO,
+			LOG.log(Level.INFO,
 					"Loaded {0} presents from file {1}"
 					, new Object[] { count, PRESENTS_FILENAME });
 		} catch (Exception e) {
-			log.log(Level.WARNING,
+			LOG.log(Level.WARNING,
 					"Failed to load {0}, Error: {1}"
 					, new Object[] { PRESENTS_FILENAME, e });
 		}
@@ -281,11 +283,11 @@ public final class PropertiesHelper {
 		try {
 			OutputStream output = Collector.getInstance().getPapplet().createOutput(PRESENTS_FILENAME);
 			props.store(output, "Visual Daemon presents file");
-			log.log(Level.INFO,
+			LOG.log(Level.INFO,
 					"Presents saved as {0}"
 					, new Object[] { PRESENTS_FILENAME });
 		} catch (Exception e) {
-			log.log(Level.WARNING,
+			LOG.log(Level.WARNING,
 					"Failed to save {0}, Error: {1}"
 					, new Object[] { PRESENTS_FILENAME, e });
 		}
@@ -307,8 +309,7 @@ public final class PropertiesHelper {
 					lpdDevice.add(cfg);
 					devicesInRow1++;
 				} catch (Exception e) {
-					log.log(Level.WARNING,
-							"Failed to parse {0}", s);
+					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
 
 				}
 			}
@@ -322,8 +323,7 @@ public final class PropertiesHelper {
 					lpdDevice.add(cfg);
 					devicesInRow2++;				
 				} catch (Exception e) {
-					log.log(Level.WARNING,
-							"Failed to parse {0}", s);
+					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
 
 				}
 			}
@@ -365,7 +365,7 @@ public final class PropertiesHelper {
 					ColorFormat cf = ColorFormat.valueOf(s);
 					colorFormat.add(cf);					
 				} catch (Exception e) {
-					log.log(Level.WARNING, "Failed to parse {0}", s);
+					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
 				}
 			}			
 		}
@@ -399,20 +399,19 @@ public final class PropertiesHelper {
 		return i2cAddr.size();
 	}
 	
-	
 	/**
 	 * Parses the null output settings.
 	 *
 	 * @return the int
 	 */
 	private int parseNullOutputAddress() {		
-		devicesInRow1 = parseInt("nulloutput.devices.row1");
-		devicesInRow2 = parseInt("nulloutput.devices.row2");
-		
-		return devicesInRow1+devicesInRow2;
+		if (config.containsKey("nulloutput.devices.row1") && config.containsKey("nulloutput.devices.row2")) {
+			devicesInRow1 = parseInt("nulloutput.devices.row1");
+			devicesInRow2 = parseInt("nulloutput.devices.row2");
+			return devicesInRow1+devicesInRow2;
+		}
+		return 0;
 	}	
-	
-	
 
 	/**
 	 * get configured artnet ip.

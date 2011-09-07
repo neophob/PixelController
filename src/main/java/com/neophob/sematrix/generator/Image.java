@@ -42,6 +42,11 @@ public class Image extends Generator {
 	/** The Constant PREFIX. */
 	public static final String PREFIX = "pics/";
 	
+	//TODO should be dynamic someday, maybe move settings to the properties file
+	public static final String files[] = new String[] {
+		"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif",
+		"hsv.jpg", "hls.jpg", "right.jpg", "ff-logo-small.jpg"};
+
 	/** The Constant RESIZE_TYP. */
 	private static final ResizeName RESIZE_TYP = ResizeName.PIXEL_RESIZE;	
 	
@@ -112,9 +117,7 @@ public class Image extends Generator {
 	 */
 	@Override
 	public void shuffle() {
-		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
-			//TODO should be dynamic someday
-			String files[] = new String[] {"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif"};
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
 			int nr = new Random().nextInt(files.length);
 			loadFile(files[nr]);		
 		}
