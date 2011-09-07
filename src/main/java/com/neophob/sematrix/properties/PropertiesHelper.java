@@ -110,7 +110,7 @@ public final class PropertiesHelper {
 		int pixelInvadersDevices = parseLpdAddress();
 		int artnetDevices = parseArtNetDevices();
 		int miniDmxDevices = parseMiniDmxDevices();
-    int nullDevices = parseNullOutputAddress();
+		int nullDevices = parseNullOutputAddress();
     
 		//track how many output systems are enabled
 		int enabledOutputs = 0;
@@ -399,20 +399,19 @@ public final class PropertiesHelper {
 		return i2cAddr.size();
 	}
 	
-	
 	/**
 	 * Parses the null output settings.
 	 *
 	 * @return the int
 	 */
 	private int parseNullOutputAddress() {		
-		devicesInRow1 = parseInt("nulloutput.devices.row1");
-		devicesInRow2 = parseInt("nulloutput.devices.row2");
-		
-		return devicesInRow1+devicesInRow2;
+		if (config.containsKey("nulloutput.devices.row1") && config.containsKey("nulloutput.devices.row2")) {
+			devicesInRow1 = parseInt("nulloutput.devices.row1");
+			devicesInRow2 = parseInt("nulloutput.devices.row2");
+			return devicesInRow1+devicesInRow2;
+		}
+		return 0;
 	}	
-	
-	
 
 	/**
 	 * get configured artnet ip.
