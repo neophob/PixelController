@@ -57,12 +57,12 @@ public class MiniDmxDevice extends Output {
 	 *
 	 * @param controller the controller
 	 */
-	public MiniDmxDevice(PixelControllerOutput controller) {
-		super(controller, MiniDmxDevice.class.toString());
+	public MiniDmxDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(ph, controller, MiniDmxDevice.class.toString());
 		
 		this.initialized = false;
-		this.xSize = PropertiesHelper.getInstance().parseMiniDmxDevicesX();
-		this.ySize = PropertiesHelper.getInstance().parseMiniDmxDevicesY();
+		this.xSize = ph.parseMiniDmxDevicesX();
+		this.ySize = ph.parseMiniDmxDevicesY();
 		try {
 			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize*3);			
 			this.initialized = miniDmx.ping();

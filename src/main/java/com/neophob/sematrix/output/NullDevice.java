@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.output;
 
+import com.neophob.sematrix.properties.PropertiesHelper;
+
 /**
  * does nothin.
  *
@@ -31,8 +33,8 @@ public class NullDevice extends Output {
 	 *
 	 * @param controller the controller
 	 */
-	public NullDevice(PixelControllerOutput controller) {
-		super(controller, NullDevice.class.toString());		
+	public NullDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(ph, controller, NullDevice.class.toString());		
 	}
 	
 	/* (non-Javadoc)

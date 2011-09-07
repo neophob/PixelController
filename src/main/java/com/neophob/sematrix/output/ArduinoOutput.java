@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.output;
 
+import com.neophob.sematrix.properties.PropertiesHelper;
+
 /**
  * The Class ArduinoOutput.
  *
@@ -40,8 +42,8 @@ public abstract class ArduinoOutput extends Output {
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public ArduinoOutput(PixelControllerOutput controller, String name) {
-		super(controller, name);
+	public ArduinoOutput(PropertiesHelper ph, PixelControllerOutput controller, String name) {
+		super(ph, controller, name);
 	}
 	
 	/**

@@ -41,521 +41,501 @@ import com.neophob.sematrix.output.OutputDeviceEnum;
  *
  * @author michu
  */
-public final class PropertiesHelper {
+public class PropertiesHelper {
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PropertiesHelper.class.getName());
-	
-	/** The instance. */
-	private static PropertiesHelper instance = new PropertiesHelper();
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(PropertiesHelper.class.getName());
 
-	//define config files
-	/** The Constant PRESENTS_FILENAME. */
-	private static final String PRESENTS_FILENAME = "data/presents.led";
-	
-	/** The Constant CONFIG_FILENAME. */
-	private static final String CONFIG_FILENAME = "data/config.properties";
-	
-	/** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
-	private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
-	
-	private static final String FAILED_TO_PARSE = "Failed to parse {0}";
-	
-	/** The config. */
-	private Properties config=null;
-	
-	/** The output device enum. */
-	private OutputDeviceEnum outputDeviceEnum = null;
-	
-	//output specific settings
-	/** The i2c addr. */
-	private List<Integer> i2cAddr=null;
-	
-	/** The lpd device. */
-	private List<DeviceConfig> lpdDevice=null;
-	
-	/** The color format. */
-	private List<ColorFormat> colorFormat=null;
-	
-	//how many output screens are used? needed to define layouts
-	/** The devices in row1. */
-	private int devicesInRow1 = 0;
-	
-	/** The devices in row2. */
-	private int devicesInRow2 = 0;
-	
-	//Resolution of the output device
-	/** The device x resolution. */
-	private int deviceXResolution = 8;
-	
-	/** The device y resolution. */
-	private int deviceYResolution = 8;
-	
-	/**
-	 * Instantiates a new properties helper.
-	 */
-	private PropertiesHelper() {
-		config = new Properties();		
-		try {
-			InputStream input = Collector.getInstance().getPapplet().createInput(CONFIG_FILENAME);
-			config.load(input);
-						
-			LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to load Config", e);
-			throw new IllegalArgumentException("Configuration error!", e);
-		}
+    /** The Constant PRESENTS_FILENAME. */
+    private static final String PRESENTS_FILENAME = "data/presents.led";
 
-		int rainbowduinoDevices = parseI2cAddress();
-		int pixelInvadersDevices = parseLpdAddress();
-		int artnetDevices = parseArtNetDevices();
-		int miniDmxDevices = parseMiniDmxDevices();
-    int nullDevices = parseNullOutputAddress();
-    
-		//track how many output systems are enabled
-		int enabledOutputs = 0;
-		
-		//track how many ouput devices are configured
-		int totalDevices = 0;
-		
-		if (rainbowduinoDevices > 0) {
-			enabledOutputs++;
-			totalDevices = rainbowduinoDevices;
-			LOG.log(Level.INFO, "found Rainbowduino device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
-		}  
-		if (pixelInvadersDevices > 0) {
-			enabledOutputs++;
-			totalDevices = pixelInvadersDevices;
-			LOG.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS;
-		}
-		if (artnetDevices > 0) {
-			enabledOutputs++;
-			totalDevices = artnetDevices;
-			LOG.log(Level.INFO, "found Artnet device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
-		}
-		if (miniDmxDevices > 0) {
-			enabledOutputs++;
-			totalDevices = miniDmxDevices;
-			LOG.log(Level.INFO, "found miniDMX device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
-		} 
-		if (nullDevices > 0) {
-			enabledOutputs++;
-			totalDevices = nullDevices;
-			LOG.log(Level.INFO, "found Null device: "+totalDevices);
-			this.outputDeviceEnum = OutputDeviceEnum.NULL;
-		} 
-		
-		
-		if (enabledOutputs>1) {
-			LOG.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
-			throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
-		}
+    /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
+    private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
 
-		if (enabledOutputs==0 || totalDevices==0) {
-			enabledOutputs=1;
-			totalDevices = 1;
-			devicesInRow1 = 1;
-			LOG.log(Level.INFO, "no output device defined, use NULL output");
-			this.outputDeviceEnum = OutputDeviceEnum.NULL;
-		}
-				
-		//add default color format RGB is nothing is configured
-		int nrOfColorFormat = getColorFormatFromCfg();
-		if (nrOfColorFormat==0) {
-			for (int i=0; i<totalDevices; i++) {
-				colorFormat.add(ColorFormat.RBG);
-			}
-		}
-	}
-	
-	/**
-	 * Gets the single instance of PropertiesHelper.
-	 *
-	 * @return single instance of PropertiesHelper
-	 */
-	public static PropertiesHelper getInstance() {
-		return instance;
-	}
+    /** The Constant FAILED_TO_PARSE. */
+    private static final String FAILED_TO_PARSE = "Failed to parse {0}";
 
-	/**
-	 * Parses the boolean.
-	 *
-	 * @param property the property
-	 * @return true, if successful
-	 */
-	private boolean parseBoolean(String property) {
-		String rawConfig = config.getProperty(property);
-		if (StringUtils.isNotBlank(rawConfig)) {
-			try {
-				return Boolean.parseBoolean(rawConfig);
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * get a int value from the config file.
-	 *
-	 * @param property the property
-	 * @return the int
-	 */
-	private int parseInt(String property) {
-		String rawConfig = config.getProperty(property);
-		if (StringUtils.isNotBlank(rawConfig)) {
-			try {
-				return Integer.parseInt(rawConfig);
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
-			}
-		}
-		return 0;		
-	}
+    /** The config. */
+    protected Properties config=null;
+
+    /** The output device enum. */
+    private OutputDeviceEnum outputDeviceEnum = null;
+
+    //output specific settings
+    /** The i2c addr. */
+    private List<Integer> i2cAddr=null;
+
+    /** The lpd device. */
+    private List<DeviceConfig> lpdDevice=null;
+
+    /** The color format. */
+    private List<ColorFormat> colorFormat=null;
+
+    //how many output screens are used? needed to define layouts
+    /** The devices in row1. */
+    private int devicesInRow1 = 0;
+
+    /** The devices in row2. */
+    private int devicesInRow2 = 0;
+
+    //Resolution of the output device
+    /** The device x resolution. */
+    private int deviceXResolution = 8;
+
+    /** The device y resolution. */
+    private int deviceYResolution = 8;
+
+    /**
+     * Instantiates a new properties helper.
+     *
+     * @param input the input
+     */
+    public PropertiesHelper(Properties config) {
+        this.config = config;
+        
+        int rainbowduinoDevices = parseI2cAddress();
+        int pixelInvadersDevices = parsePixelInvaderConfig();
+        int artnetDevices = parseArtNetDevices();
+        int miniDmxDevices = parseMiniDmxDevices();
+        int nullDevices = parseNullOutputAddress();
+
+        //track how many output systems are enabled
+        int enabledOutputs = 0;
+
+        //track how many ouput devices are configured
+        int totalDevices = 0;
+
+        if (rainbowduinoDevices > 0) {
+            enabledOutputs++;
+            totalDevices = rainbowduinoDevices;
+            LOG.log(Level.INFO, "found Rainbowduino device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
+        }  
+        if (pixelInvadersDevices > 0) {
+            enabledOutputs++;
+            totalDevices = pixelInvadersDevices;
+            LOG.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS;
+        }
+        if (artnetDevices > 0) {
+            enabledOutputs++;
+            totalDevices = artnetDevices;
+            LOG.log(Level.INFO, "found Artnet device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
+        }
+        if (miniDmxDevices > 0) {
+            enabledOutputs++;
+            totalDevices = miniDmxDevices;
+            LOG.log(Level.INFO, "found miniDMX device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
+        } 
+        if (nullDevices > 0) {
+            enabledOutputs++;
+            totalDevices = nullDevices;
+            LOG.log(Level.INFO, "found Null device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.NULL;
+        } 
 
 
-	/**
-	 * Gets the property.
-	 *
-	 * @param key the key
-	 * @return the property
-	 */
-	public String getProperty(String key) {
-		return config.getProperty(key);
-	}
+        if (enabledOutputs>1) {
+            LOG.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
+            throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
+        }
 
-	/**
-	 * Gets the property.
-	 *
-	 * @param key the key
-	 * @param defaultValue the default value
-	 * @return the property
-	 */
-	public String getProperty(String key, String defaultValue) {
-		return config.getProperty(key, defaultValue);
-	}
-	
-	
-	/**
-	 * Load presents.
-	 */
-	public void loadPresents() {
-		Properties props = new Properties();
-		try {
-			InputStream input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
-			List<PresentSettings> presents = Collector.getInstance().getPresent();
-			props.load(input);
-			String s;
-			int count=0;
-			for (int i=0; i<Collector.NR_OF_PRESENT_SLOTS; i++) {
-				s=props.getProperty(""+i);
-				if (StringUtils.isNotBlank(s)) {
-					presents.get(i).setPresent(s.split(";"));
-					count++;
-				}
-			}
-			LOG.log(Level.INFO,
-					"Loaded {0} presents from file {1}"
-					, new Object[] { count, PRESENTS_FILENAME });
-		} catch (Exception e) {
-			LOG.log(Level.WARNING,
-					"Failed to load {0}, Error: {1}"
-					, new Object[] { PRESENTS_FILENAME, e });
-		}
-	}
-		
-	/**
-	 * Save presents.
-	 */
-	public void savePresents() {
-		Properties props = new Properties();
-		List<PresentSettings> presents = Collector.getInstance().getPresent();
-		int idx=0;
-		for (PresentSettings p: presents) {
-			props.setProperty( ""+idx, p.getSettingsAsString() );
-			idx++;
-		}
-		
-		try {
-			OutputStream output = Collector.getInstance().getPapplet().createOutput(PRESENTS_FILENAME);
-			props.store(output, "Visual Daemon presents file");
-			LOG.log(Level.INFO,
-					"Presents saved as {0}"
-					, new Object[] { PRESENTS_FILENAME });
-		} catch (Exception e) {
-			LOG.log(Level.WARNING,
-					"Failed to save {0}, Error: {1}"
-					, new Object[] { PRESENTS_FILENAME, e });
-		}
-	}
+        if (enabledOutputs==0 || totalDevices==0) {
+            enabledOutputs=1;
+            totalDevices = 1;
+            devicesInRow1 = 1;
+            LOG.log(Level.INFO, "no output device defined, use NULL output");
+            this.outputDeviceEnum = OutputDeviceEnum.NULL;
+        }
 
-	/**
-	 * Parses the lpd address.
-	 *
-	 * @return the int
-	 */
-	private int parseLpdAddress() {
-		lpdDevice = new ArrayList<DeviceConfig>();
-		
-		String value = config.getProperty("pixelinvaders.layout.row1");
-		if (StringUtils.isNotBlank(value)) {
-			for (String s: value.split(",")) {
-				try {
-					DeviceConfig cfg = DeviceConfig.valueOf(s);
-					lpdDevice.add(cfg);
-					devicesInRow1++;
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+        //add default color format RGB is nothing is configured
+        int nrOfColorFormat = getColorFormatFromCfg();
+        if (nrOfColorFormat==0) {
+            for (int i=0; i<totalDevices; i++) {
+                colorFormat.add(ColorFormat.RBG);
+            }
+        }
+    }
 
-				}
-			}
-		}
 
-		value = config.getProperty("pixelinvaders.layout.row2");
-		if (StringUtils.isNotBlank(value)) {
-			for (String s: value.split(",")) {
-				try {
-					DeviceConfig cfg = DeviceConfig.valueOf(s);
-					lpdDevice.add(cfg);
-					devicesInRow2++;				
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+    /**
+     * Parses the boolean.
+     *
+     * @param property the property
+     * @return true, if successful
+     */
+    private boolean parseBoolean(String property) {
+        String rawConfig = config.getProperty(property);
+        if (StringUtils.isNotBlank(rawConfig)) {
+            try {
+                return Boolean.parseBoolean(rawConfig);
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
+            }
+        }
+        return false;
+    }
 
-				}
-			}
-		}
+    /**
+     * get a int value from the config file.
+     *
+     * @param property the property
+     * @return the int
+     */
+    private int parseInt(String property) {
+        String rawConfig = config.getProperty(property);
+        if (StringUtils.isNotBlank(rawConfig)) {
+            try {
+                return Integer.parseInt(rawConfig);
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
+            }
+        }
+        return 0;		
+    }
 
-		return lpdDevice.size();
-	}
-	
-	/**
-	 * get the size of the software emulated matrix.
-	 *
-	 * @return the size or -1 if nothing was defined
-	 */
-	public int getLedPixelSize() {
-		int ret=-1;
-		
-		String tmp = config.getProperty("led.pixel.size");
-		try {
-			ret = Integer.parseInt(tmp);
-		} catch (NumberFormatException e) {
-			// TODO: handle exception
-		}
-		return ret;
-		
-	}
-	
-	/**
-	 * Gets the color format from cfg.
-	 *
-	 * @return the color format from cfg
-	 */
-	private int getColorFormatFromCfg() {
-		colorFormat = new ArrayList<ColorFormat>();
-		String rawConfig = config.getProperty("panel.color.order");
-		
-		if (StringUtils.isNotBlank(rawConfig)) {
-			for (String s: rawConfig.split(",")) {
-				try {
-					ColorFormat cf = ColorFormat.valueOf(s);
-					colorFormat.add(cf);					
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-				}
-			}			
-		}
-		
-		return colorFormat.size();
-	}
-	
-	/**
-	 * Parses the i2c address.
-	 *
-	 * @return the int
-	 */
-	private int parseI2cAddress() {
-		i2cAddr = new ArrayList<Integer>();
-		
-		String rawConfig = config.getProperty("layout.row1.i2c.addr");
-		if (StringUtils.isNotBlank(rawConfig)) {
-			for (String s: rawConfig.split(",")) {
-				i2cAddr.add( Integer.parseInt(s));
-				devicesInRow1++;
-			}
-		}
-		rawConfig = config.getProperty("layout.row2.i2c.addr");
-		if (StringUtils.isNotBlank(rawConfig)) {
-			for (String s: rawConfig.split(",")) {
-				i2cAddr.add( Integer.parseInt(s));
-				devicesInRow2++;
-			}
-		}
-		
-		return i2cAddr.size();
-	}
-	
-	
-	/**
-	 * Parses the null output settings.
-	 *
-	 * @return the int
-	 */
-	private int parseNullOutputAddress() {		
-		devicesInRow1 = parseInt("nulloutput.devices.row1");
-		devicesInRow2 = parseInt("nulloutput.devices.row2");
-		
-		return devicesInRow1+devicesInRow2;
-	}	
-	
-	
 
-	/**
-	 * get configured artnet ip.
-	 *
-	 * @return the art net ip
-	 */
-	public String getArtNetIp() {
-		return config.getProperty("artnet.ip");
-	}
-	
-	/**
-	 * Parses the art net devices.
-	 *
-	 * @return the int
-	 */
-	private int parseArtNetDevices() {
-		//minimal ip length 1.1.1.1
-		if (StringUtils.length(getArtNetIp())>6) {
-			devicesInRow1=1;
-			return 1;
-		}
-		
-		return 0;
-	}
+    /**
+     * Gets the property.
+     *
+     * @param key the key
+     * @return the property
+     */
+    public String getProperty(String key) {
+        return config.getProperty(key);
+    }
 
-	/**
-	 * Parses the mini dmx devices.
-	 *
-	 * @return the int
-	 */
-	private int parseMiniDmxDevices() {
-		if (parseMiniDmxDevicesX()>0 && parseMiniDmxDevicesY()>0) {
-			this.devicesInRow1=1;
-			this.deviceXResolution = parseMiniDmxDevicesX();
-			this.deviceYResolution = parseMiniDmxDevicesY();
-			return 1;
-		}
-		return 0;
-	}
-	
-	/**
-	 * Parses the mini dmx devices x.
-	 *
-	 * @return the int
-	 */
-	public int parseMiniDmxDevicesX() {
-		return parseInt("minidmx.resolution.x");
-	}
+    /**
+     * Gets the property.
+     *
+     * @param key the key
+     * @param defaultValue the default value
+     * @return the property
+     */
+    public String getProperty(String key, String defaultValue) {
+        return config.getProperty(key, defaultValue);
+    }
 
-	/**
-	 * Parses the mini dmx devices y.
-	 *
-	 * @return the int
-	 */
-	public int parseMiniDmxDevicesY() {
-		return parseInt("minidmx.resolution.y");
-	}
-	
-	/**
-	 * Start randommode.
-	 *
-	 * @return true, if successful
-	 */
-	public boolean startRandommode() {
-		return parseBoolean("startup.in.randommode");
-	}
-	
-	/**
-	 * Gets the nr of screens.
-	 *
-	 * @return the nr of screens
-	 */
-	public int getNrOfScreens() {
-		return devicesInRow1+devicesInRow2;
-	}
-	
-	
-	/**
-	 * Gets the layout.
-	 *
-	 * @return the layout
-	 */
-	public Layout getLayout() {
-		if (devicesInRow2>0) {
-			return new BoxLayout(devicesInRow1, devicesInRow2);
-		}
-	
-		return new HorizontalLayout(devicesInRow1, devicesInRow2);
-	}
 
-	/**
-	 * Gets the i2c addr.
-	 *
-	 * @return i2c address for rainbowduino devices
-	 */
-	public List<Integer> getI2cAddr() {
-		return i2cAddr;
-	}
+    /**
+     * Load presents.
+     */
+    public void loadPresents() {
+        Properties props = new Properties();
+        try {
+            InputStream input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
+            List<PresentSettings> presents = Collector.getInstance().getPresent();
+            props.load(input);
+            String s;
+            int count=0;
+            for (int i=0; i<Collector.NR_OF_PRESENT_SLOTS; i++) {
+                s=props.getProperty(""+i);
+                if (StringUtils.isNotBlank(s)) {
+                    presents.get(i).setPresent(s.split(";"));
+                    count++;
+                }
+            }
+            LOG.log(Level.INFO,
+                    "Loaded {0} presents from file {1}"
+                    , new Object[] { count, PRESENTS_FILENAME });
+        } catch (Exception e) {
+            LOG.log(Level.WARNING,
+                    "Failed to load {0}, Error: {1}"
+                    , new Object[] { PRESENTS_FILENAME, e });
+        }
+    }
 
-	/**
-	 * Gets the lpd device.
-	 *
-	 * @return options to display lpd6803 displays
-	 */
-	public List<DeviceConfig> getLpdDevice() {
-		return lpdDevice;
-	}
+    /**
+     * Save presents.
+     */
+    public void savePresents() {
+        Properties props = new Properties();
+        List<PresentSettings> presents = Collector.getInstance().getPresent();
+        int idx=0;
+        for (PresentSettings p: presents) {
+            props.setProperty( ""+idx, p.getSettingsAsString() );
+            idx++;
+        }
 
-	/**
-	 * Gets the color format.
-	 *
-	 * @return the color format
-	 */
-	public List<ColorFormat> getColorFormat() {
-		return colorFormat;
-	}
-	
-	/**
-	 * Gets the output device.
-	 *
-	 * @return the configured output device
-	 */
-	public OutputDeviceEnum getOutputDevice() {
-		return this.outputDeviceEnum;
-	}
+        try {
+            OutputStream output = Collector.getInstance().getPapplet().createOutput(PRESENTS_FILENAME);
+            props.store(output, "Visual Daemon presents file");
+            LOG.log(Level.INFO, "Presents saved as {0}", PRESENTS_FILENAME );
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}"
+                    , new Object[] { PRESENTS_FILENAME, e });
+        }
+    }
 
-	/**
-	 * Gets the device x resolution.
-	 *
-	 * @return the device x resolution
-	 */
-	public int getDeviceXResolution() {
-		return deviceXResolution;
-	}
+    /**
+     * Parses the lpd address.
+     *
+     * @return the int
+     */
+    private int parsePixelInvaderConfig() {
+        lpdDevice = new ArrayList<DeviceConfig>();
 
-	/**
-	 * Gets the device y resolution.
-	 *
-	 * @return the device y resolution
-	 */
-	public int getDeviceYResolution() {
-		return deviceYResolution;
-	}
-	
-	
+        String value = config.getProperty(ConfigConstants.PIXELINVADERS_ROW1);
+        if (StringUtils.isNotBlank(value)) {
+            for (String s: value.split(ConfigConstants.DELIM)) {
+                try {
+                    DeviceConfig cfg = DeviceConfig.valueOf(s);
+                    lpdDevice.add(cfg);
+                    devicesInRow1++;
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+
+                }
+            }
+        }
+
+        value = config.getProperty(ConfigConstants.PIXELINVADERS_ROW2);
+        if (StringUtils.isNotBlank(value)) {
+            for (String s: value.split(ConfigConstants.DELIM)) {
+                try {
+                    DeviceConfig cfg = DeviceConfig.valueOf(s);
+                    lpdDevice.add(cfg);
+                    devicesInRow2++;				
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+
+                }
+            }
+        }
+
+        return lpdDevice.size();
+    }
+
+    /**
+     * get the size of the software emulated matrix.
+     *
+     * @return the size or -1 if nothing was defined
+     */
+    public int getLedPixelSize() {
+        int ret=-1;
+
+        String tmp = config.getProperty(ConfigConstants.CFG_PIXEL_SIZE);
+        try {
+            ret = Integer.parseInt(tmp);
+        } catch (NumberFormatException e) {
+            LOG.log(Level.WARNING, FAILED_TO_PARSE, e);
+        }
+        return ret;
+
+    }
+
+    /**
+     * Gets the color format from cfg.
+     *
+     * @return the color format from cfg
+     */
+    private int getColorFormatFromCfg() {
+        colorFormat = new ArrayList<ColorFormat>();
+        String rawConfig = config.getProperty(ConfigConstants.CFG_PANEL_COLOR_ORDER);
+
+        if (StringUtils.isNotBlank(rawConfig)) {
+            for (String s: rawConfig.split(ConfigConstants.DELIM)) {
+                try {
+                    ColorFormat cf = ColorFormat.valueOf(s);
+                    colorFormat.add(cf);					
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                }
+            }			
+        }
+
+        return colorFormat.size();
+    }
+
+    /**
+     * Parses the i2c address.
+     *
+     * @return the int
+     */
+    private int parseI2cAddress() {
+        i2cAddr = new ArrayList<Integer>();
+
+        String rawConfig = config.getProperty(ConfigConstants.RAINBOWDUINO_ROW1);
+        if (StringUtils.isNotBlank(rawConfig)) {
+            for (String s: rawConfig.split(ConfigConstants.DELIM)) {
+                i2cAddr.add( Integer.decode(s));
+                devicesInRow1++;
+            }
+        }
+        rawConfig = config.getProperty(ConfigConstants.RAINBOWDUINO_ROW2);
+        if (StringUtils.isNotBlank(rawConfig)) {
+            for (String s: rawConfig.split(ConfigConstants.DELIM)) {
+                i2cAddr.add( Integer.decode(s));
+                devicesInRow2++;
+            }
+        }
+
+        return i2cAddr.size();
+    }
+
+
+    /**
+     * Parses the null output settings.
+     *
+     * @return the int
+     */
+    private int parseNullOutputAddress() {
+        int row1=parseInt(ConfigConstants.NULLOUTPUT_ROW1);
+        int row2=parseInt(ConfigConstants.NULLOUTPUT_ROW2);
+        if (row1+row2>0) {
+            devicesInRow1 = row1;
+            devicesInRow2 = row2;
+        }
+
+        return row1+row2;
+    }	
+
+
+
+    /**
+     * get configured artnet ip.
+     *
+     * @return the art net ip
+     */
+    public String getArtNetIp() {
+        return config.getProperty(ConfigConstants.ARTNET_IP);
+    }
+
+    /**
+     * Parses the art net devices.
+     *
+     * @return the int
+     */
+    private int parseArtNetDevices() {
+        //minimal ip length 1.1.1.1
+        if (StringUtils.length(getArtNetIp())>6) {
+            devicesInRow1=1;
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Parses the mini dmx devices.
+     *
+     * @return the int
+     */
+    private int parseMiniDmxDevices() {
+        if (parseMiniDmxDevicesX()>0 && parseMiniDmxDevicesY()>0) {
+            this.devicesInRow1=1;
+            this.deviceXResolution = parseMiniDmxDevicesX();
+            this.deviceYResolution = parseMiniDmxDevicesY();
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Parses the mini dmx devices x.
+     *
+     * @return the int
+     */
+    public int parseMiniDmxDevicesX() {
+        return parseInt(ConfigConstants.MINIDMX_RESOLUTION_X);
+    }
+
+    /**
+     * Parses the mini dmx devices y.
+     *
+     * @return the int
+     */
+    public int parseMiniDmxDevicesY() {
+        return parseInt(ConfigConstants.MINIDMX_RESOLUTION_Y);
+    }
+
+    /**
+     * Start randommode.
+     *
+     * @return true, if successful
+     */
+    public boolean startRandommode() {
+        return parseBoolean(ConfigConstants.STARTUP_IN_RANDOM_MODE);
+    }
+
+    /**
+     * Gets the nr of screens.
+     *
+     * @return the nr of screens
+     */
+    public int getNrOfScreens() {
+        return devicesInRow1+devicesInRow2;
+    }
+
+
+    /**
+     * Gets the layout.
+     *
+     * @return the layout
+     */
+    public Layout getLayout() {
+        if (devicesInRow2>0) {
+            return new BoxLayout(devicesInRow1, devicesInRow2);
+        }
+
+        return new HorizontalLayout(devicesInRow1, devicesInRow2);
+    }
+
+    /**
+     * Gets the i2c addr.
+     *
+     * @return i2c address for rainbowduino devices
+     */
+    public List<Integer> getI2cAddr() {
+        return i2cAddr;
+    }
+
+    /**
+     * Gets the lpd device.
+     *
+     * @return options to display lpd6803 displays
+     */
+    public List<DeviceConfig> getLpdDevice() {
+        return lpdDevice;
+    }
+
+    /**
+     * Gets the color format.
+     *
+     * @return the color format
+     */
+    public List<ColorFormat> getColorFormat() {
+        return colorFormat;
+    }
+
+    /**
+     * Gets the output device.
+     *
+     * @return the configured output device
+     */
+    public OutputDeviceEnum getOutputDevice() {
+        return this.outputDeviceEnum;
+    }
+
+    /**
+     * Gets the device x resolution.
+     *
+     * @return the device x resolution
+     */
+    public int getDeviceXResolution() {
+        return deviceXResolution;
+    }
+
+    /**
+     * Gets the device y resolution.
+     *
+     * @return the device y resolution
+     */
+    public int getDeviceYResolution() {
+        return deviceYResolution;
+    }
+
+
 }

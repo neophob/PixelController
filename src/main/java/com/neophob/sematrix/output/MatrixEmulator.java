@@ -49,9 +49,9 @@ public class MatrixEmulator extends Output {
 	 *
 	 * @param controller the controller
 	 */
-	public MatrixEmulator(PixelControllerOutput controller) {
-		super(controller, MatrixEmulator.class.toString());
-		ledSize = PropertiesHelper.getInstance().getLedPixelSize();
+	public MatrixEmulator(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(ph, controller, MatrixEmulator.class.toString());
+		ledSize = ph.getLedPixelSize();
 		
 		int x,y;
 		switch (layout.getLayoutName()) {

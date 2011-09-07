@@ -2,12 +2,17 @@ package com.neophob;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.junit.Test;
 
 import processing.core.PApplet;
 
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * test start
@@ -16,6 +21,8 @@ import com.neophob.sematrix.glue.Collector;
  */
 public class PixelControllerTest extends PApplet {
 
+    private static final Logger LOG = Logger.getLogger(PixelControllerTest.class.getName());
+    
 	@Test
 	public void testMain() {
 		PApplet.main(new String[] { "com.neophob.PixelControllerTest" });
@@ -29,14 +36,13 @@ public class PixelControllerTest extends PApplet {
 		assertTrue(PixelControllerFader.getFaderCount()>3);
 	}
 	
-/*	@Test
-	public void testMixer() {
-		Mixer mix = Collector.getInstance().getPixelControllerMixer().getMixer(MixerName.PASSTHRU);
-		
-	}*/
+
 	
 	public void setup() { 
-		Collector.getInstance().init(this, 10);
+	    LOG.log(Level.INFO,"public void setup");
+	    Properties config = new Properties();     
+	    PropertiesHelper ph = new PropertiesHelper(config);
+		Collector.getInstance().init(this, 10, ph);
 	}
 	
 	public void draw() {

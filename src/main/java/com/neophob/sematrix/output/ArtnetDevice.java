@@ -53,13 +53,13 @@ public class ArtnetDevice extends Output {
 	 * 
 	 * @param controller
 	 */
-	public ArtnetDevice(PixelControllerOutput controller) {
-		super(controller, ArtnetDevice.class.toString());
+	public ArtnetDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(ph, controller, ArtnetDevice.class.toString());
 
 		initialized = false;
 		artnet = new ArtNet();
 		artnet.init();
-		ip = PropertiesHelper.getInstance().getArtNetIp();
+		ip = ph.getArtNetIp();
 		try {
 			artnet.start();
 			initialized = true;

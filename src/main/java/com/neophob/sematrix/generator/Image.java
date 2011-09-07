@@ -39,11 +39,15 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Image extends Generator {
 
+    /** The Constant INITIAL_IMAGE. */
+    public static final String INITIAL_IMAGE = "initial.image.simple";
+    
 	/** The Constant PREFIX. */
-	public static final String PREFIX = "pics/";
+    public static final String PREFIX = "pics/";
 	
 	//TODO should be dynamic someday, maybe move settings to the properties file
-	public static final String files[] = new String[] {
+	/** The Constant files. */
+	private static final String files[] = new String[] {
 		"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif",
 		"hsv.jpg", "hls.jpg", "right.jpg", "ff-logo-small.jpg"};
 

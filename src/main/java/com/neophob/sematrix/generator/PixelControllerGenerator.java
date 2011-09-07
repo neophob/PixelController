@@ -37,269 +37,281 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  */
 public class PixelControllerGenerator implements PixelControllerElement {
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
 
-	
-	/** The all generators. */
-	private List<Generator> allGenerators;
-	
-	/** The blinkenlights. */
-	private Blinkenlights blinkenlights;
-	
-	/** The image. */
-	private Image image;
-	
-	/** The image zoomer. */
-	private ImageZoomer imageZoomer;
-	
-	/** The texture deformation. */
-	private TextureDeformation textureDeformation;	
-	
-	/** The textwriter. */
-	private Textwriter textwriter;
+    private static final String DEFAULT_BLINKENLIGHTS = "torus.bml";
+    private static final String DEFAULT_IMAGE = "logo.gif";
+    private static final String DEFAULT_TEXTUREDEFORMATION = "logo.gif";
+    private static final String DEFAULT_TEXT = "PixelInvaders!";
+    private static final String DEFAULT_TTF = "04B_03__.TTF";
+    private static final String DEFAULT_TTF_SIZE = "82";
+    private static final String DEFAULT_IMAGE_ZOOMER = "bnz20.jpg";
 
-	/**
-	 * Instantiates a new pixel controller generator.
-	 */
-	public PixelControllerGenerator() {
-		allGenerators = new CopyOnWriteArrayList<Generator>();					
-	}
-	
-	/**
-	 * initialize all generators.
-	 */
-	public void initAll() {
-		
-		String fileBlinken = PropertiesHelper.getInstance().getProperty("initial.blinken");
-		blinkenlights = new Blinkenlights(this, fileBlinken);
-		
-		String fileImageSimple = PropertiesHelper.getInstance().getProperty("initial.image.simple");
-		image = new Image(this, fileImageSimple);
-		
-		new Plasma2(this);
-		new PlasmaAdvanced(this);
-		new SimpleColors(this);
-		new Fire(this);
-		new PassThruGen(this);
-		new Metaballs(this);
-		new PixelImage(this);
-		String fileTextureDeformation = PropertiesHelper.getInstance().getProperty("initial.texture");
-		textureDeformation = new TextureDeformation(this, fileTextureDeformation);
-		String text = PropertiesHelper.getInstance().getProperty("initial.text");
-		textwriter = new Textwriter(this, 
-				PropertiesHelper.getInstance().getProperty("font.filename"), 
-				Integer.parseInt(PropertiesHelper.getInstance().getProperty("font.size")),
-				text
-		);
-		String fileImageZoomer = PropertiesHelper.getInstance().getProperty("initial.image.zoomer");
-		imageZoomer = new ImageZoomer(this, fileImageZoomer);
-		new Cell(this);
-		new FFTSpectrum(this);
-		new Geometrics(this);
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.glue.PixelControllerElement#getCurrentState()
-	 */
-	public List<String> getCurrentState() {
-		List<String> ret = new ArrayList<String>();
-		
-		ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
-		ret.add(ValidCommands.IMAGE+" "+image.getFilename());
-		ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
-		ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
-		ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
-		ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
+    /** The all generators. */
+    private List<Generator> allGenerators;
 
-		return ret;
-	}
+    /** The blinkenlights. */
+    private Blinkenlights blinkenlights;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
-	 */
-	@Override
-	public void update() {
-		for (Generator m: allGenerators) {			
-			m.update();				
-		}
-	}
+    /** The image. */
+    private Image image;
+
+    /** The image zoomer. */
+    private ImageZoomer imageZoomer;
+
+    /** The texture deformation. */
+    private TextureDeformation textureDeformation;	
+
+    /** The textwriter. */
+    private Textwriter textwriter;
+
+    private PropertiesHelper ph;
+
+    /**
+     * Instantiates a new pixel controller generator.
+     */
+    public PixelControllerGenerator(PropertiesHelper ph) {
+        allGenerators = new CopyOnWriteArrayList<Generator>();	
+        this.ph = ph;
+    }
 
 
 
-	
-	/*
-	 * GENERATOR ======================================================
-	 */
+    /**
+     * initialize all generators.
+     */
+    public void initAll() {	    		
+        String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
+        blinkenlights = new Blinkenlights(this, fileBlinken);
 
-	/**
-	 * Gets the generator.
-	 *
-	 * @param name the name
-	 * @return the generator
-	 */
-	public Generator getGenerator(GeneratorName name) {
-		for (Generator gen: allGenerators) {
-			if (gen.getId() == name.getId()) {
-				return gen;
-			}
-		}
-		return null;
-	}
+        String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
+        image = new Image(this, fileImageSimple);
 
-	/**
-	 * Gets the all generators.
-	 *
-	 * @return the all generators
-	 */
-	public List<Generator> getAllGenerators() {
-		return allGenerators;
-	}
+        new Plasma2(this);
+        new PlasmaAdvanced(this);
+        new SimpleColors(this);
+        new Fire(this);
+        new PassThruGen(this);
+        new Metaballs(this);
+        new PixelImage(this);
+        String fileTextureDeformation = ph.getProperty(TextureDeformation.INITIAL_IMAGE, DEFAULT_TEXTUREDEFORMATION);
+        textureDeformation = new TextureDeformation(this, fileTextureDeformation);
 
-	/**
-	 * Gets the generator.
-	 *
-	 * @param index the index
-	 * @return the generator
-	 */
-	public Generator getGenerator(int index) {
-		for (Generator gen: allGenerators) {
-			if (gen.getId() == index) {
-				return gen;
-			}
-		}
-		
-		LOG.log(Level.INFO, "Invalid Generator index selected: {0}", index);
-		return null;
-	}
+        textwriter = new Textwriter(this, 
+                ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
+                Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)),
+                ph.getProperty(Textwriter.INITIAL_TEXT, DEFAULT_TEXT)
+        );
 
-	/**
-	 * Gets the size.
-	 *
-	 * @return the size
-	 */
-	public int getSize() {
-		return allGenerators.size();
-	}
+        String fileImageZoomer = ph.getProperty(ImageZoomer.INITIAL_IMAGE, DEFAULT_IMAGE_ZOOMER);
+        imageZoomer = new ImageZoomer(this, fileImageZoomer);
+        new Cell(this);
+        new FFTSpectrum(this);
+        new Geometrics(this);
+    }
 
-	/**
-	 * Adds the input.
-	 *
-	 * @param input the input
-	 */
-	public void addInput(Generator input) {
-		allGenerators.add(input);
-	}
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.glue.PixelControllerElement#getCurrentState()
+     */
+    public List<String> getCurrentState() {
+        List<String> ret = new ArrayList<String>();
 
-	
-	/**
-	 * Gets the file blinken.
-	 *
-	 * @return the file blinken
-	 */
-	public String getFileBlinken() {
-		return blinkenlights.getFilename();
-	}
+        ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
+        ret.add(ValidCommands.IMAGE+" "+image.getFilename());
+        ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
+        ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
+        ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
+        ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
 
-	/**
-	 * Sets the file blinken.
-	 *
-	 * @param fileBlinken the new file blinken
-	 */
-	public void setFileBlinken(String fileBlinken) {
-		blinkenlights.loadFile(fileBlinken);
-	}
-	
-	/**
-	 * Gets the file image simple.
-	 *
-	 * @return the file image simple
-	 */
-	public String getFileImageSimple() {
-		return image.getFilename();
-	}
+        return ret;
+    }
 
-	/**
-	 * Sets the file image simple.
-	 *
-	 * @param fileImageSimple the new file image simple
-	 */
-	public void setFileImageSimple(String fileImageSimple) {
-		image.loadFile(fileImageSimple);
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.glue.PixelControllerElement#update()
+     */
+    @Override
+    public void update() {
+        for (Generator m: allGenerators) {			
+            m.update();				
+        }
+    }
 
-	}	
 
-	/**
-	 * Gets the file image zoomer.
-	 *
-	 * @return the file image zoomer
-	 */
-	public String getFileImageZoomer() {
-		return imageZoomer.getFilename();
-	}
 
-	/**
-	 * Sets the file image zoomer.
-	 *
-	 * @param fileImageZoomer the new file image zoomer
-	 */
-	public void setFileImageZoomer(String fileImageZoomer) {
-		imageZoomer.loadImage(fileImageZoomer);
-	}
 
-	/**
-	 * Gets the file texture deformation.
-	 *
-	 * @return the file texture deformation
-	 */
-	public String getFileTextureDeformation() {
-		return textureDeformation.getFilename();
-	}
+    /*
+     * GENERATOR ======================================================
+     */
 
-	/**
-	 * Sets the file texture deformation.
-	 *
-	 * @param fileTextureDeformation the new file texture deformation
-	 */
-	public void setFileTextureDeformation(String fileTextureDeformation) {
-		textureDeformation.loadFile(fileTextureDeformation);
-	}
+    /**
+     * Gets the generator.
+     *
+     * @param name the name
+     * @return the generator
+     */
+    public Generator getGenerator(GeneratorName name) {
+        for (Generator gen: allGenerators) {
+            if (gen.getId() == name.getId()) {
+                return gen;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Gets the texture deformation lut.
-	 *
-	 * @return the texture deformation lut
-	 */
-	public int getTextureDeformationLut() {
-		return textureDeformation.getLut();
-	}
+    /**
+     * Gets the all generators.
+     *
+     * @return the all generators
+     */
+    public List<Generator> getAllGenerators() {
+        return allGenerators;
+    }
 
-	/**
-	 * Sets the texture deformation lut.
-	 *
-	 * @param textureDeformationLut the new texture deformation lut
-	 */
-	public void setTextureDeformationLut(int textureDeformationLut) {
-		textureDeformation.changeLUT(textureDeformationLut);
-	}
+    /**
+     * Gets the generator.
+     *
+     * @param index the index
+     * @return the generator
+     */
+    public Generator getGenerator(int index) {
+        for (Generator gen: allGenerators) {
+            if (gen.getId() == index) {
+                return gen;
+            }
+        }
 
-	/**
-	 * Gets the text.
-	 *
-	 * @return the text
-	 */
-	public String getText() {
-		return textwriter.getText();
-	}
+        LOG.log(Level.INFO, "Invalid Generator index selected: {0}", index);
+        return null;
+    }
 
-	/**
-	 * Sets the text.
-	 *
-	 * @param text the new text
-	 */
-	public void setText(String text) {
-		textwriter.createTextImage(text);
-	}
+    /**
+     * Gets the size.
+     *
+     * @return the size
+     */
+    public int getSize() {
+        return allGenerators.size();
+    }
+
+    /**
+     * Adds the input.
+     *
+     * @param input the input
+     */
+    public void addInput(Generator input) {
+        allGenerators.add(input);
+    }
+
+
+    /**
+     * Gets the file blinken.
+     *
+     * @return the file blinken
+     */
+    public String getFileBlinken() {
+        return blinkenlights.getFilename();
+    }
+
+    /**
+     * Sets the file blinken.
+     *
+     * @param fileBlinken the new file blinken
+     */
+    public void setFileBlinken(String fileBlinken) {
+        blinkenlights.loadFile(fileBlinken);
+    }
+
+    /**
+     * Gets the file image simple.
+     *
+     * @return the file image simple
+     */
+    public String getFileImageSimple() {
+        return image.getFilename();
+    }
+
+    /**
+     * Sets the file image simple.
+     *
+     * @param fileImageSimple the new file image simple
+     */
+    public void setFileImageSimple(String fileImageSimple) {
+        image.loadFile(fileImageSimple);
+
+    }	
+
+    /**
+     * Gets the file image zoomer.
+     *
+     * @return the file image zoomer
+     */
+    public String getFileImageZoomer() {
+        return imageZoomer.getFilename();
+    }
+
+    /**
+     * Sets the file image zoomer.
+     *
+     * @param fileImageZoomer the new file image zoomer
+     */
+    public void setFileImageZoomer(String fileImageZoomer) {
+        imageZoomer.loadImage(fileImageZoomer);
+    }
+
+    /**
+     * Gets the file texture deformation.
+     *
+     * @return the file texture deformation
+     */
+    public String getFileTextureDeformation() {
+        return textureDeformation.getFilename();
+    }
+
+    /**
+     * Sets the file texture deformation.
+     *
+     * @param fileTextureDeformation the new file texture deformation
+     */
+    public void setFileTextureDeformation(String fileTextureDeformation) {
+        textureDeformation.loadFile(fileTextureDeformation);
+    }
+
+    /**
+     * Gets the texture deformation lut.
+     *
+     * @return the texture deformation lut
+     */
+    public int getTextureDeformationLut() {
+        return textureDeformation.getLut();
+    }
+
+    /**
+     * Sets the texture deformation lut.
+     *
+     * @param textureDeformationLut the new texture deformation lut
+     */
+    public void setTextureDeformationLut(int textureDeformationLut) {
+        textureDeformation.changeLUT(textureDeformationLut);
+    }
+
+    /**
+     * Gets the text.
+     *
+     * @return the text
+     */
+    public String getText() {
+        return textwriter.getText();
+    }
+
+    /**
+     * Sets the text.
+     *
+     * @param text the new text
+     */
+    public void setText(String text) {
+        textwriter.createTextImage(text);
+    }
 
 
 }

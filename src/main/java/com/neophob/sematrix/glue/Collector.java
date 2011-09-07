@@ -41,6 +41,7 @@ import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
+import com.neophob.sematrix.properties.ConfigConstants;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
@@ -123,6 +124,8 @@ public final class Collector {
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
+	private PropertiesHelper ph;
+	
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
 
@@ -152,14 +155,15 @@ public final class Collector {
 	 * @param papplet the papplet
 	 * @param fps the fps
 	 */
-	public void init(PApplet papplet, int fps) {
+	public synchronized void init(PApplet papplet, int fps, PropertiesHelper ph) {
 		if (initialized) {
 			return;
 		}
 		
 		this.papplet = papplet;
-		this.nrOfScreens = PropertiesHelper.getInstance().getNrOfScreens();
+		this.nrOfScreens = ph.getNrOfScreens();
 		this.fps = fps;
+		this.ph = ph;
 		
 		//choose sound implementation
 		try {
@@ -169,14 +173,13 @@ public final class Collector {
 			Sound.getInstance().setImplementation(new SoundDummy());
 		}
 		
-		new MatrixData(PropertiesHelper.getInstance().getDeviceXResolution(), 
-				PropertiesHelper.getInstance().getDeviceYResolution());
+		new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
 		pixelControllerResize = new PixelControllerResize();
 		pixelControllerResize.initAll();
 
 		//create generators
-		pixelControllerGenerator = new PixelControllerGenerator();
+		pixelControllerGenerator = new PixelControllerGenerator(ph);
 		pixelControllerGenerator.initAll();
 		
 		pixelControllerEffect = new PixelControllerEffect();
@@ -191,7 +194,7 @@ public final class Collector {
 		pixelControllerOutput = new PixelControllerOutput();
 		pixelControllerOutput.initAll();
 		
-		PropertiesHelper.getInstance().loadPresents();
+		ph.loadPresents();
 
 		//create an empty mapping
 		ioMapping.clear();
@@ -200,14 +203,14 @@ public final class Collector {
 		}
 
 		//Start tcp server
-		int listeningPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.listening.port", "3449") );
-		int sendPort = Integer.parseInt( PropertiesHelper.getInstance().getProperty("net.send.port", "3445") );
+		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstants.NET_LISTENING_PORT, "3449") );
+		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstants.NET_SEND_PORT, "3445") );
+		String listeningIp = ph.getProperty(ConfigConstants.NET_LISTENING_ADDR, "127.0.0.1");
 		
-		try {
-			pdSrv = new TcpServer(papplet, listeningPort, "127.0.0.1", sendPort);
+		try {		    
+			pdSrv = new TcpServer(papplet, listeningPort, listeningIp, sendPort);
 		} catch (BindException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		    LOG.log(Level.SEVERE, "failed to start TCP Server", e);
 		}
 
 		initialized=true;
@@ -617,6 +620,7 @@ public final class Collector {
 		this.isLoadingPresent = isLoadingPresent;
 	}
 
+	
 	//getShufflerSelect
 	
 	/**
@@ -683,5 +687,12 @@ public final class Collector {
 	public PixelControllerOutput getPixelControllerOutput() {
 		return pixelControllerOutput;
 	}
+
+    /**
+     * @return the ph
+     */
+    public PropertiesHelper getPh() {
+        return ph;
+    }
 
 }

@@ -39,6 +39,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class TextureDeformation extends Generator {	
 
+    public static final String INITIAL_IMAGE = "initial.texture";
+    
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(TextureDeformation.class.getName());
 

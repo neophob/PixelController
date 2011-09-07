@@ -363,7 +363,7 @@ public final class MessageProcessor {
 					int idxs = col.getSelectedPresent();
 					List<String> present = col.getCurrentStatus();
 					col.getPresent().get(idxs).setPresent(present);
-					PropertiesHelper.getInstance().savePresents();
+					col.getPh().savePresents();					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}

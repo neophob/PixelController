@@ -20,6 +20,7 @@
 package com.neophob;
 
 import java.util.Date;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,6 +50,9 @@ public class PixelController extends PApplet {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
 
+    /** The Constant CONFIG_FILENAME. */
+    private static final String CONFIG_FILENAME = "data/config.properties";
+    
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
 	
@@ -68,35 +72,44 @@ public class PixelController extends PApplet {
 	 * prepare.
 	 */
 	public void setup() {
-		//		ImageIcon titlebaricon = new ImageIcon(loadBytes("logo.jpg"));
-		//		super.frame.setIconImage(titlebaricon.getImage()); 
-		//		super.frame.setTitle("This is in the titlebar!");
+	    LOG.log(Level.INFO,"--- PixelController Setup START ---");
+	    
+	    Properties config = new Properties();
+        try {
+            config.load(createInput(CONFIG_FILENAME));
+            LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Failed to load Config", e);
+            throw new IllegalArgumentException("Configuration error!", e);
+        }
 
+	    PropertiesHelper ph = new PropertiesHelper(config);
+	    
+	    
 		Collector col = Collector.getInstance(); 				
-		col.init(this, FPS);
+		col.init(this, FPS, ph);
 		frameRate(FPS);
 		noSmooth();
-		
-		new MatrixEmulator(col.getPixelControllerOutput());		
-		PropertiesHelper ph = PropertiesHelper.getInstance();
+				
+		new MatrixEmulator(ph, col.getPixelControllerOutput());				
 		
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
 			case PIXELINVADERS:
-				this.output = new Lpd6803Device(col.getPixelControllerOutput(), ph.getLpdDevice(), ph.getColorFormat());
+				this.output = new Lpd6803Device(ph, col.getPixelControllerOutput());
 				break;
 			case RAINBOWDUINO:
-				this.output = new RainbowduinoDevice(col.getPixelControllerOutput(), ph.getI2cAddr());
+				this.output = new RainbowduinoDevice(ph, col.getPixelControllerOutput());
 				break;
 			case ARTNET:
-				this.output = new ArtnetDevice(col.getPixelControllerOutput());
+				this.output = new ArtnetDevice(ph, col.getPixelControllerOutput());
 				break;
 			case MINIDMX:
-				this.output = new MiniDmxDevice(col.getPixelControllerOutput());
+				this.output = new MiniDmxDevice(ph, col.getPixelControllerOutput());
 				break;
 			case NULL:
-				this.output = new NullDevice(col.getPixelControllerOutput());
+				this.output = new NullDevice(ph, col.getPixelControllerOutput());
 				break;
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
@@ -115,6 +128,8 @@ public class PixelController extends PApplet {
 			Shuffler.manualShuffleStuff();
 			col.setRandomMode(true);
 		}
+		
+		LOG.log(Level.INFO,"--- PixelController Setup END ---");
 	}
 
 	/* (non-Javadoc)

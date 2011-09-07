@@ -28,6 +28,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * Send data to Lpd6803 Device.
@@ -55,12 +56,11 @@ public class Lpd6803Device extends ArduinoOutput {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public Lpd6803Device(PixelControllerOutput controller, List<DeviceConfig> displayOptions,
-			List<ColorFormat> colorFormat) {
-		super(controller, Lpd6803Device.class.toString());
+	public Lpd6803Device(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(ph, controller, Lpd6803Device.class.toString());
 		
-		this.displayOptions = displayOptions;
-		this.colorFormat = colorFormat;
+		this.displayOptions = ph.getLpdDevice();
+		this.colorFormat = ph.getColorFormat();
 		this.initialized = false;		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet() );			

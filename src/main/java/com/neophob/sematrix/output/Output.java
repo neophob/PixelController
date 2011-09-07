@@ -49,17 +49,20 @@ public abstract class Output {
 	/** The layout. */
 	protected Layout layout;
 	
+	private PropertiesHelper ph;
+	
 	/**
 	 * Instantiates a new output.
 	 *
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public Output(PixelControllerOutput controller, String name) {
+	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name) {
+	    this.ph = ph;
 		this.name = name;
 				
 		this.matrixData = Collector.getInstance().getMatrix();
-		this.layout = PropertiesHelper.getInstance().getLayout();
+		this.layout = ph.getLayout();
 
 		LOG.log(Level.INFO,
 				"Output created: {0}, Layout: {1}"

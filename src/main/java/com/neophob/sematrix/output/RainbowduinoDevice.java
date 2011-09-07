@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
 import com.neophob.lib.rainbowduino.Rainbowduino;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * Send data to Rainbowduino.
@@ -49,10 +50,10 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	 * @param controller the controller
 	 * @param allI2cAddress the all i2c address
 	 */
-	public RainbowduinoDevice(PixelControllerOutput controller, List<Integer> allI2cAddress) {
-		super(controller, RainbowduinoDevice.class.toString());
-		this.allI2cAddress = allI2cAddress;
+	public RainbowduinoDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(ph, controller, RainbowduinoDevice.class.toString());
 		
+		this.allI2cAddress = ph.getI2cAddr();		
 		this.initialized = false;		
 		try {
 			rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet(), allI2cAddress);			

@@ -35,18 +35,20 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * The Class ImageZoomer.
  *
  * @author michu
- * TODO voluminize
+ * 
  */
 public class ImageZoomer extends Generator {
 
+    public static final String INITIAL_IMAGE = "initial.image.zoomer";
+    
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(ImageZoomer.class.getName());
 
 	/** The Constant PREFIX. */
-	public static final String PREFIX = "pics/";
+	private static final String PREFIX = "pics/";
 	
 	/** The Constant MOVE_DURATION_IN_S. */
-	public static final int MOVE_DURATION_IN_S = 4;
+	private static final int MOVE_DURATION_IN_S = 4;
 
 	/** The cliped img. */
 	private PImage origImg, clipedImg;  // Declare variable "a" of type PImage 

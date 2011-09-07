@@ -44,6 +44,11 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  */
 public class Textwriter extends Generator {
+    
+    public static final String INITIAL_TEXT = "initial.text";
+    public static final String FONT_FILENAME = "font.filename";
+    public static final String FONT_SIZE = "font.size";
+    
 
 	/** The Constant TEXT_BUFFER_X_SIZE. */
 	private static final int TEXT_BUFFER_X_SIZE=128;

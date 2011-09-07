@@ -40,6 +40,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Blinkenlights extends Generator implements PConstants {
 
+    public static final String INITIAL_FILENAME = "initial.blinken";
+    
 	/** The Constant PREFIX. */
 	private static final String PREFIX = "blinken/";
 	
