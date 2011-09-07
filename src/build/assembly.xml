@@ -28,13 +28,12 @@
 	<!-- collect external libs -->
 	<dependencySets>
 		<dependencySet>
-			<excludes>
-			</excludes>
 			<unpack>false</unpack>
 			<outputDirectory>/lib</outputDirectory>
+			<useProjectArtifact>false</useProjectArtifact>
 		</dependencySet>
 	</dependencySets>
-
+	
 	<!-- Overlay with files from "src/build/dist" -->
 	<fileSets>
 		<!-- Copy all files, including binary (without conversion) -->
@@ -46,26 +45,26 @@
 	</fileSets>
 	
 	<files>
- 		<file>
+		<file>
 			<source>${basedir}/src/build/PixelController.sh</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 			<fileMode>0755</fileMode>
 		</file>
- 		<file>
+		<file>
 			<source>${basedir}/src/build/PixelController.cmd</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 		</file>
-
+		
 		<!-- copy the pure data gui -->
- 		<file>
+		<file>
 			<source>${basedir}/data/ledgui4.pd</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 			<destName>PixelController.pd</destName>
 		</file>
-
+		
 		<!-- silly hack for the startscript -->
 		<file>
 			<source>${basedir}/target/${project.artifactId}-${project.version}.jar</source>
@@ -74,22 +73,22 @@
 			<destName>${project.artifactId}.jar</destName>
 		</file>
 		
- 		<file>
+		<file>
 			<source>${basedir}/lib/serial/librxtxSerial.jnilib</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
 		</file>
- 		<file>
+		<file>
 			<source>${basedir}/lib/serial/librxtxSerial.so</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
 		</file>
- 		<file>
+		<file>
 			<source>${basedir}/lib/serial/win32/rxtxSerial.dll</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
 		</file>
- 		<file>
+		<file>
 			<source>${basedir}/lib/serial/win64/rxtxSerial.dll</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
