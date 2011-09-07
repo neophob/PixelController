@@ -35,6 +35,8 @@ import processing.net.Server;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * The Class TcpServer.
  *
@@ -129,6 +131,7 @@ public final class TcpServer implements Runnable {
 	/**
 	 * tcp server thread.
 	 */
+	@SuppressWarnings
 	public void run() {
 		log.log(Level.INFO,	"Ready receiving messages...");
 		while (Thread.currentThread() == runner) {
@@ -186,7 +189,7 @@ public final class TcpServer implements Runnable {
 							}
 						}
 					}												
-				} catch (Exception e) {}
+				} catch (RuntimeException e) {}
 			}
 
 			count++;

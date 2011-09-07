@@ -218,7 +218,7 @@ public abstract class Generator implements RandomizeState {
 	 * @return the buffer
 	 */
 	public int[] getBuffer() {
-		return internalBuffer;
+		return internalBuffer.clone();
 	}
 	
 	/**

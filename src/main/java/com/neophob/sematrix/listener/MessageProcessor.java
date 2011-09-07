@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
@@ -502,11 +502,12 @@ public final class MessageProcessor {
 				break;
 				
 			default:
-				String s="";
+				StringBuffer stringBuffer = new StringBuffer();
 				for (int i=0; i<msg.length;i++) {
-					s+=msg[i]+"; ";
+					stringBuffer.append(msg[i]);
+					stringBuffer.append("; ");
 				}
-				log.log(Level.INFO,	"Ignored command <{0}>", s);
+				log.log(Level.INFO,	"Ignored command <{0}>", stringBuffer.toString());
 				break;
 			}
 		} catch (IllegalArgumentException e) {

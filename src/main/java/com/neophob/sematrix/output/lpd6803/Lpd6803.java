@@ -582,12 +582,12 @@ public class Lpd6803 {
 			}			
 		}
 		
-		String s="";
+		StringBuffer stringBuffer = new StringBuffer();
 		for (byte b: msg) {
-			s+=(char)b;
+			stringBuffer.append((char)b);
 		}
 		log.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", 
-				new String[] {s, ""+(System.currentTimeMillis()-start)});
+				new String[] {stringBuffer.toString(), ""+(System.currentTimeMillis()-start)});
 		ackErrors++;
 		return false;		
 	}

@@ -630,6 +630,7 @@ public class Scalr {
 	protected static BufferedImage scaleImageIncrementally(BufferedImage src,
 			int targetWidth, int targetHeight, Object interpolationHintValue) {
 		boolean hasReassignedSrc = false;
+		@SuppressWarnings("unused")
 		int incrementCount = 0;
 		int currentWidth = src.getWidth();
 		int currentHeight = src.getHeight();

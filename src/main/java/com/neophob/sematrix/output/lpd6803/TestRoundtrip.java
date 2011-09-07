@@ -20,6 +20,7 @@
 package com.neophob.sematrix.output.lpd6803;
 
 import processing.core.PApplet;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * simply test class, only used to test the lib<br>
@@ -44,6 +45,7 @@ public class TestRoundtrip extends PApplet {
 	/** 
 	 * ss
 	 */
+	@SuppressWarnings
 	public void setup() {		 
 		frameRate(500);
 		

@@ -24,6 +24,8 @@ import processing.core.PApplet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * The Class MatrixEmulator.
  */
@@ -93,6 +95,7 @@ public class MatrixEmulator extends Output {
 	 * @see com.neophob.sematrix.output.Output#update()
 	 */
 	@Override
+	@SuppressWarnings
 	public void update() {
 		frame++;
 		

@@ -37,8 +37,8 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.PropertiesHelper;
@@ -407,33 +407,41 @@ public final class Collector {
 	public List<String> getCurrentStatus() {		
 		List<String> ret = new ArrayList<String>();
 		
-		String gen1="";
-		String gen2="";
-		String fx1="";
-		String fx2="";
-		String mix="";
+		StringBuffer gen1 = new StringBuffer();
+		StringBuffer gen2 = new StringBuffer();
+		StringBuffer fx1 = new StringBuffer();
+		StringBuffer fx2 = new StringBuffer();
+		StringBuffer mix = new StringBuffer();
 		for (Visual v: getAllVisuals()) {
-			gen1+=v.getGenerator1Idx()+EMPTY_CHAR;
-			gen2+=v.getGenerator2Idx()+EMPTY_CHAR;
-			fx1+=v.getEffect1Idx()+EMPTY_CHAR;
-			fx2+=v.getEffect2Idx()+EMPTY_CHAR;
-			mix+=v.getMixerIdx()+EMPTY_CHAR;				
+			gen1.append(v.getGenerator1Idx());
+			gen1.append(EMPTY_CHAR);
+			gen2.append(v.getGenerator2Idx());
+			gen2.append(EMPTY_CHAR);
+			fx1.append(v.getEffect1Idx());
+			fx1.append(EMPTY_CHAR);
+			fx2.append(v.getEffect2Idx());
+			fx2.append(EMPTY_CHAR);
+			mix.append(v.getMixerIdx());
+			mix.append(EMPTY_CHAR);
 		}
 		
-		String fader="";
-		String output="";
-		String outputEffect="";
+		StringBuffer fader = new StringBuffer();
+		StringBuffer output = new StringBuffer();
+		StringBuffer outputEffect = new StringBuffer();
 		for (OutputMapping o: getAllOutputMappings()) {
-			fader+=o.getFader().getId()+EMPTY_CHAR;
-			output+=o.getVisualId()+EMPTY_CHAR;
-			outputEffect+=o.getEffect().getId()+EMPTY_CHAR;
+			fader.append(o.getFader().getId());
+			fader.append(EMPTY_CHAR);
+			output.append(o.getVisualId());
+			output.append(EMPTY_CHAR);
+			outputEffect.append(o.getEffect().getId());
+			outputEffect.append(EMPTY_CHAR);
 		}
-		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+gen1);
-		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+gen2);
-		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+fx1);
-		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+fx2);
-		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+mix);
-		ret.add(ValidCommands.CHANGE_FADER+EMPTY_CHAR+fader);		
+		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+gen1.toString());
+		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+gen2.toString());
+		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+fx1.toString());
+		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+fx2.toString());
+		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+mix.toString());
+		ret.add(ValidCommands.CHANGE_FADER+EMPTY_CHAR+fader.toString());
 
 		//add element status
 		ret.addAll(pixelControllerEffect.getCurrentState());
@@ -441,8 +449,8 @@ public final class Collector {
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
 		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);
-		ret.add(ValidCommands.CHANGE_OUTPUT+EMPTY_CHAR+output);
-		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+outputEffect);
+		ret.add(ValidCommands.CHANGE_OUTPUT+EMPTY_CHAR+output.toString());
+		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+outputEffect.toString());
 		ret.add(ValidCommands.CURRENT_VISUAL+EMPTY_CHAR+currentVisual);
 		return ret;
 	}

@@ -15,6 +15,7 @@ import com.neophob.sematrix.glue.Collector;
  *
  */
 public class PixelControllerTest extends PApplet {
+	private static final long serialVersionUID = 6446405558854972992L;
 
 	@Test
 	public void testMain() {

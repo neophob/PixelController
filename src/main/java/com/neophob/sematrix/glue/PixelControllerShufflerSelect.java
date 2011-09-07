@@ -85,15 +85,15 @@ public class PixelControllerShufflerSelect implements PixelControllerElement {
 	 * @return the shuffler status
 	 */
 	private String getShufflerStatus() {
-		String s="";
+		StringBuffer stringBuffer = new StringBuffer();
 		int value;
 		
 		for (int i=0; i<shufflerSelect.size(); i++) {
 			value=0;
 			if (shufflerSelect.get(i)) value=1;
-			s+=" "+value;			
+			stringBuffer.append(value);
 		}
-		return s;
+		return stringBuffer.toString();
 	}
 
 	/**

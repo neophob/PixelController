@@ -56,13 +56,13 @@ public class PixelController extends PApplet {
 	public static final int FPS = 20;
 
 	/** The output. */
-	private Output output;
+	private transient Output output;
 	
 	/** The error. */
 	private int error;
 	
-	/** The frame counter. */
-	private int frameCounter=0;
+//	/** The frame counter. */
+//	private int frameCounter=0;
 
 	/**
 	 * prepare.
@@ -139,7 +139,7 @@ public class PixelController extends PApplet {
 				);
 			}
 		}
-		frameCounter++;
+//		frameCounter++;
 	}
 
 	/**

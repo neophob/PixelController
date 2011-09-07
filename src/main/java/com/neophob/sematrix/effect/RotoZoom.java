@@ -156,7 +156,7 @@ public class RotoZoom extends Effect {
 		if (workmode == WORKMODE.ZOOM && faderPos>0.0f) {			
 			return CrossfaderHelper.getBuffer(faderPos, this.rotoZoomedBuffer, rotoZoom(scale2, angle, buffer));
 		}
-		return this.rotoZoomedBuffer;
+		return this.rotoZoomedBuffer.clone();
 	}
 
 
