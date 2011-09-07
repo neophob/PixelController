@@ -41,7 +41,7 @@ import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
-import com.neophob.sematrix.properties.ConfigConstants;
+import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
@@ -203,9 +203,9 @@ public final class Collector {
 		}
 
 		//Start tcp server
-		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstants.NET_LISTENING_PORT, "3449") );
-		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstants.NET_SEND_PORT, "3445") );
-		String listeningIp = ph.getProperty(ConfigConstants.NET_LISTENING_ADDR, "127.0.0.1");
+		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3449") );
+		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3445") );
+		String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
 		
 		try {		    
 			pdSrv = new TcpServer(papplet, listeningPort, listeningIp, sendPort);

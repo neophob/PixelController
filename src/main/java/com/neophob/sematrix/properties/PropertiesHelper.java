@@ -277,9 +277,9 @@ public class PropertiesHelper {
     private int parsePixelInvaderConfig() {
         lpdDevice = new ArrayList<DeviceConfig>();
 
-        String value = config.getProperty(ConfigConstants.PIXELINVADERS_ROW1);
+        String value = config.getProperty(ConfigConstant.PIXELINVADERS_ROW1);
         if (StringUtils.isNotBlank(value)) {
-            for (String s: value.split(ConfigConstants.DELIM)) {
+            for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
                     DeviceConfig cfg = DeviceConfig.valueOf(s);
                     lpdDevice.add(cfg);
@@ -291,9 +291,9 @@ public class PropertiesHelper {
             }
         }
 
-        value = config.getProperty(ConfigConstants.PIXELINVADERS_ROW2);
+        value = config.getProperty(ConfigConstant.PIXELINVADERS_ROW2);
         if (StringUtils.isNotBlank(value)) {
-            for (String s: value.split(ConfigConstants.DELIM)) {
+            for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
                     DeviceConfig cfg = DeviceConfig.valueOf(s);
                     lpdDevice.add(cfg);
@@ -316,7 +316,7 @@ public class PropertiesHelper {
     public int getLedPixelSize() {
         int ret=-1;
 
-        String tmp = config.getProperty(ConfigConstants.CFG_PIXEL_SIZE);
+        String tmp = config.getProperty(ConfigConstant.CFG_PIXEL_SIZE);
         try {
             ret = Integer.parseInt(tmp);
         } catch (NumberFormatException e) {
@@ -333,10 +333,10 @@ public class PropertiesHelper {
      */
     private int getColorFormatFromCfg() {
         colorFormat = new ArrayList<ColorFormat>();
-        String rawConfig = config.getProperty(ConfigConstants.CFG_PANEL_COLOR_ORDER);
+        String rawConfig = config.getProperty(ConfigConstant.CFG_PANEL_COLOR_ORDER);
 
         if (StringUtils.isNotBlank(rawConfig)) {
-            for (String s: rawConfig.split(ConfigConstants.DELIM)) {
+            for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 try {
                     ColorFormat cf = ColorFormat.valueOf(s);
                     colorFormat.add(cf);					
@@ -357,16 +357,16 @@ public class PropertiesHelper {
     private int parseI2cAddress() {
         i2cAddr = new ArrayList<Integer>();
 
-        String rawConfig = config.getProperty(ConfigConstants.RAINBOWDUINO_ROW1);
+        String rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_ROW1);
         if (StringUtils.isNotBlank(rawConfig)) {
-            for (String s: rawConfig.split(ConfigConstants.DELIM)) {
+            for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 i2cAddr.add( Integer.decode(s));
                 devicesInRow1++;
             }
         }
-        rawConfig = config.getProperty(ConfigConstants.RAINBOWDUINO_ROW2);
+        rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_ROW2);
         if (StringUtils.isNotBlank(rawConfig)) {
-            for (String s: rawConfig.split(ConfigConstants.DELIM)) {
+            for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 i2cAddr.add( Integer.decode(s));
                 devicesInRow2++;
             }
@@ -382,8 +382,8 @@ public class PropertiesHelper {
      * @return the int
      */
     private int parseNullOutputAddress() {
-        int row1=parseInt(ConfigConstants.NULLOUTPUT_ROW1);
-        int row2=parseInt(ConfigConstants.NULLOUTPUT_ROW2);
+        int row1=parseInt(ConfigConstant.NULLOUTPUT_ROW1);
+        int row2=parseInt(ConfigConstant.NULLOUTPUT_ROW2);
         if (row1+row2>0) {
             devicesInRow1 = row1;
             devicesInRow2 = row2;
@@ -400,7 +400,7 @@ public class PropertiesHelper {
      * @return the art net ip
      */
     public String getArtNetIp() {
-        return config.getProperty(ConfigConstants.ARTNET_IP);
+        return config.getProperty(ConfigConstant.ARTNET_IP);
     }
 
     /**
@@ -439,7 +439,7 @@ public class PropertiesHelper {
      * @return the int
      */
     public int parseMiniDmxDevicesX() {
-        return parseInt(ConfigConstants.MINIDMX_RESOLUTION_X);
+        return parseInt(ConfigConstant.MINIDMX_RESOLUTION_X);
     }
 
     /**
@@ -448,7 +448,7 @@ public class PropertiesHelper {
      * @return the int
      */
     public int parseMiniDmxDevicesY() {
-        return parseInt(ConfigConstants.MINIDMX_RESOLUTION_Y);
+        return parseInt(ConfigConstant.MINIDMX_RESOLUTION_Y);
     }
 
     /**
@@ -457,7 +457,7 @@ public class PropertiesHelper {
      * @return true, if successful
      */
     public boolean startRandommode() {
-        return parseBoolean(ConfigConstants.STARTUP_IN_RANDOM_MODE);
+        return parseBoolean(ConfigConstant.STARTUP_IN_RANDOM_MODE);
     }
 
     /**
