@@ -70,8 +70,30 @@ public class ParsedArgument {
 		return parameter;
 	}
 
+	/**
+	 * Gets the target.
+	 *
+	 * @return the target
+	 */
+	public String getTarget() {
+	    return hostname+":"+port;
+	}
+	
+	/**
+	 * Gets the payload.
+	 *
+	 * @param eol the eol
+	 * @return the payload
+	 */
+	public String getPayload(String eol) { 
+	    return command.toString()+" "+parameter+eol;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
-		return hostname+":"+port+" -> command: "+command+" '"+parameter+"'";
+		return getTarget()+" -> command: "+command+" <"+parameter+">";
 	}
 	
 }

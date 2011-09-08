@@ -46,7 +46,7 @@ public final class TcpServer implements Runnable {
 	private static final long CONNECT_RETRY_IN_MS = 16000;
 	
 	/** The Constant FUDI_MSG_END_MARKER. */
-	private static final String FUDI_MSG_END_MARKER = ";";
+	public static final String FUDI_MSG_END_MARKER = ";";
 	
 	/** The Constant FLOODING_TIME. */
 	private static final int FLOODING_TIME = 300;
