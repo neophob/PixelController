@@ -34,92 +34,6 @@ import com.neophob.sematrix.glue.Shuffler;
  */
 public final class MessageProcessor {
 
-	/**
-	 * The Enum ValidCommands.
-	 */
-	public enum ValidCommands {
-		//refresh whole gui
-		/** The STATUS. */
-		STATUS,
-		//just refresh the gui
-		/** The STATU s_ mini. */
-		STATUS_MINI,
-		
-		/** The CHANG e_ generato r_ a. */
-		CHANGE_GENERATOR_A,
-		
-		/** The CHANG e_ generato r_ b. */
-		CHANGE_GENERATOR_B,
-		
-		/** The CHANG e_ effec t_ a. */
-		CHANGE_EFFECT_A,
-		
-		/** The CHANG e_ effec t_ b. */
-		CHANGE_EFFECT_B,
-		
-		/** The CHANG e_ mixer. */
-		CHANGE_MIXER,
-		
-		/** The CHANG e_ output. */
-		CHANGE_OUTPUT,
-		
-		/** The CHANG e_ outpu t_ effect. */
-		CHANGE_OUTPUT_EFFECT,
-		
-		/** The CHANG e_ fader. */
-		CHANGE_FADER,
-		
-		/** The CHANG e_ tint. */
-		CHANGE_TINT,
-		
-		/** The CHANG e_ present. */
-		CHANGE_PRESENT,
-		
-		/** The CHANG e_ shuffle r_ select. */
-		CHANGE_SHUFFLER_SELECT,
-		
-		/** The CHANG e_ threshol d_ value. */
-		CHANGE_THRESHOLD_VALUE,
-		
-		/** The CHANG e_ rotozoom. */
-		CHANGE_ROTOZOOM,
-		
-		/** The SAV e_ present. */
-		SAVE_PRESENT,
-		
-		/** The LOA d_ present. */
-		LOAD_PRESENT,
-		
-		/** The BLINKEN. */
-		BLINKEN,
-		
-		/** The IMAGE. */
-		IMAGE,
-		
-		/** The IMAG e_ zoomer. */
-		IMAGE_ZOOMER,
-		
-		/** The TEXTDEF. */
-		TEXTDEF,
-		
-		/** The TEXTDE f_ file. */
-		TEXTDEF_FILE,
-		
-		/** The TEXTWR. */
-		TEXTWR,
-		//used for enable/disable random mode
-		/** The RANDOM. */
-		RANDOM,
-		//used as a one shot randomizer
-		/** The RANDOMIZE. */
-		RANDOMIZE,
-		//select a saved entrys
-		/** The PRESE t_ random. */
-		PRESET_RANDOM,
-		
-		/** The CURREN t_ visual. */
-		CURRENT_VISUAL
-	}
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(MessageProcessor.class.getName());
@@ -320,7 +234,9 @@ public final class MessageProcessor {
 					boolean b;
 					for (int i=0; i<size; i++) {
 						b = false;
-						if (msg[i+1].equals("1")) b = true;
+						if (msg[i+1].equals("1")) {
+							b = true;
+						}
 						col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
 					}					
 				} catch (Exception e) {
@@ -470,7 +386,7 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case RANDOMIZE:	//one shot randomizer for current visual
+			case RANDOMIZE:	//one shot randomizer
 				try {
 					Shuffler.manualShuffleStuff();
 					return ValidCommands.STATUS;
@@ -479,7 +395,7 @@ public final class MessageProcessor {
 				}
 				break;
 				
-			case PRESET_RANDOM:	//one shot randomizer for current visual, use a pre-stored present
+			case PRESET_RANDOM:	//one shot randomizer, use a pre-stored present
 				try {
 					Shuffler.presentShuffler();
 					return ValidCommands.STATUS;					

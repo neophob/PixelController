@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.ValidCommands;
 
 /**
  * The Class PixelControllerShufflerSelect.

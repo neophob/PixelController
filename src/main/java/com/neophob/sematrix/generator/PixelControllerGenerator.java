@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.PixelControllerElement;
-import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.ValidCommands;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**

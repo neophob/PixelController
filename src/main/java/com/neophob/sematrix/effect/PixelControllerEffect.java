@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.glue.PixelControllerElement;
-import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.ValidCommands;
 
 /**
  * The Class PixelControllerEffect.

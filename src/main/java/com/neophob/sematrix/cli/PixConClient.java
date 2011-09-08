@@ -12,7 +12,7 @@ import java.text.ParseException;
 import processing.core.PApplet;
 import processing.net.Client;
 
-import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.ValidCommands;
 import com.neophob.sematrix.listener.TcpServer;
 
 /**
@@ -37,6 +37,10 @@ public class PixConClient {
      */
     private static void usage() {
         System.out.println("Usage: Client [-h hostname] [-p port] -c ValidCommand");
+        System.out.println("Valid commands:");
+        for (ValidCommands vc: ValidCommands.values()) {
+        	System.out.println("\t"+vc.toString()+"\t# of parameter: "+vc.getNrOfParams()+"\t"+vc.getDesc());
+        }
         System.exit(1);		
     }
 
@@ -60,6 +64,7 @@ public class PixConClient {
             int pPort = (Integer)parser.getOptionValue(port, DEFAULT_PORT);
             String pCmd = (String)parser.getOptionValue(command);            
             if (pCmd==null) {
+            	usage();
                 throw new IllegalArgumentException("no ValidCommand specified!");
             }
             

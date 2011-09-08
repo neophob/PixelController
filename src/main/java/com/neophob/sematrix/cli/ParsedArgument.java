@@ -1,6 +1,6 @@
 package com.neophob.sematrix.cli;
 
-import com.neophob.sematrix.listener.MessageProcessor.ValidCommands;
+import com.neophob.sematrix.listener.ValidCommands;
 
 /**
  * The Class ParsedArgument.
