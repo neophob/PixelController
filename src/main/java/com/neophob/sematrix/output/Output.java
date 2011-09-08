@@ -49,8 +49,6 @@ public abstract class Output {
 	/** The layout. */
 	protected Layout layout;
 	
-	private PropertiesHelper ph;
-	
 	/**
 	 * Instantiates a new output.
 	 *
@@ -58,7 +56,6 @@ public abstract class Output {
 	 * @param name the name
 	 */
 	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name) {
-	    this.ph = ph;
 		this.name = name;
 				
 		this.matrixData = Collector.getInstance().getMatrix();

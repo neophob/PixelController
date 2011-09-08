@@ -51,8 +51,8 @@ public class PropertiesHelperTest {
     @Test
     public void testPixelInvadersConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstants.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
-        config.put(ConfigConstants.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
         PropertiesHelper ph = new PropertiesHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
@@ -67,8 +67,8 @@ public class PropertiesHelperTest {
     @Test
     public void testRainbowduinosConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstants.RAINBOWDUINO_ROW1, "5,6");
-        config.put(ConfigConstants.RAINBOWDUINO_ROW2, "0x7,8");
+        config.put(ConfigConstant.RAINBOWDUINO_ROW1, "5,6");
+        config.put(ConfigConstant.RAINBOWDUINO_ROW2, "0x7,8");
         PropertiesHelper ph = new PropertiesHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
@@ -83,8 +83,8 @@ public class PropertiesHelperTest {
     @Test
     public void testMiniDmxConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstants.MINIDMX_RESOLUTION_X, "10");
-        config.put(ConfigConstants.MINIDMX_RESOLUTION_Y, "13");
+        config.put(ConfigConstant.MINIDMX_RESOLUTION_X, "10");
+        config.put(ConfigConstant.MINIDMX_RESOLUTION_Y, "13");
         PropertiesHelper ph = new PropertiesHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
@@ -99,8 +99,8 @@ public class PropertiesHelperTest {
     @Test
     public void testNullConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstants.NULLOUTPUT_ROW1, "4");
-        config.put(ConfigConstants.NULLOUTPUT_ROW2, "4");
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "4");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "4");
         PropertiesHelper ph = new PropertiesHelper(config);
 
         assertEquals(8, ph.getNrOfScreens());
@@ -115,9 +115,9 @@ public class PropertiesHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void testMultipleConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstants.RAINBOWDUINO_ROW1, "4");
-        config.put(ConfigConstants.MINIDMX_RESOLUTION_X, "13");
-        config.put(ConfigConstants.MINIDMX_RESOLUTION_Y, "1");
+        config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
+        config.put(ConfigConstant.MINIDMX_RESOLUTION_X, "13");
+        config.put(ConfigConstant.MINIDMX_RESOLUTION_Y, "1");
         new PropertiesHelper(config);
     }
 
@@ -125,8 +125,8 @@ public class PropertiesHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void testMultiple2Config() {     
         Properties config = new Properties();
-        config.put(ConfigConstants.RAINBOWDUINO_ROW1, "4");
-        config.put(ConfigConstants.PIXELINVADERS_ROW2, "NO_ROTATE");
+        config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "NO_ROTATE");
         new PropertiesHelper(config);
     }    
 
