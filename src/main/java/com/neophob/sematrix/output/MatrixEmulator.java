@@ -32,9 +32,6 @@ public class MatrixEmulator extends Output {
 	/** The Constant RAHMEN_SIZE. */
 	private static final int RAHMEN_SIZE = 4;
 	
-	/** The Constant LED_SIZE. */
-	private static final int LED_SIZE = 32;
-	
 	/** The Constant LED_ABSTAND. */
 	private static final int LED_ABSTAND = 0;
 	
@@ -42,7 +39,9 @@ public class MatrixEmulator extends Output {
 	private int frame = 0;
 	
 	/** The led size. */
-	private int ledSize = LED_SIZE;
+	private int ledSize;
+	
+	private PApplet parent;
 
 	/**
 	 * Instantiates a new matrix emulator.
@@ -67,8 +66,9 @@ public class MatrixEmulator extends Output {
 			break;
 		}
 		
-		Collector.getInstance().getPapplet().size(x, y);
-		Collector.getInstance().getPapplet().background(33,33,33);
+		parent = Collector.getInstance().getPapplet();
+		parent.size(x, y);
+		parent.background(33,33,33);
 	}
 
 	/**
@@ -99,23 +99,24 @@ public class MatrixEmulator extends Output {
 		//show only each 2nd frame to reduce cpu load
 		if (frame%2==1) {
 			return;
-		}
+		}				
 		
+		int cnt=0;
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
-				drawOutput(screen, 0, super.getBufferForScreen(screen));
+				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen));
 			}			
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(screen, 0, super.getBufferForScreen(screen));
+				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen));
 				ofs++;
 			}			
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(screen, 1, super.getBufferForScreen(ofs+screen));
+				drawOutput(cnt++, screen, 1, super.getBufferForScreen(ofs+screen));
 			}			
 			break;
 		}
@@ -128,13 +129,21 @@ public class MatrixEmulator extends Output {
 	 * @param nrY the nr y
 	 * @param buffer - the buffer to draw
 	 */
-	private void drawOutput(int nrX, int nrY, int buffer[]) {
+	private void drawOutput(int nr, int nrX, int nrY, int buffer[]) {
 		int xOfs = nrX*(getOneMatrixXSize()+LED_ABSTAND);
 		int yOfs = nrY*(getOneMatrixYSize()+LED_ABSTAND);
 		int ofs=0;
 		int tmp,r,g,b;
 
-		PApplet parent = Collector.getInstance().getPapplet();
+		//mark the active visual
+		int currentOutput = Collector.getInstance().getCurrentOutput();		
+		if (nr == currentOutput) {
+			parent.fill(200,66,66);
+		} else {
+			parent.fill(33,33,33);
+		}		
+		parent.rect(xOfs, yOfs, getOneMatrixXSize(), getOneMatrixYSize());			
+		
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
 			for (int x=0; x<matrixData.getDeviceXSize(); x++) {					
 				tmp = buffer[ofs++];
@@ -142,6 +151,7 @@ public class MatrixEmulator extends Output {
 				g = (int) ((tmp>>8)  & 255);       
 				b = (int) ( tmp      & 255);
 
+				//TODO correct color reduce
 				//simulate 5bit color
 				r >>= 3;
 				g >>= 3;

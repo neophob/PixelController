@@ -50,11 +50,6 @@ import com.neophob.sematrix.resize.PixelControllerResize;
  */
 public final class Collector {
 
-	/** 
-	 * TODO make dynamic
-	 * nr of shuffler entries. enable/disable option for random mode 
-	 * 
-	 */
 	private static final Logger LOG = Logger.getLogger(Collector.class.getName());
 	
 	/** The Constant EMPTY_CHAR. */

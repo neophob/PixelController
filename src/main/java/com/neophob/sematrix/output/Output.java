@@ -61,8 +61,7 @@ public abstract class Output {
 		this.matrixData = Collector.getInstance().getMatrix();
 		this.layout = ph.getLayout();
 
-		LOG.log(Level.INFO,
-				"Output created: {0}, Layout: {1}"
+		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}"
 				, new Object[] { this.name, layout.getLayoutName() });
 	
 		//add to list

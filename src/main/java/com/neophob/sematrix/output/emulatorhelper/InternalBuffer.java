@@ -30,13 +30,15 @@ import com.neophob.sematrix.glue.Visual;
 
 
 /**
- * The Class InternalBuffer.
+ * Display the internal Visual buffers
  */
 public class InternalBuffer extends PApplet {
 	
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2344499301021L;
 
+	private static final int SELECTED_MARKER = 10;
+	
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(InternalBuffer.class.getName());
 
@@ -64,7 +66,7 @@ public class InternalBuffer extends PApplet {
 	public InternalBuffer(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
 		this.displayHoriz = displayHoriz;
 		this.x = x;
-		this.y = y;
+		this.y = y+SELECTED_MARKER;
 		this.targetXSize = targetXSize;
 		this.targetYSize = targetYSize;
 	}
@@ -86,6 +88,8 @@ public class InternalBuffer extends PApplet {
 	public void draw() {
 		int localX=0, localY=0;
 		int[] buffer;
+		int currentVisual = Collector.getInstance().getCurrentVisual();
+		int ofs=0;
 		
 		for (Visual v: Collector.getInstance().getAllVisuals()) {
 			//get image
@@ -98,14 +102,24 @@ public class InternalBuffer extends PApplet {
 			pImage.loadPixels();
 			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
 			pImage.updatePixels();
-
-			//display it
+			
+			//draw selected marker
+			if (ofs==currentVisual) {
+				fill(200,66,66);
+			} else {
+				fill(33,33,33);
+			}	
+			rect(localX, localY+targetYSize, targetXSize, SELECTED_MARKER);
+			
+			//display the image
 			image(pImage, localX, localY);
 			if (displayHoriz) {
 				localX += pImage.width;
 			} else {
 				localY += pImage.height;
-			}			
+			}
+
+			ofs++;
 		}
 	}
 
