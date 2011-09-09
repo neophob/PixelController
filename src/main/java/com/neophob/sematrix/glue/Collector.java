@@ -238,8 +238,12 @@ public final class Collector {
 				u=1;
 			}
 		}
-		if (Sound.getInstance().isKick()) u+=3;
-		if (Sound.getInstance().isHat()) u+=1;
+		if (Sound.getInstance().isKick()) {
+			u+=3;
+		}
+		if (Sound.getInstance().isHat()) {
+			u+=1;
+		}
 		
 		//update generator depending on the input sound
 		for (int i=0; i<u; i++) {

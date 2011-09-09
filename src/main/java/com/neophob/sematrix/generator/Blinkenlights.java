@@ -46,7 +46,7 @@ public class Blinkenlights extends Generator implements PConstants {
 	private static final String PREFIX = "blinken/";
 	
 	//TODO should be dynamic someday
-	private static final String files[] = new String[] {
+	private static final String MOVIE_FILES[] = new String[] {
 		"torus.bml", "bnf_auge.bml", "bb-frogskin2.bml", "bb-rauten2.bml", "bb-spiral2fast.bml",
 		"flatter_flatter.bml", "badtv.bml", "kreise-versetzt.bml", "blender.bml"};
 
@@ -140,14 +140,18 @@ public class Blinkenlights extends Generator implements PConstants {
 		try {
 			for (int y=0; y<internalBufferYSize; y++) {
 				if (ySrc>yDiff) {
-					if (yofs<blinken.height) yofs++;				
+					if (yofs<blinken.height) {
+						yofs++;				
+					}
 					ySrc-=yDiff;
 				}
 				xofs=0;
 				xSrc=0;
 				for (int x=0; x<internalBufferXSize; x++) {
 					if (xSrc>xDiff) {
-						if (xofs<blinken.width)xofs++;
+						if (xofs<blinken.width) {
+							xofs++;
+						}
 						xSrc-=xDiff;
 					}				
 					ofs=xofs+yofs*blinken.width;
@@ -202,8 +206,8 @@ public class Blinkenlights extends Generator implements PConstants {
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
-			int nr = rand.nextInt(files.length);
-			loadFile(files[nr]);
+			int nr = rand.nextInt(MOVIE_FILES.length);
+			loadFile(MOVIE_FILES[nr]);
 		}
 	}
 

@@ -7,7 +7,6 @@ import jargs.gnu.CmdLineParser.UnknownOptionException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.text.ParseException;
 
 import processing.core.PApplet;
 import processing.net.Client;

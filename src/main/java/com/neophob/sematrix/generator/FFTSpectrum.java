@@ -69,7 +69,9 @@ public class FFTSpectrum extends Generator {
 		    int h = (int)(Math.log(fftSmooth[i]*3.0f)*30);
 
 		    h=255+h;
-		    if (h>255) h=255;
+		    if (h>255) {
+		    	h=255;
+		    }
 		    h = h*h/255;
 		    col = (h << 16) | (h << 8) | h;
 		    rect(col, 0, i*yBlock, this.internalBufferXSize, i*yBlock+yBlock);

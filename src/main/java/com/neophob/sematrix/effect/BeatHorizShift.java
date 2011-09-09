@@ -28,7 +28,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class BeatHorizShift extends Effect {
 
 	/** The ammount. */
-	int ammount=0;
+	private int ammount=0;
 	
 	/**
 	 * Instantiates a new beat horiz shift.

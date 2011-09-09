@@ -70,7 +70,7 @@ public enum ShufflerOffset {
 	
 	
 	/** The ofs. */
-	int ofs;
+	private int ofs;
 	
 	/**
 	 * Instantiates a new shuffler offset.

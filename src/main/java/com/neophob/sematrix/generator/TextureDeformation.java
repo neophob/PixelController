@@ -45,7 +45,7 @@ public class TextureDeformation extends Generator {
 	private static final Logger LOG = Logger.getLogger(TextureDeformation.class.getName());
 
 	//TODO should be dynamic someday, maybe move settings to the properties file
-	private static final String files[] = new String[] {
+	private static final String TEXTURE_FILES[] = new String[] {
 			"1316.jpg", "ceiling.jpg", "circle.jpg", "gradient.jpg", 
 			"check.jpg", "hsv.jpg", "hls.jpg"};
 
@@ -53,7 +53,7 @@ public class TextureDeformation extends Generator {
 	private int w, h;
 	
 	/** The m lut. */
-	private int[] mLUT;
+	private int[] lookUpTable;
 	
 	/** The tmp array. */
 	private int[] tmpArray;
@@ -65,7 +65,7 @@ public class TextureDeformation extends Generator {
 	private int timeDisplacement;
 	
 	/** The lut. */
-	private int lut;
+	private int selectedLut;
 	
 	/** The filename. */
 	private String filename;
@@ -80,11 +80,11 @@ public class TextureDeformation extends Generator {
 		super(controller, GeneratorName.TEXTURE_DEFORMATION, ResizeName.PIXEL_RESIZE);
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
-		mLUT =  new int[3 * w * h];
+		lookUpTable =  new int[3 * w * h];
 		tmpArray = new int[this.internalBuffer.length];
 		// use higher resolution textures if things get to pixelated
 
-		this.lut=9;
+		this.selectedLut=9;
 		loadFile(filename);
 	}
 
@@ -94,8 +94,8 @@ public class TextureDeformation extends Generator {
 	 * @param lut the lut
 	 */
 	public void changeLUT(int lut) {
-		this.lut = lut;
-		createLUT(lut);
+		this.selectedLut = lut;
+		createLut(lut);
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class TextureDeformation extends Generator {
 			textureImg = tmpImage;
 			LOG.log(Level.INFO,
 					"Loaded texture {0} ", new Object[] { fileName });
-			createLUT(lut);
+			createLut(selectedLut);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING,
 					"Failed to load texture {0}!", new Object[] { fileName });
@@ -129,9 +129,9 @@ public class TextureDeformation extends Generator {
 		for (int pixelCount = 0; pixelCount < getInternalBufferSize(); pixelCount++)
 		{
 			int o = (pixelCount << 1) + pixelCount;  // equivalent to 3 * pixelCount
-			int u = mLUT[o+0] + timeDisplacement;    // to look like its animating, add timeDisplacement
-			int v = mLUT[o+1] + timeDisplacement;
-			int adjustBrightness = mLUT[o+2];
+			int u = lookUpTable[o+0] + timeDisplacement;    // to look like its animating, add timeDisplacement
+			int v = lookUpTable[o+1] + timeDisplacement;
+			int adjustBrightness = lookUpTable[o+2];
 
 			// get the R,G,B values from texture
 			int currentPixel = textureImg.pixels[textureImg.width * (v & textureImg.height-1) + (u & textureImg.width-1)];
@@ -196,7 +196,7 @@ public class TextureDeformation extends Generator {
 	 *
 	 * @param effectStyle the effect style
 	 */
-	private void createLUT(int effectStyle){
+	private void createLut(int effectStyle){
 		// increment placeholder
 		int k = 0;
 
@@ -274,9 +274,9 @@ public class TextureDeformation extends Generator {
 					bright = 0;
 					break;
 				}
-				mLUT[k++] = (int)(textureImg.width*u) & textureImg.width-1;
-				mLUT[k++] = (int)(textureImg.height*v) & textureImg.height-1;
-				mLUT[k++] = (int)(bright);
+				lookUpTable[k++] = (int)(textureImg.width*u) & textureImg.width-1;
+				lookUpTable[k++] = (int)(textureImg.height*v) & textureImg.height-1;
+				lookUpTable[k++] = (int)(bright);
 			}
 		}
 	}
@@ -290,8 +290,8 @@ public class TextureDeformation extends Generator {
 			Random rand = new Random();
 			this.changeLUT(rand.nextInt(12));
 
-			int nr = rand.nextInt(files.length);
-			loadFile(files[nr]);		
+			int nr = rand.nextInt(TEXTURE_FILES.length);
+			loadFile(TEXTURE_FILES[nr]);		
 		}
 	}
 
@@ -311,7 +311,7 @@ public class TextureDeformation extends Generator {
 	 * @return the lut
 	 */
 	public int getLut() {
-		return lut;
+		return selectedLut;
 	}
 
 }

@@ -47,7 +47,7 @@ public class Image extends Generator {
 	
 	//TODO should be dynamic someday, maybe move settings to the properties file
 	/** The Constant files. */
-	private static final String files[] = new String[] {
+	private static final String IMAGE_FILES[] = new String[] {
 		"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif",
 		"hsv.jpg", "hls.jpg", "right.jpg", "ff-logo-small.jpg"};
 
@@ -122,8 +122,8 @@ public class Image extends Generator {
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
-			int nr = new Random().nextInt(files.length);
-			loadFile(files[nr]);		
+			int nr = new Random().nextInt(IMAGE_FILES.length);
+			loadFile(IMAGE_FILES[nr]);		
 		}
 	}
 	

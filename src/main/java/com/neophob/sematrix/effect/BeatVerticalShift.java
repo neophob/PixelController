@@ -28,7 +28,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class BeatVerticalShift extends Effect {
 
 	/** The ammount. */
-	int ammount=0;
+	private int ammount=0;
 	
 	/**
 	 * Instantiates a new beat vertical shift.
