@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.listener.ValidCommands;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * verify the rotate buffer code

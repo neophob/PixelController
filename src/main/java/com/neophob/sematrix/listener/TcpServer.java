@@ -33,7 +33,7 @@ import processing.net.Client;
 import processing.net.Server;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.listener.ValidCommands;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * The Class TcpServer.

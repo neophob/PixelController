@@ -1,0 +1,180 @@
+/**
+ * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+ *
+ * This file is part of PixelController.
+ *
+ * PixelController is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PixelController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.neophob.sematrix.properties;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The Enum ValidCommands.
+ */
+public enum ValidCommands {
+	
+	/** The STATUS. */
+	STATUS(CommandGroup.MISC, 0, "refresh whole gui"),
+	
+	/** The STATUS mini. */
+	STATUS_MINI(CommandGroup.MISC, 0, "just refresh parts of the gui"),
+	
+	/** The CHANGE generator a. */
+	CHANGE_GENERATOR_A(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
+	
+	/** The CHANGE generator b. */
+	CHANGE_GENERATOR_B(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
+	
+	/** The CHANGE effect a. */
+	CHANGE_EFFECT_A(CommandGroup.VISUAL, 1, "<INT> change first effect for current visual"),
+	
+	/** The CHANGE effect b. */
+	CHANGE_EFFECT_B(CommandGroup.VISUAL, 1, "<INT> change second effect for current visual"),
+	
+	/** The CHANGE mixer. */
+	CHANGE_MIXER(CommandGroup.VISUAL, 1, "<INT> change mixer for current visual"),
+	
+	//TODO
+	/** The CHANGE output. */
+	CHANGE_OUTPUT(CommandGroup.OUTPUT, 0, "<INT> change visual for all outputs"),
+	
+	//TODO
+	/** The CHANGE output effect. */
+	CHANGE_OUTPUT_EFFECT(CommandGroup.OUTPUT, 0, "<INT> change effect for all outputs"),
+	
+	//TODO
+	/** The CHANGE fader. */
+	CHANGE_FADER(CommandGroup.OUTPUT, 0, "<INT> change fader for all outputs"),
+	
+	/** The CHANG e_ tint. */
+	CHANGE_TINT(CommandGroup.EFFECT, 3, "<INT> <INT> <INT> select rgb value for the tint effect, 0-255"),
+	
+	/** The CHANGE present. */
+	CHANGE_PRESENT(CommandGroup.MISC, 1, "<INT> select current present id"),
+	
+	/** The CHANGE shuffler select. */
+	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 14, "14 times <INT>, 14 parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON"),
+	
+	/** The CHANGE threshold value. */
+	CHANGE_THRESHOLD_VALUE(CommandGroup.EFFECT, 1, "<INT> select current threshold for the threshold effect, 0-255"),
+	
+	/** The CHANG e_ rotozoom. */
+	CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
+	
+	/** The SAVE present. */
+	SAVE_PRESENT(CommandGroup.MISC, 0, "save current present settings"),
+	
+	/** The LOAD present. */
+	LOAD_PRESENT(CommandGroup.MISC, 0, "load current present settings"),
+	
+	/** The BLINKEN. */
+	BLINKEN(CommandGroup.GENERATOR, 1, "<STRING> file to load for the blinkenlights generator"),
+	
+	/** The IMAGE. */
+	IMAGE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the simple image generator"),
+	
+	/** The IMAGE zoomer. */
+	IMAGE_ZOOMER(CommandGroup.GENERATOR, 1, "<STRING> image to load for the image zoomer generator"),
+	
+	/** The TEXTDEF. */
+	TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
+	
+	/** The TEXTDE file. */
+	TEXTDEF_FILE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the texture deformation generator"),
+	
+	/** The TEXTWRITER. */
+	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
+
+	/** The RANDOM. */
+	RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode" ),
+
+	/** The RANDOMIZE. */
+	RANDOMIZE(CommandGroup.MISC, 0, "one shot randomizer"),
+	
+	/** The PRESET random. */
+	PRESET_RANDOM(CommandGroup.MISC, 0, "one shot randomizer, use a pre-stored present"),
+	
+	/** The CURRENT visual. */
+	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual");
+	
+	/** The nr of params. */
+	private int nrOfParams;
+	
+	/** The desc. */
+	private String desc;
+	
+	/** The group. */
+	private CommandGroup group;
+	
+	/**
+	 * Instantiates a new valid commands.
+	 *
+	 * @param group the group
+	 * @param nrOfParams the nr of params
+	 * @param desc the desc
+	 */
+	ValidCommands(CommandGroup group, int nrOfParams, String desc) {
+		this.group = group;
+		this.nrOfParams = nrOfParams;
+		this.desc = desc;
+	}
+
+	/**
+	 * Gets the nr of params.
+	 *
+	 * @return the nr of params
+	 */
+	public int getNrOfParams() {
+		return nrOfParams;
+	}
+
+	/**
+	 * Gets the desc.
+	 *
+	 * @return the desc
+	 */
+	public String getDesc() {
+		return desc;
+	}
+	
+	
+	/**
+	 * Gets the group.
+	 *
+	 * @return the group
+	 */
+	public CommandGroup getGroup() {
+		return group;
+	}
+
+	/**
+	 * X.
+	 *
+	 * @param group the group
+	 * @return the list
+	 */
+	public static List<ValidCommands> getCommandsByGroup(CommandGroup group) {
+		List<ValidCommands> list = new ArrayList<ValidCommands>();
+		for (ValidCommands vc: ValidCommands.values()) {
+			if (vc.getGroup() == group) {
+				list.add(vc);
+			}
+		}
+		
+		return list;
+	}
+}

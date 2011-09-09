@@ -28,6 +28,7 @@ import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * The Class MessageProcessor.

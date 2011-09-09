@@ -56,6 +56,13 @@
 			<filtered>false</filtered>
 		</file>
 
+ 		<file>
+			<source>${basedir}/src/build/PixConCli.sh</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<fileMode>0755</fileMode>
+		</file>
+
 		<!-- copy the pure data gui -->
  		<file>
 			<source>${basedir}/data/ledgui4.pd</source>

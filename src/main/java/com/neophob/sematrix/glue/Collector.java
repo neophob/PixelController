@@ -38,11 +38,11 @@ import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
-import com.neophob.sematrix.listener.ValidCommands;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
 /**

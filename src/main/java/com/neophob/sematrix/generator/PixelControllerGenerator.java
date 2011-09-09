@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.PixelControllerElement;
-import com.neophob.sematrix.listener.ValidCommands;
 import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * The Class PixelControllerGenerator.

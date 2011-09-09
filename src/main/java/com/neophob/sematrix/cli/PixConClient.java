@@ -12,8 +12,9 @@ import java.text.ParseException;
 import processing.core.PApplet;
 import processing.net.Client;
 
-import com.neophob.sematrix.listener.ValidCommands;
 import com.neophob.sematrix.listener.TcpServer;
+import com.neophob.sematrix.properties.CommandGroup;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * The Class Client.
@@ -38,10 +39,13 @@ public class PixConClient {
     private static void usage() {
         System.out.println("Usage: Client [-h hostname] [-p port] -c ValidCommand");
         System.out.println("Valid commands:");
-        for (ValidCommands vc: ValidCommands.values()) {
-        	System.out.println("\t"+vc.toString()+"\t# of parameter: "+vc.getNrOfParams()+"\t"+vc.getDesc());
+ 
+        for (CommandGroup cg: CommandGroup.values()) {
+            for (ValidCommands vc: ValidCommands.getCommandsByGroup(cg)) {
+            	System.out.println("\t"+vc.toString()+"\t# of parameter: "+vc.getNrOfParams()+"\t"+vc.getDesc());
+            }        	
+            System.out.println();
         }
-        System.exit(1);		
     }
 
 
@@ -115,9 +119,10 @@ public class PixConClient {
      * @throws ParseException the parse exception
      */
     public static void main(String[] args) throws Exception {
-        System.out.println("PixelController Client v0.1");
+        System.out.println("PixelController Client v0.2");
 
         ParsedArgument cmd = parseArgument(args);
+        for (String s: args) System.out.println("PARAM: "+s);
         System.out.println("\t"+cmd);
         
         Client c = connectToServer(cmd);       
