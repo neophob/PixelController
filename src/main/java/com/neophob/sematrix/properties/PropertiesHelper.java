@@ -476,11 +476,15 @@ public class PropertiesHelper {
      * @return the layout
      */
     public Layout getLayout() {
-        if (devicesInRow2>0) {
-            return new BoxLayout(devicesInRow1, devicesInRow2);
+        if (devicesInRow1>0 && devicesInRow2==0) {
+            return new HorizontalLayout(devicesInRow1, devicesInRow2);
         }
 
-        return new HorizontalLayout(devicesInRow1, devicesInRow2);
+        if (devicesInRow1>0 && devicesInRow2>0 && devicesInRow1==devicesInRow2) {
+            return new BoxLayout(devicesInRow1, devicesInRow2);
+        }
+        
+        throw new IllegalStateException("Illegal device configuration detected!");
     }
 
     /**

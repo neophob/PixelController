@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import com.neophob.sematrix.layout.Layout.LayoutName;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 
 /**
@@ -128,6 +129,34 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
         config.put(ConfigConstant.PIXELINVADERS_ROW2, "NO_ROTATE");
         new PropertiesHelper(config);
+    }    
+
+    @Test(expected = IllegalStateException.class)
+    public void testLayout() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "4");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "2");
+        new PropertiesHelper(config).getLayout();        
+    }    
+
+    @Test
+    public void testHorizontalLayout() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "3");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
+        PropertiesHelper ph = new PropertiesHelper(config);        
+        assertEquals(3, ph.getNrOfScreens());
+        assertEquals(LayoutName.HORIZONTAL, ph.getLayout().getLayoutName());
+    }    
+
+    @Test
+    public void testBoxLayout() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "3");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "3");
+        PropertiesHelper ph = new PropertiesHelper(config);        
+        assertEquals(6, ph.getNrOfScreens());
+        assertEquals(LayoutName.BOX, ph.getLayout().getLayoutName());
     }    
 
 }
