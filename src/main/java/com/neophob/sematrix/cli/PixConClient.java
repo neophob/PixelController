@@ -122,7 +122,6 @@ public class PixConClient {
         System.out.println("PixelController Client v0.2");
 
         ParsedArgument cmd = parseArgument(args);
-        for (String s: args) System.out.println("PARAM: "+s);
         System.out.println("\t"+cmd);
         
         Client c = connectToServer(cmd);       

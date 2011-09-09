@@ -203,8 +203,8 @@ public final class Collector {
 		}
 
 		//Start tcp server
-		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3449") );
-		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3445") );
+		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
+		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
 		String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
 		
 		try {		    

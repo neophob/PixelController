@@ -62,6 +62,11 @@
 			<filtered>false</filtered>
 			<fileMode>0755</fileMode>
 		</file>
+ 		<file>
+			<source>${basedir}/src/build/PixConCli.cmd</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</file>
 
 		<!-- copy the pure data gui -->
  		<file>
