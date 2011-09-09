@@ -49,14 +49,23 @@ public enum ValidCommands {
 	CHANGE_MIXER(CommandGroup.VISUAL, 1, "<INT> change mixer for current visual"),
 	
 	/** The CHANGE output. */
-	CHANGE_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for all outputs"),
+	CHANGE_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for current output"),
 	
 	/** The CHANGE output effect. */
-	CHANGE_OUTPUT_EFFECT(CommandGroup.OUTPUT, 1, "<INT> change effect for all outputs"),
+	CHANGE_OUTPUT_EFFECT(CommandGroup.OUTPUT, 1, "<INT> change effect for current output"),
 	
 	/** The CHANGE fader. */
-	CHANGE_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for current outputs"),
+	CHANGE_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for current output"),
+
+	/** The CHANGE output. */
+	CHANGE_ALL_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for all outputs"),
 	
+	/** The CHANGE output effect. */
+	CHANGE_ALL_OUTPUT_EFFECT(CommandGroup.OUTPUT, 1, "<INT> change effect for all outputs"),
+	
+	/** The CHANGE fader. */
+	CHANGE_ALL_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for all outputs"),
+
 	/** The CHANGE tint. */
 	CHANGE_TINT(CommandGroup.EFFECT, 3, "<INT> <INT> <INT> select rgb value for the tint effect, 0-255"),
 	

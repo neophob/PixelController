@@ -1,17 +1,17 @@
-#N canvas 208 71 898 602 10;
+#N canvas 708 104 898 602 10;
 #X declare -lib mrpeach;
 #X obj 5 -25 cnv 15 700 295 empty empty visuals 20 12 0 14 -204786
 -66577 0;
 #X obj 58 54 hradio 15 1 0 15 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 12;
+-1 -1 8;
 #X obj 58 76 hradio 15 1 0 9 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 5;
+-1 0;
 #X obj 59 139 hradio 15 1 0 15 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 13;
+-1 -1 14;
 #X obj 59 161 hradio 15 1 0 9 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 0;
+-1 -1 2;
 #X obj 60 224 hradio 15 1 0 10 s_mix1 r_mix1 empty 0 -8 0 10 -203904
--1 -1 0;
+-1 -1 4;
 #X obj 12 54 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 12 76 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
@@ -37,7 +37,7 @@
 #X obj 14 323 tgl 15 0 s_rndsel_faderout r_rndsel_faderout empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 14 345 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -260097
--1 -1 1 1;
+-1 -1 0 1;
 #X text 96 283 output #1;
 #X text 35 343 Visual;
 #X text 27 75 FX1;
@@ -139,19 +139,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 195 1;
+-262144 -1 -1 438 1;
 #X obj 33 71 cnv 15 140 160 empty empty //colorize 20 12 0 14 -262130
 -66577 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 2225 1;
+-33289 -1 1033 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 2067 1;
+-33289 -1 2565 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 2285 1;
+-33289 -1 1787 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -159,7 +159,7 @@
 #X obj 33 226 cnv 15 140 70 empty empty //rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 2063 1;
+16 64 12 -262144 -33289 -1 1623 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -1372,7 +1372,7 @@
 #X connect 9 0 8 0;
 #X coords 0 -1 1 1 470 180 1 50 50;
 #X restore 4 388 pd presentStuff;
-#N canvas 175 277 953 523 network 1;
+#N canvas 175 277 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
 #X obj 28 150 s r_gen1;
@@ -1490,7 +1490,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 1;
 #X msg 640 380 send STATUS;
 #X obj 641 413 route 1;
-#N canvas 111 22 1169 645 basicGui 1;
+#N canvas -15 22 1257 659 basicGui 0;
 #X obj 84 -21 receive s_gen1;
 #X floatatom 84 5 5 0 0 0 - - -;
 #X floatatom 342 3 5 0 0 0 - - -;
@@ -1511,17 +1511,17 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 -1 -1;
 #X obj 593 284 delay 20;
 #X obj 652 220 receive s_fader1;
-#X floatatom 653 366 5 0 0 0 - - -;
-#X floatatom 762 366 5 0 0 0 - - -;
-#X obj 631 383 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X floatatom 653 396 5 0 0 0 - - -;
+#X floatatom 762 396 5 0 0 0 - - -;
+#X obj 631 413 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 594 404 delay 20;
-#X obj 653 340 receive s_tint_r;
-#X obj 762 340 receive s_tint_g;
-#X floatatom 872 366 5 0 0 0 - - -;
-#X obj 872 340 receive s_tint_b;
-#X obj 653 391 pack i i i;
-#X msg 653 415 send CHANGE_TINT \$1 \$2 \$3;
+#X obj 594 434 delay 20;
+#X obj 653 370 receive s_tint_r;
+#X obj 762 370 receive s_tint_g;
+#X floatatom 872 396 5 0 0 0 - - -;
+#X obj 872 370 receive s_tint_b;
+#X obj 653 421 pack i i i;
+#X msg 653 445 send CHANGE_TINT \$1 \$2 \$3;
 #X floatatom 614 9 5 0 0 0 - - -;
 #X obj 592 26 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -1550,12 +1550,24 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X msg 614 58 send CHANGE_OUTPUT_EFFECT \$1;
 #X obj 652 150 pack i;
 #X obj 652 271 pack i;
-#X floatatom 874 455 5 0 0 0 - - -;
-#X obj 874 478 pack i;
-#X obj 874 429 receive s_current_output;
-#X msg 874 501 send CURRENT_OUTPUT \$1;
+#X floatatom 874 485 5 0 0 0 - - -;
+#X obj 874 508 pack i;
+#X obj 874 459 receive s_current_output;
+#X msg 874 531 send CURRENT_OUTPUT \$1;
 #X msg 652 173 send CHANGE_OUTPUT_VISUAL \$1;
 #X msg 652 295 send CHANGE_OUTPUT_FADER \$1;
+#X floatatom 867 21 5 0 0 0 - - -;
+#X obj 867 44 pack i;
+#X obj 867 -5 receive s_output_fx_all;
+#X msg 867 67 send CHANGE_ALL_OUTPUT_EFFECT \$1;
+#X floatatom 867 141 5 0 0 0 - - -;
+#X obj 867 164 pack i;
+#X msg 867 187 send CHANGE_ALL_OUTPUT_FADER \$1;
+#X floatatom 867 261 5 0 0 0 - - -;
+#X obj 867 284 pack i;
+#X obj 867 235 receive s_output_visual_all;
+#X msg 867 307 send CHANGE_ALL_OUTPUT_VISUAL \$1;
+#X obj 867 115 receive s_output_fader_all;
 #X connect 0 0 1 0;
 #X connect 1 0 39 0;
 #X connect 2 0 40 0;
@@ -1618,6 +1630,18 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 58 0 32 0;
 #X connect 59 0 32 0;
 #X connect 60 0 32 0;
+#X connect 61 0 62 0;
+#X connect 62 0 64 0;
+#X connect 63 0 61 0;
+#X connect 64 0 32 0;
+#X connect 65 0 66 0;
+#X connect 66 0 67 0;
+#X connect 67 0 32 0;
+#X connect 68 0 69 0;
+#X connect 69 0 71 0;
+#X connect 70 0 68 0;
+#X connect 71 0 32 0;
+#X connect 72 0 65 0;
 #X restore 768 322 pd basicGui;
 #N canvas 0 22 729 300 textureDeformation 0;
 #X obj 346 226 outlet;
@@ -2040,38 +2064,14 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X coords 0 -1 1 1 200 140 1 50 50;
 #X restore 478 388 pd network;
 #N canvas 60 38 815 243 output4all 0;
-#X obj 424 167 s r_out1;
-#X obj 532 168 s r_out2;
-#X obj 634 167 s r_out3;
-#X obj 742 168 s r_out4;
-#X obj 401 127 s r_fader1;
-#X obj 510 127 s r_fader2;
-#X obj 621 127 s r_fader3;
-#X obj 730 127 s r_fader4;
-#X obj 292 96 s r_fx_output1;
-#X obj 431 96 s r_fx_output2;
-#X obj 572 96 s r_fx_output3;
-#X obj 711 96 s r_fx_output4;
 #X obj 50 50 cnv 15 160 110 empty empty //output_map 20 12 0 14 -204786
 -66577 0;
-#X obj 59 120 hradio 15 1 0 5 empty r_outall empty 0 -8 0 10 -228856
--1 -1 0;
-#X obj 59 98 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X obj 59 76 hradio 15 1 0 9 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X connect 13 0 0 0;
-#X connect 13 0 1 0;
-#X connect 13 0 2 0;
-#X connect 13 0 3 0;
-#X connect 14 0 4 0;
-#X connect 14 0 5 0;
-#X connect 14 0 6 0;
-#X connect 14 0 7 0;
-#X connect 15 0 8 0;
-#X connect 15 0 9 0;
-#X connect 15 0 10 0;
-#X connect 15 0 11 0;
+#X obj 59 120 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
+empty 0 -8 0 10 -228856 -1 -1 2;
+#X obj 59 98 hradio 15 1 0 4 s_output_fader_all r_output_fader_all
+empty 0 -8 0 10 -228856 -1 -1 2;
+#X obj 59 76 hradio 15 1 0 9 s_output_fx_all r_output_fx_all empty
+0 -8 0 10 -228856 -1 -1 0;
 #X coords 0 -1 1 1 160 110 1 50 50;
 #X restore 389 274 pd output4all;
 #X text 57 106 Effects: Off \, Inverter \, Rotozoom \, Beat horizontal
