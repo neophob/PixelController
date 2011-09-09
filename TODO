@@ -7,7 +7,6 @@ TODO
 -more generators/effects/mixer...
 -update initial image in firmware
 -Move message handling and randomizer handling out to effective classes
--Highlight the current selected Visual in the debug output
 -log to a file
 -more layouts
 -color simulation in MatrixEmulator be dependend on the selected output device

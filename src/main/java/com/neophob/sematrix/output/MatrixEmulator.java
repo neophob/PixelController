@@ -102,21 +102,23 @@ public class MatrixEmulator extends Output {
 		}				
 		
 		int cnt=0;
+		int currentOutput = Collector.getInstance().getCurrentOutput();
+		
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
-				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen));
+				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen), currentOutput);
 			}			
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen));
+				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen), currentOutput);
 				ofs++;
 			}			
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, super.getBufferForScreen(ofs+screen));
+				drawOutput(cnt++, screen, 1, super.getBufferForScreen(ofs+screen), currentOutput);
 			}			
 			break;
 		}
@@ -129,14 +131,13 @@ public class MatrixEmulator extends Output {
 	 * @param nrY the nr y
 	 * @param buffer - the buffer to draw
 	 */
-	private void drawOutput(int nr, int nrX, int nrY, int buffer[]) {
+	private void drawOutput(int nr, int nrX, int nrY, int buffer[], int currentOutput) {
 		int xOfs = nrX*(getOneMatrixXSize()+LED_ABSTAND);
 		int yOfs = nrY*(getOneMatrixYSize()+LED_ABSTAND);
 		int ofs=0;
 		int tmp,r,g,b;
 
-		//mark the active visual
-		int currentOutput = Collector.getInstance().getCurrentOutput();		
+		//mark the active visual				
 		if (nr == currentOutput) {
 			parent.fill(200,66,66);
 		} else {
