@@ -20,7 +20,10 @@
 package com.neophob.sematrix.properties;
 
 /**
- * The Enum CommandGroup.
+ * The Enum CommandGroup used to group valid commands together.
+ * this is only used to display the help message in the cli client
+ * 
+ * @author michu
  */
 public enum CommandGroup {
 	

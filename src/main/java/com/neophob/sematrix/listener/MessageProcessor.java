@@ -72,20 +72,9 @@ public final class MessageProcessor {
 
 			case CHANGE_GENERATOR_A:
 				try {
-					if (msg.length==2) {
-						//the new method - used by the gui
 						int nr = col.getCurrentVisual();
 						tmp=Integer.parseInt(msg[1]);
 						col.getVisual(nr).setGenerator1(tmp);
-					} else {
-						int size = col.getAllVisuals().size();
-						if (size>msgLength) size=msgLength;
-						for (int i=0; i<size; i++) {
-							tmp=Integer.parseInt(msg[i+1]);
-							col.getVisual(i).setGenerator1(tmp);
-						}						
-					}
-
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -93,20 +82,10 @@ public final class MessageProcessor {
 				
 			case CHANGE_GENERATOR_B:
 				try {
-					if (msg.length==2) {
 						//the new method - used by the gui
 						int nr = col.getCurrentVisual();
 						tmp=Integer.parseInt(msg[1]);
 						col.getVisual(nr).setGenerator2(tmp);
-					} else {
-						int size = col.getAllVisuals().size();
-						if (size>msgLength) size=msgLength;
-						for (int i=0; i<size; i++) {
-							tmp=Integer.parseInt(msg[i+1]);
-							col.getVisual(i).setGenerator2(tmp);
-						}						
-					}
-
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -114,21 +93,9 @@ public final class MessageProcessor {
 
 			case CHANGE_EFFECT_A:
 				try {
-					if (msg.length==2) {
-						//the new method - used by the gui
 						int nr = col.getCurrentVisual();
-						tmp=Integer.parseInt(msg[1]);
-				
+						tmp=Integer.parseInt(msg[1]);				
 						col.getVisual(nr).setEffect1(tmp);						
-					} else {
-						//the "old" method - used by the saved presents
-						int size = col.getAllVisuals().size();
-						if (size>msgLength) size=msgLength;
-						for (int i=0; i<size; i++) {
-							tmp=Integer.parseInt(msg[i+1]);
-							col.getVisual(i).setEffect1(tmp);
-						}						
-					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -136,20 +103,9 @@ public final class MessageProcessor {
 
 			case CHANGE_EFFECT_B:
 				try {
-					if (msg.length==2) {
-						//the new method - used by the gui
 						int nr = col.getCurrentVisual();
 						tmp=Integer.parseInt(msg[1]);
 						col.getVisual(nr).setEffect2(tmp);						
-					} else {
-						int size = col.getAllVisuals().size();
-						if (size>msgLength) size=msgLength;
-						for (int i=0; i<size; i++) {
-							tmp=Integer.parseInt(msg[i+1]);
-							col.getVisual(i).setEffect2(tmp);
-						}						
-					}
- 
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -157,43 +113,31 @@ public final class MessageProcessor {
 
 			case CHANGE_MIXER:
 				try {
-					if (msg.length==2) {
 						//the new method - used by the gui
 						int nr = col.getCurrentVisual();
 						tmp=Integer.parseInt(msg[1]);
 						col.getVisual(nr).setMixer(tmp);
-					} else {
-						int size = col.getAllVisuals().size();
-						if (size>msgLength) size=msgLength;
-						for (int i=0; i<size; i++) {
-							tmp=Integer.parseInt(msg[i+1]);
-							col.getVisual(i).setMixer(tmp);
-						}						
-					}
-
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
 
-			case CHANGE_OUTPUT:
+			case CHANGE_OUTPUT_VISUAL:
 				try {
-					int size = col.getAllOutputMappings().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						int newFx = Integer.parseInt(msg[i+1]);
-						int oldFx = col.getFxInputForScreen(i);
-						if(oldFx!=newFx) {
+						int nr = col.getCurrentOutput();				
+						int newFx = Integer.parseInt(msg[1]);
+						int oldFx = col.getFxInputForScreen(nr);
+						LOG.log(Level.INFO,	"old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
+						if (oldFx!=newFx) {
 							LOG.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
 							if (startFader) {
 								//start fader to change screen
-								col.getOutputMappings(i).getFader().startFade(newFx, i);								
+								col.getOutputMappings(nr).getFader().startFade(newFx, nr);								
 							} else {
 								//do not fade if we load setting from present
-								col.mapInputToScreen(i, newFx);
+								col.mapInputToScreen(nr, newFx);
 							}
 						}
-					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -201,28 +145,22 @@ public final class MessageProcessor {
 
 			case CHANGE_OUTPUT_EFFECT:
 				try {
-					int size = col.getAllOutputMappings().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
-						col.getOutputMappings(i).setEffect(col.getPixelControllerEffect().getEffect(tmp));
-					}
+						int nr = col.getCurrentOutput();
+						tmp=Integer.parseInt(msg[1]);
+						col.getOutputMappings(nr).setEffect(col.getPixelControllerEffect().getEffect(tmp));
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
 
-			case CHANGE_FADER:
+			case CHANGE_OUTPUT_FADER:
 				try {
-					int size = col.getAllOutputMappings().size();
-					if (size>msgLength) size=msgLength;
-					for (int i=0; i<size; i++) {
-						tmp=Integer.parseInt(msg[i+1]);
+						int nr = col.getCurrentOutput();
+						tmp=Integer.parseInt(msg[1]);
 						//do not start a new fader while the old one is still running
-						if (!col.getOutputMappings(i).getFader().isStarted()) {
-							col.getOutputMappings(i).setFader(PixelControllerFader.getFader(tmp));							
+						if (!col.getOutputMappings(nr).getFader().isStarted()) {
+							col.getOutputMappings(nr).setFader(PixelControllerFader.getFader(tmp));							
 						}
-					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -247,9 +185,7 @@ public final class MessageProcessor {
 				
 			case CHANGE_ROTOZOOM:
 				try {					
-					int val = Integer.parseInt(msg[1]);		
-					//col.setRotoZoomAngle(val);			
-					//log.log(Level.WARNING,	"rotozoom value: "+val);
+					int val = Integer.parseInt(msg[1]);
 					RotoZoom r = (RotoZoom)col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM);
 					r.setAngle(val);					
 				} catch (Exception e) {
@@ -416,7 +352,19 @@ public final class MessageProcessor {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
 				break;
-				
+
+			case CURRENT_OUTPUT:
+				//change the selected output, need to update
+				//some of the gui elements 
+				try {
+					int a = Integer.parseInt(msg[1]);
+					Collector.getInstance().setCurrentOutput(a);
+					return ValidCommands.STATUS_MINI;
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				break;
+
 			default:
 			    StringBuffer sb = new StringBuffer();
 				for (int i=0; i<msg.length;i++) {

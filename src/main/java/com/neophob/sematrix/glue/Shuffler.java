@@ -58,7 +58,7 @@ public final class Shuffler {
 		
 		boolean done=false;
 		while (!done) {
-			int idx = rand.nextInt(64);
+			int idx = rand.nextInt(col.getPresent().size());
 			List<String> present = col.getPresent().get(idx).getPresent();
 			if (present!=null && present.size()>0) { 
 				col.setCurrentStatus(present);
@@ -158,7 +158,7 @@ public final class Shuffler {
 
 		Random rand = new Random();
 		int blah = rand.nextInt(16);
-		LOG.log(Level.INFO, "Automatic Shuffler {0}", blah);
+		//LOG.log(Level.INFO, "Automatic Shuffler {0}", blah);
 
 		if (snare) {			
 			if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
@@ -173,7 +173,6 @@ public final class Shuffler {
 				for (Visual v: col.getAllVisuals()) {
 					v.setGenerator2(rand.nextInt(size));
 				}
-
 			}
 
 			if (blah == 3 && col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {

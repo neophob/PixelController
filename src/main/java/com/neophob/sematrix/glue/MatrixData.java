@@ -76,8 +76,7 @@ public class MatrixData {
 		this.deviceYSize = deviceYSize;
 		this.deviceSize = deviceXSize*deviceYSize;
 
-		LOG.log(Level.INFO,
-				"screenSize: {0} ({1} * {2}), "
+		LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), "
 				, new Object[] { deviceSize, deviceXSize, deviceYSize });
 		
 		Collector.getInstance().setMatrix(this);

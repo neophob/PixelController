@@ -48,19 +48,16 @@ public enum ValidCommands {
 	/** The CHANGE mixer. */
 	CHANGE_MIXER(CommandGroup.VISUAL, 1, "<INT> change mixer for current visual"),
 	
-	//TODO
 	/** The CHANGE output. */
-	CHANGE_OUTPUT(CommandGroup.OUTPUT, 0, "<INT> change visual for all outputs"),
+	CHANGE_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for all outputs"),
 	
-	//TODO
 	/** The CHANGE output effect. */
-	CHANGE_OUTPUT_EFFECT(CommandGroup.OUTPUT, 0, "<INT> change effect for all outputs"),
+	CHANGE_OUTPUT_EFFECT(CommandGroup.OUTPUT, 1, "<INT> change effect for all outputs"),
 	
-	//TODO
 	/** The CHANGE fader. */
-	CHANGE_FADER(CommandGroup.OUTPUT, 0, "<INT> change fader for all outputs"),
+	CHANGE_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for current outputs"),
 	
-	/** The CHANG e_ tint. */
+	/** The CHANGE tint. */
 	CHANGE_TINT(CommandGroup.EFFECT, 3, "<INT> <INT> <INT> select rgb value for the tint effect, 0-255"),
 	
 	/** The CHANGE present. */
@@ -109,8 +106,11 @@ public enum ValidCommands {
 	PRESET_RANDOM(CommandGroup.MISC, 0, "one shot randomizer, use a pre-stored present"),
 	
 	/** The CURRENT visual. */
-	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual");
-	
+	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual"),
+
+	/** The CURRENT output. */
+	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output");
+
 	/** The nr of params. */
 	private int nrOfParams;
 	
@@ -162,7 +162,7 @@ public enum ValidCommands {
 	}
 
 	/**
-	 * X.
+	 * getCommandsByGroup
 	 *
 	 * @param group the group
 	 * @return the list
