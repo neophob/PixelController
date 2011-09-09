@@ -1,17 +1,17 @@
-#N canvas 708 104 898 602 10;
+#N canvas 465 117 898 602 10;
 #X declare -lib mrpeach;
 #X obj 5 -25 cnv 15 700 295 empty empty visuals 20 12 0 14 -204786
 -66577 0;
 #X obj 58 54 hradio 15 1 0 15 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 8;
+-1 -1 14;
 #X obj 58 76 hradio 15 1 0 9 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 0;
+-1 8;
 #X obj 59 139 hradio 15 1 0 15 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
 -1 -1 14;
 #X obj 59 161 hradio 15 1 0 9 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 2;
+-1 -1 7;
 #X obj 60 224 hradio 15 1 0 10 s_mix1 r_mix1 empty 0 -8 0 10 -203904
--1 -1 4;
+-1 -1 6;
 #X obj 12 54 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 12 76 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
@@ -25,7 +25,7 @@
 #X obj 5 274 cnv 15 380 110 empty empty output 20 12 0 14 -228856 -66577
 0;
 #X obj 80 346 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 3;
 #X text 35 322 Fader;
 #X obj 80 324 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
 -1 -1 0;
@@ -37,7 +37,7 @@
 #X obj 14 323 tgl 15 0 s_rndsel_faderout r_rndsel_faderout empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 14 345 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -260097
--1 -1 0 1;
+-1 -1 1 1;
 #X text 96 283 output #1;
 #X text 35 343 Visual;
 #X text 27 75 FX1;
@@ -139,19 +139,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 438 1;
+-262144 -1 -1 1556 1;
 #X obj 33 71 cnv 15 140 160 empty empty //colorize 20 12 0 14 -262130
 -66577 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 1033 1;
+-33289 -1 3100 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 2565 1;
+-33289 -1 3100 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 1787 1;
+-33289 -1 3100 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -159,7 +159,7 @@
 #X obj 33 226 cnv 15 140 70 empty empty //rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 1623 1;
+16 64 12 -262144 -33289 -1 1550 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -757,7 +757,7 @@
 #X obj 766 300 r s_rndsel_threshold;
 #X floatatom 766 328 5 0 0 0 - - -;
 #X obj 62 516 send to_server;
-#X obj 697 84 send to_server;
+#X obj 404 156 send to_server;
 #X obj 62 441 pack i i i i i i i i i i i i i i;
 #X msg 62 473 send CHANGE_SHUFFLER_SELECT \$1 \$2 \$3 \$4 \$5 \$6 \$7
 \$8 \$9 \$10 \$11 \$12 \$13 \$14;
@@ -2067,7 +2067,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X obj 50 50 cnv 15 160 110 empty empty //output_map 20 12 0 14 -204786
 -66577 0;
 #X obj 59 120 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
-empty 0 -8 0 10 -228856 -1 -1 2;
+empty 0 -8 0 10 -228856 -1 -1 3;
 #X obj 59 98 hradio 15 1 0 4 s_output_fader_all r_output_fader_all
 empty 0 -8 0 10 -228856 -1 -1 2;
 #X obj 59 76 hradio 15 1 0 9 s_output_fx_all r_output_fx_all empty
@@ -2080,7 +2080,7 @@ Emboss;
 #X text 79 365 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
 #X obj 523 -19 hradio 22 1 0 5 s_current_visual r_current_visual select_visual
--80 11 0 10 -262144 -1 -1 0;
+-80 11 0 10 -258113 -1 -1 3;
 #X text 58 6 Generators: Off \, Blinken \, ImagePlasma \, Simplecolors
 \, Fire \, Metaballs \, PixelimgTexturedeformation \, Textwriter \,
 Cell \, Plasma2 \, Frequency \, Drops;
@@ -2153,7 +2153,7 @@ Cell \, Plasma2 \, Frequency \, Drops;
 #X obj 29 218 tgl 15 0 empty r_tgl_emulate emulate_xy_pad_with_mouse
 17 7 0 10 -262144 -1 -1 0 1;
 #X obj 139 443 mod 256;
-#X obj 10 10 grid grid1 200 0 255 200 0 99 1 1 1 10 10 482 54;
+#X obj 10 10 grid grid1 200 0 255 200 0 99 1 1 1 10 10 610 93;
 #X obj 164 414 mod 100;
 #X obj 656 333 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -2240,4 +2240,4 @@ Cell \, Plasma2 \, Frequency \, Drops;
 #X coords 0 -1 1 1 250 230 1 10 10;
 #X restore 439 22 pd xypad;
 #X obj 274 281 hradio 22 1 0 4 s_current_output r_current_output select_output
--80 11 0 10 -262144 -1 -1 0;
+-80 11 0 10 -258113 -1 -1 0;
