@@ -49,8 +49,8 @@ import processing.core.PApplet;
 import processing.serial.Serial;
 
 import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
-import com.neophob.lib.rainbowduino.RainbowduinoHelper;
 import com.neophob.lib.rainbowduino.SerialPortException;
+import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
@@ -304,7 +304,7 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 */
 	private boolean didFrameChange(byte data[]) {
-		String s = RainbowduinoHelper.getMD5(data);
+		String s = MD5.asHex(data);
 		
 		if (lastDataMap.isEmpty()) {
 			//first run
