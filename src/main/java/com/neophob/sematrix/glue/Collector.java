@@ -126,6 +126,8 @@ public final class Collector {
 	
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
+	
+	private boolean soundAware=false;
 
 	/**
 	 * Instantiates a new collector.
@@ -193,7 +195,8 @@ public final class Collector {
 		pixelControllerOutput.initAll();
 		
 		ph.loadPresents();
-
+		soundAware = ph.isAudioAware();
+		
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
@@ -229,20 +232,24 @@ public final class Collector {
 			return;
 		}
 		
-		//get sound volume
-		float f = Sound.getInstance().getVolumeNormalized();
-		int u = (int)(0.5f+f*1.5f);
-		//check for silence - in this case update slowly
-		if (u<1) {
-			if (frames%3==1) {
-				u=1;
+		int u = 1;
+		
+		if (soundAware) {
+			//get sound volume
+			float f = Sound.getInstance().getVolumeNormalized();
+			u = (int)(0.5f+f*1.5f);
+			//check for silence - in this case update slowly
+			if (u<1) {
+				if (frames%3==1) {
+					u=1;
+				}
 			}
-		}
-		if (Sound.getInstance().isKick()) {
-			u+=3;
-		}
-		if (Sound.getInstance().isHat()) {
-			u+=1;
+			if (Sound.getInstance().isKick()) {
+				u+=3;
+			}
+			if (Sound.getInstance().isHat()) {
+				u+=1;
+			}			
 		}
 		
 		//update generator depending on the input sound

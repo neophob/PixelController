@@ -461,6 +461,17 @@ public class PropertiesHelper {
     }
 
     /**
+     * Start randommode.
+     *
+     * @return true, if successful
+     */
+    public boolean isAudioAware() {
+        return parseBoolean(ConfigConstant.SOUND_AWARE_GENERATORS);
+    }
+
+    
+
+    /**
      * Gets the nr of screens.
      *
      * @return the nr of screens
