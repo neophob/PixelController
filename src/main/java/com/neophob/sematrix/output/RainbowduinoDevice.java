@@ -101,7 +101,8 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	public void update() {
 		if (initialized) {
 			int size=allI2cAddress.size();
-			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
+			int totalScreens = Collector.getInstance().getNrOfScreens();
+			for (int screen=0; screen<totalScreens; screen++) {
 				//draw only on available screens!
 				if (screen<size) {
 					int i2cAddr = allI2cAddress.get(screen);
