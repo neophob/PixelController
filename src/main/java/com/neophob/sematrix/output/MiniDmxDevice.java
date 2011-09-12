@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
-import com.neophob.sematrix.output.neorainbowduino.NoSerialPortFoundException;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.PropertiesHelper;
 

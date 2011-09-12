@@ -1,4 +1,4 @@
-package com.neophob.sematrix.output.neorainbowduino;
+package com.neophob.sematrix.output;
 
 /**
  * If the library is unable to find a serial port, this Exception will be thrown
@@ -8,19 +8,18 @@ package com.neophob.sematrix.output.neorainbowduino;
  * @author Michael Vogt / neophob.com
  *
  */
-public class SerialPortException extends Exception {
-
+public class NoSerialPortFoundException extends Exception {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3951181732955456485L;
+	private static final long serialVersionUID = -6432383124399209942L;
 
 	/**
 	 * 
 	 * @param s
 	 */
-	public SerialPortException(String s) {
+	public NoSerialPortFoundException(String s) {
 		super(s);
 	}
 }
