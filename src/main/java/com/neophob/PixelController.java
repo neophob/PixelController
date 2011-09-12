@@ -19,7 +19,6 @@
 
 package com.neophob;
 
-import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,9 +60,6 @@ public class PixelController extends PApplet {
 
 	/** The output. */
 	private Output output;
-	
-	/** The error. */
-	private int error;
 	
 	/** The frame counter. */
 	private int frameCounter=0;
@@ -135,24 +131,13 @@ public class PixelController extends PApplet {
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
-	@SuppressWarnings("deprecation")
 	public void draw() { 
 		//update all generators
  
 		Collector.getInstance().updateSystem();
 
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
-			ArduinoOutput arduinoOutput = (ArduinoOutput) this.output;
-			if (arduinoOutput.getArduinoErrorCounter() > 0) {
-				this.error = arduinoOutput.getArduinoErrorCounter();
-				LOG.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
-						new Object[] {
-							new Date(arduinoOutput.getLatestHeartbeat()).toGMTString(),
-							this.error,
-							arduinoOutput.getArduinoBufferSize()
-						}
-				);
-			}
+			this.output.logStatistics();
 		}
 		frameCounter++;
 	}

@@ -105,4 +105,10 @@ public abstract class Output {
 		return name;
 	}
 
+	/**
+	 * debug output if possible
+	 */
+	public void logStatistics() {
+		
+	}
 }

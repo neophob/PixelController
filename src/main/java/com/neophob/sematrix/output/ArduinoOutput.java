@@ -18,6 +18,10 @@
  */
 package com.neophob.sematrix.output;
 
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -27,6 +31,9 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  */
 public abstract class ArduinoOutput extends Output {
 	
+	/** The log. */
+	private static final Logger LOG = Logger.getLogger(ArduinoOutput.class.getName());
+
 	/** The initialized. */
 	protected boolean initialized;
 	
@@ -39,6 +46,7 @@ public abstract class ArduinoOutput extends Output {
 	/**
 	 * Instantiates a new arduino output.
 	 *
+	 * @param ph the ph
 	 * @param controller the controller
 	 * @param name the name
 	 */
@@ -66,4 +74,22 @@ public abstract class ArduinoOutput extends Output {
 	 * @return the latest heartbeat
 	 */
 	public abstract long getLatestHeartbeat();
+	
+	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.output.Output#logStatistics()
+	 */
+	@SuppressWarnings("deprecation")
+	public void logStatistics() {
+		if (this.getArduinoErrorCounter() > 0) {
+			int error = this.getArduinoErrorCounter();
+			LOG.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
+					new Object[] {
+						new Date(this.getLatestHeartbeat()).toGMTString(),
+						error, this.getArduinoBufferSize()
+					}
+			);
+		}		
+	}
+
 }
