@@ -11,3 +11,5 @@ TODO
 -more layouts
 -color simulation in MatrixEmulator be dependend on the selected output device
 
+-make sound related update configurable (markus lang)
+-remove dependency of the rainbowduino lib, integrate it into pixelcontroller

@@ -42,6 +42,8 @@ public class MatrixEmulator extends Output {
 	private int ledSize;
 	
 	private PApplet parent;
+	
+	private Collector col;
 
 	/**
 	 * Instantiates a new matrix emulator.
@@ -66,9 +68,10 @@ public class MatrixEmulator extends Output {
 			break;
 		}
 		
-		parent = Collector.getInstance().getPapplet();
-		parent.size(x, y);
-		parent.background(33,33,33);
+		this.col = Collector.getInstance();
+		this.parent = this.col.getPapplet();
+		this.parent.size(x, y);
+		this.parent.background(33,33,33);
 	}
 
 	/**
@@ -102,11 +105,11 @@ public class MatrixEmulator extends Output {
 		}				
 		
 		int cnt=0;
-		int currentOutput = Collector.getInstance().getCurrentOutput();
+		int currentOutput = this.col.getCurrentOutput();
 		
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
-			for (int screen=0; screen<Collector.getInstance().getNrOfScreens(); screen++) {
+			for (int screen=0; screen<this.col.getNrOfScreens(); screen++) {
 				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen), currentOutput);
 			}			
 			break;

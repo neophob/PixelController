@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 
 import com.neophob.lib.rainbowduino.RainbowduinoHelper;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.misc.MD5;
 
 /**
@@ -48,4 +49,26 @@ public class MD5SpeedTest {
         LOG.log(Level.INFO,"MD5.asHex needed {0}ms", (post-pre));
     }
 
+    @Test
+    public void speedTestNexw() {
+        long pre = System.currentTimeMillis();
+        for (int i=0; i<ROUNDS; i++) {
+            Collector.getInstance().getCurrentVisual();
+        }               
+        long post = System.currentTimeMillis();
+
+        LOG.log(Level.INFO,"111111 {0}ms", (post-pre));
+    }
+    
+    @Test
+    public void speedTestNexw2() {
+        Collector c = Collector.getInstance();
+        long pre = System.currentTimeMillis();
+        for (int i=0; i<ROUNDS; i++) {
+            c.getCurrentVisual();
+        }               
+        long post = System.currentTimeMillis();
+
+        LOG.log(Level.INFO,"2222222 {0}ms", (post-pre));
+    }
 }
