@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
-import com.neophob.lib.rainbowduino.Rainbowduino;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.neorainbowduino.NoSerialPortFoundException;
+import com.neophob.sematrix.output.neorainbowduino.Rainbowduino;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**

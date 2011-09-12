@@ -166,20 +166,6 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>neorainbowduino.jar</id>
-						<configuration>
-							<file>lib/neorainbowduino.jar</file>
-							<groupId>com.neophob</groupId>
-							<artifactId>neorainbowduino</artifactId>
-							<version>0.82</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
 						<id>core.jar</id>
 						<configuration>
 							<file>lib/core.jar</file>
@@ -521,12 +507,6 @@
 			<groupId>compartmental.net</groupId>
 			<artifactId>tritonus_share</artifactId>
 			<version>2.0.2</version>
-		</dependency>
-		<!-- src: http://code.google.com/p/neorainbowduino/ -->
-		<dependency>
-			<groupId>com.neophob</groupId>
-			<artifactId>neorainbowduino</artifactId>
-			<version>0.82</version>
 		</dependency>
 		<!-- src: https://github.com/neophob/processing-blinkenlights -->
 		<dependency>

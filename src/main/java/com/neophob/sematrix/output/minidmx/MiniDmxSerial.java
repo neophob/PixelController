@@ -48,9 +48,9 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.serial.Serial;
 
-import com.neophob.lib.rainbowduino.NoSerialPortFoundException;
-import com.neophob.lib.rainbowduino.SerialPortException;
 import com.neophob.sematrix.output.misc.MD5;
+import com.neophob.sematrix.output.neorainbowduino.NoSerialPortFoundException;
+import com.neophob.sematrix.output.neorainbowduino.SerialPortException;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
