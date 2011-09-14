@@ -1,4 +1,4 @@
-#N canvas 142 77 713 604 10;
+#N canvas 509 141 713 604 10;
 #X declare -lib mrpeach;
 #X obj 5 -25 cnv 15 700 295 empty empty //Visuals 20 12 0 14 -204786
 -66577 0;
@@ -24,11 +24,11 @@
 -1 -1 1 1;
 #X obj 5 274 cnv 15 380 110 empty empty //Output 20 12 0 14 -257985
 -66577 0;
-#X obj 80 346 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -262144
--1 -1 0;
+#X obj 80 346 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -261682
+-1 -1 3;
 #X text 35 322 Fader;
-#X obj 80 324 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -262144
--1 -1 0;
+#X obj 80 324 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -204800
+-1 -1 2;
 #X obj 80 302 hradio 15 1 0 10 s_fx_output1 r_fx_output1 empty 0 -8
 0 10 -262130 -1 -1 8;
 #X text 35 299 Effect;
@@ -38,7 +38,6 @@
 7 0 10 -260097 -1 -1 1 1;
 #X obj 14 345 tgl 15 0 s_rndsel_out r_rndsel_out empty 17 7 0 10 -260097
 -1 -1 1 1;
-#X text 96 283 output #1;
 #X text 35 343 Visual;
 #X text 27 75 FX1;
 #X text 27 53 GEN1;
@@ -755,7 +754,7 @@
 -30 38 0 15 -257985 -1 -1;
 #X obj 461 317 s to_server;
 #X obj 66 74 hsl 250 25 0 127 0 0 empty empty empty -2 -8 0 10 -262130
--1 -1 8100 1;
+-1 -1 20700 0;
 #X obj 63 263 int;
 #X floatatom 167 106 5 0 0 0 - r_sel s_sel;
 #X obj 63 308 s r_sel;
@@ -773,20 +772,20 @@
 #X coords 0 -1 1 1 290 110 1 50 50;
 #X restore 4 388 pd presentStuff;
 #N canvas 60 38 815 243 output4all 0;
-#X obj 50 50 cnv 15 170 110 empty empty //ALL_Outputs 20 12 0 14 -257985
+#X obj 50 50 cnv 15 170 110 empty empty //All_Outputs 20 12 0 14 -257985
 -66577 0;
 #X obj 59 120 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
-empty 0 -8 0 10 -228856 -1 -1 4;
+empty 0 -8 0 10 -261682 -1 -1 4;
 #X obj 59 98 hradio 15 1 0 4 s_output_fader_all r_output_fader_all
-empty 0 -8 0 10 -228856 -1 -1 0;
+empty 0 -8 0 10 -204800 -1 -1 0;
 #X obj 59 76 hradio 15 1 0 10 s_output_fx_all r_output_fx_all empty
-0 -8 0 10 -228856 -1 -1 9;
+0 -8 0 10 -262130 -1 -1 9;
 #X coords 0 -1 1 1 170 110 1 50 50;
 #X restore 389 274 pd output4all;
 #X text 79 365 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
 #X obj 589 -20 hradio 22 1 0 5 s_current_visual r_current_visual select_visual
--80 11 0 10 -258113 -1 -1 0;
+-80 6 0 10 -258113 -1 -1 0;
 #X text 58 6 Generators: Off \, Blinken \, ImagePlasma \, Simplecolors
 \, Fire \, Metaballs \, PixelimgTexturedeformation \, Textwriter \,
 Cell \, Plasma2 \, Frequency \, Drops;
@@ -946,7 +945,7 @@ Cell \, Plasma2 \, Frequency \, Drops;
 #X coords 0 -1 1 1 250 230 1 10 10;
 #X restore 439 22 pd xypad;
 #X obj 290 281 hradio 22 1 0 4 s_current_output r_current_output select_output
--80 11 0 10 -258113 -1 -1 3;
+-80 6 0 10 -258113 -1 -1 3;
 #N canvas 175 277 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
