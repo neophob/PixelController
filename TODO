@@ -1,4 +1,3 @@
-
 TODO
 ----
 -palette concept (greyscale, rgb, hsv...)
@@ -9,7 +8,6 @@ TODO
 -Move message handling and randomizer handling out to effective classes
 -log to a file
 -more layouts
--color simulation in MatrixEmulator be dependend on the selected output device
-
--make sound related update configurable (markus lang)
--remove dependency of the rainbowduino lib, integrate it into pixelcontroller
+-color depth of MatrixEmulator be dependend on the selected output device (currently hardcoded)
+-more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
+-update generators only if they are visiable
