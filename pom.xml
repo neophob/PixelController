@@ -76,50 +76,12 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>assembly</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>${project.artifactId}-${project.version}</finalName>
 							<outputDirectory>${project.build.directory}</outputDirectory>
 							<descriptors>
 								<descriptor>${basedir}/src/build/assembly.xml</descriptor>
 							</descriptors>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.pyx4j</groupId>
-				<artifactId>maven-junction-plugin</artifactId>
-				<version>1.0.3</version>
-				<executions>
-					<execution>
-						<id>assembly</id>
-						<phase>package</phase>
-							<goals>
-								<goal>link</goal>
-							</goals>
-							<configuration>
-								<links>
-									<link>
-										<src>${project.build.directory}/assembly/${project.artifactId}-${project.version}</src>
-										<dst>${project.build.directory}/assembly/current</dst>
-									</link>
-								</links>
-							</configuration>
-					</execution>
-					<execution>
-						<id>clean</id>
-						<phase>pre-clean</phase>
-							<goals>
-								<goal>unlink</goal>
-							</goals>
-							<configuration>
-								<links>
-									<link>
-										<src>${project.build.directory}/assembly/${project.artifactId}-${project.version}</src>
-										<dst>${project.build.directory}/assembly/current</dst>
-									</link>
-								</links>
-							</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -148,7 +110,7 @@
 							<fileSeparator>\</fileSeparator>
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.build.directory}/assembly/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
@@ -163,7 +125,7 @@
 							<fileSeparator>/</fileSeparator>
 							<pathSeparator>:</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.build.directory}/assembly/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
