@@ -87,43 +87,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.pyx4j</groupId>
-				<artifactId>maven-junction-plugin</artifactId>
-				<version>1.0.3</version>
-				<executions>
-					<execution>
-						<id>assembly</id>
-						<phase>package</phase>
-							<goals>
-								<goal>link</goal>
-							</goals>
-							<configuration>
-								<links>
-									<link>
-										<src>${project.build.directory}/assembly/${project.artifactId}-${project.version}</src>
-										<dst>${project.build.directory}/assembly/current</dst>
-									</link>
-								</links>
-							</configuration>
-					</execution>
-					<execution>
-						<id>clean</id>
-						<phase>pre-clean</phase>
-							<goals>
-								<goal>unlink</goal>
-							</goals>
-							<configuration>
-								<links>
-									<link>
-										<src>${project.build.directory}/assembly/${project.artifactId}-${project.version}</src>
-										<dst>${project.build.directory}/assembly/current</dst>
-									</link>
-								</links>
-							</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
 				<version>1.9.0</version>
@@ -148,7 +111,7 @@
 							<fileSeparator>\</fileSeparator>
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.build.directory}/assembly/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
+							<outputFile>${project.build.directory}/assembly/${project.artifactId}/classpath-win.properties</outputFile>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
@@ -163,7 +126,7 @@
 							<fileSeparator>/</fileSeparator>
 							<pathSeparator>:</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.build.directory}/assembly/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
+							<outputFile>${project.build.directory}/assembly/${project.artifactId}/classpath-unix.properties</outputFile>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>

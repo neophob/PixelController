@@ -27,7 +27,7 @@
 	<formats>
 		<format>dir</format>
 	</formats>
-	<baseDirectory>${project.artifactId}-${project.version}</baseDirectory>
+	<baseDirectory>${project.artifactId}</baseDirectory>
  
 	<!-- collect external libs -->
 	<dependencySets>
