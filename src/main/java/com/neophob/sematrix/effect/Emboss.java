@@ -27,24 +27,73 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Emboss extends Effect {
 
-	/**
-	 * Instantiates a new emboss.
-	 *
-	 * @param controller the controller
-	 */
-	public Emboss(PixelControllerEffect controller) {
-		super(controller, EffectName.EMBOSS, ResizeName.QUALITY_RESIZE);
-	}
+    /** The emboss kernel. */
+    private static float[] embossKernel = new float[]{
+       -2,-2, 0,
+       -2, 6, 0,
+        0, 0, 0      
+    };
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
-	 */
-	public int[] getBuffer(int[] buffer) {
-//		return BoxFilter.applyBoxFilter(8, 1, buffer, this.internalBufferXSize);
-		int []a = BoxFilter.applyBoxFilter(8, 1, buffer, this.internalBufferXSize);
-		a = BoxFilter.applyBoxFilter(4, 1, a, this.internalBufferXSize);
-		return BoxFilter.applyBoxFilter(5, 1, a, this.internalBufferXSize);
-	}
-	
+    /** The boxoffset. */
+    private int[] boxoffset;
+    
+    /** The buffer size. */
+    private int bufferSize;
+
+    /**
+     * Instantiates a new emboss.
+     *
+     * @param controller the controller
+     */
+    public Emboss(PixelControllerEffect controller) {
+        super(controller, EffectName.EMBOSS, ResizeName.QUALITY_RESIZE);
+
+        bufferSize = internalBufferXSize*internalBufferYSize;
+        boxoffset = new int[] { 
+                bufferSize-internalBufferXSize-1,       bufferSize-internalBufferXSize,     bufferSize-internalBufferXSize+1,
+                bufferSize-1,                           0,                                  1,
+                internalBufferXSize-1,                  internalBufferXSize,                internalBufferXSize+1
+        };
+
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+     */
+    public int[] getBuffer(int[] buffer) {
+        int ret[] = new int[buffer.length];
+        float f;
+        int val,valr, valg, valb;
+        int index=0;
+
+        for (int y=0; y<internalBufferYSize; y++) {
+            for (int x=0; x<internalBufferXSize; x++) {
+                valr = 0;
+                valg = 0;
+                valb = 0;
+
+                for (int ofsn=0; ofsn< 9; ofsn++){
+                    f = embossKernel[ofsn];
+                    val = buffer[(index + boxoffset[ofsn])%(bufferSize)];
+                    valr += (int)(f * ((val>>16) & 255));
+                    valg += (int)(f * ((val>> 8) & 255));
+                    valb += (int)(f * ((val    ) & 255));
+                }      
+
+                if (valr>255) valr = 255;
+                if (valg>255) valg = 255;
+                if (valb>255) valb = 255;
+
+                if (valr<0) valr = 0;
+                if (valg<0) valg = 0;
+                if (valb<0) valb = 0;
+
+                ret[index] = (int)(valr << 16) | (valg << 8) | valb;
+                index++;
+            }
+
+        }
+        return ret;
+    }
 
 }

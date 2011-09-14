@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 import processing.core.PConstants;
 import processing.core.PImage;
 
-import com.neophob.sematrix.effect.BoxFilter;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -55,9 +54,6 @@ public class TextureDeformation extends Generator {
 	/** The m lut. */
 	private int[] lookUpTable;
 	
-	/** The tmp array. */
-	private int[] tmpArray;
-	
 	/** The texture img. */
 	private PImage textureImg;
 	
@@ -81,9 +77,8 @@ public class TextureDeformation extends Generator {
 		w = getInternalBufferXSize();
 		h = getInternalBufferYSize();
 		lookUpTable =  new int[3 * w * h];
-		tmpArray = new int[this.internalBuffer.length];
+		
 		// use higher resolution textures if things get to pixelated
-
 		this.selectedLut=9;
 		loadFile(filename);
 	}
@@ -160,10 +155,10 @@ public class TextureDeformation extends Generator {
 			}
 
 			// put texture pixel on buffer screen
-			tmpArray[pixelCount] = currentPixel;
+			internalBuffer[pixelCount] = currentPixel;
 		}
 		textureImg.updatePixels();
-		this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, tmpArray, getInternalBufferXSize());
+		//this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, tmpArray, getInternalBufferXSize());
 		timeDisplacement++;
 	}
 
