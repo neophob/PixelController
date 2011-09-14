@@ -10,4 +10,4 @@ TODO
 -more layouts
 -color depth of MatrixEmulator be dependend on the selected output device (currently hardcoded)
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
--update generators only if they are visiable
+
