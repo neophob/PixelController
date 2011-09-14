@@ -45,10 +45,10 @@ public class SimpleColors extends Generator {
 	@Override
 	public void update() {
 		int col, ofs=0;
-		for (int y=0; y<this.getInternalBufferYSize(); y++) {
-			for (int x=0; x<this.getInternalBufferXSize(); x++) {			
+		for (int y=0; y<internalBufferYSize; y++) {
+		    ofs = y*internalBufferXSize;
+			for (int x=0; x<internalBufferXSize; x++) {			
 				col = (int)((4*((y+rotate)%255)) << 16) | ((2*((x+rotate)%255)) << 8)  | ((x+y+rotate>>1)%255);
-				ofs = y*this.getInternalBufferXSize()+x;				
 				this.internalBuffer[ofs++]=col;
 			}
 		}

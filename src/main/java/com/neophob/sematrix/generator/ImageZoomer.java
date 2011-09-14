@@ -178,6 +178,7 @@ public class ImageZoomer extends Generator {
 		distZoom = endZoom-beginZoom;
 	}
 
+	
 	/**
 	 * Do the move.
 	 */

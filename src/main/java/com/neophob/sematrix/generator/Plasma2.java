@@ -21,9 +21,9 @@ package com.neophob.sematrix.generator;
 
 import java.awt.Color;
 
-import com.neophob.sematrix.resize.Resize.ResizeName;
-
 import processing.core.PApplet;
+
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
 /**
@@ -61,21 +61,21 @@ public class Plasma2 extends Generator {
 		int timeDisplacement = frameCount++;
 
 		// No need to do this math for every pixel
-		float calculation1 = PApplet.sin( PApplet.radians(timeDisplacement * 0.61655617f));
-		float calculation2 = PApplet.sin( PApplet.radians(timeDisplacement * -3.6352262f));
+		float calculation1 = (float)Math.sin( PApplet.radians(timeDisplacement * 0.61655617f));
+		float calculation2 = (float)Math.sin( PApplet.radians(timeDisplacement * -3.6352262f));
 		
 		int aaa = 1024;
-		int ySize = getInternalBufferYSize();
+		int ySize = internalBufferYSize;
 		// Plasma algorithm
-		for (int x = 0; x < getInternalBufferXSize(); x++, xc++) {
+		for (int x = 0; x < internalBufferXSize; x++, xc++) {
 			float yc = 20;
-			float s1 = aaa + aaa * PApplet.sin(PApplet.radians(xc) * calculation1 );
+			float s1 = aaa + aaa * (float)Math.sin(PApplet.radians(xc) * calculation1 );
 
 			for (int y = 0; y < ySize; y++, yc++) {
-				float s2 = aaa + aaa * PApplet.sin(PApplet.radians(yc) * calculation2 );
-				float s3 = aaa + aaa * PApplet.sin(PApplet.radians((xc + yc + timeDisplacement * 5) / 2));  
+				float s2 = aaa + aaa * (float)Math.sin(PApplet.radians(yc) * calculation2 );
+				float s3 = aaa + aaa * (float)Math.sin(PApplet.radians((xc + yc + timeDisplacement * 5) / 2));  
 				float s  = (s1+ s2 + s3) / (6f*255f);
-				this.internalBuffer[y*this.getInternalBufferXSize()+x] = Color.HSBtoRGB(s, 0.98f, 0.9f);
+				this.internalBuffer[y*internalBufferXSize+x] = Color.HSBtoRGB(s, 0.98f, 0.9f);
 			}
 		}   
 	}
