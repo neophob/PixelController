@@ -319,7 +319,7 @@ public class Visual {
 	 */
 	public static void initializeVisuals(int nrOfScreens) {
 		for (int n=0; n<nrOfScreens+1; n++) {
-			switch (n%5) {
+			switch (n%10) {
 			case 0:
 				new Visual(GeneratorName.BLINKENLIGHTS);
 				break;
@@ -337,6 +337,21 @@ public class Visual {
 				break;
 			case 5:
 				new Visual(GeneratorName.FIRE);
+				break;
+			case 6:
+				new Visual(GeneratorName.IMAGE_ZOOMER);
+				break;
+			case 7:
+				new Visual(GeneratorName.TEXTURE_DEFORMATION);
+				break;
+			case 8:
+				new Visual(GeneratorName.GEOMETRICS);
+				break;
+			case 9:
+				new Visual(GeneratorName.PLASMA_ADVANCED);
+				break;
+			case 10:
+				new Visual(GeneratorName.PIXELIMAGE);
 				break;
 			}
 		}

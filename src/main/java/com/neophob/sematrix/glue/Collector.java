@@ -188,7 +188,7 @@ public final class Collector {
 		pixelControllerMixer = new PixelControllerMixer();
 		pixelControllerMixer.initAll();
 		
-		//create 5 visuals
+		//create visuals
 		Visual.initializeVisuals(nrOfScreens);
 				
 		pixelControllerOutput = new PixelControllerOutput();
