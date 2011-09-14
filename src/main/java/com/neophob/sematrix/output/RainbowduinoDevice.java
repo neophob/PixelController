@@ -59,7 +59,7 @@ public class RainbowduinoDevice extends ArduinoOutput {
 			this.initialized = rainbowduino.ping();
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
-			LOG.log(Level.WARNING, "failed to initialize serial port!");
+			LOG.log(Level.WARNING, "failed to initialize serial port!", e);
 		}
 		
 	}
