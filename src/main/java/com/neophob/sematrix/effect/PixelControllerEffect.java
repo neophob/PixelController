@@ -73,7 +73,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		tint = new Tint(this);
 		threshold = new Threshold(this);
 		new Emboss(this);
-
+		new Zoom(this);
 	}
 	
 	/* (non-Javadoc)

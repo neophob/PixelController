@@ -299,8 +299,8 @@ public class Visual {
 	 *
 	 * @param mixer1 the new mixer
 	 */
-	public void setMixer(Mixer mixer1) {
-		this.mixer = mixer1;
+	public void setMixer(Mixer mixer) {
+		this.mixer = mixer;
 	}
 
 	/**

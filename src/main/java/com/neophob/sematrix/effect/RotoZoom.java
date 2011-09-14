@@ -34,7 +34,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * 
  * ripped from http://www.openprocessing.org/visuals/?visualID=8030
  */
-public class RotoZoom extends Effect {
+public class RotoZoom extends RotoZoomEffect {
 
 	//endless zooming or zoomin-zoomout...
 	/**
@@ -178,44 +178,8 @@ public class RotoZoom extends Effect {
 				dscalee*=-1;
 			}			
 		}
-
 	}
 
-
-	/**
-	 * do the actual roto zooming.
-	 *
-	 * @param scaleP the scale p
-	 * @param angleP the angle p
-	 * @param bufferP the buffer p
-	 * @return the int[]
-	 */
-	private int[] rotoZoom(float scaleP, float angleP, int bufferP[]) {
-		int[] tmp = new int[bufferP.length];
-		int x,y,offs=0,soffs;
-		float tx,ty;
-
-		float ca=(float)(scaleP*Math.cos(angleP));//cosAng);
-		float sa=(float)(scaleP*Math.sin(angleP));//sinAng);
-
-		float txx=0-(internalBufferXSize/2.0f)*sa;
-		float tyy=0+(internalBufferYSize/2.0f)*ca;
-
-		for (y=0;y<internalBufferYSize;y++) {
-			txx-=sa;
-			tyy+=ca;
-			ty=tyy;
-			tx=txx;
-			for (x=0;x<internalBufferXSize;x++) {
-				tx+=ca;
-				ty+=sa;
-				soffs=(int)tx+(int)(ty)*internalBufferXSize;
-				tmp[offs++]=bufferP[soffs&(bufferP.length-1)];
-			}
-		}
-
-		return tmp;
-	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.effect.Effect#shuffle()
