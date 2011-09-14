@@ -20,13 +20,17 @@
 package com.neophob.sematrix.generator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator.GeneratorName;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PixelControllerElement;
+import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.properties.ValidCommands;
 
@@ -131,9 +135,20 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @see com.neophob.sematrix.glue.PixelControllerElement#update()
      */
     @Override
-    public void update() {
-        for (Generator m: allGenerators) {			
-            m.update();				
+    public void update() {        
+        //get a set with active visuals
+        List<Visual> allVisuals = Collector.getInstance().getAllVisuals();
+        Set<Integer> activeVisuals = new HashSet<Integer>();        
+        for (Visual v: allVisuals) {
+            activeVisuals.add(v.getGenerator1Idx());
+            activeVisuals.add(v.getGenerator2Idx());
+        }
+        
+        //update only selected generators
+        for (Generator m: allGenerators) {
+            if (activeVisuals.contains(m.getId())) {
+                m.update();   
+            }
         }
     }
 
