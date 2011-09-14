@@ -65,7 +65,56 @@ import com.neophob.sematrix.properties.ColorFormat;
  *
  */
 public class MiniDmxSerial {
-		
+	
+    enum MiniDmxPayload {
+        SEND_96_BYTES(96, (byte)0xa0),              //32 pixel, for example 8x4 pixel
+        SEND_256_BYTES(256, (byte)0xa1),            //85 pixel, for example 8x8 pixel and padding
+        SEND_512_BYTES(512, (byte)0xa2),            //170 pixel, for example 16x8 pixel and padding
+        SEND_768_BYTES(768, (byte)0xb0),            //256 pixel, for example 16x16 pixel
+        SEND_1536_BYTES(1536, (byte)0xb1),          //512 pixel, for example 32x16 pixel
+        SEND_3072_BYTES(3072, (byte)0xb2);          //1024 pixel, for example 32x32 pixel
+        
+        MiniDmxPayload(int payloadSize, byte payload) {
+            this.payloadSize = payloadSize;
+            this.payload = payload;
+        }
+        
+        private int payloadSize;
+        
+        private byte payload;
+
+        /**
+         * @return the payloadSize
+         */
+        public int getPayloadSize() {
+            return payloadSize;
+        }
+
+        /**
+         * @return the payload
+         */
+        public byte getPayload() {
+            return payload;
+        }
+        
+        /**
+         * 
+         * @param payloadSize
+         * @return
+         * @throws IllegalArgumentException
+         */
+        public static MiniDmxPayload getDmxPayload(int payloadSize) throws IllegalArgumentException {
+            for (MiniDmxPayload mdp: MiniDmxPayload.values()) {
+                if (mdp.getPayloadSize()==payloadSize) {
+                    return mdp;
+                }
+            }
+            
+            throw new IllegalArgumentException("Unsupported Payload size defined!");
+        }
+        
+    }
+    
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
 	
@@ -84,23 +133,7 @@ public class MiniDmxSerial {
 	/** The Constant REPLY_ERROR. */
 	private static final byte REPLY_ERROR    = (byte)0xc0;
 	
-	/** The Constant SEND_96_BYTES. */
-	private static final byte SEND_96_BYTES    = (byte)0xa0; //32 pixel, for example 8x4 pixel
-	
-	/** The Constant SEND_256_BYTES. */
-	private static final byte SEND_256_BYTES   = (byte)0xa1; //85 pixel, for example 8x8 pixel and padding
-	
-	/** The Constant SEND_512_BYTES. */
-	private static final byte SEND_512_BYTES   = (byte)0xa2; //170 pixel, for example 16x8 pixel and padding
-	
-	/** The Constant SEND_768_BYTES. */
-	private static final byte SEND_768_BYTES   = (byte)0xb0; //256 pixel, for example 16x16 pixel
-	
-	/** The Constant SEND_1536_BYTES. */
-	private static final byte SEND_1536_BYTES  = (byte)0xb1; //512 pixel, for example 32x16 pixel
-	
-	/** The Constant SEND_3072_BYTES. */
-	private static final byte SEND_3072_BYTES  = (byte)0xb2; //1024 pixel, for example 32x32 pixel
+	private MiniDmxPayload miniDmxPayload;
 	
 	//connection errors to arduino, TODO: use it!
 	/** The connection error counter. */
@@ -109,9 +142,6 @@ public class MiniDmxSerial {
 	/** The ack errors. */
 	private long ackErrors = 0;
 
-	/** The target buffersize. */
-	private int targetBuffersize;
-	
 	/** The app. */
 	private PApplet app;
 
@@ -152,27 +182,23 @@ public class MiniDmxSerial {
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 *
-	 * @param _app the _app
+	 * @param app the app
 	 * @param portName the port name
 	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet _app, String portName, int targetBuffersize) throws NoSerialPortFoundException {
+	public MiniDmxSerial(PApplet app, String portName, int targetBuffersize) throws IllegalArgumentException, NoSerialPortFoundException {
 		
-		LOG.log(Level.INFO,	"Initialize miniDMX lib v{0}", VERSION);
+		LOG.log(Level.INFO,	"Initialize MiniDMX lib v{0}", VERSION);
 		
-		this.app = _app;
-		app.registerDispose(this);
+		this.app = app;
+		this.app.registerDispose(this);
 		
 		lastDataMap = "";
 		
 		String serialPortName="";	
-		if (targetBuffersize == 96 || targetBuffersize == 256 || targetBuffersize == 512 || targetBuffersize == 768 || targetBuffersize == 3072) {
-			this.targetBuffersize = targetBuffersize;
-		} else {
-			LOG.log(Level.SEVERE, "Invalid buffer size selected: {0}"+targetBuffersize);
-			throw new NoSerialPortFoundException("Invalid buffer size selected: "+targetBuffersize);
-		}
+		this.miniDmxPayload = MiniDmxPayload.getDmxPayload(targetBuffersize);
+		LOG.log(Level.INFO,  "MiniDMX payload size: {0}", this.miniDmxPayload.payloadSize);
 		
 		if (portName!=null && !portName.trim().isEmpty()) {
 			//open specific port
@@ -242,6 +268,7 @@ public class MiniDmxSerial {
 	 */
 	private void openPort(String portName) throws NoSerialPortFoundException {
 		if (portName == null) {
+		    LOG.log(Level.INFO, "portName == null");
 			return;
 		}
 		
@@ -272,10 +299,10 @@ public class MiniDmxSerial {
 	/**
 	 * send a serial ping command to the arduino board.
 	 * 
-	 * @return wheter ping was successfull (arduino reachable) or not
+	 * @return wheter ping was successfull or not
 	 */
 	public boolean ping() {		
-		byte data[] = new byte[512];
+		byte data[] = new byte[this.miniDmxPayload.payloadSize];
 		
 		//just send a frame
 		return sendFrame(data);
@@ -339,37 +366,15 @@ public class MiniDmxSerial {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public boolean sendFrame(byte data[]) throws IllegalArgumentException {		
-		if (data.length!=targetBuffersize) {
-			throw new IllegalArgumentException("data lenght must be "+targetBuffersize+" bytes!");
+		if (data.length!=miniDmxPayload.getPayloadSize()) {
+			throw new IllegalArgumentException("sendFrame error, data lenght must be "+miniDmxPayload.getPayloadSize()+" bytes!");
 		}
-		byte cmdfull[] = new byte[targetBuffersize+3];
+		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];
 		
 		cmdfull[0] = START_OF_BLOCK;
-		switch (targetBuffersize) {
-		case 96:
-			cmdfull[1] = SEND_96_BYTES;
-			break;
-		case 256:
-			cmdfull[1] = SEND_256_BYTES;
-			break;
-		case 512:
-			cmdfull[1] = SEND_512_BYTES;
-			break;
-		case 768:
-			cmdfull[1] = SEND_768_BYTES;
-			break;
-		case 1536:
-			cmdfull[1] = SEND_1536_BYTES;
-			break;			
-		case 3072:
-			cmdfull[1] = SEND_3072_BYTES;
-			break;
-		default:
-			LOG.log(Level.WARNING, "Invalid targetBuffersize: {0}", targetBuffersize);
-			return false;
-		}
-		System.arraycopy(data, 0, cmdfull, 2, targetBuffersize);
-		cmdfull[targetBuffersize+2] = END_OF_BLOCK;
+		cmdfull[1] = miniDmxPayload.getPayload();
+		System.arraycopy(data, 0, cmdfull, 2, miniDmxPayload.getPayloadSize());
+		cmdfull[miniDmxPayload.getPayloadSize()+2] = END_OF_BLOCK;
 
 		//send frame only if needed
 		if (didFrameChange(data)) {
@@ -512,10 +517,11 @@ public class MiniDmxSerial {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
+	    int targetBuffersize = miniDmxPayload.getPayloadSize();
 		if (data.length!=targetBuffersize) {
-			throw new IllegalArgumentException("data lenght must be "+targetBuffersize+" bytes!");
+			throw new IllegalArgumentException("convertBufferTo24bit error, data lenght must be "+targetBuffersize+" bytes!");
 		}
-
+		
 		int[] r = new int[targetBuffersize];
 		int[] g = new int[targetBuffersize];
 		int[] b = new int[targetBuffersize];
@@ -555,75 +561,6 @@ public class MiniDmxSerial {
 		return buffer;
 	}
 
-	
-	/**
-	 * Convert buffer to15bit.
-	 *
-	 * @param data the data
-	 * @param colorFormat the color format
-	 * @return the byte[]
-	 * @throws IllegalArgumentException the illegal argument exception
-	 */
-	public byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
-		if (data.length!=targetBuffersize) {
-			throw new IllegalArgumentException("data lenght must be "+targetBuffersize+" bytes!");
-		}
-
-		int[] r = new int[targetBuffersize];
-		int[] g = new int[targetBuffersize];
-		int[] b = new int[targetBuffersize];
-		int tmp;
-		int ofs=0;
-
-		//step#1: split up r/g/b 
-		for (int n=0; n<targetBuffersize; n++) {
-			//one int contains the rgb color
-			tmp = data[ofs];
-
-			switch (colorFormat) {
-			case RGB:
-				r[ofs] = (int) ((tmp>>16) & 255);
-				g[ofs] = (int) ((tmp>>8)  & 255);
-				b[ofs] = (int) ( tmp      & 255);		
-				
-				break;
-			case RBG:
-				r[ofs] = (int) ((tmp>>16) & 255);
-				b[ofs] = (int) ((tmp>>8)  & 255);
-				g[ofs] = (int) ( tmp      & 255);		
-				
-				break;
-			}
-			ofs++;
-		}
-
-		return convertTo15Bit(r,g,b);
-	}
-
-	/**
-	 * Convert to15 bit.
-	 *
-	 * @param r the r
-	 * @param g the g
-	 * @param b the b
-	 * @return the byte[]
-	 */
-	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
-		int dst=0;
-		byte[] converted = new byte[128];
-		//convert to 24bpp to 15(16)bpp 
-		//output format: RRRRRGGG GGGBBBBB (64x)
-		for (int i=0; i<64;i++) {
-			byte b1 = (byte)(r[i]>>3);
-			byte b2 = (byte)(g[i]>>3);
-			byte b3 = (byte)(b[i]>>3);
-
-			converted[dst++] = (byte)((b1<<2) | (b2>>3));
-			converted[dst++] = (byte)(((b2&7)<<5) | b3);
-		}
-		
-		return converted;
-	}
 
 	/**
 	 * Gets the connection error counter.
