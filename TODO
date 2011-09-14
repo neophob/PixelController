@@ -1,8 +1,8 @@
 TODO
 ----
--palette concept (greyscale, rgb, hsv...)
--rewrite output selection/configuration, Color concept, currently we're mixing b/w, rgb and hsv, plus there is a tint effect
--add option for a zoomed screen
+-palette/color concept (greyscale, rgb, hsv...), currently we're mixing b/w, rgb and hsv, plus there is a tint effect
+-rewrite output selection/configuration, 
+-add option for a zoomed screen (effect?)
 -more generators/effects/mixer...
 -update initial image in firmware
 -Move message handling and randomizer handling out to effective classes
