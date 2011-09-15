@@ -25,7 +25,10 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
- * The Class MatrixEmulator.
+ * The low resolution software matrix 
+ * 
+ * @author michu
+ * 
  */
 public class MatrixEmulator extends Output {
 
