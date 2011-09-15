@@ -86,9 +86,7 @@ public class PixelController extends PApplet {
 		col.init(this, FPS, ph);
 		frameRate(FPS);
 		noSmooth();
-				
-		new MatrixEmulator(ph, col.getPixelControllerOutput());				
-		
+						
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
@@ -113,6 +111,8 @@ public class PixelController extends PApplet {
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
+		
+		new MatrixEmulator(ph, col.getPixelControllerOutput(), this.output.getBpp());				
 		
 		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
 			new InternalDebugWindow(true);	

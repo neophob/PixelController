@@ -50,7 +50,7 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	 * @param allI2cAddress the all i2c address
 	 */
 	public RainbowduinoDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, RainbowduinoDevice.class.toString());
+		super(ph, controller, RainbowduinoDevice.class.toString(), 4);
 		
 		this.allI2cAddress = ph.getI2cAddr();		
 		this.initialized = false;		

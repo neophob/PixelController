@@ -49,20 +49,23 @@ public abstract class Output {
 	/** The layout. */
 	protected Layout layout;
 	
+	/** *bit per pixel */
+	protected int bpp;
 	/**
 	 * Instantiates a new output.
 	 *
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name) {
+	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
 		this.name = name;
 				
 		this.matrixData = Collector.getInstance().getMatrix();
 		this.layout = ph.getLayout();
+		this.bpp = bpp;
 
-		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}"
-				, new Object[] { this.name, layout.getLayoutName() });
+		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
+				, new Object[] { this.name, layout.getLayoutName(), this.bpp });
 	
 		//add to list
 		controller.addOutput(this);
@@ -111,4 +114,15 @@ public abstract class Output {
 	public void logStatistics() {
 		
 	}
+
+	/**
+	 * 
+	 * @return bpp (bit per pixel)
+	 */
+	public int getBpp() {
+		return bpp;
+	}
+
+
+	
 }
