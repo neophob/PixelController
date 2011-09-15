@@ -76,7 +76,8 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>${project.artifactId}-${project.version}</finalName>
+							<finalName>assembly</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 							<outputDirectory>${project.build.directory}</outputDirectory>
 							<descriptors>
 								<descriptor>${basedir}/src/build/assembly.xml</descriptor>
@@ -110,7 +111,7 @@
 							<fileSeparator>\</fileSeparator>
 							<pathSeparator>;</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
+							<outputFile>${project.build.directory}/assembly/${project.artifactId}-${project.version}/classpath-win.properties</outputFile>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
@@ -125,7 +126,7 @@
 							<fileSeparator>/</fileSeparator>
 							<pathSeparator>:</pathSeparator>
 							<outputFilterFile>true</outputFilterFile>
-							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-distribution/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
+							<outputFile>${project.build.directory}/assembly/${project.artifactId}-${project.version}/classpath-unix.properties</outputFile>
 							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>

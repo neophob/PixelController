@@ -212,7 +212,9 @@ public final class Collector {
 			pdSrv = new TcpServer(papplet, listeningPort, listeningIp, sendPort);
 		} catch (BindException e) {
 		    LOG.log(Level.SEVERE, "failed to start TCP Server", e);
-		}
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "failed to start TCP Server", e);
+        }
 
 		initialized=true;
 	}

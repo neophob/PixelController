@@ -42,6 +42,7 @@ Boston, MA  02111-1307  USA
 
 package com.neophob.sematrix.output.minidmx;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,7 +67,7 @@ import com.neophob.sematrix.properties.ColorFormat;
  */
 public class MiniDmxSerial {
 	
-    enum MiniDmxPayload {
+    public enum MiniDmxPayload {
         SEND_96_BYTES(96, (byte)0xa0),              //32 pixel, for example 8x4 pixel
         SEND_256_BYTES(256, (byte)0xa1),            //85 pixel, for example 8x8 pixel and padding
         SEND_512_BYTES(512, (byte)0xa2),            //170 pixel, for example 16x8 pixel and padding
@@ -110,7 +111,7 @@ public class MiniDmxSerial {
                 }
             }
             
-            throw new IllegalArgumentException("Unsupported Payload size defined!");
+            throw new IllegalArgumentException("Unsupported Payload size defined: "+payloadSize);
         }
         
     }
@@ -146,7 +147,8 @@ public class MiniDmxSerial {
 	private PApplet app;
 
 	/** The baud. */
-	private int baud = 230400;
+	//private int baud = 230400;
+	private int baud = 115200;
 	
 	/** The port. */
 	private Serial port;
@@ -301,8 +303,14 @@ public class MiniDmxSerial {
 	 * 
 	 * @return wheter ping was successfull or not
 	 */
-	public boolean ping() {		
+	public boolean ping() {
+	    
+	    //the data is not really needed
 		byte data[] = new byte[this.miniDmxPayload.payloadSize];
+
+	    //just make sure its initialized with RANDOM data, so it pass the "didFrameChange" method
+		Random r = new Random();
+		r.nextBytes(data);
 		
 		//just send a frame
 		return sendFrame(data);
@@ -369,11 +377,13 @@ public class MiniDmxSerial {
 		if (data.length!=miniDmxPayload.getPayloadSize()) {
 			throw new IllegalArgumentException("sendFrame error, data lenght must be "+miniDmxPayload.getPayloadSize()+" bytes!");
 		}
-		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];
 		
+		//add header to data
+		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];		
 		cmdfull[0] = START_OF_BLOCK;
 		cmdfull[1] = miniDmxPayload.getPayload();
 		System.arraycopy(data, 0, cmdfull, 2, miniDmxPayload.getPayloadSize());
+		//add eod marker
 		cmdfull[miniDmxPayload.getPayloadSize()+2] = END_OF_BLOCK;
 
 		//send frame only if needed
@@ -416,7 +426,6 @@ public class MiniDmxSerial {
 	 * @throws SerialPortException the serial port exception
 	 */
 	private synchronized void writeSerialData(byte[] cmdfull) throws SerialPortException {
-		//TODO handle the 128 byte buffer limit!
 		if (port==null) {
 			throw new SerialPortException("port is not ready!");
 		}
@@ -471,6 +480,7 @@ public class MiniDmxSerial {
 			return false;
 		}
 		
+		LOG.log(Level.INFO, "#### Reply size: {0} bytes ###", msg.length);
 		int ofs=0;
 		for (byte b:msg) {
 			if (b==START_OF_BLOCK && msg.length-ofs>2 && msg[ofs+2]==END_OF_BLOCK) {
@@ -479,11 +489,10 @@ public class MiniDmxSerial {
 					return true;
 				}
 				if (ack==REPLY_ERROR) {
-					LOG.log(Level.INFO, "#### Invalid reply: {0}ms ###", System.currentTimeMillis()-start);
+					LOG.log(Level.INFO, "#### Invalid reply (ERROR) {0}ms ###", System.currentTimeMillis()-start);
 					return true;
 				}
-				LOG.log(Level.INFO, "#### Unknown reply: {0} ###", ack);
-				
+				LOG.log(Level.INFO, "#### Unknown reply: {0} ###", ack);				
 			}
 			ofs++;
 		}
@@ -517,10 +526,11 @@ public class MiniDmxSerial {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
-	    int targetBuffersize = miniDmxPayload.getPayloadSize();
+	    /*int targetBuffersize = miniDmxPayload.getPayloadSize();
 		if (data.length!=targetBuffersize) {
-			throw new IllegalArgumentException("convertBufferTo24bit error, data lenght must be "+targetBuffersize+" bytes!");
-		}
+			throw new IllegalArgumentException("convertBufferTo24bit error, data lenght must be "+targetBuffersize+" bytes but is "+data.length+" bytes!");
+		}*/
+	    int targetBuffersize = data.length;
 		
 		int[] r = new int[targetBuffersize];
 		int[] g = new int[targetBuffersize];
