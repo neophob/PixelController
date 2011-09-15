@@ -526,10 +526,11 @@ public class MiniDmxSerial {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
-	    int targetBuffersize = miniDmxPayload.getPayloadSize();
+	    /*int targetBuffersize = miniDmxPayload.getPayloadSize();
 		if (data.length!=targetBuffersize) {
-			throw new IllegalArgumentException("convertBufferTo24bit error, data lenght must be "+targetBuffersize+" bytes!");
-		}
+			throw new IllegalArgumentException("convertBufferTo24bit error, data lenght must be "+targetBuffersize+" bytes but is "+data.length+" bytes!");
+		}*/
+	    int targetBuffersize = data.length;
 		
 		int[] r = new int[targetBuffersize];
 		int[] g = new int[targetBuffersize];
