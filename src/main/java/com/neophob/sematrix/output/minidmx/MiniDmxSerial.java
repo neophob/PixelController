@@ -378,10 +378,12 @@ public class MiniDmxSerial {
 			throw new IllegalArgumentException("sendFrame error, data lenght must be "+miniDmxPayload.getPayloadSize()+" bytes!");
 		}
 		
+		//add header to data
 		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];		
 		cmdfull[0] = START_OF_BLOCK;
 		cmdfull[1] = miniDmxPayload.getPayload();
 		System.arraycopy(data, 0, cmdfull, 2, miniDmxPayload.getPayloadSize());
+		//add eod marker
 		cmdfull[miniDmxPayload.getPayloadSize()+2] = END_OF_BLOCK;
 
 		//send frame only if needed
@@ -424,7 +426,6 @@ public class MiniDmxSerial {
 	 * @throws SerialPortException the serial port exception
 	 */
 	private synchronized void writeSerialData(byte[] cmdfull) throws SerialPortException {
-		//TODO handle the 128 byte buffer limit!
 		if (port==null) {
 			throw new SerialPortException("port is not ready!");
 		}
@@ -479,6 +480,7 @@ public class MiniDmxSerial {
 			return false;
 		}
 		
+		LOG.log(Level.INFO, "#### Reply size: {0} bytes ###", msg.length);
 		int ofs=0;
 		for (byte b:msg) {
 			if (b==START_OF_BLOCK && msg.length-ofs>2 && msg[ofs+2]==END_OF_BLOCK) {
@@ -487,11 +489,10 @@ public class MiniDmxSerial {
 					return true;
 				}
 				if (ack==REPLY_ERROR) {
-					LOG.log(Level.INFO, "#### Invalid reply: {0}ms ###", System.currentTimeMillis()-start);
+					LOG.log(Level.INFO, "#### Invalid reply (ERROR) {0}ms ###", System.currentTimeMillis()-start);
 					return true;
 				}
-				LOG.log(Level.INFO, "#### Unknown reply: {0} ###", ack);
-				
+				LOG.log(Level.INFO, "#### Unknown reply: {0} ###", ack);				
 			}
 			ofs++;
 		}
