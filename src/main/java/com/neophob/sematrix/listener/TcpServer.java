@@ -97,7 +97,7 @@ public final class TcpServer implements Runnable {
 	 * @throws BindException the bind exception
 	 */
 	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {		
-		this.app = app;  
+		this.app = app; 
 		app.registerDispose(this);
 
 		this.sendHost = sendHost;

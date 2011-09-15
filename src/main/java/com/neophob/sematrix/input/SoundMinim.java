@@ -92,7 +92,11 @@ public final class SoundMinim implements SeSound, Runnable {
 		fft.window(FFT.HAMMING);
 		fft.logAverages(120,4); // 32 bands
 
-		Collector.getInstance().getPapplet().registerDispose(this);
+		if (Collector.getInstance().getPapplet() == null) {
+		    LOG.log(Level.WARNING, "failed to registerDispose for SoundMinim!");
+		} else {
+		    Collector.getInstance().getPapplet().registerDispose(this);
+		}
 		this.runner = new Thread(this);
 		this.runner.setName("ZZ Sound stuff");
 		this.runner.start();

@@ -68,9 +68,9 @@ public class Emboss extends Effect {
 
         for (int y=0; y<internalBufferYSize; y++) {
             for (int x=0; x<internalBufferXSize; x++) {
-                valr = 0;
-                valg = 0;
-                valb = 0;
+                valr = 128;
+                valg = 128;
+                valb = 128;
 
                 for (int ofsn=0; ofsn< 9; ofsn++){
                     f = embossKernel[ofsn];
