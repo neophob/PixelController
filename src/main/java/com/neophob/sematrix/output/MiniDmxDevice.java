@@ -51,6 +51,9 @@ public class MiniDmxDevice extends Output {
 	/** The y size. */
 	private int ySize;
 	
+	/** The output color format. */
+	private ColorFormat colorFormat;
+	
 	/**
 	 * init the mini dmx devices.
 	 *
@@ -66,6 +69,11 @@ public class MiniDmxDevice extends Output {
 		if (baud==0) {
 		    //set default
 		    baud = 115200;
+		}
+		
+		this.colorFormat = ColorFormat.RBG;
+		if (ph.getColorFormat().size()>0) {
+			this.colorFormat = ph.getColorFormat().get(0);
 		}
 		
 		try {
@@ -84,7 +92,7 @@ public class MiniDmxDevice extends Output {
 	public void update() {
 		
 		if (initialized) {	
-			miniDmx.sendRgbFrame(super.getBufferForScreen(0), ColorFormat.RBG);
+			miniDmx.sendRgbFrame(super.getBufferForScreen(0), colorFormat);
 		}
 	}
 

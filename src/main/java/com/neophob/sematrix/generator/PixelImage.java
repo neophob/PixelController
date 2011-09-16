@@ -122,7 +122,7 @@ gelesen von der mitte!
 			int xofs, yofs=-1, dst=0;
 
 			//resize image from 8x8 to 128x128
-			for (int y=0; y<internalBufferXSize; y++) {
+			for (int y=0; y<internalBufferYSize; y++) {
 				if (y%yDiff==0) yofs++;
 				xofs=-1;
 				for (int x=0; x<internalBufferXSize; x++) {
