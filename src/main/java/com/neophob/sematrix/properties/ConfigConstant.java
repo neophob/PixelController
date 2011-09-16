@@ -55,6 +55,9 @@ public final class ConfigConstant {
 	/** The Constant MINIDMX_RESOLUTION_Y. */
 	public static final String MINIDMX_RESOLUTION_Y = "minidmx.resolution.y";
 	
+	/**	The Constant MINIDMX_BAUDRATE */
+	public static final String MINIDMX_BAUDRATE = "minidmx.baudrate";
+	
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
 

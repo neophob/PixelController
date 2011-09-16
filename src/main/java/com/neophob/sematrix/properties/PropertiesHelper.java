@@ -452,6 +452,15 @@ public class PropertiesHelper {
     }
 
     /**
+     * baudrate of the minidmx device
+     * 
+     * @return the int
+     */
+    public int parseMiniDmxBaudRate() {
+        return parseInt(ConfigConstant.MINIDMX_BAUDRATE);        
+    }
+    
+    /**
      * Start randommode.
      *
      * @return true, if successful

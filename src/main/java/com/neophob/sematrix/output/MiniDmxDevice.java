@@ -62,8 +62,14 @@ public class MiniDmxDevice extends Output {
 		this.initialized = false;
 		this.xSize = ph.parseMiniDmxDevicesX();
 		this.ySize = ph.parseMiniDmxDevicesY();
+		int baud = ph.parseMiniDmxBaudRate();
+		if (baud==0) {
+		    //set default
+		    baud = 115200;
+		}
+		
 		try {
-			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize*3);			
+			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize*3, baud);			
 			this.initialized = miniDmx.ping();
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {

@@ -59,15 +59,16 @@ import com.neophob.sematrix.properties.ColorFormat;
  * created for ledstyles.de 
  * <br><br>
  * 
- * TODO: guess it does not work yet, as its untested
- * TODO: padding
- * 
  * @author Michael Vogt / neophob.com
  *
  */
 public class MiniDmxSerial {
 	
-    public enum MiniDmxPayload {
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
+
+    
+    public enum MiniDmxPayloadEnum {
         SEND_96_BYTES(96, (byte)0xa0),              //32 pixel, for example 8x4 pixel
         SEND_256_BYTES(256, (byte)0xa1),            //85 pixel, for example 8x8 pixel and padding
         SEND_512_BYTES(512, (byte)0xa2),            //170 pixel, for example 16x8 pixel and padding
@@ -75,14 +76,20 @@ public class MiniDmxSerial {
         SEND_1536_BYTES(1536, (byte)0xb1),          //512 pixel, for example 32x16 pixel
         SEND_3072_BYTES(3072, (byte)0xb2);          //1024 pixel, for example 32x32 pixel
         
-        MiniDmxPayload(int payloadSize, byte payload) {
+        MiniDmxPayloadEnum(int payloadSize, byte payload) {
             this.payloadSize = payloadSize;
             this.payload = payload;
         }
-        
+
+        /** how many bytes we send in each message */
         private int payloadSize;
         
+        /** the payload byte, used to identify the message size */
         private byte payload;
+        
+        /** how many bytes we need to add to each messages */
+        private int paddingBytes = 0;
+
 
         /**
          * @return the payloadSize
@@ -99,15 +106,56 @@ public class MiniDmxSerial {
         }
         
         /**
+         * @return the paddingBytes
+         */
+        public int getPaddingBytes() {
+            return paddingBytes;
+        }
+        
+        /**
          * 
          * @param payloadSize
          * @return
          * @throws IllegalArgumentException
          */
-        public static MiniDmxPayload getDmxPayload(int payloadSize) throws IllegalArgumentException {
-            for (MiniDmxPayload mdp: MiniDmxPayload.values()) {
+        public static MiniDmxPayloadEnum getDmxPayload(int payloadSize) throws IllegalArgumentException {
+            for (MiniDmxPayloadEnum mdp: MiniDmxPayloadEnum.values()) {
                 if (mdp.getPayloadSize()==payloadSize) {
                     return mdp;
+                }
+            }
+            
+            if (payloadSize>0 && payloadSize<SEND_3072_BYTES.payloadSize) {
+                
+                if (payloadSize > SEND_1536_BYTES.payloadSize) {
+                    MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_3072_BYTES;
+                    miniDmxPayloadEnum.paddingBytes = SEND_3072_BYTES.payloadSize-payloadSize;
+                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    return miniDmxPayloadEnum;
+                }
+                if (payloadSize > SEND_768_BYTES.payloadSize) {
+                    MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_1536_BYTES;
+                    miniDmxPayloadEnum.paddingBytes = SEND_1536_BYTES.payloadSize-payloadSize;
+                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    return miniDmxPayloadEnum;
+                }
+                if (payloadSize > SEND_512_BYTES.payloadSize) {
+                    MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_768_BYTES;
+                    miniDmxPayloadEnum.paddingBytes = SEND_768_BYTES.payloadSize-payloadSize;
+                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    return miniDmxPayloadEnum;
+                }
+                if (payloadSize > SEND_256_BYTES.payloadSize) {
+                    MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_512_BYTES;
+                    miniDmxPayloadEnum.paddingBytes = SEND_512_BYTES.payloadSize-payloadSize;
+                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    return miniDmxPayloadEnum;
+                }
+                if (payloadSize > SEND_96_BYTES.payloadSize) {
+                    MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_256_BYTES;
+                    miniDmxPayloadEnum.paddingBytes = SEND_256_BYTES.payloadSize-payloadSize;
+                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    return miniDmxPayloadEnum;
                 }
             }
             
@@ -115,12 +163,9 @@ public class MiniDmxSerial {
         }
         
     }
-    
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
-	
+    	
 	/** internal lib version. */
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.1";
 
 	/** The Constant START_OF_BLOCK. */
 	private static final byte START_OF_BLOCK = (byte)0x5a;
@@ -134,7 +179,7 @@ public class MiniDmxSerial {
 	/** The Constant REPLY_ERROR. */
 	private static final byte REPLY_ERROR    = (byte)0xc0;
 	
-	private MiniDmxPayload miniDmxPayload;
+	private MiniDmxPayloadEnum miniDmxPayload;
 	
 	//connection errors to arduino, TODO: use it!
 	/** The connection error counter. */
@@ -147,16 +192,14 @@ public class MiniDmxSerial {
 	private PApplet app;
 
 	/** The baud. */
-	//private int baud = 230400;
-	private int baud = 115200;
+	private int baud;
 	
 	/** The port. */
 	private Serial port;
 
 	/** map to store checksum of image. */
 	private String lastDataMap;
-	
-	
+		
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 *
@@ -164,8 +207,8 @@ public class MiniDmxSerial {
 	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet app, int targetBuffersize) throws NoSerialPortFoundException {
-		this(app, null, targetBuffersize);
+	public MiniDmxSerial(PApplet app, int targetBuffersize, int baud) throws NoSerialPortFoundException {
+		this(app, null, targetBuffersize, baud);
 	}
 
 	/**
@@ -176,8 +219,8 @@ public class MiniDmxSerial {
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet _app, int targetBuffersize, String portName) throws NoSerialPortFoundException {
-		this(_app, portName, targetBuffersize);
+	public MiniDmxSerial(PApplet _app, int targetBuffersize, String portName, int baud) throws NoSerialPortFoundException {
+		this(_app, portName, targetBuffersize, baud);
 	}
 
 
@@ -189,18 +232,22 @@ public class MiniDmxSerial {
 	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet app, String portName, int targetBuffersize) throws IllegalArgumentException, NoSerialPortFoundException {
+	public MiniDmxSerial(PApplet app, String portName, int targetBuffersize, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize MiniDMX lib v{0}", VERSION);
 		
 		this.app = app;
 		this.app.registerDispose(this);
+		this.baud = baud;
 		
 		lastDataMap = "";
 		
 		String serialPortName="";	
-		this.miniDmxPayload = MiniDmxPayload.getDmxPayload(targetBuffersize);
-		LOG.log(Level.INFO,  "MiniDMX payload size: {0}", this.miniDmxPayload.payloadSize);
+		this.miniDmxPayload = MiniDmxPayloadEnum.getDmxPayload(targetBuffersize);
+		LOG.log(Level.INFO,  "MiniDMX payload size: {0}, padding bytes: {1}, baudrate: {2}", new Object[] {
+		        this.miniDmxPayload.payloadSize,
+		        this.miniDmxPayload.paddingBytes,
+		        this.baud});
 		
 		if (portName!=null && !portName.trim().isEmpty()) {
 			//open specific port
@@ -373,16 +420,19 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public boolean sendFrame(byte data[]) throws IllegalArgumentException {		
-		if (data.length!=miniDmxPayload.getPayloadSize()) {
+	public boolean sendFrame(byte data[]) throws IllegalArgumentException {
+	    //respect the padding!
+        int sourceDataLength = miniDmxPayload.getPayloadSize()-miniDmxPayload.paddingBytes;
+
+		if (data.length!=sourceDataLength) {
 			throw new IllegalArgumentException("sendFrame error, data lenght must be "+miniDmxPayload.getPayloadSize()+" bytes!");
 		}
 		
 		//add header to data
 		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];		
 		cmdfull[0] = START_OF_BLOCK;
-		cmdfull[1] = miniDmxPayload.getPayload();
-		System.arraycopy(data, 0, cmdfull, 2, miniDmxPayload.getPayloadSize());
+		cmdfull[1] = miniDmxPayload.getPayload();		
+		System.arraycopy(data, 0, cmdfull, 2, sourceDataLength);
 		//add eod marker
 		cmdfull[miniDmxPayload.getPayloadSize()+2] = END_OF_BLOCK;
 
