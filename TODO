@@ -3,9 +3,9 @@ TODO
 -palette/color concept (greyscale, rgb, hsv...), currently we're mixing b/w, rgb and hsv, plus there is a tint effect
 -rewrite output selection/configuration, 
 -more generators/effects/mixer...
--update initial image in firmware
 -Move message handling out to effective classes
 -log to a file
 -more layouts
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
--MiniDMX: add baudrate
+-Rainbowduino firmware: update initial image in firmware
+
