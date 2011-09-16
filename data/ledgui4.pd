@@ -1,17 +1,17 @@
-#N canvas 509 141 713 604 10;
+#N canvas 593 239 713 604 10;
 #X declare -lib mrpeach;
 #X obj 5 -25 cnv 15 700 295 empty empty //Visuals 20 12 0 14 -204786
 -66577 0;
 #X obj 58 54 hradio 15 1 0 15 s_gen1 r_gen1 empty 0 -8 0 10 -203904
--1 -1 9;
+-1 -1 11;
 #X obj 58 76 hradio 15 1 0 10 s_fx1 r_fx1 empty 0 -8 0 10 -262130 -1
--1 7;
+-1 1;
 #X obj 59 139 hradio 15 1 0 15 s_gen_b1 r_gen_b1 empty 0 -8 0 10 -203904
--1 -1 3;
+-1 -1 4;
 #X obj 59 161 hradio 15 1 0 10 s_fx_b1 r_fx_b1 empty 0 -8 0 10 -262130
--1 -1 7;
+-1 -1 8;
 #X obj 60 224 hradio 15 1 0 10 s_mix1 r_mix1 empty 0 -8 0 10 -203904
--1 -1 5;
+-1 -1 8;
 #X obj 12 54 tgl 15 0 s_rndsel_gen1 r_rndsel_gen1 empty 17 7 0 10 -260097
 -1 -1 1 1;
 #X obj 12 76 tgl 15 0 s_rndsel_fx1 r_rndsel_fx1 empty 17 7 0 10 -260097
@@ -25,12 +25,12 @@
 #X obj 5 274 cnv 15 380 110 empty empty //Output 20 12 0 14 -257985
 -66577 0;
 #X obj 80 346 hradio 15 1 0 5 s_out1 r_out1 empty 0 -8 0 10 -261682
--1 -1 3;
+-1 -1 1;
 #X text 35 322 Fader;
 #X obj 80 324 hradio 15 1 0 4 s_fader1 r_fader1 empty 0 -8 0 10 -204800
--1 -1 2;
+-1 -1 0;
 #X obj 80 302 hradio 15 1 0 10 s_fx_output1 r_fx_output1 empty 0 -8
-0 10 -262130 -1 -1 8;
+0 10 -262130 -1 -1 0;
 #X text 35 299 Effect;
 #X obj 14 302 tgl 15 0 s_rndsel_mixout r_rndsel_mixout empty 17 7 0
 10 -260097 -1 -1 1 1;
@@ -54,19 +54,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 1556 1;
+-262144 -1 -1 109 1;
 #X obj 33 71 cnv 15 140 160 empty empty //Tint 20 12 0 14 -262130 -66577
 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 3100 1;
+-33289 -1 49 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 3100 1;
+-33289 -1 1228 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 3100 1;
+-33289 -1 2966 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -74,7 +74,7 @@
 #X obj 33 226 cnv 15 140 70 empty empty //Rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 1550 1;
+16 64 12 -262144 -33289 -1 1452 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -754,7 +754,7 @@
 -30 38 0 15 -257985 -1 -1;
 #X obj 461 317 s to_server;
 #X obj 66 74 hsl 250 25 0 127 0 0 empty empty empty -2 -8 0 10 -262130
--1 -1 20700 0;
+-1 -1 14600 0;
 #X obj 63 263 int;
 #X floatatom 167 106 5 0 0 0 - r_sel s_sel;
 #X obj 63 308 s r_sel;
@@ -775,7 +775,7 @@
 #X obj 50 50 cnv 15 170 110 empty empty //All_Outputs 20 12 0 14 -257985
 -66577 0;
 #X obj 59 120 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
-empty 0 -8 0 10 -261682 -1 -1 4;
+empty 0 -8 0 10 -261682 -1 -1 3;
 #X obj 59 98 hradio 15 1 0 4 s_output_fader_all r_output_fader_all
 empty 0 -8 0 10 -204800 -1 -1 0;
 #X obj 59 76 hradio 15 1 0 10 s_output_fx_all r_output_fx_all empty
@@ -785,10 +785,7 @@ empty 0 -8 0 10 -204800 -1 -1 0;
 #X text 79 365 Fader: Off \, Crossfade \, UpsideDown \, LeftToRight
 ;
 #X obj 589 -20 hradio 22 1 0 5 s_current_visual r_current_visual select_visual
--80 6 0 10 -258113 -1 -1 0;
-#X text 58 6 Generators: Off \, Blinken \, ImagePlasma \, Simplecolors
-\, Fire \, Metaballs \, PixelimgTexturedeformation \, Textwriter \,
-Cell \, Plasma2 \, Frequency \, Drops;
+-80 6 0 10 -258113 -86277 -1 2;
 #X text 60 190 Mixer: Off \, AddSat \, Multiply \, Mix \, Neg \, Multiply
 \, Checkb \, Xor \, MinusHalf \, Either;
 #N canvas 90 22 1046 592 xypad 0;
@@ -858,7 +855,7 @@ Cell \, Plasma2 \, Frequency \, Drops;
 #X obj 29 218 tgl 15 0 empty r_tgl_emulate emulate_xy_pad_with_mouse
 17 7 0 10 -262144 -1 -1 0 1;
 #X obj 139 443 mod 256;
-#X obj 10 10 grid grid1 200 0 255 200 0 99 1 1 1 10 10 610 93;
+#X obj 10 10 grid grid1 200 0 255 200 0 99 1 1 1 10 10 524 112;
 #X obj 164 414 mod 100;
 #X obj 656 333 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
@@ -945,7 +942,7 @@ Cell \, Plasma2 \, Frequency \, Drops;
 #X coords 0 -1 1 1 250 230 1 10 10;
 #X restore 439 22 pd xypad;
 #X obj 290 281 hradio 22 1 0 4 s_current_output r_current_output select_output
--80 6 0 10 -258113 -1 -1 3;
+-80 6 0 10 -258113 -86277 -1 0;
 #N canvas 175 277 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
@@ -1640,7 +1637,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X text 57 93 Effects: Off \, Inverter \, Rotozoom \, Beat horizontal
 shift \, Beat vertical shift \, Voluminize \, Tint \, Threshold \,
 Emboss \, Zoom;
-#N canvas 260 406 786 268 keyboard 0;
+#N canvas 458 53 786 268 keyboard 0;
 #X obj 36 27 keyup;
 #X obj 59 142 0;
 #X obj 93 143 1;
@@ -1654,7 +1651,6 @@ Emboss \, Zoom;
 #X floatatom 29 84 5 0 0 0 - - -;
 #X text 115 68 Keys: 1 2 3 4 5 R;
 #X obj 459 85 route 177 8220 35 199 91;
-#X obj 482 179 s r_current_visual;
 #X obj 429 133 0;
 #X obj 463 133 1;
 #X obj 500 133 2;
@@ -1665,96 +1661,97 @@ Emboss \, Zoom;
 #X obj 259 149 s r_tgl_emulate;
 #X obj 259 122 0;
 #X obj 64 210 s r_current_visual;
+#X obj 482 179 s r_output_visual_all;
 #X connect 0 0 9 0;
-#X connect 0 0 19 0;
+#X connect 0 0 18 0;
 #X connect 1 0 8 0;
-#X connect 1 0 22 0;
+#X connect 1 0 21 0;
 #X connect 2 0 8 0;
-#X connect 2 0 22 0;
+#X connect 2 0 21 0;
 #X connect 3 0 8 0;
-#X connect 3 0 22 0;
+#X connect 3 0 21 0;
 #X connect 4 0 8 0;
-#X connect 4 0 22 0;
+#X connect 4 0 21 0;
 #X connect 5 0 8 0;
-#X connect 5 0 22 0;
+#X connect 5 0 21 0;
 #X connect 6 0 7 0;
-#X connect 11 0 13 0;
-#X connect 11 1 14 0;
-#X connect 11 2 15 0;
-#X connect 11 3 16 0;
-#X connect 11 4 17 0;
-#X connect 13 0 12 0;
-#X connect 14 0 12 0;
-#X connect 15 0 12 0;
-#X connect 16 0 12 0;
-#X connect 17 0 12 0;
-#X connect 19 0 1 0;
-#X connect 19 1 2 0;
-#X connect 19 2 3 0;
-#X connect 19 3 4 0;
-#X connect 19 4 5 0;
-#X connect 19 5 6 0;
-#X connect 19 6 21 0;
-#X connect 19 7 11 0;
-#X connect 21 0 20 0;
+#X connect 11 0 12 0;
+#X connect 11 1 13 0;
+#X connect 11 2 14 0;
+#X connect 11 3 15 0;
+#X connect 11 4 16 0;
+#X connect 12 0 22 0;
+#X connect 13 0 22 0;
+#X connect 14 0 22 0;
+#X connect 15 0 22 0;
+#X connect 16 0 22 0;
+#X connect 18 0 1 0;
+#X connect 18 1 2 0;
+#X connect 18 2 3 0;
+#X connect 18 3 4 0;
+#X connect 18 4 5 0;
+#X connect 18 5 6 0;
+#X connect 18 6 20 0;
+#X connect 18 7 11 0;
+#X connect 20 0 19 0;
 #X restore 131 530 pd keyboard;
-#N canvas 459 482 821 306 generaotor 0;
-#X obj 10 13 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904
--66577 0;
-#X obj 22 250 send blinkenfile;
-#X obj 166 13 cnv 15 150 266 empty empty image 20 12 0 14 -203904 -66577
+#N canvas 438 141 503 361 generaotor 1;
+#X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
 0;
-#X obj 178 249 send image;
-#X obj 141 17 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17 7
+#X obj 16 241 send blinkenfile;
+#X obj 160 4 cnv 15 150 266 empty empty image 20 12 0 14 -203904 -66577
+0;
+#X obj 172 240 send image;
+#X obj 135 8 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17 7
 0 10 -260097 -1 -1 1 1;
-#X obj 296 18 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0 10
+#X obj 290 9 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0 10
 -260097 -1 -1 1 1;
-#X obj 322 13 cnv 15 180 266 empty empty texturedeform 20 12 0 14 -203904
+#X obj 316 4 cnv 15 180 266 empty empty texturedeform 20 12 0 14 -203904
 -66577 0;
-#X obj 332 246 send change_lut;
-#X obj 326 43 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
+#X obj 326 237 send change_lut;
+#X obj 320 34 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
 -1 -1;
-#X obj 326 64 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
+#X obj 320 55 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
 -1 -1;
-#X obj 390 43 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
+#X obj 384 34 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
 -1 -1;
-#X obj 390 64 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
+#X obj 384 55 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
 -1 -1;
-#X obj 456 43 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144 -1
+#X obj 450 34 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144 -1
 -1;
-#X obj 456 64 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
+#X obj 450 55 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
 -1;
-#X obj 483 18 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17 7
+#X obj 477 9 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17 7
 0 10 -260097 -1 -1 1 1;
-#X obj 508 14 cnv 15 306 80 empty empty textwriter 20 12 0 14 -203904
+#X obj 4 275 cnv 15 306 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
-#X obj 523 66 send textwriter;
-#X msg 22 37 torus.bml;
-#X msg 22 58 bnf_auge.bml;
-#X msg 22 79 bb-frogskin2.bml;
-#X msg 22 100 bb-rauten2.bml;
-#X msg 22 121 bb-spiral2fast.bml;
-#X msg 178 43 circle.jpg;
-#X msg 178 67 half.jpg;
-#X msg 178 92 gradient.jpg;
-#X msg 178 116 check.jpg;
-#X msg 332 87 ceiling.jpg;
-#X msg 332 127 circle.jpg;
-#X msg 332 148 gradient.jpg;
-#X msg 332 107 1316.jpg;
-#X msg 178 142 hsv.jpg;
-#X msg 178 168 hls.jpg;
-#X msg 21 142 flatter_flatter.bml;
-#X msg 22 163 badtv.bml;
-#X msg 178 197 right.jpg;
-#X msg 332 170 check.jpg;
-#X msg 423 145 hsv.jpg;
-#X msg 423 171 hls.jpg;
-#X msg 22 185 kreise-versetzt.bml;
-#X msg 46 216 blender.bml;
-#X msg 199 222 ff-logo-small.jpg;
-#X msg 248 197 logo.gif;
-#X msg 523 41 DEMODAYS 2011;
+#X obj 19 327 send textwriter;
+#X msg 16 28 torus.bml;
+#X msg 16 49 bnf_auge.bml;
+#X msg 16 70 bb-frogskin2.bml;
+#X msg 16 91 bb-rauten2.bml;
+#X msg 16 112 bb-spiral2fast.bml;
+#X msg 172 34 circle.jpg;
+#X msg 172 58 half.jpg;
+#X msg 172 83 gradient.jpg;
+#X msg 172 107 check.jpg;
+#X msg 326 78 ceiling.jpg;
+#X msg 326 118 circle.jpg;
+#X msg 326 139 gradient.jpg;
+#X msg 326 98 1316.jpg;
+#X msg 172 133 hsv.jpg;
+#X msg 172 159 hls.jpg;
+#X msg 15 133 flatter_flatter.bml;
+#X msg 16 154 badtv.bml;
+#X msg 172 188 right.jpg;
+#X msg 326 161 check.jpg;
+#X msg 417 136 hsv.jpg;
+#X msg 417 162 hls.jpg;
+#X msg 16 176 kreise-versetzt.bml;
+#X msg 40 207 blender.bml;
+#X msg 193 213 ff-logo-small.jpg;
+#X msg 242 188 logo.gif;
+#X msg 19 302 DEMODAYS 2011;
 #X connect 17 0 1 0;
 #X connect 18 0 1 0;
 #X connect 19 0 1 0;
@@ -1782,3 +1779,6 @@ Emboss \, Zoom;
 #X connect 41 0 3 0;
 #X connect 42 0 16 0;
 #X restore 36 530 pd generaotor;
+#X text 58 6 Generators: Off \, Blinken \, Image \, Plasma \, Simplecolors
+\, Fire \, Metaballs \, Pixelimg \, Texturedeformation \, Textwriter
+\, Cell \, Plasma2 \, Frequency \, Drops;

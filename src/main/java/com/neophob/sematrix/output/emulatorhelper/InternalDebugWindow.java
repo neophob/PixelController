@@ -30,7 +30,7 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 
 /**
- * The Class InternalDebugWindow.
+ * Helper class to create a new window
  *
  * @author michu
  */

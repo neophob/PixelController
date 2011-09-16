@@ -25,7 +25,10 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
- * The Class MatrixEmulator.
+ * The low resolution software matrix 
+ * 
+ * @author michu
+ * 
  */
 public class MatrixEmulator extends Output {
 
@@ -50,8 +53,8 @@ public class MatrixEmulator extends Output {
 	 *
 	 * @param controller the controller
 	 */
-	public MatrixEmulator(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, MatrixEmulator.class.toString());
+	public MatrixEmulator(PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+		super(ph, controller, MatrixEmulator.class.toString(), bpp);
 		ledSize = ph.getLedPixelSize();
 		
 		int x,y;
@@ -148,6 +151,8 @@ public class MatrixEmulator extends Output {
 		}		
 		parent.rect(xOfs, yOfs, getOneMatrixXSize(), getOneMatrixYSize());			
 		
+		int shift = 8-bpp;
+		
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
 			for (int x=0; x<matrixData.getDeviceXSize(); x++) {					
 				tmp = buffer[ofs++];
@@ -155,14 +160,15 @@ public class MatrixEmulator extends Output {
 				g = (int) ((tmp>>8)  & 255);       
 				b = (int) ( tmp      & 255);
 
-				//TODO correct color reduce
-				//simulate 5bit color
-				r >>= 3;
-				g >>= 3;
-				b >>= 3;
-				r <<= 3;
-				g <<= 3;
-				b <<= 3;
+				//simulate lower bpp
+				if (shift>0) {
+					r >>= shift;
+					g >>= shift;
+					b >>= shift;
+					r <<= shift;
+					g <<= shift;
+					b <<= shift;				
+				}
 
 				parent.fill(r,g,b);
 				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+ledSize),

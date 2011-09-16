@@ -54,7 +54,7 @@ public class ArtnetDevice extends Output {
 	 * @param controller
 	 */
 	public ArtnetDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, ArtnetDevice.class.toString());
+		super(ph, controller, ArtnetDevice.class.toString(), 8);
 
 		initialized = false;
 		artnet = new ArtNet();

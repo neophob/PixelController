@@ -30,7 +30,9 @@ import com.neophob.sematrix.glue.Visual;
 
 
 /**
- * Display the internal Visual buffers
+ * Display the internal Visual buffers in full resolution
+ * 
+ * @author michu
  */
 public class InternalBuffer extends PApplet {
 	
@@ -88,16 +90,17 @@ public class InternalBuffer extends PApplet {
 	public void draw() {
 		int localX=0, localY=0;
 		int[] buffer;
-		int currentVisual = Collector.getInstance().getCurrentVisual();
+		Collector col = Collector.getInstance();
+		int currentVisual = col.getCurrentVisual();
 		int ofs=0;
 		
-		for (Visual v: Collector.getInstance().getAllVisuals()) {
+		for (Visual v: col.getAllVisuals()) {
 			//get image
-			buffer = Collector.getInstance().getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
+			buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
 			
 			if (pImage==null) {
 				//create an image out of the buffer
-		 		pImage = Collector.getInstance().getPapplet().createImage(targetXSize, targetYSize, PApplet.RGB );				
+		 		pImage = col.getPapplet().createImage(targetXSize, targetYSize, PApplet.RGB );				
 			}
 			pImage.loadPixels();
 			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);

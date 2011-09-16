@@ -50,8 +50,8 @@ public abstract class ArduinoOutput extends Output {
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public ArduinoOutput(PropertiesHelper ph, PixelControllerOutput controller, String name) {
-		super(ph, controller, name);
+	public ArduinoOutput(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
+		super(ph, controller, name, bpp);
 	}
 	
 	/**
