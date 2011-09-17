@@ -424,10 +424,10 @@ public class MiniDmxSerial {
 	    //respect the padding!
         int sourceDataLength = miniDmxPayload.getPayloadSize()-miniDmxPayload.paddingBytes;
 
-		if (data.length!=sourceDataLength) {
-			throw new IllegalArgumentException("sendFrame error, data lenght must be "+miniDmxPayload.getPayloadSize()+" bytes!");
-		}
-		
+		if (data.length!=sourceDataLength && data.length!=miniDmxPayload.getPayloadSize()) {
+			throw new IllegalArgumentException("sendFrame error, illegal data lenght "+data.length);
+		}	
+        
 		//add header to data
 		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];		
 		cmdfull[0] = START_OF_BLOCK;
@@ -530,7 +530,7 @@ public class MiniDmxSerial {
 			return false;
 		}
 		
-		LOG.log(Level.INFO, "#### Reply size: {0} bytes ###", msg.length);
+		//LOG.log(Level.INFO, "#### Reply size: {0} bytes ###", msg.length);
 		int ofs=0;
 		for (byte b:msg) {
 			if (b==START_OF_BLOCK && msg.length-ofs>2 && msg[ofs+2]==END_OF_BLOCK) {
