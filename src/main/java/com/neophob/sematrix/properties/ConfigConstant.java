@@ -82,4 +82,7 @@ public final class ConfigConstant {
 	/** The Constant NET_LISTENING_ADDR. */
 	public static final String NET_LISTENING_ADDR = "127.0.0.1";
 	
+	/** The Constant ADDITIONAL_VISUAL_SCREENS. */
+	public static final String ADDITIONAL_VISUAL_SCREENS = "additional.visual.screens";
+	
 }

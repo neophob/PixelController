@@ -489,6 +489,15 @@ public class PropertiesHelper {
         return devicesInRow1+devicesInRow2;
     }
 
+    /**
+     * Parses the mini dmx devices y.
+     *
+     * @return the int
+     */
+    public int getNrOfAdditionalVisuals() {
+        return parseInt(ConfigConstant.ADDITIONAL_VISUAL_SCREENS);
+    }
+
 
     /**
      * Gets the layout.

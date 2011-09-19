@@ -318,7 +318,7 @@ public class Visual {
 	 * @param nrOfScreens the nr of screens
 	 */
 	public static void initializeVisuals(int nrOfScreens) {
-		for (int n=0; n<nrOfScreens+1; n++) {
+		for (int n=0; n<nrOfScreens; n++) {
 			switch (n%10) {
 			case 0:
 				new Visual(GeneratorName.BLINKENLIGHTS);
