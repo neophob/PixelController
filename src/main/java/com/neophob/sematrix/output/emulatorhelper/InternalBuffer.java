@@ -152,7 +152,14 @@ public class InternalBuffer extends PApplet {
 		fill(55,55,55);
 		rect(frames, localY+targetYSize+SELECTED_MARKER*2+2, targetXSize-frames, 5);
 		
-		//display sound stats
+		displaySoundStats(localY);
+	}
+
+	/**
+	 * 
+	 * @param localY
+	 */
+	private void displaySoundStats(int localY) {
 		Sound snd = Sound.getInstance();
 		
 		int xofs = targetXSize;
@@ -167,10 +174,13 @@ public class InternalBuffer extends PApplet {
 
 		xofs+=xx;
 		colorSelect(snd.isHat());
-		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
-
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);		
 	}
-
+	
+	/**
+	 * 
+	 * @param b
+	 */
 	private void colorSelect(boolean b) {
 		if (b) {
 			fill(200,200,200);	
