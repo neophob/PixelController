@@ -205,7 +205,7 @@ public final class Collector {
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
-			ioMapping.add(new OutputMapping(n, 0));			
+			ioMapping.add(new OutputMapping(n));			
 		}
 
 		//Start tcp server

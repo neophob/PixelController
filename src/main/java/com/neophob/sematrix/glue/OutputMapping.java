@@ -35,9 +35,6 @@ public class OutputMapping {
 	/** the visual input object. */
 	private int visualId;
 	
-	/** the output screen nr. */
-	private int screenNr;
-	
 	/** The fader. */
 	private Fader fader;
 	
@@ -49,7 +46,6 @@ public class OutputMapping {
 	 */
 	public OutputMapping() {
 		this.visualId = 0;
-		this.screenNr = 0;
 		
 		this.fader = PixelControllerFader.getFader(FaderName.SWITCH);
 		this.effect = Collector.getInstance().getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
@@ -61,10 +57,9 @@ public class OutputMapping {
 	 * @param visualId the visual id
 	 * @param screenNr the screen nr
 	 */
-	public OutputMapping(int visualId, int screenNr) {
+	public OutputMapping(int visualId) {
 		this();
 		this.visualId = visualId;
-		this.screenNr = screenNr;
 	}
 
 	/**
@@ -85,24 +80,6 @@ public class OutputMapping {
 		this.visualId = visualId;
 	}
 
-	/**
-	 * Gets the screen nr.
-	 *
-	 * @return the screen nr
-	 */
-	public int getScreenNr() {
-		return screenNr;
-	}
-
-	/**
-	 * Sets the screen nr.
-	 *
-	 * @param screenNr the new screen nr
-	 */
-	public void setScreenNr(int screenNr) {
-		this.screenNr = screenNr;
-	}
-	
 	/**
 	 * Gets the effect.
 	 *
