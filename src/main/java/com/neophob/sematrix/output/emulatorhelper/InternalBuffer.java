@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.output.emulatorhelper;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +28,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
 
 
@@ -92,6 +95,12 @@ public class InternalBuffer extends PApplet {
 		int[] buffer;
 		Collector col = Collector.getInstance();
 		int currentVisual = col.getCurrentVisual();
+		
+		Set<Integer> outputId = new HashSet<Integer>();
+		for (OutputMapping om: col.getAllOutputMappings()) {
+			outputId.add(om.getVisualId());
+		}
+
 		int ofs=0;
 		
 		for (Visual v: col.getAllVisuals()) {
@@ -106,13 +115,23 @@ public class InternalBuffer extends PApplet {
 			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
 			pImage.updatePixels();
 			
-			//draw selected marker
+			//draw current input
 			if (ofs==currentVisual) {
 				fill(200,66,66);
 			} else {
 				fill(33,33,33);
 			}	
 			rect(localX, localY+targetYSize, targetXSize, SELECTED_MARKER);
+
+			
+			//draw current output
+			if (outputId.contains(ofs)) {
+				fill(66,200,66);
+			} else {
+				fill(33,33,33);
+			}	
+			rect(localX, localY+targetYSize+10, targetXSize, SELECTED_MARKER);				
+
 			
 			//display the image
 			image(pImage, localX, localY);
