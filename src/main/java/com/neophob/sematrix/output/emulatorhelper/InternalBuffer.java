@@ -119,7 +119,7 @@ public class InternalBuffer extends PApplet {
 			if (ofs==currentVisual) {
 				fill(200,66,66);
 			} else {
-				fill(33,33,33);
+				fill(55,55,55);
 			}	
 			rect(localX, localY+targetYSize, targetXSize, SELECTED_MARKER);
 
@@ -128,7 +128,7 @@ public class InternalBuffer extends PApplet {
 			if (outputId.contains(ofs)) {
 				fill(66,200,66);
 			} else {
-				fill(33,33,33);
+				fill(55,55,55);
 			}	
 			rect(localX, localY+targetYSize+10, targetXSize, SELECTED_MARKER);				
 
