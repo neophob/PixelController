@@ -30,6 +30,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.input.Sound;
 
 
 /**
@@ -43,7 +44,7 @@ public class InternalBuffer extends PApplet {
 	private static final long serialVersionUID = 2344499301021L;
 
 	private static final int SELECTED_MARKER = 10;
-	
+
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(InternalBuffer.class.getName());
 
@@ -150,7 +151,32 @@ public class InternalBuffer extends PApplet {
 		rect(0, localY+targetYSize+SELECTED_MARKER*2+2, frames, 5);
 		fill(55,55,55);
 		rect(frames, localY+targetYSize+SELECTED_MARKER*2+2, targetXSize-frames, 5);
+		
+		//display sound stats
+		Sound snd = Sound.getInstance();
+		
+		int xofs = targetXSize;
+		int xx = targetXSize/3;
+		
+		colorSelect(snd.isKick());
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
+	
+		xofs+=xx;
+		colorSelect(snd.isSnare());
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
+
+		xofs+=xx;
+		colorSelect(snd.isHat());
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
+
 	}
 
+	private void colorSelect(boolean b) {
+		if (b) {
+			fill(200,200,200);	
+		} else {
+			fill(55,55,55);	
+		}		
+	}
 
 }
