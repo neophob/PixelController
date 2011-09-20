@@ -80,7 +80,7 @@ public class InternalBuffer extends PApplet {
 	 * @see processing.core.PApplet#setup()
 	 */
     public void setup() {
-    	LOG.log(Level.INFO, "create frame with size "+x+"/"+y);
+    	LOG.log(Level.INFO, "create internal buffer with size "+x+"/"+y);
         size(x,y);
         noSmooth();
         frameRate(Collector.getInstance().getFps());
@@ -100,9 +100,9 @@ public class InternalBuffer extends PApplet {
 		for (OutputMapping om: col.getAllOutputMappings()) {
 			outputId.add(om.getVisualId());
 		}
-
-		int ofs=0;
 		
+		//draw output buffer and marker
+		int ofs=0;
 		for (Visual v: col.getAllVisuals()) {
 			//get image
 			buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
@@ -130,7 +130,7 @@ public class InternalBuffer extends PApplet {
 			} else {
 				fill(55,55,55);
 			}	
-			rect(localX, localY+targetYSize+10, targetXSize, SELECTED_MARKER);				
+			rect(localX, localY+targetYSize+SELECTED_MARKER, targetXSize, SELECTED_MARKER);				
 
 			
 			//display the image
@@ -143,6 +143,13 @@ public class InternalBuffer extends PApplet {
 
 			ofs++;
 		}
+
+		//display frame progress
+		int frames = col.getFrames() % targetXSize;
+		fill(200,200,200);
+		rect(0, localY+targetYSize+SELECTED_MARKER*2+2, frames, 5);
+		fill(55,55,55);
+		rect(frames, localY+targetYSize+SELECTED_MARKER*2+2, targetXSize-frames, 5);
 	}
 
 

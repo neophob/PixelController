@@ -59,7 +59,7 @@ public class InternalDebugWindow extends Frame {
         } else {
         	y*=nrOfScreens;
         }
-        x+=10;y+=50;
+        x+=10;y+=55;
         
         LOG.log(Level.INFO, "create frame with size "+x+"/"+y);
         setBounds(0, 0, x, y);

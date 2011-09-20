@@ -61,9 +61,6 @@ public class PixelController extends PApplet {
 	/** The output. */
 	private Output output;
 	
-	/** The frame counter. */
-	private int frameCounter=0;
-
 	/**
 	 * prepare.
 	 */
@@ -139,7 +136,6 @@ public class PixelController extends PApplet {
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
 		}
-		frameCounter++;
 	}
 
 	/**
