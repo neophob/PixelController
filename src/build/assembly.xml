@@ -74,7 +74,7 @@
 
 		<!-- copy the pure data gui -->
  		<file>
-			<source>${basedir}/data/ledgui4.pd</source>
+			<source>${basedir}/data/ledgui5.pd</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 			<destName>PixelController.pd</destName>
