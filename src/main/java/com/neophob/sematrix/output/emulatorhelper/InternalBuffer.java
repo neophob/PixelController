@@ -97,6 +97,7 @@ public class InternalBuffer extends PApplet {
 		Collector col = Collector.getInstance();
 		int currentVisual = col.getCurrentVisual();
 		
+		//set used to find out if visual is on screen
 		Set<Integer> outputId = new HashSet<Integer>();
 		for (OutputMapping om: col.getAllOutputMappings()) {
 			outputId.add(om.getVisualId());

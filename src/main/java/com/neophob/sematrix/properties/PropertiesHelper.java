@@ -184,7 +184,7 @@ public class PropertiesHelper {
      * @param property the property
      * @return the int
      */
-    private int parseInt(String property) {
+    private int parseInt(String property, int defaultValue) {
         String rawConfig = config.getProperty(property);
         if (StringUtils.isNotBlank(rawConfig)) {
             try {
@@ -193,7 +193,16 @@ public class PropertiesHelper {
                 LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
             }
         }
-        return 0;		
+        return defaultValue;		
+    }
+    
+    /**
+     * 
+     * @param property
+     * @return
+     */
+    private int parseInt(String property) {        
+        return parseInt(property, 0);       
     }
 
 
@@ -495,9 +504,16 @@ public class PropertiesHelper {
      * @return the int
      */
     public int getNrOfAdditionalVisuals() {
-        return parseInt(ConfigConstant.ADDITIONAL_VISUAL_SCREENS);
+        return parseInt(ConfigConstant.ADDITIONAL_VISUAL_SCREENS, 0);
     }
 
+    /**
+     * 
+     * @return
+     */
+    public int getDebugWindowMaximalXSize() {        
+        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_X_SIZE, 1024);
+    }
 
     /**
      * Gets the layout.

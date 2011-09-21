@@ -46,29 +46,38 @@ public class InternalDebugWindow extends Frame {
 	 * Instantiates a new internal debug window.
 	 *
 	 * @param displayHoriz the display horiz
+	 * @param the maximal x size of the window
 	 */
-	public InternalDebugWindow(boolean displayHoriz) {
-        super("debug buffer");
+	public InternalDebugWindow(boolean displayHoriz, int maximalXSize) {
+        super("debug buffer");        
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
-        int x = g.getInternalBufferXSize()*2;
-        int y = g.getInternalBufferYSize()*2;        
         
+        float aspect = (float)g.getInternalBufferXSize()/(float)g.getInternalBufferYSize();
+        int singleVisualXSize,singleVisualYSize;   
+        singleVisualXSize=maximalXSize/nrOfScreens;
+        singleVisualYSize=(int)(maximalXSize/nrOfScreens/aspect);
+
+        int windowXSize=singleVisualXSize;
+        int windowYSize=singleVisualYSize;
+
         if (displayHoriz) {
-        	x*=nrOfScreens;
+        	windowXSize*=nrOfScreens;
         } else {
-        	y*=nrOfScreens;
+        	windowYSize*=nrOfScreens;
         }
-        x+=10;y+=55;
-        
-        LOG.log(Level.INFO, "create frame with size "+x+"/"+y);
-        setBounds(0, 0, x, y);
+       
+        //boarder stuff
+        windowXSize+=10;
+        windowYSize+=60;
+
+        LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
+        setBounds(0, 0, windowXSize, windowYSize);
         this.setResizable(false);
-        this.setSize(x, y);
+        this.setSize(windowXSize, windowYSize);
 
         setLayout(new BorderLayout());
-        PApplet embed = new InternalBuffer(displayHoriz, x, y, 
-        		g.getInternalBufferXSize()*2, g.getInternalBufferYSize()*2);
+        PApplet embed = new InternalBuffer(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
         
         add(embed, BorderLayout.CENTER);
 
@@ -77,7 +86,6 @@ public class InternalDebugWindow extends Frame {
         // that other internal variables are properly set.
         embed.init();
         
-        setVisible(true); 
-		
+        setVisible(true); 		
 	}
 }
