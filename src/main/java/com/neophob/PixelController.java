@@ -37,6 +37,7 @@ import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
+import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -61,9 +62,6 @@ public class PixelController extends PApplet {
 	/** The output. */
 	private Output output;
 	
-	/** The frame counter. */
-	private int frameCounter=0;
-
 	/**
 	 * prepare.
 	 */
@@ -114,8 +112,8 @@ public class PixelController extends PApplet {
 		
 		new MatrixEmulator(ph, col.getPixelControllerOutput(), this.output.getBpp());				
 		
-		if (ph.getProperty("show.debug.window").equalsIgnoreCase("true")) {
-			new InternalDebugWindow(true);	
+		if (ph.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
+			new InternalDebugWindow(true, ph.getDebugWindowMaximalXSize());	
 		}
 		
 		//start in random mode?
@@ -139,7 +137,6 @@ public class PixelController extends PApplet {
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
 		}
-		frameCounter++;
 	}
 
 	/**

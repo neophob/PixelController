@@ -85,4 +85,7 @@ public final class ConfigConstant {
 	/** The Constant ADDITIONAL_VISUAL_SCREENS. */
 	public static final String ADDITIONAL_VISUAL_SCREENS = "additional.visual.screens";
 	
+	public static final String SHOW_DEBUG_WINDOW = "show.debug.window";
+	
+	public static final String DEBUG_WINDOW_MAX_X_SIZE = "maximal.debug.window.xsize";
 }

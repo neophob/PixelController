@@ -87,6 +87,7 @@ public final class Collector {
 	
 	/** The frames. */
 	private int frames;
+	private int framesEffective;
 	
 	/** The current visual. */
 	private int currentVisual;
@@ -205,7 +206,7 @@ public final class Collector {
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
-			ioMapping.add(new OutputMapping(n, 0));			
+			ioMapping.add(new OutputMapping(n));			
 		}
 
 		//Start tcp server
@@ -258,6 +259,8 @@ public final class Collector {
 				u+=1;
 			}			
 		}
+		
+		framesEffective+=u;
 		
 		//update generator depending on the input sound
 		for (int i=0; i<u; i++) {
@@ -715,5 +718,15 @@ public final class Collector {
     public PropertiesHelper getPh() {
         return ph;
     }
+
+    /**
+     * 
+     * @return
+     */
+	public int getFrames() {
+		return framesEffective;
+	}
+    
+    
 
 }

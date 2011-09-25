@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.output.emulatorhelper;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +28,9 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.input.Sound;
 
 
 /**
@@ -40,7 +44,7 @@ public class InternalBuffer extends PApplet {
 	private static final long serialVersionUID = 2344499301021L;
 
 	private static final int SELECTED_MARKER = 10;
-	
+
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(InternalBuffer.class.getName());
 
@@ -77,7 +81,7 @@ public class InternalBuffer extends PApplet {
 	 * @see processing.core.PApplet#setup()
 	 */
     public void setup() {
-    	LOG.log(Level.INFO, "create frame with size "+x+"/"+y);
+    	LOG.log(Level.INFO, "create internal buffer with size "+x+"/"+y);
         size(x,y);
         noSmooth();
         frameRate(Collector.getInstance().getFps());
@@ -92,8 +96,15 @@ public class InternalBuffer extends PApplet {
 		int[] buffer;
 		Collector col = Collector.getInstance();
 		int currentVisual = col.getCurrentVisual();
-		int ofs=0;
 		
+		//set used to find out if visual is on screen
+		Set<Integer> outputId = new HashSet<Integer>();
+		for (OutputMapping om: col.getAllOutputMappings()) {
+			outputId.add(om.getVisualId());
+		}
+		
+		//draw output buffer and marker
+		int ofs=0;
 		for (Visual v: col.getAllVisuals()) {
 			//get image
 			buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
@@ -106,13 +117,23 @@ public class InternalBuffer extends PApplet {
 			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
 			pImage.updatePixels();
 			
-			//draw selected marker
+			//draw current input
 			if (ofs==currentVisual) {
 				fill(200,66,66);
 			} else {
-				fill(33,33,33);
+				fill(55,55,55);
 			}	
 			rect(localX, localY+targetYSize, targetXSize, SELECTED_MARKER);
+
+			
+			//draw current output
+			if (outputId.contains(ofs)) {
+				fill(66,200,66);
+			} else {
+				fill(55,55,55);
+			}	
+			rect(localX, localY+targetYSize+SELECTED_MARKER, targetXSize, SELECTED_MARKER);				
+
 			
 			//display the image
 			image(pImage, localX, localY);
@@ -124,7 +145,49 @@ public class InternalBuffer extends PApplet {
 
 			ofs++;
 		}
+
+		//display frame progress
+		int frames = col.getFrames() % targetXSize;
+		fill(200,200,200);
+		rect(0, localY+targetYSize+SELECTED_MARKER*2+2, frames, 5);
+		fill(55,55,55);
+		rect(frames, localY+targetYSize+SELECTED_MARKER*2+2, targetXSize-frames, 5);
+		
+		displaySoundStats(localY);
 	}
 
+	/**
+	 * 
+	 * @param localY
+	 */
+	private void displaySoundStats(int localY) {
+		Sound snd = Sound.getInstance();
+		
+		int xofs = targetXSize;
+		int xx = targetXSize/3;
+		
+		colorSelect(snd.isKick());
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
+	
+		xofs+=xx;
+		colorSelect(snd.isSnare());
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
+
+		xofs+=xx;
+		colorSelect(snd.isHat());
+		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);		
+	}
+	
+	/**
+	 * 
+	 * @param b
+	 */
+	private void colorSelect(boolean b) {
+		if (b) {
+			fill(200,200,200);	
+		} else {
+			fill(55,55,55);	
+		}		
+	}
 
 }
