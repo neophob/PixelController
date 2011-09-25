@@ -51,7 +51,9 @@ extern "C" {
 #define CMD_SCAN_I2C_BUS 0x06
 
 //8ms is the minimum!
-#define SERIAL_WAIT_TIME_IN_MS 8
+#define SERIAL_DELAY_LOOP 3
+#define SERIAL_WAIT_DELAY 3
+#define SERIAL_HEADER_SIZE 5
 
 //I2C definitions
 #define START_OF_DATA 0x10
@@ -77,7 +79,7 @@ byte serInStr[128]; 	 				 // array that will hold the serial input string
 //64 -> rate: 24.22577, long: 3,     totalTime: 33685     16.84ms     20.89ms
 //-> I use 16b - not the fastest variant but more accurate
 
-#define SERIALBUFFERSIZE 16
+#define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
 
 byte g_errorCounter;
@@ -87,11 +89,9 @@ static void sendAck() {
   serialResonse[0] = 'A';
   serialResonse[1] = 'K';
   serialResonse[2] = Serial.available();
-  serialResonse[3] = g_errorCounter;  
-  Serial.write(serialResonse, 4);
-
-  //Clear bufer
- // Serial.flush();
+  serialResonse[3] = g_errorCounter;
+  Serial.write(serialResonse, SERIALBUFFERSIZE);
+  Serial.send_now();
 }
 
 
@@ -134,9 +134,9 @@ void scanI2CBus() {
   byte data = 0; // not used, just an address to feed to twi_writeTo()
   for (byte addr = START_I2C_SCAN; addr <= END_I2C_SCAN; addr++) {
   //rc 0 = success
-    digitalWrite(13, HIGH);
+    digitalWrite(11, HIGH);
     rc = twi_writeTo(addr, &data, 0, 1);
-    digitalWrite(13, LOW);
+    digitalWrite(11, LOW);
     if (rc==0) {
       serialResonse[i]=addr;
       if (i<SERIALBUFFERSIZE) i++;
@@ -151,7 +151,7 @@ void scanI2CBus() {
 void setup() {
   Wire.begin(1); // join i2c bus (address optional for master)
   
-  pinMode(13, OUTPUT);
+  pinMode(11, OUTPUT);
   memset(serialResonse, 0, SERIALBUFFERSIZE);
 
   //im your slave and wait for your commands, master!
@@ -164,16 +164,16 @@ void loop() {
   //read the serial port and create a string out of what you read
   g_errorCounter=0;
 
-  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
   // see if we got a proper command string yet
   if (readCommand(serInStr) == 0) {
-    //no valid data found
-    //sleep for 250us
-    delayMicroseconds(250);
+  	if (g_errorCounter != 0 && g_errorCounter != 102) {
+  	  sendAck();
+  	}
     return;
   }
   
-  digitalWrite(13, HIGH);
+  digitalWrite(11, HIGH);
   
   //i2c addres of device
   byte addr    = serInStr[1];
@@ -186,11 +186,11 @@ void loop() {
 
   switch (type) {
     case CMD_SENDFRAME:
-    	//the size of an image must be exactly 96 bytes
-        if (sendlen!=96) {
-          g_errorCounter=100;
+        //the size of an image must be exactly 96 bytes
+        if (sendlen == 96) {
+          g_errorCounter = BlinkM_sendBuffer(addr, cmd);
         } else {
-          g_errorCounter = BlinkM_sendBuffer(addr, cmd);    
+          g_errorCounter=100;
         }
         break;
     case CMD_PING:
@@ -211,7 +211,7 @@ void loop() {
         
   //send ack to library - command processed
   sendAck();
-    
+  digitalWrite(11, LOW);
 }
 
 
@@ -252,59 +252,59 @@ byte readCommand(byte *str) {
   }
 
   if (i==0) {
-    //failed to get data
-    g_errorCounter=101;
+    //failed to get data ignore it
+    g_errorCounter = 102;
     return 0;    
   }
+  
 
 //read header  
-  i = SERIAL_WAIT_TIME_IN_MS;
-  while (Serial.available() < HEADER_SIZE-1) {   // wait for the rest
-    delay(1); 
-    if (i-- == 0) {
-      g_errorCounter=102;
-      return 0;        // get out if takes too long
+  i=1;
+  b=SERIAL_DELAY_LOOP;
+  while (i<SERIAL_HEADER_SIZE) {
+    if (Serial.available()) {
+      str[i++] = Serial.read();
+    } else {
+      delay(SERIAL_WAIT_DELAY); 
+      if (b-- == 0) {
+        g_errorCounter = 103;
+        return 0; //no data available!
+      }
     }
   }
-  for (i=1; i<HEADER_SIZE; i++) {
-    str[i] = Serial.read();       // fill it up
-  }
   
-// --- START HEADER CHECK    
+  // --- START HEADER CHECK    
   //check if data is correct, 0x10 = START_OF_DATA
   if (str[4] != START_OF_DATA) {
-    g_errorCounter=104;
+    g_errorCounter = 104;
     return 0;
   }
   
   //check sendlen, its possible that sendlen is 0!
   sendlen = str[2];
 // --- END HEADER CHECK
-
   
 //read data  
-  i = SERIAL_WAIT_TIME_IN_MS;
-  // wait for the final part, +1 for END_OF_DATA
-  while (Serial.available() < sendlen+1) {
-    delay(1); 
-    if( i-- == 0 ) {
-      g_errorCounter=105;
-      return 0;
+  i=0;
+  b=SERIAL_DELAY_LOOP;
+  while (i<sendlen+1) {
+    if (Serial.available()) {
+      str[SERIAL_HEADER_SIZE+i++] = Serial.read();
+    } else {
+      delay(SERIAL_WAIT_DELAY); 
+      if (b-- == 0) {
+        g_errorCounter = 105;
+        return 0; //no data available!
+      }
     }
   }
 
-  for (i=HEADER_SIZE; i<HEADER_SIZE+sendlen+1; i++) {
-    str[i] = Serial.read();       // fill it up
-  }
-
   //check if data is correct, 0x20 = END_OF_DATA
-  if (str[HEADER_SIZE+sendlen] != END_OF_DATA) {
-    g_errorCounter=106;
+  if (str[SERIAL_HEADER_SIZE+sendlen] != END_OF_DATA) {
+    g_errorCounter = 106;
     return 0;
   }
 
   //return data size (without meta data)
   return sendlen;
 }
-
-
