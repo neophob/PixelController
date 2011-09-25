@@ -586,5 +586,7 @@ public class PropertiesHelper {
         return deviceYResolution;
     }
 
-
+	public boolean isFPSLoggingEnabled() {
+		return parseBoolean(ConfigConstant.FPS_LOGGING_ENABLED);
+	}
 }

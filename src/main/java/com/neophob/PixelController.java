@@ -20,6 +20,9 @@
 package com.neophob;
 
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +30,6 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
-import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
@@ -61,6 +63,11 @@ public class PixelController extends PApplet {
 
 	/** The output. */
 	private Output output;
+	
+	// variables needed for logging
+	private boolean fpsLoggingEnabled;
+	private ScheduledExecutorService scheduledExecutorService;
+	private int framesCounter;
 	
 	/**
 	 * prepare.
@@ -123,19 +130,35 @@ public class PixelController extends PApplet {
 			col.setRandomMode(true);
 		}
 		
+		this.fpsLoggingEnabled = ph.isFPSLoggingEnabled();
+		// enable average fps per minute logging
+		if (this.fpsLoggingEnabled) {
+			this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+			this.framesCounter = 0;
+			Runnable fpsRunnable = new Runnable() {
+				@Override
+				public void run() {
+					LOG.log(Level.INFO, "average fps per minute: {0}", framesCounter / 60f);
+					framesCounter = 0;
+				}
+			};
+			this.scheduledExecutorService.scheduleAtFixedRate(fpsRunnable, 60, 60, TimeUnit.SECONDS);
+		}
+		
 		LOG.log(Level.INFO,"--- PixelController Setup END ---");
 	}
 
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
-	public void draw() { 
-		//update all generators
- 
+	public void draw() {
+		// update all generators
 		Collector.getInstance().updateSystem();
-
-		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
-			this.output.logStatistics();
+		// log output statistics
+		this.output.logStatistics();
+		// count average fps per minute if enabled
+		if (this.fpsLoggingEnabled) {
+			this.framesCounter++;
 		}
 	}
 

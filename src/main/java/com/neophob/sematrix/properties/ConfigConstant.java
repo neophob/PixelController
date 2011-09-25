@@ -88,4 +88,8 @@ public final class ConfigConstant {
 	public static final String SHOW_DEBUG_WINDOW = "show.debug.window";
 	
 	public static final String DEBUG_WINDOW_MAX_X_SIZE = "maximal.debug.window.xsize";
+	
+	/** The Constant FPS_LOGGING_ENABLED. */
+	public static final String FPS_LOGGING_ENABLED = "fps.logging.enabled";
+	
 }

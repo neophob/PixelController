@@ -36,10 +36,10 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * @author michu
  */
 public abstract class Output {
-
+	
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Output.class.getName());
-
+	
 	/** The name. */
 	private String name;
 	
@@ -51,6 +51,7 @@ public abstract class Output {
 	
 	/** *bit per pixel */
 	protected int bpp;
+	
 	/**
 	 * Instantiates a new output.
 	 *
@@ -63,10 +64,10 @@ public abstract class Output {
 		this.matrixData = Collector.getInstance().getMatrix();
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
-
+		
 		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
 				, new Object[] { this.name, layout.getLayoutName(), this.bpp });
-	
+		
 		//add to list
 		controller.addOutput(this);
 	}
@@ -80,7 +81,7 @@ public abstract class Output {
 	 * Close.
 	 */
 	public abstract void close(); 
-
+	
 	/**
 	 * get buffer for a output, this method respect the mapping.
 	 *
@@ -107,14 +108,13 @@ public abstract class Output {
 	public String toString() {
 		return name;
 	}
-
+	
 	/**
 	 * debug output if possible
 	 */
 	public void logStatistics() {
-		
 	}
-
+	
 	/**
 	 * 
 	 * @return bpp (bit per pixel)
@@ -122,7 +122,4 @@ public abstract class Output {
 	public int getBpp() {
 		return bpp;
 	}
-
-
-	
 }
