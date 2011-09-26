@@ -24,12 +24,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PixelControllerElement;
+import com.neophob.sematrix.glue.Statistics;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.properties.ValidCommands;
@@ -71,6 +75,11 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private Textwriter textwriter;
 
     private PropertiesHelper ph;
+    
+    private Collector collector;
+    
+    private ExecutorService executorService;
+    private Statistics statistics;
 
     /**
      * Instantiates a new pixel controller generator.
@@ -78,9 +87,10 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public PixelControllerGenerator(PropertiesHelper ph) {
         allGenerators = new CopyOnWriteArrayList<Generator>();	
         this.ph = ph;
+        this.collector = Collector.getInstance();
+        this.executorService = Executors.newCachedThreadPool();
+        this.statistics = Statistics.getInstance();
     }
-
-
 
     /**
      * initialize all generators.
@@ -131,29 +141,55 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return ret;
     }
 
-    /* (non-Javadoc)
-     * @see com.neophob.sematrix.glue.PixelControllerElement#update()
-     */
-    @Override
-    public void update() {        
-        //get a set with active visuals
-        List<Visual> allVisuals = Collector.getInstance().getAllVisuals();
-        Set<Integer> activeVisuals = new HashSet<Integer>();        
-        for (Visual v: allVisuals) {
-            activeVisuals.add(v.getGenerator1Idx());
-            activeVisuals.add(v.getGenerator2Idx());
-        }
-        
-        //update only selected generators
-        for (Generator m: allGenerators) {
-            if (activeVisuals.contains(m.getId())) {
-                m.update();   
-            }
-        }
-    }
-
-
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
+	 */
+	@Override
+	public void update() {
+		// get a set with all active generators
+		Set<Integer> activeGenerators = new HashSet<Integer>();
+		for (Visual visual : this.collector.getAllVisuals()) {
+			activeGenerators.add(visual.getGenerator1Idx());
+			activeGenerators.add(visual.getGenerator2Idx());
+		}
+		// update only active generators
+		final CountDownLatch startGate = new CountDownLatch(1);
+		final CountDownLatch endGate = new CountDownLatch(activeGenerators.size());
+		for (final Generator generator : this.allGenerators) {
+			if (!activeGenerators.contains(generator.getId())) {
+				continue;
+			}
+			// create runnable instance
+			Runnable generatorRunnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						startGate.await();
+						try {
+							generator.update();
+						} finally {
+							endGate.countDown();
+						}
+					} catch (InterruptedException e) {
+						LOG.log(Level.SEVERE, "waiting for start gate of generator: " + generator.getClass().getSimpleName()  + " got interrupted!", e);
+					}
+				}
+			};
+			// schedule runnable for execution
+			this.executorService.execute(generatorRunnable);
+		}
+		// track time needed to execute all runnable instances
+		long start = System.nanoTime();
+		startGate.countDown();
+		try {
+			endGate.await();
+		} catch (InterruptedException e) {
+			LOG.log(Level.SEVERE, "waiting for all generators to finish their update() method got interrupted!", e);
+		}
+		this.statistics.sendGeneratorsUpdateTime(System.nanoTime() - start);
+	}
 
     /*
      * GENERATOR ======================================================

@@ -589,4 +589,8 @@ public class PropertiesHelper {
 	public boolean isFPSLoggingEnabled() {
 		return parseBoolean(ConfigConstant.FPS_LOGGING_ENABLED);
 	}
+
+	public boolean statisticsEnabled() {
+		return parseBoolean(ConfigConstant.STATISTICS_ENABLED);
+	}
 }

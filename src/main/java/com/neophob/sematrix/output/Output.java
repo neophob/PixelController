@@ -37,11 +37,10 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  */
 public abstract class Output {
 	
+	private OutputDeviceEnum outputDeviceEnum;
+	
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Output.class.getName());
-	
-	/** The name. */
-	private String name;
 	
 	/** The matrix data. */
 	protected MatrixData matrixData;
@@ -58,15 +57,15 @@ public abstract class Output {
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
-		this.name = name;
+	public Output(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+		this.outputDeviceEnum = outputDeviceEnum;
 				
 		this.matrixData = Collector.getInstance().getMatrix();
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
 		
 		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
-				, new Object[] { this.name, layout.getLayoutName(), this.bpp });
+				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp });
 		
 		//add to list
 		controller.addOutput(this);
@@ -106,7 +105,7 @@ public abstract class Output {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return name;
+		return this.outputDeviceEnum.name();
 	}
 	
 	/**
@@ -121,5 +120,9 @@ public abstract class Output {
 	 */
 	public int getBpp() {
 		return bpp;
+	}
+
+	public OutputDeviceEnum getOutputDeviceEnum() {
+		return this.outputDeviceEnum;
 	}
 }

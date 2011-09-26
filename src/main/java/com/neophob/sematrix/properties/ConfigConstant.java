@@ -92,4 +92,6 @@ public final class ConfigConstant {
 	/** The Constant FPS_LOGGING_ENABLED. */
 	public static final String FPS_LOGGING_ENABLED = "fps.logging.enabled";
 	
+	/** The Constant STATISTICS_ENABLED. */
+	public static final String STATISTICS_ENABLED = "statistics.enabled";
 }

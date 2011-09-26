@@ -22,22 +22,36 @@ package com.neophob.sematrix.output;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.PixelControllerElement;
+import com.neophob.sematrix.glue.Statistics;
 
 /**
  * The Class PixelControllerOutput.
  */
 public class PixelControllerOutput implements PixelControllerElement {
+	
+	/** The log. */
+	private static final Logger LOG = Logger.getLogger(PixelControllerOutput.class.getName());
 
 	/** The all outputs. */
 	private List<Output> allOutputs;
+
+	private final ExecutorService executorService;
+	private Statistics statistics;
 	
 	/**
 	 * Instantiates a new pixel controller output.
 	 */
 	public PixelControllerOutput() {
 		allOutputs = new CopyOnWriteArrayList<Output>();
+		this.executorService = Executors.newCachedThreadPool();
+		this.statistics = Statistics.getInstance();
 	}
 	
 	/* (non-Javadoc)
@@ -60,13 +74,39 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 */
 	@Override
 	public void update() {
-		for (Output o: allOutputs) {
-			o.update();
+		final CountDownLatch startGate = new CountDownLatch(1);
+		final CountDownLatch endGate = new CountDownLatch(this.allOutputs.size());
+		for (final Output output: this.allOutputs) {
+			
+			// create runnable instance
+			Runnable outputRunnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						startGate.await();
+						try {
+							output.update();
+						} finally {
+							endGate.countDown();
+						}
+					} catch (InterruptedException e) {
+						LOG.log(Level.SEVERE, "waiting for start gate of output: " + output.getClass().getSimpleName()  + " got interrupted!", e);
+					}
+				}
+			};
+			// schedule runnable for execution
+			this.executorService.execute(outputRunnable);
 		}
+		// track time needed to execute all runnable instances
+		long start = System.nanoTime();
+		startGate.countDown();
+		try {
+			endGate.await();
+		} catch (InterruptedException e) {
+			LOG.log(Level.SEVERE, "waiting for all outputs to finish their update() method got interrupted!", e);
+		}
+		this.statistics.sendOutputsUpdateTime(System.nanoTime() - start);
 	}
-
-
-
 
 	/*
 	 * OUTPUT ======================================================
@@ -89,6 +129,4 @@ public class PixelControllerOutput implements PixelControllerElement {
 	public void addOutput(Output output) {
 		allOutputs.add(output);
 	}
-
-
 }

@@ -30,6 +30,7 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.glue.Statistics;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
@@ -84,10 +85,15 @@ public class PixelController extends PApplet {
             throw new IllegalArgumentException("Configuration error!", e);
         }
 
-	    PropertiesHelper ph = new PropertiesHelper(config);
-	    
-	    
-		Collector col = Collector.getInstance(); 				
+		PropertiesHelper ph = new PropertiesHelper(config);
+
+		// enable statistics logging
+		Statistics statistics = Statistics.getInstance();
+		if (ph.statisticsEnabled()) {
+			statistics.enable();
+		}
+
+		Collector col = Collector.getInstance();
 		col.init(this, FPS, ph);
 		frameRate(FPS);
 		noSmooth();
