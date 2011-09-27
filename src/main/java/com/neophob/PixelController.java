@@ -20,9 +20,6 @@
 package com.neophob;
 
 import java.util.Properties;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +27,6 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
-import com.neophob.sematrix.glue.Statistics;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
@@ -42,6 +38,7 @@ import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.statistics.Statistics;
 
 /**
  * The Class PixelController.
@@ -65,10 +62,8 @@ public class PixelController extends PApplet {
 	/** The output. */
 	private Output output;
 	
-	// variables needed for logging
-	private boolean fpsLoggingEnabled;
-	private ScheduledExecutorService scheduledExecutorService;
-	private int framesCounter;
+	private boolean statisticsEnabled;
+	private Statistics statistics;
 	
 	/**
 	 * prepare.
@@ -88,9 +83,10 @@ public class PixelController extends PApplet {
 		PropertiesHelper ph = new PropertiesHelper(config);
 
 		// enable statistics logging
-		Statistics statistics = Statistics.getInstance();
-		if (ph.statisticsEnabled()) {
-			statistics.enable();
+		this.statistics = Statistics.getInstance();
+		this.statisticsEnabled = ph.statisticsEnabled();
+		if (this.statisticsEnabled) {
+			this.statistics.enable();
 		}
 
 		Collector col = Collector.getInstance();
@@ -136,21 +132,6 @@ public class PixelController extends PApplet {
 			col.setRandomMode(true);
 		}
 		
-		this.fpsLoggingEnabled = ph.isFPSLoggingEnabled();
-		// enable average fps per minute logging
-		if (this.fpsLoggingEnabled) {
-			this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-			this.framesCounter = 0;
-			Runnable fpsRunnable = new Runnable() {
-				@Override
-				public void run() {
-					LOG.log(Level.INFO, "average fps per minute: {0}", framesCounter / 60f);
-					framesCounter = 0;
-				}
-			};
-			this.scheduledExecutorService.scheduleAtFixedRate(fpsRunnable, 60, 60, TimeUnit.SECONDS);
-		}
-		
 		LOG.log(Level.INFO,"--- PixelController Setup END ---");
 	}
 
@@ -162,10 +143,8 @@ public class PixelController extends PApplet {
 		Collector.getInstance().updateSystem();
 		// log output statistics
 		this.output.logStatistics();
-		// count average fps per minute if enabled
-		if (this.fpsLoggingEnabled) {
-			this.framesCounter++;
-		}
+		// count average fps per minute
+		this.statistics.trackFPS(this.frameCount);
 	}
 
 	/**

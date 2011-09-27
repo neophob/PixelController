@@ -33,10 +33,10 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PixelControllerElement;
-import com.neophob.sematrix.glue.Statistics;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.PropertiesHelper;
 import com.neophob.sematrix.properties.ValidCommands;
+import com.neophob.sematrix.statistics.Statistics;
 
 /**
  * The Class PixelControllerGenerator.
@@ -148,6 +148,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	 */
 	@Override
 	public void update() {
+		long init = System.nanoTime();
 		// get a set with all active generators
 		Set<Integer> activeGenerators = new HashSet<Integer>();
 		for (Visual visual : this.collector.getAllVisuals()) {
@@ -188,7 +189,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 		} catch (InterruptedException e) {
 			LOG.log(Level.SEVERE, "waiting for all generators to finish their update() method got interrupted!", e);
 		}
-		this.statistics.sendGeneratorsUpdateTime(System.nanoTime() - start);
+		this.statistics.trackGeneratorsUpdateTime(init, start, System.nanoTime());
 	}
 
     /*

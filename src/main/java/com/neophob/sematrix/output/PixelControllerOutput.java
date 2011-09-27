@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.PixelControllerElement;
-import com.neophob.sematrix.glue.Statistics;
+import com.neophob.sematrix.statistics.Statistics;
 
 /**
  * The Class PixelControllerOutput.
@@ -74,6 +74,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 */
 	@Override
 	public void update() {
+		long init = System.nanoTime();
 		final CountDownLatch startGate = new CountDownLatch(1);
 		final CountDownLatch endGate = new CountDownLatch(this.allOutputs.size());
 		for (final Output output: this.allOutputs) {
@@ -105,7 +106,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 		} catch (InterruptedException e) {
 			LOG.log(Level.SEVERE, "waiting for all outputs to finish their update() method got interrupted!", e);
 		}
-		this.statistics.sendOutputsUpdateTime(System.nanoTime() - start);
+		this.statistics.trackOutputsUpdateTime(init, start, System.nanoTime());
 	}
 
 	/*
