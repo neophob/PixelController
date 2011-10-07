@@ -19,12 +19,15 @@
 package com.neophob.sematrix.jmx;
 
 import java.lang.management.ManagementFactory;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+
+import org.apache.commons.collections.buffer.CircularFifoBuffer;
 
 /**
  * 
@@ -40,20 +43,28 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	
 	private static final float VERSION = 1.04f;
 	
+	private int configuredFps;
 	private float currentFps;
-	private float generatorUpdateTime;
-	private float effectUpdateTime;
-	private float outputUpdateTime;
-	private float faderUpdateTime;
-	
 	private long frameCount;
 	
+	private CircularFifoBuffer generatorUpdateTime;
+	private CircularFifoBuffer effectUpdateTime;
+	private CircularFifoBuffer outputUpdateTime;
+	private CircularFifoBuffer faderUpdateTime;
+		
 	
 	/**
 	 * Register the JMX Bean
 	 */
-	public PixelControllerStatus() {
+	public PixelControllerStatus(int fps) {
 		LOG.log(Level.INFO, "Initialize the PixelControllerStatus JMX Bean");
+		
+		this.configuredFps = fps;
+		generatorUpdateTime = new CircularFifoBuffer(fps);
+		effectUpdateTime = new CircularFifoBuffer(fps);
+		outputUpdateTime = new CircularFifoBuffer(fps);
+		faderUpdateTime = new CircularFifoBuffer(fps);
+		
 		// register MBean
 		try {
 			MBeanServer server = ManagementFactory.getPlatformMBeanServer();
@@ -77,24 +88,44 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		return currentFps;
 	}
 
+	/**
+	 * sum up all existing entries (May represent the last hour)
+	 * @param it
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	private float sumUp(Iterator it) {
+		float sum = 0;
+		while (it.hasNext()) {
+			Float entry = (Float) it.next();
+			sum += entry;
+		}
+		return sum;
+	}
+
+
 	@Override
 	public float getGeneratorUpdateTime() {
-		return generatorUpdateTime;
+		float total = sumUp(generatorUpdateTime.iterator());
+		return total/configuredFps;
 	}
 
 	@Override
 	public float getEffectUpdateTime() {
-		return effectUpdateTime;
+		float total = sumUp(effectUpdateTime.iterator());
+		return total/configuredFps;
 	}
 
 	@Override
 	public float getOutputUpdateTime() {
-		return outputUpdateTime;
+		float total = sumUp(outputUpdateTime.iterator());
+		return total/configuredFps;
 	}
 
 	@Override
 	public float getFaderUpdateTime() {
-		return faderUpdateTime;
+		float total = sumUp(faderUpdateTime.iterator());
+		return total/configuredFps;
 	}
 
 	@Override
@@ -107,24 +138,24 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.currentFps = currentFps;
 	}
 
-	public void setGeneratorUpdateTime(float generatorUpdateTime) {
-		this.generatorUpdateTime = generatorUpdateTime;
-	}
-
-	public void setEffectUpdateTime(float effectUpdateTime) {
-		this.effectUpdateTime = effectUpdateTime;
-	}
-
-	public void setOutputUpdateTime(float outputUpdateTime) {
-		this.outputUpdateTime = outputUpdateTime;
-	}
-
 	public void setFrameCount(long frameCount) {
 		this.frameCount = frameCount;
 	}
 
-	public void setFaderUpdateTime(float faderUpdateTime) {
-		this.faderUpdateTime = faderUpdateTime;
+	public void addGeneratorUpdateTime(float generatorUpdateTime) {
+		this.generatorUpdateTime.add(generatorUpdateTime);
+	}
+
+	public void addEffectUpdateTime(float effectUpdateTime) {
+		this.effectUpdateTime.add(effectUpdateTime);
+	}
+
+	public void addOutputUpdateTime(float outputUpdateTime) {
+		this.outputUpdateTime.add(outputUpdateTime);
+	}
+
+	public void addFaderUpdateTime(float faderUpdateTime) {
+		this.faderUpdateTime.add(faderUpdateTime);
 	}
 	
 	

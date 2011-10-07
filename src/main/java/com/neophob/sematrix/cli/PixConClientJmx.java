@@ -79,14 +79,18 @@ public final class PixConClientJmx {
 		ObjectName mbeanName = new ObjectName(PixelControllerStatus.JMX_BEAN_NAME);
 		
 		PixelControllerStatusMBean mbeanProxy = JMX.newMBeanProxy(mbsc, mbeanName, PixelControllerStatusMBean.class, true);
-
+		final String SUFFIX = "ms";
+		
+		System.out.println("Generic:");
 		System.out.println("Server Version:\t" + mbeanProxy.getVersion());
 		System.out.println("Current FPS:\t" + mbeanProxy.getCurrentFps());
 		System.out.println("Frame count:\t" + mbeanProxy.getFrameCount());
-		System.out.println("Generator Update time:\t" + mbeanProxy.getGeneratorUpdateTime());
-		System.out.println("Effect Update time:\t" + mbeanProxy.getEffectUpdateTime());
-		System.out.println("Output Update time:\t" + mbeanProxy.getOutputUpdateTime());
-		System.out.println("Fader Update time:\t" + mbeanProxy.getFaderUpdateTime());
+		
+		System.out.println("Update Time (per 1s):");
+		System.out.println("Generator:\t" + mbeanProxy.getGeneratorUpdateTime()+SUFFIX);
+		System.out.println("Effect:\t" + mbeanProxy.getEffectUpdateTime()+SUFFIX);
+		System.out.println("Output:\t" + mbeanProxy.getOutputUpdateTime()+SUFFIX);
+		System.out.println("Fader:\t" + mbeanProxy.getFaderUpdateTime()+SUFFIX);
 	}
 
 }

@@ -151,9 +151,7 @@ public final class Collector {
 		}
 
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
-		pixelControllerShufflerSelect.initAll();
-		
-		pixConStat = new PixelControllerStatus(); 
+		pixelControllerShufflerSelect.initAll();		 
 	}
 
 	/**
@@ -228,6 +226,8 @@ public final class Collector {
             LOG.log(Level.SEVERE, "failed to start TCP Server", e);
         }
 
+		pixConStat = new PixelControllerStatus(fps);
+		
 		initialized=true;
 	}
 
@@ -276,15 +276,15 @@ public final class Collector {
 		for (int i=0; i<u; i++) {
 			pixelControllerGenerator.update();			
 		}
-		pixConStat.setGeneratorUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.addGeneratorUpdateTime(System.currentTimeMillis()-l);
 		
 		l = System.currentTimeMillis();
 		pixelControllerEffect.update();
-		pixConStat.setEffectUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.addEffectUpdateTime(System.currentTimeMillis()-l);
 		
 		l = System.currentTimeMillis();
 		pixelControllerOutput.update();
-		pixConStat.setOutputUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.addOutputUpdateTime(System.currentTimeMillis()-l);
 				
 		//cleanup faders
 		l = System.currentTimeMillis();
@@ -295,7 +295,7 @@ public final class Collector {
 				fader.cleanUp();
 			}
 		}
-		pixConStat.setFaderUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.addFaderUpdateTime(System.currentTimeMillis()-l);
 		
 		if (randomMode) {
 			Shuffler.shuffleStuff();

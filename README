@@ -33,8 +33,8 @@ should build PixelController
 CREDITS
 -------
 
-Michael Vogt:		Project Lead, Main Coder		
+Michael Vogt:       Project Lead, Main Coder		
 	
-Markus Lang:		Maven enhancements, Output enhancements, Performance enhancements		
-Rainer Ostendorf:	Artnet Output
-Pesi:				miniDMX Output, Tester
+Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements		
+Rainer Ostendorf:   Artnet Output
+Pesi:               miniDMX Output, Tester
