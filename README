@@ -14,12 +14,12 @@ Make sure your led matrix connected to you coputer before the application is sta
 HOWTO GET A PIXELINVADERS PANEL
 -------------------------------
 You can create the housing yourself or buy a DIY at my indiegogo.com campaign at http://igg.me/p/31640?a=167555&i=shlk
-
+Check the PixelInvaders home at http://www.pixelinvaders.ch or my Blog at http://www.neophob.com
 
 HOWTO BUILD PIXELCONTROLLER
 ---------------------------
 Prerequisite:
--Maven2
+-Maven v2.x (do NOT use Maven 3.x!!)
 -JDK 1.6+
 
 Install the needed libraries to your local repo (lib/install.sh). this is needed as some packages like processing are
