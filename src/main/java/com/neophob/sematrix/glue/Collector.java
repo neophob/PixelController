@@ -226,7 +226,7 @@ public final class Collector {
             LOG.log(Level.SEVERE, "failed to start TCP Server", e);
         }
 
-		pixConStat = new PixelControllerStatus(fps);
+		pixConStat = new PixelControllerStatus(fps*10);
 		
 		initialized=true;
 	}
