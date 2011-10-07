@@ -22,7 +22,7 @@ setlocal
 REM warning, opengl is very shaky!!
 REM set JAVA_OPT=-Dsun.java2d.opengl=True -Djava.library.path=lib
 
-set JAVA_OPT=-Djava.library.path=lib
+set JAVA_OPT=-Djava.library.path=lib -Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote -Djava.security.policy=data\client.policy
 
 for /f "tokens=*" %%i in ('type classpath-win.properties') do echo set %%i > cp.cmd
 call cp.cmd

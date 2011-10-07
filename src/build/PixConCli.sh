@@ -17,11 +17,11 @@
 # along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#/bin/bash
+#!/bin/bash
 
 #TODO add cd into current dir...
 
-export JAVA_OPT="-Dcom.apple.hwaccel=false -Djava.library.path=lib -server"
+export JAVA_OPT="-Djava.library.path=lib -Djava.security.policy=data/client.policy"
 source ./classpath-unix.properties
 echo classpath: $classpath
 java $JAVA_OPT -classpath $classpath:./lib/PixelController.jar com.neophob.sematrix.cli.PixConClient $@

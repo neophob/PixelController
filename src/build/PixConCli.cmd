@@ -23,7 +23,7 @@ setlocal
 REM warning, opengl is very shaky!!
 REM set JAVA_OPT=-Dsun.java2d.opengl=True -Djava.library.path=lib
 
-set JAVA_OPT=-Djava.library.path=lib
+set JAVA_OPT=-Djava.library.path=lib -Djava.security.policy=data\client.policy
 
 for /f "tokens=*" %%i in ('type classpath-win.properties') do echo set %%i > cp.cmd
 call cp.cmd
