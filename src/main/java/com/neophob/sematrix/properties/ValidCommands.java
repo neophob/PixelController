@@ -118,7 +118,10 @@ public enum ValidCommands {
 	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual"),
 
 	/** The CURRENT output. */
-	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output");
+	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output"),
+
+	/** The CURRENT output. */
+	JMX_STAT(CommandGroup.MISC, 0, "show JMX runtime statistic");
 
 	/** The nr of params. */
 	private int nrOfParams;

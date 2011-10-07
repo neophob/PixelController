@@ -36,6 +36,7 @@ import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
+import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
@@ -129,7 +130,10 @@ public final class Collector {
 	private boolean isLoadingPresent=false;
 	
 	private boolean soundAware=false;
+	
+	private PixelControllerStatus pixConStat;
 
+	
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -148,6 +152,8 @@ public final class Collector {
 
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
 		pixelControllerShufflerSelect.initAll();
+		
+		pixConStat = new PixelControllerStatus(); 
 	}
 
 	/**

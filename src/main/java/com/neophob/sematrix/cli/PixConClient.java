@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+ *
+ * This file is part of PixelController.
+ *
+ * PixelController is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PixelController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.neophob.sematrix.cli;
 
 import jargs.gnu.CmdLineParser;
@@ -16,10 +34,14 @@ import com.neophob.sematrix.properties.CommandGroup;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
- * The Class Client.
+ * 
+ * @author michu
+ *
  */
 public class PixConClient {
 
+	private static final float VERSION = 0.3f; 
+	
     /** The Constant DEFAULT_PORT. */
     private static final int DEFAULT_PORT = 3448;
 
@@ -42,7 +64,7 @@ public class PixConClient {
         for (CommandGroup cg: CommandGroup.values()) {
             for (ValidCommands vc: ValidCommands.getCommandsByGroup(cg)) {
             	System.out.println("\t"+vc.toString()+"\t# of parameter: "+vc.getNrOfParams()+"\t"+vc.getDesc());
-            }        	
+            }
             System.out.println();
         }
     }
@@ -92,6 +114,12 @@ public class PixConClient {
         return null;
     }
 
+    /**
+     * 
+     * @param cmd
+     * @return
+     * @throws ConnectException
+     */
     private static Client connectToServer(ParsedArgument cmd) throws ConnectException {
         Client client = null;
         Socket socket = new Socket();
@@ -118,15 +146,19 @@ public class PixConClient {
      * @throws ParseException the parse exception
      */
     public static void main(String[] args) throws Exception {
-        System.out.println("PixelController Client v0.2");
+        System.out.println("PixelController Client v"+VERSION);
 
         ParsedArgument cmd = parseArgument(args);
         System.out.println("\t"+cmd);
         
-        Client c = connectToServer(cmd);       
-        c.write(cmd.getPayload(TcpServer.FUDI_MSG_END_MARKER));
-        
-        System.out.println("Close connection, Bye!");
-        c.dispose();
+        if (cmd.getCommand() == ValidCommands.JMX_STAT) {
+        	PixConClientJmx.queryJmxServer(cmd.getHostname(), cmd.getPort());
+        } else {
+            Client c = connectToServer(cmd);       
+            c.write(cmd.getPayload(TcpServer.FUDI_MSG_END_MARKER));
+            
+            System.out.println("Close connection, Bye!");
+            c.dispose();        	
+        }
     }
 }
