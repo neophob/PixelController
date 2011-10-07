@@ -44,7 +44,11 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private float generatorUpdateTime;
 	private float effectUpdateTime;
 	private float outputUpdateTime;
-
+	private float faderUpdateTime;
+	
+	private long frameCount;
+	
+	
 	/**
 	 * Register the JMX Bean
 	 */
@@ -88,6 +92,17 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		return outputUpdateTime;
 	}
 
+	@Override
+	public float getFaderUpdateTime() {
+		return faderUpdateTime;
+	}
+
+	@Override
+	public long getFrameCount() {
+		return frameCount;
+	}
+
+
 	public void setCurrentFps(float currentFps) {
 		this.currentFps = currentFps;
 	}
@@ -104,5 +119,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.outputUpdateTime = outputUpdateTime;
 	}
 
+	public void setFrameCount(long frameCount) {
+		this.frameCount = frameCount;
+	}
+
+	public void setFaderUpdateTime(float faderUpdateTime) {
+		this.faderUpdateTime = faderUpdateTime;
+	}
+	
 	
 }

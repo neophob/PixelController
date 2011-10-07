@@ -38,6 +38,12 @@ public interface PixelControllerStatusMBean {
 	float getCurrentFps();
 
 	/**
+	 * How many frames we displayed?
+	 * @return
+	 */
+	long getFrameCount();
+	
+	/**
 	 * how long does it take to update all generators?
 	 * @return time in ms
 	 */
@@ -54,5 +60,11 @@ public interface PixelControllerStatusMBean {
 	 * @return time in ms
 	 */
 	float getOutputUpdateTime();
+
+	/**
+	 * how long does it take to update all faders?
+	 * @return time in ms
+	 */
+	float getFaderUpdateTime();
 
 }

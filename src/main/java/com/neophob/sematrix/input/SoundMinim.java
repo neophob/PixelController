@@ -69,8 +69,8 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public SoundMinim() {
 		minim = new Minim(Collector.getInstance().getPapplet());
-		in = minim.getLineIn( Minim.STEREO, 512 );
-		//in = minim.getLineIn( Minim.MONO, 1024 );
+		//in = minim.getLineIn( Minim.STEREO, 512 );
+		in = minim.getLineIn( Minim.MONO, 1024 );
 
 		// a beat detection object that is FREQ_ENERGY mode that 
 		// expects buffers the length of song's buffer size
@@ -83,7 +83,7 @@ public final class SoundMinim implements SeSound, Runnable {
 		// algorithm if it is giving too many false-positives. The default value is 10, 
 		// which is essentially no damping. If you try to set the sensitivity to a negative value, 
 		// an error will be reported and it will be set to 10 instead. 
-		beat.setSensitivity(300); 
+		beat.setSensitivity(250); 
 		beat.detectMode(BeatDetect.FREQ_ENERGY);
 
 		bl = new BeatListener(beat, in);		 
@@ -197,7 +197,7 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public void dispose() {		
 		runner = null;
-		//XXX this.shutdown();
+		//XXX 		this.shutdown();
 	}
 
 	/**

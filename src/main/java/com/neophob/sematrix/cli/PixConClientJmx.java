@@ -82,10 +82,11 @@ public final class PixConClientJmx {
 
 		System.out.println("Server Version:\t" + mbeanProxy.getVersion());
 		System.out.println("Current FPS:\t" + mbeanProxy.getCurrentFps());
+		System.out.println("Frame count:\t" + mbeanProxy.getFrameCount());
 		System.out.println("Generator Update time:\t" + mbeanProxy.getGeneratorUpdateTime());
 		System.out.println("Effect Update time:\t" + mbeanProxy.getEffectUpdateTime());
 		System.out.println("Output Update time:\t" + mbeanProxy.getOutputUpdateTime());
-				
+		System.out.println("Fader Update time:\t" + mbeanProxy.getFaderUpdateTime());
 	}
 
 }

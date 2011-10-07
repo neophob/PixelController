@@ -266,6 +266,10 @@ public final class Collector {
 			}			
 		}
 		
+		//update the current value of frames per second
+		pixConStat.setCurrentFps(papplet.frameRate);
+		pixConStat.setFrameCount(papplet.frameCount);
+
 		framesEffective+=u;
 		long l = System.currentTimeMillis();
 		//update generator depending on the input sound
@@ -281,11 +285,9 @@ public final class Collector {
 		l = System.currentTimeMillis();
 		pixelControllerOutput.update();
 		pixConStat.setOutputUpdateTime(System.currentTimeMillis()-l);
-		
-		//update the current value of frames per second
-		pixConStat.setCurrentFps(papplet.frameRate);
-		
+				
 		//cleanup faders
+		l = System.currentTimeMillis();
 		for (OutputMapping om: ioMapping) {
 			Fader fader = om.getFader();
 			if (fader.isDone()) {
@@ -293,6 +295,7 @@ public final class Collector {
 				fader.cleanUp();
 			}
 		}
+		pixConStat.setFaderUpdateTime(System.currentTimeMillis()-l);
 		
 		if (randomMode) {
 			Shuffler.shuffleStuff();
