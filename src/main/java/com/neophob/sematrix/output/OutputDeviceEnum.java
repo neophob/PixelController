@@ -24,17 +24,30 @@ package com.neophob.sematrix.output;
 public enum OutputDeviceEnum {
 	
 	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
-	PIXELINVADERS,
+	PIXELINVADERS(true),
 	
 	/** The RAINBOWDUINO. */
-	RAINBOWDUINO,
+	RAINBOWDUINO(true),
 	
 	/** The ARTNET. */
-	ARTNET,
+	ARTNET(true),
 	
 	/** The MINIDMX. */
-	MINIDMX,
+	MINIDMX(true),
 	
 	/** The NULL Output. */
-	NULL;
+	NULL(false),
+	
+	/** The MatrixEmulator Output. */
+	MATRIX_EMULATOR(false);
+	
+	private boolean updatedViaBackgroundThread;
+	
+	private OutputDeviceEnum(boolean updatedViaBackgroundThread) {
+		this.updatedViaBackgroundThread = updatedViaBackgroundThread;
+	}
+	
+	public boolean isUpdatedViaBackgroundThread() {
+		return this.updatedViaBackgroundThread;
+	}
 }

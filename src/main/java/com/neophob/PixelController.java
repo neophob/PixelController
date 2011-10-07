@@ -27,7 +27,6 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
-import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.Lpd6803Device;
 import com.neophob.sematrix.output.MatrixEmulator;
@@ -39,6 +38,7 @@ import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.statistics.Statistics;
 
 /**
  * The Class PixelController.
@@ -62,6 +62,9 @@ public class PixelController extends PApplet {
 	/** The output. */
 	private Output output;
 	
+	private boolean statisticsEnabled;
+	private Statistics statistics;
+	
 	/**
 	 * prepare.
 	 */
@@ -77,10 +80,16 @@ public class PixelController extends PApplet {
             throw new IllegalArgumentException("Configuration error!", e);
         }
 
-	    PropertiesHelper ph = new PropertiesHelper(config);
-	    
-	    
-		Collector col = Collector.getInstance(); 				
+		PropertiesHelper ph = new PropertiesHelper(config);
+
+		// enable statistics logging
+		this.statistics = Statistics.getInstance();
+		this.statisticsEnabled = ph.statisticsEnabled();
+		if (this.statisticsEnabled) {
+			this.statistics.enable();
+		}
+
+		Collector col = Collector.getInstance();
 		col.init(this, FPS, ph);
 		frameRate(FPS);
 		noSmooth();
@@ -129,14 +138,13 @@ public class PixelController extends PApplet {
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
-	public void draw() { 
-		//update all generators
- 
+	public void draw() {
+		// update all generators
 		Collector.getInstance().updateSystem();
-
-		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
-			this.output.logStatistics();
-		}
+		// log output statistics
+		this.output.logStatistics();
+		// count average fps per minute
+		this.statistics.trackFPS(this.frameCount);
 	}
 
 	/**

@@ -586,5 +586,7 @@ public class PropertiesHelper {
         return deviceYResolution;
     }
 
-
+	public boolean statisticsEnabled() {
+		return parseBoolean(ConfigConstant.STATISTICS_ENABLED);
+	}
 }

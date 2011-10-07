@@ -23,10 +23,10 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.properties.PropertiesHelper;
-
 import artnet4j.ArtNet;
 import artnet4j.packets.ArtDmxPacket;
+
+import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * The Class ArtnetDevice.
@@ -54,7 +54,7 @@ public class ArtnetDevice extends Output {
 	 * @param controller
 	 */
 	public ArtnetDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, ArtnetDevice.class.toString(), 8);
+		super(OutputDeviceEnum.ARTNET, ph, controller, 8);
 
 		initialized = false;
 		artnet = new ArtNet();

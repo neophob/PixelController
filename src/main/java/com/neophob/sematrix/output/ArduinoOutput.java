@@ -50,8 +50,8 @@ public abstract class ArduinoOutput extends Output {
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public ArduinoOutput(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
-		super(ph, controller, name, bpp);
+	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+		super(outputDeviceEnum, ph, controller, bpp);
 	}
 	
 	/**
@@ -84,12 +84,12 @@ public abstract class ArduinoOutput extends Output {
 		if (this.getArduinoErrorCounter() > 0) {
 			int error = this.getArduinoErrorCounter();
 			LOG.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
-					new Object[] {
-						new Date(this.getLatestHeartbeat()).toGMTString(),
-						error, this.getArduinoBufferSize()
-					}
+				new Object[] {
+					new Date(this.getLatestHeartbeat()).toGMTString(),
+					error,
+					this.getArduinoBufferSize()
+				}
 			);
-		}		
+		}
 	}
-
 }

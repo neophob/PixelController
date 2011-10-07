@@ -34,7 +34,7 @@ public class NullDevice extends Output {
 	 * @param controller the controller
 	 */
 	public NullDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, NullDevice.class.toString(), 8);		
+		super(OutputDeviceEnum.NULL, ph, controller, 8);
 	}
 	
 	/* (non-Javadoc)

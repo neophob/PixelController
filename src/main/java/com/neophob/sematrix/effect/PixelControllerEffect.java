@@ -20,17 +20,30 @@
 package com.neophob.sematrix.effect;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PixelControllerElement;
+import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.ValidCommands;
+import com.neophob.sematrix.statistics.Statistics;
 
 /**
  * The Class PixelControllerEffect.
  */
 public class PixelControllerEffect implements PixelControllerElement {
+	
+	/** The log. */
+	private static final Logger LOG = Logger.getLogger(PixelControllerEffect.class.getName());
 
 	/** The all effects. */
 	private List<Effect> allEffects;
@@ -40,22 +53,69 @@ public class PixelControllerEffect implements PixelControllerElement {
 	
 	/** The threshold. */
 	private Threshold threshold;
-	
+
+	private Collector collector;
+
+	private ExecutorService executorService;
+	private Statistics statistics;
+
 	/**
 	 * Instantiates a new pixel controller effect.
 	 */
 	public PixelControllerEffect() {
 		allEffects = new CopyOnWriteArrayList<Effect>();
+		this.collector = Collector.getInstance();
+		this.executorService = Executors.newCachedThreadPool();
+		this.statistics = Statistics.getInstance();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.glue.PixelControllerElement#update()
 	 */
 	@Override
 	public void update() {
-		for (Effect e: allEffects) {
-			e.update();
+		long init = System.nanoTime();
+		// get a set with all active effects
+		Set<Integer> activeEffects = new HashSet<Integer>();
+		for (Visual visual : this.collector.getAllVisuals()) {
+			activeEffects.add(visual.getEffect1Idx());
+			activeEffects.add(visual.getEffect2Idx());
 		}
+		// update only active effects
+		final CountDownLatch startGate = new CountDownLatch(1);
+		final CountDownLatch endGate = new CountDownLatch(activeEffects.size());
+		for (final Effect effect : this.allEffects) {
+			if (!activeEffects.contains(effect.getId())) {
+				continue;
+			}
+			// create runnable instance
+			Runnable effectRunnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						startGate.await();
+						try {
+							effect.update();
+						} finally {
+							endGate.countDown();
+						}
+					} catch (InterruptedException e) {
+						LOG.log(Level.SEVERE, "waiting for start gate of effect: " + effect.getClass().getSimpleName()  + " got interrupted!", e);
+					}
+				}
+			};
+			// schedule runnable for execution
+			this.executorService.execute(effectRunnable);
+		}
+		// track time needed to execute all runnable instances
+		long start = System.nanoTime();
+		startGate.countDown();
+		try {
+			endGate.await();
+		} catch (InterruptedException e) {
+			LOG.log(Level.SEVERE, "waiting for all effects to finish their update() method got interrupted!", e);
+		}
+		this.statistics.trackEffectsUpdateTime(init, start, System.nanoTime());
 	}
 	
 	/**
@@ -210,8 +270,4 @@ public class PixelControllerEffect implements PixelControllerElement {
 	public int getB() {
 		return tint.getB();
 	}
-
-
-
-
 }

@@ -60,7 +60,7 @@ public class MiniDmxDevice extends Output {
 	 * @param controller the controller
 	 */
 	public MiniDmxDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, MiniDmxDevice.class.toString(), 8);
+		super(OutputDeviceEnum.MINIDMX, ph, controller, 8);
 		
 		this.initialized = false;
 		this.xSize = ph.parseMiniDmxDevicesX();
