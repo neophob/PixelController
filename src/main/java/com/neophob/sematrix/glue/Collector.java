@@ -267,13 +267,23 @@ public final class Collector {
 		}
 		
 		framesEffective+=u;
-		
+		long l = System.currentTimeMillis();
 		//update generator depending on the input sound
 		for (int i=0; i<u; i++) {
 			pixelControllerGenerator.update();			
 		}
+		pixConStat.setGeneratorUpdateTime(System.currentTimeMillis()-l);
+		
+		l = System.currentTimeMillis();
 		pixelControllerEffect.update();
+		pixConStat.setEffectUpdateTime(System.currentTimeMillis()-l);
+		
+		l = System.currentTimeMillis();
 		pixelControllerOutput.update();
+		pixConStat.setOutputUpdateTime(System.currentTimeMillis()-l);
+		
+		//update the current value of frames per second
+		pixConStat.setCurrentFps(papplet.frameRate);
 		
 		//cleanup faders
 		for (OutputMapping om: ioMapping) {
