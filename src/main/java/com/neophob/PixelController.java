@@ -131,7 +131,6 @@ public class PixelController extends PApplet {
 	 */
 	public void draw() { 
 		//update all generators
- 
 		Collector.getInstance().updateSystem();
 
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
@@ -145,6 +144,6 @@ public class PixelController extends PApplet {
 	 * @param args the arguments
 	 */
 	public static void main(String args[]) {
-		PApplet.main(new String[] { "com.neophob.PixelController" });
+		PApplet.main(new String[] { PixelController.class.getName().toString() });
 	}
 }

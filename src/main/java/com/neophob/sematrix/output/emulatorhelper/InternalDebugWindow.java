@@ -69,7 +69,7 @@ public class InternalDebugWindow extends Frame {
        
         //boarder stuff
         windowXSize+=10;
-        windowYSize+=60;
+        windowYSize+=80;
 
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
         setBounds(0, 0, windowXSize, windowYSize);
@@ -88,4 +88,5 @@ public class InternalDebugWindow extends Frame {
         
         setVisible(true); 		
 	}
+
 }

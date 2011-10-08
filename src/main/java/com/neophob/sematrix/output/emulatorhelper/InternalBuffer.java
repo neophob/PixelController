@@ -92,6 +92,9 @@ public class InternalBuffer extends PApplet {
      * draw the whole internal buffer on screen.
      */
 	public void draw() {
+		
+		long l = System.currentTimeMillis();
+		
 		int localX=0, localY=0;
 		int[] buffer;
 		Collector col = Collector.getInstance();
@@ -153,7 +156,13 @@ public class InternalBuffer extends PApplet {
 		fill(55,55,55);
 		rect(frames, localY+targetYSize+SELECTED_MARKER*2+2, targetXSize-frames, 5);
 		
+		//beat detection
 		displaySoundStats(localY);
+		
+		//show mode
+		displayCurrentMode();
+		
+		col.getPixConStat().addInternalWindowUpdateTime(System.currentTimeMillis()-l);
 	}
 
 	/**
@@ -177,6 +186,11 @@ public class InternalBuffer extends PApplet {
 		colorSelect(snd.isHat());
 		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);		
 	}
+	
+	private void displayCurrentMode() {
+		//TODO
+	}
+	
 	
 	/**
 	 * 

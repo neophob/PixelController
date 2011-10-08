@@ -87,10 +87,11 @@ public final class PixConClientJmx {
 		System.out.println("Frame count:\t" + mbeanProxy.getFrameCount());
 		
 		System.out.println("\nUpdate Time during the last 10s:");
-		System.out.println("Generator:\t" + mbeanProxy.getGeneratorUpdateTime()+SUFFIX);
-		System.out.println("Effect:   \t" + mbeanProxy.getEffectUpdateTime()+SUFFIX);
-		System.out.println("Output:   \t" + mbeanProxy.getOutputUpdateTime()+SUFFIX);
-		System.out.println("Fader:    \t" + mbeanProxy.getFaderUpdateTime()+SUFFIX);
+		System.out.println("Generator: \t" + mbeanProxy.getGeneratorUpdateTime()+SUFFIX);
+		System.out.println("Effect:    \t" + mbeanProxy.getEffectUpdateTime()+SUFFIX);
+		System.out.println("Output:    \t" + mbeanProxy.getOutputUpdateTime()+SUFFIX);
+		System.out.println("Fader:     \t" + mbeanProxy.getFaderUpdateTime()+SUFFIX);
+		System.out.println("Dbg Window:\t" + mbeanProxy.getInternalWindowUpdateTime()+SUFFIX);
 	}
 
 }

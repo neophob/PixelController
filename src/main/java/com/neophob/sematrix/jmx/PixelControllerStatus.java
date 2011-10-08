@@ -51,7 +51,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private CircularFifoBuffer effectUpdateTime;
 	private CircularFifoBuffer outputUpdateTime;
 	private CircularFifoBuffer faderUpdateTime;
-		
+	private CircularFifoBuffer internalWindowUpdateTime;	
 	
 	/**
 	 * Register the JMX Bean
@@ -64,6 +64,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		effectUpdateTime = new CircularFifoBuffer(fps);
 		outputUpdateTime = new CircularFifoBuffer(fps);
 		faderUpdateTime = new CircularFifoBuffer(fps);
+		internalWindowUpdateTime = new CircularFifoBuffer(fps);
 		
 		// register MBean
 		try {
@@ -97,7 +98,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private float sumUp(Iterator it) {
 		float sum = 0;
 		while (it.hasNext()) {
-			Float entry = (Float) it.next();
+			float entry = (Float) it.next();
 			sum += entry;
 		}
 		return sum;
@@ -129,6 +130,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	}
 
 	@Override
+	public float getInternalWindowUpdateTime() {
+		float total = sumUp(internalWindowUpdateTime.iterator());
+		System.out.println("size:"+internalWindowUpdateTime.size()+", total:"+total);		
+		return total/configuredFps;
+	}
+
+	@Override
 	public long getFrameCount() {
 		return frameCount;
 	}
@@ -156,6 +164,10 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 
 	public void addFaderUpdateTime(float faderUpdateTime) {
 		this.faderUpdateTime.add(faderUpdateTime);
+	}
+
+	public void addInternalWindowUpdateTime(float udateTime) {
+		this.internalWindowUpdateTime.add(udateTime);
 	}
 	
 	

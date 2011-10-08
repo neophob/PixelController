@@ -745,6 +745,15 @@ public final class Collector {
 	public int getFrames() {
 		return framesEffective;
 	}
+
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public PixelControllerStatus getPixConStat() {
+		return pixConStat;
+	}
     
     
 

@@ -67,4 +67,10 @@ public interface PixelControllerStatusMBean {
 	 */
 	float getFaderUpdateTime();
 
+	/**
+	 * how long does it take to update the internal debug window?
+	 * @return time in ms
+	 */
+	float getInternalWindowUpdateTime();
+
 }

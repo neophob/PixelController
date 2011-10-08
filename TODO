@@ -10,5 +10,6 @@ TODO
 -Rainbowduino firmware: update initial image in firmware
 -Rainbowduino firmware: add autonomous firmware mode, run simple animation if no computer is connected
 -add notification if random mode is selected or not
+-decoupling visual generation from output update, should increase performance
 -create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control/
 
