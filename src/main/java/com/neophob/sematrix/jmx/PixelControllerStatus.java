@@ -132,7 +132,6 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	@Override
 	public float getInternalWindowUpdateTime() {
 		float total = sumUp(internalWindowUpdateTime.iterator());
-		System.out.println("size:"+internalWindowUpdateTime.size()+", total:"+total);		
 		return total/configuredFps;
 	}
 
