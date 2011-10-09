@@ -1,20 +1,77 @@
+WHAT
+----
 PixelController - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2011
+I want to create a easy to use matrix controller software which creates stunning visuals!
 
 
 HOWTO USE PIXELCONTROLLER
 -------------------------
 Prerequisite:
 -Java Runtime, v1.6+
--PureData (http://puredata.info/)
+-PureData (http://puredata.info/), download the extended Version
 
 Run PixelController.cmd on Windows and PixelController.sh on OSX/Linux to start the application.
-Make sure your led matrix connected to you coputer before the application is started! 
+Make sure your led matrix connected to you computer before the application is started and you
+configured your hardware ind the config.properties file.
+
+
+SUPPORTED HARDWARE
+------------------
+PixelController supports different (LED) matrix hardware devices:
+-PixelInvaders 3d Panels
+-Seeedstudios Rainbowduino
+-ArtNet Devices
+-MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
 
 
 HOWTO GET A PIXELINVADERS PANEL
 -------------------------------
 You can create the housing yourself or buy a DIY at my indiegogo.com campaign at http://igg.me/p/31640?a=167555&i=shlk
-Check the PixelInvaders home at http://www.pixelinvaders.ch or my Blog at http://www.neophob.com
+Check the PixelInvaders Website at http://www.pixelinvaders.ch or watch my blog at http://www.neophob.com
+
+
+DETAILED RAINBOWDUINO INSTRUCTIONS:
+-----------------------------------
+If you own a Rainbowduino and an Arduino board and like to run PixelController, read this howto by Scott Wilson!
+ 
+Prepare:
+- Install Arduino programming environment.
+- Install PureData extended.
+- I run 'mvn --version' in terminal to see if maven is installed and up to date.
+- Java is built into mac and is currently running v1.6
+- I connect the arduino board to the computer via USB
+- I connect the arduino to the Rainbowduino using the GND/SDA/SCL method. (howto on neophob.com)
+
+Patch Arduino libraries:
+- I open and patch the file twi.h with the correct values.
+- I put the flexiTimer2 and MSTimer2 in my local Libraries folder.
+- I restart the Arduino programming environment
+- the new libraries now show up in the Arduino menu.
+ 
+Upload Rainbowduino firmware:
+- I open a 'Bare Minimum' sketch in the Arduino programmer.
+- I select the correct port and card type from the menu.
+- I upload the empty sketch to the Arduino.
+ 
+- I connect the Arduino to the Rainbowduino using the tx/rx method.
+- I open the sketch provided by you from your GitHub page. (Rainbow_V2_71.pde)
+  https://github.com/neophob/PixelController/blob/master/data/ArduinoFw/rainbowduino/rainbowduinoFw/Rainbow_V2_71/Rainbow_V2_71.pde
+- I change the i2c address in the 'rainbow.h' sketch to 0x01 and save that file (each Rainbowduino device needs a unique i2c address).
+- I select the correct port and board/chip type and upload the sketch.
+- this uploads with no errors and the Rainbowduino now shows an image like one of pixel invader images.
+ 
+Upload Arduino firmware:
+- I unplug the rx/tx wires from the Arduino
+- I open the Arduino sketch provided by you (neoLed.pde)
+  https://github.com/neophob/PixelController/blob/master/data/ArduinoFw/rainbowduino/arduinoFw/neoLed/neoLed.pde
+- I select the correct ports and card type and upload the sketch to the Arduino card.
+- this uploads with no errors
+
+Run PixelController:
+- I download your PixelController source from GitHub.
+- I rename and put this folder in my root user folder. ie: Macintosh HD/users/themonkeybars/pixelcontroller
+- I try and run the file pixelcontroller.sh
+
 
 HOWTO BUILD PIXELCONTROLLER
 ---------------------------
@@ -22,19 +79,16 @@ Prerequisite:
 -Maven v2.x (do NOT use Maven 3.x!!)
 -JDK 1.6+
 
-Install the needed libraries to your local repo (lib/install.sh). this is needed as some packages like processing are
-not available in a public repo. 
-
-Then 
+Then run 
 # mvn clean package
-should build PixelController
+this should build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
 
 
 CREDITS
 -------
-
 Michael Vogt:       Project Lead, Main Coder		
 	
 Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements		
 Rainer Ostendorf:   Artnet Output
 Pesi:               miniDMX Output, Tester
+Scott Wilson:       Arduino/Rainbowduino Howto
