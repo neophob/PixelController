@@ -1,15 +1,17 @@
-TODO
-----
+TODO PixelController
+--------------------
 -palette/color concept (greyscale, rgb, hsv...), currently we're mixing b/w, rgb and hsv, plus there is a tint effect
 -rewrite output selection/configuration, 
 -more generators/effects/mixer...
--Move message handling out to effective classes
--log to a file
--more layouts
+-move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
+-Log output to a file instead the command line
+-more layouts (what kind of layouts?)
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
--Rainbowduino firmware: update initial image in firmware
--Rainbowduino firmware: add autonomous firmware mode, run simple animation if no computer is connected
--add notification if random mode is selected or not
 -decoupling visual generation from output update, should increase performance
--create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control/
+-add notification if random mode is selected or not
+-create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 
+TODO PixelInvaders
+------------------
+-PixelInvaders firmware: update initial image in firmware
+-PixelInvaders firmware: add autonomous firmware mode, run simple animation if no computer is connected
