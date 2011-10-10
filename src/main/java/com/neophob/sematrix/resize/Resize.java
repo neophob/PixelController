@@ -109,7 +109,7 @@ public abstract class Resize {
 	 * @param deviceYSize the device y size
 	 * @return the pixels from image
 	 */
-	protected static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
+	public static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
 		//painfull slow!
 		//return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0, deviceXSize);
 		DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();

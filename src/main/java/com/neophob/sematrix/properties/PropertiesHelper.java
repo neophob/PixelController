@@ -470,6 +470,14 @@ public class PropertiesHelper {
     }
     
     /**
+     * offset for screen capture
+     * @return
+     */
+    public int parseScreenCaptureOffset() {
+        return parseInt(ConfigConstant.CAPTURE_OFFSET);        
+    }
+
+    /**
      * Start randommode.
      *
      * @return true, if successful

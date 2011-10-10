@@ -113,6 +113,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new Cell(this);
         new FFTSpectrum(this);
         new Geometrics(this);
+        int captureOffset = ph.parseScreenCaptureOffset();
+        new ScreenCapture(this, captureOffset, captureOffset);
     }
 
     /* (non-Javadoc)

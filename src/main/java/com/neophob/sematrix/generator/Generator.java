@@ -89,7 +89,10 @@ public abstract class Generator implements RandomizeState {
 		FFT(13),
 		
 		/** The GEOMETRICS. */
-		GEOMETRICS(14);
+		GEOMETRICS(14),
+		
+		/** The SCREEN_CAPTURE. */
+		SCREEN_CAPTURE(15);
 		
 		/** The id. */
 		private int id;
