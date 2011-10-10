@@ -57,7 +57,10 @@ public final class ConfigConstant {
 	
 	/**	The Constant MINIDMX_BAUDRATE */
 	public static final String MINIDMX_BAUDRATE = "minidmx.baudrate";
-	
+
+	/**	The Constant MINIDMX_BAUDRATE */
+	public static final String MINIDMX_LAYOUT = "minidmx.layout";
+
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
 

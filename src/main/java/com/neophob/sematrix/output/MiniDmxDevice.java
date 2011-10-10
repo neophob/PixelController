@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
 import com.neophob.sematrix.properties.ColorFormat;
+import com.neophob.sematrix.properties.DeviceConfig;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -46,10 +47,13 @@ public class MiniDmxDevice extends Output {
 	private boolean initialized;
 	
 	/** The x size. */
-	private int xSize;
+	private int xResolution;
 	
 	/** The y size. */
-	private int ySize;
+	private int yResolution;
+	
+	/** does the image needs to be rotated?*/
+	private DeviceConfig displayOption;
 	
 	/** The output color format. */
 	private ColorFormat colorFormat;
@@ -63,8 +67,15 @@ public class MiniDmxDevice extends Output {
 		super(ph, controller, MiniDmxDevice.class.toString(), 8);
 		
 		this.initialized = false;
-		this.xSize = ph.parseMiniDmxDevicesX();
-		this.ySize = ph.parseMiniDmxDevicesY();
+		this.xResolution = ph.parseMiniDmxDevicesX();
+		this.yResolution = ph.parseMiniDmxDevicesY();
+		
+		//get the mini dmx layout
+		this.displayOption = ph.getMiniDmxLayout();		
+		if (this.displayOption==null) {
+			this.displayOption = DeviceConfig.NO_ROTATE;
+		}
+		
 		int baud = ph.parseMiniDmxBaudRate();
 		if (baud==0) {
 		    //set default
@@ -77,7 +88,7 @@ public class MiniDmxDevice extends Output {
 		}
 		
 		try {
-			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xSize*this.ySize*3, baud);			
+			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);			
 			this.initialized = miniDmx.ping();
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
@@ -92,7 +103,11 @@ public class MiniDmxDevice extends Output {
 	public void update() {
 		
 		if (initialized) {	
-			miniDmx.sendRgbFrame(super.getBufferForScreen(0), colorFormat);
+			
+			int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(0), displayOption, 
+					xResolution, yResolution);
+			
+			miniDmx.sendRgbFrame(transformedBuffer, colorFormat);
 		}
 	}
 

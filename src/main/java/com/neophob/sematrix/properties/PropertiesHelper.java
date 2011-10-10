@@ -277,7 +277,24 @@ public class PropertiesHelper {
                     , new Object[] { PRESENTS_FILENAME, e });
         }
     }
+    
+    
+    /**
+     * 
+     * @return
+     */
+    public DeviceConfig getMiniDmxLayout() {
+    	String value = config.getProperty(ConfigConstant.MINIDMX_LAYOUT);
+        try {
+            return DeviceConfig.valueOf(value);
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, FAILED_TO_PARSE, value);
+        }
+        
+    	return DeviceConfig.NO_ROTATE;
+    }
 
+    
     /**
      * Parses the lpd address.
      *
@@ -295,7 +312,6 @@ public class PropertiesHelper {
                     devicesInRow1++;
                 } catch (Exception e) {
                     LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-
                 }
             }
         }
@@ -309,7 +325,6 @@ public class PropertiesHelper {
                     devicesInRow2++;				
                 } catch (Exception e) {
                     LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-
                 }
             }
         }
