@@ -14,7 +14,7 @@ import com.neophob.sematrix.properties.DeviceConfig;
 public class RotateBufferTest {
 
 	@SuppressWarnings("unused")
-	private static void dumpBuffer(int[] ret) {
+	public static void dumpBuffer(int[] ret) {
 		int a=0;
 		for (int r: ret) {
 			System.out.print(r+", ");

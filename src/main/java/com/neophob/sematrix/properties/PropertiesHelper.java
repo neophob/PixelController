@@ -483,7 +483,15 @@ public class PropertiesHelper {
     public int parseMiniDmxBaudRate() {
         return parseInt(ConfigConstant.MINIDMX_BAUDRATE);        
     }
-    
+
+    /**
+     * 
+     * @return
+     */
+    public boolean isDmxSnakeCabeling() {
+        return parseBoolean(ConfigConstant.MINIDMX_SNAKE_CABELING);
+    }
+
     /**
      * offset for screen capture
      * @return
@@ -509,9 +517,8 @@ public class PropertiesHelper {
     public boolean isAudioAware() {
         return parseBoolean(ConfigConstant.SOUND_AWARE_GENERATORS);
     }
-
     
-
+    
     /**
      * Gets the nr of screens.
      *

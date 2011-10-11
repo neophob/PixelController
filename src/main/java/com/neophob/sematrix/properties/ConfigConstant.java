@@ -61,6 +61,9 @@ public final class ConfigConstant {
 	/**	The Constant MINIDMX_BAUDRATE */
 	public static final String MINIDMX_LAYOUT = "minidmx.layout";
 
+	/** The Constant MINIDMX_SNAKE_CABELING */
+	public static final String MINIDMX_SNAKE_CABELING = "minidmx.snake.cabling";
+	
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
 

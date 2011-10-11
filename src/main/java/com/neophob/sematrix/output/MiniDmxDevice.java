@@ -58,6 +58,9 @@ public class MiniDmxDevice extends Output {
 	/** The output color format. */
 	private ColorFormat colorFormat;
 	
+	/** flip each 2nd scanline? */
+	private boolean snakeCabeling;
+	
 	/**
 	 * init the mini dmx devices.
 	 *
@@ -69,6 +72,7 @@ public class MiniDmxDevice extends Output {
 		this.initialized = false;
 		this.xResolution = ph.parseMiniDmxDevicesX();
 		this.yResolution = ph.parseMiniDmxDevicesY();
+		this.snakeCabeling = ph.isDmxSnakeCabeling();
 		
 		//get the mini dmx layout
 		this.displayOption = ph.getMiniDmxLayout();		
@@ -104,8 +108,14 @@ public class MiniDmxDevice extends Output {
 		
 		if (initialized) {	
 			
+			//rotate buffer (if needed)
 			int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(0), displayOption, 
 					xResolution, yResolution);
+			
+			if (this.snakeCabeling) {
+				//flip each 2nd scanline
+				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, xResolution, yResolution);
+			}
 			
 			miniDmx.sendRgbFrame(transformedBuffer, colorFormat);
 		}

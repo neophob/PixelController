@@ -441,8 +441,7 @@ public class Lpd6803 {
 			} else {
 				toggler-=3;
 			}
-		}			
-
+		}
 	}
 
 	/**
