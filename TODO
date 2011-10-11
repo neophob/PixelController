@@ -10,6 +10,7 @@ TODO PixelController
 -decoupling visual generation from output update, should increase performance
 -add notification if random mode is selected or not
 -create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
+-particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system
 
 TODO PixelInvaders
 ------------------
