@@ -12,6 +12,7 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -40,7 +41,9 @@ public class PixelControllerTest extends PApplet {
 	
 	public void setup() { 
 	    LOG.log(Level.INFO,"public void setup");
-	    Properties config = new Properties();     
+	    Properties config = new Properties();
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
 	    PropertiesHelper ph = new PropertiesHelper(config);
 		Collector.getInstance().init(this, 10, ph);
 	}

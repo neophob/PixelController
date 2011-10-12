@@ -29,7 +29,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
-import com.neophob.sematrix.output.Lpd6803Device;
+import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.MatrixEmulator;
 import com.neophob.sematrix.output.MiniDmxDevice;
 import com.neophob.sematrix.output.NullDevice;
@@ -89,7 +89,7 @@ public class PixelController extends PApplet {
 		try {
 			switch (outputDeviceEnum) {
 			case PIXELINVADERS:
-				this.output = new Lpd6803Device(ph, col.getPixelControllerOutput());
+				this.output = new PixelInvadersDevice(ph, col.getPixelControllerOutput());
 				break;
 			case RAINBOWDUINO:
 				this.output = new RainbowduinoDevice(ph, col.getPixelControllerOutput());

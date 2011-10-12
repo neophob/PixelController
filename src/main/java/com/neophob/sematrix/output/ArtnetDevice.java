@@ -35,11 +35,9 @@ import artnet4j.packets.ArtDmxPacket;
  * @author Rainer Ostendorf <mail@linlab.de>
  * 
  * TODO:
- * -support for multiple devices
- * -support for buffer rotation
  * -more options in the config file
  */
-public class ArtnetDevice extends Output {
+public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 
 	private static final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
@@ -72,7 +70,7 @@ public class ArtnetDevice extends Output {
 	@Override
 	public void update() {
 		if (initialized) {
-			sendBufferToArtnetReceiver(0, super.getBufferForScreen(0));
+			sendBufferToArtnetReceiver(0, getTransformedBuffer());
 		}
 	}
 
@@ -86,7 +84,7 @@ public class ArtnetDevice extends Output {
 		ArtDmxPacket dmx = new ArtDmxPacket();
 		dmx.setUniverse(0, 0);
 		dmx.setSequenceID(sequenceID % 255);
-		byte[] buffer = new byte[frameBuf.length *3 ];
+		byte[] buffer = new byte[frameBuf.length *3];
 		for (int i = 0; i < frameBuf.length; i++) {
 			buffer[i*3]     = (byte) ((frameBuf[i]>>16) & 0xff);
 			buffer[(i*3)+1] = (byte) ((frameBuf[i]>>8) & 0xff);
@@ -98,6 +96,10 @@ public class ArtnetDevice extends Output {
 	}
 
 	@Override
-	public void close()	{}
+	public void close()	{
+	    if (initialized) {
+	        artnet.stop();   
+	    }	    
+	}
 }
 

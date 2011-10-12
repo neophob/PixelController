@@ -49,21 +49,21 @@ public final class ConfigConstant {
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";
 	
-	/** The Constant MINIDMX_RESOLUTION_X. */
-	public static final String MINIDMX_RESOLUTION_X = "minidmx.resolution.x";
+	/** The Constant OUTPUT_DEVICE_RESOLUTION_X. */
+	public static final String OUTPUT_DEVICE_RESOLUTION_X = "output.resolution.x";
 	
-	/** The Constant MINIDMX_RESOLUTION_Y. */
-	public static final String MINIDMX_RESOLUTION_Y = "minidmx.resolution.y";
+	/** The Constant OUTPUT_DEVICE_RESOLUTION_Y. */
+	public static final String OUTPUT_DEVICE_RESOLUTION_Y = "output.resolution.y";
 	
+    /** The Constant OUTPUT_DEVICE_SNAKE_CABELING */
+    public static final String OUTPUT_DEVICE_SNAKE_CABELING = "output.snake.cabling";
+    
+    /** The Constant MINIDMX_BAUDRATE */
+    public static final String OUTPUT_DEVICE_LAYOUT = "minidmx.layout";
+
 	/**	The Constant MINIDMX_BAUDRATE */
 	public static final String MINIDMX_BAUDRATE = "minidmx.baudrate";
 
-	/**	The Constant MINIDMX_BAUDRATE */
-	public static final String MINIDMX_LAYOUT = "minidmx.layout";
-
-	/** The Constant MINIDMX_SNAKE_CABELING */
-	public static final String MINIDMX_SNAKE_CABELING = "minidmx.snake.cabling";
-	
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
 

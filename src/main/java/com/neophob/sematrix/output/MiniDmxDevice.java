@@ -24,8 +24,6 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
-import com.neophob.sematrix.properties.ColorFormat;
-import com.neophob.sematrix.properties.DeviceConfig;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -35,7 +33,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  *
  * @author michu
  */
-public class MiniDmxDevice extends Output {
+public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(MiniDmxDevice.class.getName());
@@ -46,51 +44,21 @@ public class MiniDmxDevice extends Output {
 	/** The initialized. */
 	private boolean initialized;
 	
-	/** The x size. */
-	private int xResolution;
-	
-	/** The y size. */
-	private int yResolution;
-	
-	/** does the image needs to be rotated?*/
-	private DeviceConfig displayOption;
-	
-	/** The output color format. */
-	private ColorFormat colorFormat;
-	
-	/** flip each 2nd scanline? */
-	private boolean snakeCabeling;
-	
 	/**
 	 * init the mini dmx devices.
 	 *
 	 * @param controller the controller
 	 */
 	public MiniDmxDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, MiniDmxDevice.class.toString(), 8);
-		
-		this.initialized = false;
-		this.xResolution = ph.parseMiniDmxDevicesX();
-		this.yResolution = ph.parseMiniDmxDevicesY();
-		this.snakeCabeling = ph.isDmxSnakeCabeling();
-		
-		//get the mini dmx layout
-		this.displayOption = ph.getMiniDmxLayout();		
-		if (this.displayOption==null) {
-			this.displayOption = DeviceConfig.NO_ROTATE;
-		}
+		super(ph, controller, MiniDmxDevice.class.toString(), 8);				
 		
 		int baud = ph.parseMiniDmxBaudRate();
 		if (baud==0) {
 		    //set default
 		    baud = 115200;
 		}
-		
-		this.colorFormat = ColorFormat.RBG;
-		if (ph.getColorFormat().size()>0) {
-			this.colorFormat = ph.getColorFormat().get(0);
-		}
-		
+
+		this.initialized = false;
 		try {
 			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);			
 			this.initialized = miniDmx.ping();
@@ -104,20 +72,9 @@ public class MiniDmxDevice extends Output {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.Output#update()
 	 */
-	public void update() {
-		
-		if (initialized) {	
-			
-			//rotate buffer (if needed)
-			int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(0), displayOption, 
-					xResolution, yResolution);
-			
-			if (this.snakeCabeling) {
-				//flip each 2nd scanline
-				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, xResolution, yResolution);
-			}
-			
-			miniDmx.sendRgbFrame(transformedBuffer, colorFormat);
+	public void update() {		
+		if (initialized) {							
+			miniDmx.sendRgbFrame(getTransformedBuffer(), colorFormat);
 		}
 	}
 

@@ -46,6 +46,8 @@ public class PropertiesHelper {
     /** The log. */
     private static final Logger LOG = Logger.getLogger(PropertiesHelper.class.getName());
 
+    private static final int DEFAULT_RESOLUTION = 8;
+    
     /** The Constant PRESENTS_FILENAME. */
     private static final String PRESENTS_FILENAME = "data/presents.led";
 
@@ -78,12 +80,11 @@ public class PropertiesHelper {
     /** The devices in row2. */
     private int devicesInRow2 = 0;
 
-    //Resolution of the output device
-    /** The device x resolution. */
-    private int deviceXResolution = 8;
+    /** The output device x resolution. */
+    private int deviceXResolution;
 
-    /** The device y resolution. */
-    private int deviceYResolution = 8;
+    /** The output device y resolution. */
+    private int deviceYResolution;
 
     /**
      * Instantiates a new properties helper.
@@ -94,7 +95,7 @@ public class PropertiesHelper {
         this.config = config;
         
         int rainbowduinoDevices = parseI2cAddress();
-        int pixelInvadersDevices = parsePixelInvaderConfig();
+        int pixelInvadersDevices = parsePixelInvaderConfig();        
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
         int nullDevices = parseNullOutputAddress();
@@ -283,8 +284,8 @@ public class PropertiesHelper {
      * 
      * @return
      */
-    public DeviceConfig getMiniDmxLayout() {
-    	String value = config.getProperty(ConfigConstant.MINIDMX_LAYOUT);
+    public DeviceConfig getOutputDeviceLayout() {
+    	String value = config.getProperty(ConfigConstant.OUTPUT_DEVICE_LAYOUT);
         try {
             return DeviceConfig.valueOf(value);
         } catch (Exception e) {
@@ -305,6 +306,8 @@ public class PropertiesHelper {
 
         String value = config.getProperty(ConfigConstant.PIXELINVADERS_ROW1);
         if (StringUtils.isNotBlank(value)) {
+            this.deviceXResolution = 8;
+            this.deviceYResolution = 8;
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
                     DeviceConfig cfg = DeviceConfig.valueOf(s);
@@ -383,6 +386,9 @@ public class PropertiesHelper {
 
         String rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_ROW1);
         if (StringUtils.isNotBlank(rawConfig)) {
+            this.deviceXResolution = 8;
+            this.deviceYResolution = 8;
+
             for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 i2cAddr.add( Integer.decode(s));
                 devicesInRow1++;
@@ -411,6 +417,8 @@ public class PropertiesHelper {
         if (row1+row2>0) {
             devicesInRow1 = row1;
             devicesInRow2 = row2;
+            this.deviceXResolution = 8;
+            this.deviceYResolution = 8;
         }
 
         return row1+row2;
@@ -434,8 +442,11 @@ public class PropertiesHelper {
      */
     private int parseArtNetDevices() {
         //minimal ip length 1.1.1.1
-        if (StringUtils.length(getArtNetIp())>6) {
-            devicesInRow1=1;
+        if (StringUtils.length(getArtNetIp())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
+            this.devicesInRow1=1;
+            this.devicesInRow2=0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
             return 1;
         }
 
@@ -447,11 +458,12 @@ public class PropertiesHelper {
      *
      * @return the int
      */
-    private int parseMiniDmxDevices() {
-        if (parseMiniDmxDevicesX()>0 && parseMiniDmxDevicesY()>0) {
+    private int parseMiniDmxDevices() {        
+        if (parseMiniDmxBaudRate()>100 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
             this.devicesInRow1=1;
-            this.deviceXResolution = parseMiniDmxDevicesX();
-            this.deviceYResolution = parseMiniDmxDevicesY();
+            this.devicesInRow2=0;
+            this.deviceXResolution = parseOutputXResolution();            
+            this.deviceYResolution = parseOutputYResolution();
             return 1;
         }
         return 0;
@@ -462,8 +474,8 @@ public class PropertiesHelper {
      *
      * @return the int
      */
-    public int parseMiniDmxDevicesX() {
-        return parseInt(ConfigConstant.MINIDMX_RESOLUTION_X);
+    public int parseOutputXResolution() {
+        return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, DEFAULT_RESOLUTION);
     }
 
     /**
@@ -471,8 +483,16 @@ public class PropertiesHelper {
      *
      * @return the int
      */
-    public int parseMiniDmxDevicesY() {
-        return parseInt(ConfigConstant.MINIDMX_RESOLUTION_Y);
+    public int parseOutputYResolution() {
+        return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, DEFAULT_RESOLUTION);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public boolean isOutputSnakeCabeling() {
+        return parseBoolean(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING);
     }
 
     /**
@@ -482,14 +502,6 @@ public class PropertiesHelper {
      */
     public int parseMiniDmxBaudRate() {
         return parseInt(ConfigConstant.MINIDMX_BAUDRATE);        
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public boolean isDmxSnakeCabeling() {
-        return parseBoolean(ConfigConstant.MINIDMX_SNAKE_CABELING);
     }
 
     /**

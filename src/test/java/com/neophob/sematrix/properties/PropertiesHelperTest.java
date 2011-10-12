@@ -41,8 +41,8 @@ public class PropertiesHelperTest {
         PropertiesHelper ph = new PropertiesHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
-        assertEquals(8, ph.getDeviceXResolution());
-        assertEquals(8, ph.getDeviceYResolution());
+        assertEquals(0, ph.getDeviceXResolution());
+        assertEquals(0, ph.getDeviceYResolution());
 
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
@@ -82,21 +82,40 @@ public class PropertiesHelperTest {
     }
 
     @Test
+    public void testArtnetConfig() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.ARTNET_IP, "192.168.1.1");        
+        PropertiesHelper ph = new PropertiesHelper(config);
+
+        assertEquals(1, ph.getNrOfScreens());
+        assertEquals(8, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        assertEquals(false, ph.isOutputSnakeCabeling());
+
+        assertEquals(0, ph.getI2cAddr().size());
+        assertEquals(0, ph.getLpdDevice().size());
+        assertEquals(OutputDeviceEnum.ARTNET, ph.getOutputDevice());
+    }    
+
+    @Test
     public void testMiniDmxConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.MINIDMX_RESOLUTION_X, "10");
-        config.put(ConfigConstant.MINIDMX_RESOLUTION_Y, "13");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "13");
+        config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
+        config.put(ConfigConstant.MINIDMX_BAUDRATE, "115200");
         PropertiesHelper ph = new PropertiesHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
         assertEquals(10, ph.getDeviceXResolution());
         assertEquals(13, ph.getDeviceYResolution());
-
+        assertEquals(true, ph.isOutputSnakeCabeling());
+        
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.MINIDMX, ph.getOutputDevice());
-    }    
-
+    }  
+    
     @Test
     public void testNullConfig() {     
         Properties config = new Properties();
@@ -117,8 +136,7 @@ public class PropertiesHelperTest {
     public void testMultipleConfig() {     
         Properties config = new Properties();
         config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
-        config.put(ConfigConstant.MINIDMX_RESOLUTION_X, "13");
-        config.put(ConfigConstant.MINIDMX_RESOLUTION_Y, "1");
+        config.put(ConfigConstant.ARTNET_IP, "192.168.4.2");
         new PropertiesHelper(config);
     }
 
