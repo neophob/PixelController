@@ -135,6 +135,8 @@ void showInitImage() {
     for (int i=0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel( i % 96));
     }    
+    // Update the strip, to start they are all 'off'
+    strip.show();
 }
 
 
@@ -156,10 +158,8 @@ void setup() {
   strip.begin();
   
   showInitImage();
-  
-  // Update the strip, to start they are all 'off'
-  strip.show();
-  
+
+  //no serial data received yet  
   serialDataRecv = 0;
 }
 
