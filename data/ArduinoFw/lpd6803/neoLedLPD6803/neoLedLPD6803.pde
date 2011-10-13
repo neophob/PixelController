@@ -111,13 +111,13 @@ unsigned int Wheel(byte WheelPos) {
   return(Color(r,g,b));
 }
 
-//
+//do some animation until serial data arrives
 void rainbow() {
   int i;   
   for (i=0; i < strip.numPixels(); i++) {
      strip.setPixelColor(i, Wheel( (i + j) % 96));
   }
-  strip.doSwapBuffersAsap(64);
+  strip.doSwapBuffersAsap(strip.numPixels());
   delay(1);
   
   k++;
@@ -342,3 +342,4 @@ byte readCommand(byte *str) {
   //return data size (without meta data)
   return sendlen;
 }
+
