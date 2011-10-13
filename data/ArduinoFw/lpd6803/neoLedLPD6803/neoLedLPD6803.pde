@@ -1,7 +1,8 @@
 /*
- * arduino serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
- *  
- * This file is part of PixelController. WORKING!
+ * PixelInvaders serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
+ * Tested on Teensy and Arduino
+ * 
+ * This file is part of PixelController.
  *
  * PixelController is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +29,7 @@
 #define BAUD_RATE 115200
 
 //--- protocol data start
-#define CMD_START_BYTE  0x01
+#define CMD_START_BYTE 0x01
 #define CMD_SENDFRAME 0x03
 #define CMD_PING  0x04
 
@@ -46,37 +47,27 @@
 #define SERIAL_WAIT_DELAY 3
 
 #define PIXELS_PER_PANEL 32
-#define NR_OF_PANELS 4
+#define NR_OF_PANELS 2
 
 //this should match RX_BUFFER_SIZE from HardwareSerial.cpp
-byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 // array that will hold the serial input string
+//array that will hold the serial input string
+byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
 
 // Choose which 2 pins you will use for output.
 // Can be any valid output pins.
 int dataPin = 2;       // 'green' wire
 int clockPin = 3;      // 'blue' wire
-// Don't forget to connect 'blue' to ground and 'red' to +5V
 
-//initialize strip with 20 leds
+//initialize pixels
 LPD6803 strip = LPD6803(PIXELS_PER_PANEL*NR_OF_PANELS, dataPin, clockPin);
-
-//counter for 2000 frames
-//http://www.ftdichip.com/Support/Documents/AppNotes/AN232B-04_DataLatencyFlow.pdf
-//there is a 16ms delay until the buffer is full, here are some measurements
-//time is round trip time from/to java
-//size  errorrate       frames>35ms  time for 2000frames  time/frame  time/frame worstcase
-//5  -> rate: 0.0,      long: 156,   totalTime: 44250     22.13ms
-//8  -> rate: 5.894106, long: 38,    totalTime: 41184     20.59ms     21.83ms
-//16 -> rate: 7.092907, long: 4,     totalTime: 40155     20.07ms     21.48ms
-//32 -> rate: 6.943056, long: 5,     totalTime: 39939     19.97ms     21.36ms
-//62 -> rate: 22.97702, long: 7,     totalTime: 33739     16.89ms     20.58ms
-//64 -> rate: 24.22577, long: 3,     totalTime: 33685     16.84ms     20.89ms
-//-> I use 16b - not the fastest variant but more accurate
 
 #define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
 
 byte g_errorCounter;
+
+int j=0,k=0;
+byte serialDataRecv;
 
 //send status back to library
 static void sendAck() {
@@ -85,6 +76,8 @@ static void sendAck() {
   serialResonse[2] = Serial.available();
   serialResonse[3] = g_errorCounter;
   Serial.write(serialResonse, SERIALBUFFERSIZE);
+  
+  //comment out next line on arduino!
   Serial.send_now();
 }
 
@@ -96,11 +89,9 @@ unsigned int Color(byte r, byte g, byte b) {
 
 //Input a value 0 to 127 to get a color value.
 //The colours are a transition r - g -b - back to r
-unsigned int Wheel(byte WheelPos)
-{
+unsigned int Wheel(byte WheelPos) {
   byte r,g,b;
-  switch(WheelPos >> 5)
-  {
+  switch(WheelPos >> 5) {
     case 0:
       r=31- WheelPos % 32;   //Red down
       g=WheelPos % 32;      // Green up
@@ -118,6 +109,25 @@ unsigned int Wheel(byte WheelPos)
       break; 
   }
   return(Color(r,g,b));
+}
+
+//
+void rainbow() {
+  int i;   
+  for (i=0; i < strip.numPixels(); i++) {
+     strip.setPixelColor(i, Wheel( (i + j) % 96));
+  }
+  strip.doSwapBuffersAsap(64);
+  delay(1);
+  
+  k++;
+  if (k>50) {
+    k=0;
+    j++;
+    if (j>96*3) {  // 3 cycles of all 96 colors in the wheel
+       j=0; 
+    }
+  }
 }
 
 //create initial image
@@ -149,6 +159,8 @@ void setup() {
   
   // Update the strip, to start they are all 'off'
   strip.show();
+  
+  serialDataRecv = 0;
 }
 
 // --------------------------------------------
@@ -158,16 +170,17 @@ void loop() {
   //read the serial port and create a string out of what you read
   g_errorCounter=0;
 
-  // digitalWrite(13, LOW);
   // see if we got a proper command string yet
   if (readCommand(serInStr) == 0) {
     if (g_errorCounter!=0 && g_errorCounter!=102) {
       sendAck();
     }
+    
+    if (serialDataRecv==0) {
+    	  rainbow();    	
+    }
     return;
   }
-
-  //digitalWrite(13, HIGH);
   
   //led offset
   byte ofs    = serInStr[1];
@@ -189,6 +202,7 @@ void loop() {
         break;
 
     case CMD_PING:
+    	serialDataRecv = 1;
         //just send the ack!
         break;
     default:
@@ -199,7 +213,6 @@ void loop() {
 
   //send ack to library - command processed
   sendAck();
-  //digitalWrite(13, LOW);
 }
 
 // --------------------------------------------
@@ -329,7 +342,3 @@ byte readCommand(byte *str) {
   //return data size (without meta data)
   return sendlen;
 }
-
-
-
-
