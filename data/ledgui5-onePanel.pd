@@ -1,4 +1,4 @@
-#N canvas 381 304 953 543 10;
+#N canvas 381 304 761 543 10;
 #X declare -lib mrpeach;
 #X obj -262 -5 cnv 15 400 470 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -6,11 +6,11 @@
 -257985 -66577 0;
 #X obj 260 171 hradio 15 1 0 5 s_out1 r_out1 Visual_Nr. 0 -8 0 10 -261682
 -1 -1 0;
-#X obj 390 139 tgl 15 0 s_rndsel_mixout r_rndsel_mixout Effect 17 7
+#X obj 396 137 tgl 15 0 s_rndsel_mixout r_rndsel_mixout Effect 17 7
 0 10 -260097 -1 -1 0 1;
-#X obj 390 157 tgl 15 0 s_rndsel_faderout r_rndsel_faderout Fader 17
+#X obj 396 155 tgl 15 0 s_rndsel_faderout r_rndsel_faderout Fader 17
 7 0 10 -260097 -1 -1 0 1;
-#X obj 390 175 tgl 15 0 s_rndsel_out r_rndsel_out Visual 17 7 0 10
+#X obj 396 173 tgl 15 0 s_rndsel_out r_rndsel_out Visual 17 7 0 10
 -260097 -1 -1 0 1;
 #N canvas 746 23 565 357 fx 0;
 #X obj 33 0 cnv 15 140 70 empty empty //Threshold 20 12 0 14 -262130
@@ -163,10 +163,8 @@
 #X connect 42 0 36 0;
 #X coords 0 -1 1 1 205 100 1 50 50;
 #X restore 287 314 pd random;
-#X obj 2 23 hradio 22 1 0 5 s_current_visual r_current_visual current_visual
+#X obj 2 23 hradio 22 1 0 2 s_current_visual r_current_visual current_visual
 6 -8 0 12 -258113 -86277 -1 0;
-#X obj 359 23 hradio 22 1 0 4 s_current_output r_current_output select_output
-0 -8 0 12 -4034 -86277 -1 0;
 #N canvas 175 277 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
@@ -1831,28 +1829,3 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X text 284 84 Left to right;
 #X text -232 260 ScreenCapture;
 #X text -117 260 ScreenCapture;
-#N canvas 423 222 836 305 output4all 0;
-#X obj 50 50 cnv 15 220 200 empty empty //All_Outputs 20 12 0 14 -257985
--66577 0;
-#X obj 167 222 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
-Visual_Nr 0 -8 0 12 -261682 -1 -1 0;
-#X obj 59 93 vradio 15 1 0 10 s_output_fx_all r_output_fx_all Effect
-0 -8 0 12 -262130 -1 -1 0;
-#X text 80 91 Off;
-#X text 79 107 Inverter;
-#X text 80 122 Rotozoom;
-#X text 80 137 Beat Shift H;
-#X text 80 153 Beat Shift V;
-#X text 80 167 Voluminize;
-#X text 80 197 Threshold;
-#X text 80 182 Tint;
-#X text 81 211 Emboss;
-#X text 81 227 Zoom;
-#X obj 167 93 vradio 15 1 0 4 s_output_fader_all r_output_fader_all
-Fader 0 -8 0 12 -204800 -1 -1 0;
-#X text 186 91 Off;
-#X text 185 107 Crossfade;
-#X text 186 122 Upside Down;
-#X text 186 137 Left to right;
-#X coords 0 -1 1 1 220 200 1 50 50;
-#X restore 465 -4 pd output4all;
