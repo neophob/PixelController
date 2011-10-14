@@ -69,7 +69,10 @@ byte g_errorCounter;
 int j=0,k=0;
 byte serialDataRecv;
 
-//send status back to library
+
+// --------------------------------------------
+//     send status back to library
+// --------------------------------------------
 static void sendAck() {
   serialResonse[0] = 'A';
   serialResonse[1] = 'K';
@@ -87,8 +90,10 @@ unsigned int Color(byte r, byte g, byte b) {
   return( ((unsigned int)g & 0x1F )<<10 | ((unsigned int)b & 0x1F)<<5 | (unsigned int)r & 0x1F);
 }
 
-//Input a value 0 to 127 to get a color value.
-//The colours are a transition r - g -b - back to r
+// --------------------------------------------
+//     Input a value 0 to 127 to get a color value.
+//     The colours are a transition r - g -b - back to r
+// --------------------------------------------
 unsigned int Wheel(byte WheelPos) {
   byte r,g,b;
   switch(WheelPos >> 5) {
@@ -111,14 +116,16 @@ unsigned int Wheel(byte WheelPos) {
   return(Color(r,g,b));
 }
 
-//do some animation until serial data arrives
+// --------------------------------------------
+//     do some animation until serial data arrives
+// --------------------------------------------
 void rainbow() {
   int i;   
   for (i=0; i < strip.numPixels(); i++) {
-     strip.setPixelColor(i, Wheel( (i + j) % 96));
+     strip.setPixelColor(i, Wheel((i + j) % 96));
   }
   strip.doSwapBuffersAsap(strip.numPixels());
-  delay(1);
+  delay(2);
   
   k++;
   if (k>50) {
@@ -130,7 +137,10 @@ void rainbow() {
   }
 }
 
-//create initial image
+
+// --------------------------------------------
+//     create initial image
+// --------------------------------------------
 void showInitImage() {
     for (int i=0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel( i % 96));
@@ -144,39 +154,34 @@ void showInitImage() {
 //      setup
 // --------------------------------------------
 void setup() {
-  //pinMode(13, OUTPUT);
-  
   memset(serialResonse, 0, SERIALBUFFERSIZE);
 
   //im your slave and wait for your commands, master!
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
 
-  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or is slow
-
-  // Start up the LED counter
-  strip.begin();
+  strip.setCPUmax(80);  // start with 50% CPU usage. up this if the strand flickers or is slow  
+  strip.begin();        // Start up the LED counter
   
-  showInitImage();
-
-  //no serial data received yet  
-  serialDataRecv = 0;
+  showInitImage();      // display some colors
+  
+  serialDataRecv = 0;   //no serial data received yet  
 }
 
 // --------------------------------------------
-//      loop
+//      main loop
 // --------------------------------------------
 void loop() {
-  //read the serial port and create a string out of what you read
   g_errorCounter=0;
 
   // see if we got a proper command string yet
   if (readCommand(serInStr) == 0) {
+    //nope, nothing arrived yet...
     if (g_errorCounter!=0 && g_errorCounter!=102) {
       sendAck();
     }
     
-    if (serialDataRecv==0) {
+    if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
     	  rainbow();    	
     }
     return;
@@ -191,21 +196,22 @@ void loop() {
   //get the image data
   byte* cmd    = serInStr+5;
   
-   switch (type) {
-   case CMD_SENDFRAME:
+  switch (type) {
+     case CMD_SENDFRAME:
     	//the size of an image must be exactly 64bytes for 8*4 pixels
         if (sendlen == COLOR_5BIT_FRAME_SIZE) {
           updatePixels(ofs, cmd);
         } else {
-	  g_errorCounter=100;
+          g_errorCounter=100;
         }
         break;
 
-    case CMD_PING:
-    	serialDataRecv = 1;
+      case CMD_PING:
         //just send the ack!
+    	  serialDataRecv = 1;        
         break;
-    default:
+        
+      default:
         //invalid command
         g_errorCounter=130; 
         break;
@@ -217,7 +223,7 @@ void loop() {
 
 // --------------------------------------------
 //    update 32 bytes of the led matrix
-//    ofs: which panel, 0, 64, 128...
+//    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
 // --------------------------------------------
 void updatePixels(byte ofs, byte* buffer) {
   uint16_t currentLed = ofs*PIXELS_PER_PANEL;
@@ -234,7 +240,6 @@ void updatePixels(byte ofs, byte* buffer) {
  --------------------------------------------
      read serial command
  --------------------------------------------
-
 read a string from the serial and store it in an array
 you must supply the str array variable
 returns number of bytes read, or zero if fail
@@ -268,17 +273,6 @@ byte readCommand(byte *str) {
   }
 
   //read header  
-/*  i = SERIAL_DELAY_LOOP;
-  while (Serial.available() < SERIAL_HEADER_SIZE-1) {   // wait for the rest
-    delay(SERIAL_WAIT_DELAY); 
-    if (i-- == 0) {
-      g_errorCounter = 103;
-      return 0;        //no data available!
-    }
-  }
-  for (i=1; i<SERIAL_HEADER_SIZE; i++) {
-    str[i] = Serial.read();       // fill it up
-  }*/
   i=1;
   b=SERIAL_DELAY_LOOP;
   while (i<SERIAL_HEADER_SIZE) {
@@ -305,19 +299,6 @@ byte readCommand(byte *str) {
   // --- END HEADER CHECK
 
   //read data  
-/*  i = SERIAL_DELAY_LOOP;
-  // wait for the final part, +1 for END_OF_DATA
-  while (Serial.available() < sendlen+1) {
-    delay(SERIAL_WAIT_DELAY); 
-    if( i-- == 0 ) {
-      g_errorCounter = 105;
-      return 0;
-    }
-  }
-  for (i=SERIAL_HEADER_SIZE; i<SERIAL_HEADER_SIZE+sendlen+1; i++) {
-    str[i] = Serial.read();       // fill it up
-  }*/
-  
   i=0;
   b=SERIAL_DELAY_LOOP;
   while (i<sendlen+1) {
@@ -331,7 +312,6 @@ byte readCommand(byte *str) {
       }      
     }
   }
-
 
   //check if data is correct, 0x20 = END_OF_DATA
   if (str[SERIAL_HEADER_SIZE+sendlen] != END_OF_DATA) {
