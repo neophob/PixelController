@@ -120,11 +120,6 @@ unsigned int Wheel(byte WheelPos) {
 //     do some animation until serial data arrives
 // --------------------------------------------
 void rainbow() {
-  int i;   
-  for (i=0; i < strip.numPixels(); i++) {
-     strip.setPixelColor(i, Wheel((i + j) % 96));
-  }
-  strip.doSwapBuffersAsap(strip.numPixels());
   delay(2);
   
   k++;
@@ -134,6 +129,11 @@ void rainbow() {
     if (j>96*3) {  // 3 cycles of all 96 colors in the wheel
        j=0; 
     }
+    
+  	for (int i=0; i < strip.numPixels(); i++) {
+    	 strip.setPixelColor(i, Wheel((i + j) % 96));
+  	}
+  	strip.doSwapBuffersAsap(strip.numPixels());    
   }
 }
 
