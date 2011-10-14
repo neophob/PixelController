@@ -79,10 +79,9 @@ public class PixelController extends PApplet {
 
 	    PropertiesHelper ph = new PropertiesHelper(config);
 	    
-	    
 		Collector col = Collector.getInstance(); 				
-		col.init(this, FPS, ph);
-		frameRate(FPS);
+		col.init(this, ph);
+		frameRate(ph.parseFps());
 		noSmooth();
 						
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();

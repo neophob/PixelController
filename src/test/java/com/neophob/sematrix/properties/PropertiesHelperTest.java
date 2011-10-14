@@ -46,6 +46,7 @@ public class PropertiesHelperTest {
 
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
+        assertEquals(20, ph.parseFps());
         assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
     }
 

@@ -96,4 +96,6 @@ public final class ConfigConstant {
 	public static final String DEBUG_WINDOW_MAX_X_SIZE = "maximal.debug.window.xsize";
 	
 	public static final String CAPTURE_OFFSET = "screen.capture.offset";
+	
+	public static final String FPS = "fps";
 }

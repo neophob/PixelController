@@ -157,18 +157,18 @@ public final class Collector {
 	/**
 	 * initialize the collector.
 	 *
-	 * @param papplet the papplet
-	 * @param fps the fps
+	 * @param papplet the PApplet
+	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(PApplet papplet, int fps, PropertiesHelper ph) {
+	public synchronized void init(PApplet papplet, PropertiesHelper ph) {
 		if (initialized) {
 			return;
 		}
 		
 		this.papplet = papplet;
 		this.nrOfScreens = ph.getNrOfScreens();
-		this.fps = fps;
 		this.ph = ph;
+		this.fps = ph.parseFps();
 		
 		//choose sound implementation
 		try {

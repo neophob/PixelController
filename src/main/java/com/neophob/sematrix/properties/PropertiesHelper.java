@@ -505,6 +505,15 @@ public class PropertiesHelper {
     }
 
     /**
+     * baudrate of the minidmx device
+     * 
+     * @return the int
+     */
+    public int parseFps() {
+        return parseInt(ConfigConstant.FPS, 20);        
+    }
+
+    /**
      * offset for screen capture
      * @return
      */
