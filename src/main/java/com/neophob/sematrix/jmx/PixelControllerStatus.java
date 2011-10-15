@@ -46,6 +46,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private int configuredFps;
 	private float currentFps;
 	private long frameCount;
+	private long startTime;
 	
 	private CircularFifoBuffer generatorUpdateTime;
 	private CircularFifoBuffer effectUpdateTime;
@@ -65,6 +66,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		outputUpdateTime = new CircularFifoBuffer(fps);
 		faderUpdateTime = new CircularFifoBuffer(fps);
 		internalWindowUpdateTime = new CircularFifoBuffer(fps);
+		startTime = System.currentTimeMillis();
 		
 		// register MBean
 		try {
@@ -140,7 +142,12 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		return frameCount;
 	}
 
+	@Override
+	public long getStartTime() {
+		return startTime;
+	}
 
+	
 	public void setCurrentFps(float currentFps) {
 		this.currentFps = currentFps;
 	}

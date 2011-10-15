@@ -92,6 +92,11 @@ public final class PixConClientJmx {
 		System.out.println("Output:    \t" + mbeanProxy.getOutputUpdateTime()+SUFFIX);
 		System.out.println("Fader:     \t" + mbeanProxy.getFaderUpdateTime()+SUFFIX);
 		System.out.println("Dbg Window:\t" + mbeanProxy.getInternalWindowUpdateTime()+SUFFIX);
+		
+		long runTime = System.currentTimeMillis() - mbeanProxy.getStartTime();
+		runTime /= 60000;
+		System.out.println("Runtime:\t" + runTime+"min");
+		
 	}
 
 }

@@ -73,4 +73,9 @@ public interface PixelControllerStatusMBean {
 	 */
 	float getInternalWindowUpdateTime();
 
+	/**
+	 * when was the app started?
+	 * @return time in ms
+	 */
+	long getStartTime();
 }
