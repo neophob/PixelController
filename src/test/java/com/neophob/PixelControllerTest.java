@@ -45,7 +45,7 @@ public class PixelControllerTest extends PApplet {
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
 	    PropertiesHelper ph = new PropertiesHelper(config);
-		Collector.getInstance().init(this, 10, ph);
+		Collector.getInstance().init(this, ph);
 	}
 	
 	public void draw() {
