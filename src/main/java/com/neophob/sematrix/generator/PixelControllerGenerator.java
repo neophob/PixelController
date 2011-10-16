@@ -99,7 +99,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
         new Plasma2(this);
         new PlasmaAdvanced(this);
-        new SimpleColors(this);
         new Fire(this);
         new PassThruGen(this);
         new Metaballs(this);
@@ -206,7 +205,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
             }
         }
 
-        LOG.log(Level.INFO, "Invalid Generator index selected: {0}", index);
+        LOG.log(Level.WARNING, "Invalid Generator index selected: {0}", index);
         return null;
     }
 

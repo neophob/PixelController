@@ -12,9 +12,8 @@ TODO PixelController
 -create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system
 
-SimpleColors: remove
-ColorFader: add random selector
-ColorScroll: add random selector
+-ColorScroll/ColorFader: add options to config file
+
 
 TODO PixelInvaders
 ------------------

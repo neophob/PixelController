@@ -327,7 +327,7 @@ public class Visual {
 				new Visual(GeneratorName.METABALLS);
 				break;
 			case 2:
-				new Visual(GeneratorName.SIMPLECOLORS);
+				new Visual(GeneratorName.COLOR_SCROLL);
 				break;
 			case 3:
 				new Visual(GeneratorName.PLASMA);

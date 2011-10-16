@@ -82,7 +82,7 @@ public final class Shuffler {
 		int totalNrEffect = col.getPixelControllerEffect().getSize();
 		int totalNrMixer = col.getPixelControllerMixer().getSize();
 
-		LOG.log(Level.INFO, "Manaual Shuffle for Visual {0}", currentVisual);
+		LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
 			for (Visual v: col.getAllVisuals()) {
@@ -157,7 +157,7 @@ public final class Shuffler {
 		Collector col = Collector.getInstance(); 
 
 		Random rand = new Random();
-		int blah = rand.nextInt(16);
+		int blah = rand.nextInt(17);
 		//LOG.log(Level.INFO, "Automatic Shuffler {0}", blah);
 
 		if (snare) {			
@@ -253,9 +253,13 @@ public final class Shuffler {
 			if (blah == 9) {
 				col.getPixelControllerGenerator().getGenerator(GeneratorName.BLINKENLIGHTS).shuffle();
 			}
-
+			
 			if (blah == 12) {
 				col.getPixelControllerGenerator().getGenerator(GeneratorName.TEXTURE_DEFORMATION).shuffle();
+			}
+
+			if (blah == 16) {
+				col.getPixelControllerGenerator().getGenerator(GeneratorName.COLOR_SCROLL).shuffle();
 			}
 
 		}

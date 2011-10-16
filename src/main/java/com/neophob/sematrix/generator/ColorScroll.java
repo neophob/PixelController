@@ -22,7 +22,10 @@ package com.neophob.sematrix.generator;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -172,6 +175,18 @@ public class ColorScroll extends Generator {
         this.fade = fadeLength;
         maxFrames = colorMap.size() * fade;
     }
+    
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.generator.Generator#shuffle()
+	 */
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.COLOR_SCROLL)) {
+			Random rand = new Random();
+			int nr = rand.nextInt(ScrollMode.values().length);
+			setScrollMode(nr);	
+		}
+	}
     
     /**
      * 

@@ -58,8 +58,8 @@ public abstract class Generator implements RandomizeState {
 		/** The PLASMA. */
 		PLASMA(3),
 		
-		/** The SIMPLECOLORS. */
-		SIMPLECOLORS(4),
+		/** The COLOR_SCROLL. */
+		COLOR_SCROLL(4),
 		
 		/** The FIRE. */
 		FIRE(5),
@@ -94,11 +94,8 @@ public abstract class Generator implements RandomizeState {
 		/** The SCREEN_CAPTURE. */
 		SCREEN_CAPTURE(15), 
                 
-                /** The COLOR_SCROLL */
-                COLOR_SCROLL(16),
-                
-                /** The COLOR_FADE */
-                COLOR_FADE(17);
+        /** The COLOR_FADE */
+        COLOR_FADE(16);
 		
 		/** The id. */
 		private int id;
