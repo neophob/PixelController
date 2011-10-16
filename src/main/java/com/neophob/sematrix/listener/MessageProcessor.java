@@ -31,7 +31,6 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.properties.ValidCommands;
-import java.util.Arrays;
 
 /**
  * The Class MessageProcessor.
@@ -333,7 +332,7 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case COLDIR:
+			case COLOR_SCROLL_OPT:
 				try {
 					int dir = Integer.parseInt(msg[1]);
 					col.getPixelControllerGenerator().setColorScrollingDirection(dir);

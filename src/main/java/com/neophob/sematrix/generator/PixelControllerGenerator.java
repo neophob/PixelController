@@ -98,8 +98,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
         image = new Image(this, fileImageSimple);
 
-        colorScroll = new ColorScroll(this);
-        colorFade = new ColorFade(this);
         new Plasma2(this);
         new PlasmaAdvanced(this);
         new SimpleColors(this);
@@ -124,6 +122,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new Geometrics(this);
         int captureOffset = ph.parseScreenCaptureOffset();
         new ScreenCapture(this, captureOffset, captureOffset);
+        colorScroll = new ColorScroll(this);
+        colorFade = new ColorFade(this);
     }
 
     /* (non-Javadoc)
@@ -318,7 +318,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @param colorScrollDir the newcolor scroll direction
      */
     public void setColorScrollingDirection(int colorScrollDir) {
-        colorScroll.setColorScrollDir(colorScrollDir);
+    	colorScroll.setScrollMode(colorScrollDir);
     }
     
     /**

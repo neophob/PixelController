@@ -102,8 +102,8 @@ public enum ValidCommands {
 	/** The TEXTDE file. */
 	TEXTDEF_FILE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the texture deformation generator"),
 	
-	/** The COLDIR. */
-	COLDIR(CommandGroup.GENERATOR, 1, "<INT> select fading direction, 1-4"),
+	/** The COLOR_SCROLL_OPT. */
+	COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
 	
 	/** The TEXTWRITER. */
 	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),

@@ -1,8 +1,29 @@
+/**
+ * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+ *
+ * This file is part of PixelController.
+ *
+ * PixelController is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PixelController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.neophob.sematrix.generator;
 
-import com.neophob.sematrix.resize.Resize.ResizeName;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  *
@@ -11,30 +32,52 @@ import java.util.ArrayList;
 public class ColorScroll extends Generator {
 
     private int fade;
-    private int scrollDir;
-    private ArrayList<Color> colorMap;
+    private ScrollMode scrollMode;
+    private List<Color> colorMap;
     private int frameCount;
     private int maxFrames;
     
-    private static final byte LEFT_TO_RIGHT = 1;
-    private static final byte RIGHT_TO_LEFT = 2;
-    private static final byte TOP_TO_BOTTOM = 3;
-    private static final byte BOTTOM_TO_TOP = 4;
-    
-    private static final byte RIGHT_BOTTOM_TO_LEFT_TOP = 5;
-    private static final byte LEFT_BOTTOM_TO_RIGHT_TOP = 6;
-    private static final byte RIGHT_TOP_TO_LEFT_BOTTOM = 7;
-    private static final byte LEFT_TOP_TO_RIGHT_BOTTOM = 8;
-    
-    private static final byte MIDDLE_TO_SIDES_VERTICAL = 9;
-    private static final byte SIDES_TO_MIDDLE_VERTICAL = 10;
-    private static final byte MIDDLE_TO_SIDES_HORIZONTAL = 11;
-    private static final byte SIDES_TO_MIDDLE_HORIZONTAL = 12;
-    
-    private static final byte EXPLODE_CIRCLE = 13;
-    private static final byte IMPLODE_CIRCLE = 14;
-    
+    enum ScrollMode{
+    	LEFT_TO_RIGHT(0),
+    	RIGHT_TO_LEFT(1),
+    	TOP_TO_BOTTOM(2),
+    	BOTTOM_TO_TOP(3),
+    	
+    	RIGHT_BOTTOM_TO_LEFT_TOP(4),
+    	LEFT_BOTTOM_TO_RIGHT_TOP(5),
+    	RIGHT_TOP_TO_LEFT_BOTTOM(6),
+    	LEFT_TOP_TO_RIGHT_BOTTOM(7),
+    	
+    	MIDDLE_TO_SIDES_VERTICAL(8),
+    	SIDES_TO_MIDDLE_VERTICAL(9),
+    	MIDDLE_TO_SIDES_HORIZONTAL(10),
+    	SIDES_TO_MIDDLE_HORIZONTAL(11),
+    	
+    	EXPLODE_CIRCLE(12),
+    	IMPLODE_CIRCLE(13);
+    	
+    	int mode;
+    	
+    	ScrollMode(int mode) {
+    		this.mode = mode;
+    	}
+    	
+    	public int getMode() {
+    		return mode;
+    	}
+    	 
+    	public static ScrollMode getScrollMode(int nr) {
+    		for (ScrollMode s: ScrollMode.values()) {
+    			if (s.getMode() == nr) {
+    				return s;
+    			}
+    		}
+    		
+    		return null;
+    	}
 
+    }
+    
     /**
      * Instantiates a new colorscroll
      *
@@ -53,19 +96,20 @@ public class ColorScroll extends Generator {
         colorMap.add(new Color(255, 128, 255));
 
         fade = 30;
-        scrollDir = EXPLODE_CIRCLE;
+        scrollMode = ScrollMode.EXPLODE_CIRCLE;
 
         maxFrames = colorMap.size() * fade;
     }
 
+    
     /* (non-Javadoc)
      * @see com.neophob.sematrix.generator.Generator#update()
      */
     @Override
     public void update() {
         frameCount = (frameCount + 1) % maxFrames;
-        // scrol colors on x axis
-        switch (scrollDir) {
+        // scroll colors on x axis
+        switch (scrollMode) {
             case LEFT_TO_RIGHT:
                 leftToRight();
                 break;
@@ -111,144 +155,118 @@ public class ColorScroll extends Generator {
         }
     }
 
-    void setColorScrollDir(int colorScrollDir) {
-        this.scrollDir = colorScrollDir;
+    /**
+     * 
+     * @param scrollMode
+     */
+    void setScrollMode(int scrollMode) {
+        this.scrollMode = ScrollMode.getScrollMode(scrollMode);
         this.frameCount = 0;
     }
 
+    /**
+     * 
+     * @param fadeLength
+     */
     void setFadeLength(int fadeLength) {
         this.fade = fadeLength;
         maxFrames = colorMap.size() * fade;
     }
+    
+    /**
+     * 
+     * @param val
+     * @return
+     */
+    private int[] getColor(int val) {
+        int colornumber = (int) ((Math.round(Math.floor((val + frameCount) / fade))) % colorMap.size());
+        int nextcolornumber = (colornumber + 1) % colorMap.size();
+        double ratio = ((val + frameCount) % fade) / (float)fade;
 
+        int Rthis = colorMap.get(colornumber).getRed();
+        int Rnext = colorMap.get(nextcolornumber).getRed();
+        int Gthis = colorMap.get(colornumber).getGreen();
+        int Gnext = colorMap.get(nextcolornumber).getGreen();
+        int Bthis = colorMap.get(colornumber).getBlue();
+        int Bnext = colorMap.get(nextcolornumber).getBlue();
+
+        int[] ret = new int[3];
+        ret[0] = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
+        ret[1] = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
+        ret[2] = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        
+        return ret;
+    }
+    
+
+    /**
+     * 
+     */
     private void leftToRight() {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize; x++) {
-
-            int colornumber = (int) ((Math.round(Math.floor((x + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((x + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
+        	
+        	int[] col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void rightToLeft() {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize; x++) {
-
             int x_rev = internalBufferXSize - x - 1;
-            int colornumber = (int) ((Math.round(Math.floor((x + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((x + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
+            
+            int[] col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x_rev] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x_rev] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void topToBottom() {
         int ySize = internalBufferYSize;
 
         for (int y = 0; y < internalBufferXSize; y++) {
-
             int y_rev = internalBufferXSize - y - 1;
-            int colornumber = (int) ((Math.round(Math.floor((y + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((y + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
+            
+            int[] col = getColor(y);            
             for (int x = 0; x < ySize; x++) {
-                this.internalBuffer[y_rev * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y_rev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void bottomToTop() {
         int ySize = internalBufferYSize;
 
         for (int y = 0; y < internalBufferXSize; y++) {
-
-            int colornumber = (int) ((Math.round(Math.floor((y + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((y + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
+            int[] col = getColor(y);
             for (int x = 0; x < ySize; x++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void rightBottomToLeftTop() {
         for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
 
-            int colornumber = (int) ((Math.round(Math.floor((diagStep + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((diagStep + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        	int[] col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -260,29 +278,17 @@ public class ColorScroll extends Generator {
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = diagOffset + diagCounter;
                 int y = diagPixelCount - diagCounter - 1 + diagOffset;
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void leftBottomToRightTop() {
         for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
-
-            int colornumber = (int) ((Math.round(Math.floor((diagStep + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((diagStep + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        	int[] col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -294,29 +300,17 @@ public class ColorScroll extends Generator {
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = internalBufferXSize - 1 - (diagOffset + diagCounter);
                 int y = diagPixelCount - diagCounter - 1 + diagOffset;
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void rightTopToLeftBottom() {
         for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
-
-            int colornumber = (int) ((Math.round(Math.floor((diagStep + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((diagStep + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        	int[] col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -328,31 +322,19 @@ public class ColorScroll extends Generator {
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = diagOffset + diagCounter;
                 int y = internalBufferXSize - 1 - (diagPixelCount - diagCounter - 1 + diagOffset);
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void leftTopToRightBottom() {
         for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
+        	int[] col = getColor(diagStep);
 
-            int colornumber = (int) ((Math.round(Math.floor((diagStep + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((diagStep + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
-            int diagPixelCount = diagStep;
+        	int diagPixelCount = diagStep;
             int diagOffset = 0;
             if (diagStep >= internalBufferXSize) {
                 diagPixelCount = (2 * internalBufferXSize) - diagStep;
@@ -362,148 +344,89 @@ public class ColorScroll extends Generator {
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = internalBufferXSize - 1 - (diagOffset + diagCounter);
                 int y = internalBufferYSize - 1 - (diagPixelCount - diagCounter - 1 + diagOffset);
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void middleToSidesVertical() {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize / 2; x++) {
-
-            int colornumber = (int) ((Math.round(Math.floor((x + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((x + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        	int[] col = getColor(x);
 
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
-                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x - 1] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x - 1] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void sidesToMiddleVertical() {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize / 2; x++) {
 
             int x_rev = (internalBufferXSize / 2) - x - 1;
-            int colornumber = (int) ((Math.round(Math.floor((x + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((x + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
+            int[] col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x_rev] = (R << 16) | (G << 8) | (B);
-                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x_rev - 1] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x_rev] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x_rev - 1] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void middleToSidesHorizontal() {
         int xSize = internalBufferXSize;
 
         for (int y = 0; y < internalBufferYSize / 2; y++) {
 
-            int colornumber = (int) ((Math.round(Math.floor((y + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((y + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        	int[] col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
-                this.internalBuffer[(internalBufferYSize - y - 1) * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[(internalBufferYSize - y - 1) * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void sidesToMiddleHorizontal() {
         int xSize = internalBufferXSize;
 
         for (int y = 0; y < internalBufferYSize / 2; y++) {
 
             int y_rev = (internalBufferYSize / 2) - y - 1;
-            int colornumber = (int) ((Math.round(Math.floor((y + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((y + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+            int[] col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
-                this.internalBuffer[y_rev * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
-                this.internalBuffer[(internalBufferYSize - y_rev - 1) * internalBufferXSize + x] = (R << 16) | (G << 8) | (B);
+                this.internalBuffer[y_rev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[(internalBufferYSize - y_rev - 1) * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
 
+    /**
+     * 
+     */
     private void implodeCircle() {
 
+        int x0 = internalBufferXSize / 2;
+        int y0 = internalBufferYSize / 2;
+
         for (int r = 0; r < Math.max(internalBufferXSize, internalBufferYSize) * 1.42; r++) {
-
-            int colornumber = (int) ((Math.round(Math.floor((r + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((r + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
-
-            int x0 = internalBufferXSize / 2;
-            int y0 = internalBufferYSize / 2;
+        	int[] col = getColor(r);
 
             int f = 1 - r;
             int ddF_x = 1;
@@ -512,15 +435,12 @@ public class ColorScroll extends Generator {
             int y = r;
 
 
-            setPixel(x0, y0 + r, R, G, B);
-            setPixel(x0, y0 - r, R, G, B);
-            setPixel(x0 + r, y0, R, G, B);
-            setPixel(x0 - r, y0, R, G, B);
+            setPixel(x0, y0 + r, col[0], col[1], col[2]);
+            setPixel(x0, y0 - r, col[0], col[1], col[2]);
+            setPixel(x0 + r, y0, col[0], col[1], col[2]);
+            setPixel(x0 - r, y0, col[0], col[1], col[2]);
 
             while (x < y) {
-                // ddF_x == 2 * x + 1;
-                // ddF_y == -2 * y;
-                // f == x*x + y*y - radius*radius + 2*x - y + 1;
                 if (f >= 0) {
                     y--;
                     ddF_y += 2;
@@ -529,63 +449,50 @@ public class ColorScroll extends Generator {
                 x++;
                 ddF_x += 2;
                 f += ddF_x;
-                setPixel(x0 + x, y0 + y, R, G, B);
-                setPixel(x0 - x, y0 + y, R, G, B);
-                setPixel(x0 + x, y0 - y, R, G, B);
-                setPixel(x0 - x, y0 - y, R, G, B);
-                setPixel(x0 + y, y0 + x, R, G, B);
-                setPixel(x0 - y, y0 + x, R, G, B);
-                setPixel(x0 + y, y0 - x, R, G, B);
-                setPixel(x0 - y, y0 - x, R, G, B);
+                setPixel(x0 + x, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 - x, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 + x, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 - x, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 + y, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 - y, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 + y, y0 - x, col[0], col[1], col[2]);
+                setPixel(x0 - y, y0 - x, col[0], col[1], col[2]);
 
                 //double line to mind gaps
-                setPixel(x0 + x + 1, y0 + y, R, G, B);
-                setPixel(x0 - x + 1, y0 + y, R, G, B);
-                setPixel(x0 + x + 1, y0 - y, R, G, B);
-                setPixel(x0 - x + 1, y0 - y, R, G, B);
-                setPixel(x0 + y + 1, y0 + x, R, G, B);
-                setPixel(x0 - y + 1, y0 + x, R, G, B);
-                setPixel(x0 + y + 1, y0 - x, R, G, B);
-                setPixel(x0 - y + 1, y0 - x, R, G, B);
+                setPixel(x0 + x + 1, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 + x + 1, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 - x, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 - x, col[0], col[1], col[2]);
                 
-                setPixel(x0 + x + 1, y0 + y + 1, R, G, B);
-                setPixel(x0 - x + 1, y0 + y + 1, R, G, B);
-                setPixel(x0 + x + 1, y0 - y + 1, R, G, B);
-                setPixel(x0 - x + 1, y0 - y + 1, R, G, B);
-                setPixel(x0 + y + 1, y0 + x + 1, R, G, B);
-                setPixel(x0 - y + 1, y0 + x + 1, R, G, B);
-                setPixel(x0 + y + 1, y0 - x + 1, R, G, B);
-                setPixel(x0 - y + 1, y0 - x + 1, R, G, B);
+                setPixel(x0 + x + 1, y0 + y + 1, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 + y + 1, col[0], col[1], col[2]);
+                setPixel(x0 + x + 1, y0 - y + 1, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 - y + 1, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 + x + 1, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 + x + 1, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 - x + 1, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 - x + 1, col[0], col[1], col[2]);
                 
             }
         }
     }
     
+    /**
+     * 
+     */
     private void explodeCircle() {
 
-        for (int r = 0; r < Math.max(internalBufferXSize, internalBufferYSize) * 1.42; r++) {
-            
+        int x0 = internalBufferXSize / 2;
+        int y0 = internalBufferYSize / 2;
+
+        for (int r = 0; r < Math.max(internalBufferXSize, internalBufferYSize) * 1.42; r++) {            
             int rRev = (int) (Math.max(internalBufferXSize, internalBufferYSize) * 1.42) - r;
 
-            int colornumber = (int) ((Math.round(Math.floor((rRev + frameCount) / fade))) % colorMap.size());
-            int nextcolornumber = (colornumber + 1) % colorMap.size();
-            double ratio = ((rRev + frameCount) % fade);
-            ratio = ratio / fade;
-
-            int Rthis = colorMap.get(colornumber).getRed();
-            int Rnext = colorMap.get(nextcolornumber).getRed();
-            int Gthis = colorMap.get(colornumber).getGreen();
-            int Gnext = colorMap.get(nextcolornumber).getGreen();
-            int Bthis = colorMap.get(colornumber).getBlue();
-            int Bnext = colorMap.get(nextcolornumber).getBlue();
-
-            int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-            int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-            int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
-
-
-            int x0 = internalBufferXSize / 2;
-            int y0 = internalBufferYSize / 2;
+            int[] col = getColor(rRev);
 
             int f = 1 - r;
             int ddF_x = 1;
@@ -593,16 +500,12 @@ public class ColorScroll extends Generator {
             int x = 0;
             int y = r;
 
-
-            setPixel(x0, y0 + r, R, G, B);
-            setPixel(x0, y0 - r, R, G, B);
-            setPixel(x0 + r, y0, R, G, B);
-            setPixel(x0 - r, y0, R, G, B);
+            setPixel(x0, y0 + r, col[0], col[1], col[2]);
+            setPixel(x0, y0 - r, col[0], col[1], col[2]);
+            setPixel(x0 + r, y0, col[0], col[1], col[2]);
+            setPixel(x0 - r, y0, col[0], col[1], col[2]);
 
             while (x < y) {
-                // ddF_x == 2 * x + 1;
-                // ddF_y == -2 * y;
-                // f == x*x + y*y - radius*radius + 2*x - y + 1;
                 if (f >= 0) {
                     y--;
                     ddF_y += 2;
@@ -611,41 +514,49 @@ public class ColorScroll extends Generator {
                 x++;
                 ddF_x += 2;
                 f += ddF_x;
-                setPixel(x0 + x, y0 + y, R, G, B);
-                setPixel(x0 - x, y0 + y, R, G, B);
-                setPixel(x0 + x, y0 - y, R, G, B);
-                setPixel(x0 - x, y0 - y, R, G, B);
-                setPixel(x0 + y, y0 + x, R, G, B);
-                setPixel(x0 - y, y0 + x, R, G, B);
-                setPixel(x0 + y, y0 - x, R, G, B);
-                setPixel(x0 - y, y0 - x, R, G, B);
+                setPixel(x0 + x, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 - x, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 + x, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 - x, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 + y, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 - y, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 + y, y0 - x, col[0], col[1], col[2]);
+                setPixel(x0 - y, y0 - x, col[0], col[1], col[2]);
 
                 //double line to mind gaps
-                setPixel(x0 + x + 1, y0 + y, R, G, B);
-                setPixel(x0 - x + 1, y0 + y, R, G, B);
-                setPixel(x0 + x + 1, y0 - y, R, G, B);
-                setPixel(x0 - x + 1, y0 - y, R, G, B);
-                setPixel(x0 + y + 1, y0 + x, R, G, B);
-                setPixel(x0 - y + 1, y0 + x, R, G, B);
-                setPixel(x0 + y + 1, y0 - x, R, G, B);
-                setPixel(x0 - y + 1, y0 - x, R, G, B);
+                setPixel(x0 + x + 1, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 + y, col[0], col[1], col[2]);
+                setPixel(x0 + x + 1, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 - y, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 + x, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 - x, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 - x, col[0], col[1], col[2]);
                 
-                setPixel(x0 + x + 1, y0 + y + 1, R, G, B);
-                setPixel(x0 - x + 1, y0 + y + 1, R, G, B);
-                setPixel(x0 + x + 1, y0 - y + 1, R, G, B);
-                setPixel(x0 - x + 1, y0 - y + 1, R, G, B);
-                setPixel(x0 + y + 1, y0 + x + 1, R, G, B);
-                setPixel(x0 - y + 1, y0 + x + 1, R, G, B);
-                setPixel(x0 + y + 1, y0 - x + 1, R, G, B);
-                setPixel(x0 - y + 1, y0 - x + 1, R, G, B);
-                
+                setPixel(x0 + x + 1, y0 + y + 1, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 + y + 1, col[0], col[1], col[2]);
+                setPixel(x0 + x + 1, y0 - y + 1, col[0], col[1], col[2]);
+                setPixel(x0 - x + 1, y0 - y + 1, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 + x + 1, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 + x + 1, col[0], col[1], col[2]);
+                setPixel(x0 + y + 1, y0 - x + 1, col[0], col[1], col[2]);
+                setPixel(x0 - y + 1, y0 - x + 1, col[0], col[1], col[2]);
             }
         }
     }
 
-    private void setPixel(float x, float y, int R, int G, int B) {
-        if ((int) y >= 0 && (int) y < internalBufferYSize && (int) x >= 0 && (int) x < internalBufferXSize) {
-            this.internalBuffer[(int) y * internalBufferXSize + (int) x] = (R << 16) | (G << 8) | (B);
+    /**
+     * 
+     * @param x
+     * @param y
+     * @param R
+     * @param G
+     * @param B
+     */
+    private void setPixel(int x, int y, int r, int g, int b) {
+        if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
+            this.internalBuffer[y * internalBufferXSize + x] = (r << 16) | (g << 8) | b;
         }
     }
+
 }
