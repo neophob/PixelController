@@ -92,7 +92,13 @@ public abstract class Generator implements RandomizeState {
 		GEOMETRICS(14),
 		
 		/** The SCREEN_CAPTURE. */
-		SCREEN_CAPTURE(15);
+		SCREEN_CAPTURE(15), 
+                
+                /** The COLOR_SCROLL */
+                COLOR_SCROLL(16),
+                
+                /** The COLOR_FADE */
+                COLOR_FADE(17);
 		
 		/** The id. */
 		private int id;
