@@ -65,8 +65,14 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private ImageZoomer imageZoomer;
 
     /** The texture deformation. */
-    private TextureDeformation textureDeformation;	
+    private TextureDeformation textureDeformation;
+    
+    /** The ColorScroller. */
+    private ColorScroll colorScroll;
 
+    /** The Color fader- */
+    private ColorFade colorFade;
+    
     /** The textwriter. */
     private Textwriter textwriter;
 
@@ -92,6 +98,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
         image = new Image(this, fileImageSimple);
 
+        colorScroll = new ColorScroll(this);
+        colorFade = new ColorFade(this);
         new Plasma2(this);
         new PlasmaAdvanced(this);
         new SimpleColors(this);
@@ -99,6 +107,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new PassThruGen(this);
         new Metaballs(this);
         new PixelImage(this);
+        
         String fileTextureDeformation = ph.getProperty(TextureDeformation.INITIAL_IMAGE, DEFAULT_TEXTUREDEFORMATION);
         textureDeformation = new TextureDeformation(this, fileTextureDeformation);
 
@@ -303,6 +312,33 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return textureDeformation.getLut();
     }
 
+    /**
+     * Sets the color scroll direction.
+     *
+     * @param colorScrollDir the newcolor scroll direction
+     */
+    public void setColorScrollingDirection(int colorScrollDir) {
+        colorScroll.setColorScrollDir(colorScrollDir);
+    }
+    
+    /**
+     * Sets the color scroll fade length.
+     *
+     * @param colorScrollDir the new color scroll fade length
+     */
+    public void setColorScrollingFadeLength(int colorScrolFadeLength) {
+        colorScroll.setFadeLength(colorScrolFadeLength);
+    }
+    
+    /**
+     * Sets the color scroll fade length.
+     *
+     * @param colorScrollDir the new color scroll fade length
+     */
+    public void setColorFadeTime(int colorFadeTime) {
+        colorFade.setFadeTime(colorFadeTime);
+    }
+    
     /**
      * Sets the texture deformation lut.
      *

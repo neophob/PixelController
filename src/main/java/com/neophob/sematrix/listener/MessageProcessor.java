@@ -31,6 +31,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.properties.ValidCommands;
+import java.util.Arrays;
 
 /**
  * The Class MessageProcessor.
@@ -62,7 +63,7 @@ public final class MessageProcessor {
 		if (msg==null || msg.length<1) {
 			return null;
 		}
-
+                
 		int msgLength = msg.length-1;
 		int tmp;		
 		try {
@@ -327,6 +328,15 @@ public final class MessageProcessor {
 				try {
 					String fileToLoad = msg[1];
 					col.getPixelControllerGenerator().setFileImageZoomer(fileToLoad);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+
+			case COLDIR:
+				try {
+					int dir = Integer.parseInt(msg[1]);
+					col.getPixelControllerGenerator().setColorScrollingDirection(dir);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
