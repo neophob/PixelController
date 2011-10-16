@@ -1,4 +1,4 @@
-#N canvas 276 117 954 558 10;
+#N canvas 372 315 954 558 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -1580,7 +1580,7 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X connect 18 7 11 0;
 #X connect 20 0 19 0;
 #X restore 92 157 pd keyboard;
-#N canvas 592 381 688 361 generaotor 1;
+#N canvas 339 465 688 361 generaotor 1;
 #X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
 0;
 #X obj 16 241 send blinkenfile;
@@ -1639,9 +1639,23 @@ CHANGE_TINT CHANGE_THRESHOLD_VALUE;
 #X msg 19 302 DEMODAYS 2011;
 #X obj 502 4 cnv 15 180 266 empty empty colorscroll 20 12 0 14 -203904
 -66577 0;
-#X obj 542 223 send color_scroll;
+#X obj 551 249 send color_scroll;
 #X obj 509 34 vradio 15 1 0 14 empty empty empty 0 -8 0 10 -262144
--1 -1 13;
+-1 -1 10;
+#X text 529 33 Left to right;
+#X text 529 49 Right to left;
+#X text 529 64 Top to Bottom;
+#X text 530 79 Bottom to Top;
+#X text 529 94 Right bottom to left top;
+#X text 529 108 Left bottom to right top;
+#X text 530 124 Right top to left bottom;
+#X text 530 139 Left top to right bottom;
+#X text 530 155 Middle to sides vertical;
+#X text 530 171 Sides to middle vertical;
+#X text 530 200 Sides to middle horizontal;
+#X text 530 186 Middle to sides horizontal;
+#X text 530 214 Explode Circle;
+#X text 530 230 Implode Circle;
 #X connect 17 0 1 0;
 #X connect 18 0 1 0;
 #X connect 19 0 1 0;

@@ -87,7 +87,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     }
 
 
-
     /**
      * initialize all generators.
      */
@@ -138,7 +137,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
-
+        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getResizeOption());
         return ret;
     }
 
