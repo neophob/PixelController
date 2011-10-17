@@ -123,7 +123,7 @@ public class MD5 {
      * Initialize MD5 internal state (object can be reused just by
      * calling Init() after every Final()
      **/
-    public synchronized void Init () {
+    public synchronized void init () {
         state = new MD5State();
         finals = null;
     }
@@ -133,7 +133,7 @@ public class MD5 {
      **/
     public MD5 () {
         if (native_lib_init_pending) _initNativeLibrary();
-        this.Init();
+        this.init();
     }
     
     /**
