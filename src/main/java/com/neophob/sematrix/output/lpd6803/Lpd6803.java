@@ -137,39 +137,39 @@ public class Lpd6803 {
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
 	 *
-	 * @param _app the _app
+	 * @param app the app
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet _app, int baud) throws NoSerialPortFoundException {
-		this(_app, null, baud);
+	public Lpd6803(PApplet app, int baud) throws NoSerialPortFoundException {
+		this(app, null, baud);
 	}
+
+	/**
+	 * Create a new instance to communicate with the lpd6803 device.
+	 *
+	 * @param app the app
+	 * @param portName the port name
+	 * @throws NoSerialPortFoundException the no serial port found exception
+	 */
+	public Lpd6803(PApplet app, String portName) throws NoSerialPortFoundException {
+		this(app, portName, 0);
+	}
+
 
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
 	 *
 	 * @param _app the _app
 	 * @param portName the port name
-	 * @throws NoSerialPortFoundException the no serial port found exception
-	 */
-	public Lpd6803(PApplet _app, String portName) throws NoSerialPortFoundException {
-		this(_app, portName, 0);
-	}
-
-
-	/**
-	 * Create a new instance to communicate with the lpd6803 device.
-	 *
-	 * @param _app the _app
-	 * @param portName the port name
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet _app, String portName, int baud) throws NoSerialPortFoundException {
+	public Lpd6803(PApplet app, String portName, int baud) throws NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
-		this.app = _app;
+		this.app = app;
 		app.registerDispose(this);
 		
 		lastDataMap = new HashMap<Byte, String>();

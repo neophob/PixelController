@@ -108,39 +108,39 @@ public class Rainbowduino {
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 * 
-	 * @param _app
+	 * @param app
 	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet _app, List<Integer> rainbowduinoAddr) 
+	public Rainbowduino(PApplet app, List<Integer> rainbowduinoAddr) 
 		throws NoSerialPortFoundException {
-		this(_app, null, 0, rainbowduinoAddr);
+		this(app, null, 0, rainbowduinoAddr);
 	}
 
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 * 
-	 * @param _app
+	 * @param app
 	 * @param rainbowduinoAddr
 	 * @param baud
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet _app, List<Integer> rainbowduinoAddr, int baud) 
+	public Rainbowduino(PApplet app, List<Integer> rainbowduinoAddr, int baud) 
 		throws NoSerialPortFoundException {
-		this(_app, null, baud, rainbowduinoAddr);
+		this(app, null, baud, rainbowduinoAddr);
 	}
 
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 * 
-	 * @param _app
+	 * @param app
 	 * @param rainbowduinoAddr
 	 * @param portName
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet _app, List<Integer> rainbowduinoAddr, String portName) 
+	public Rainbowduino(PApplet app, List<Integer> rainbowduinoAddr, String portName) 
 		throws NoSerialPortFoundException {
-		this(_app, portName, 0, rainbowduinoAddr);
+		this(app, portName, 0, rainbowduinoAddr);
 	}
 
 
@@ -153,12 +153,12 @@ public class Rainbowduino {
 	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet _app, String portName, int baud, List<Integer> rainbowduinoAddr) 
+	public Rainbowduino(PApplet app, String portName, int baud, List<Integer> rainbowduinoAddr) 
 		throws NoSerialPortFoundException {
 		
 		log.log(Level.INFO,	"Initialize neorainbowduino lib v{0}", VERSION);
 		
-		this.app = _app;
+		this.app = app;
 		app.registerDispose(this);
 		
 		scannedI2cDevices = new ArrayList<Integer>();

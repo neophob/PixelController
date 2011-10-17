@@ -214,13 +214,13 @@ public class MiniDmxSerial {
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 *
-	 * @param _app the _app
+	 * @param app the _app
 	 * @param targetBuffersize the target buffersize
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet _app, int targetBuffersize, String portName, int baud) throws NoSerialPortFoundException {
-		this(_app, portName, targetBuffersize, baud);
+	public MiniDmxSerial(PApplet app, int targetBuffersize, String portName, int baud) throws NoSerialPortFoundException {
+		this(app, portName, targetBuffersize, baud);
 	}
 
 
