@@ -67,6 +67,7 @@ public class MiniDmxSerial {
     /** The log. */
     private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
 
+    private static final String PADDING_BYTES = "paddingBytes {0}";
     
     public enum MiniDmxPayloadEnum {
         SEND_96_BYTES(96, (byte)0xa0),              //32 pixel, for example 8x4 pixel
@@ -130,31 +131,31 @@ public class MiniDmxSerial {
                 if (payloadSize > SEND_1536_BYTES.payloadSize) {
                     MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_3072_BYTES;
                     miniDmxPayloadEnum.paddingBytes = SEND_3072_BYTES.payloadSize-payloadSize;
-                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    LOG.log(Level.WARNING, PADDING_BYTES, miniDmxPayloadEnum.paddingBytes);
                     return miniDmxPayloadEnum;
                 }
                 if (payloadSize > SEND_768_BYTES.payloadSize) {
                     MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_1536_BYTES;
                     miniDmxPayloadEnum.paddingBytes = SEND_1536_BYTES.payloadSize-payloadSize;
-                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    LOG.log(Level.WARNING, PADDING_BYTES, miniDmxPayloadEnum.paddingBytes);
                     return miniDmxPayloadEnum;
                 }
                 if (payloadSize > SEND_512_BYTES.payloadSize) {
                     MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_768_BYTES;
                     miniDmxPayloadEnum.paddingBytes = SEND_768_BYTES.payloadSize-payloadSize;
-                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    LOG.log(Level.WARNING, PADDING_BYTES, miniDmxPayloadEnum.paddingBytes);
                     return miniDmxPayloadEnum;
                 }
                 if (payloadSize > SEND_256_BYTES.payloadSize) {
                     MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_512_BYTES;
                     miniDmxPayloadEnum.paddingBytes = SEND_512_BYTES.payloadSize-payloadSize;
-                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    LOG.log(Level.WARNING, PADDING_BYTES, miniDmxPayloadEnum.paddingBytes);
                     return miniDmxPayloadEnum;
                 }
                 if (payloadSize > SEND_96_BYTES.payloadSize) {
                     MiniDmxPayloadEnum miniDmxPayloadEnum = SEND_256_BYTES;
                     miniDmxPayloadEnum.paddingBytes = SEND_256_BYTES.payloadSize-payloadSize;
-                    LOG.log(Level.WARNING, "paddingBytes {0}", miniDmxPayloadEnum.paddingBytes);
+                    LOG.log(Level.WARNING, PADDING_BYTES, miniDmxPayloadEnum.paddingBytes);
                     return miniDmxPayloadEnum;
                 }
             }
