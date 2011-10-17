@@ -44,19 +44,19 @@ public class Geometrics extends Generator {
 
 	/** The Constant THICKNESS. */
 	private static final int THICKNESS = 10;
-	
+
 	/** The drops. */
 	private List<Drop> drops;
-	
+
 	/** The tmp. */
 	private List<Drop> tmp;
-	
+
 	/** The drop hue. */
 	private int dropHue = 0;
 
 	/** The sound. */
 	private Sound sound;
-	
+
 	/** The rnd gen. */
 	private Random rndGen=new Random();
 
@@ -114,7 +114,7 @@ public class Geometrics extends Generator {
 				tmp.add(d);
 			}
 		}
-		
+
 		if (tmp.size()>0) {
 			drops.removeAll(tmp);			
 		}
@@ -131,7 +131,7 @@ public class Geometrics extends Generator {
 
 		/** The drop size. */
 		int xpos, ypos, dropcolor, dropSize;
-		
+
 		/** The finished. */
 		boolean finished;
 
@@ -188,19 +188,17 @@ public class Geometrics extends Generator {
 				if (x+px < internalBufferXSize && x+px>0) {
 
 					for (int y=0; y<thick; y++) {
-						
 						//check boundaries
 						if (y+py < internalBufferYSize && y+py>0) {
-							int pos = ofs+x+y*internalBufferXSize;
 							
-							if (pos>0 && pos < internalBuffer.length)
-							try {
-								internalBuffer[pos]=col;						
-							} catch (Exception e) {
-								//just to be sure...
-								LOG.log(Level.WARNING,
-										"Very bad! {1}", new Object[] { e });
-							}							
+							int pos = ofs+x+y*internalBufferXSize;
+							if (pos>0 && pos < internalBuffer.length) {
+								try {
+									internalBuffer[pos]=col;						
+								} catch (Exception e) {
+									LOG.log(Level.WARNING, "Very bad! {1}", new Object[] { e });
+								}															
+							}
 						}
 					}
 				}

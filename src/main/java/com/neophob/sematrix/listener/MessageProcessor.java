@@ -220,7 +220,9 @@ public final class MessageProcessor {
 			case CHANGE_SHUFFLER_SELECT:
 				try {					
 					int size = col.getPixelControllerShufflerSelect().getShufflerSelect().size();
-					if (size>msgLength) size=msgLength;
+					if (size>msgLength) {
+						size=msgLength;
+					}
 					boolean b;
 					for (int i=0; i<size; i++) {
 						b = false;
@@ -249,12 +251,24 @@ public final class MessageProcessor {
 					int r = Integer.parseInt(msg[1]);
 					int g = Integer.parseInt(msg[2]);
 					int b = Integer.parseInt(msg[3]);
-					if (r>255) r=255;
-					if (g>255) g=255;
-					if (b>255) b=255;
-					if (r<0) r=0;
-					if (g<0) g=0;
-					if (b<0) b=0;
+					if (r>255) {
+						r=255;
+					}
+					if (g>255) {
+						g=255;
+					}
+					if (b>255) {
+						b=255;
+					}
+					if (r<0) {
+						r=0;
+					}
+					if (g<0) {
+						g=0;
+					}
+					if (b<0) {
+						b=0;
+					}
 					col.getPixelControllerEffect().setRGB(r, g, b);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -297,8 +311,12 @@ public final class MessageProcessor {
 			case CHANGE_THRESHOLD_VALUE:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					if (a>255) a=255;
-					if (a<0) a=0;
+					if (a>255) {
+						a=255;
+					}
+					if (a<0) {
+						a=0;
+					}
 					col.getPixelControllerEffect().setThresholdValue(a);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
