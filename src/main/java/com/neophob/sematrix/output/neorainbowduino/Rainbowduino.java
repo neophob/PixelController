@@ -391,10 +391,12 @@ public class Rainbowduino {
 		cmdfull[1] = addr;
 		cmdfull[2] = (byte)data.length;
 		cmdfull[3] = CMD_SENDFRAME;
-		cmdfull[4] = START_OF_DATA;		
-		for (int i=0; i<data.length; i++) {
-			cmdfull[5+i] = data[i];
-		}
+		cmdfull[4] = START_OF_DATA;
+		
+		System.arraycopy(data, 0, cmdfull, 5, data.length);
+//		for (int i=0; i<data.length; i++) {
+//			cmdfull[5+i] = data[i];
+//		}		
 		cmdfull[data.length+5] = END_OF_DATA;
 		
 		try {
