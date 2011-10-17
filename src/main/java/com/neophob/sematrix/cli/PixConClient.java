@@ -52,6 +52,10 @@ public class PixConClient {
     private static final String PARAM_PORT = "port";
     private static final String PARAM_HOST = "hostname";
 
+    private PixConClient() {
+    	//Util class
+    }
+    
     /**
      * Usage.
      *
