@@ -98,10 +98,7 @@ public class Image extends Generator {
 			this.internalBuffer = res.resizeImage(RESIZE_TYP, tmp.pixels, 
 					tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
 			tmp.updatePixels();
-			
-			//pimage.resize(internalBufferXSize, internalBufferYSize);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {			
 			LOG.log(Level.WARNING,
 					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
 		}

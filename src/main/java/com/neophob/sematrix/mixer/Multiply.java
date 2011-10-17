@@ -41,14 +41,14 @@ public class Multiply extends Mixer {
 	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
 	 */
 	public int[] getBuffer(Visual visual) {
-		short cr_s,cg_s,cb_s;
-		short cr_d,cg_d,cb_d;
-		int col;
-		
 		if (visual.getEffect2() == null) {
 			return visual.getEffect1Buffer();
 		}
 		
+		short redSource, greenSource, blueSource;
+		short redDest, greenDest, blueDest;
+		int col;
+				
 		Generator gen1 = visual.getGenerator1();		
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
@@ -56,20 +56,20 @@ public class Multiply extends Mixer {
 
 		for (int i=0; i<gen1.internalBuffer.length; i++){
 			col = src1[i];
-    		cr_s=(short) ((col>>16)&255);
-    		cg_s=(short) ((col>>8) &255);
-    		cb_s=(short) ( col     &255);
+    		redSource=(short) ((col>>16)&255);
+    		greenSource=(short) ((col>>8) &255);
+    		blueSource=(short) ( col     &255);
     		
 			col = src2[i];
-    		cr_d=(short) ((col>>16)&255);
-    		cg_d=(short) ((col>>8) &255);
-    		cb_d=(short) ( col     &255);
+    		redDest=(short) ((col>>16)&255);
+    		greenDest=(short) ((col>>8) &255);
+    		blueDest=(short) ( col     &255);
     		
-    		cr_d = (short) (cr_d * cr_s / 255);
-    		cg_d = (short) (cg_d * cg_s / 255);
-    		cb_d = (short) (cb_d * cb_s / 255);
+    		redDest = (short) (redDest * redSource / 255);
+    		greenDest = (short) (greenDest * greenSource / 255);
+    		blueDest = (short) (blueDest * blueSource / 255);
     		
-    		dst[i]=(int) ((cr_d << 16) | (cg_d << 8) | cb_d);
+    		dst[i]=(int) ((redDest << 16) | (greenDest << 8) | blueDest);
           }
 	
 		return dst;

@@ -105,8 +105,12 @@ public class RotoZoom extends RotoZoomEffect {
 	 * @return the int
 	 */
 	public int setAngle(int angle) {
-		if (angle > 127) angle = 127;
-		if (angle < -127) angle = -127;
+		if (angle > 127) {
+			angle = 127;
+		}
+		if (angle < -127) {
+			angle = -127;
+		}
 		
 		this.angleOrig = angle;
 		

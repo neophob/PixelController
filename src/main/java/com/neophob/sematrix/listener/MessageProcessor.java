@@ -435,8 +435,7 @@ public final class MessageProcessor {
 				break;
 			}
 		} catch (IllegalArgumentException e) {
-			LOG.log(Level.INFO,	"Illegal argument <{0}>: {1}", new Object[] { msg[0], e });
-			e.printStackTrace();
+			LOG.log(Level.INFO,	"Illegal argument <{0}>: {1}", new Object[] { msg[0], e });			
 		}		
 
 		return null;

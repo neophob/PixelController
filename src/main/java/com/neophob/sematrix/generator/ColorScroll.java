@@ -59,7 +59,7 @@ public class ColorScroll extends Generator {
     	EXPLODE_CIRCLE(12),
     	IMPLODE_CIRCLE(13);
     	
-    	int mode;
+    	private int mode;
     	
     	ScrollMode(int mode) {
     		this.mode = mode;
@@ -193,17 +193,17 @@ public class ColorScroll extends Generator {
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         double ratio = ((val + frameCount) % fade) / (float)fade;
 
-        int Rthis = colorMap.get(colornumber).getRed();
-        int Rnext = colorMap.get(nextcolornumber).getRed();
-        int Gthis = colorMap.get(colornumber).getGreen();
-        int Gnext = colorMap.get(nextcolornumber).getGreen();
-        int Bthis = colorMap.get(colornumber).getBlue();
-        int Bnext = colorMap.get(nextcolornumber).getBlue();
+        int rThis = colorMap.get(colornumber).getRed();
+        int rNext = colorMap.get(nextcolornumber).getRed();
+        int gThis = colorMap.get(colornumber).getGreen();
+        int gNext = colorMap.get(nextcolornumber).getGreen();
+        int bThis = colorMap.get(colornumber).getBlue();
+        int bNext = colorMap.get(nextcolornumber).getBlue();
 
         int[] ret = new int[3];
-        ret[0] = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-        ret[1] = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-        ret[2] = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        ret[0] = rThis - (int) Math.round((rThis - rNext) * (ratio));
+        ret[1] = gThis - (int) Math.round((gThis - gNext) * (ratio));
+        ret[2] = bThis - (int) Math.round((bThis - bNext) * (ratio));
         
         return ret;
     }
@@ -231,11 +231,11 @@ public class ColorScroll extends Generator {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize; x++) {
-            int x_rev = internalBufferXSize - x - 1;
+            int xRev = internalBufferXSize - x - 1;
             
             int[] col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x_rev] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + xRev] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
@@ -247,11 +247,11 @@ public class ColorScroll extends Generator {
         int ySize = internalBufferYSize;
 
         for (int y = 0; y < internalBufferXSize; y++) {
-            int y_rev = internalBufferXSize - y - 1;
+            int yRev = internalBufferXSize - y - 1;
             
             int[] col = getColor(y);            
             for (int x = 0; x < ySize; x++) {
-                this.internalBuffer[y_rev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[yRev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
@@ -383,11 +383,11 @@ public class ColorScroll extends Generator {
 
         for (int x = 0; x < internalBufferXSize / 2; x++) {
 
-            int x_rev = (internalBufferXSize / 2) - x - 1;
+            int xRev = (internalBufferXSize / 2) - x - 1;
             int[] col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x_rev] = (col[0] << 16) | (col[1] << 8) | col[2];
-                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x_rev - 1] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + xRev] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - xRev - 1] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
@@ -417,12 +417,12 @@ public class ColorScroll extends Generator {
 
         for (int y = 0; y < internalBufferYSize / 2; y++) {
 
-            int y_rev = (internalBufferYSize / 2) - y - 1;
+            int yRev = (internalBufferYSize / 2) - y - 1;
             int[] col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
-                this.internalBuffer[y_rev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
-                this.internalBuffer[(internalBufferYSize - y_rev - 1) * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[yRev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[(internalBufferYSize - yRev - 1) * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
         }
     }
@@ -439,11 +439,10 @@ public class ColorScroll extends Generator {
         	int[] col = getColor(r);
 
             int f = 1 - r;
-            int ddF_x = 1;
-            int ddF_y = -2 * r;
+            int ddFx = 1;
+            int ddFy = -2 * r;
             int x = 0;
             int y = r;
-
 
             setPixel(x0, y0 + r, col[0], col[1], col[2]);
             setPixel(x0, y0 - r, col[0], col[1], col[2]);
@@ -453,12 +452,12 @@ public class ColorScroll extends Generator {
             while (x < y) {
                 if (f >= 0) {
                     y--;
-                    ddF_y += 2;
-                    f += ddF_y;
+                    ddFy += 2;
+                    f += ddFy;
                 }
                 x++;
-                ddF_x += 2;
-                f += ddF_x;
+                ddFx += 2;
+                f += ddFx;
                 setPixel(x0 + x, y0 + y, col[0], col[1], col[2]);
                 setPixel(x0 - x, y0 + y, col[0], col[1], col[2]);
                 setPixel(x0 + x, y0 - y, col[0], col[1], col[2]);
@@ -505,8 +504,8 @@ public class ColorScroll extends Generator {
             int[] col = getColor(rRev);
 
             int f = 1 - r;
-            int ddF_x = 1;
-            int ddF_y = -2 * r;
+            int ddFx = 1;
+            int ddFy = -2 * r;
             int x = 0;
             int y = r;
 
@@ -518,12 +517,12 @@ public class ColorScroll extends Generator {
             while (x < y) {
                 if (f >= 0) {
                     y--;
-                    ddF_y += 2;
-                    f += ddF_y;
+                    ddFy += 2;
+                    f += ddFy;
                 }
                 x++;
-                ddF_x += 2;
-                f += ddF_x;
+                ddFx += 2;
+                f += ddFx;
                 setPixel(x0 + x, y0 + y, col[0], col[1], col[2]);
                 setPixel(x0 - x, y0 + y, col[0], col[1], col[2]);
                 setPixel(x0 + x, y0 - y, col[0], col[1], col[2]);

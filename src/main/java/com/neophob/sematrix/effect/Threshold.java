@@ -60,14 +60,25 @@ public class Threshold extends Effect {
     		cg=(short) ((col>>8)&255);
     		cb=(short) ( col&255);
     		
-    		if (cr<this.threshold) cr=0; else cr=255;
-    		if (cg<this.threshold) cg=0; else cg=255;
-    		if (cb<this.threshold) cb=0; else cb=255;
+    		if (cr<this.threshold) {
+    			cr=0; 
+    		} else {
+    			cr=255;
+    		}
+    		if (cg<this.threshold) {
+    			cg=0; 
+    		} else {
+    			cg=255;
+    		}
+    		if (cb<this.threshold) {
+    			cb=0; 
+    		} else {
+    			cb=255;
+    		}
     		
     		ret[i]= (cr << 16) | (cg << 8) | cb;
 		}
 		return ret;
-		//return BoxFilter.applyBoxFilter(0, 1, ret, this.internalBufferXSize);
 	}
 	
 	/* (non-Javadoc)

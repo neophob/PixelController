@@ -48,8 +48,8 @@ public class Voluminizer extends Mixer {
 			return visual.getEffect1Buffer();
 		}
 
-		short cr_s,cg_s,cb_s;
-		short cr_d,cg_d,cb_d;
+		short redSource, greenSource, blueSource;
+		short redDest, greenDest, blueDest;
 		int col;
 
 		Generator gen1 = visual.getGenerator1();		
@@ -60,20 +60,20 @@ public class Voluminizer extends Mixer {
 		float sound = Sound.getInstance().getVolumeNormalized();
 		for (int i=0; i<gen1.internalBuffer.length; i++){
 			col = src1[i];
-    		cr_s=(short) ((col>>16)&255);
-    		cg_s=(short) ((col>>8) &255);
-    		cb_s=(short) ( col     &255);
+    		redSource=(short) ((col>>16)&255);
+    		greenSource=(short) ((col>>8) &255);
+    		blueSource=(short) ( col     &255);
     		
 			col = src2[i];
-    		cr_d=(short) ((col>>16)&255);
-    		cg_d=(short) ((col>>8) &255);
-    		cb_d=(short) ( col     &255);
+    		redDest=(short) ((col>>16)&255);
+    		greenDest=(short) ((col>>8) &255);
+    		blueDest=(short) ( col     &255);
     		
-    		cr_d = (short) (cr_d*sound + ((1.0f-sound)*cr_s) );
-    		cg_d = (short) (cg_d*sound + ((1.0f-sound)*cg_s));
-    		cb_d = (short) (cb_d*sound + ((1.0f-sound)*cb_s));
+    		redDest = (short) (redDest*sound + ((1.0f-sound)*redSource) );
+    		greenDest = (short) (greenDest*sound + ((1.0f-sound)*greenSource));
+    		blueDest = (short) (blueDest*sound + ((1.0f-sound)*blueSource));
     		
-    		dst[i]=(int) ((cr_d << 16) | (cg_d << 8) | cb_d);
+    		dst[i]=(int) ((redDest << 16) | (greenDest << 8) | blueDest);
           }
 	
 		return dst;

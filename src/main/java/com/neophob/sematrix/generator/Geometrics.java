@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -36,6 +38,9 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author michu
  */
 public class Geometrics extends Generator {
+
+	/** The Constant LOG. */
+	private static final Logger LOG = Logger.getLogger(Geometrics.class.getName());
 
 	/** The Constant THICKNESS. */
 	private static final int THICKNESS = 10;
@@ -193,7 +198,8 @@ public class Geometrics extends Generator {
 								internalBuffer[pos]=col;						
 							} catch (Exception e) {
 								//just to be sure...
-								e.printStackTrace();
+								LOG.log(Level.WARNING,
+										"Very bad! {1}", new Object[] { e });
 							}							
 						}
 					}

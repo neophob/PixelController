@@ -151,19 +151,19 @@ public class Cell extends Generator {
 	class Attractor {
 
 		/** The x. */
-		public int x;
+		int x;
 		
 		/** The y. */
-		public int y;
+		int y;
 		
 		/** The dx. */
-		public int dx;
+		int dx;
 		
 		/** The dy. */
-		public int dy;
+		int dy;
 		
 		/** The b. */
-		public int r,g,b;
+		int r,g,b;
 
 		/**
 		 * Instantiates a new attractor.
@@ -189,13 +189,23 @@ public class Cell extends Generator {
 			// move with wrap-around
 			this.x+=this.dx;
 			this.y+=this.dy;
-			if (this.x<0 || this.x>internalBufferXSize/RENDERSIZE) this.dx=-this.dx;
-			if (this.y<0 || this.y>internalBufferYSize/RENDERSIZE) this.dy=-this.dy;
+			if (this.x<0 || this.x>internalBufferXSize/RENDERSIZE) {
+				this.dx=-this.dx;
+			}
+			if (this.y<0 || this.y>internalBufferYSize/RENDERSIZE) {
+				this.dy=-this.dy;
+			}
 
 			int rnd = random.nextInt(111);
-			if (rnd==3) this.r=random.nextInt(255);
-			if (rnd==44) this.g=random.nextInt(255);
-			if (rnd==99) this.b=random.nextInt(255);
+			if (rnd==3) {
+				this.r=random.nextInt(255);
+			}
+			if (rnd==44) {
+				this.g=random.nextInt(255);
+			}
+			if (rnd==99) {
+				this.b=random.nextInt(255);
+			}
 		}
 		
 		/**

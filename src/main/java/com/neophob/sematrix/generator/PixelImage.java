@@ -123,10 +123,14 @@ gelesen von der mitte!
 
 			//resize image from 8x8 to 128x128
 			for (int y=0; y<internalBufferYSize; y++) {
-				if (y%yDiff==0) yofs++;
+				if (y%yDiff==0) {
+					yofs++;
+				}
 				xofs=-1;
 				for (int x=0; x<internalBufferXSize; x++) {
-					if (x%xDiff==0) xofs++;
+					if (x%xDiff==0) {
+						xofs++;
+					}
 					int col = 255*this.grid[xofs][yofs];
 					this.internalBuffer[dst++] = (col << 16) | (col << 8)  | col;
 				}				

@@ -36,6 +36,8 @@ import com.neophob.sematrix.jmx.PixelControllerStatusMBean;
  */
 public final class PixConClientJmx {
 
+	private static final String SUFFIX = "ms";
+	
 	private PixConClientJmx() {
 		// avoid instantiation
 	}
@@ -78,8 +80,7 @@ public final class PixConClientJmx {
 	private static void printJmxStatus(MBeanServerConnection mbsc) throws Exception {
 		ObjectName mbeanName = new ObjectName(PixelControllerStatus.JMX_BEAN_NAME);
 		
-		PixelControllerStatusMBean mbeanProxy = JMX.newMBeanProxy(mbsc, mbeanName, PixelControllerStatusMBean.class, true);
-		final String SUFFIX = "ms";
+		PixelControllerStatusMBean mbeanProxy = JMX.newMBeanProxy(mbsc, mbeanName, PixelControllerStatusMBean.class, true);		
 		
 		System.out.println("\nGeneric:");
 		System.out.println("Server Version:\t" + mbeanProxy.getVersion());

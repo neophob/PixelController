@@ -70,14 +70,18 @@ public class Metaballs extends Generator {
 			f = (float)Math.sin((i+1)*3+5*blobPx[i]);
 			//f = (float)Math.sin((i+1)*3+5*blobPx[i]);
 			f*=3f;
-			if (f<0) f=0-f;
+			if (f<0) {
+				f=0-f;
+			}
 			f+=0.5f;			
 			blobPx[i]+=blobDx[i]*f;
 
 			f = (float)Math.cos(a%256+(i+3)*blobPy[i]);
 //			f = (float)Math.cos(a%256+3*blobPy[i]);
 			f*=3f;
-			if (f<0) f=0-f;
+			if (f<0) {
+				f=0-f;
+			}
 			f+=0.5f;			
 			blobPy[i]+=(int)(blobDy[i]*f);
 
@@ -105,7 +109,9 @@ public class Metaballs extends Generator {
 		}
 
 		a++;
-		if (a>0xffff) a=1;
+		if (a>0xffff) {
+			a=1;
+		}
 
 		for (int y = 0; y < internalBufferYSize; y++) {
 			for (int x = 0; x < internalBufferXSize; x++) {
@@ -117,8 +123,12 @@ public class Metaballs extends Generator {
 				//pg.pixels[x+y*pg.width] = color(0, m+x, (x+m+y)/2);
 				int g = m+x;
 				int b = (x+m+y)/3;
-				if (g>255) g=255;
-				if (b>255) b=255;
+				if (g>255) {
+					g=255;
+				}
+				if (b>255) {
+					b=255;
+				}
 				this.internalBuffer[y*internalBufferXSize+x] = (0 << 16) | (g << 8) | (b);
 			}
 		}

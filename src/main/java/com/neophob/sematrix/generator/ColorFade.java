@@ -64,18 +64,18 @@ public class ColorFade extends Generator {
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         double ratio = (frameCount % colorFadeTime) / (float)colorFadeTime;
         
-        int Rthis = colorMap.get(colornumber).getRed();
-        int Rnext = colorMap.get(nextcolornumber).getRed();
-        int Gthis = colorMap.get(colornumber).getGreen();
-        int Gnext = colorMap.get(nextcolornumber).getGreen();
-        int Bthis = colorMap.get(colornumber).getBlue();
-        int Bnext = colorMap.get(nextcolornumber).getBlue();
+        int rThis = colorMap.get(colornumber).getRed();
+        int rNext = colorMap.get(nextcolornumber).getRed();
+        int gThis = colorMap.get(colornumber).getGreen();
+        int gNext = colorMap.get(nextcolornumber).getGreen();
+        int bThis = colorMap.get(colornumber).getBlue();
+        int bNext = colorMap.get(nextcolornumber).getBlue();
 
-        int R = Rthis - (int) Math.round((Rthis - Rnext) * (ratio));
-        int G = Gthis - (int) Math.round((Gthis - Gnext) * (ratio));
-        int B = Bthis - (int) Math.round((Bthis - Bnext) * (ratio));
+        int r = rThis - (int) Math.round((rThis - rNext) * (ratio));
+        int g = gThis - (int) Math.round((gThis - gNext) * (ratio));
+        int b = bThis - (int) Math.round((bThis - bNext) * (ratio));
         
-        Arrays.fill(this.internalBuffer, (R << 16) | (G << 8) | (B));
+        Arrays.fill(this.internalBuffer, (r << 16) | (g << 8) | b);
     }
 
     /**

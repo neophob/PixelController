@@ -80,13 +80,25 @@ public class Emboss extends Effect {
                     valb += (int)(f * ((val    ) & 255));
                 }      
 
-                if (valr>255) valr = 255;
-                if (valg>255) valg = 255;
-                if (valb>255) valb = 255;
+                if (valr>255) {
+                	valr = 255;
+                }
+                if (valg>255) {
+                	valg = 255;
+                }
+                if (valb>255) {
+                	valb = 255;
+                }
 
-                if (valr<0) valr = 0;
-                if (valg<0) valg = 0;
-                if (valb<0) valb = 0;
+                if (valr<0) {
+                	valr = 0;
+                }
+                if (valg<0) {
+                	valg = 0;
+                }
+                if (valb<0) {
+                	valb = 0;
+                }
 
                 ret[index] = (int)(valr << 16) | (valg << 8) | valb;
                 index++;
