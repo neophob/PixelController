@@ -86,18 +86,13 @@ public class ColorScroll extends Generator {
      *
      * @param controller the controller
      */
-    public ColorScroll(PixelControllerGenerator controller) {
+    public ColorScroll(PixelControllerGenerator controller, List<Integer> colorList) {
         super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
 
         colorMap = new ArrayList<Color>();
-        //put some colors for testing
-        colorMap.add(new Color(255, 128, 128));
-        colorMap.add(new Color(255, 255, 128));
-        colorMap.add(new Color(128, 255, 128));
-        colorMap.add(new Color(128, 255, 255));
-        colorMap.add(new Color(128, 128, 255));
-        colorMap.add(new Color(255, 128, 255));
-
+        for (Integer i: colorList) {
+        	colorMap.add(new Color(i));
+        }
         fade = 30;
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 

@@ -98,4 +98,6 @@ public final class ConfigConstant {
 	public static final String CAPTURE_OFFSET = "screen.capture.offset";
 	
 	public static final String FPS = "fps";
+	
+	public static final String COLORSCROLL_RGBCOLOR = "colorscroll.rgbcolor";
 }

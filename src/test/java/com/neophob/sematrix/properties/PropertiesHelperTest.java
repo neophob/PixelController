@@ -21,6 +21,7 @@ package com.neophob.sematrix.properties;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -178,4 +179,13 @@ public class PropertiesHelperTest {
         assertEquals(LayoutName.BOX, ph.getLayout().getLayoutName());
     }    
 
+    @Test
+    public void testColorScroll() {
+        Properties config = new Properties();
+        config.put(ConfigConstant.COLORSCROLL_RGBCOLOR, "0xff8080, 0xffff00, 0x80ff80, 0xff0080, 0xff0080");
+        PropertiesHelper ph = new PropertiesHelper(config);
+        List<Integer> l = ph.getColorScrollValues();
+        assertEquals(5, l.size());
+        assertEquals(Integer.valueOf(16744576), l.get(0));
+    }
 }
