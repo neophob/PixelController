@@ -226,15 +226,15 @@ public class MD5 {
     
     private native void Transform_native (int[] state, byte buffer[], int shift, int length);
     
-    private void Transform (MD5State state, byte buffer[], int shift, int[] decode_buf) {
+    private void Transform (MD5State state, byte buffer[], int shift, int[] decodeBuf) {
         int
             a = state.state[0],
             b = state.state[1],
             c = state.state[2],
             d = state.state[3],
-            x[] = decode_buf;
+            x[] = decodeBuf;
         
-        Decode(buffer, shift, decode_buf);
+        Decode(buffer, shift, decodeBuf);
         
         /* Round 1 */
         a += ((b & c) | (~b & d)) + x[ 0] + 0xd76aa478; /* 1 */
