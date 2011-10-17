@@ -665,13 +665,13 @@ public class MD5 {
         return native_lib_loaded;
     }
     
-    private static synchronized final void  _initNativeLibrary () {
+    private static synchronized void  _initNativeLibrary () {
         if (!native_lib_init_pending) return;
         native_lib_loaded = _loadNativeLibrary();
         native_lib_init_pending = false;
     }
     
-    private static synchronized final boolean _loadNativeLibrary () {
+    private static synchronized boolean _loadNativeLibrary () {
         try {
             
             // don't try to load if the right property is set
