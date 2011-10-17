@@ -434,14 +434,13 @@ public final class Collector {
 
 		//get output status
 		OutputMapping om = ioMapping.get(currentOutput); 
-		
-		LOG.log(Level.INFO, "currentOutput: {0}, check: {1}, visual: {2} "
-				, new Object[] { currentOutput, om.getVisualId(), om.getVisualId() });
-
-		
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
 		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
 		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+		
+		LOG.log(Level.INFO, "currentOutput: {0}, check: {1}, visual: {2} "
+				, new Object[] { currentOutput, om.getVisualId(), om.getVisualId() });
+		
 		return ret;
 	}
 
@@ -452,22 +451,8 @@ public final class Collector {
 	 * @return the current status
 	 */
 	public List<String> getCurrentStatus() {		
-		List<String> ret = new ArrayList<String>();				
-		
-		//all visuals
-		Visual v = allVisuals.get(currentVisual);
-		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
-		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
-		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
-		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
-		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
-		
-		//get output status
-		OutputMapping om = ioMapping.get(currentOutput); 
-		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
-		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
-		
+		List<String> ret = this.getCurrentMiniStatus();				
+				
 		//add element status
 		ret.addAll(pixelControllerEffect.getCurrentState());
 		ret.addAll(pixelControllerGenerator.getCurrentState());
