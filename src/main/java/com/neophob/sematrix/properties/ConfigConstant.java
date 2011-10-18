@@ -100,4 +100,6 @@ public final class ConfigConstant {
 	public static final String FPS = "fps";
 	
 	public static final String COLORSCROLL_RGBCOLOR = "colorscroll.rgbcolor";
+	
+	public static final String COLORFADE_RGBCOLOR = "colorfade.rgbcolor";
 }

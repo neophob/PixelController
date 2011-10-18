@@ -121,7 +121,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         int captureOffset = ph.parseScreenCaptureOffset();
         new ScreenCapture(this, captureOffset, captureOffset);
         colorScroll = new ColorScroll(this, ph.getColorScrollValues());
-        colorFade = new ColorFade(this);
+        colorFade = new ColorFade(this, ph.getColorFadeValues());
     }
 
     /* (non-Javadoc)

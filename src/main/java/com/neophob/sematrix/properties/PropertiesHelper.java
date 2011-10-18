@@ -641,8 +641,8 @@ public class PropertiesHelper {
      * 
      * @return
      */
-    public List<Integer> getColorScrollValues() {
-    	String rawConfig = config.getProperty(ConfigConstant.COLORSCROLL_RGBCOLOR);
+    private List<Integer> parseRgbColors(String cfg) {
+    	String rawConfig = config.getProperty(cfg);
     	if (rawConfig==null) {
     		return new ArrayList<Integer>();
     	}
@@ -662,6 +662,22 @@ public class PropertiesHelper {
     	}
     	
     	return list;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<Integer> getColorScrollValues() {
+    	return parseRgbColors(ConfigConstant.COLORSCROLL_RGBCOLOR);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<Integer> getColorFadeValues() {
+    	return parseRgbColors(ConfigConstant.COLORFADE_RGBCOLOR);
     }
 
 }

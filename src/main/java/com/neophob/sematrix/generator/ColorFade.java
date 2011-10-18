@@ -42,17 +42,21 @@ public class ColorFade extends Generator {
      *
      * @param controller the controller
      */
-    public ColorFade(PixelControllerGenerator controller) {
+    public ColorFade(PixelControllerGenerator controller, List<Integer> colorList) {
         super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
 
         colorMap = new ArrayList<Color>();
         
-        //put some colors for testing
-        colorMap.add(new Color(0, 0, 128));
-        colorMap.add(new Color(0, 0, 0));
+        for (Integer i: colorList) {
+        	colorMap.add(new Color(i));
+        }
 
+        //add default value if nothing is configured
+        if (colorMap.size()==0) {
+            colorMap.add(new Color(0, 0, 128));
+            colorMap.add(new Color(0, 0, 0));
+        }
         colorFadeTime = 30;
-
         maxFrames = colorMap.size() * colorFadeTime;
     }
 
