@@ -17,7 +17,7 @@ pages = [[
     "x":0, "y":0,
     "width":.2, "height":.45,
     "numberOfSliders" : 2,
-    "min" : 0, "max" : 16,
+    "min" : 0, "max" : 16.9,
     "stroke": "#62627e",
     "color": "#c4c4fc",
 },
@@ -39,7 +39,7 @@ pages = [[
     "width":.2, "height":.40,
     "numberOfSliders" : 2,
     "stroke": "#7e7e62",
-    "min" : 0, "max" : 9,
+    "min" : 0, "max" : 9.9,
     "color": "#fcfcc4",
 },
 {
@@ -60,7 +60,7 @@ pages = [[
     "width":.1, "height":.4,
     "stroke": "#454545",
     "color": "#999999",
-    "min" : 0, "max" : 9,
+    "min" : 0, "max" : 9.9,
     "isXFader" : false,
     "isVertical" : true,
 },
@@ -102,6 +102,17 @@ pages = [[
 },
 
 
+/* Buttons */
+{
+     "name": "myButton",
+     "type": "MultiButton",
+     "x":.65, "y":.5,
+     "width":.2, "height":.4,
+     "rows":4, "columns":2,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",    
+},
 
 /* --- data end --- */
 
