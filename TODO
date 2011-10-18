@@ -2,7 +2,7 @@ TODO PixelController
 --------------------
 -palette/color concept (greyscale, rgb, hsv...), currently we're mixing b/w, rgb and hsv, plus there is a tint effect
 -rewrite output selection/configuration, 
--more generators/effects/mixer...
+-more effects/mixer...
 -move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
 -Log output to a file instead the command line
 -more layouts (what kind of layouts?)
@@ -11,8 +11,6 @@ TODO PixelController
 -add notification if random mode is selected or not
 -create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system
-
--ColorScroll/ColorFader: add options to config file
 
 
 TODO PixelInvaders
