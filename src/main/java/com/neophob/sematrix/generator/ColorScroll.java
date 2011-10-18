@@ -93,6 +93,16 @@ public class ColorScroll extends Generator {
         for (Integer i: colorList) {
         	colorMap.add(new Color(i));
         }
+        
+        //add default value if nothing is configured
+        if (colorMap.size()==0) {
+            colorMap.add(new Color(255, 128, 128));
+            colorMap.add(new Color(255, 255, 128));
+            colorMap.add(new Color(128, 255, 128));
+            colorMap.add(new Color(128, 255, 255));
+            colorMap.add(new Color(128, 128, 255));
+            colorMap.add(new Color(255, 128, 255));
+        }
         fade = 30;
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 
