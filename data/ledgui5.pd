@@ -1,4 +1,4 @@
-#N canvas 415 33 954 558 10;
+#N canvas 318 50 954 558 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -12,7 +12,7 @@
 7 0 10 -260097 -1 -1 1 1;
 #X obj 453 148 tgl 15 0 s_rndsel_out r_rndsel_out Visual 17 7 0 10
 -260097 -1 -1 1 1;
-#N canvas 715 23 565 357 fx 0;
+#N canvas 428 218 565 357 fx 0;
 #X obj 33 0 cnv 15 140 70 empty empty //Threshold 20 12 0 14 -262130
 -66577 0;
 #X floatatom 116 35 5 0 0 0 - - s_threshold;
@@ -20,19 +20,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 1556 1;
+-262144 -1 -1 1106 1;
 #X obj 33 71 cnv 15 140 160 empty empty //Tint 20 12 0 14 -262130 -66577
 0;
-#X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 3100 1;
+#X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -257985
+-258113 -258113 3088 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 3100 1;
+-4034 -4034 3076 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 3100 1;
+-4160 -4160 3076 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -40,7 +40,7 @@
 #X obj 33 221 cnv 15 140 70 empty empty //Rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 1550 1;
+16 64 12 -262144 -33289 -1 2453 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -169,10 +169,10 @@
 #X coords 0 -1 1 1 205 100 1 50 50;
 #X restore 350 287 pd random;
 #X obj 65 -4 hradio 22 1 0 5 s_current_visual r_current_visual current_visual
-6 -8 0 12 -258113 -86277 -1 0;
+6 -8 0 12 -258113 -86277 -1 4;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
-#N canvas 327 22 953 523 network 0;
+#N canvas 327 22 953 523 network 1;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
 #X obj 28 150 s r_gen1;
@@ -551,81 +551,81 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X obj 45 239 cnv 15 200 60 empty empty OSC_processing 20 12 0 14 -260097
 -66577 0;
 #N canvas 114 65 925 608 osc 1;
-#X obj -161 39 unpackOSC;
-#X obj -161 8 udpreceive 4443;
-#X floatatom -91 65 3 0 0 0 - - -;
-#X floatatom -64 65 3 0 0 0 - - -;
-#X floatatom -37 65 3 0 0 0 - - -;
-#X floatatom -10 65 3 0 0 0 - - -;
-#X text -134 64 from;
-#X floatatom 18 65 5 0 0 0 - - -;
-#X obj -91 39 unpack 0 0 0 0 0;
-#X obj 18 91 > 0;
-#X floatatom 18 119 5 0 0 0 - - -;
-#X obj 18 171 outlet;
-#X obj -131 117 print;
-#X obj -161 220 routeOSC /knobR /knobG /knobB;
-#X obj -47 252 * 255;
-#X obj -7 252 int;
-#X obj -47 274 s r_tint_b;
-#X obj -161 252 * 255;
-#X obj -121 252 int;
-#X obj -161 274 s r_tint_r;
-#X obj -104 302 * 255;
-#X obj -64 302 int;
-#X obj -104 324 s r_tint_g;
-#X obj 75 270 routeOSC /0 /1;
-#X floatatom 75 319 5 0 0 0 - - -;
-#X obj 195 270 routeOSC /0 /1;
-#X obj 75 294 int;
-#X obj 59 343 s r_gen1;
-#X floatatom 122 319 5 0 0 0 - - -;
-#X obj 122 294 int;
-#X obj 122 343 s r_gen_b1;
-#X obj 75 220 routeOSC /SliderGen /SliderEffect /SliderMix;
-#X floatatom 213 319 5 0 0 0 - - -;
-#X obj 213 294 int;
-#X floatatom 260 319 5 0 0 0 - - -;
-#X obj 260 294 int;
-#X obj 260 343 s r_fx_b1;
-#X obj 197 343 s r_fx1;
-#X floatatom 330 289 5 0 0 0 - - -;
-#X obj 330 264 int;
-#X obj 330 313 s r_mix1;
-#X obj 436 346 s r_rnd_on;
-#X floatatom 436 269 5 0 0 0 - - -;
-#X obj 436 245 int;
-#X obj 441 322 s r_rnd_off;
-#X obj 436 298 moses 1;
-#X obj 436 221 routeOSC /randomToggleButton /activateTintButton;
-#X obj 578 245 int;
-#X obj 578 268 moses 1;
-#X obj 578 324 s r_output_fx_all;
-#X msg 578 293 6;
-#X obj -164 451 int;
-#X obj -164 474 moses 1;
-#X obj -164 500 s r_rnd_do;
-#X obj -63 451 int;
-#X obj -63 474 moses 1;
-#X obj -63 500 s r_rnd_pres;
-#X obj -164 389 routeOSC /fireRandomButton /fireRandomPresentButton
+#X obj -156 39 unpackOSC;
+#X obj -156 8 udpreceive 4443;
+#X floatatom -86 65 3 0 0 0 - - -;
+#X floatatom -59 65 3 0 0 0 - - -;
+#X floatatom -32 65 3 0 0 0 - - -;
+#X floatatom -5 65 3 0 0 0 - - -;
+#X text -129 64 from;
+#X floatatom 23 65 5 0 0 0 - - -;
+#X obj -86 39 unpack 0 0 0 0 0;
+#X obj 23 91 > 0;
+#X floatatom 23 119 5 0 0 0 - - -;
+#X obj 23 171 outlet;
+#X obj -126 117 print;
+#X obj -156 220 routeOSC /knobR /knobG /knobB;
+#X obj -42 252 * 255;
+#X obj -2 252 int;
+#X obj -42 274 s r_tint_b;
+#X obj -156 252 * 255;
+#X obj -116 252 int;
+#X obj -156 274 s r_tint_r;
+#X obj -99 302 * 255;
+#X obj -59 302 int;
+#X obj -99 324 s r_tint_g;
+#X obj 80 270 routeOSC /0 /1;
+#X floatatom 80 319 5 0 0 0 - - -;
+#X obj 200 270 routeOSC /0 /1;
+#X obj 80 294 int;
+#X obj 64 343 s r_gen1;
+#X floatatom 127 319 5 0 0 0 - - -;
+#X obj 127 294 int;
+#X obj 127 343 s r_gen_b1;
+#X obj 80 220 routeOSC /SliderGen /SliderEffect /SliderMix;
+#X floatatom 218 319 5 0 0 0 - - -;
+#X obj 218 294 int;
+#X floatatom 265 319 5 0 0 0 - - -;
+#X obj 265 294 int;
+#X obj 265 343 s r_fx_b1;
+#X obj 202 343 s r_fx1;
+#X floatatom 335 289 5 0 0 0 - - -;
+#X obj 335 264 int;
+#X obj 335 313 s r_mix1;
+#X obj 441 346 s r_rnd_on;
+#X floatatom 441 269 5 0 0 0 - - -;
+#X obj 441 245 int;
+#X obj 446 322 s r_rnd_off;
+#X obj 441 298 moses 1;
+#X obj 441 221 routeOSC /randomToggleButton /activateTintButton;
+#X obj 583 245 int;
+#X obj 583 268 moses 1;
+#X obj 583 324 s r_output_fx_all;
+#X msg 583 293 6;
+#X obj -159 451 int;
+#X obj -159 474 moses 1;
+#X obj -159 500 s r_rnd_do;
+#X obj -58 451 int;
+#X obj -58 474 moses 1;
+#X obj -58 500 s r_rnd_pres;
+#X obj -159 389 routeOSC /fireRandomButton /fireRandomPresentButton
 /VisualNr;
-#X obj 38 451 int;
-#X floatatom 38 477 5 0 0 0 - - -;
-#X obj 38 523 spigot;
-#X floatatom 88 477 5 0 0 0 - - -;
-#X obj 71 501 !=;
-#X obj 38 548 s r_current_visual;
-#X obj 633 9 import mrpeach;
-#X obj 196 451 int;
-#X obj 196 474 moses 1;
-#X obj 314 421 int;
-#X obj 314 444 moses 1;
-#X obj 196 391 routeOSC /visualOneToAll /visualTwoToAll;
-#X msg 196 497 0;
-#X obj 196 520 s r_output_visual_all;
-#X obj 314 491 s r_output_visual_all;
-#X msg 314 468 1;
+#X obj 43 451 int;
+#X floatatom 43 477 5 0 0 0 - - -;
+#X obj 43 523 spigot;
+#X floatatom 93 477 5 0 0 0 - - -;
+#X obj 76 501 !=;
+#X obj 43 548 s r_current_visual;
+#X obj 638 9 import mrpeach;
+#X obj 201 451 int;
+#X obj 201 474 moses 1;
+#X obj 319 421 int;
+#X obj 319 444 moses 1;
+#X obj 201 391 routeOSC /visualOneToAll /visualTwoToAll;
+#X msg 201 497 0;
+#X obj 201 520 s r_output_visual_all;
+#X obj 319 491 s r_output_visual_all;
+#X msg 319 468 1;
 #X connect 0 0 12 0;
 #X connect 0 0 13 0;
 #X connect 1 0 8 0;
@@ -731,7 +731,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 205 110 1 50 50;
 #X restore 350 173 pd network;
 #X obj -187 9 vradio 15 1 0 17 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
--1 -1 10;
+-1 -1 9;
 #X text -170 7 Off;
 #X text -170 23 Blinken;
 #X text -170 38 Image;
@@ -747,9 +747,9 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text -169 218 Drops;
 #X text -170 158 Image Zoomer;
 #X obj -73 9 vradio 15 1 0 17 s_gen_b1 r_gen_b1 Generator2 0 -8 0 12
--203904 -1 -1 0;
+-203904 -1 -1 11;
 #X obj -186 302 vradio 15 1 0 10 s_fx1 r_fx1 Effect1 0 -8 0 12 -262130
--1 -1 0;
+-1 -1 7;
 #X text -166 300 Off;
 #X text -167 317 Inverter;
 #X text -166 331 Rotozoom;
@@ -761,7 +761,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text -165 420 Emboss;
 #X text -165 436 Zoom;
 #X obj -74 302 vradio 15 1 0 10 s_fx_b1 r_fx_b1 Effect2 0 -8 0 12 -262130
--1 -1 0;
+-1 -1 4;
 #N canvas 401 146 727 402 presentStuff 0;
 #X obj 491 105 r s_save_preset;
 #X msg 491 70 send LOAD_PRESENT;
@@ -798,7 +798,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 400 60 1 50 50;
 #X restore -198 461 pd presentStuff;
 #X obj 65 302 vradio 15 1 0 10 s_mix1 r_mix1 Mixer 0 -8 0 12 -99865
--1 -1 0;
+-1 -1 7;
 #X text -55 7 Off;
 #X text -55 23 Blinken;
 #X text -55 38 Image;
@@ -1704,7 +1704,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X restore 19 22 pd xypad;
 #X restore 94 211 pd pad;
 #X obj 216 13 vradio 15 1 0 10 s_fx_output1 r_fx_output1 Effect 0 -8
-0 12 -262130 -1 -1 0;
+0 12 -262130 -1 -1 6;
 #X text 237 11 Off;
 #X text 236 27 Inverter;
 #X text 237 42 Rotozoom;
