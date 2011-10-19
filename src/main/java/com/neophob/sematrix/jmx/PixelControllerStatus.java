@@ -19,7 +19,9 @@
 package com.neophob.sematrix.jmx;
 
 import java.lang.management.ManagementFactory;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,34 +40,42 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
-
+	
 	public static final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
 	private static final float VERSION = 1.04f;
+	private static final int SECONDS = 10;
+	private static long COOL_DOWN_TIMESTAMP = System.currentTimeMillis();
+	private static final int COOL_DOWN_MILLISECONDS = 3000;
 	
 	private int configuredFps;
 	private float currentFps;
 	private long frameCount;
 	private long startTime;
 	
-	private CircularFifoBuffer generatorUpdateTime;
-	private CircularFifoBuffer effectUpdateTime;
-	private CircularFifoBuffer outputUpdateTime;
-	private CircularFifoBuffer faderUpdateTime;
-	private CircularFifoBuffer internalWindowUpdateTime;	
+	private Map<BufferEnum, CircularFifoBuffer> buffers;
+	
+	private enum BufferEnum {
+		GENERATOR,
+		EFFECT,
+		OUTPUT,
+		FADER,
+		INTERNAL_WINDOW;
+	}
 	
 	/**
 	 * Register the JMX Bean
 	 */
-	public PixelControllerStatus(int fps) {
+	public PixelControllerStatus(int configuredFps) {
 		LOG.log(Level.INFO, "Initialize the PixelControllerStatus JMX Bean");
 		
-		this.configuredFps = fps;
-		generatorUpdateTime = new CircularFifoBuffer(fps);
-		effectUpdateTime = new CircularFifoBuffer(fps);
-		outputUpdateTime = new CircularFifoBuffer(fps);
-		faderUpdateTime = new CircularFifoBuffer(fps);
-		internalWindowUpdateTime = new CircularFifoBuffer(fps);
+		this.configuredFps = configuredFps;
+		
+		// initialize all buffers 
+		this.buffers = new HashMap<BufferEnum, CircularFifoBuffer>();
+		for (BufferEnum bufferenum : BufferEnum.values()) {
+			this.buffers.put(bufferenum, new CircularFifoBuffer(this.configuredFps * SECONDS));
+		}
 		startTime = System.currentTimeMillis();
 		
 		// register MBean
@@ -91,50 +101,39 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		return currentFps;
 	}
 
-	/**
-	 * sum up all existing entries (May represent the last hour)
-	 * @param it
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	private float sumUp(Iterator it) {
-		float sum = 0;
-		while (it.hasNext()) {
-			float entry = (Float) it.next();
-			sum += entry;
-		}
-		return sum;
+	@Override
+	public float getConfiguredFps() {
+		return this.configuredFps;
 	}
-
+	
+	@Override
+	public long getRecordedMilliSeconds() {
+		return Float.valueOf(((this.configuredFps * SECONDS) / this.currentFps) * 1000).longValue();
+	}
 
 	@Override
 	public float getGeneratorUpdateTime() {
-		float total = sumUp(generatorUpdateTime.iterator());
-		return total/configuredFps;
+		return this.getBufferValue(BufferEnum.GENERATOR);
 	}
 
 	@Override
 	public float getEffectUpdateTime() {
-		float total = sumUp(effectUpdateTime.iterator());
-		return total/configuredFps;
+		return this.getBufferValue(BufferEnum.EFFECT);
 	}
 
 	@Override
 	public float getOutputUpdateTime() {
-		float total = sumUp(outputUpdateTime.iterator());
-		return total/configuredFps;
+		return this.getBufferValue(BufferEnum.OUTPUT);
 	}
 
 	@Override
 	public float getFaderUpdateTime() {
-		float total = sumUp(faderUpdateTime.iterator());
-		return total/configuredFps;
+		return this.getBufferValue(BufferEnum.FADER);
 	}
 
 	@Override
 	public float getInternalWindowUpdateTime() {
-		float total = sumUp(internalWindowUpdateTime.iterator());
-		return total/configuredFps;
+		return this.getBufferValue(BufferEnum.INTERNAL_WINDOW);
 	}
 
 	@Override
@@ -146,7 +145,6 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	public long getStartTime() {
 		return startTime;
 	}
-
 	
 	public void setCurrentFps(float currentFps) {
 		this.currentFps = currentFps;
@@ -156,25 +154,65 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.frameCount = frameCount;
 	}
 
-	public void addGeneratorUpdateTime(float generatorUpdateTime) {
-		this.generatorUpdateTime.add(generatorUpdateTime);
+	public void addGeneratorUpdateTime(long generatorUpdateTime) {
+		if (!ignoreValue()) {
+			this.buffers.get(BufferEnum.GENERATOR).add(generatorUpdateTime);
+		}
 	}
 
-	public void addEffectUpdateTime(float effectUpdateTime) {
-		this.effectUpdateTime.add(effectUpdateTime);
+	public void addEffectUpdateTime(long effectUpdateTime) {
+		if (!ignoreValue()) {
+			this.buffers.get(BufferEnum.EFFECT).add(effectUpdateTime);
+		}
 	}
 
-	public void addOutputUpdateTime(float outputUpdateTime) {
-		this.outputUpdateTime.add(outputUpdateTime);
+	public void addOutputUpdateTime(long outputUpdateTime) {
+		if (!ignoreValue()) {
+			this.buffers.get(BufferEnum.OUTPUT).add(outputUpdateTime);
+		}
 	}
 
-	public void addFaderUpdateTime(float faderUpdateTime) {
-		this.faderUpdateTime.add(faderUpdateTime);
+	public void addFaderUpdateTime(long faderUpdateTime) {
+		if (!ignoreValue()) {
+			this.buffers.get(BufferEnum.FADER).add(faderUpdateTime);
+		}
 	}
 
-	public void addInternalWindowUpdateTime(float udateTime) {
-		this.internalWindowUpdateTime.add(udateTime);
+	public void addInternalWindowUpdateTime(long udateTime) {
+		if (!ignoreValue()) {
+			this.buffers.get(BufferEnum.INTERNAL_WINDOW).add(udateTime);
+		}
 	}
-	
-	
+
+	/**
+	 * @param bufferEnum the buffer for that you want to get the average value
+	 * @return returns average value of all buffer entries
+	 */
+	private float getBufferValue(BufferEnum bufferEnum) {
+		CircularFifoBuffer buffer = this.buffers.get(bufferEnum);
+		// calculate sum of all buffer values
+		float bufferSum = 0f;
+		@SuppressWarnings("rawtypes")
+		Iterator iterator = buffer.iterator();
+		while (iterator.hasNext()) {
+			bufferSum += (Long) iterator.next();
+		}
+		// return average value
+		float result = bufferSum / buffer.size();
+		if (Float.isNaN(result)) {
+			result = 0f;
+		}
+		return result;
+	}
+
+	private boolean ignoreValue() {
+		if (COOL_DOWN_TIMESTAMP != -1) {
+			if (System.currentTimeMillis() - COOL_DOWN_TIMESTAMP > (COOL_DOWN_MILLISECONDS)) {
+				COOL_DOWN_TIMESTAMP = -1;
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
 }

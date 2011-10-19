@@ -18,12 +18,17 @@
  */
 package com.neophob.sematrix.cli;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import javax.management.JMX;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
+
+import org.apache.commons.lang.time.DurationFormatUtils;
 
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.PixelControllerStatusMBean;
@@ -35,6 +40,9 @@ import com.neophob.sematrix.jmx.PixelControllerStatusMBean;
  *
  */
 public final class PixConClientJmx {
+	private static final NumberFormat PERCENT_FORMAT = DecimalFormat.getPercentInstance();
+	private static final NumberFormat NUMBER_FORMAT = DecimalFormat.getNumberInstance();
+
 
 	private static final String SUFFIX = "ms";
 	
@@ -60,7 +68,7 @@ public final class PixConClientJmx {
 			jmxc = JMXConnectorFactory.connect(url, null);
 
 			System.out.println("Get an MBeanServerConnection...");
-			MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();        
+			MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();
 			printJmxStatus(mbsc);
 			
 			System.out.println("\nClose the connection to the server");
@@ -84,15 +92,15 @@ public final class PixConClientJmx {
 		
 		System.out.println("\nGeneric:");
 		System.out.println("Server Version:\t" + mbeanProxy.getVersion());
-		System.out.println("Current FPS:\t" + mbeanProxy.getCurrentFps());
+		System.out.println("Current FPS:\t" + NUMBER_FORMAT.format(mbeanProxy.getCurrentFps()) + " (" + PERCENT_FORMAT.format(mbeanProxy.getCurrentFps() / mbeanProxy.getConfiguredFps()) + " of configured FPS: " + NUMBER_FORMAT.format(mbeanProxy.getConfiguredFps()) + ")");
 		System.out.println("Frame count:\t" + mbeanProxy.getFrameCount());
 		
-		System.out.println("\nUpdate Time during the last 10s:");
-		System.out.println("Generator: \t" + mbeanProxy.getGeneratorUpdateTime()+SUFFIX);
-		System.out.println("Effect:    \t" + mbeanProxy.getEffectUpdateTime()+SUFFIX);
-		System.out.println("Output:    \t" + mbeanProxy.getOutputUpdateTime()+SUFFIX);
-		System.out.println("Fader:     \t" + mbeanProxy.getFaderUpdateTime()+SUFFIX);
-		System.out.println("Dbg Window:\t" + mbeanProxy.getInternalWindowUpdateTime()+SUFFIX);
+		System.out.println("\nAverage update times collected during the last " + DurationFormatUtils.formatDuration(mbeanProxy.getRecordedMilliSeconds(), "ss:SSS") + " seconds:");
+		System.out.println("Generator: \t" + NUMBER_FORMAT.format(mbeanProxy.getGeneratorUpdateTime())+SUFFIX);
+		System.out.println("Effect:    \t" + NUMBER_FORMAT.format(mbeanProxy.getEffectUpdateTime())+SUFFIX);
+		System.out.println("Output:    \t" + NUMBER_FORMAT.format(mbeanProxy.getOutputUpdateTime())+SUFFIX);
+		System.out.println("Fader:     \t" + NUMBER_FORMAT.format(mbeanProxy.getFaderUpdateTime())+SUFFIX);
+		System.out.println("Dbg Window:\t" + NUMBER_FORMAT.format(mbeanProxy.getInternalWindowUpdateTime())+SUFFIX);
 		
 		long runTime = System.currentTimeMillis() - mbeanProxy.getStartTime();
 		runTime /= 60000;
