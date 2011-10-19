@@ -15,9 +15,13 @@ generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaba
 effectnames=["Off", "Inverter", "Rotozoom", "BeatS H", "BeatS V", "Volumn", "Tint", "Threshold", "Emboss", "Zoom"]
 mixernames=["Off", "AddSat", "Multiply", "Mix", "Neg", "Checkboard", "Multiply", "Xor", "MinusHalf", "Either"]
 
-pages = [[
+buttonNames=["one", "two", "tree", "four"]
 
-/* --- data start --- */
+
+
+pages = [
+/********** PAGE 1 *************/
+[
 
 /* Generator slider */
 {
@@ -29,14 +33,14 @@ pages = [[
     "min" : 0, "max" : 16.9,
     "stroke": "#62627e",
     "color": "#c4c4fc",
-    "onvaluechange" : "infoGen.changeValue( 'Generator: '+generatornames[ Math.floor(SliderGen.children[0].value) ] +'/'+ generatornames[ Math.floor(SliderGen.children[1].value) ] );"    
+    "onvaluechange" : "infoGen.changeValue( 'Generator: '+generatornames[ Math.floor(SliderGen.children[0].value) ] +'/'+ generatornames[ Math.floor(SliderGen.children[1].value) ] );", 
 },
 {
     "name": "infoGen",
     "type": "Label",
     "x": .0, "y": .45,
     "width": .5, "height": .05,
-    "value": "Generator: 0/0",
+    "value": "Generator: --",
     "verticalCenter": false,
     "align": "left",
 },
@@ -51,14 +55,14 @@ pages = [[
     "stroke": "#7e7e62",
     "min" : 0, "max" : 9.9,
     "color": "#fcfcc4",
-    "onvaluechange" : "infoEffect.changeValue( 'Effect: '+ effectnames[ Math.floor(SliderEffect.children[0].value) ] +'/'+ effectnames[ Math.floor(SliderEffect.children[1].value) ] );"
+    "onvaluechange" : "infoEffect.changeValue( 'Effect: '+ effectnames[ Math.floor(SliderEffect.children[0].value) ] +'/'+ effectnames[ Math.floor(SliderEffect.children[1].value) ] );",
 },
 {
     "name": "infoEffect",
     "type": "Label",
     "x": .0, "y": .9,
     "width": .25, "height": .1,
-    "value": "Effect: 0/0",
+    "value": "Effect: --",
     "verticalCenter": false,
     "align": "left",
 },
@@ -71,17 +75,17 @@ pages = [[
     "width":.1, "height":.4,
     "stroke": "#454545",
     "color": "#999999",
-    "min" : 0, "max" : 9.9,
+    "min": 0, "max": 9.9,
     "isXFader" : false,
     "isVertical" : true,
-    "onvaluechange" : "infoMix.changeValue( 'Mixer: '+mixernames[Math.floor(this.value)] );"
+    "onvaluechange": "infoMix.changeValue( 'Mixer: '+mixernames[Math.floor(this.value)] );",
 },
 {
     "name": "infoMix",
     "type": "Label",
     "x": .25, "y": .9,
     "width": .25, "height": .1,
-    "value": "Mixer: C",
+    "value": "Mixer: --",
     "verticalCenter": false,
     "align": "left",
 },
@@ -109,7 +113,8 @@ pages = [[
     "x":0.8, "y":0,
     "radius":.145,
     "color": "#0000ff",
-    "stroke": "#000088",    
+    "stroke": "#000088",   
+         "label": "AAaaaaaaaa", 
 },
 /* -- Activate Tint Effect on all Outputs Button */
 {
@@ -120,6 +125,7 @@ pages = [[
      "mode": "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
+     "label": "ACTIVATE TINT FX",
 },
 
 
@@ -136,13 +142,14 @@ pages = [[
 },
 /* -- Random Button */
 {
-     "name": "randomButton",
+     "name": "randomToggleButton",
      "type": "Button",
      "x": 0.75, "y": .5,
      "width": .1, "height": .1,
      "mode": "toggle",
      "color": "#fc8000",
-     "stroke": "#7e4000",     
+     "stroke": "#7e4000",
+     "label": "RANDOM",     
 },
 /* -- Refresh Button */
 {
@@ -154,8 +161,11 @@ pages = [[
      "color": "#fc8000",
      "stroke": "#7e4000",
      "ontouchstart": "interfaceManager.refreshInterface()",
+     "label": "REFRESH GUI",
 },
-/* --- data end --- */
 
 ]
+
+/********** PAGE 2 *************/
+
 ];
