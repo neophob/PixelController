@@ -36,6 +36,12 @@ public interface PixelControllerStatusMBean {
 	 * @return current frames per second
 	 */
 	float getCurrentFps();
+	
+	/**
+	 * configured frames per second
+	 * @return
+	 */
+	float getConfiguredFps();
 
 	/**
 	 * How many frames we displayed?
@@ -78,4 +84,9 @@ public interface PixelControllerStatusMBean {
 	 * @return time in ms
 	 */
 	long getStartTime();
+	
+	/**
+	 * @return the number of milliseconds from that the average values will be calculated
+	 */
+	long getRecordedMilliSeconds();
 }
