@@ -24,7 +24,7 @@ pages = [
     "name":"SliderGen",
     "type":"MultiSlider",
     "x":0, "y":0,
-    "width":.2, "height":.45,
+    "width":.15, "height":.45,
     "numberOfSliders" : 2,
     "min" : 0, "max" : 16.9,
     "stroke": "#62627e",
@@ -35,18 +35,42 @@ pages = [
     "name": "infoGen",
     "type": "Label",
     "x": .0, "y": .45,
-    "width": .5, "height": .05,
+    "width": .25, "height": .05,
     "value": "Generator: --",
     "verticalCenter": false,
     "align": "left",
 },
+
+/* Visual NR slider */
+{
+    "name":"VisualNr",
+    "type":"Slider",
+    "x":0.25, "y":0,
+    "width":.075, "height":.45,
+    "stroke": "#454545",
+    "color": "#999999",
+    "min": 0, "max": 4.9,
+    "isXFader" : false,
+    "isVertical" : true,
+    "onvaluechange": "infoVisual.changeValue( 'Visual: '+ Math.floor(this.value) );",
+},
+{
+    "name": "infoVisual",
+    "type": "Label",
+    "x": .25, "y": .45,
+    "width": .25, "height": .1,
+    "value": "Visual: --",
+    "verticalCenter": false,
+    "align": "left",
+},
+
 
 /* Effect slider */
 {
     "name":"SliderEffect",
     "type":"MultiSlider",
     "x":0, "y":0.5,
-    "width":.2, "height":.40,
+    "width":.15, "height":.40,
     "numberOfSliders" : 2,
     "stroke": "#7e7e62",
     "min" : 0, "max" : 9.9,
@@ -68,7 +92,7 @@ pages = [
     "name":"SliderMix",
     "type":"Slider",
     "x":0.25, "y":0.5,
-    "width":.1, "height":.4,
+    "width":.075, "height":.4,
     "stroke": "#454545",
     "color": "#999999",
     "min": 0, "max": 9.9,
@@ -110,7 +134,6 @@ pages = [
     "radius":.145,
     "color": "#0000ff",
     "stroke": "#000088",   
-         "label": "AAaaaaaaaa", 
 },
 /* -- Activate Tint Effect on all Outputs Button */
 {
@@ -122,6 +145,7 @@ pages = [
      "color": "#fc8000",
      "stroke": "#7e4000",
      "label": "ACTIVATE TINT FX",
+     "oninit": "activateTintButton.fillDiv.style.borderWidth = '2px';",
 },
 
 /* -- RANDOM MODE Button */
@@ -133,7 +157,8 @@ pages = [
      "mode": "toggle",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "label": "RANDOM MODE",     
+     "label": "RANDOM MODE",
+     "oninit": "randomToggleButton.fillDiv.style.borderWidth = '2px';",          
 },
 /* -- RANDOM Buttons */
 {
@@ -144,7 +169,8 @@ pages = [
      "mode": "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "label": "RANDOM",     
+     "label": "RANDOM",
+     "oninit": "fireRandomButton.fillDiv.style.borderWidth = '2px';",     
 },
 /* -- RANDOM PRESENT Buttons */
 {
@@ -155,13 +181,38 @@ pages = [
      "mode": "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "label": "RND PRESENT",     
+     "label": "RND PRESENT", 
+	 "oninit": "fireRandomPresentButton.fillDiv.style.borderWidth = '2px';",    
+},
+/* -- Visual 1 to ALL OUTPUTS Button */
+{
+     "name": "visualOneToAll",
+     "type": "Button",
+     "x": .65, "y": .5,
+     "width": .15, "height": .1,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "VISUAL 1 TO ALL PANELS",
+	 "oninit": "visualOneToAll.fillDiv.style.borderWidth = '2px';",     
+},
+/* -- Visual 2 to ALL OUTPUTS Button */
+{
+     "name": "visualTwoToAll",
+     "type": "Button",
+     "x": .65, "y": .6,
+     "width": .15, "height": .1,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "VISUAL 2 TO ALL PANELS", 
+	 "oninit": "visualTwoToAll.fillDiv.style.borderWidth = '2px';",
 },
 /* -- Refresh GUI Button */
 {
      "name": "refreshButton",
      "type": "Button",
-     "x": 0.9, "y": .8,
+     "x": 0.88, "y": .8,
      "width": .1, "height": .1,
      "mode": "momentary",
      "color": "#fc8000",
@@ -169,6 +220,7 @@ pages = [
      "ontouchstart": "interfaceManager.refreshInterface()",
      "label": "REFRESH GUI",
 },
+
 
 ]
 
