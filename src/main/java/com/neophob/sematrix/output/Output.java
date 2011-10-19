@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.output;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,8 +51,14 @@ public abstract class Output {
 	/** The layout. */
 	protected Layout layout;
 	
+	protected Collector collector;
+	
 	/** *bit per pixel */
 	protected int bpp;
+	
+	private Map<Integer, int[]> currentBufferMap;
+	private Map<Integer, int[]> preparedBufferMap;
+	
 	/**
 	 * Instantiates a new output.
 	 *
@@ -60,10 +68,14 @@ public abstract class Output {
 	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
 		this.name = name;
 				
-		this.matrixData = Collector.getInstance().getMatrix();
+		this.collector = Collector.getInstance();
+		this.matrixData = this.collector.getMatrix();
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
-
+		
+		this.currentBufferMap = new HashMap<Integer, int[]>();
+		this.preparedBufferMap = new HashMap<Integer, int[]>();
+		
 		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
 				, new Object[] { this.name, layout.getLayoutName(), this.bpp });
 	
@@ -88,17 +100,32 @@ public abstract class Output {
 	 * @return the buffer for screen
 	 */
 	public int[] getBufferForScreen(int screenNr) {
-		Collector c = Collector.getInstance();
-		LayoutModel lm = layout.getDataForScreen(screenNr);
-		OutputMapping map = c.getOutputMappings(screenNr);
-		
-		if (lm.screenDoesNotNeedStretching()) {
-			Visual v = c.getVisual(lm.getFxInput());
-			return matrixData.getScreenBufferForDevice(v, map);
-		} else {
-			Visual v = c.getVisual(lm.getFxInput());
-			return matrixData.getScreenBufferForDevice(v, lm, map);
+		return this.currentBufferMap.get(screenNr);
+	}
+	
+	// fill the the preparedBufferMap instance with int[] buffers for all screens
+	public void prepare() {
+		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
+			LayoutModel lm = this.layout.getDataForScreen(screen);
+			OutputMapping map = this.collector.getOutputMappings(screen);
+			int[] buffer;
+			if (lm.screenDoesNotNeedStretching()) {
+				Visual v = this.collector.getVisual(lm.getFxInput());
+				buffer = this.matrixData.getScreenBufferForDevice(v, map);
+			} else {
+				Visual v = this.collector.getVisual(lm.getFxInput());
+				buffer = this.matrixData.getScreenBufferForDevice(v, lm, map);
+			}
+			this.preparedBufferMap.put(Integer.valueOf(screen), buffer);
 		}
+	}
+
+	// switch currentBufferMap <-> preparedBufferMap instances
+	public void switchBuffers() {
+		Map<Integer, int[]> currentMap = this.currentBufferMap;
+		this.currentBufferMap = this.preparedBufferMap;
+		this.preparedBufferMap = currentMap;
+		this.preparedBufferMap.clear();
 	}
 	
 	/* (non-Javadoc)
@@ -122,7 +149,4 @@ public abstract class Output {
 	public int getBpp() {
 		return bpp;
 	}
-
-
-	
 }

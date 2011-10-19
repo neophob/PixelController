@@ -59,9 +59,6 @@ public class MatrixData {
 	/** The device size. */
 	private int deviceSize;
 	
-	/** The tmp image. */
-	private PImage tmpImage;
-
 	/**
 	 * init matrix data.
 	 *
@@ -148,10 +145,7 @@ public class MatrixData {
 		int yStart=lm.getyStart(getBufferYSize());
 		int yWidth=lm.getyWidth(getBufferYSize());
 		
-		//lazy creation of the pimage
-		if (tmpImage==null || tmpImage.width != getBufferXSize()) {
-			tmpImage = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );			
-		} 
+		PImage tmpImage = Collector.getInstance().getPapplet().createImage( getBufferXSize(), getBufferYSize(), PApplet.RGB );			
 		tmpImage.loadPixels();
 		System.arraycopy(buffer, 0, tmpImage.pixels, 0, getBufferXSize()*getBufferYSize());
 
@@ -164,9 +158,6 @@ public class MatrixData {
 
 		return resizeBufferForDevice(bfr2, visual.getResizeOption(), deviceXSize, deviceYSize);
 	}
-
-	
-	
 
 	/**
 	 * resize internal buffer to output size.
