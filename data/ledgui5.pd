@@ -1,4 +1,4 @@
-#N canvas 326 187 954 558 10;
+#N canvas 415 33 954 558 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -24,15 +24,15 @@
 #X obj 33 71 cnv 15 140 160 empty empty //Tint 20 12 0 14 -262130 -66577
 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -262144
--33289 -1 3100 1;
+-33289 -1 2164 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--33289 -1 2334 1;
+-33289 -1 2310 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--33289 -1 3100 1;
+-33289 -1 669 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -57,7 +57,7 @@
 #X connect 19 0 18 0;
 #X coords 0 -1 1 1 140 290 1 33 0;
 #X restore 205 172 pd fx;
-#N canvas 182 223 1173 604 random 0;
+#N canvas 527 374 1173 604 random 0;
 #X msg 480 60 send RANDOM ON;
 #X msg 480 87 send RANDOM OFF;
 #X msg 480 36 send RANDOMIZE;
@@ -172,7 +172,7 @@
 6 -8 0 12 -258113 -86277 -1 0;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
-#N canvas 32 182 953 523 network 1;
+#N canvas 409 22 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
 #X obj 28 150 s r_gen1;
@@ -550,7 +550,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X floatatom 195 120 5 0 0 3 osc_client - -;
 #X obj 45 239 cnv 15 200 60 empty empty OSC_processing 20 12 0 14 -260097
 -66577 0;
-#N canvas 90 90 986 527 osc 1;
+#N canvas 100 90 1049 647 osc 0;
 #X obj -174 6 import mrpeach;
 #X obj -141 119 unpackOSC;
 #X obj -141 88 udpreceive 4443;
@@ -628,6 +628,14 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X obj 598 348 moses 1;
 #X obj 598 404 s r_output_fx_all;
 #X msg 598 373 6;
+#X obj -144 469 routeOSC /fireRandomButton /fireRandomPresentButton
+;
+#X obj -144 501 int;
+#X obj -144 524 moses 1;
+#X obj -144 550 s r_rnd_do;
+#X obj 7 501 int;
+#X obj 7 524 moses 1;
+#X obj 7 550 s r_rnd_pres;
 #X connect 1 0 29 0;
 #X connect 1 0 39 0;
 #X connect 2 0 9 0;
@@ -703,9 +711,16 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 71 1 70 0;
 #X connect 72 0 69 0;
 #X connect 72 1 73 0;
+#X connect 72 2 77 0;
 #X connect 73 0 74 0;
 #X connect 74 0 76 0;
 #X connect 76 0 75 0;
+#X connect 77 0 78 0;
+#X connect 77 1 81 0;
+#X connect 78 0 79 0;
+#X connect 79 0 80 0;
+#X connect 81 0 82 0;
+#X connect 82 0 83 0;
 #X restore 82 268 pd osc;
 #X connect 2 0 19 0;
 #X connect 2 0 6 0;
@@ -738,7 +753,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 205 110 1 50 50;
 #X restore 350 173 pd network;
 #X obj -187 9 vradio 15 1 0 17 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
--1 -1 1;
+-1 -1 0;
 #X text -170 7 Off;
 #X text -170 23 Blinken;
 #X text -170 38 Image;
@@ -805,7 +820,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 400 60 1 50 50;
 #X restore -198 461 pd presentStuff;
 #X obj 65 302 vradio 15 1 0 10 s_mix1 r_mix1 Mixer 0 -8 0 12 -99865
--1 -1 0;
+-1 -1 3;
 #X text -55 7 Off;
 #X text -55 23 Blinken;
 #X text -55 38 Image;

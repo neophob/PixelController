@@ -15,10 +15,6 @@ generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaba
 effectnames=["Off", "Inverter", "Rotozoom", "BeatS H", "BeatS V", "Volumn", "Tint", "Threshold", "Emboss", "Zoom"]
 mixernames=["Off", "AddSat", "Multiply", "Mix", "Neg", "Checkboard", "Multiply", "Xor", "MinusHalf", "Either"]
 
-buttonNames=["one", "two", "tree", "four"]
-
-
-
 pages = [
 /********** PAGE 1 *************/
 [
@@ -128,34 +124,44 @@ pages = [
      "label": "ACTIVATE TINT FX",
 },
 
-
-/* -- Multi Buttons */
-{
-     "name": "myButton",
-     "type": "MultiButton",
-     "x":.5, "y":.5,
-     "width":.1, "height":.4,
-     "rows":4, "columns":1,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",    
-},
-/* -- Random Button */
+/* -- RANDOM MODE Button */
 {
      "name": "randomToggleButton",
      "type": "Button",
-     "x": 0.75, "y": .5,
+     "x": 0.5, "y": .5,
      "width": .1, "height": .1,
      "mode": "toggle",
      "color": "#fc8000",
      "stroke": "#7e4000",
+     "label": "RANDOM MODE",     
+},
+/* -- RANDOM Buttons */
+{
+     "name": "fireRandomButton",
+     "type": "Button",
+     "x":.5, "y":.6,
+     "width":.1, "height":.1,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
      "label": "RANDOM",     
 },
-/* -- Refresh Button */
+/* -- RANDOM PRESENT Buttons */
+{
+     "name": "fireRandomPresentButton",
+     "type": "Button",
+     "x":.5, "y":.7,
+     "width":.1, "height":.1,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "RND PRESENT",     
+},
+/* -- Refresh GUI Button */
 {
      "name": "refreshButton",
      "type": "Button",
-     "x": 0.75, "y": .7,
+     "x": 0.9, "y": .8,
      "width": .1, "height": .1,
      "mode": "momentary",
      "color": "#fc8000",
@@ -169,3 +175,6 @@ pages = [
 /********** PAGE 2 *************/
 
 ];
+
+
+
