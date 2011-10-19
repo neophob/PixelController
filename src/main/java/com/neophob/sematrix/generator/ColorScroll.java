@@ -39,6 +39,9 @@ public class ColorScroll extends Generator {
     private List<Color> colorMap;
     private int frameCount;
     private int maxFrames;
+
+    private int internalBufferXSize2;
+    private int internalBufferYSize2;
     
     enum ScrollMode{
     	LEFT_TO_RIGHT(0),
@@ -106,6 +109,9 @@ public class ColorScroll extends Generator {
         fade = 30;
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 
+        internalBufferXSize2 = internalBufferXSize/2;
+        internalBufferYSize2 = internalBufferYSize/2;
+        
         maxFrames = colorMap.size() * fade;
     }
 
@@ -375,7 +381,7 @@ public class ColorScroll extends Generator {
     private void middleToSidesVertical() {
         int ySize = internalBufferYSize;
 
-        for (int x = 0; x < internalBufferXSize / 2; x++) {
+        for (int x = 0; x < internalBufferXSize2; x++) {
         	int[] col = getColor(x);
 
             for (int y = 0; y < ySize; y++) {
@@ -391,9 +397,9 @@ public class ColorScroll extends Generator {
     private void sidesToMiddleVertical() {
         int ySize = internalBufferYSize;
 
-        for (int x = 0; x < internalBufferXSize / 2; x++) {
+        for (int x = 0; x < internalBufferXSize2; x++) {
 
-            int xRev = (internalBufferXSize / 2) - x - 1;
+            int xRev = (internalBufferXSize2) - x - 1;
             int[] col = getColor(x);
             for (int y = 0; y < ySize; y++) {
                 this.internalBuffer[y * internalBufferXSize + xRev] = (col[0] << 16) | (col[1] << 8) | col[2];
@@ -408,7 +414,7 @@ public class ColorScroll extends Generator {
     private void middleToSidesHorizontal() {
         int xSize = internalBufferXSize;
 
-        for (int y = 0; y < internalBufferYSize / 2; y++) {
+        for (int y = 0; y < internalBufferYSize2; y++) {
 
         	int[] col = getColor(y);
 
@@ -425,9 +431,9 @@ public class ColorScroll extends Generator {
     private void sidesToMiddleHorizontal() {
         int xSize = internalBufferXSize;
 
-        for (int y = 0; y < internalBufferYSize / 2; y++) {
+        for (int y = 0; y < internalBufferYSize2; y++) {
 
-            int yRev = (internalBufferYSize / 2) - y - 1;
+            int yRev = internalBufferYSize2 - y - 1;
             int[] col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
@@ -442,10 +448,8 @@ public class ColorScroll extends Generator {
      */
     private void implodeCircle() {
 
-        int x0 = internalBufferXSize / 2;
-        int y0 = internalBufferYSize / 2;
-
-        for (int r = 0; r < Math.max(internalBufferXSize, internalBufferYSize) * 1.42; r++) {
+        int upToValue = (int)(Math.max(internalBufferXSize, internalBufferYSize) * 1.42f);
+        for (int r = 0; r < upToValue; r++) {
         	int[] col = getColor(r);
 
             int f = 1 - r;
@@ -454,10 +458,10 @@ public class ColorScroll extends Generator {
             int x = 0;
             int y = r;
 
-            setPixel(x0, y0 + r, col[0], col[1], col[2]);
-            setPixel(x0, y0 - r, col[0], col[1], col[2]);
-            setPixel(x0 + r, y0, col[0], col[1], col[2]);
-            setPixel(x0 - r, y0, col[0], col[1], col[2]);
+            setPixel(internalBufferXSize2, internalBufferYSize2 + r, col);
+            setPixel(internalBufferXSize2, internalBufferYSize2 - r, col);
+            setPixel(internalBufferXSize2 + r, internalBufferYSize2, col);
+            setPixel(internalBufferXSize2 - r, internalBufferYSize2, col);
 
             while (x < y) {
                 if (f >= 0) {
@@ -468,33 +472,33 @@ public class ColorScroll extends Generator {
                 x++;
                 ddFx += 2;
                 f += ddFx;
-                setPixel(x0 + x, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 - x, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 + x, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 - x, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 + y, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 - y, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 + y, y0 - x, col[0], col[1], col[2]);
-                setPixel(x0 - y, y0 - x, col[0], col[1], col[2]);
+                setPixel(internalBufferXSize2 + x, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 - x, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 + x, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 - x, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 + y, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 - y, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 + y, internalBufferYSize2 - x, col);
+                setPixel(internalBufferXSize2 - y, internalBufferYSize2 - x, col);
 
                 //double line to mind gaps
-                setPixel(x0 + x + 1, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 + x + 1, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 - x, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 - x, col[0], col[1], col[2]);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 - x, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 - x, col);
                 
-                setPixel(x0 + x + 1, y0 + y + 1, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 + y + 1, col[0], col[1], col[2]);
-                setPixel(x0 + x + 1, y0 - y + 1, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 - y + 1, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 + x + 1, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 + x + 1, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 - x + 1, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 - x + 1, col[0], col[1], col[2]);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 + y + 1, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 + y + 1, col);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 - y + 1, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 - y + 1, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 + x + 1, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 + x + 1, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 - x + 1, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 - x + 1, col);
                 
             }
         }
@@ -505,12 +509,9 @@ public class ColorScroll extends Generator {
      */
     private void explodeCircle() {
 
-        int x0 = internalBufferXSize / 2;
-        int y0 = internalBufferYSize / 2;
-
-        for (int r = 0; r < Math.max(internalBufferXSize, internalBufferYSize) * 1.42; r++) {            
-            int rRev = (int) (Math.max(internalBufferXSize, internalBufferYSize) * 1.42) - r;
-
+        int upToValue = (int)(Math.max(internalBufferXSize, internalBufferYSize) * 1.42f);
+        for (int r = 0; r < upToValue; r++) {            
+            int rRev = upToValue - r;
             int[] col = getColor(rRev);
 
             int f = 1 - r;
@@ -519,10 +520,10 @@ public class ColorScroll extends Generator {
             int x = 0;
             int y = r;
 
-            setPixel(x0, y0 + r, col[0], col[1], col[2]);
-            setPixel(x0, y0 - r, col[0], col[1], col[2]);
-            setPixel(x0 + r, y0, col[0], col[1], col[2]);
-            setPixel(x0 - r, y0, col[0], col[1], col[2]);
+            setPixel(internalBufferXSize2, internalBufferYSize2 + r, col);
+            setPixel(internalBufferXSize2, internalBufferYSize2 - r, col);
+            setPixel(internalBufferXSize2 + r, internalBufferYSize2, col);
+            setPixel(internalBufferXSize2 - r, internalBufferYSize2, col);
 
             while (x < y) {
                 if (f >= 0) {
@@ -533,33 +534,33 @@ public class ColorScroll extends Generator {
                 x++;
                 ddFx += 2;
                 f += ddFx;
-                setPixel(x0 + x, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 - x, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 + x, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 - x, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 + y, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 - y, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 + y, y0 - x, col[0], col[1], col[2]);
-                setPixel(x0 - y, y0 - x, col[0], col[1], col[2]);
+                setPixel(internalBufferXSize2 + x, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 - x, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 + x, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 - x, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 + y, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 - y, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 + y, internalBufferYSize2 - x, col);
+                setPixel(internalBufferXSize2 - y, internalBufferYSize2 - x, col);
 
                 //double line to mind gaps
-                setPixel(x0 + x + 1, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 + y, col[0], col[1], col[2]);
-                setPixel(x0 + x + 1, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 - y, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 + x, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 - x, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 - x, col[0], col[1], col[2]);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 + y, col);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 - y, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 + x, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 - x, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 - x, col);
                 
-                setPixel(x0 + x + 1, y0 + y + 1, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 + y + 1, col[0], col[1], col[2]);
-                setPixel(x0 + x + 1, y0 - y + 1, col[0], col[1], col[2]);
-                setPixel(x0 - x + 1, y0 - y + 1, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 + x + 1, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 + x + 1, col[0], col[1], col[2]);
-                setPixel(x0 + y + 1, y0 - x + 1, col[0], col[1], col[2]);
-                setPixel(x0 - y + 1, y0 - x + 1, col[0], col[1], col[2]);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 + y + 1, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 + y + 1, col);
+                setPixel(internalBufferXSize2 + x + 1, internalBufferYSize2 - y + 1, col);
+                setPixel(internalBufferXSize2 - x + 1, internalBufferYSize2 - y + 1, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 + x + 1, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 + x + 1, col);
+                setPixel(internalBufferXSize2 + y + 1, internalBufferYSize2 - x + 1, col);
+                setPixel(internalBufferXSize2 - y + 1, internalBufferYSize2 - x + 1, col);
             }
         }
     }
@@ -572,9 +573,9 @@ public class ColorScroll extends Generator {
      * @param G
      * @param B
      */
-    private void setPixel(int x, int y, int r, int g, int b) {
+    private void setPixel(int x, int y, int[] col) {
         if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
-            this.internalBuffer[y * internalBufferXSize + x] = (r << 16) | (g << 8) | b;
+            this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
         }
     }
 
