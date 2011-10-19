@@ -11,6 +11,10 @@ javascript reference: http://www.javascriptkit.com/jsref/math.shtml
 loadedInterfaceName = "pixelControl002";
 interfaceOrientation = "landscape";
 
+generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaballs", "Pixel", "Textur", "Text", "ImgZoom", "Cell", "Plsama2", "Frequenzy", "Drops", "Capture", "ColFad"]
+effectnames=["Off", "Inverter", "Rotozoom", "BeatS H", "BeatS V", "Volumn", "Tint", "Threshold", "Emboss", "Zoom"]
+mixernames=["Off", "AddSat", "Multiply", "Mix", "Neg", "Checkboard", "Multiply", "Xor", "MinusHalf", "Either"]
+
 pages = [[
 
 /* --- data start --- */
@@ -25,14 +29,14 @@ pages = [[
     "min" : 0, "max" : 16.9,
     "stroke": "#62627e",
     "color": "#c4c4fc",
-    "onvaluechange" : "infoGen.changeValue( 'Generator: '+Math.floor(SliderGen.children[0].value) +'/'+Math.floor(SliderGen.children[1].value) );"    
+    "onvaluechange" : "infoGen.changeValue( 'Generator: '+generatornames[ Math.floor(SliderGen.children[0].value) ] +'/'+ generatornames[ Math.floor(SliderGen.children[1].value) ] );"    
 },
 {
     "name": "infoGen",
     "type": "Label",
     "x": .0, "y": .45,
     "width": .5, "height": .05,
-    "value": "Generator: --",
+    "value": "Generator: 0/0",
     "verticalCenter": false,
     "align": "left",
 },
@@ -47,14 +51,14 @@ pages = [[
     "stroke": "#7e7e62",
     "min" : 0, "max" : 9.9,
     "color": "#fcfcc4",
-    "onvaluechange" : "infoEffect.changeValue( 'Effect: '+Math.floor(SliderEffect.children[0].value) +'/'+Math.floor(SliderEffect.children[1].value) );"
+    "onvaluechange" : "infoEffect.changeValue( 'Effect: '+ effectnames[ Math.floor(SliderEffect.children[0].value) ] +'/'+ effectnames[ Math.floor(SliderEffect.children[1].value) ] );"
 },
 {
     "name": "infoEffect",
     "type": "Label",
     "x": .0, "y": .9,
-    "width": .125, "height": .1,
-    "value": "Effect",
+    "width": .25, "height": .1,
+    "value": "Effect: 0/0",
     "verticalCenter": false,
     "align": "left",
 },
@@ -70,23 +74,14 @@ pages = [[
     "min" : 0, "max" : 9.9,
     "isXFader" : false,
     "isVertical" : true,
-    "onvaluechange" : "infoMixValue.changeValue( Math.floor(this.value) );"
+    "onvaluechange" : "infoMix.changeValue( 'Mixer: '+mixernames[Math.floor(this.value)] );"
 },
 {
     "name": "infoMix",
     "type": "Label",
     "x": .25, "y": .9,
-    "width": .125, "height": .1,
-    "value": "Mixer value:",
-    "verticalCenter": false,
-    "align": "left",
-},
-{
-    "name": "infoMixValue",
-    "type": "Label",
-    "x": .375, "y": .9,
-    "width": .125, "height": .1,
-    "value": "--",
+    "width": .25, "height": .1,
+    "value": "Mixer: C",
     "verticalCenter": false,
     "align": "left",
 },
