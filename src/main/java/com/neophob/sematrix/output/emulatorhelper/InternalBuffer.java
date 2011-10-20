@@ -160,7 +160,7 @@ public class InternalBuffer extends PApplet {
 		displaySoundStats(localY);
 		
 		//show mode
-		displayCurrentMode();
+		displayCurrentMode(localY, col.isRandomMode());
 		
 		col.getPixConStat().addInternalWindowUpdateTime(System.currentTimeMillis()-l);
 	}
@@ -187,8 +187,13 @@ public class InternalBuffer extends PApplet {
 		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);		
 	}
 	
-	private void displayCurrentMode() {
-		//TODO
+	/**
+	 * 
+	 */
+	private void displayCurrentMode(int localY, boolean randomModeEnabled) {
+		//show if random mode is enabled
+		colorSelect(randomModeEnabled);
+		rect(0, localY+targetYSize+SELECTED_MARKER*3, targetXSize, 10);
 	}
 	
 	

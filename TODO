@@ -8,8 +8,7 @@ TODO PixelController
 -more layouts (what kind of layouts?)
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
 -decoupling visual generation from output update, should increase performance
--add notification if random mode is selected or not
--create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
+-WIP create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system
 
 
@@ -18,3 +17,8 @@ TODO PixelInvaders
 -PixelInvaders firmware: update initial image in firmware
 -PixelInvaders firmware: add autonomous firmware mode, run simple animation if no computer is connected
 
+
+
+v1.0.3
+------
+-add notification if random mode is selected or not
