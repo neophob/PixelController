@@ -29,12 +29,12 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
-import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.MatrixEmulator;
 import com.neophob.sematrix.output.MiniDmxDevice;
 import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
+import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
 import com.neophob.sematrix.properties.ConfigConstant;
@@ -50,9 +50,9 @@ public class PixelController extends PApplet {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
 
-    /** The Constant CONFIG_FILENAME. */
-    private static final String CONFIG_FILENAME = "data/config.properties";
-    
+	/** The Constant CONFIG_FILENAME. */
+	private static final String CONFIG_FILENAME = "data/config.properties";
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
 	
@@ -62,28 +62,30 @@ public class PixelController extends PApplet {
 	/** The output. */
 	private Output output;
 	
+	private MatrixEmulator matrixEmulator;
+	
 	/**
 	 * prepare.
 	 */
 	public void setup() {
-	    LOG.log(Level.INFO,"--- PixelController Setup START ---");
-	    
-	    Properties config = new Properties();
-        try {
-            config.load(createInput(CONFIG_FILENAME));
-            LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Failed to load Config", e);
-            throw new IllegalArgumentException("Configuration error!", e);
-        }
+		LOG.log(Level.INFO, "--- PixelController Setup START ---");
 
-	    PropertiesHelper ph = new PropertiesHelper(config);
-	    
-		Collector col = Collector.getInstance(); 				
+		Properties config = new Properties();
+		try {
+			config.load(createInput(CONFIG_FILENAME));
+			LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Failed to load Config", e);
+			throw new IllegalArgumentException("Configuration error!", e);
+		}
+
+		PropertiesHelper ph = new PropertiesHelper(config);
+
+		Collector col = Collector.getInstance();
 		col.init(this, ph);
 		frameRate(ph.parseFps());
 		noSmooth();
-						
+		
 		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
@@ -109,7 +111,7 @@ public class PixelController extends PApplet {
 			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
 		
-		new MatrixEmulator(ph, col.getPixelControllerOutput(), this.output.getBpp());				
+		this.matrixEmulator = new MatrixEmulator(ph, this.output);
 		
 		if (ph.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
 			new InternalDebugWindow(true, ph.getDebugWindowMaximalXSize());	
@@ -129,9 +131,11 @@ public class PixelController extends PApplet {
 	 * @see processing.core.PApplet#draw()
 	 */
 	public void draw() { 
-		//update all generators
+		// update all generators
 		Collector.getInstance().updateSystem();
-
+		// update matrixEmulator instance
+		this.matrixEmulator.update();
+		
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
 		}

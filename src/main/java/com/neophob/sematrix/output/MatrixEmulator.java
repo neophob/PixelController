@@ -22,6 +22,8 @@ package com.neophob.sematrix.output;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
+import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -30,7 +32,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * @author michu
  * 
  */
-public class MatrixEmulator extends Output {
+public class MatrixEmulator {
 
 	/** The Constant RAHMEN_SIZE. */
 	private static final int RAHMEN_SIZE = 4;
@@ -46,16 +48,27 @@ public class MatrixEmulator extends Output {
 	
 	private PApplet parent;
 	
-	private Collector col;
+	/** The matrix data. */
+	private MatrixData matrixData;
+	
+	/** The layout. */
+	private Layout layout;
+	
+	private Collector collector;
+	
+	private Output output;
 
 	/**
 	 * Instantiates a new matrix emulator.
 	 *
 	 * @param controller the controller
 	 */
-	public MatrixEmulator(PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
-		super(ph, controller, MatrixEmulator.class.toString(), bpp);
-		ledSize = ph.getLedPixelSize();
+	public MatrixEmulator(PropertiesHelper ph, Output output) {
+		this.output = output;
+		this.ledSize = ph.getLedPixelSize();
+		this.collector = Collector.getInstance();
+		this.matrixData = this.collector.getMatrix();
+		this.layout = ph.getLayout();
 		
 		int x,y;
 		switch (layout.getLayoutName()) {
@@ -71,8 +84,8 @@ public class MatrixEmulator extends Output {
 			break;
 		}
 		
-		this.col = Collector.getInstance();
-		this.parent = this.col.getPapplet();
+		this.collector = Collector.getInstance();
+		this.parent = this.collector.getPapplet();
 		this.parent.size(x, y);
 		this.parent.background(33,33,33);
 	}
@@ -95,37 +108,33 @@ public class MatrixEmulator extends Output {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+ledSize);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.Output#update()
-	 */
-	@Override
 	public void update() {
 		frame++;
 		
 		//show only each 2nd frame to reduce cpu load
 		if (frame%2==1) {
 			return;
-		}				
+		}
 		
 		int cnt=0;
-		int currentOutput = this.col.getCurrentOutput();
+		int currentOutput = this.collector.getCurrentOutput();
 		
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
-			for (int screen=0; screen<this.col.getNrOfScreens(); screen++) {
-				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen), currentOutput);
-			}			
+			for (int screen=0; screen<this.collector.getNrOfScreens(); screen++) {
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen), currentOutput);
+			}
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, super.getBufferForScreen(screen), currentOutput);
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen), currentOutput);
 				ofs++;
-			}			
+			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, super.getBufferForScreen(ofs+screen), currentOutput);
-			}			
+				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen), currentOutput);
+			}
 			break;
 		}
 	}
@@ -143,21 +152,21 @@ public class MatrixEmulator extends Output {
 		int ofs=0;
 		int tmp,r,g,b;
 
-		//mark the active visual				
+		//mark the active visual
 		if (nr == currentOutput) {
 			parent.fill(200,66,66);
 		} else {
 			parent.fill(33,33,33);
-		}		
-		parent.rect(xOfs, yOfs, getOneMatrixXSize(), getOneMatrixYSize());			
+		}
+		parent.rect(xOfs, yOfs, getOneMatrixXSize(), getOneMatrixYSize());
 		
-		int shift = 8-bpp;
+		int shift = 8 - this.output.getBpp();
 		
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
-			for (int x=0; x<matrixData.getDeviceXSize(); x++) {					
+			for (int x=0; x<matrixData.getDeviceXSize(); x++) {
 				tmp = buffer[ofs++];
 				r = (int) ((tmp>>16) & 255);
-				g = (int) ((tmp>>8)  & 255);       
+				g = (int) ((tmp>>8)  & 255);
 				b = (int) ( tmp      & 255);
 
 				//simulate lower bpp
@@ -167,24 +176,13 @@ public class MatrixEmulator extends Output {
 					b >>= shift;
 					r <<= shift;
 					g <<= shift;
-					b <<= shift;				
+					b <<= shift;
 				}
-
 				parent.fill(r,g,b);
 				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+ledSize),
 							yOfs+RAHMEN_SIZE+y*(RAHMEN_SIZE+ledSize),
 							ledSize,ledSize);
-			}		
+			}
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.Output#close()
-	 */
-	@Override
-	public void close() {
-		// TODO Auto-generated method stub
-	}
-
-
 }
