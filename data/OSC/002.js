@@ -15,50 +15,74 @@ generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaba
 effectnames=["Off", "Inverter", "Rotozoom", "BeatS H", "BeatS V", "Volumn", "Tint", "Threshold", "Emboss", "Zoom"]
 mixernames=["Off", "AddSat", "Multiply", "Mix", "Neg", "Checkboard", "Multiply", "Xor", "MinusHalf", "Either"]
 
-pages = [[
-
-/* --- data start --- */
+pages = [
+/********** PAGE 1 *************/
+[
 
 /* Generator slider */
 {
     "name":"SliderGen",
     "type":"MultiSlider",
     "x":0, "y":0,
-    "width":.2, "height":.45,
+    "width":.15, "height":.45,
     "numberOfSliders" : 2,
     "min" : 0, "max" : 16.9,
     "stroke": "#62627e",
     "color": "#c4c4fc",
-    "onvaluechange" : "infoGen.changeValue( 'Generator: '+generatornames[ Math.floor(SliderGen.children[0].value) ] +'/'+ generatornames[ Math.floor(SliderGen.children[1].value) ] );"    
+    "onvaluechange" : "infoGen.changeValue( 'Generator: '+generatornames[ Math.floor(SliderGen.children[0].value) ] +'/'+ generatornames[ Math.floor(SliderGen.children[1].value) ] );", 
 },
 {
     "name": "infoGen",
     "type": "Label",
     "x": .0, "y": .45,
-    "width": .5, "height": .05,
-    "value": "Generator: 0/0",
+    "width": .25, "height": .05,
+    "value": "Generator: --",
     "verticalCenter": false,
     "align": "left",
 },
+
+/* Visual NR slider */
+{
+    "name":"VisualNr",
+    "type":"Slider",
+    "x":0.2, "y":0,
+    "width":.075, "height":.45,
+    "stroke": "#452525",
+    "color": "#995555",
+    "min": 0, "max": 4.9,
+    "isXFader" : false,
+    "isVertical" : true,
+    "onvaluechange": "infoVisual.changeValue( 'Visual Nr: '+ Math.floor(this.value) );",
+},
+{
+    "name": "infoVisual",
+    "type": "Label",
+    "x": .2, "y": .45,
+    "width": .25, "height": .1,
+    "value": "Visual: --",
+    "verticalCenter": false,
+    "align": "left",
+},
+
 
 /* Effect slider */
 {
     "name":"SliderEffect",
     "type":"MultiSlider",
     "x":0, "y":0.5,
-    "width":.2, "height":.40,
+    "width":.15, "height":.40,
     "numberOfSliders" : 2,
     "stroke": "#7e7e62",
     "min" : 0, "max" : 9.9,
     "color": "#fcfcc4",
-    "onvaluechange" : "infoEffect.changeValue( 'Effect: '+ effectnames[ Math.floor(SliderEffect.children[0].value) ] +'/'+ effectnames[ Math.floor(SliderEffect.children[1].value) ] );"
+    "onvaluechange" : "infoEffect.changeValue( 'Effect: '+ effectnames[ Math.floor(SliderEffect.children[0].value) ] +'/'+ effectnames[ Math.floor(SliderEffect.children[1].value) ] );",
 },
 {
     "name": "infoEffect",
     "type": "Label",
     "x": .0, "y": .9,
     "width": .25, "height": .1,
-    "value": "Effect: 0/0",
+    "value": "Effect: --",
     "verticalCenter": false,
     "align": "left",
 },
@@ -67,21 +91,21 @@ pages = [[
 {
     "name":"SliderMix",
     "type":"Slider",
-    "x":0.25, "y":0.5,
-    "width":.1, "height":.4,
+    "x":0.2, "y":0.5,
+    "width":.075, "height":.4,
     "stroke": "#454545",
     "color": "#999999",
-    "min" : 0, "max" : 9.9,
+    "min": 0, "max": 9.9,
     "isXFader" : false,
     "isVertical" : true,
-    "onvaluechange" : "infoMix.changeValue( 'Mixer: '+mixernames[Math.floor(this.value)] );"
+    "onvaluechange": "infoMix.changeValue( 'Mixer: '+mixernames[Math.floor(this.value)] );",
 },
 {
     "name": "infoMix",
     "type": "Label",
-    "x": .25, "y": .9,
+    "x": .2, "y": .9,
     "width": .25, "height": .1,
-    "value": "Mixer: C",
+    "value": "Mixer: --",
     "verticalCenter": false,
     "align": "left",
 },
@@ -90,7 +114,7 @@ pages = [[
 {
     "name":"knobR",
     "type":"Knob",
-    "x":0.5, "y":0,
+    "x":.5, "y":0,
     "radius":.145,
     "color": "#ff0000",
     "stroke": "#880000",
@@ -98,7 +122,7 @@ pages = [[
 {
     "name":"knobG",
     "type":"Knob",
-    "x":0.65, "y":0,
+    "x":.65, "y":0,
     "radius":.145,
     "color": "#00ff00",
     "stroke": "#008800",
@@ -106,56 +130,142 @@ pages = [[
 {
     "name":"knobB",
     "type":"Knob",
-    "x":0.8, "y":0,
+    "x":.8, "y":0,
     "radius":.145,
     "color": "#0000ff",
-    "stroke": "#000088",    
+    "stroke": "#000088",   
+},
+{
+    "name":"knobThreshold",
+    "type":"Knob",
+    "x":.65, "y":.25,
+    "radius":.145,
+    "color": "#557755",
+    "stroke": "#335533",
+},
+{
+    "name":"knobRotozoom",
+    "type":"Knob",
+    "x":.8, "y":.25,
+    "radius":.145,
+    "color": "#557755",
+    "stroke": "#335533",  
+    "centerZero" : true, 
 },
 /* -- Activate Tint Effect on all Outputs Button */
 {
      "name": "activateTintButton",
      "type": "Button",
      "x": 0.5, "y": .25,
-     "width": .1, "height": .1,
+     "width": .145, "height": .08,
      "mode": "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
+     "label": "ACTIVATE TINT FX",
+     "oninit": "activateTintButton.fillDiv.style.borderWidth = '2px';",
 },
-
-
-/* -- Multi Buttons */
 {
-     "name": "myButton",
-     "type": "MultiButton",
-     "x":.5, "y":.5,
-     "width":.1, "height":.4,
-     "rows":4, "columns":1,
+     "name": "activateTresholdButton",
+     "type": "Button",
+     "x": 0.5, "y": .33,
+     "width": .145, "height": .08,
      "mode": "momentary",
      "color": "#fc8000",
-     "stroke": "#7e4000",    
+     "stroke": "#7e4000",
+     "label": "ACTIVATE THRESHOLD FX",
+     "oninit": "activateTresholdButton.fillDiv.style.borderWidth = '2px';",
 },
-/* -- Random Button */
 {
-     "name": "randomButton",
+     "name": "activateRotozoomButton",
      "type": "Button",
-     "x": 0.75, "y": .5,
-     "width": .1, "height": .1,
+     "x": 0.5, "y": .41,
+     "width": .145, "height": .08,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "ACTIVATE ROTOZOOM FX",
+     "oninit": "activateRotozoomButton.fillDiv.style.borderWidth = '2px';",
+},
+
+/* -- RANDOM MODE Button */
+{
+     "name": "randomToggleButton",
+     "type": "Button",
+     "x": 0.5, "y": .5,
+     "width": .145, "height": .08,
      "mode": "toggle",
      "color": "#fc8000",
-     "stroke": "#7e4000",     
+     "stroke": "#7e4000",
+     "label": "RANDOM MODE",
+     "oninit": "randomToggleButton.fillDiv.style.borderWidth = '2px';",          
 },
-/* -- Refresh Button */
+/* -- RANDOM Buttons */
+{
+     "name": "fireRandomButton",
+     "type": "Button",
+     "x":.5, "y":.58,
+     "width":.145, "height":.08,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "RANDOM",
+     "oninit": "fireRandomButton.fillDiv.style.borderWidth = '2px';",     
+},
+/* -- RANDOM PRESENT Buttons */
+{
+     "name": "fireRandomPresentButton",
+     "type": "Button",
+     "x":.5, "y":.66,
+     "width":.145, "height":.08,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "RND PRESENT", 
+	 "oninit": "fireRandomPresentButton.fillDiv.style.borderWidth = '2px';",    
+},
+/* -- Visual 1 to ALL OUTPUTS Button */
+{
+     "name": "visualOneToAll",
+     "type": "Button",
+     "x": .65, "y": .5,
+     "width": .15, "height": .08,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "VISUAL 1 TO ALL PANELS",
+	 "oninit": "visualOneToAll.fillDiv.style.borderWidth = '2px';",     
+},
+/* -- Visual 2 to ALL OUTPUTS Button */
+{
+     "name": "visualTwoToAll",
+     "type": "Button",
+     "x": .65, "y": .58,
+     "width": .15, "height": .08,
+     "mode": "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "VISUAL 2 TO ALL PANELS", 
+	 "oninit": "visualTwoToAll.fillDiv.style.borderWidth = '2px';",
+},
+/* -- Refresh GUI Button */
 {
      "name": "refreshButton",
      "type": "Button",
-     "x": 0.75, "y": .7,
+     "x": 0.88, "y": .8,
      "width": .1, "height": .1,
      "mode": "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
      "ontouchstart": "interfaceManager.refreshInterface()",
+     "label": "REFRESH GUI",
 },
-/* --- data end --- */
+
 
 ]
+
+/********** PAGE 2 *************/
+
 ];
+
+
+
