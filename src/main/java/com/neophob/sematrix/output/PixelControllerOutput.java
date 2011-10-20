@@ -48,7 +48,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 * Instantiates a new pixel controller output.
 	 */
 	public PixelControllerOutput() {
-		allOutputs = new CopyOnWriteArrayList<Output>();
+		this.allOutputs = new CopyOnWriteArrayList<Output>();
 		this.executorService = Executors.newCachedThreadPool();
 	}
 	
@@ -72,6 +72,17 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 */
 	@Override
 	public void update() {
+		// check if this is the first call of this method
+		if (this.prepare_endGate == null && this.update_endGate == null) {
+			// we have to prepare the int[] buffers manually the first time. to not mess up this method
+			// even more the prepare() methods will be called directly without any additional threading
+			// overhead. for the first frame it shouldn't really matter that the outputs have to wait 
+			// until the int[] buffers preparation is done.
+			for (Output output : this.allOutputs) {
+				output.prepare();
+			}
+		}
+		
 		// wait for the outputs to finish their prepare() methods from the previous call of this method
 		if (this.prepare_endGate != null) {
 			try {
@@ -80,24 +91,13 @@ public class PixelControllerOutput implements PixelControllerElement {
 				LOG.log(Level.SEVERE, "waiting for all outputs to finish their prepare() method got interrupted!", e);
 			}
 		}
+		
 		// wait for the outputs to finish their update() methods from the previous call of this method
 		if (this.update_endGate != null) {
 			try {
 				this.update_endGate.await();
 			} catch (InterruptedException e) {
 				LOG.log(Level.SEVERE, "waiting for all outputs to finish their update() method got interrupted!", e);
-			}
-		}
-
-		// check if this is the first call of this method
-		if (this.prepare_endGate == null && this.update_endGate == null) {
-			// we have to prepare the int[] buffers manually the first time. to not mess up this method
-			// even more the prepare() methods will be called directly without any additional threading
-			// overhead that will anyway be called after the first update() calls have taken place. 
-			// For the first frame it shouldn't really matter that the outputs have to wait until the
-			// int[] buffers preparation is done.
-			for (Output output : this.allOutputs) {
-				output.prepare();
 			}
 		}
 		
@@ -109,14 +109,14 @@ public class PixelControllerOutput implements PixelControllerElement {
 		for (Output output : this.allOutputs) {
 			output.switchBuffers();
 		}
-
+		
 		// create countDownLatches used to call all update() and prepare() methods simultaneously
 		// and to block until all calls have been finished via the end gate instances
 		final CountDownLatch update_startGate = new CountDownLatch(1);
 		this.update_endGate = new CountDownLatch(this.allOutputs.size());
 		final CountDownLatch prepare_startGate = new CountDownLatch(1);
 		this.prepare_endGate = new CountDownLatch(this.allOutputs.size());
-
+		
 		// construct two runnable instance for each output and schedule them
 		for (final Output output: allOutputs) {
 			// create runnable instance for updating an output instance
@@ -163,14 +163,9 @@ public class PixelControllerOutput implements PixelControllerElement {
 		// the next run in parallel to the running update() methods
 		prepare_startGate.countDown();
 	}
-
-	/*
-	 * OUTPUT ======================================================
-	 */
-
+	
 	/**
 	 * Gets the all outputs.
-	 *
 	 * @return the all outputs
 	 */
 	public List<Output> getAllOutputs() {
@@ -179,7 +174,6 @@ public class PixelControllerOutput implements PixelControllerElement {
 
 	/**
 	 * Adds the output.
-	 *
 	 * @param output the output
 	 */
 	public void addOutput(Output output) {

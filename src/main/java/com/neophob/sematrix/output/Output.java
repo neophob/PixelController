@@ -67,7 +67,7 @@ public abstract class Output {
 	 */
 	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
 		this.name = name;
-				
+		
 		this.collector = Collector.getInstance();
 		this.matrixData = this.collector.getMatrix();
 		this.layout = ph.getLayout();
