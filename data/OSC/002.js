@@ -251,7 +251,7 @@ pages = [
 {
      "name": "refreshButton",
      "type": "Button",
-     "x": 0.88, "y": .8,
+     "x": 0.88, "y": .7,
      "width": .1, "height": .1,
      "mode": "momentary",
      "color": "#fc8000",
@@ -259,6 +259,20 @@ pages = [
      "ontouchstart": "interfaceManager.refreshInterface()",
      "label": "REFRESH GUI",
 },
+/* -- Button for enabling Menu/Toolbar */
+{
+    "name": "tabButton",
+    "type": "Button",
+    "x": 0.88, "y": .81,
+    "width": .1, "height": .1,
+    "mode": "toggle",
+    "color": "#fc8000",
+    "stroke": "#7e4000",
+    "isLocal": true,
+    "ontouchstart": "if(this.value == this.max) { control.showToolbar(); } else { control.hideToolbar(); }",
+    "label": "MENU"
+},
+
 
 
 ]
