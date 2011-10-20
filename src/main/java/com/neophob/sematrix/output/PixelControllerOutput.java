@@ -113,29 +113,12 @@ public class PixelControllerOutput implements PixelControllerElement {
 		// create countDownLatches used to call all update() and prepare() methods simultaneously
 		// and to block until all calls have been finished via the end gate instances
 		final CountDownLatch update_startGate = new CountDownLatch(1);
-		this.update_endGate = new CountDownLatch(this.allOutputs.size());
+		this.update_endGate = new CountDownLatch(this.getNumberOfPhysicalOutputs());
 		final CountDownLatch prepare_startGate = new CountDownLatch(1);
 		this.prepare_endGate = new CountDownLatch(this.allOutputs.size());
 		
 		// construct two runnable instance for each output and schedule them
-		for (final Output output: allOutputs) {
-			// create runnable instance for updating an output instance
-			Runnable update_runnable = new Runnable() {
-				@Override
-				public void run() {
-					try {
-						update_startGate.await();
-						try {
-							output.update();
-						} finally {
-							update_endGate.countDown();
-						}
-					} catch (InterruptedException e) {
-						LOG.log(Level.SEVERE, "waiting for start gate of output: " + output.getClass().getSimpleName()  + " got interrupted!", e);
-					}
-				}
-			};
-			this.executorService.execute(update_runnable);
+		for (final Output output: this.allOutputs) {
 			// create runnable instance for preparing an output instance
 			Runnable prepare_runnable = new Runnable() {
 				@Override
@@ -153,6 +136,27 @@ public class PixelControllerOutput implements PixelControllerElement {
 				}
 			};
 			this.executorService.execute(prepare_runnable);
+			// skip update method call for non-physical outputs
+			if (!output.getType().isPhysical()) {
+				continue;
+			}
+			// create runnable instance for updating an output instance
+			Runnable update_runnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						update_startGate.await();
+						try {
+							output.update();
+						} finally {
+							update_endGate.countDown();
+						}
+					} catch (InterruptedException e) {
+						LOG.log(Level.SEVERE, "waiting for start gate of output: " + output.getClass().getSimpleName()  + " got interrupted!", e);
+					}
+				}
+			};
+			this.executorService.execute(update_runnable);
 		}
 		
 		// trigger output update() methods and write the 
@@ -178,5 +182,15 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 */
 	public void addOutput(Output output) {
 		allOutputs.add(output);
+	}
+	
+	private int getNumberOfPhysicalOutputs() {
+		int outputs = 0;
+		for (Output output : this.allOutputs) {
+			if (output.getType().isPhysical()) {
+				outputs++;
+			}
+		}
+		return outputs;
 	}
 }
