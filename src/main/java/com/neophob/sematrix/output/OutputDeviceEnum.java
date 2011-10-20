@@ -24,17 +24,27 @@ package com.neophob.sematrix.output;
 public enum OutputDeviceEnum {
 	
 	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
-	PIXELINVADERS,
+	PIXELINVADERS(true),
 	
 	/** The RAINBOWDUINO. */
-	RAINBOWDUINO,
+	RAINBOWDUINO(true),
 	
 	/** The ARTNET. */
-	ARTNET,
+	ARTNET(true),
 	
 	/** The MINIDMX. */
-	MINIDMX,
+	MINIDMX(true),
 	
 	/** The NULL Output. */
-	NULL;
+	NULL(false);
+	
+	private boolean physical;
+	
+	private OutputDeviceEnum(boolean physical) {
+		this.physical = physical;
+	}
+	
+	public boolean isPhysical() {
+		return this.physical;
+	}
 }

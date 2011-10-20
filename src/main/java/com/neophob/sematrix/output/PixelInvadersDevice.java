@@ -57,7 +57,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	 * @param colorFormat the color format
 	 */
 	public PixelInvadersDevice(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, PixelInvadersDevice.class.toString(), 5);
+		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);
 		
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();

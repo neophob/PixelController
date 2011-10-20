@@ -56,7 +56,7 @@ public class Lpd6803Device extends ArduinoOutput {
 	 * @param colorFormat the color format
 	 */
 	public Lpd6803Device(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(ph, controller, Lpd6803Device.class.toString(), 5);
+		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);
 		
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();

@@ -56,12 +56,12 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
 	/**
 	 * Instantiates a new ResolutionAwareOutput.
 	 *
+	 * @param outputDeviceEnum the outputDeviceEnum
 	 * @param ph the ph
 	 * @param controller the controller
-	 * @param name the name
 	 */
-	public OnePanelResolutionAwareOutput(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
-		super(ph, controller, name, bpp);
+	public OnePanelResolutionAwareOutput(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+		super(outputDeviceEnum, ph, controller, bpp);
 		
         this.xResolution = ph.parseOutputXResolution();
         this.yResolution = ph.parseOutputYResolution();

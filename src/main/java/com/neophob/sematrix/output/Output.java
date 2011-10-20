@@ -42,8 +42,8 @@ public abstract class Output {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Output.class.getName());
 
-	/** The name. */
-	private String name;
+	/** The outputDeviceEnum. */
+	private OutputDeviceEnum outputDeviceEnum;
 	
 	/** The matrix data. */
 	protected MatrixData matrixData;
@@ -65,8 +65,8 @@ public abstract class Output {
 	 * @param controller the controller
 	 * @param name the name
 	 */
-	public Output(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
-		this.name = name;
+	public Output(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+		this.outputDeviceEnum = outputDeviceEnum;
 		
 		this.collector = Collector.getInstance();
 		this.matrixData = this.collector.getMatrix();
@@ -77,7 +77,7 @@ public abstract class Output {
 		this.preparedBufferMap = new HashMap<Integer, int[]>();
 		
 		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
-				, new Object[] { this.name, layout.getLayoutName(), this.bpp });
+				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp });
 	
 		//add to list
 		controller.addOutput(this);
@@ -132,7 +132,7 @@ public abstract class Output {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return name;
+		return this.outputDeviceEnum.toString();
 	}
 
 	/**
@@ -148,5 +148,9 @@ public abstract class Output {
 	 */
 	public int getBpp() {
 		return bpp;
+	}
+	
+	public OutputDeviceEnum getType() {
+		return this.outputDeviceEnum;
 	}
 }

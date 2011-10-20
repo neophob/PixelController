@@ -46,12 +46,12 @@ public abstract class ArduinoOutput extends Output {
 	/**
 	 * Instantiates a new arduino output.
 	 *
+	 * @param outputDeviceEnum the outputDeviceEnum
 	 * @param ph the ph
 	 * @param controller the controller
-	 * @param name the name
 	 */
-	public ArduinoOutput(PropertiesHelper ph, PixelControllerOutput controller, String name, int bpp) {
-		super(ph, controller, name, bpp);
+	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+		super(outputDeviceEnum, ph, controller, bpp);
 	}
 	
 	/**
