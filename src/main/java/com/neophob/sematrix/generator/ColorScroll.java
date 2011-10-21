@@ -260,12 +260,11 @@ public class ColorScroll extends Generator {
      * 
      */
     private void topToBottom() {
-        int ySize = internalBufferYSize;
+        int ySize = internalBufferXSize;
 
-        for (int y = 0; y < internalBufferXSize; y++) {
-            int yRev = internalBufferXSize - y - 1;
-            
-            int[] col = getColor(y);            
+        for (int y = 0; y < internalBufferYSize; y++) {
+            int yRev = internalBufferYSize - y - 1;
+            int[] col = getColor(y);
             for (int x = 0; x < ySize; x++) {
                 this.internalBuffer[yRev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
             }
@@ -276,9 +275,9 @@ public class ColorScroll extends Generator {
      * 
      */
     private void bottomToTop() {
-        int ySize = internalBufferYSize;
+        int ySize = internalBufferXSize;
 
-        for (int y = 0; y < internalBufferXSize; y++) {
+        for (int y = 0; y < internalBufferYSize; y++) {
             int[] col = getColor(y);
             for (int x = 0; x < ySize; x++) {
                 this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
@@ -290,21 +289,22 @@ public class ColorScroll extends Generator {
      * 
      */
     private void rightBottomToLeftTop() {
-        for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
+        int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
+        for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
 
-        	int[] col = getColor(diagStep);
+            int[] col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
-            if (diagStep >= internalBufferXSize) {
-                diagPixelCount = (2 * internalBufferXSize) - diagStep;
-                diagOffset = diagStep - internalBufferXSize;
+            if (diagStep >= bigSide) {
+                diagPixelCount = (2 * bigSide) - diagStep;
+                diagOffset = diagStep - bigSide;
             }
 
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = diagOffset + diagCounter;
                 int y = diagPixelCount - diagCounter - 1 + diagOffset;
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                setPixel(x, y, col);
             }
         }
     }
@@ -313,20 +313,21 @@ public class ColorScroll extends Generator {
      * 
      */
     private void leftBottomToRightTop() {
-        for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
+        int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
+        for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
         	int[] col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
-            if (diagStep >= internalBufferXSize) {
-                diagPixelCount = (2 * internalBufferXSize) - diagStep;
-                diagOffset = diagStep - internalBufferXSize;
+            if (diagStep >= bigSide) {
+                diagPixelCount = (2 * bigSide) - diagStep;
+                diagOffset = diagStep - bigSide;
             }
 
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = internalBufferXSize - 1 - (diagOffset + diagCounter);
                 int y = diagPixelCount - diagCounter - 1 + diagOffset;
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                setPixel(x, y, col);
             }
         }
     }
@@ -335,20 +336,21 @@ public class ColorScroll extends Generator {
      * 
      */
     private void rightTopToLeftBottom() {
-        for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
+        int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
+        for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
         	int[] col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
-            if (diagStep >= internalBufferXSize) {
-                diagPixelCount = (2 * internalBufferXSize) - diagStep;
-                diagOffset = diagStep - internalBufferXSize;
+            if (diagStep >= bigSide) {
+                diagPixelCount = (2 * bigSide) - diagStep;
+                diagOffset = diagStep - bigSide;
             }
 
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = diagOffset + diagCounter;
-                int y = internalBufferXSize - 1 - (diagPixelCount - diagCounter - 1 + diagOffset);
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                int y = internalBufferYSize - 1 - (diagPixelCount - diagCounter - 1 + diagOffset);
+                setPixel(x, y, col);
             }
         }
     }
@@ -357,20 +359,21 @@ public class ColorScroll extends Generator {
      * 
      */
     private void leftTopToRightBottom() {
-        for (int diagStep = 0; diagStep < internalBufferXSize + internalBufferYSize; diagStep++) {
+        int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
+        for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
         	int[] col = getColor(diagStep);
 
         	int diagPixelCount = diagStep;
             int diagOffset = 0;
-            if (diagStep >= internalBufferXSize) {
-                diagPixelCount = (2 * internalBufferXSize) - diagStep;
-                diagOffset = diagStep - internalBufferXSize;
+            if (diagStep >= bigSide) {
+                diagPixelCount = (2 * bigSide) - diagStep;
+                diagOffset = diagStep - bigSide;
             }
 
             for (int diagCounter = 0; diagCounter < diagPixelCount; diagCounter++) {
                 int x = internalBufferXSize - 1 - (diagOffset + diagCounter);
                 int y = internalBufferYSize - 1 - (diagPixelCount - diagCounter - 1 + diagOffset);
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                setPixel(x, y, col);
             }
         }
     }

@@ -46,7 +46,7 @@ public class MatrixData {
 	private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
 	/** the internal buffer is 8 times larger than the output buffer. */
-	private static final int INTERNAL_BUFFER_SIZE = 8;
+	public static final int INTERNAL_BUFFER_SIZE = 8;
 	
 
 	//output buffer

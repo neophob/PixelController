@@ -103,6 +103,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new PassThruGen(this);
         new Metaballs(this);
         new PixelImage(this);
+        new Rain(this);
         
         String fileTextureDeformation = ph.getProperty(TextureDeformation.INITIAL_IMAGE, DEFAULT_TEXTUREDEFORMATION);
         textureDeformation = new TextureDeformation(this, fileTextureDeformation);
