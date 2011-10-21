@@ -216,11 +216,8 @@ public class ScalrOld {
 		BufferedImage result = null;
 
 		if (src != null) {
-			long startTime = 0;
-
 			int currentWidth = src.getWidth();
 			int currentHeight = src.getHeight();
-			float ratio = ((float) currentHeight / (float) currentWidth);
 
 			/*
 			 * The resize operation has to be constrained by the smallest
