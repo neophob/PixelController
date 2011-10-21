@@ -133,7 +133,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 		// construct two runnable instance for each output and schedule them
 		for (final Output output: this.allOutputs) {
 			// create runnable instance for preparing an output instance
-			Runnable prepare_runnable = new Runnable() {
+			Runnable prepareRunnable = new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -150,13 +150,13 @@ public class PixelControllerOutput implements PixelControllerElement {
 					}
 				}
 			};
-			this.executorService.execute(prepare_runnable);
+			this.executorService.execute(prepareRunnable);
 			// skip update method call for non-physical outputs
 			if (!output.getType().isPhysical()) {
 				continue;
 			}
 			// create runnable instance for updating an output instance
-			Runnable update_runnable = new Runnable() {
+			Runnable updateRunnable = new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -173,7 +173,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 					}
 				}
 			};
-			this.executorService.execute(update_runnable);
+			this.executorService.execute(updateRunnable);
 		}
 		
 		// trigger output update() methods and write the 

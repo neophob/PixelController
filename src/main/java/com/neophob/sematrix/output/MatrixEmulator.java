@@ -34,6 +34,8 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  */
 public class MatrixEmulator {
 
+	private static final int MAX_BPP = 8;
+	
 	/** The Constant RAHMEN_SIZE. */
 	private static final int RAHMEN_SIZE = 4;
 	
@@ -160,7 +162,7 @@ public class MatrixEmulator {
 		}
 		parent.rect(xOfs, yOfs, getOneMatrixXSize(), getOneMatrixYSize());
 		
-		int shift = 8 - this.output.getBpp();
+		int shift = MAX_BPP - this.output.getBpp();
 		
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
 			for (int x=0; x<matrixData.getDeviceXSize(); x++) {
