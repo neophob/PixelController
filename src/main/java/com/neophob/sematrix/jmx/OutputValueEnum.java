@@ -18,7 +18,20 @@
  */
 package com.neophob.sematrix.jmx;
 
+/**
+ * The Enum OutputValueEnum.
+ */
 public enum OutputValueEnum {
+	
 	PREPARE,
-	UPDATE
+	UPDATE;
+	
+	/**
+	 * Gets the readable name.
+	 *
+	 * @return the readable name
+	 */
+	public String getReadableName() {
+		return name().toLowerCase().replace('_', ' ');
+	}
 }

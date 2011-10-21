@@ -18,7 +18,11 @@
  */
 package com.neophob.sematrix.jmx;
 
+/**
+ * The Enum ValueEnum.
+ */
 public enum ValueEnum {
+	
 	GENERATOR,
 	EFFECT,
 	OUTPUT_SCHEDULE,
@@ -27,4 +31,13 @@ public enum ValueEnum {
 	OUTPUT_PREPARE_WAIT,
 	OUTPUT_UPDATE_WAIT,
 	MATRIX_EMULATOR_WINDOW;
+	
+	/**
+	 * Gets the readable name.
+	 *
+	 * @return the readable name
+	 */
+	public String getReadableName() {
+		return name().toLowerCase().replace('_', ' ');
+	}
 }
