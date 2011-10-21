@@ -38,22 +38,46 @@ public enum OutputDeviceEnum {
 	/** The NULL Output. */
 	NULL(NullDevice.class, false);
 	
+	/** The implementing class. */
 	private Class<? extends Output> implementingClass;
+	
+	/** The physical. */
 	private boolean physical;
 	
+	/**
+	 * Instantiates a new output device enum.
+	 *
+	 * @param implementingClass the implementing class
+	 * @param physical the physical
+	 */
 	private OutputDeviceEnum(Class<? extends Output> implementingClass, boolean physical) {
 		this.implementingClass = implementingClass;
 		this.physical = physical;
 	}
 	
+	/**
+	 * Checks if is physical.
+	 *
+	 * @return true, if is physical
+	 */
 	public boolean isPhysical() {
 		return this.physical;
 	}
 	
+	/**
+	 * Gets the implementing class.
+	 *
+	 * @return the implementing class
+	 */
 	public Class<? extends Output> getImplementingClass() {
 		return this.implementingClass;
 	}
 	
+	/**
+	 * Gets the readable name.
+	 *
+	 * @return the readable name
+	 */
 	public String getReadableName() {
 		return this.name() + " (" + this.implementingClass.getSimpleName() + ")";
 	}

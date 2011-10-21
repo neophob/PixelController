@@ -38,14 +38,20 @@ import com.neophob.sematrix.jmx.ValueEnum;
  */
 public class PixelControllerOutput implements PixelControllerElement {
 	
+	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerOutput.class.getName());
 
 	/** The all outputs. */
 	private List<Output> allOutputs;
 	
+	/** The executor service. */
 	private ExecutorService executorService;
-	private CountDownLatch update_endGate;
-	private CountDownLatch prepare_endGate;
+	
+	/** The update end gate. */
+	private CountDownLatch updateEndGate;
+	
+	/** The prepare end gate. */
+	private CountDownLatch prepareEndGate;
 	
 	/**
 	 * Instantiates a new pixel controller output.
@@ -76,7 +82,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	@Override
 	public void update() {
 		// check if this is the first call of this method
-		if (this.prepare_endGate == null && this.update_endGate == null) {
+		if (this.prepareEndGate == null && this.updateEndGate == null) {
 			// we have to prepare the int[] buffers manually the first time. to not mess up this method
 			// even more the prepare() methods will be called directly without any additional threading
 			// overhead. for the first frame it shouldn't really matter that the outputs have to wait 
@@ -88,9 +94,9 @@ public class PixelControllerOutput implements PixelControllerElement {
 		
 		// wait for the outputs to finish their prepare() methods from the previous call of this method
 		long startTime = System.currentTimeMillis();
-		if (this.prepare_endGate != null) {
+		if (this.prepareEndGate != null) {
 			try {
-				this.prepare_endGate.await();
+				this.prepareEndGate.await();
 			} catch (InterruptedException e) {
 				LOG.log(Level.SEVERE, "waiting for all outputs to finish their prepare() method got interrupted!", e);
 			}
@@ -99,9 +105,9 @@ public class PixelControllerOutput implements PixelControllerElement {
 		
 		// wait for the outputs to finish their update() methods from the previous call of this method
 		startTime = System.currentTimeMillis();
-		if (this.update_endGate != null) {
+		if (this.updateEndGate != null) {
 			try {
-				this.update_endGate.await();
+				this.updateEndGate.await();
 			} catch (InterruptedException e) {
 				LOG.log(Level.SEVERE, "waiting for all outputs to finish their update() method got interrupted!", e);
 			}
@@ -119,10 +125,10 @@ public class PixelControllerOutput implements PixelControllerElement {
 		
 		// create countDownLatches used to call all update() and prepare() methods simultaneously
 		// and to block until all calls have been finished via the end gate instances
-		final CountDownLatch update_startGate = new CountDownLatch(1);
-		this.update_endGate = new CountDownLatch(this.getNumberOfPhysicalOutputs());
-		final CountDownLatch prepare_startGate = new CountDownLatch(1);
-		this.prepare_endGate = new CountDownLatch(this.allOutputs.size());
+		final CountDownLatch updateStartGate = new CountDownLatch(1);
+		this.updateEndGate = new CountDownLatch(this.getNumberOfPhysicalOutputs());
+		final CountDownLatch prepareStartGate = new CountDownLatch(1);
+		this.prepareEndGate = new CountDownLatch(this.allOutputs.size());
 		
 		// construct two runnable instance for each output and schedule them
 		for (final Output output: this.allOutputs) {
@@ -131,13 +137,13 @@ public class PixelControllerOutput implements PixelControllerElement {
 				@Override
 				public void run() {
 					try {
-						prepare_startGate.await();
+						prepareStartGate.await();
 						try {
 							long startTime = System.currentTimeMillis();
 							output.prepare();
 							Collector.getInstance().getPixConStat().trackOutputTime(output, OutputValueEnum.PREPARE, System.currentTimeMillis() - startTime);
 						} finally {
-							prepare_endGate.countDown();
+							prepareEndGate.countDown();
 						}
 					} catch (InterruptedException e) {
 						LOG.log(Level.SEVERE, "waiting for start gate of output: " + output.getClass().getSimpleName()  + " got interrupted!", e);
@@ -154,13 +160,13 @@ public class PixelControllerOutput implements PixelControllerElement {
 				@Override
 				public void run() {
 					try {
-						update_startGate.await();
+						updateStartGate.await();
 						try {
 							long startTime = System.currentTimeMillis();
 							output.update();
 							Collector.getInstance().getPixConStat().trackOutputTime(output, OutputValueEnum.UPDATE, System.currentTimeMillis() - startTime);
 						} finally {
-							update_endGate.countDown();
+							updateEndGate.countDown();
 						}
 					} catch (InterruptedException e) {
 						LOG.log(Level.SEVERE, "waiting for start gate of output: " + output.getClass().getSimpleName()  + " got interrupted!", e);
@@ -172,11 +178,11 @@ public class PixelControllerOutput implements PixelControllerElement {
 		
 		// trigger output update() methods and write the 
 		// current int[] buffers to the output instances
-		update_startGate.countDown();
+		updateStartGate.countDown();
 		
 		// trigger output prepare() methods to be ready for
 		// the next run in parallel to the running update() methods
-		prepare_startGate.countDown();
+		prepareStartGate.countDown();
 	}
 	
 	/**
@@ -195,6 +201,11 @@ public class PixelControllerOutput implements PixelControllerElement {
 		allOutputs.add(output);
 	}
 	
+	/**
+	 * Gets the number of physical outputs.
+	 *
+	 * @return the number of physical outputs
+	 */
 	private int getNumberOfPhysicalOutputs() {
 		int outputs = 0;
 		for (Output output : this.allOutputs) {
