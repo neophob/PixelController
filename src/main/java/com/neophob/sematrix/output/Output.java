@@ -51,19 +51,25 @@ public abstract class Output {
 	/** The layout. */
 	protected Layout layout;
 	
+	/** The collector. */
 	protected Collector collector;
 	
-	/** *bit per pixel */
+	/** *bit per pixel. */
 	protected int bpp;
 	
+	/** The current buffer map. */
 	private Map<Integer, int[]> currentBufferMap;
+	
+	/** The prepared buffer map. */
 	private Map<Integer, int[]> preparedBufferMap;
 	
 	/**
 	 * Instantiates a new output.
 	 *
+	 * @param outputDeviceEnum the output device enum
+	 * @param ph the ph
 	 * @param controller the controller
-	 * @param name the name
+	 * @param bpp the bpp
 	 */
 	public Output(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
 		this.outputDeviceEnum = outputDeviceEnum;
@@ -84,12 +90,12 @@ public abstract class Output {
 	}
 	
 	/**
-	 * Update.
+	 * Update the output device
 	 */
 	public abstract void update();
 	
 	/**
-	 * Close.
+	 * Close to output device
 	 */
 	public abstract void close(); 
 
@@ -103,7 +109,10 @@ public abstract class Output {
 		return this.currentBufferMap.get(screenNr);
 	}
 	
-	// fill the the preparedBufferMap instance with int[] buffers for all screens
+
+	/**
+	 * fill the the preparedBufferMap instance with int[] buffers for all screens.
+	 */
 	public void prepare() {
 		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
 			LayoutModel lm = this.layout.getDataForScreen(screen);
@@ -121,6 +130,9 @@ public abstract class Output {
 	}
 
 	// switch currentBufferMap <-> preparedBufferMap instances
+	/**
+	 * Switch buffers.
+	 */
 	public void switchBuffers() {
 		Map<Integer, int[]> currentMap = this.currentBufferMap;
 		this.currentBufferMap = this.preparedBufferMap;
@@ -136,20 +148,26 @@ public abstract class Output {
 	}
 
 	/**
-	 * debug output if possible
+	 * debug output if possible.
 	 */
 	public void logStatistics() {
 		
 	}
 
 	/**
-	 * 
+	 * Gets the bpp.
+	 *
 	 * @return bpp (bit per pixel)
 	 */
 	public int getBpp() {
 		return bpp;
 	}
 	
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public OutputDeviceEnum getType() {
 		return this.outputDeviceEnum;
 	}
