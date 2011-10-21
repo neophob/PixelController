@@ -144,8 +144,7 @@ public class ScalrOld {
 	 */
 	public static BufferedImage resize(BufferedImage src, int targetSize)
 			throws IllegalArgumentException {
-		return resize(src, Method.AUTOMATIC, targetSize, targetSize, false,
-				false);
+		return resize(src, Method.AUTOMATIC, targetSize, targetSize);
 	}
 
 	/**
@@ -170,36 +169,10 @@ public class ScalrOld {
 	 */
 	public static BufferedImage resize(BufferedImage src, Method scalingMethod,
 			int targetSize) throws IllegalArgumentException {
-		return resize(src, scalingMethod, targetSize, targetSize, false, false);
+		return resize(src, scalingMethod, targetSize, targetSize);
 	}
 
-	/**
-	 * Resize a given image (maintaining its proportion) to the target width and
-	 * height using the given scaling method.
-	 * 
-	 * @param src
-	 *            The image that will be scaled.
-	 * @param scalingMethod
-	 *            The method used for scaling the image; preferring speed to
-	 *            quality or a balance of both.
-	 * @param targetWidth
-	 *            The target width that you wish the image to have.
-	 * @param targetHeight
-	 *            The target height that you wish the image to have.
-	 * 
-	 * @return the proportionally scaled image no bigger than the given width
-	 *         and height.
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if <code>scalingMethod</code> is <code>null</code>, if
-	 *             <code>targetWidth</code> is &lt; 0 or if
-	 *             <code>targetHeight</code> is &lt; 0.
-	 */
-	public static BufferedImage resize(BufferedImage src, Method scalingMethod,
-			int targetWidth, int targetHeight) throws IllegalArgumentException {
-		return resize(src, scalingMethod, targetWidth, targetHeight, false,
-				false);
-	}
+
 
 	/**
 	 * Resize a given image (maintaining its proportion) to the target width and
@@ -232,8 +205,7 @@ public class ScalrOld {
 	 *             <code>targetHeight</code> is &lt; 0.
 	 */
 	public static BufferedImage resize(BufferedImage src, Method scalingMethod,
-			int targetWidth, int targetHeight, boolean printDebugInfo,
-			boolean printElapseTimes) throws IllegalArgumentException {
+			int targetWidth, int targetHeight) throws IllegalArgumentException {
 		if (scalingMethod == null)
 			throw new IllegalArgumentException("scalingMethod cannot be null");
 		if (targetWidth < 0)
@@ -245,16 +217,10 @@ public class ScalrOld {
 
 		if (src != null) {
 			long startTime = 0;
-			if (printElapseTimes) {
-				startTime = System.currentTimeMillis();
-			}
+
 			int currentWidth = src.getWidth();
 			int currentHeight = src.getHeight();
 			float ratio = ((float) currentHeight / (float) currentWidth);
-
-			if (printDebugInfo)
-				System.out.println("Source Image Size: " + currentWidth + "x"
-						+ currentHeight + ", Ratio (H/W): " + ratio);
 
 			/*
 			 * The resize operation has to be constrained by the smallest
@@ -303,16 +269,10 @@ public class ScalrOld {
 			 * iterations up-wards.
 			 */
 			if (scalingMethod == Method.AUTOMATIC) {
-				if (targetWidth < AUTOMATIC_THRESHOLD_PX
-						&& targetHeight < AUTOMATIC_THRESHOLD_PX)
+				if (targetWidth < AUTOMATIC_THRESHOLD_PX && targetHeight < AUTOMATIC_THRESHOLD_PX)
 					scalingMethod = Method.QUALITY;
 				else
 					scalingMethod = Method.SPEED;
-
-				if (printDebugInfo)
-					System.out
-							.println("Method AUTOMATIC Specified, Selecting: "
-									+ scalingMethod.name());
 			}
 
 			// Now we scale the image
@@ -441,9 +401,6 @@ public class ScalrOld {
 				}
 			}
 
-			if (printElapseTimes)
-				System.out.println("Image Scaled in "
-						+ (System.currentTimeMillis() - startTime) + "ms");
 		}
 
 		return result;
