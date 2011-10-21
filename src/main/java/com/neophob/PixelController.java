@@ -27,6 +27,7 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.jmx.ValueEnum;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.MatrixEmulator;
@@ -58,6 +59,8 @@ public class PixelController extends PApplet {
 	
 	/** The Constant FPS. */
 	public static final int FPS = 20;
+	
+	private Collector collector;
 
 	/** The output. */
 	private Output output;
@@ -81,8 +84,8 @@ public class PixelController extends PApplet {
 
 		PropertiesHelper ph = new PropertiesHelper(config);
 
-		Collector col = Collector.getInstance();
-		col.init(this, ph);
+		this.collector = Collector.getInstance();
+		this.collector.init(this, ph);
 		frameRate(ph.parseFps());
 		noSmooth();
 		
@@ -90,19 +93,19 @@ public class PixelController extends PApplet {
 		try {
 			switch (outputDeviceEnum) {
 			case PIXELINVADERS:
-				this.output = new PixelInvadersDevice(ph, col.getPixelControllerOutput());
+				this.output = new PixelInvadersDevice(ph, this.collector.getPixelControllerOutput());
 				break;
 			case RAINBOWDUINO:
-				this.output = new RainbowduinoDevice(ph, col.getPixelControllerOutput());
+				this.output = new RainbowduinoDevice(ph, this.collector.getPixelControllerOutput());
 				break;
 			case ARTNET:
-				this.output = new ArtnetDevice(ph, col.getPixelControllerOutput());
+				this.output = new ArtnetDevice(ph, this.collector.getPixelControllerOutput());
 				break;
 			case MINIDMX:
-				this.output = new MiniDmxDevice(ph, col.getPixelControllerOutput());
+				this.output = new MiniDmxDevice(ph, this.collector.getPixelControllerOutput());
 				break;
 			case NULL:
-				this.output = new NullDevice(ph, col.getPixelControllerOutput());
+				this.output = new NullDevice(ph, this.collector.getPixelControllerOutput());
 				break;
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
@@ -121,7 +124,7 @@ public class PixelController extends PApplet {
 		if (ph.startRandommode()) {
 			LOG.log(Level.INFO,"Random Mode enabled");
 			Shuffler.manualShuffleStuff();
-			col.setRandomMode(true);
+			this.collector.setRandomMode(true);
 		}
 		
 		LOG.log(Level.INFO,"--- PixelController Setup END ---");
@@ -134,7 +137,9 @@ public class PixelController extends PApplet {
 		// update all generators
 		Collector.getInstance().updateSystem();
 		// update matrixEmulator instance
+		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
+		this.collector.getPixConStat().trackTime(ValueEnum.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);
 		
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
