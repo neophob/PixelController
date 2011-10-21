@@ -317,16 +317,16 @@ pages = [
     "bounds": [0,0,1,.1],
 },
 
-/* -- multibutton -- */
+/* -- multibutton, there is an error to get the current id -- */
+/* see: http://charlie-roberts.com/Control/forum/topic.php?id=323#post-1003 */
 {
-     "name" : "myButton",
+     "name" : "currentPresent",
      "type" : "MultiButton",
      "bounds": [0,.1,.85,.8],
      "rows" : 12, "columns" : 8,
      "mode" : "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "onvaluechange": "page2Label.changeValue( 'SELECT PRESENT: '+this.lastTouched.activeNumber );",
 },
 
 /* -- next page --*/
@@ -342,6 +342,30 @@ pages = [
     "stroke": "#7e4000",
 },
 
+/* -- LOAD -- */
+{
+     "name" : "loadPresent",
+     "type" : "Button",
+     "bounds": [.88,.1,.1,.1],
+     "mode" : "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "Load",
+     "labelSize": "18",
+     "oninit": "loadPresent.fillDiv.style.borderWidth = '2px';",
+},
+/* -- SAVE -- */
+{
+     "name" : "savePresent",
+     "type" : "Button",
+     "bounds": [.88,.2,.1,.1],
+     "mode" : "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "label": "Save",
+     "labelSize": "18",     
+     "oninit": "savePresent.fillDiv.style.borderWidth = '2px';",
+},
 
 ],
 

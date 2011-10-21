@@ -29,50 +29,81 @@ import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
+ * The Class ColorScroll.
  *
  * @author McGyver
  */
 public class ColorScroll extends Generator {
 
+    /** The fade. */
     private int fade;
+    
+    /** The scroll mode. */
     private ScrollMode scrollMode;
+    
+    /** The color map. */
     private List<Color> colorMap;
+    
+    /** The frame count. */
     private int frameCount;
+    
+    /** The max frames. */
     private int maxFrames;
 
+    /** The internal buffer x size2. */
     private int internalBufferXSize2;
+    
+    /** The internal buffer y size2. */
     private int internalBufferYSize2;
     
+    
+    /**
+     * The Enum ScrollMode.
+     */
     enum ScrollMode{
-    	LEFT_TO_RIGHT(0),
-    	RIGHT_TO_LEFT(1),
-    	TOP_TO_BOTTOM(2),
-    	BOTTOM_TO_TOP(3),
+	    LEFT_TO_RIGHT(0),
+	    RIGHT_TO_LEFT(1),
+	    TOP_TO_BOTTOM(2),
+	    BOTTOM_TO_TOP(3),
+	    RIGHT_BOTTOM_TO_LEFT_TOP(4),
+	    LEFT_BOTTOM_TO_RIGHT_TOP(5),
+	    RIGHT_TOP_TO_LEFT_BOTTOM(6),
+	    LEFT_TOP_TO_RIGHT_BOTTOM(7),
+	    MIDDLE_TO_SIDES_VERTICAL(8),
+	    SIDES_TO_MIDDLE_VERTICAL(9),
+	    MIDDLE_TO_SIDES_HORIZONTAL(10),
+	    SIDES_TO_MIDDLE_HORIZONTAL(11),
+	    EXPLODE_CIRCLE(12),
+	    IMPLODE_CIRCLE(13);
     	
-    	RIGHT_BOTTOM_TO_LEFT_TOP(4),
-    	LEFT_BOTTOM_TO_RIGHT_TOP(5),
-    	RIGHT_TOP_TO_LEFT_BOTTOM(6),
-    	LEFT_TOP_TO_RIGHT_BOTTOM(7),
+    	/** The mode. */
+	    private int mode;
     	
-    	MIDDLE_TO_SIDES_VERTICAL(8),
-    	SIDES_TO_MIDDLE_VERTICAL(9),
-    	MIDDLE_TO_SIDES_HORIZONTAL(10),
-    	SIDES_TO_MIDDLE_HORIZONTAL(11),
-    	
-    	EXPLODE_CIRCLE(12),
-    	IMPLODE_CIRCLE(13);
-    	
-    	private int mode;
-    	
-    	ScrollMode(int mode) {
+    	/**
+	     * Instantiates a new scroll mode.
+	     *
+	     * @param mode the mode
+	     */
+	    ScrollMode(int mode) {
     		this.mode = mode;
     	}
     	
-    	public int getMode() {
+    	/**
+	     * Gets the mode.
+	     *
+	     * @return the mode
+	     */
+	    public int getMode() {
     		return mode;
     	}
     	 
-    	public static ScrollMode getScrollMode(int nr) {
+    	/**
+	     * Gets the scroll mode.
+	     *
+	     * @param nr the nr
+	     * @return the scroll mode
+	     */
+	    public static ScrollMode getScrollMode(int nr) {
     		for (ScrollMode s: ScrollMode.values()) {
     			if (s.getMode() == nr) {
     				return s;
@@ -85,9 +116,10 @@ public class ColorScroll extends Generator {
     }
     
     /**
-     * Instantiates a new colorscroll
+     * Instantiates a new colorscroll.
      *
      * @param controller the controller
+     * @param colorList the color list
      */
     public ColorScroll(PixelControllerGenerator controller, List<Integer> colorList) {
         super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
@@ -170,8 +202,9 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
-     * @param scrollMode
+     * Sets the scroll mode.
+     *
+     * @param scrollMode the new scroll mode
      */
     void setScrollMode(int scrollMode) {
         this.scrollMode = ScrollMode.getScrollMode(scrollMode);
@@ -179,8 +212,9 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
-     * @param fadeLength
+     * Sets the fade length.
+     *
+     * @param fadeLength the new fade length
      */
     void setFadeLength(int fadeLength) {
         this.fade = fadeLength;
@@ -200,9 +234,10 @@ public class ColorScroll extends Generator {
 	}
     
     /**
-     * 
-     * @param val
-     * @return
+     * Gets the color.
+     *
+     * @param val the val
+     * @return the color
      */
     private int[] getColor(int val) {
         int colornumber = (int) ((Math.round(Math.floor((val + frameCount) / fade))) % colorMap.size());
@@ -226,7 +261,7 @@ public class ColorScroll extends Generator {
     
 
     /**
-     * 
+     * Left to right.
      */
     private void leftToRight() {
         int ySize = internalBufferYSize;
@@ -241,7 +276,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Right to left.
      */
     private void rightToLeft() {
         int ySize = internalBufferYSize;
@@ -257,7 +292,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Top to bottom.
      */
     private void topToBottom() {
         int ySize = internalBufferXSize;
@@ -272,7 +307,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Bottom to top.
      */
     private void bottomToTop() {
         int ySize = internalBufferXSize;
@@ -286,7 +321,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Right bottom to left top.
      */
     private void rightBottomToLeftTop() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
@@ -310,7 +345,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Left bottom to right top.
      */
     private void leftBottomToRightTop() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
@@ -333,7 +368,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Right top to left bottom.
      */
     private void rightTopToLeftBottom() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
@@ -356,7 +391,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Left top to right bottom.
      */
     private void leftTopToRightBottom() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
@@ -379,7 +414,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Middle to sides vertical.
      */
     private void middleToSidesVertical() {
         int ySize = internalBufferYSize;
@@ -395,7 +430,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Sides to middle vertical.
      */
     private void sidesToMiddleVertical() {
         int ySize = internalBufferYSize;
@@ -412,7 +447,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Middle to sides horizontal.
      */
     private void middleToSidesHorizontal() {
         int xSize = internalBufferXSize;
@@ -429,7 +464,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Sides to middle horizontal.
      */
     private void sidesToMiddleHorizontal() {
         int xSize = internalBufferXSize;
@@ -447,7 +482,7 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
+     * Implode circle.
      */
     private void implodeCircle() {
 
@@ -508,7 +543,7 @@ public class ColorScroll extends Generator {
     }
     
     /**
-     * 
+     * Explode circle.
      */
     private void explodeCircle() {
 
@@ -569,12 +604,11 @@ public class ColorScroll extends Generator {
     }
 
     /**
-     * 
-     * @param x
-     * @param y
-     * @param R
-     * @param G
-     * @param B
+     * Sets the pixel.
+     *
+     * @param x the x
+     * @param y the y
+     * @param col the col
      */
     private void setPixel(int x, int y, int[] col) {
         if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
