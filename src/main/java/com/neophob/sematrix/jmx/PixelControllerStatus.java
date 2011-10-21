@@ -37,33 +37,54 @@ import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 
 /**
- * 
- * @author michu
+ * The Class PixelControllerStatus.
  *
+ * @author michu
  */
 public class PixelControllerStatus implements PixelControllerStatusMBean {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
 	
+	/** The Constant JMX_BEAN_NAME. */
 	public static final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
+	/** The Constant VERSION. */
 	private static final float VERSION = 1.1f;
+	
+	/** The Constant SECONDS. */
 	private static final int SECONDS = 10;
-	private static long COOL_DOWN_TIMESTAMP = System.currentTimeMillis();
+		
+	/** The Constant COOL_DOWN_MILLISECONDS. */
 	private static final int COOL_DOWN_MILLISECONDS = 3000;
 	
+	private static long coolDownTimestamp = System.currentTimeMillis();
+
+	/** The configured fps. */
 	private int configuredFps;
+	
+	/** The current fps. */
 	private float currentFps;
+	
+	/** The frame count. */
 	private long frameCount;
+	
+	/** The start time. */
 	private long startTime;
 	
+	/** The buffers. */
 	private Map<ValueEnum, CircularFifoBuffer> buffers;
+	
+	/** The output buffers. */
 	private Map<Output, Map<OutputValueEnum, CircularFifoBuffer>> outputBuffers;
+	
+	/** The output list. */
 	private List<Output> outputList;
 	
 	/**
-	 * Register the JMX Bean
+	 * Register the JMX Bean.
+	 *
+	 * @param configuredFps the configured fps
 	 */
 	public PixelControllerStatus(int configuredFps) {
 		LOG.log(Level.INFO, "Initialize the PixelControllerStatus JMX Bean");
@@ -93,54 +114,94 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getVersion()
+	 */
 	@Override
 	public float getVersion() {
 		return VERSION;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getCurrentFps()
+	 */
 	@Override
 	public float getCurrentFps() {
 		return currentFps;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getConfiguredFps()
+	 */
 	@Override
 	public float getConfiguredFps() {
 		return this.configuredFps;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getRecordedMilliSeconds()
+	 */
 	@Override
 	public long getRecordedMilliSeconds() {
 		return Float.valueOf(((this.configuredFps * SECONDS) / this.currentFps) * 1000).longValue();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getAverageTime(com.neophob.sematrix.jmx.ValueEnum)
+	 */
 	@Override
 	public float getAverageTime(ValueEnum valueEnum) {
 		return this.getBufferValue(this.buffers.get(valueEnum));
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getOutputAverageTime(int, com.neophob.sematrix.jmx.OutputValueEnum)
+	 */
 	@Override
 	public float getOutputAverageTime(int output, OutputValueEnum outputValueEnum) {
 		return this.getBufferValue(this.outputBuffers.get(this.outputList.get(output)).get(outputValueEnum));
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getFrameCount()
+	 */
 	@Override
 	public long getFrameCount() {
 		return frameCount;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getStartTime()
+	 */
 	@Override
 	public long getStartTime() {
 		return startTime;
 	}
 	
+	/**
+	 * Sets the current fps.
+	 *
+	 * @param currentFps the new current fps
+	 */
 	public void setCurrentFps(float currentFps) {
 		this.currentFps = currentFps;
 	}
 
+	/**
+	 * Sets the frame count.
+	 *
+	 * @param frameCount the new frame count
+	 */
 	public void setFrameCount(long frameCount) {
 		this.frameCount = frameCount;
 	}
 
+	/**
+	 * Track time.
+	 *
+	 * @param valueEnum the value enum
+	 * @param time the time
+	 */
 	public void trackTime(ValueEnum valueEnum, long time) {
 		if (this.ignoreValue()) {
 			return;
@@ -148,6 +209,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.buffers.get(valueEnum).add(time);
 	}
 	
+	/**
+	 * Track output time.
+	 *
+	 * @param output the output
+	 * @param outputValueEnum the output value enum
+	 * @param time the time
+	 */
 	public void trackOutputTime(Output output, OutputValueEnum outputValueEnum, long time) {
 		if (this.ignoreValue()) {
 			return;
@@ -165,10 +233,15 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.outputBuffers.get(output).get(outputValueEnum).add(time);
 	}
 	
+	/**
+	 * Ignore value.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean ignoreValue() {
-		if (COOL_DOWN_TIMESTAMP != -1) {
-			if (System.currentTimeMillis() - COOL_DOWN_TIMESTAMP > (COOL_DOWN_MILLISECONDS)) {
-				COOL_DOWN_TIMESTAMP = -1;
+		if (coolDownTimestamp != -1) {
+			if (System.currentTimeMillis() - coolDownTimestamp > COOL_DOWN_MILLISECONDS) {
+				coolDownTimestamp = -1;
 			} else {
 				return true;
 			}
@@ -177,7 +250,9 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	}
 
 	/**
-	 * @param valueEnum the buffer for that you want to get the average value
+	 * Gets the buffer value.
+	 *
+	 * @param circularFifoBuffer the circular fifo buffer
 	 * @return returns average value of all buffer entries
 	 */
 	private float getBufferValue(CircularFifoBuffer circularFifoBuffer) {
@@ -200,11 +275,17 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getNumberOfOutputs()
+	 */
 	@Override
 	public int getNumberOfOutputs() {
 		return this.outputList.size();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getOutputType(int)
+	 */
 	@Override
 	public OutputDeviceEnum getOutputType(int output) {
 		return this.outputList.get(output).getType();
