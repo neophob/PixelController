@@ -6,7 +6,7 @@ TODO PixelController
 -move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
 -Log output to a file instead the command line
 -more layouts (what kind of layouts?)
--more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
+-WIP more threads! the output gets calculated on the fly, this means wait until the visuals are generated. if they would run in seperate thread, that would be faster...
 -decoupling visual generation from output update, should increase performance
 -WIP create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system

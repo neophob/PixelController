@@ -15,6 +15,40 @@ generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaba
 effectnames=["Off", "Inverter", "Rotozoom", "BeatS H", "BeatS V", "Volumn", "Tint", "Threshold", "Emboss", "Zoom"]
 mixernames=["Off", "AddSat", "Multiply", "Mix", "Neg", "Checkboard", "Multiply", "Xor", "MinusHalf", "Either"]
 
+
+/******* Constants appear on all pages *******/
+
+constants = [
+
+/* -- Refresh GUI Button */
+{
+     "name": "refreshButton",
+     "type": "Button",
+     "x": 0.88, "y": .7,
+     "width": .1, "height": .1,
+     "mode": "contact",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "ontouchstart": "interfaceManager.refreshInterface()",
+     "label": "Refresh GUI",
+     "labelSize": "18",
+},
+/* -- Button for enabling Menu/Toolbar */
+{
+    "name": "tabButton",
+    "type": "Button",
+    "x": 0.88, "y": .81,
+    "width": .1, "height": .1,
+    "mode": "toggle",
+    "color": "#fc8000",
+    "stroke": "#7e4000",
+    "isLocal": true,
+    "ontouchstart": "if(this.value == this.max) { control.showToolbar(); } else { control.hideToolbar(); }",
+    "label": "Menu",
+    "labelSize": "18",
+},
+];
+
 pages = [
 /********** PAGE 1 *************/
 [
@@ -34,10 +68,10 @@ pages = [
 {
     "name": "infoGen",
     "type": "Label",
-    "x": .0, "y": .45,
-    "width": .25, "height": .05,
+    "bounds": [0,.35,.25,.1],
     "value": "Generator: --",
     "verticalCenter": false,
+    "size": "18",
     "align": "left",
 },
 
@@ -45,7 +79,7 @@ pages = [
 {
     "name":"VisualNr",
     "type":"Slider",
-    "x":0.2, "y":0,
+    "x":0.25, "y":0,
     "width":.075, "height":.45,
     "stroke": "#452525",
     "color": "#995555",
@@ -57,10 +91,10 @@ pages = [
 {
     "name": "infoVisual",
     "type": "Label",
-    "x": .2, "y": .45,
-    "width": .25, "height": .1,
+    "bounds": [.25,.35,.25,.1],
     "value": "Visual: --",
     "verticalCenter": false,
+    "size": "18",
     "align": "left",
 },
 
@@ -72,18 +106,18 @@ pages = [
     "x":0, "y":0.5,
     "width":.15, "height":.40,
     "numberOfSliders" : 2,
-    "stroke": "#7e7e62",
     "min" : 0, "max" : 9.9,
+    "stroke": "#7e7e62",
     "color": "#fcfcc4",
     "onvaluechange" : "infoEffect.changeValue( 'Effect: '+ effectnames[ Math.floor(SliderEffect.children[0].value) ] +'/'+ effectnames[ Math.floor(SliderEffect.children[1].value) ] );",
 },
 {
     "name": "infoEffect",
     "type": "Label",
-    "x": .0, "y": .9,
-    "width": .25, "height": .1,
+    "bounds": [0,.8,.25,.1],    
     "value": "Effect: --",
     "verticalCenter": false,
+    "size": "18",
     "align": "left",
 },
 
@@ -91,8 +125,7 @@ pages = [
 {
     "name":"SliderMix",
     "type":"Slider",
-    "x":0.2, "y":0.5,
-    "width":.075, "height":.4,
+    "bounds": [.25,.5,.075,.4],    
     "stroke": "#454545",
     "color": "#999999",
     "min": 0, "max": 9.9,
@@ -103,10 +136,11 @@ pages = [
 {
     "name": "infoMix",
     "type": "Label",
-    "x": .2, "y": .9,
+    "x": .25, "y": .8,
     "width": .25, "height": .1,
     "value": "Mixer: --",
     "verticalCenter": false,
+    "size": "18",
     "align": "left",
 },
 
@@ -140,16 +174,16 @@ pages = [
     "type":"Knob",
     "x":.65, "y":.25,
     "radius":.145,
-    "color": "#557755",
-    "stroke": "#335533",
+    "stroke": "#7e7e62",
+    "color": "#fcfcc4",
 },
 {
     "name":"knobRotozoom",
     "type":"Knob",
     "x":.8, "y":.25,
     "radius":.145,
-    "color": "#557755",
-    "stroke": "#335533",  
+    "stroke": "#7e7e62",
+    "color": "#fcfcc4",
     "centerZero" : true, 
 },
 /* -- Activate Tint Effect on all Outputs Button */
@@ -158,10 +192,11 @@ pages = [
      "type": "Button",
      "x": 0.5, "y": .25,
      "width": .145, "height": .08,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",
+     "mode": "contact",
+     "stroke": "#7e7e62",
+     "color": "#fcfcc4",
      "label": "ACTIVATE TINT FX",
+     "labelSize": "14",
      "oninit": "activateTintButton.fillDiv.style.borderWidth = '2px';",
 },
 {
@@ -169,10 +204,11 @@ pages = [
      "type": "Button",
      "x": 0.5, "y": .33,
      "width": .145, "height": .08,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",
+     "mode": "contact",
+     "stroke": "#7e7e62",
+     "color": "#fcfcc4",
      "label": "ACTIVATE THRESHOLD FX",
+     "labelSize": "14",
      "oninit": "activateTresholdButton.fillDiv.style.borderWidth = '2px';",
 },
 {
@@ -180,10 +216,11 @@ pages = [
      "type": "Button",
      "x": 0.5, "y": .41,
      "width": .145, "height": .08,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",
+     "mode": "contact",
+     "stroke": "#7e7e62",
+     "color": "#fcfcc4",
      "label": "ACTIVATE ROTOZOOM FX",
+     "labelSize": "14",
      "oninit": "activateRotozoomButton.fillDiv.style.borderWidth = '2px';",
 },
 
@@ -197,6 +234,7 @@ pages = [
      "color": "#fc8000",
      "stroke": "#7e4000",
      "label": "RANDOM MODE",
+     "labelSize": "18",
      "oninit": "randomToggleButton.fillDiv.style.borderWidth = '2px';",          
 },
 /* -- RANDOM Buttons */
@@ -205,10 +243,11 @@ pages = [
      "type": "Button",
      "x":.5, "y":.58,
      "width":.145, "height":.08,
-     "mode": "momentary",
+     "mode": "contact",
      "color": "#fc8000",
      "stroke": "#7e4000",
      "label": "RANDOM",
+     "labelSize": "18",
      "oninit": "fireRandomButton.fillDiv.style.borderWidth = '2px';",     
 },
 /* -- RANDOM PRESENT Buttons */
@@ -217,10 +256,11 @@ pages = [
      "type": "Button",
      "x":.5, "y":.66,
      "width":.145, "height":.08,
-     "mode": "momentary",
+     "mode": "contact",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "label": "RND PRESENT", 
+     "label": "RANDOM PRESENT",
+     "labelSize": "18",
 	 "oninit": "fireRandomPresentButton.fillDiv.style.borderWidth = '2px';",    
 },
 /* -- Visual 1 to ALL OUTPUTS Button */
@@ -229,10 +269,11 @@ pages = [
      "type": "Button",
      "x": .65, "y": .5,
      "width": .15, "height": .08,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",
+     "mode": "contact",
+     "stroke": "#452525",
+     "color": "#995555",
      "label": "VISUAL 1 TO ALL PANELS",
+     "labelSize": "14",
 	 "oninit": "visualOneToAll.fillDiv.style.borderWidth = '2px';",     
 },
 /* -- Visual 2 to ALL OUTPUTS Button */
@@ -241,43 +282,68 @@ pages = [
      "type": "Button",
      "x": .65, "y": .58,
      "width": .15, "height": .08,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",
+     "mode": "contact",
+     "stroke": "#452525",
+     "color": "#995555",
      "label": "VISUAL 2 TO ALL PANELS", 
+     "labelSize": "14",
 	 "oninit": "visualTwoToAll.fillDiv.style.borderWidth = '2px';",
 },
-/* -- Refresh GUI Button */
+
+/* -- next page --*/
 {
-     "name": "refreshButton",
-     "type": "Button",
-     "x": 0.88, "y": .7,
-     "width": .1, "height": .1,
-     "mode": "momentary",
-     "color": "#fc8000",
-     "stroke": "#7e4000",
-     "ontouchstart": "interfaceManager.refreshInterface()",
-     "label": "REFRESH GUI",
-},
-/* -- Button for enabling Menu/Toolbar */
-{
-    "name": "tabButton",
+    "name": "nextB",
     "type": "Button",
-    "x": 0.88, "y": .81,
-    "width": .1, "height": .1,
-    "mode": "toggle",
+    "bounds": [.88,.59,.1,.1], 
+    "label": "Presents",
+    "labelSize": "18",
+    "mode": "contact",    
+    "ontouchstart": "control.changePage(1);",
     "color": "#fc8000",
     "stroke": "#7e4000",
-    "isLocal": true,
-    "ontouchstart": "if(this.value == this.max) { control.showToolbar(); } else { control.hideToolbar(); }",
-    "label": "MENU"
+},
+
+],
+
+/********** PAGE 2 *************/
+[
+
+/* -- label -- */
+{
+    "name":"page2Label",
+    "type":"Label",
+    "value":"SELECT PRESENT",
+    "size": "40",
+    "bounds": [0,0,1,.1],
+},
+
+/* -- multibutton -- */
+{
+     "name" : "myButton",
+     "type" : "MultiButton",
+     "bounds": [0,.1,.85,.8],
+     "rows" : 12, "columns" : 8,
+     "mode" : "momentary",
+     "color": "#fc8000",
+     "stroke": "#7e4000",
+     "onvaluechange": "page2Label.changeValue( 'SELECT PRESENT: '+this.lastTouched.activeNumber );",
+},
+
+/* -- next page --*/
+{
+    "name": "nextA",
+    "type": "Button",
+    "bounds": [.88,.59,.1,.1], 
+    "label": "Control",
+    "labelSize": "18",
+    "mode": "contact",    
+    "ontouchstart": "control.changePage(0);",
+    "color": "#fc8000",
+    "stroke": "#7e4000",
 },
 
 
-
-]
-
-/********** PAGE 2 *************/
+],
 
 ];
 
