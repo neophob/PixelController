@@ -51,8 +51,6 @@ public class MatrixData {
 	/** the internal buffer is 8 times larger than the output buffer. */
 	private static final int INTERNAL_BUFFER_SIZE = 8;
 	
-
-	//output buffer
 	/** The device x size. */
 	private int deviceXSize;
 	
@@ -62,6 +60,7 @@ public class MatrixData {
 	/** The device size. */
 	private int deviceSize;
 	
+	/** This map is used to store temporary images */
 	private Map<Output, PImage> pImagesMap;
 	
 	/**
@@ -184,14 +183,13 @@ public class MatrixData {
 	 * @param deviceYSize the device y size
 	 * @return RESIZED image
 	 */
-	public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize) {
-		
+	public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize) {		
 		//processing RESIZE is buggy!
 		//return ResizeImageHelper.processingResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
 		
 		//Area Average Filter - nice output but slow!
 		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
-//	return new int[deviceXSize* deviceYSize];	
+		//return new int[deviceXSize* deviceYSize];	
 
 		Resize r = Collector.getInstance().getPixelControllerResize().getResize(resizeName);
 		return r.getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
