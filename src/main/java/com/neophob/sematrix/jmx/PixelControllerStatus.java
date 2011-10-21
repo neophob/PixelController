@@ -19,8 +19,10 @@
 package com.neophob.sematrix.jmx;
 
 import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +32,9 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
+
+import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.OutputDeviceEnum;
 
 /**
  * 
@@ -53,15 +58,9 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private long frameCount;
 	private long startTime;
 	
-	private Map<BufferEnum, CircularFifoBuffer> buffers;
-	
-	private enum BufferEnum {
-		GENERATOR,
-		EFFECT,
-		OUTPUT,
-		FADER,
-		INTERNAL_WINDOW;
-	}
+	private Map<ValueEnum, CircularFifoBuffer> buffers;
+	private Map<Output, Map<OutputValueEnum, CircularFifoBuffer>> outputBuffers;
+	private List<Output> outputList;
 	
 	/**
 	 * Register the JMX Bean
@@ -72,10 +71,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.configuredFps = configuredFps;
 		
 		// initialize all buffers 
-		this.buffers = new HashMap<BufferEnum, CircularFifoBuffer>();
-		for (BufferEnum bufferenum : BufferEnum.values()) {
-			this.buffers.put(bufferenum, new CircularFifoBuffer(this.configuredFps * SECONDS));
+		this.buffers = new HashMap<ValueEnum, CircularFifoBuffer>();
+		for (ValueEnum valueEnum : ValueEnum.values()) {
+			this.buffers.put(valueEnum, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
+		this.outputBuffers = new HashMap<Output, Map<OutputValueEnum, CircularFifoBuffer>>();
+		this.outputList = new ArrayList<Output>();
+
 		startTime = System.currentTimeMillis();
 		
 		// register MBean
@@ -112,28 +114,13 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	}
 
 	@Override
-	public float getGeneratorUpdateTime() {
-		return this.getBufferValue(BufferEnum.GENERATOR);
+	public float getAverageTime(ValueEnum valueEnum) {
+		return this.getBufferValue(this.buffers.get(valueEnum));
 	}
-
+	
 	@Override
-	public float getEffectUpdateTime() {
-		return this.getBufferValue(BufferEnum.EFFECT);
-	}
-
-	@Override
-	public float getOutputUpdateTime() {
-		return this.getBufferValue(BufferEnum.OUTPUT);
-	}
-
-	@Override
-	public float getFaderUpdateTime() {
-		return this.getBufferValue(BufferEnum.FADER);
-	}
-
-	@Override
-	public float getInternalWindowUpdateTime() {
-		return this.getBufferValue(BufferEnum.INTERNAL_WINDOW);
+	public float getOutputAverageTime(int output, OutputValueEnum outputValueEnum) {
+		return this.getBufferValue(this.outputBuffers.get(this.outputList.get(output)).get(outputValueEnum));
 	}
 
 	@Override
@@ -154,57 +141,30 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.frameCount = frameCount;
 	}
 
-	public void addGeneratorUpdateTime(long generatorUpdateTime) {
-		if (!ignoreValue()) {
-			this.buffers.get(BufferEnum.GENERATOR).add(generatorUpdateTime);
+	public void trackTime(ValueEnum valueEnum, long time) {
+		if (this.ignoreValue()) {
+			return;
 		}
+		this.buffers.get(valueEnum).add(time);
 	}
-
-	public void addEffectUpdateTime(long effectUpdateTime) {
-		if (!ignoreValue()) {
-			this.buffers.get(BufferEnum.EFFECT).add(effectUpdateTime);
+	
+	public void trackOutputTime(Output output, OutputValueEnum outputValueEnum, long time) {
+		if (this.ignoreValue()) {
+			return;
 		}
+		// make sure the output instance is known inside the outputBuffers instance
+		if (!this.outputBuffers.containsKey(output)) {
+			this.outputBuffers.put(output, new HashMap<OutputValueEnum, CircularFifoBuffer>());
+			this.outputList.add(output);
+		}
+		// make sure a circularFifoBuffer instance was construct for the given outputValueEnum
+		if (!this.outputBuffers.get(output).containsKey(outputValueEnum)) {
+			this.outputBuffers.get(output).put(outputValueEnum, new CircularFifoBuffer(this.configuredFps * SECONDS));
+		}
+		// add time to internal buffer instance
+		this.outputBuffers.get(output).get(outputValueEnum).add(time);
 	}
-
-	public void addOutputUpdateTime(long outputUpdateTime) {
-		if (!ignoreValue()) {
-			this.buffers.get(BufferEnum.OUTPUT).add(outputUpdateTime);
-		}
-	}
-
-	public void addFaderUpdateTime(long faderUpdateTime) {
-		if (!ignoreValue()) {
-			this.buffers.get(BufferEnum.FADER).add(faderUpdateTime);
-		}
-	}
-
-	public void addInternalWindowUpdateTime(long udateTime) {
-		if (!ignoreValue()) {
-			this.buffers.get(BufferEnum.INTERNAL_WINDOW).add(udateTime);
-		}
-	}
-
-	/**
-	 * @param bufferEnum the buffer for that you want to get the average value
-	 * @return returns average value of all buffer entries
-	 */
-	private float getBufferValue(BufferEnum bufferEnum) {
-		CircularFifoBuffer buffer = this.buffers.get(bufferEnum);
-		// calculate sum of all buffer values
-		float bufferSum = 0f;
-		@SuppressWarnings("rawtypes")
-		Iterator iterator = buffer.iterator();
-		while (iterator.hasNext()) {
-			bufferSum += (Long) iterator.next();
-		}
-		// return average value
-		float result = bufferSum / buffer.size();
-		if (Float.isNaN(result)) {
-			result = 0f;
-		}
-		return result;
-	}
-
+	
 	private boolean ignoreValue() {
 		if (COOL_DOWN_TIMESTAMP != -1) {
 			if (System.currentTimeMillis() - COOL_DOWN_TIMESTAMP > (COOL_DOWN_MILLISECONDS)) {
@@ -214,5 +174,39 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * @param valueEnum the buffer for that you want to get the average value
+	 * @return returns average value of all buffer entries
+	 */
+	private float getBufferValue(CircularFifoBuffer circularFifoBuffer) {
+		// handle null instance
+		if (circularFifoBuffer == null) {
+			return 0f;
+		}
+		// calculate sum of all buffer values
+		float bufferSum = 0f;
+		@SuppressWarnings("rawtypes")
+		Iterator iterator = circularFifoBuffer.iterator();
+		while (iterator.hasNext()) {
+			bufferSum += (Long) iterator.next();
+		}
+		// return average value
+		float result = bufferSum / circularFifoBuffer.size();
+		if (Float.isNaN(result)) {
+			result = 0f;
+		}
+		return result;
+	}
+
+	@Override
+	public int getNumberOfOutputs() {
+		return this.outputList.size();
+	}
+
+	@Override
+	public OutputDeviceEnum getOutputType(int output) {
+		return this.outputList.get(output).getType();
 	}
 }

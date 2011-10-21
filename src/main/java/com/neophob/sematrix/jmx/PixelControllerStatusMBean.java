@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.jmx;
 
+import com.neophob.sematrix.output.OutputDeviceEnum;
+
 /**
  * JMX Interface to provide basic statistics
  * @author michu
@@ -50,35 +52,17 @@ public interface PixelControllerStatusMBean {
 	long getFrameCount();
 	
 	/**
-	 * how long does it take to update all generators?
-	 * @return time in ms
+	 * how long does it take to update the component defined by the given valueEnum instance?
+	 * @return average time in ms for the duration of the getRecordedMilliSeconds() method
 	 */
-	float getGeneratorUpdateTime();
+	float getAverageTime(ValueEnum valueEnum);
 	
 	/**
-	 * how long does it take to update all effects?
-	 * @return time in ms
+	 * how long does it take to update the output aspect defined by the given outputValueEnum instance?
+	 * @return average time in ms for the duration of the getRecordedMilliSeconds() method
 	 */
-	float getEffectUpdateTime();
-
-	/**
-	 * how long does it take to update all output devices?
-	 * @return time in ms
-	 */
-	float getOutputUpdateTime();
-
-	/**
-	 * how long does it take to update all faders?
-	 * @return time in ms
-	 */
-	float getFaderUpdateTime();
-
-	/**
-	 * how long does it take to update the internal debug window?
-	 * @return time in ms
-	 */
-	float getInternalWindowUpdateTime();
-
+	float getOutputAverageTime(int output, OutputValueEnum outputValueEnum);
+	
 	/**
 	 * when was the app started?
 	 * @return time in ms
@@ -89,4 +73,14 @@ public interface PixelControllerStatusMBean {
 	 * @return the number of milliseconds from that the average values will be calculated
 	 */
 	long getRecordedMilliSeconds();
+
+	/**
+	 * @return returns the number of registered output instances
+	 */
+	int getNumberOfOutputs();
+
+	/**
+	 * @return returns the type of the given output instance position
+	 */
+	OutputDeviceEnum getOutputType(int output);
 }

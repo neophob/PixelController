@@ -37,6 +37,7 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
+import com.neophob.sematrix.jmx.ValueEnum;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
@@ -276,15 +277,15 @@ public final class Collector {
 		for (int i=0; i<u; i++) {
 			pixelControllerGenerator.update();			
 		}
-		pixConStat.addGeneratorUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.trackTime(ValueEnum.GENERATOR, System.currentTimeMillis()-l);
 		
 		l = System.currentTimeMillis();
 		pixelControllerEffect.update();
-		pixConStat.addEffectUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.trackTime(ValueEnum.EFFECT, System.currentTimeMillis()-l);
 		
 		l = System.currentTimeMillis();
 		pixelControllerOutput.update();
-		pixConStat.addOutputUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.trackTime(ValueEnum.OUTPUT_SCHEDULE, System.currentTimeMillis()-l);
 				
 		//cleanup faders
 		l = System.currentTimeMillis();
@@ -295,7 +296,7 @@ public final class Collector {
 				fader.cleanUp();
 			}
 		}
-		pixConStat.addFaderUpdateTime(System.currentTimeMillis()-l);
+		pixConStat.trackTime(ValueEnum.FADER, System.currentTimeMillis()-l);
 		
 		if (randomMode) {
 			Shuffler.shuffleStuff();

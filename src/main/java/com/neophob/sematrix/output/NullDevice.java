@@ -43,8 +43,6 @@ public class NullDevice extends Output {
 	public void update() {
 		//nothing todo
 	}
-
-
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.Output#close()
@@ -53,5 +51,4 @@ public class NullDevice extends Output {
 	public void close() {
 		//nothing todo
 	}
-
 }
