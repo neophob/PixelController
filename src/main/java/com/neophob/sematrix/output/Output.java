@@ -114,7 +114,7 @@ public abstract class Output {
 				buffer = this.matrixData.getScreenBufferForDevice(v, map);
 			} else {
 				Visual v = this.collector.getVisual(lm.getFxInput());
-				buffer = this.matrixData.getScreenBufferForDevice(v, lm, map);
+				buffer = this.matrixData.getScreenBufferForDevice(v, lm, map, this);
 			}
 			this.preparedBufferMap.put(Integer.valueOf(screen), buffer);
 		}
