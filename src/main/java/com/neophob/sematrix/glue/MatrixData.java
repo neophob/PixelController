@@ -158,8 +158,8 @@ public class MatrixData {
 		// PImage instance with every method call.
 		PImage tmpImage = this.pImagesMap.get(output);
 		if (tmpImage==null || tmpImage.width != getBufferXSize()) {
-		tmpImage = Collector.getInstance().getPapplet().createImage(getBufferXSize(), getBufferYSize(), PApplet.RGB);
-		this.pImagesMap.put(output, tmpImage);
+			tmpImage = Collector.getInstance().getPapplet().createImage(getBufferXSize(), getBufferYSize(), PApplet.RGB);
+			this.pImagesMap.put(output, tmpImage);
 		} 
 		
 		tmpImage.loadPixels();

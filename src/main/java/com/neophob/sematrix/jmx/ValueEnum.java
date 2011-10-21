@@ -1,0 +1,12 @@
+package com.neophob.sematrix.jmx;
+
+public enum ValueEnum {
+	GENERATOR,
+	EFFECT,
+	OUTPUT_SCHEDULE,
+	FADER,
+	DEBUG_WINDOW,
+	OUTPUT_PREPARE_WAIT,
+	OUTPUT_UPDATE_WAIT,
+	MATRIX_EMULATOR_WINDOW;
+}

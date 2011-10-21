@@ -113,7 +113,7 @@ public final class PixConClientJmx {
 		System.out.println("\nThe following average times have been collected during the last " + DurationFormatUtils.formatDuration(mbeanProxy.getRecordedMilliSeconds(), "ss.SSS") + " seconds:");
 		for (ValueEnum valueEnum : ValueEnum.values()) {
 			System.out.printf("%-25s: %3.3fms\n",
-					valueEnum.getReadableName(),
+					valueEnum.toString(),//.getReadableName(),
 					mbeanProxy.getAverageTime(valueEnum)
 			);
 		}
@@ -123,7 +123,7 @@ public final class PixConClientJmx {
 			System.out.println("\nOuput-specific average times for output #" + (output+1) + ": " + mbeanProxy.getOutputType(output).getReadableName());
 			for (OutputValueEnum outputValueEnum : OutputValueEnum.values()) {
 				System.out.printf("   %-22s: %3.3fms\n",
-						outputValueEnum.getReadableName(),
+						outputValueEnum.toString(),//.getReadableName(),
 						mbeanProxy.getOutputAverageTime(output, outputValueEnum)
 				);
 			}
