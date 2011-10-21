@@ -48,7 +48,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	
 	public static final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
-	private static final float VERSION = 1.04f;
+	private static final float VERSION = 1.1f;
 	private static final int SECONDS = 10;
 	private static long COOL_DOWN_TIMESTAMP = System.currentTimeMillis();
 	private static final int COOL_DOWN_MILLISECONDS = 3000;
