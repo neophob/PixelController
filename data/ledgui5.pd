@@ -1,4 +1,4 @@
-#N canvas 318 50 954 558 10;
+#N canvas 899 105 954 558 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -20,19 +20,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 1568 1;
+-262144 -1 -1 1556 1;
 #X obj 33 71 cnv 15 140 160 empty empty //Tint 20 12 0 14 -262130 -66577
 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -257985
--258113 -258113 109 1;
+-258113 -258113 3100 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--4034 -4034 936 1;
+-4034 -4034 3100 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--4160 -4160 2978 1;
+-4160 -4160 3100 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -40,7 +40,7 @@
 #X obj 33 221 cnv 15 140 70 empty empty //Rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 2478 1;
+16 64 12 -262144 -33289 -1 1550 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -169,7 +169,7 @@
 #X coords 0 -1 1 1 205 100 1 50 50;
 #X restore 350 287 pd random;
 #X obj 65 -4 hradio 22 1 0 5 s_current_visual r_current_visual current_visual
-6 -8 0 12 -258113 -86277 -1 1;
+6 -8 0 12 -258113 -86277 -1 0;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
 #N canvas 327 22 953 523 network 0;
@@ -763,8 +763,8 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 39 0 37 0;
 #X coords 0 -1 1 1 205 110 1 50 50;
 #X restore 350 173 pd network;
-#X obj -187 9 vradio 15 1 0 17 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
--1 -1 12;
+#X obj -187 9 vradio 15 1 0 18 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
+-1 -1 16;
 #X text -170 7 Off;
 #X text -170 23 Blinken;
 #X text -170 38 Image;
@@ -779,10 +779,10 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text -169 203 Frequency;
 #X text -169 218 Drops;
 #X text -170 158 Image Zoomer;
-#X obj -73 9 vradio 15 1 0 17 s_gen_b1 r_gen_b1 Generator2 0 -8 0 12
--203904 -1 -1 10;
+#X obj -73 9 vradio 15 1 0 18 s_gen_b1 r_gen_b1 Generator2 0 -8 0 12
+-203904 -1 -1 0;
 #X obj -186 302 vradio 15 1 0 10 s_fx1 r_fx1 Effect1 0 -8 0 12 -262130
--1 -1 8;
+-1 -1 0;
 #X text -166 300 Off;
 #X text -167 317 Inverter;
 #X text -166 331 Rotozoom;
@@ -794,7 +794,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text -165 420 Emboss;
 #X text -165 436 Zoom;
 #X obj -74 302 vradio 15 1 0 10 s_fx_b1 r_fx_b1 Effect2 0 -8 0 12 -262130
--1 -1 4;
+-1 -1 0;
 #N canvas 401 146 727 402 presentStuff 0;
 #X obj 491 105 r s_save_preset;
 #X msg 491 70 send LOAD_PRESENT;
@@ -816,7 +816,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X floatatom 327 77 5 0 0 0 - r_sel s_sel;
 #X obj 248 327 s r_sel;
 #X obj 70 74 hsl 250 25 0 127 0 0 empty empty empty -2 -8 0 10 -262130
--1 -1 11200 1;
+-1 -1 0 1;
 #X connect 0 0 3 0;
 #X connect 1 0 12 0;
 #X connect 2 0 1 0;
@@ -831,7 +831,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 400 60 1 50 50;
 #X restore -198 461 pd presentStuff;
 #X obj 65 302 vradio 15 1 0 10 s_mix1 r_mix1 Mixer 0 -8 0 12 -99865
--1 -1 8;
+-1 -1 0;
 #X text -55 7 Off;
 #X text -55 23 Blinken;
 #X text -55 38 Image;
@@ -1737,7 +1737,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X restore 19 22 pd xypad;
 #X restore 94 211 pd pad;
 #X obj 216 13 vradio 15 1 0 10 s_fx_output1 r_fx_output1 Effect 0 -8
-0 12 -262130 -1 -1 6;
+0 12 -262130 -1 -1 0;
 #X text 237 11 Off;
 #X text 236 27 Inverter;
 #X text 237 42 Rotozoom;
@@ -1761,7 +1761,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X obj 167 222 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
 Visual_Nr 0 -8 0 12 -261682 -1 -1 0;
 #X obj 59 93 vradio 15 1 0 10 s_output_fx_all r_output_fx_all Effect
-0 -8 0 12 -262130 -1 -1 2;
+0 -8 0 12 -262130 -1 -1 0;
 #X text 80 91 Off;
 #X text 79 107 Inverter;
 #X text 80 122 Rotozoom;
