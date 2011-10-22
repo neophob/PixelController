@@ -312,13 +312,12 @@ pages = [
 {
     "name":"page2Label",
     "type":"Label",
-    "value":"SELECT PRESENT",
+    "value":"SELECTED PRESENT ID: -",
     "size": "40",
     "bounds": [0,0,1,.1],
 },
 
-/* -- multibutton, there is an error to get the current id -- */
-/* see: http://charlie-roberts.com/Control/forum/topic.php?id=323#post-1003 */
+/* -- multibutton -- */
 {
      "name" : "currentPresent",
      "type" : "MultiButton",
@@ -327,6 +326,7 @@ pages = [
      "mode" : "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
+     "onvaluechange": "page2Label.changeValue( 'SELECTED PRESENT ID: ' + this.childID );",
 },
 
 /* -- next page --*/
