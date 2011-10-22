@@ -30,10 +30,10 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.lang.time.DurationFormatUtils;
 
-import com.neophob.sematrix.jmx.OutputValueEnum;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.PixelControllerStatusMBean;
-import com.neophob.sematrix.jmx.TimeMeasure;
+import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.jmx.TimeMeasureItemOutput;
 
 /**
  * JMX Helper
@@ -110,9 +110,10 @@ public final class PixConClientJmx {
 		);
 		
 		// print average timing information
-		System.out.println("\nThe following average times have been collected during the last " + DurationFormatUtils.formatDuration(mbeanProxy.getRecordedMilliSeconds(), "ss.SSS") + " seconds:");
-		for (TimeMeasure valueEnum : TimeMeasure.values()) {
-			System.out.printf("%-25s: %3.3fms\n",
+		System.out.println("\nThe following average times have been collected during the last " 
+		+ DurationFormatUtils.formatDuration(mbeanProxy.getRecordedMilliSeconds(), "ss.SSS") + " seconds:");
+		for (TimeMeasureItemGlobal valueEnum : TimeMeasureItemGlobal.values()) {
+			System.out.printf("   %-22s: %3.3fms\n",
 					valueEnum.getReadableName(),
 					mbeanProxy.getAverageTime(valueEnum)
 			);
@@ -121,7 +122,7 @@ public final class PixConClientJmx {
 		// print output specific timing information
 		for (int output = 0; output < mbeanProxy.getNumberOfOutputs(); output++) {
 			System.out.println("\nOuput-specific average times for output #" + (output+1) + ": " + mbeanProxy.getOutputType(output).getReadableName());
-			for (OutputValueEnum outputValueEnum : OutputValueEnum.values()) {
+			for (TimeMeasureItemOutput outputValueEnum : TimeMeasureItemOutput.values()) {
 				System.out.printf("   %-22s: %3.3fms\n",
 						outputValueEnum.getReadableName(),
 						mbeanProxy.getOutputAverageTime(output, outputValueEnum)

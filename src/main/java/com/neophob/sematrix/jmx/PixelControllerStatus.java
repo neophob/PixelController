@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,11 +73,11 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	/** The start time. */
 	private long startTime;
 	
-	/** The buffers. */
-	private Map<TimeMeasure, CircularFifoBuffer> buffers;
+	/** The global time measure value. */
+	private Map<TimeMeasureItemGlobal, CircularFifoBuffer> timeMeasureMapGlobal;
 	
-	/** The output buffers. */
-	private Map<Output, Map<OutputValueEnum, CircularFifoBuffer>> outputBuffers;
+	/** The output dependent measure values */
+	private Map<Output, Map<TimeMeasureItemOutput, CircularFifoBuffer>> timeMeasureMapOutput;
 	
 	/** The output list. */
 	private List<Output> outputList;
@@ -92,11 +93,11 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.configuredFps = configuredFps;
 		
 		// initialize all buffers 
-		this.buffers = new HashMap<TimeMeasure, CircularFifoBuffer>();
-		for (TimeMeasure valueEnum : TimeMeasure.values()) {
-			this.buffers.put(valueEnum, new CircularFifoBuffer(this.configuredFps * SECONDS));
+		this.timeMeasureMapGlobal = new ConcurrentHashMap<TimeMeasureItemGlobal, CircularFifoBuffer>();
+		for (TimeMeasureItemGlobal timeMeasureItem : TimeMeasureItemGlobal.values()) {
+			this.timeMeasureMapGlobal.put(timeMeasureItem, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
-		this.outputBuffers = new HashMap<Output, Map<OutputValueEnum, CircularFifoBuffer>>();
+		this.timeMeasureMapOutput = new ConcurrentHashMap<Output, Map<TimeMeasureItemOutput, CircularFifoBuffer>>();
 		this.outputList = new ArrayList<Output>();
 
 		startTime = System.currentTimeMillis();
@@ -150,16 +151,16 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getAverageTime(com.neophob.sematrix.jmx.ValueEnum)
 	 */
 	@Override
-	public float getAverageTime(TimeMeasure valueEnum) {
-		return this.getBufferValue(this.buffers.get(valueEnum));
+	public float getAverageTime(TimeMeasureItemGlobal timeMeasure) {
+		return getAverageBufferValue(this.timeMeasureMapGlobal.get(timeMeasure));
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getOutputAverageTime(int, com.neophob.sematrix.jmx.OutputValueEnum)
 	 */
 	@Override
-	public float getOutputAverageTime(int output, OutputValueEnum outputValueEnum) {
-		return this.getBufferValue(this.outputBuffers.get(this.outputList.get(output)).get(outputValueEnum));
+	public float getOutputAverageTime(int output, TimeMeasureItemOutput timeMeasureItem) {
+		return getAverageBufferValue(this.timeMeasureMapOutput.get(this.outputList.get(output)).get(timeMeasureItem));
 	}
 
 	/* (non-Javadoc)
@@ -202,11 +203,11 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 * @param valueEnum the value enum
 	 * @param time the time
 	 */
-	public void trackTime(TimeMeasure valueEnum, long time) {
+	public void trackTime(TimeMeasureItemGlobal valueEnum, long time) {
 		if (this.ignoreValue()) {
 			return;
 		}
-		this.buffers.get(valueEnum).add(time);
+		this.timeMeasureMapGlobal.get(valueEnum).add(time);
 	}
 	
 	/**
@@ -216,25 +217,25 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 * @param outputValueEnum the output value enum
 	 * @param time the time
 	 */
-	public void trackOutputTime(Output output, OutputValueEnum outputValueEnum, long time) {
+	public void trackOutputTime(Output output, TimeMeasureItemOutput timeMeasureItem, long time) {
 		if (this.ignoreValue()) {
 			return;
 		}
 		// make sure the output instance is known inside the outputBuffers instance
-		if (!this.outputBuffers.containsKey(output)) {
-			this.outputBuffers.put(output, new HashMap<OutputValueEnum, CircularFifoBuffer>());
+		if (!this.timeMeasureMapOutput.containsKey(output)) {
+			this.timeMeasureMapOutput.put(output, new HashMap<TimeMeasureItemOutput, CircularFifoBuffer>());
 			this.outputList.add(output);
 		}
 		// make sure a circularFifoBuffer instance was construct for the given outputValueEnum
-		if (!this.outputBuffers.get(output).containsKey(outputValueEnum)) {
-			this.outputBuffers.get(output).put(outputValueEnum, new CircularFifoBuffer(this.configuredFps * SECONDS));
+		if (!this.timeMeasureMapOutput.get(output).containsKey(timeMeasureItem)) {
+			this.timeMeasureMapOutput.get(output).put(timeMeasureItem, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
 		// add time to internal buffer instance
-		this.outputBuffers.get(output).get(outputValueEnum).add(time);
+		this.timeMeasureMapOutput.get(output).get(timeMeasureItem).add(time);
 	}
 	
 	/**
-	 * Ignore value.
+	 * Ignore value if running time < 3 seconds
 	 *
 	 * @return true, if successful
 	 */
@@ -250,12 +251,12 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	}
 
 	/**
-	 * Gets the buffer value.
+	 * Gets the average buffer value.
 	 *
 	 * @param circularFifoBuffer the circular fifo buffer
 	 * @return returns average value of all buffer entries
 	 */
-	private float getBufferValue(CircularFifoBuffer circularFifoBuffer) {
+	private static float getAverageBufferValue(CircularFifoBuffer circularFifoBuffer) {
 		// handle null instance
 		if (circularFifoBuffer == null) {
 			return 0f;

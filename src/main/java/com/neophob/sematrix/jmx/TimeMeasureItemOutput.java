@@ -21,7 +21,7 @@ package com.neophob.sematrix.jmx;
 /**
  * This Enum is used to identify output specific performance values
  */
-public enum OutputValueEnum {
+public enum TimeMeasureItemOutput {
 	
 	PREPARE,
 	UPDATE;

@@ -55,13 +55,13 @@ public interface PixelControllerStatusMBean {
 	 * how long does it take to update the component defined by the given valueEnum instance?
 	 * @return average time in ms for the duration of the getRecordedMilliSeconds() method
 	 */
-	float getAverageTime(TimeMeasure valueEnum);
+	float getAverageTime(TimeMeasureItemGlobal valueEnum);
 	
 	/**
 	 * how long does it take to update the output aspect defined by the given outputValueEnum instance?
 	 * @return average time in ms for the duration of the getRecordedMilliSeconds() method
 	 */
-	float getOutputAverageTime(int output, OutputValueEnum outputValueEnum);
+	float getOutputAverageTime(int output, TimeMeasureItemOutput timeMeasureItem);
 	
 	/**
 	 * when was the app started?

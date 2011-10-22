@@ -21,7 +21,7 @@ package com.neophob.sematrix.jmx;
 /**
  * This Enum is used to identify global performance values
  */
-public enum TimeMeasure {
+public enum TimeMeasureItemGlobal {
 	
 	GENERATOR,
 	EFFECT,

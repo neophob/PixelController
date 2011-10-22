@@ -27,7 +27,7 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
-import com.neophob.sematrix.jmx.TimeMeasure;
+import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.MatrixEmulator;
@@ -139,7 +139,7 @@ public class PixelController extends PApplet {
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
-		this.collector.getPixConStat().trackTime(TimeMeasure.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);
+		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);
 		
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
