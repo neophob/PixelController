@@ -54,15 +54,19 @@ public abstract class Output {
 	/** The collector. */
 	protected Collector collector;
 	
-	/** *bit per pixel. */
+	/** bit per pixel. */
 	protected int bpp;
 	
-	/** The current buffer map. */
-	private Map<Integer, int[]> currentBufferMap;
+	private int totalNrOfOutputBuffers;
+	private int switchBuffer;
 	
-	/** The prepared buffer map. */
-	private Map<Integer, int[]> preparedBufferMap;
-	
+	/** 
+	 * this map contains twice as muchen entries as outputs exists
+	 * for each output device two buffers exists, one to display and
+	 * one to work with 
+	 */
+	private Map<Integer, int[]> bufferMap;
+
 	/**
 	 * Instantiates a new output.
 	 *
@@ -79,14 +83,15 @@ public abstract class Output {
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
 		
-		this.currentBufferMap = new HashMap<Integer, int[]>();
-		this.preparedBufferMap = new HashMap<Integer, int[]>();
+		this.bufferMap = new HashMap<Integer, int[]>();		
+		this.totalNrOfOutputBuffers = this.collector.getNrOfScreens();
+		this.switchBuffer=0;
 		
-		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
-				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp });
-	
 		//add to list
 		controller.addOutput(this);
+
+		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
+				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp });	
 	}
 	
 	/**
@@ -106,38 +111,42 @@ public abstract class Output {
 	 * @return the buffer for screen
 	 */
 	public int[] getBufferForScreen(int screenNr) {
-		return this.currentBufferMap.get(screenNr);
+		return this.bufferMap.get(switchBuffer+screenNr);
 	}
 	
 
 	/**
 	 * fill the the preparedBufferMap instance with int[] buffers for all screens.
 	 */
-	public void prepare() {
+	public void prepareOutputBuffer() {
+		int[] buffer;
+		Visual v;
+		
 		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
 			LayoutModel lm = this.layout.getDataForScreen(screen);
 			OutputMapping map = this.collector.getOutputMappings(screen);
-			int[] buffer;
+			
 			if (lm.screenDoesNotNeedStretching()) {
-				Visual v = this.collector.getVisual(lm.getFxInput());
+				v = this.collector.getVisual(lm.getFxInput());
 				buffer = this.matrixData.getScreenBufferForDevice(v, map);
 			} else {
-				Visual v = this.collector.getVisual(lm.getFxInput());
+				v = this.collector.getVisual(lm.getFxInput());
 				buffer = this.matrixData.getScreenBufferForDevice(v, lm, map, this);
 			}
-			this.preparedBufferMap.put(Integer.valueOf(screen), buffer);
-		}
+			
+			this.bufferMap.put(screen+switchBuffer, buffer);
+		}				
 	}
 
-	// switch currentBufferMap <-> preparedBufferMap instances
 	/**
-	 * Switch buffers.
+	 * switch currentBufferMap <-> preparedBufferMap instances
 	 */
 	public void switchBuffers() {
-		Map<Integer, int[]> currentMap = this.currentBufferMap;
-		this.currentBufferMap = this.preparedBufferMap;
-		this.preparedBufferMap = currentMap;
-		this.preparedBufferMap.clear();
+		if (switchBuffer==0) {
+			switchBuffer = totalNrOfOutputBuffers;
+		} else {
+			switchBuffer = 0;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -151,7 +160,7 @@ public abstract class Output {
 	 * debug output if possible.
 	 */
 	public void logStatistics() {
-		
+		//nothing to do per default
 	}
 
 	/**

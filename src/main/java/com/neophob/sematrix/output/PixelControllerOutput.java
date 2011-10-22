@@ -88,7 +88,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 			// overhead. for the first frame it shouldn't really matter that the outputs have to wait 
 			// until the int[] buffers preparation is done.
 			for (Output output : this.allOutputs) {
-				output.prepare();
+				output.prepareOutputBuffer();
 			}
 		}
 		
@@ -140,7 +140,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 						prepareStartGate.await();
 						try {
 							long startTime = System.currentTimeMillis();
-							output.prepare();
+							output.prepareOutputBuffer();
 							Collector.getInstance().getPixConStat().trackOutputTime(output, TimeMeasureItemOutput.PREPARE, System.currentTimeMillis() - startTime);
 						} finally {
 							prepareEndGate.countDown();
