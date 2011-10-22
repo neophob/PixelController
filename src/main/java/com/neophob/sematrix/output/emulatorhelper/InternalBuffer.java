@@ -31,7 +31,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
-import com.neophob.sematrix.jmx.ValueEnum;
+import com.neophob.sematrix.jmx.TimeMeasure;
 
 
 /**
@@ -163,7 +163,7 @@ public class InternalBuffer extends PApplet {
 		//show mode
 		displayCurrentMode(localY, col.isRandomMode());
 		
-		col.getPixConStat().trackTime(ValueEnum.DEBUG_WINDOW, System.currentTimeMillis()-l);
+		col.getPixConStat().trackTime(TimeMeasure.DEBUG_WINDOW, System.currentTimeMillis()-l);
 	}
 
 	/**

@@ -19,9 +19,9 @@
 package com.neophob.sematrix.jmx;
 
 /**
- * The Enum ValueEnum.
+ * This Enum is used to identify global performance values
  */
-public enum ValueEnum {
+public enum TimeMeasure {
 	
 	GENERATOR,
 	EFFECT,

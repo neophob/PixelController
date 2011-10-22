@@ -19,7 +19,7 @@
 package com.neophob.sematrix.jmx;
 
 /**
- * The Enum OutputValueEnum.
+ * This Enum is used to identify output specific performance values
  */
 public enum OutputValueEnum {
 	

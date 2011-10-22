@@ -33,7 +33,7 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import com.neophob.sematrix.jmx.OutputValueEnum;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.PixelControllerStatusMBean;
-import com.neophob.sematrix.jmx.ValueEnum;
+import com.neophob.sematrix.jmx.TimeMeasure;
 
 /**
  * JMX Helper
@@ -111,7 +111,7 @@ public final class PixConClientJmx {
 		
 		// print average timing information
 		System.out.println("\nThe following average times have been collected during the last " + DurationFormatUtils.formatDuration(mbeanProxy.getRecordedMilliSeconds(), "ss.SSS") + " seconds:");
-		for (ValueEnum valueEnum : ValueEnum.values()) {
+		for (TimeMeasure valueEnum : TimeMeasure.values()) {
 			System.out.printf("%-25s: %3.3fms\n",
 					valueEnum.getReadableName(),
 					mbeanProxy.getAverageTime(valueEnum)

@@ -73,7 +73,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private long startTime;
 	
 	/** The buffers. */
-	private Map<ValueEnum, CircularFifoBuffer> buffers;
+	private Map<TimeMeasure, CircularFifoBuffer> buffers;
 	
 	/** The output buffers. */
 	private Map<Output, Map<OutputValueEnum, CircularFifoBuffer>> outputBuffers;
@@ -92,8 +92,8 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		this.configuredFps = configuredFps;
 		
 		// initialize all buffers 
-		this.buffers = new HashMap<ValueEnum, CircularFifoBuffer>();
-		for (ValueEnum valueEnum : ValueEnum.values()) {
+		this.buffers = new HashMap<TimeMeasure, CircularFifoBuffer>();
+		for (TimeMeasure valueEnum : TimeMeasure.values()) {
 			this.buffers.put(valueEnum, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
 		this.outputBuffers = new HashMap<Output, Map<OutputValueEnum, CircularFifoBuffer>>();
@@ -150,7 +150,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getAverageTime(com.neophob.sematrix.jmx.ValueEnum)
 	 */
 	@Override
-	public float getAverageTime(ValueEnum valueEnum) {
+	public float getAverageTime(TimeMeasure valueEnum) {
 		return this.getBufferValue(this.buffers.get(valueEnum));
 	}
 	
@@ -202,7 +202,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 * @param valueEnum the value enum
 	 * @param time the time
 	 */
-	public void trackTime(ValueEnum valueEnum, long time) {
+	public void trackTime(TimeMeasure valueEnum, long time) {
 		if (this.ignoreValue()) {
 			return;
 		}
