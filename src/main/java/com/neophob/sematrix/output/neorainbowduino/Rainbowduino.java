@@ -512,13 +512,12 @@ public class Rainbowduino {
 	private synchronized boolean waitForAck() {
 		//TODO some more tuning is needed here.
 		long start = System.currentTimeMillis();
-		int timeout=3; //wait up to 50ms
-		while (timeout > 0 && port.available() < 3) {
-			sleep(10); //in ms
-			timeout--;
+		long waitTime = start + 50; // wait up to 50ms
+		while (waitTime > System.currentTimeMillis() && port.available() < 3) {
+			sleep(1);
 		}
 
-		if (timeout < 1 && port.available() < 3) {
+		if (port.available() < 3) {
 			log.log(Level.INFO, "No serial reply, duration: {0}ms", System.currentTimeMillis()-start);
 			ackErrors++;
 			return false;
@@ -562,14 +561,13 @@ public class Rainbowduino {
 	private synchronized boolean waitForI2cResultAndAck() {
 		//wait for ack/nack
 		//TODO make this configurabe
-		int timeout=20; //wait up to 100ms
-		while (timeout > 0 && port.available() < 15) {
-			sleep(10); //in ms
-			timeout--;
+		long waitTime = System.currentTimeMillis() + 100; // wait up to 100ms
+		while (waitTime > System.currentTimeMillis() && port.available() < 15) {
+			sleep(1);
 		}
 
 		byte[] msg = port.readBytes();
-		if (timeout < 1) {
+		if (port.available() < 15) {
 			log.log(Level.INFO, "Invalid serial data {0}", Arrays.toString(msg));
 			return false;
 		}
