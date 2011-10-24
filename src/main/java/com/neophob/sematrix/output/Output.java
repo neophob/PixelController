@@ -57,11 +57,12 @@ public abstract class Output {
 	/** bit per pixel. */
 	protected int bpp;
 	
+	/** counter used for buffer switching */
 	private int totalNrOfOutputBuffers;
 	private int switchBuffer;
 	
 	/** 
-	 * this map contains twice as muchen entries as outputs exists
+	 * this map contains twice as much entries as outputs exists
 	 * for each output device two buffers exists, one to display and
 	 * one to work with 
 	 */
@@ -135,11 +136,9 @@ public abstract class Output {
 			}
 			
 			// the prepare method has to write to the currently not used range of the bufferMap
-			int pos;
-			if (this.switchBuffer == this.totalNrOfOutputBuffers) {
-				pos = screen;
-			} else {
-				pos = screen + this.totalNrOfOutputBuffers;
+			int pos = screen;
+			if (this.switchBuffer != this.totalNrOfOutputBuffers) {
+				pos += this.totalNrOfOutputBuffers;
 			}
 			this.bufferMap.put(pos, buffer);
 		}

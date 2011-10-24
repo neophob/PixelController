@@ -108,6 +108,9 @@ public class RainbowduinoHelper {
 	 * @return rainbowduino compatible format as byte[3*8*4] 
 	 */
 	public static byte[] convertRgbToRainbowduino(int[] data) throws IllegalArgumentException {
+		if (data==null) {
+			throw new IllegalArgumentException("data is null!");
+		}
 		if (data.length!=64) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}

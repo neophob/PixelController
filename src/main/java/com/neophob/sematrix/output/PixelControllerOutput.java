@@ -81,6 +81,11 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 */
 	@Override
 	public void update() {
+		/* old, single threaded implementation
+		for (Output o: allOutputs) {
+			o.update();
+		}*/
+		
 		// check if this is the first call of this method
 		if (this.prepareEndGate == null && this.updateEndGate == null) {
 			// we have to prepare the int[] buffers manually the first time. to not mess up this method
