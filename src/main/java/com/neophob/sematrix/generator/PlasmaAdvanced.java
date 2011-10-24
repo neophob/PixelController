@@ -47,58 +47,58 @@ public class PlasmaAdvanced extends Generator {
 	// swing/wave function parameters
 	/** The Constant SWINGLEN. */
 	private static final int SWINGLEN = GRADIENTLEN*3;
-	
+
 	/** The Constant SWINGMAX. */
 	private static final int SWINGMAX = GRADIENTLEN / 2 - 1;
 
 	//TODO make them configable
 	/** The Constant MIN_FACTOR. */
 	private static final int MIN_FACTOR = 4;
-	
+
 	/** The Constant MAX_FACTOR. */
 	private static final int MAX_FACTOR = 10;
 
-	
+
 	/** The rf. */
 	private int rf = 4;
-	
+
 	/** The gf. */
 	private int gf = 2;
-	
+
 	/** The bf. */
 	private int bf = 1;
-	
+
 	/** The rd. */
 	private int rd = 0;
-	
+
 	/** The gd. */
 	private int gd = GRADIENTLEN / gf;
-	
+
 	/** The bd. */
 	private int bd = GRADIENTLEN / bf / 2;
 
 	// gradient & swing curve arrays
 	/** The fade color steps. */
 	private int fadeColorSteps = 0;
-	
+
 	/** The color grad. */
 	private int[] colorGrad  = new int[GRADIENTLEN];
-	
+
 	/** The color grad tmp. */
 	private int[] colorGradTmp  = new int[GRADIENTLEN];
 
 	/** The fade swing steps. */
 	private int fadeSwingSteps = 0;
-	
+
 	/** The swing curve. */
 	private int[] swingCurve = new int[SWINGLEN];
-	
+
 	/** The swing curve tmp. */
 	private int[] swingCurveTmp = new int[SWINGLEN];
 
 	/** The frame count. */
 	private int frameCount;
-	
+
 	/** The random. */
 	private Random random;
 
@@ -135,7 +135,7 @@ public class PlasmaAdvanced extends Generator {
 		if (fadeSwingSteps>0) {
 			fadeSwingCurve();
 		}
-		
+
 		int t = frameCount*SPEEDUP;
 		int swingT = swing(t); // swingT/-Y/-YT variables are used for a little tuning ...
 
@@ -169,15 +169,14 @@ public class PlasmaAdvanced extends Generator {
 		for( int i=0; i<SWINGLEN; i++ ) {
 			float ni = i*TWO_PI/SWINGLEN; // ni goes [0..TWO_PI] -> one complete cos wave
 			swingCurveTmp[i]=
-				(int)( Math.cos( ni*factor1 ) * Math.cos( ni*factor2 ) * Math.cos( ni*factor3 ) * halfmax + halfmax );
+					(int)( Math.cos( ni*factor1 ) * Math.cos( ni*factor2 ) * Math.cos( ni*factor3 ) * halfmax + halfmax );
 		}
 		fadeSwingSteps = FADE_STEPS;
 	}
 
 
-	// create a smooth, colorful gradient by cosinus curves in the RGB channels
 	/**
-	 * Make gradient.
+	 * create a smooth, colorful gradient by cosinus curves in the RGB channels
 	 */
 	private void makeGradient() {
 		int val = random.nextInt(12);
@@ -195,7 +194,6 @@ public class PlasmaAdvanced extends Generator {
 		case 5: bd = random.nextInt(GRADIENTLEN);
 		break;
 		}
-		//System.out.println("Gradient factors("+rf+","+gf+","+bf+"), displacement("+rd+","+gd+","+bd+")");
 
 		// fill gradient array
 		for (int i = 0; i < GRADIENTLEN; i++) {
@@ -216,7 +214,7 @@ public class PlasmaAdvanced extends Generator {
 	private int getR(int col) {
 		return (col>>16)&255;
 	}
-	
+
 	/**
 	 * Gets the g.
 	 *
@@ -226,7 +224,7 @@ public class PlasmaAdvanced extends Generator {
 	private int getG(int col) {
 		return (col>>8)&255;
 	}
-	
+
 	/**
 	 * Gets the b.
 	 *

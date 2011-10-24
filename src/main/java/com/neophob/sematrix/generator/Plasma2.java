@@ -19,57 +19,31 @@
 
 package com.neophob.sematrix.generator;
 
-import java.awt.Color;
+import java.util.List;
 
 import processing.core.PApplet;
 
 import com.neophob.sematrix.resize.Resize.ResizeName;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
- * TODO: multiple palettes
- * various sizes.
+ * Plasma Generator, ripped form openprocessing
  *
  * @author mvogt
  */
-public class Plasma2 extends Generator {
+public class Plasma2 extends ColorMapAwareGenerator {
 
-	/** The log. */
-         private static final Logger LOG = Logger.getLogger(ColorFade.class.getName());
-        
-        /** The color map. */
-        private List<Color> colorMap;
-
-        /** The frame count. */
+	/** The frame count. */
 	private int frameCount;
-	
+
 	/**
 	 * Instantiates a new plasma2.
 	 *
 	 * @param controller the controller
 	 */
 	public Plasma2(PixelControllerGenerator controller, List<Integer> colorList) {
-		super(controller, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
+		super(controller, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE, colorList);
 		frameCount=1;
-                
-                colorMap = new ArrayList<Color>();
-                for (Integer i: colorList) {
-                        colorMap.add(new Color(i));
-                }
-
-                //add default value if nothing is configured
-                if (colorMap.isEmpty()) {
-                    colorMap.add(new Color(255, 128, 128));
-                    colorMap.add(new Color(255, 255, 128));
-                    colorMap.add(new Color(128, 255, 128));
-                    colorMap.add(new Color(128, 255, 255));
-                    colorMap.add(new Color(128, 128, 255));
-                    colorMap.add(new Color(255, 128, 255));
-                }
 	}
 
 	/* (non-Javadoc)
@@ -88,7 +62,7 @@ public class Plasma2 extends Generator {
 		// No need to do this math for every pixel
 		float calculation1 = (float)Math.sin( PApplet.radians(timeDisplacement * 0.61655617f));
 		float calculation2 = (float)Math.sin( PApplet.radians(timeDisplacement * -3.6352262f));
-		
+
 		int aaa = 1024;
 		int ySize = internalBufferYSize;
 		// Plasma algorithm
@@ -105,48 +79,33 @@ public class Plasma2 extends Generator {
 		}   
 	}
 
-    private int getColor(float s) {
-        //reduce s to [0-1]
-        s = (s - (float) Math.floor(s)) * colorMap.size();
-        
-        int colornumber = (int) Math.floor(s);
-        int nextcolornumber = (colornumber + 1) % colorMap.size();
-        
-        //use sinus as cross over function for much smoother transitions
-        double ratio = ( Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;
-        
-        int rThis = colorMap.get(colornumber).getRed();
-        int rNext = colorMap.get(nextcolornumber).getRed();
-        int gThis = colorMap.get(colornumber).getGreen();
-        int gNext = colorMap.get(nextcolornumber).getGreen();
-        int bThis = colorMap.get(colornumber).getBlue();
-        int bNext = colorMap.get(nextcolornumber).getBlue();
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 */
+	private int getColor(float s) {
+		//reduce s to [0-1]
+		s = (s - (float) Math.floor(s)) * colorMap.size();
 
-        int r = rThis - (int) Math.round((rThis - rNext) * (ratio));
-        int g = gThis - (int) Math.round((gThis - gNext) * (ratio));
-        int b = bThis - (int) Math.round((bThis - bNext) * (ratio));
-        
-        return (r << 16) | (g << 8) | b;
-    }
+		int colornumber = (int) Math.floor(s);
+		int nextcolornumber = (colornumber + 1) % colorMap.size();
 
-    void setColorMap(String colorMap) {
-        if (colorMap==null) {
-    		this.colorMap =  new ArrayList<Color>();
-    	}
+		//use sinus as cross over function for much smoother transitions
+		double ratio = ( Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;
 
-    	String[] tmp = colorMap.trim().split("_");
-    	if (tmp==null || tmp.length==0) {
-    		this.colorMap =  new ArrayList<Color>();
-    	}
-    	
-    	List<Color> list = new ArrayList<Color>();
-    	for (String s: tmp) {
-    		try {
-    			list.add( new Color(Integer.decode(s.trim())) );
-    		} catch (Exception e) {
-    			LOG.log(Level.WARNING, "Failed to parse {0}", s);
-		}	
-    	}
-        this.colorMap = list;
-    }
+		int rThis = colorMap.get(colornumber).getRed();
+		int rNext = colorMap.get(nextcolornumber).getRed();
+		int gThis = colorMap.get(colornumber).getGreen();
+		int gNext = colorMap.get(nextcolornumber).getGreen();
+		int bThis = colorMap.get(colornumber).getBlue();
+		int bNext = colorMap.get(nextcolornumber).getBlue();
+
+		int r = rThis - (int) Math.round((rThis - rNext) * (ratio));
+		int g = gThis - (int) Math.round((gThis - gNext) * (ratio));
+		int b = bThis - (int) Math.round((bThis - bNext) * (ratio));
+
+		return (r << 16) | (g << 8) | b;
+	}
+
 }

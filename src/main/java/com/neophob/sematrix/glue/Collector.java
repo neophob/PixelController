@@ -60,7 +60,7 @@ public final class Collector {
 	/** The Constant NR_OF_PRESENT_SLOTS. */
 	public static final int NR_OF_PRESENT_SLOTS = 128;
 	
-	/** The instance. */
+	/** The singleton instance. */
 	private static Collector instance = new Collector();
 
 	/** The random mode. */
@@ -618,13 +618,19 @@ public final class Collector {
 			this.currentVisual = currentVisual;			
 		}
 	}
-
 	
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getCurrentOutput() {
 		return currentOutput;
 	}
 
+	/**
+	 * 
+	 * @param currentOutput
+	 */
 	public void setCurrentOutput(int currentOutput) {
 		if (currentOutput<ioMapping.size()) {
 			this.currentOutput = currentOutput;			
@@ -648,9 +654,6 @@ public final class Collector {
 	public synchronized void setLoadingPresent(boolean isLoadingPresent) {
 		this.isLoadingPresent = isLoadingPresent;
 	}
-
-	
-	//getShufflerSelect
 	
 	/**
 	 * Gets the shuffler select.

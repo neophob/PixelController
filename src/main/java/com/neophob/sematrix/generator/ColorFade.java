@@ -19,27 +19,19 @@
 
 package com.neophob.sematrix.generator;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.neophob.sematrix.resize.Resize.ResizeName;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *              
  * @author McGyver
  */
-public class ColorFade extends Generator {
-
-    /** The log. */
-    private static final Logger LOG = Logger.getLogger(ColorFade.class.getName());
+public class ColorFade extends ColorMapAwareGenerator {
 
     private int colorFadeTime;
     private int maxFrames;
-    private List<Color> colorMap;
     private int frameCount;
 
     /**
@@ -48,19 +40,8 @@ public class ColorFade extends Generator {
      * @param controller the controller
      */
     public ColorFade(PixelControllerGenerator controller, List<Integer> colorList) {
-        super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
+        super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE, colorList);
 
-        colorMap = new ArrayList<Color>();
-        
-        for (Integer i: colorList) {
-        	colorMap.add(new Color(i));
-        }
-
-        //add default value if nothing is configured
-        if (colorMap.size()==0) {
-            colorMap.add(new Color(0, 0, 128));
-            colorMap.add(new Color(0, 0, 0));
-        }
         colorFadeTime = 30;
         maxFrames = colorMap.size() * colorFadeTime;
     }
@@ -76,10 +57,6 @@ public class ColorFade extends Generator {
         
         //use sinus as cross over function for much smoother transitions
         double ratio = ( Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;
-        
-//        int colornumber = (int) ((Math.round(Math.floor(frameCount / colorFadeTime))) % colorMap.size());
-//        int nextcolornumber = (colornumber + 1) % colorMap.size();
-//        double ratio = (frameCount % colorFadeTime) / (float)colorFadeTime;
         
         int rThis = colorMap.get(colornumber).getRed();
         int rNext = colorMap.get(nextcolornumber).getRed();
@@ -105,24 +82,4 @@ public class ColorFade extends Generator {
         maxFrames = colorMap.size() * colorFadeTime;
     }
     
-    void setColorMap(String colorMap) {
-        if (colorMap==null) {
-    		this.colorMap =  new ArrayList<Color>();
-    	}
-
-    	String[] tmp = colorMap.trim().split("_");
-    	if (tmp==null || tmp.length==0) {
-    		this.colorMap =  new ArrayList<Color>();
-    	}
-    	
-    	List<Color> list = new ArrayList<Color>();
-    	for (String s: tmp) {
-    		try {
-    			list.add( new Color(Integer.decode(s.trim())) );
-    		} catch (Exception e) {
-    			LOG.log(Level.WARNING, "Failed to parse {0}", s);
-		}	
-    	}
-        this.colorMap = list;
-    }
 }

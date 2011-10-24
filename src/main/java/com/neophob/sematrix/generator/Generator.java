@@ -154,7 +154,7 @@ public abstract class Generator implements RandomizeState {
 		this.internalBuffer = new int[internalBufferXSize*internalBufferYSize];
 
 		LOG.log(Level.INFO,
-				"SeMAtrixParent: internalBufferSize: {0} name: {1} "
+				"Generator: internalBufferSize: {0} name: {1} "
 				, new Object[] { internalBuffer.length, name });
 		
 		//add to list

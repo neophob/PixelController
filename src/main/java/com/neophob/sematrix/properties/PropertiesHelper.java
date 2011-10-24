@@ -680,7 +680,11 @@ public class PropertiesHelper {
     	return parseRgbColors(ConfigConstant.COLORFADE_RGBCOLOR);
     }
 
-    public List<Integer> getPlasmaValues() {
+    /**
+     * 
+     * @return
+     */
+    public List<Integer> getPlasmaColorValues() {
         return parseRgbColors(ConfigConstant.PLASMA_RGBCOLOR);
     }
 

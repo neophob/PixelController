@@ -100,7 +100,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
         image = new Image(this, fileImageSimple);
 
-        plasma2 = new Plasma2(this, ph.getPlasmaValues());
+        plasma2 = new Plasma2(this, ph.getPlasmaColorValues());
         
         new PlasmaAdvanced(this);
         new Fire(this);

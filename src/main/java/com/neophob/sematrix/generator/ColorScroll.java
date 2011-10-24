@@ -19,35 +19,25 @@
 
 package com.neophob.sematrix.generator;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The Class ColorScroll.
  *
  * @author McGyver
  */
-public class ColorScroll extends Generator {
-
-    /** The log. */
-    private static final Logger LOG = Logger.getLogger(ColorScroll.class.getName());
+public class ColorScroll extends ColorMapAwareGenerator {
 
     /** The fade. */
     private int fade;
     
     /** The scroll mode. */
     private ScrollMode scrollMode;
-    
-    /** The color map. */
-    private List<Color> colorMap;
     
     /** The frame count. */
     private int frameCount;
@@ -127,22 +117,8 @@ public class ColorScroll extends Generator {
      * @param colorList the color list
      */
     public ColorScroll(PixelControllerGenerator controller, List<Integer> colorList) {
-        super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
+        super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE, colorList);
 
-        colorMap = new ArrayList<Color>();
-        for (Integer i: colorList) {
-        	colorMap.add(new Color(i));
-        }
-        
-        //add default value if nothing is configured
-        if (colorMap.size()==0) {
-            colorMap.add(new Color(255, 128, 128));
-            colorMap.add(new Color(255, 255, 128));
-            colorMap.add(new Color(128, 255, 128));
-            colorMap.add(new Color(128, 255, 255));
-            colorMap.add(new Color(128, 128, 255));
-            colorMap.add(new Color(255, 128, 255));
-        }
         fade = 30;
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 
@@ -621,24 +597,4 @@ public class ColorScroll extends Generator {
         }
     }
 
-    void setColorMap(String colorMap) {
-        if (colorMap==null) {
-    		this.colorMap =  new ArrayList<Color>();
-    	}
-
-    	String[] tmp = colorMap.trim().split("_");
-    	if (tmp==null || tmp.length==0) {
-    		this.colorMap =  new ArrayList<Color>();
-    	}
-    	
-    	List<Color> list = new ArrayList<Color>();
-    	for (String s: tmp) {
-    		try {
-    			list.add( new Color(Integer.decode(s.trim())) );
-    		} catch (Exception e) {
-    			LOG.log(Level.WARNING, "Failed to parse {0}", s);
-		}	
-    	}
-        this.colorMap = list;
-    }
 }
