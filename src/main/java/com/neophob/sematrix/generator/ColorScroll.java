@@ -27,6 +27,8 @@ import java.util.Random;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class ColorScroll.
@@ -34,6 +36,9 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author McGyver
  */
 public class ColorScroll extends Generator {
+
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(ColorScroll.class.getName());
 
     /** The fade. */
     private int fade;
@@ -55,7 +60,7 @@ public class ColorScroll extends Generator {
     
     /** The internal buffer y size2. */
     private int internalBufferYSize2;
-    
+
     
     /**
      * The Enum ScrollMode.
@@ -616,4 +621,24 @@ public class ColorScroll extends Generator {
         }
     }
 
+    void setColorMap(String colorMap) {
+        if (colorMap==null) {
+    		this.colorMap =  new ArrayList<Color>();
+    	}
+
+    	String[] tmp = colorMap.trim().split("_");
+    	if (tmp==null || tmp.length==0) {
+    		this.colorMap =  new ArrayList<Color>();
+    	}
+    	
+    	List<Color> list = new ArrayList<Color>();
+    	for (String s: tmp) {
+    		try {
+    			list.add( new Color(Integer.decode(s.trim())) );
+    		} catch (Exception e) {
+    			LOG.log(Level.WARNING, "Failed to parse {0}", s);
+		}	
+    	}
+        this.colorMap = list;
+    }
 }

@@ -1,4 +1,4 @@
-#N canvas 318 50 954 558 10;
+#N canvas 833 399 1024 600 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -20,19 +20,19 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 64 8
--262144 -1 -1 0 1;
+-262144 -1 -1 1556 1;
 #X obj 33 71 cnv 15 140 160 empty empty //Tint 20 12 0 14 -262130 -66577
 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 64 12 -257985
--258113 -258113 0 1;
+-258113 -258113 3100 1;
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 64 12 -262144
--4034 -4034 0 1;
+-4034 -4034 3100 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 64 12 -262144
--4160 -4160 0 1;
+-4160 -4160 3100 1;
 #X floatatom 116 191 5 0 255 0 - - s_tint_b;
 #X obj 89 191 int;
 #X obj 153 77 tgl 15 0 s_rndsel_tint r_rndsel_tint empty 17 7 0 10
@@ -40,7 +40,7 @@
 #X obj 33 221 cnv 15 140 70 empty empty //Rotozoom 20 12 0 14 -262130
 -66577 0;
 #X obj 47 252 knob 32 32 -127 127 0 0 empty r_rotozoom_angle ° 38
-16 64 12 -262144 -33289 -1 0 1;
+16 64 12 -262144 -33289 -1 1550 1;
 #X floatatom 114 259 5 0 255 0 - - s_rotozoom_angle;
 #X obj 87 259 int;
 #X obj 153 230 tgl 15 0 s_rndsel_rotozoom r_rndsel_rotozoom empty 17
@@ -172,7 +172,7 @@
 6 -8 0 12 -258113 -86277 -1 0;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
-#N canvas 327 22 953 523 network 1;
+#N canvas 849 74 953 523 network 1;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
 #X obj 28 150 s r_gen1;
@@ -472,14 +472,14 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 11 0 12 0;
 #X connect 12 0 0 0;
 #X restore 790 221 pd textureDeformation;
-#N canvas 381 22 812 327 generator 0;
+#N canvas 381 22 885 576 generator 1;
 #X obj 167 45 r blinkenfile;
 #X obj 49 47 r textwriter;
 #X msg 49 101 send TEXTWR \$1;
 #X obj 49 74 symbol;
 #X obj 167 72 symbol;
 #X msg 167 102 send BLINKEN \$1;
-#X obj 277 194 outlet;
+#X obj 311 541 outlet;
 #X obj 311 45 r image;
 #X obj 311 72 symbol;
 #X msg 311 102 send IMAGE \$1;
@@ -490,6 +490,21 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X msg 587 133 send COLOR_SCROLL_OPT \$1;
 #X floatatom 587 74 5 0 0 0 - - -;
 #X obj 587 96 pack i;
+#X obj 49 184 symbol;
+#X obj 49 304 symbol;
+#X obj 49 157 r color_scroll_map;
+#X obj 49 277 r color_fade_map;
+#X obj 49 424 symbol;
+#X obj 49 397 r plasma_map;
+#X obj 433 277 r color_fade_length;
+#X obj 433 397 r color_scroll_length;
+#X obj 433 304 int;
+#X obj 433 424 int;
+#X msg 433 331 send COLOR_FADE_LENGTH \$1;
+#X msg 433 451 send COLOR_SCROLL_LENGTH \$1;
+#X msg 49 451 send PLASMA_MAP \$1;
+#X msg 49 331 send COLOR_FADE_MAP \$1;
+#X msg 49 211 send COLOR_SCROLL_MAP \$1;
 #X connect 0 0 4 0;
 #X connect 1 0 3 0;
 #X connect 2 0 6 0;
@@ -506,6 +521,21 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 14 0 6 0;
 #X connect 15 0 16 0;
 #X connect 16 0 14 0;
+#X connect 17 0 31 0;
+#X connect 18 0 30 0;
+#X connect 19 0 17 0;
+#X connect 20 0 18 0;
+#X connect 21 0 29 0;
+#X connect 22 0 21 0;
+#X connect 23 0 25 0;
+#X connect 24 0 26 0;
+#X connect 25 0 27 0;
+#X connect 26 0 28 0;
+#X connect 27 0 6 0;
+#X connect 28 0 6 0;
+#X connect 29 0 6 0;
+#X connect 30 0 6 0;
+#X connect 31 0 6 0;
 #X restore 791 270 pd generator;
 #X obj 50 50 cnv 15 205 110 empty empty //Network 20 12 0 14 -260097
 -1 0;
@@ -550,7 +580,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X floatatom 195 120 5 0 0 3 osc_client - -;
 #X obj 45 239 cnv 15 200 60 empty empty OSC_processing 20 12 0 14 -260097
 -66577 0;
-#N canvas 352 22 1095 628 osc 1;
+#N canvas 101 419 1095 628 osc 0;
 #X obj -146 39 unpackOSC;
 #X obj -146 8 udpreceive 4443;
 #X floatatom -76 65 3 0 0 0 - - -;
@@ -778,7 +808,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 205 110 1 50 50;
 #X restore 350 173 pd network;
 #X obj -187 9 vradio 15 1 0 17 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
--1 -1 5;
+-1 -1 16;
 #X text -170 7 Off;
 #X text -170 23 Blinken;
 #X text -170 38 Image;
@@ -794,7 +824,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text -169 218 Drops;
 #X text -170 158 Image Zoomer;
 #X obj -73 9 vradio 15 1 0 17 s_gen_b1 r_gen_b1 Generator2 0 -8 0 12
--203904 -1 -1 7;
+-203904 -1 -1 0;
 #X obj -186 302 vradio 15 1 0 10 s_fx1 r_fx1 Effect1 0 -8 0 12 -262130
 -1 -1 0;
 #X text -166 300 Off;
@@ -830,7 +860,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X floatatom 327 77 5 0 0 0 - r_sel s_sel;
 #X obj 248 327 s r_sel;
 #X obj 70 74 hsl 250 25 0 127 0 0 empty empty empty -2 -8 0 10 -262130
--1 -1 11200 1;
+-1 -1 0 1;
 #X connect 0 0 3 0;
 #X connect 1 0 12 0;
 #X connect 2 0 1 0;
@@ -1489,7 +1519,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 18 7 11 0;
 #X connect 20 0 19 0;
 #X restore 92 157 pd keyboard;
-#N canvas 202 338 688 361 generaotor 0;
+#N canvas 202 338 729 550 generaotor 1;
 #X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
 0;
 #X obj 16 241 send blinkenfile;
@@ -1517,9 +1547,9 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 -1;
 #X obj 477 8 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17 7
 0 10 -260097 -1 -1 1 1;
-#X obj 4 275 cnv 15 150 80 empty empty textwriter 20 12 0 14 -203904
+#X obj 552 277 cnv 15 170 80 empty empty textwriter 20 12 0 14 -203904
 -66577 0;
-#X obj 19 323 send textwriter;
+#X obj 567 325 send textwriter;
 #X msg 16 28 torus.bml;
 #X msg 16 49 bnf_auge.bml;
 #X msg 16 70 bb-frogskin2.bml;
@@ -1545,8 +1575,8 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X msg 40 207 blender.bml;
 #X msg 193 213 ff-logo-small.jpg;
 #X msg 242 188 logo.gif;
-#X msg 19 302 DEMODAYS 2011;
-#X obj 502 4 cnv 15 180 266 empty empty colorscroll 20 12 0 14 -203904
+#X msg 567 304 DEMODAYS 2011;
+#X obj 502 4 cnv 15 220 266 empty empty colorscroll 20 12 0 14 -203904
 -66577 0;
 #X obj 551 249 send color_scroll;
 #X obj 509 34 vradio 15 1 0 14 empty empty empty 0 -8 0 10 -262144
@@ -1565,8 +1595,27 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text 530 186 Middle to sides horizontal;
 #X text 530 214 Explode Circle;
 #X text 530 230 Implode Circle;
-#X obj 661 8 tgl 15 0 s_rndsel_colorscroll r_rndsel_colorscroll empty
+#X obj 703 8 tgl 15 0 s_rndsel_colorscroll r_rndsel_colorscroll empty
 17 7 0 10 -260097 -1 -1 1 1;
+#X obj 5 277 cnv 15 539 216 empty empty color_maps 20 12 0 14 -203904
+-66577 0;
+#X text 113 281 Define colors in hex \, no whitespaces \, use _ as
+seperator;
+#X obj 16 334 send color_scroll_map;
+#X obj 16 384 send color_fade_map;
+#X obj 16 434 send plasma_map;
+#X obj 552 365 cnv 15 170 128 empty empty fade_length 20 12 0 14 -203904
+-66577 0;
+#X obj 568 397 nbx 5 14 1 1000 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 47 256;
+#X obj 568 447 nbx 5 14 1 1000 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 137 256;
+#X obj 568 417 send color_scroll_length;
+#X obj 568 467 send color_fade_length;
+#X msg 16 412 0xffff00_0x000000_0x0000ff_0x000000;
+#X msg 16 312 0xff8080_0xffff80_0x80ff80_0x80ffff_0x8080ff_0x000000
+;
+#X msg 16 362 0x00ff00_0xff00ff;
 #X connect 17 0 1 0;
 #X connect 18 0 1 0;
 #X connect 19 0 1 0;
@@ -1594,6 +1643,11 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 41 0 3 0;
 #X connect 42 0 16 0;
 #X connect 45 0 44 0;
+#X connect 67 0 69 0;
+#X connect 68 0 70 0;
+#X connect 71 0 65 0;
+#X connect 72 0 63 0;
+#X connect 73 0 64 0;
 #X restore 93 131 pd generaotor;
 #N canvas 0 22 324 262 pad 0;
 #N canvas 90 22 1046 592 xypad 0;
@@ -1763,7 +1817,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text 238 131 Emboss;
 #X text 238 147 Zoom;
 #X obj 328 13 vradio 15 1 0 4 s_fader1 r_fader1 Fader 0 -8 0 12 -204800
--1 -1 3;
+-1 -1 0;
 #X text 347 11 Off;
 #X text 346 27 Crossfade;
 #X text 347 42 Upside Down;
@@ -1775,7 +1829,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X obj 167 222 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
 Visual_Nr 0 -8 0 12 -261682 -1 -1 0;
 #X obj 59 93 vradio 15 1 0 10 s_output_fx_all r_output_fx_all Effect
-0 -8 0 12 -262130 -1 -1 2;
+0 -8 0 12 -262130 -1 -1 0;
 #X text 80 91 Off;
 #X text 79 107 Inverter;
 #X text 80 122 Rotozoom;

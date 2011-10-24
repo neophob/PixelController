@@ -75,6 +75,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
     
     /** The textwriter. */
     private Textwriter textwriter;
+    
+    /** The Plasma2 */
+    private Plasma2 plasma2;
 
     private PropertiesHelper ph;
 
@@ -97,7 +100,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
         image = new Image(this, fileImageSimple);
 
-        new Plasma2(this);
+        plasma2 = new Plasma2(this, ph.getPlasmaValues());
+        
         new PlasmaAdvanced(this);
         new Fire(this);
         new PassThruGen(this);
@@ -362,6 +366,18 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public void setText(String text) {
         textwriter.createTextImage(text);
+    }
+
+    public void setColorScrollColorMap(String colorMap) {
+        colorScroll.setColorMap(colorMap);
+    }
+
+    public void setColorFadeColorMap(String colorMap) {
+        colorFade.setColorMap(colorMap);
+    }
+
+    public void setPlasmaColorMap(String colorMap) {
+        plasma2.setColorMap(colorMap);
     }
 
 
