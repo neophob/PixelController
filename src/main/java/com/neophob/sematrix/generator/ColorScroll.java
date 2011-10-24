@@ -220,10 +220,10 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * @param val the val
      * @return the color
      */
-    private int[] getColor(int val) {
+    private int getColor(int val) {
         int colornumber = (int) ((Math.round(Math.floor((val + frameCount) / fade))) % colorMap.size());
         int nextcolornumber = (colornumber + 1) % colorMap.size();
-        double ratio = ((val + frameCount) % fade) / (float)fade;
+        float ratio = ((val + frameCount) % fade) / (float)fade;
 
         int rThis = colorMap.get(colornumber).getRed();
         int rNext = colorMap.get(nextcolornumber).getRed();
@@ -232,12 +232,11 @@ public class ColorScroll extends ColorMapAwareGenerator {
         int bThis = colorMap.get(colornumber).getBlue();
         int bNext = colorMap.get(nextcolornumber).getBlue();
 
-        int[] ret = new int[3];
-        ret[0] = rThis - (int) Math.round((rThis - rNext) * (ratio));
-        ret[1] = gThis - (int) Math.round((gThis - gNext) * (ratio));
-        ret[2] = bThis - (int) Math.round((bThis - bNext) * (ratio));
+        int r = rThis - (int) Math.round((rThis - rNext) * (ratio));
+        int g = gThis - (int) Math.round((gThis - gNext) * (ratio));
+        int b = bThis - (int) Math.round((bThis - bNext) * (ratio));
         
-        return ret;
+        return (r << 16) | (g << 8) | b;
     }
     
 
@@ -249,9 +248,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
 
         for (int x = 0; x < internalBufferXSize; x++) {
         	
-        	int[] col = getColor(x);
+        	int col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + x] = col;
             }
         }
     }
@@ -265,9 +264,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
         for (int x = 0; x < internalBufferXSize; x++) {
             int xRev = internalBufferXSize - x - 1;
             
-            int[] col = getColor(x);
+            int col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + xRev] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + xRev] = col;
             }
         }
     }
@@ -280,9 +279,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
 
         for (int y = 0; y < internalBufferYSize; y++) {
             int yRev = internalBufferYSize - y - 1;
-            int[] col = getColor(y);
+            int col = getColor(y);
             for (int x = 0; x < ySize; x++) {
-                this.internalBuffer[yRev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[yRev * internalBufferXSize + x] = col;
             }
         }
     }
@@ -294,9 +293,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
         int ySize = internalBufferXSize;
 
         for (int y = 0; y < internalBufferYSize; y++) {
-            int[] col = getColor(y);
+            int col = getColor(y);
             for (int x = 0; x < ySize; x++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + x] = col;
             }
         }
     }
@@ -308,7 +307,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
 
-            int[] col = getColor(diagStep);
+            int col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -331,7 +330,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     private void leftBottomToRightTop() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
-        	int[] col = getColor(diagStep);
+        	int col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -354,7 +353,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     private void rightTopToLeftBottom() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
-        	int[] col = getColor(diagStep);
+        	int col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -377,7 +376,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     private void leftTopToRightBottom() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
-        	int[] col = getColor(diagStep);
+        	int col = getColor(diagStep);
 
         	int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -401,11 +400,11 @@ public class ColorScroll extends ColorMapAwareGenerator {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize2; x++) {
-        	int[] col = getColor(x);
+        	int col = getColor(x);
 
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
-                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x - 1] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + x] = col;
+                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - x - 1] = col;
             }
         }
     }
@@ -419,10 +418,10 @@ public class ColorScroll extends ColorMapAwareGenerator {
         for (int x = 0; x < internalBufferXSize2; x++) {
 
             int xRev = (internalBufferXSize2) - x - 1;
-            int[] col = getColor(x);
+            int col = getColor(x);
             for (int y = 0; y < ySize; y++) {
-                this.internalBuffer[y * internalBufferXSize + xRev] = (col[0] << 16) | (col[1] << 8) | col[2];
-                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - xRev - 1] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + xRev] = col;
+                this.internalBuffer[y * internalBufferXSize + internalBufferXSize - xRev - 1] = col;
             }
         }
     }
@@ -435,11 +434,11 @@ public class ColorScroll extends ColorMapAwareGenerator {
 
         for (int y = 0; y < internalBufferYSize2; y++) {
 
-        	int[] col = getColor(y);
+        	int col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
-                this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
-                this.internalBuffer[(internalBufferYSize - y - 1) * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[y * internalBufferXSize + x] = col;
+                this.internalBuffer[(internalBufferYSize - y - 1) * internalBufferXSize + x] = col;
             }
         }
     }
@@ -453,11 +452,11 @@ public class ColorScroll extends ColorMapAwareGenerator {
         for (int y = 0; y < internalBufferYSize2; y++) {
 
             int yRev = internalBufferYSize2 - y - 1;
-            int[] col = getColor(y);
+            int col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
-                this.internalBuffer[yRev * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
-                this.internalBuffer[(internalBufferYSize - yRev - 1) * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+                this.internalBuffer[yRev * internalBufferXSize + x] = col;
+                this.internalBuffer[(internalBufferYSize - yRev - 1) * internalBufferXSize + x] = col;
             }
         }
     }
@@ -469,7 +468,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
 
         int upToValue = (int)(Math.max(internalBufferXSize, internalBufferYSize) * 1.42f);
         for (int r = 0; r < upToValue; r++) {
-        	int[] col = getColor(r);
+        	int col = getColor(r);
 
             int f = 1 - r;
             int ddFx = 1;
@@ -531,7 +530,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
         int upToValue = (int)(Math.max(internalBufferXSize, internalBufferYSize) * 1.42f);
         for (int r = 0; r < upToValue; r++) {            
             int rRev = upToValue - r;
-            int[] col = getColor(rRev);
+            int col = getColor(rRev);
 
             int f = 1 - r;
             int ddFx = 1;
@@ -591,9 +590,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * @param y the y
      * @param col the col
      */
-    private void setPixel(int x, int y, int[] col) {
+    private void setPixel(int x, int y, int col) {
         if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
-            this.internalBuffer[y * internalBufferXSize + x] = (col[0] << 16) | (col[1] << 8) | col[2];
+            this.internalBuffer[y * internalBufferXSize + x] = col;
         }
     }
 

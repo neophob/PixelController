@@ -56,20 +56,10 @@ public class ColorFade extends ColorMapAwareGenerator {
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         
         //use sinus as cross over function for much smoother transitions
-        double ratio = ( Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;
+        float ratio =(float)(Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;        
+        int col = super.getColor(colornumber, nextcolornumber, ratio);
         
-        int rThis = colorMap.get(colornumber).getRed();
-        int rNext = colorMap.get(nextcolornumber).getRed();
-        int gThis = colorMap.get(colornumber).getGreen();
-        int gNext = colorMap.get(nextcolornumber).getGreen();
-        int bThis = colorMap.get(colornumber).getBlue();
-        int bNext = colorMap.get(nextcolornumber).getBlue();
-
-        int r = rThis - (int) Math.round((rThis - rNext) * (ratio));
-        int g = gThis - (int) Math.round((gThis - gNext) * (ratio));
-        int b = bThis - (int) Math.round((bThis - bNext) * (ratio));
-        
-        Arrays.fill(this.internalBuffer, (r << 16) | (g << 8) | b);
+        Arrays.fill(this.internalBuffer, col);
     }
 
     /**
