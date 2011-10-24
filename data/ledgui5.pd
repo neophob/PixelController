@@ -1,4 +1,4 @@
-#N canvas 833 399 1024 600 10;
+#N canvas 256 200 1024 600 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -172,7 +172,7 @@
 6 -8 0 12 -258113 -86277 -1 0;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
-#N canvas 849 74 953 523 network 1;
+#N canvas 327 74 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
 #X obj 28 150 s r_gen1;
@@ -472,7 +472,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 11 0 12 0;
 #X connect 12 0 0 0;
 #X restore 790 221 pd textureDeformation;
-#N canvas 381 22 885 576 generator 1;
+#N canvas 381 22 885 576 generator 0;
 #X obj 167 45 r blinkenfile;
 #X obj 49 47 r textwriter;
 #X msg 49 101 send TEXTWR \$1;
@@ -1519,7 +1519,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 18 7 11 0;
 #X connect 20 0 19 0;
 #X restore 92 157 pd keyboard;
-#N canvas 202 338 729 550 generaotor 1;
+#N canvas 521 243 729 550 generaotor 1;
 #X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
 0;
 #X obj 16 241 send blinkenfile;
@@ -1580,7 +1580,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 -66577 0;
 #X obj 551 249 send color_scroll;
 #X obj 509 34 vradio 15 1 0 14 empty empty empty 0 -8 0 10 -262144
--1 -1 0;
+-1 -1 13;
 #X text 529 33 Left to right;
 #X text 529 49 Right to left;
 #X text 529 64 Top to Bottom;
@@ -1606,10 +1606,10 @@ seperator;
 #X obj 16 434 send plasma_map;
 #X obj 552 365 cnv 15 170 128 empty empty fade_length 20 12 0 14 -203904
 -66577 0;
-#X obj 568 397 nbx 5 14 1 1000 0 0 empty empty empty 0 -8 0 10 -262144
--1 -1 47 256;
-#X obj 568 447 nbx 5 14 1 1000 0 0 empty empty empty 0 -8 0 10 -262144
--1 -1 137 256;
+#X obj 568 397 nbx 3 14 1 500 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 4 256;
+#X obj 568 447 nbx 3 14 1 500 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 46 256;
 #X obj 568 417 send color_scroll_length;
 #X obj 568 467 send color_fade_length;
 #X msg 16 412 0xffff00_0x000000_0x0000ff_0x000000;
