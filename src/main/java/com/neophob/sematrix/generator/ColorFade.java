@@ -25,12 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.neophob.sematrix.resize.Resize.ResizeName;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
+ *              
  * @author McGyver
  */
 public class ColorFade extends Generator {
+
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(ColorFade.class.getName());
 
     private int colorFadeTime;
     private int maxFrames;
@@ -63,10 +68,18 @@ public class ColorFade extends Generator {
     @Override
     public void update() {
         frameCount = (frameCount + 1) % maxFrames;
-
-        int colornumber = (int) ((Math.round(Math.floor(frameCount / colorFadeTime))) % colorMap.size());
+        
+        float s = (float) frameCount / colorFadeTime;
+        
+        int colornumber = (int) Math.floor(s);
         int nextcolornumber = (colornumber + 1) % colorMap.size();
-        double ratio = (frameCount % colorFadeTime) / (float)colorFadeTime;
+        
+        //use sinus as cross over function for much smoother transitions
+        double ratio = ( Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;
+        
+//        int colornumber = (int) ((Math.round(Math.floor(frameCount / colorFadeTime))) % colorMap.size());
+//        int nextcolornumber = (colornumber + 1) % colorMap.size();
+//        double ratio = (frameCount % colorFadeTime) / (float)colorFadeTime;
         
         int rThis = colorMap.get(colornumber).getRed();
         int rNext = colorMap.get(nextcolornumber).getRed();
@@ -83,10 +96,33 @@ public class ColorFade extends Generator {
     }
 
     /**
-     * 
-     * @param colorFadeTime
+     * Sets the fade length.
+     *
+     * @param fadeLength the new fade length
      */
-    void setFadeTime(int colorFadeTime) {
-        this.colorFadeTime = colorFadeTime;
+    void setFadeTime(int fadeLength) {
+        this.colorFadeTime = fadeLength;
+        maxFrames = colorMap.size() * colorFadeTime;
+    }
+    
+    void setColorMap(String colorMap) {
+        if (colorMap==null) {
+    		this.colorMap =  new ArrayList<Color>();
+    	}
+
+    	String[] tmp = colorMap.trim().split("_");
+    	if (tmp==null || tmp.length==0) {
+    		this.colorMap =  new ArrayList<Color>();
+    	}
+    	
+    	List<Color> list = new ArrayList<Color>();
+    	for (String s: tmp) {
+    		try {
+    			list.add( new Color(Integer.decode(s.trim())) );
+    		} catch (Exception e) {
+    			LOG.log(Level.WARNING, "Failed to parse {0}", s);
+		}	
+    	}
+        this.colorMap = list;
     }
 }

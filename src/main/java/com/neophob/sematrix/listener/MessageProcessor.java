@@ -359,7 +359,52 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case TEXTDEF:
+			case COLOR_SCROLL_MAP:
+				try {
+					String colorMap = msg[1];
+					col.getPixelControllerGenerator().setColorScrollColorMap(colorMap);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+
+			case COLOR_FADE_MAP:
+				try {
+					String colorMap = msg[1];
+					col.getPixelControllerGenerator().setColorFadeColorMap(colorMap);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+
+			case PLASMA_MAP:
+				try {
+					String colorMap = msg[1];
+					col.getPixelControllerGenerator().setPlasmaColorMap(colorMap);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+
+			case COLOR_FADE_LENGTH:
+				try {
+					int length = Integer.parseInt(msg[1]);
+					col.getPixelControllerGenerator().setColorFadeTime(length);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+
+			case COLOR_SCROLL_LENGTH:
+				try {
+					int length = Integer.parseInt(msg[1]);
+					col.getPixelControllerGenerator().setColorScrollingFadeLength(length);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+
+                        case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
 					col.getPixelControllerGenerator().setTextureDeformationLut(lut);

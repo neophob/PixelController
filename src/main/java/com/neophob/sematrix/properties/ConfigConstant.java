@@ -102,4 +102,6 @@ public final class ConfigConstant {
 	public static final String COLORSCROLL_RGBCOLOR = "colorscroll.rgbcolor";
 	
 	public static final String COLORFADE_RGBCOLOR = "colorfade.rgbcolor";
+        
+        public static final String PLASMA_RGBCOLOR = "plasma.rgbcolor";
 }
