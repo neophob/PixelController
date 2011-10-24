@@ -134,8 +134,15 @@ public abstract class Output {
 				buffer = this.matrixData.getScreenBufferForDevice(v, lm, map, this);
 			}
 			
-			this.bufferMap.put(screen+switchBuffer, buffer);
-		}				
+			// the prepare method has to write to the currently not used range of the bufferMap
+			int pos;
+			if (this.switchBuffer == this.totalNrOfOutputBuffers) {
+				pos = screen;
+			} else {
+				pos = screen + this.totalNrOfOutputBuffers;
+			}
+			this.bufferMap.put(pos, buffer);
+		}
 	}
 
 	/**
