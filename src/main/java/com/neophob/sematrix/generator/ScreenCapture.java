@@ -19,11 +19,17 @@
 
 package com.neophob.sematrix.generator;
 
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFrame;
 
 import com.neophob.sematrix.resize.Resize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -31,7 +37,8 @@ import com.neophob.sematrix.resize.util.ScalrOld;
 
 
 /**
- *
+ * this simple class capture the screen
+ * 
  * @author mvogt
  */
 public class ScreenCapture extends Generator {
@@ -39,30 +46,86 @@ public class ScreenCapture extends Generator {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(ScreenCapture.class.getName());
 
+	private static final int BORDER_SIZE = 20;
+	
 	private Robot robot;
-	private Rectangle rectangle;
-	private int frames;
+	private Rectangle rectangleCaptureArea;
+	private int frames;	
 	
 	/**
-	 * Instantiates a new plasma2.
+	 * Instantiates a new ScreenCapture Generator.
 	 *
 	 * @param controller the controller
 	 */
-	public ScreenCapture(PixelControllerGenerator controller, int xOffset, int yOffset) {
+	public ScreenCapture(PixelControllerGenerator controller, final int offset, int width, int height) {
 		super(controller, GeneratorName.SCREEN_CAPTURE, ResizeName.QUALITY_RESIZE);
-		
-		rectangle = new Rectangle(xOffset, yOffset, internalBufferXSize*2, internalBufferYSize*2);
-		
+
+		if (width<1) {
+		    width=internalBufferXSize*2;
+		}
+		if (height<1) {
+		    height=internalBufferYSize*2;
+		}
+		rectangleCaptureArea = new Rectangle(offset, offset, width, height);		
+
 		try {
 			robot = new Robot();
-			LOG.log(Level.INFO, "ScreenCapture initialized, offset "+rectangle.x+"/"+rectangle.y
-					+", size: "+rectangle.width+"/"+rectangle.height);
+			LOG.log(Level.INFO, "ScreenCapture initialized, offset "+rectangleCaptureArea.x+"/"+rectangleCaptureArea.y
+					+", size: "+rectangleCaptureArea.width+"/"+rectangleCaptureArea.height);
+			
+			//draw border
+			drawReadBorder(height, offset-BORDER_SIZE, offset);			
+			drawReadBorder(height, offset+width+BORDER_SIZE, offset);
 			
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to initialize ScreenCapture: ", e);
+			LOG.log(Level.SEVERE, "Failed to initialize ScreenCapture: {0}", e);
 		}
 
 	}
+	
+	/**
+	 * draw a single border
+	 * 
+	 * @param height
+	 * @param x
+	 * @param y
+	 */
+	private static void drawReadBorder(int height, int x, int y) {
+        JFrame window = new JFrame();
+        window.setName("PixelController ScreenCapture Area");
+        
+        //Set the size and location of the window  
+        window.setSize(BORDER_SIZE, height);
+        window.setLocation(x,y);          
+        window.setUndecorated(true);
+        
+        //color window
+        Container container = window.getContentPane();
+        container.setBackground(Color.RED);         
+        
+        //update window property
+        window.setAlwaysOnTop(true);            
+        setOpacity(window, 0.5f);
+        window.setVisible(true);	    
+	}
+	
+	/**
+	 * see http://java.sun.com/developer/technicalArticles/GUI/translucent_shaped_windows/
+	 * @param window
+	 * @param f
+	 */
+	private static void setOpacity(JFrame window, float f) {
+	    try { 
+	        Class<?> utils = Class.forName("com.sun.awt.AWTUtilities");
+	        //use reflection to check if this method is available
+	        Method method = utils.getMethod("setWindowOpacity", Window.class, float.class);
+	        method.invoke(null, window, f);
+	     }
+	     catch(Exception e) {
+	         LOG.log(Level.SEVERE, "Failed to set Window Opacity: {0}", e);
+	     }	    
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.generator.Generator#update()
@@ -73,11 +136,16 @@ public class ScreenCapture extends Generator {
 		
 		//capture each 2nd frame
 		if (frames%2==1 && robot != null) {
-			BufferedImage screencapture = robot.createScreenCapture(rectangle);
+		    //get screenshot
+			BufferedImage screencapture = robot.createScreenCapture(rectangleCaptureArea);
+			
+			//resize it to internalBufferSize
 			screencapture = ScalrOld.resize(screencapture, ScalrOld.Method.QUALITY, internalBufferXSize, internalBufferYSize);
 
+			//convert it to raw buffer
 			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);
 		}		
 	}
+
 
 }

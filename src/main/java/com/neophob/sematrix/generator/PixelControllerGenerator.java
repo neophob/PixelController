@@ -121,9 +121,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         imageZoomer = new ImageZoomer(this, fileImageZoomer);
         new Cell(this);
         new FFTSpectrum(this);
-        new Geometrics(this);
-        int captureOffset = ph.parseScreenCaptureOffset();
-        new ScreenCapture(this, captureOffset, captureOffset);
+        new Geometrics(this);                
+        new ScreenCapture(this, ph.parseScreenCaptureOffset(), ph.parseScreenCaptureWindowSizeX(), ph.parseScreenCaptureWindowSizeY());
         colorScroll = new ColorScroll(this, ph.getColorScrollValues());
         colorFade = new ColorFade(this, ph.getColorFadeValues());
     }
