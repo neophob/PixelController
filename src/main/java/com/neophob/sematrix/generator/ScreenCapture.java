@@ -21,6 +21,7 @@ package com.neophob.sematrix.generator;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Window;
@@ -50,7 +51,6 @@ public class ScreenCapture extends Generator {
 	
 	private Robot robot;
 	private Rectangle rectangleCaptureArea;
-	private int frames;	
 	
 	/**
 	 * Instantiates a new ScreenCapture Generator.
@@ -73,9 +73,14 @@ public class ScreenCapture extends Generator {
 			LOG.log(Level.INFO, "ScreenCapture initialized, offset "+rectangleCaptureArea.x+"/"+rectangleCaptureArea.y
 					+", size: "+rectangleCaptureArea.width+"/"+rectangleCaptureArea.height);
 			
+			Frame frame = new Frame();
+			frame.setName("PixelController ScreenCapture Area");
+			
 			//draw border
-			drawReadBorder(height, offset-BORDER_SIZE, offset);			
-			drawReadBorder(height, offset+width+BORDER_SIZE, offset);
+			drawReadBorder(frame, BORDER_SIZE, height, offset-BORDER_SIZE, offset);			
+			drawReadBorder(frame, BORDER_SIZE, height, offset+width, offset);
+			drawReadBorder(frame, width+BORDER_SIZE*2, BORDER_SIZE, offset-BORDER_SIZE, offset-BORDER_SIZE);
+			drawReadBorder(frame, width+BORDER_SIZE*2, BORDER_SIZE, offset-BORDER_SIZE, height+offset);	
 			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to initialize ScreenCapture: {0}", e);
@@ -90,12 +95,11 @@ public class ScreenCapture extends Generator {
 	 * @param x
 	 * @param y
 	 */
-	private static void drawReadBorder(int height, int x, int y) {
-        JFrame window = new JFrame();
-        window.setName("PixelController ScreenCapture Area");
-        
+	private static void drawReadBorder(Frame frame, int width, int height, int x, int y) {
+        JFrame window = new JFrame(frame.getGraphicsConfiguration());
+
         //Set the size and location of the window  
-        window.setSize(BORDER_SIZE, height);
+        window.setSize(width, height);
         window.setLocation(x,y);          
         window.setUndecorated(true);
         
@@ -132,10 +136,9 @@ public class ScreenCapture extends Generator {
 	 */
 	@Override
 	public void update() {
-		frames++;
 		
 		//capture each 2nd frame
-		if (frames%2==1 && robot != null) {
+		if (robot != null) {
 		    //get screenshot
 			BufferedImage screencapture = robot.createScreenCapture(rectangleCaptureArea);
 			
