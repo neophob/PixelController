@@ -52,7 +52,14 @@ public class PropertiesHelper {
     private static final String PRESENTS_FILENAME = "data/presents.led";
 
     /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
-    private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
+    private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = 
+    		"Multiple devices configured, illegal configuration!";
+
+    private static final String ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED = 
+    		"Multiple cabling options configured, illegal configuration!";
+
+    private static final String ERROR_INVALID_OUTPUT_MAPPING = 
+    		"Invalid output mapping entries, output.mapping != output.resolution.x*output.resolution.y";
 
     /** The Constant FAILED_TO_PARSE. */
     private static final String FAILED_TO_PARSE = "Failed to parse {0}";
@@ -141,6 +148,19 @@ public class PropertiesHelper {
         if (enabledOutputs>1) {
             LOG.log(Level.SEVERE, ERROR_MULTIPLE_DEVICES_CONFIGURATED+": "+enabledOutputs);
             throw new IllegalArgumentException(ERROR_MULTIPLE_DEVICES_CONFIGURATED);
+        }
+        
+        int outputMappingSize = getOutputMappingValues().length;
+        if (isOutputSnakeCabeling() && outputMappingSize>0) {
+            LOG.log(Level.SEVERE, ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);
+            throw new IllegalArgumentException(ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED);        	
+        }
+
+        int entries = this.deviceXResolution * this.deviceYResolution;
+        if (outputMappingSize>0 && outputMappingSize!=entries) {
+        	String s = " ("+entries+"!="+outputMappingSize+")";
+            LOG.log(Level.SEVERE, ERROR_INVALID_OUTPUT_MAPPING+s);
+            throw new IllegalArgumentException(ERROR_INVALID_OUTPUT_MAPPING+s);        	
         }
 
         if (enabledOutputs==0 || totalDevices==0) {
@@ -689,6 +709,35 @@ public class PropertiesHelper {
     	return parseRgbColors(ConfigConstant.COLORSCROLL_RGBCOLOR);
     }
 
+    /**
+     * 
+     * @return a set, so no duplicate entires are allowed
+     */
+    public int[] getOutputMappingValues() {    	
+    	String rawConfig = config.getProperty(ConfigConstant.OUTPUT_MAPPING);
+    	if (rawConfig==null) {
+    		return new int[0];
+    	}
+
+    	String[] tmp = rawConfig.split(",");
+    	if (tmp==null || tmp.length==0) {
+    		return new int[0];
+    	}
+    	
+    	int ofs=0;
+    	int[] ret = new int[tmp.length];
+    	for (String s: tmp) {
+    		try {
+    			ret[ofs] = Integer.decode(s.trim());
+    			ofs++;
+    		} catch (Exception e) {
+    			LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+			}	
+    	}
+    	return ret;
+    }
+    
+    
     /**
      * 
      * @return

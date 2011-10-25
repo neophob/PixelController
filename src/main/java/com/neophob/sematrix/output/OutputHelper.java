@@ -20,6 +20,7 @@
 package com.neophob.sematrix.output;
 
 
+
 /**
  * Output Helper
  *
@@ -48,8 +49,25 @@ public class OutputHelper {
 					bufferTwo[ofs+x] = buffer[xResolution+ofs-x-1];
 				}
 			}
-		}
+		}		
+		return bufferTwo;
+	}
+	
+	/**
+	 * do manual mapping, this is used to support a more exotic device configuration
+	 * 
+	 * @param buffer
+	 * @param xResolution
+	 * @param yResolution
+	 * @return
+	 */
+	public static int[] manualMapping(int src[], int mapping[], int xResolution, int yResolution) {
+		int bufferTwo[] = src.clone();
 		
+		int ofs=0;
+		for (int i: mapping) {
+			bufferTwo[ofs++] = src[i]; 
+		}
 		return bufferTwo;
 	}
 }

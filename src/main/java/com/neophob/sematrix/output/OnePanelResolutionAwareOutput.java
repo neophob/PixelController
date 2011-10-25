@@ -51,6 +51,8 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
     /** flip each 2nd scanline? */
     protected boolean snakeCabeling;
     
+    /** Manual mapping */
+    protected int[] mapping;
 
 
 	/**
@@ -66,6 +68,7 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         this.xResolution = ph.parseOutputXResolution();
         this.yResolution = ph.parseOutputYResolution();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
+        this.mapping = ph.getOutputMappingValues();
         
         //get the mini dmx layout
         this.displayOption = ph.getOutputDeviceLayout();     
@@ -83,6 +86,7 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         LOG.log(Level.INFO, "\tSnakeCabeling: "+snakeCabeling);
         LOG.log(Level.INFO, "\tRotate: "+displayOption);
         LOG.log(Level.INFO, "\tColorFormat: "+colorFormat);
+        LOG.log(Level.INFO, "\tOutput Mapping entries: "+this.mapping.length);
 	}
 	
 	/**
@@ -98,6 +102,9 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         if (this.snakeCabeling) {
             //flip each 2nd scanline
             transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, xResolution, yResolution);
+        } else if (this.mapping.length>0) {
+        	//do manual mapping
+        	transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping, xResolution, yResolution);
         }
 	    
         return transformedBuffer;

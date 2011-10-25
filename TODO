@@ -1,7 +1,6 @@
 TODO PixelController
 --------------------
 -WIP: palette/color concept (greyscale, rgb, hsv...), currently we're mixing b/w, rgb and hsv, plus there is a tint effect
--WIP: create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -WIP: particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system
 -rewrite output selection/configuration, 
 -more effects/mixer...
@@ -9,8 +8,6 @@ TODO PixelController
 -Log output to a file instead the command line
 -more layouts (what kind of layouts?)
 -do not freeze application if output fails (disconnect controller)
--manual mapping to support fancy led mapping (OnePanelResolutionAwareOutput class). define a configuration property like 
- output.mapping=1,2,5,6,3,4,7,8 ...
 
 Done in v1.0.4
 --------------
@@ -22,5 +19,7 @@ Done in v1.0.4
 -PixelInvaders firmware: update initial image in firmware
 -PixelInvaders firmware: add autonomous firmware mode, run simple animation if no computer is connected
 -ScreenCapture: make capturing area visible to user
-
+-create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
+-manual mapping to support fancy led mapping (OnePanelResolutionAwareOutput class). define a configuration property like 
+ output.mapping=1,2,5,6,3,4,7,8 ...
 

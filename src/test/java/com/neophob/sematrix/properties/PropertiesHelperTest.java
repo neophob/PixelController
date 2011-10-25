@@ -159,6 +159,34 @@ public class PropertiesHelperTest {
         new PropertiesHelper(config).getLayout();        
     }    
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidCabling() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,4,2,1,8");
+        config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
+        new PropertiesHelper(config).getLayout();        
+    }    
+
+    @Test
+    public void testValidMapping() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "2");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "2");
+        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,7");
+        config.put(ConfigConstant.ARTNET_IP, "1.1.1.1");        
+        new PropertiesHelper(config).getLayout();        
+    }        
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidMappingCount() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "2");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "2");
+        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,4,2,1,8");
+        config.put(ConfigConstant.ARTNET_IP, "1.1.1.1");
+        new PropertiesHelper(config).getLayout();        
+    }    
+
     @Test
     public void testHorizontalLayout() {     
         Properties config = new Properties();

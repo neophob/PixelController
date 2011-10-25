@@ -13,7 +13,6 @@ import com.neophob.sematrix.properties.DeviceConfig;
  */
 public class RotateBufferTest {
 
-	@SuppressWarnings("unused")
 	public static void dumpBuffer(int[] ret) {
 		int a=0;
 		for (int r: ret) {
