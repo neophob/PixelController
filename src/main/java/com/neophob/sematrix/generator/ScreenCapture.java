@@ -135,9 +135,7 @@ public class ScreenCapture extends Generator {
 	 * @see com.neophob.sematrix.generator.Generator#update()
 	 */
 	@Override
-	public void update() {
-		
-		//capture each 2nd frame
+	public void update() {		
 		if (robot != null) {
 		    //get screenshot
 			BufferedImage screencapture = robot.createScreenCapture(rectangleCaptureArea);
@@ -149,6 +147,5 @@ public class ScreenCapture extends Generator {
 			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);
 		}		
 	}
-
 
 }
