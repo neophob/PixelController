@@ -145,6 +145,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         
         ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());        
         ret.add(ValidCommands.COLOR_FADE_MAP+" "+colorFade.getColorMapAsString());
+        
+        ret.add(ValidCommands.PLASMA_MAP+" "+plasma2.getColorMapAsString());
         return ret;
     }
 
