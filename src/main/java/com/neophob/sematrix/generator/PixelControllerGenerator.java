@@ -139,7 +139,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
-        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().toString());
+        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());
         ret.add(ValidCommands.COLOR_SCROLL_MAP+" "+colorScroll.getColorMapAsString());
         
