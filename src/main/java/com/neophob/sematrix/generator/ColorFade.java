@@ -62,14 +62,21 @@ public class ColorFade extends ColorMapAwareGenerator {
         Arrays.fill(this.internalBuffer, col);
     }
 
+
     /**
-     * Sets the fade length.
-     *
-     * @param fadeLength the new fade length
+     * @return the colorFadeTime
      */
-    void setFadeTime(int fadeLength) {
-        this.colorFadeTime = fadeLength;
+    public int getColorFadeTime() {
+        return colorFadeTime;
+    }
+
+    /**
+     * @param colorFadeTime the colorFadeTime to set
+     */
+    public void setColorFadeTime(int colorFadeTime) {
+        this.colorFadeTime = colorFadeTime;
         maxFrames = colorMap.size() * colorFadeTime;
     }
+    
     
 }

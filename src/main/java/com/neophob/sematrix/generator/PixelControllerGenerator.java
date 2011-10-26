@@ -139,7 +139,12 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
-        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getResizeOption());
+        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().toString());
+        ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());
+        ret.add(ValidCommands.COLOR_SCROLL_MAP+" "+colorScroll.getColorMapAsString());
+        
+        ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());        
+        ret.add(ValidCommands.COLOR_FADE_MAP+" "+colorFade.getColorMapAsString());
         return ret;
     }
 
@@ -337,7 +342,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @param colorScrollDir the new color scroll fade length
      */
     public void setColorFadeTime(int colorFadeTime) {
-        colorFade.setFadeTime(colorFadeTime);
+        colorFade.setColorFadeTime(colorFadeTime);
     }
     
     /**

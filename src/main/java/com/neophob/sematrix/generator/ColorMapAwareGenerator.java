@@ -21,6 +21,9 @@ public abstract class ColorMapAwareGenerator extends Generator {
 
 	/** The color map. */
 	protected List<Color> colorMap;
+	
+	/** the color map */
+	protected String colorMapAsString;
 
 	/**
 	 * 
@@ -82,7 +85,8 @@ public abstract class ColorMapAwareGenerator extends Generator {
 	 * 
 	 * @param colorMap
 	 */
-	protected void setColorMap(String colorMap) {
+	public void setColorMap(String colorMap) {
+	    this.colorMapAsString =  colorMap;
 		String[] tmp = colorMap.trim().split("_");
 		if (tmp==null || tmp.length==0) {
 			LOG.log(Level.WARNING, "Invalid Parameter: "+colorMap);
@@ -99,4 +103,14 @@ public abstract class ColorMapAwareGenerator extends Generator {
 		}
 		this.colorMap = list;
 	}
+
+    /**
+     * @return the colorMapAsString
+     */
+    public String getColorMapAsString() {
+        return colorMapAsString;
+    }
+
+	
+	
 }

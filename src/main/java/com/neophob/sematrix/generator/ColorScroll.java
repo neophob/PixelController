@@ -596,4 +596,39 @@ public class ColorScroll extends ColorMapAwareGenerator {
         }
     }
 
+
+    /**
+     * @return the fade
+     */
+    public int getFade() {
+        return fade;
+    }
+
+
+    /**
+     * @param fade the fade to set
+     */
+    public void setFade(int fade) {
+        this.fade = fade;
+    }
+
+
+    /**
+     * @return the scrollMode
+     */
+    public ScrollMode getScrollMode() {
+        return scrollMode;
+    }
+
+
+    /**
+     * @param scrollMode the scrollMode to set
+     */
+    public void setScrollMode(ScrollMode scrollMode) {
+        this.scrollMode = scrollMode;
+    }
+    
+    
+    
+
 }
