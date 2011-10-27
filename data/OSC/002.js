@@ -11,7 +11,7 @@ javascript reference: http://www.javascriptkit.com/jsref/math.shtml
 loadedInterfaceName = "pixelControl002";
 interfaceOrientation = "landscape";
 
-generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaballs", "Pixel", "Textur", "Text", "ImgZoom", "Cell", "Plsama2", "Frequenzy", "Drops", "Capture", "ColFad"]
+generatornames=["Off", "Blinken", "Image", "Plasma", "ColScrol", "Fire", "Metaballs", "Pixel", "Textur", "Text", "ImgZoom", "Cell", "Plasma2", "Frequenzy", "Drops", "Capture", "ColFad"]
 effectnames=["Off", "Inverter", "Rotozoom", "BeatS H", "BeatS V", "Volumn", "Tint", "Threshold", "Emboss", "Zoom"]
 mixernames=["Off", "AddSat", "Multiply", "Mix", "Neg", "Checkboard", "Multiply", "Xor", "MinusHalf", "Either"]
 
@@ -83,7 +83,7 @@ pages = [
     "width":.075, "height":.45,
     "stroke": "#754545",
     "color": "#CC7777",
-    "min": 0, "max": 4.9,
+    "min": 0, "max": 2.9,
     "isXFader" : false,
     "isVertical" : true,
     "onvaluechange": "infoVisual.changeValue( 'Visual Nr: '+ Math.floor(this.value) );",
@@ -288,6 +288,19 @@ pages = [
      "label": "VISUAL 2 TO ALL PANELS", 
      "labelSize": "14",
 	 "oninit": "visualTwoToAll.fillDiv.style.borderWidth = '2px';",
+},
+/* -- Visual 3 to ALL OUTPUTS Button */
+{
+     "name": "visualThreeToAll",
+     "type": "Button",
+     "x": .65, "y": .66,
+     "width": .15, "height": .08,
+     "mode": "contact",
+     "stroke": "#754545",
+     "color": "#CC7777",
+     "label": "VISUAL 3 TO ALL PANELS", 
+     "labelSize": "14",
+	 "oninit": "visualThreeToAll.fillDiv.style.borderWidth = '2px';",
 },
 
 /* -- next page --*/
