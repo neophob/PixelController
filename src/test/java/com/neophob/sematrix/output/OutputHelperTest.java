@@ -35,17 +35,13 @@ public class OutputHelperTest {
 	@Test
 	public void testOutputMapping() {
 		int[] ret;
+		int[] mapping = new int[] { 3,1,4,5,2,0 };
 		int[] buffer = new int[] {
 				1,2,3,			
 				4,5,6
 		};
 
-		int[] mapping = new int[] {
-				3,1,4,5,2,0
-		};
-
 		ret = OutputHelper.manualMapping(buffer, mapping, 3, 2);
-		
 		RotateBufferTest.dumpBuffer(ret);
 		
 		assertEquals(4, ret[0]);
@@ -54,7 +50,15 @@ public class OutputHelperTest {
 		assertEquals(6, ret[3]);
 		assertEquals(3, ret[4]);
 		assertEquals(1, ret[5]);
-
 	}
 
+	@Test
+	public void testOutputMappingWrong() {
+		int[] mapping = new int[160];
+		int[] buffer = new int[160];
+		for (int i=0; i<160; i++) {
+			mapping[i] = i+1;
+		}
+		OutputHelper.manualMapping(buffer, mapping, 8, 20);
+	}
 }

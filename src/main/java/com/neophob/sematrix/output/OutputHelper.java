@@ -19,6 +19,9 @@
 
 package com.neophob.sematrix.output;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 
 /**
@@ -27,6 +30,9 @@ package com.neophob.sematrix.output;
  * @author michu
  */
 public class OutputHelper {
+
+	/** The log. */
+	private static final Logger LOG = Logger.getLogger(OutputHelper.class.getName());
 
 	private OutputHelper() {
 		//no instance allowed
@@ -63,10 +69,14 @@ public class OutputHelper {
 	 */
 	public static int[] manualMapping(int src[], int mapping[], int xResolution, int yResolution) {
 		int bufferTwo[] = src.clone();
-		
+		int lenght = src.length;
 		int ofs=0;
 		for (int i: mapping) {
-			bufferTwo[ofs++] = src[i]; 
+			if (i+1>lenght) {
+				LOG.log(Level.SEVERE, "Your manual mapping is wrong,the first index is 0! Invalid entry index: {0}", i);
+			} else {
+				bufferTwo[ofs++] = src[i]; 				
+			}
 		}
 		return bufferTwo;
 	}
