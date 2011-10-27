@@ -226,22 +226,12 @@ public class ColorScroll extends ColorMapAwareGenerator {
     		saveFade = 1;
     	}
     	
-        int colornumber = (int) ((Math.round(Math.floor((val + frameCount) / saveFade))) % colorMap.size());
+        int colornumber = (int) (Math.round(Math.floor((val + frameCount) / saveFade)));
+        colornumber = colornumber % colorMap.size();
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         float ratio = ((val + frameCount) % saveFade) / (float)saveFade;
 
-        int rThis = colorMap.get(colornumber).getRed();
-        int rNext = colorMap.get(nextcolornumber).getRed();
-        int gThis = colorMap.get(colornumber).getGreen();
-        int gNext = colorMap.get(nextcolornumber).getGreen();
-        int bThis = colorMap.get(colornumber).getBlue();
-        int bNext = colorMap.get(nextcolornumber).getBlue();
-
-        int r = rThis - (int) Math.round((rThis - rNext) * (ratio));
-        int g = gThis - (int) Math.round((gThis - gNext) * (ratio));
-        int b = bThis - (int) Math.round((bThis - bNext) * (ratio));
-        
-        return (r << 16) | (g << 8) | b;
+        return super.getColor(colornumber, nextcolornumber, ratio);
     }
     
 

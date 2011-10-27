@@ -102,7 +102,10 @@ public abstract class ColorMapAwareGenerator extends Generator {
 				LOG.log(Level.WARNING, "Failed to parse color {0}", s);
 			}	
 		}
-		this.colorMap = list;
+		
+		if (list.size()>0) {
+			this.colorMap = list;			
+		}
 	}
 
     /**

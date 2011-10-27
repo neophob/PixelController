@@ -50,8 +50,7 @@ public class ColorFade extends ColorMapAwareGenerator {
     public void update() {
         frameCount = (frameCount + 1) % maxFrames;
         
-        float s = (float) frameCount / colorFadeTime;
-        
+        float s = (float) frameCount / colorFadeTime;       
         int colornumber = (int) Math.floor(s);
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         
