@@ -21,7 +21,7 @@
 
 #TODO add cd into current dir...
 
-export JAVA_OPT="-Djava.library.path=lib -Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote -Djava.security.policy=data/client.policy" 
+export JAVA_OPT="-Djava.util.logging.config.file=data/logging.properties -Djava.library.path=lib -Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote -Djava.security.policy=data/client.policy" 
 source ./classpath-unix.properties
 echo classpath: $classpath
 java $JAVA_OPT -classpath $classpath:./lib/PixelController.jar com.neophob.PixelController

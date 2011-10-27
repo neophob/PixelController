@@ -46,7 +46,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  *
  * @author michu
  */
-public class PixelController extends PApplet {
+public class PixelController extends PApplet {  
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
