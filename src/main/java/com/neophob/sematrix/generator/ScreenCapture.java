@@ -52,6 +52,7 @@ public class ScreenCapture extends Generator {
 	private Robot robot;
 	private Rectangle rectangleCaptureArea;
 	
+	private JFrame top,bottom,left,right;
 	/**
 	 * Instantiates a new ScreenCapture Generator.
 	 *
@@ -77,11 +78,10 @@ public class ScreenCapture extends Generator {
 			frame.setName("PixelController ScreenCapture Area");
 			
 			//draw border
-			drawReadBorder(frame, BORDER_SIZE, height, offset-BORDER_SIZE, offset);			
-			drawReadBorder(frame, BORDER_SIZE, height, offset+width, offset);
-			drawReadBorder(frame, width+BORDER_SIZE*2, BORDER_SIZE, offset-BORDER_SIZE, offset-BORDER_SIZE);
-			drawReadBorder(frame, width+BORDER_SIZE*2, BORDER_SIZE, offset-BORDER_SIZE, height+offset);	
-			
+			left = drawReadBorder(frame, BORDER_SIZE, height, offset-BORDER_SIZE, offset);			
+			right = drawReadBorder(frame, BORDER_SIZE, height, offset+width, offset);
+			top = drawReadBorder(frame, width+BORDER_SIZE*2, BORDER_SIZE, offset-BORDER_SIZE, offset-BORDER_SIZE);
+			bottom = drawReadBorder(frame, width+BORDER_SIZE*2, BORDER_SIZE, offset-BORDER_SIZE, height+offset);				
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to initialize ScreenCapture: {0}", e);
 		}
@@ -95,7 +95,7 @@ public class ScreenCapture extends Generator {
 	 * @param x
 	 * @param y
 	 */
-	private static void drawReadBorder(Frame frame, int width, int height, int x, int y) {
+	private static JFrame drawReadBorder(Frame frame, int width, int height, int x, int y) {
         JFrame window = new JFrame(frame.getGraphicsConfiguration());
 
         //Set the size and location of the window  
@@ -106,11 +106,13 @@ public class ScreenCapture extends Generator {
         //color window
         Container container = window.getContentPane();
         container.setBackground(Color.RED);         
+        setOpacity(window, 0.5f);
         
         //update window property
         window.setAlwaysOnTop(true);            
-        setOpacity(window, 0.5f);
-        window.setVisible(true);	    
+        window.setVisible(false);
+        
+        return window;
 	}
 	
 	/**
@@ -146,6 +148,22 @@ public class ScreenCapture extends Generator {
 			//convert it to raw buffer
 			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);
 		}		
+	}
+	
+	@Override
+	protected void nowActive() {
+		left.setVisible(true);
+		right.setVisible(true);
+		top.setVisible(true);
+		bottom.setVisible(true);
+	}
+
+	@Override
+	protected void nowInactive() {
+		left.setVisible(false);
+		right.setVisible(false);
+		top.setVisible(false);
+		bottom.setVisible(false);		
 	}
 
 }

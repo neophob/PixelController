@@ -138,6 +138,9 @@ public abstract class Generator implements RandomizeState {
 	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 	
+	/** is the generator selected and thus active? */
+	protected boolean active;
+	
 	/**
 	 * Instantiates a new generator.
 	 *
@@ -159,6 +162,7 @@ public abstract class Generator implements RandomizeState {
 		
 		//add to list
 		controller.addInput(this);
+		this.active = false;
 	}
 
 	/**
@@ -250,6 +254,20 @@ public abstract class Generator implements RandomizeState {
 	}
 
 	/**
+	 * this method get called if the generator gets activated
+	 */
+	protected void nowActive() {
+		
+	}
+
+	/**
+	 * this method get called if the generator gets inactive
+	 */
+	protected void nowInactive() {
+		
+	}
+
+	/**
 	 * Gets the id.
 	 *
 	 * @return the id
@@ -257,4 +275,26 @@ public abstract class Generator implements RandomizeState {
 	public int getId() {
 		return this.name.getId();
 	}
+
+	/**
+	 * is generator selected?
+	 * @return
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * update state
+	 * @param active
+	 */
+	public void setActive(boolean active) {
+		if (!active && this.active) {
+			nowInactive();
+		} else if(active && !this.active) {
+			nowActive();
+		}
+		this.active = active;
+	}
+		
 }

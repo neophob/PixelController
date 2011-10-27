@@ -166,7 +166,10 @@ public class PixelControllerGenerator implements PixelControllerElement {
         //update only selected generators
         for (Generator m: allGenerators) {
             if (activeVisuals.contains(m.getId())) {
-                m.update();   
+                m.update();
+                m.setActive(true);
+            } else {
+            	m.setActive(false);
             }
         }
     }
