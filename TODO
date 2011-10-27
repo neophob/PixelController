@@ -5,12 +5,11 @@ TODO PixelController
 -rewrite output selection/configuration, 
 -more effects/mixer...
 -move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
--Log output to a file instead the command line
 -more layouts (what kind of layouts?)
 -do not freeze application if output fails (disconnect controller)
 
-Done in v1.0.4
---------------
+Changelog v1.0.3 to v1.1
+------------------------
 -add notification if random mode is selected or not
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. 
  if they would run in seperate thread, that would be faster...
@@ -22,4 +21,4 @@ Done in v1.0.4
 -create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -manual mapping to support fancy led mapping (OnePanelResolutionAwareOutput class). define a configuration property like 
  output.mapping=1,2,5,6,3,4,7,8 ...
-
+-Log output to a file instead the command line
