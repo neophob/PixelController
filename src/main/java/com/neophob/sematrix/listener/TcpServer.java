@@ -47,7 +47,10 @@ public final class TcpServer implements Runnable {
 	
 	/** The Constant FUDI_MSG_END_MARKER. */
 	public static final String FUDI_MSG_END_MARKER = ";";
-	
+
+	/** The Constant FUDI_MSG_END_MARKER. */
+	public static final String FUDI_ALTERNATIVE_END_MARKER = ":";
+
 	/** The Constant FLOODING_TIME. */
 	private static final int FLOODING_TIME = 300;
 
@@ -151,6 +154,8 @@ public final class TcpServer implements Runnable {
 						
 						//clean message
 						String msg = lastMsg+StringUtils.replace(c.readString(), "\n", "");
+						//add replacement end string
+						msg = StringUtils.replace(msg, FUDI_ALTERNATIVE_END_MARKER, FUDI_MSG_END_MARKER);
 						msg = StringUtils.trim(msg);
 						
 						int msgCount = StringUtils.countMatches(msg, FUDI_MSG_END_MARKER);
