@@ -302,6 +302,19 @@ pages = [
      "labelSize": "14",
 	 "oninit": "visualThreeToAll.fillDiv.style.borderWidth = '2px';",
 },
+/* -- Visual 1 2 to 1 2 Button */
+{
+     "name": "visual1To1",
+     "type": "Button",
+     "x": .65, "y": .74,
+     "width": .15, "height": .08,
+     "mode": "contact",
+     "stroke": "#754545",
+     "color": "#CC7777",
+     "label": "VISUAL 1 TO 1, 2 TO 2", 
+     "labelSize": "14",
+	 "oninit": "visual1To1.fillDiv.style.borderWidth = '2px';",
+},
 
 /* -- next page --*/
 {
