@@ -45,6 +45,18 @@
 			<outputDirectory>/data</outputDirectory>
 			<filtered>false</filtered>
 		</fileSet>
+		
+		<!-- Small hack to create a log folder:
+		Copy a existing folder without subfolders, 
+		rename it, but do not copy files. -->
+		<fileSet>
+			<directory>${basedir}/src/build</directory>
+			<outputDirectory>/log</outputDirectory>
+			<directoryMode>0755</directoryMode>
+			<excludes>
+				<exclude>*</exclude>
+			</excludes>
+		</fileSet>
 	</fileSets>
 	
 	<files>
@@ -79,6 +91,8 @@
 			<filtered>false</filtered>
 			<destName>PixelController.pd</destName>
 		</file>
+		
+		
 
 		<!-- silly hack for the startscript -->
 		<file>
