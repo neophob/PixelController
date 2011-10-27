@@ -42,7 +42,8 @@ CREDITS
 -------
 Michael Vogt:       Project Lead, Main Coder		
 	
-Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements		
+Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements
+McGyver666:		    Contributor		
 Rainer Ostendorf:   Artnet Output
 Pesi:               miniDMX Output, Tester
 Scott Wilson:       Arduino/Rainbowduino Howto
