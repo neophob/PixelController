@@ -1,8 +1,8 @@
 package com.neophob.sematrix.generator;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,7 +35,8 @@ public abstract class ColorMapAwareGenerator extends Generator {
 	public ColorMapAwareGenerator(PixelControllerGenerator controller, GeneratorName name, ResizeName resizeOption,
 			List<Integer> colorList) {
 		super(controller, name, resizeOption);
-		this.colorMap = new ArrayList<Color>();
+		//make this list thread save, used when color map is updated
+		this.colorMap = new CopyOnWriteArrayList<Color>();
 		
 		LOG.log(Level.INFO, "add {0} colors to map", colorList.size());
         for (int i: colorList) {
@@ -93,7 +94,7 @@ public abstract class ColorMapAwareGenerator extends Generator {
 			return;
 		}
 
-		List<Color> list = new ArrayList<Color>();
+		List<Color> list = new CopyOnWriteArrayList<Color>();
 		for (String s: tmp) {
 			try {
 				list.add( new Color(Integer.decode(s.trim())) );
