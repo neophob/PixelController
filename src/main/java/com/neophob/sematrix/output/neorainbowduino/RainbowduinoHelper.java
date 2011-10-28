@@ -16,7 +16,7 @@ public class RainbowduinoHelper {
 
 	//the home made gamma table - please note:
 	//the rainbowduino has a color resoution if 4096 colors (12bit)
-	private static int[] GAMMA_TAB = {       
+	private static final int[] GAMMA_TAB = {       
 		0,      0,      0,      0,      0,      0,      0,      0,
 		0,      0,      0,      0,      0,      0,      0,      0,
 		0,      0,      0,      0,      0,      0,      0,      0,
