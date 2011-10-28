@@ -204,7 +204,8 @@ public class ColorScroll extends ColorMapAwareGenerator {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.COLOR_SCROLL)) {
 			Random rand = new Random();
 			int nr = rand.nextInt(ScrollMode.values().length);
-			setScrollMode(nr);	
+			this.setScrollMode(nr);
+			this.fade = rand.nextInt(150);
 		}
 	}
     
