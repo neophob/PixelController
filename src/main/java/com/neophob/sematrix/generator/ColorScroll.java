@@ -52,7 +52,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     /**
      * The Enum ScrollMode.
      */
-    enum ScrollMode{
+    private enum ScrollMode{
 	    LEFT_TO_RIGHT(0),
 	    RIGHT_TO_LEFT(1),
 	    TOP_TO_BOTTOM(2),
@@ -76,7 +76,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
 	     *
 	     * @param mode the mode
 	     */
-	    ScrollMode(int mode) {
+	    private ScrollMode(int mode) {
     		this.mode = mode;
     	}
     	
@@ -100,8 +100,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     			if (s.getMode() == nr) {
     				return s;
     			}
-    		}
-    		
+    		}    		
     		return null;
     	}
 
@@ -195,7 +194,6 @@ public class ColorScroll extends ColorMapAwareGenerator {
      */
     void setFadeLength(int fadeLength) {
         this.fade = fadeLength;
-        //maxFrames = colorMap.size() * fade;
     }
     
 	/* (non-Javadoc)
@@ -236,8 +234,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     private void leftToRight() {
         int ySize = internalBufferYSize;
 
-        for (int x = 0; x < internalBufferXSize; x++) {
-        	
+        for (int x = 0; x < internalBufferXSize; x++) {	
         	int col = getColor(x);
             for (int y = 0; y < ySize; y++) {
                 this.internalBuffer[y * internalBufferXSize + x] = col;
