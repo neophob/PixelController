@@ -75,6 +75,11 @@ import java.awt.image.BufferedImage;
  * @author Riyad Kalla (software@thebuzzmedia.com)
  */
 public class ScalrOld {
+	
+	private ScalrOld() {
+		//no instance allowed 
+	}
+	
 	/**
 	 * Used to define the different scaling hints that the algorithm can prefer.
 	 */
