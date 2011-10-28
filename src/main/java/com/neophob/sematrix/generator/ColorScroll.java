@@ -42,9 +42,6 @@ public class ColorScroll extends ColorMapAwareGenerator {
     /** The frame count. */
     private int frameCount;
     
-    /** The max frames. */
-    private int maxFrames;
-
     /** The internal buffer x size2. */
     private int internalBufferXSize2;
     
@@ -124,8 +121,6 @@ public class ColorScroll extends ColorMapAwareGenerator {
 
         internalBufferXSize2 = internalBufferXSize/2;
         internalBufferYSize2 = internalBufferYSize/2;
-        
-        maxFrames = colorMap.size() * fade;
     }
 
     
@@ -134,7 +129,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
      */
     @Override
     public void update() {
-        frameCount = (frameCount + 1) % maxFrames;
+
         // scroll colors on x axis
         switch (scrollMode) {
             case LEFT_TO_RIGHT:
@@ -180,6 +175,8 @@ public class ColorScroll extends ColorMapAwareGenerator {
                 implodeCircle();
                 break;
         }
+        
+        frameCount++;
     }
 
     /**
@@ -189,7 +186,6 @@ public class ColorScroll extends ColorMapAwareGenerator {
      */
     void setScrollMode(int scrollMode) {
         this.scrollMode = ScrollMode.getScrollMode(scrollMode);
-        this.frameCount = 0;
     }
 
     /**
@@ -199,7 +195,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
      */
     void setFadeLength(int fadeLength) {
         this.fade = fadeLength;
-        maxFrames = colorMap.size() * fade;
+        //maxFrames = colorMap.size() * fade;
     }
     
 	/* (non-Javadoc)
@@ -230,7 +226,6 @@ public class ColorScroll extends ColorMapAwareGenerator {
         colornumber = colornumber % colorMap.size();
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         float ratio = ((val + frameCount) % saveFade) / (float)saveFade;
-
         return super.getColor(colornumber, nextcolornumber, ratio);
     }
     
