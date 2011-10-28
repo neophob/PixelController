@@ -35,7 +35,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * @author Rainer Ostendorf <mail@linlab.de>
  * 
  * TODO:
- * -more options in the config file
+ * -support more universe
  */
 public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 
@@ -54,41 +54,49 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	public ArtnetDevice(PropertiesHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.ARTNET, ph, controller, 8);
 
-		initialized = false;
-		artnet = new ArtNet();
-		artnet.init();
-		ip = ph.getArtNetIp();
+		this.initialized = false;
+		this.artnet = new ArtNet();		
+		this.ip = ph.getArtNetIp();
 		try {
-			artnet.start();
-			initialized = true;
-			LOG.log(Level.INFO, "ArtNet device initialized");
+		    this.artnet.init();
+		    this.artnet.start();
+		    this.initialized = true;
+			LOG.log(Level.INFO, "ArtNet device initialized at "+ip);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "failed to initialize ArtNet port!");
 		}
 	}
-
+	
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.output.Output#update()
+     */
 	@Override
 	public void update() {
-		if (initialized) {
-			sendBufferToArtnetReceiver(0, getTransformedBuffer());
+		if (this.initialized) {
+			sendBufferToArtnetReceiver(getTransformedBuffer());
 		}
 	}
 
 
 	/**
+	 * send buffer to a dmx universe
+	 * a DMX universe can address up to 512 channels - this means up to
+	 * 170 RGB LED (510 Channels)
 	 * 
 	 * @param artnetReceiver
 	 * @param frameBuf
 	 */
-	private void sendBufferToArtnetReceiver(int artnetReceiver, int[] frameBuf) {
+	private void sendBufferToArtnetReceiver(int[] frameBuf) {
 		ArtDmxPacket dmx = new ArtDmxPacket();
 		dmx.setUniverse(0, 0);
 		dmx.setSequenceID(sequenceID % 255);
 		byte[] buffer = new byte[frameBuf.length *3];
+		int ofs;
 		for (int i = 0; i < frameBuf.length; i++) {
-			buffer[i*3]     = (byte) ((frameBuf[i]>>16) & 0xff);
-			buffer[(i*3)+1] = (byte) ((frameBuf[i]>>8) & 0xff);
-			buffer[(i*3)+2] = (byte) ( frameBuf[i] & 0xff);
+		    ofs = i*3;
+			buffer[ofs++] = (byte) ((frameBuf[i]>>16) & 0xff);
+			buffer[ofs++] = (byte) ((frameBuf[i]>>8)  & 0xff);
+			buffer[ofs  ] = (byte) ( frameBuf[i]      & 0xff);
 		}
 		dmx.setDMX(buffer, buffer.length);
 		artnet.unicastPacket(dmx, ip);
@@ -98,7 +106,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	@Override
 	public void close()	{
 	    if (initialized) {
-	        artnet.stop();   
+	        this.artnet.stop();   
 	    }	    
 	}
 }
