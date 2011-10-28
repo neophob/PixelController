@@ -172,10 +172,10 @@ public class Cell extends Generator {
 			this.x=random.nextInt(internalBufferXSize/RENDERSIZE);
 			this.y=random.nextInt(internalBufferYSize/RENDERSIZE);
 			while (this.dx==0) {
-				this.dx=-2+random.nextInt(4);
+				this.dx=-1+random.nextInt(2);
 			}
 			while (this.dy==0) {
-				this.dy=-2+random.nextInt(4); 
+				this.dy=-1+random.nextInt(2); 
 			}
 			this.r=random.nextInt(255);
 			this.g=random.nextInt(255);

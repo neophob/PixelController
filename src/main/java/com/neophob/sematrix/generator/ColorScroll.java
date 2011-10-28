@@ -52,7 +52,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
     /**
      * The Enum ScrollMode.
      */
-    private enum ScrollMode{
+    enum ScrollMode{
 	    LEFT_TO_RIGHT(0),
 	    RIGHT_TO_LEFT(1),
 	    TOP_TO_BOTTOM(2),
