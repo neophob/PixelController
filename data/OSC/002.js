@@ -250,7 +250,7 @@ pages = [
      "labelSize": "18",
      "oninit": "fireRandomButton.fillDiv.style.borderWidth = '2px';",     
 },
-/* -- RANDOM PRESENT Buttons */
+/* -- RANDOM PRESET Buttons */
 {
      "name": "fireRandomPresentButton",
      "type": "Button",
@@ -259,7 +259,7 @@ pages = [
      "mode": "contact",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "label": "RANDOM PRESENT",
+     "label": "RANDOM PRESET",
      "labelSize": "18",
 	 "oninit": "fireRandomPresentButton.fillDiv.style.borderWidth = '2px';",    
 },
@@ -321,7 +321,7 @@ pages = [
     "name": "nextB",
     "type": "Button",
     "bounds": [.88,.59,.1,.1], 
-    "label": "Presents",
+    "label": "Presets",
     "labelSize": "18",
     "mode": "contact",    
     "ontouchstart": "control.changePage(1);",
@@ -338,7 +338,7 @@ pages = [
 {
     "name":"page2Label",
     "type":"Label",
-    "value":"SELECTED PRESENT ID: -",
+    "value":"SELECTED PRESET ID: -",
     "size": "40",
     "bounds": [0,0,1,.1],
 },
@@ -352,7 +352,7 @@ pages = [
      "mode" : "momentary",
      "color": "#fc8000",
      "stroke": "#7e4000",
-     "onvaluechange": "page2Label.changeValue( 'SELECTED PRESENT ID: ' + this.childID );",
+     "onvaluechange": "page2Label.changeValue( 'SELECTED PRESET ID: ' + this.childID );",
 },
 
 /* -- next page --*/
