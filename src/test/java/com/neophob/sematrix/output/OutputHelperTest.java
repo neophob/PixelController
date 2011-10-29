@@ -61,4 +61,16 @@ public class OutputHelperTest {
 		}
 		OutputHelper.manualMapping(buffer, mapping, 8, 20);
 	}
+	
+	@Test
+	public void testIntToByteConvert() {
+		int[] intArray = new int[] { 0xffaacc, 0x0000ff };
+		
+		byte[] result = OutputHelper.convertIntToByteBuffer(intArray);
+		assertEquals(6, result.length);
+		assertEquals(255, result[0]&255);
+		assertEquals(0x0aa, result[1]&255);
+		assertEquals(0x0cc, result[2]&255);
+		assertEquals(255, result[5]&255);
+	}
 }

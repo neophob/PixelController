@@ -36,7 +36,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * @author Rainer Ostendorf <mail@linlab.de>
  * 
  * TODO:
- * -support more universe
+ *  -Device/node discovery & automatic updating of node configurations ?
  */
 public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 
@@ -83,23 +83,6 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param frameBuf
-	 * @return
-	 */
-	private byte[] convertIntToByteBuffer(int[] frameBuf) {
-		byte[] buffer = new byte[frameBuf.length*3];
-		int ofs;
-		for (int i = 0; i < frameBuf.length; i++) {
-		    ofs = i*3;
-			buffer[ofs++] = (byte) ((frameBuf[i]>>16) & 0xff);
-			buffer[ofs++] = (byte) ((frameBuf[i]>>8)  & 0xff);
-			buffer[ofs  ] = (byte) ( frameBuf[i]      & 0xff);
-		}
-		
-		return buffer;
-	}
 	
     /* (non-Javadoc)
      * @see com.neophob.sematrix.output.Output#update()
@@ -108,7 +91,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	public void update() {
 		if (this.initialized) {
 			if (this.nrOfUniverse == 1) {
-				sendBufferToArtnetReceiver(0, convertIntToByteBuffer(getTransformedBuffer()) );
+				sendBufferToArtnetReceiver(0, OutputHelper.convertIntToByteBuffer(getTransformedBuffer()) );
 			} else {
 				int[] fullBuffer = getTransformedBuffer();				
 				int remainingInt = fullBuffer.length;
@@ -122,7 +105,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 					System.arraycopy(fullBuffer, ofs, buffer, 0, tmp);
 					remainingInt-=tmp;
 					ofs+=tmp;
-					sendBufferToArtnetReceiver(i, convertIntToByteBuffer(buffer));
+					sendBufferToArtnetReceiver(i, OutputHelper.convertIntToByteBuffer(buffer));
 				}
 			}
 			
