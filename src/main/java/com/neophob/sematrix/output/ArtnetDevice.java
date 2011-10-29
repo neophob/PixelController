@@ -42,9 +42,8 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 
 	private static final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
-	private static final int PIXELS_PER_DMX_UNIVERSE = 170;
-	
 	private int sequenceID;
+	private int pixelsPerUniverse;
 	private int nrOfUniverse;
 	private ArtNet artnet;
 	private boolean initialized;
@@ -61,17 +60,18 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		this.initialized = false;
 		this.artnet = new ArtNet();				
 		try {
+			this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
 			String ip = ph.getArtNetIp();
 		    this.artnet.init();
 		    this.artnet.start();
-		    this.targetAdress = InetAddress.getByName(ip); 
+		    this.targetAdress = InetAddress.getByName(ip); 		    
 		    		
 		    this.nrOfUniverse = 1;
 		    int bufferSize=xResolution*yResolution;
-		    if (bufferSize > PIXELS_PER_DMX_UNIVERSE) {
-		    	while (bufferSize > PIXELS_PER_DMX_UNIVERSE) {
+		    if (bufferSize > pixelsPerUniverse) {
+		    	while (bufferSize > pixelsPerUniverse) {
 		    		this.nrOfUniverse++;
-		    		bufferSize -= PIXELS_PER_DMX_UNIVERSE;
+		    		bufferSize -= pixelsPerUniverse;
 		    	}
 		    }
 		    
@@ -97,8 +97,8 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 				int remainingInt = fullBuffer.length;
 				int ofs=0;
 				for (int i=0; i<this.nrOfUniverse; i++) {
-					int tmp=PIXELS_PER_DMX_UNIVERSE;
-					if (remainingInt<PIXELS_PER_DMX_UNIVERSE) {
+					int tmp=pixelsPerUniverse;
+					if (remainingInt<pixelsPerUniverse) {
 						tmp = remainingInt;
 					}
 					int[] buffer = new int[tmp];

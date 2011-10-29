@@ -48,6 +48,8 @@ public final class ConfigConstant {
 	
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";
+
+	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";	
 	
 	/** The Constant OUTPUT_DEVICE_RESOLUTION_X. */
 	public static final String OUTPUT_DEVICE_RESOLUTION_X = "output.resolution.x";

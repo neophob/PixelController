@@ -456,6 +456,14 @@ public class PropertiesHelper {
     }
 
     /**
+     * how many pixels (=3 Channels) per DMX universe
+     * @return
+     */
+    public int getArtNetPixelsPerUniverse() {
+        return parseInt(ConfigConstant.ARTNET_PIXELS_PER_UNIVERSE, 170);
+    }
+
+    /**
      * Parses the art net devices.
      *
      * @return the int
