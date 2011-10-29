@@ -61,11 +61,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		this.artnet = new ArtNet();				
 		try {
 			this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
-			String ip = ph.getArtNetIp();
+		    this.targetAdress = InetAddress.getByName(ph.getArtNetIp());			
 		    this.artnet.init();
 		    this.artnet.start();
-		    this.targetAdress = InetAddress.getByName(ip); 		    
-		    		
+		    
+		    //check how many universe we need
 		    this.nrOfUniverse = 1;
 		    int bufferSize=xResolution*yResolution;
 		    if (bufferSize > pixelsPerUniverse) {
@@ -76,8 +76,8 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		    }
 		    
 		    this.initialized = true;
-			LOG.log(Level.INFO, "ArtNet device initialized at {0}, using {1} universe and {2} pixels.", 
-					new Object[] {this.targetAdress.toString(), this.nrOfUniverse, xResolution*yResolution});
+			LOG.log(Level.INFO, "ArtNet device initialized at {0}, using {1} universe with {2} pixels.", 
+					new Object[] {this.targetAdress.toString(), this.nrOfUniverse, this.pixelsPerUniverse});
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "failed to initialize ArtNet port:", e);
 		}
