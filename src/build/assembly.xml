@@ -113,15 +113,14 @@
 			<filtered>false</filtered>
 		</file>
  		<file>
-			<source>${basedir}/lib/serial/win32/rxtxSerial.dll</source>
+			<source>${basedir}/lib/serial/rxtxSerial.dll</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
 		</file>
  		<file>
-			<source>${basedir}/lib/serial/win64/rxtxSerial.dll</source>
+			<source>${basedir}/lib/serial/rxtxSerial64.dll</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
-			<destName>rxtxSerial64b.dll</destName>
 		</file>
 		
 	</files>
