@@ -19,8 +19,8 @@
 
 #!/bin/bash
 
-CURRENT=$(dirname $0)
-cd $CURRENT
+CURRENT=$(dirname "$0")
+cd "$CURRENT"
 
 export JAVA_OPT="-Djava.library.path=lib -Djava.security.policy=data/client.policy"
 source ./classpath-unix.properties
