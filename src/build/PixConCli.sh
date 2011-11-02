@@ -19,7 +19,8 @@
 
 #!/bin/bash
 
-#TODO add cd into current dir...
+CURRENT=$(dirname $0)
+cd $CURRENT
 
 export JAVA_OPT="-Djava.library.path=lib -Djava.security.policy=data/client.policy"
 source ./classpath-unix.properties

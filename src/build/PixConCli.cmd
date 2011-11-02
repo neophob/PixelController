@@ -20,8 +20,8 @@
 @echo off
 setlocal
 
-REM warning, opengl is very shaky!!
-REM set JAVA_OPT=-Dsun.java2d.opengl=True -Djava.library.path=lib
+set BINDIR=%~dp0
+cd /D "%BINDIR%"
 
 set JAVA_OPT=-Djava.library.path=lib -Djava.security.policy=data\client.policy
 
@@ -29,3 +29,5 @@ for /f "tokens=*" %%i in ('type classpath-win.properties') do echo set %%i > cp.
 call cp.cmd
 
 java %JAVA_OPT% -classpath lib\PixelController.jar;%classpath% com.neophob.sematrix.cli.PixConClient %*
+
+endlocal
