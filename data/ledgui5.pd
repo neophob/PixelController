@@ -1,4 +1,4 @@
-#N canvas 349 145 1024 600 10;
+#N canvas 416 105 1024 600 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -172,7 +172,7 @@
 6 -8 0 12 -258113 -86277 -1 0;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
-#N canvas 327 74 953 523 network 1;
+#N canvas 254 193 953 523 network 0;
 #N canvas 42 183 1126 428 basicGui 0;
 #X obj 18 23 inlet;
 #X obj 28 150 s r_gen1;
@@ -578,235 +578,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X obj 428 231 send s_core_msg;
 #X floatatom 147 120 5 0 0 3 osc_srv - -;
 #X floatatom 195 120 5 0 0 3 osc_client - -;
-#X obj 45 239 cnv 15 200 60 empty empty OSC_processing 20 12 0 14 -260097
--66577 0;
-#N canvas 51 22 1219 625 osc 1;
-#X obj -146 39 unpackOSC;
-#X obj -146 8 udpreceive 4443;
-#X floatatom -76 65 3 0 0 0 - - -;
-#X floatatom -49 65 3 0 0 0 - - -;
-#X floatatom -22 65 3 0 0 0 - - -;
-#X floatatom 5 65 3 0 0 0 - - -;
-#X text -119 64 from;
-#X floatatom 33 65 5 0 0 0 - - -;
-#X obj -76 39 unpack 0 0 0 0 0;
-#X obj 33 91 > 0;
-#X floatatom 33 119 5 0 0 0 - - -;
-#X obj 33 171 outlet;
-#X obj -116 117 print;
-#X obj -32 252 * 255;
-#X obj 8 252 int;
-#X obj -32 274 s r_tint_b;
-#X obj -146 252 * 255;
-#X obj -106 252 int;
-#X obj -146 274 s r_tint_r;
-#X obj -77 302 * 255;
-#X obj -37 302 int;
-#X obj -77 324 s r_tint_g;
-#X obj 280 91 routeOSC /0 /1;
-#X floatatom 280 140 5 0 0 0 - - -;
-#X obj 400 91 routeOSC /0 /1;
-#X obj 280 115 int;
-#X obj 264 164 s r_gen1;
-#X floatatom 327 140 5 0 0 0 - - -;
-#X obj 327 115 int;
-#X obj 327 164 s r_gen_b1;
-#X obj 280 41 routeOSC /SliderGen /SliderEffect /SliderMix;
-#X floatatom 418 140 5 0 0 0 - - -;
-#X obj 418 115 int;
-#X floatatom 465 140 5 0 0 0 - - -;
-#X obj 465 115 int;
-#X obj 465 164 s r_fx_b1;
-#X obj 402 164 s r_fx1;
-#X floatatom 535 110 5 0 0 0 - - -;
-#X obj 535 85 int;
-#X obj 535 134 s r_mix1;
-#X obj 591 186 s r_rnd_on;
-#X floatatom 601 109 5 0 0 0 - - -;
-#X obj 601 85 int;
-#X obj 596 162 s r_rnd_off;
-#X obj 601 138 moses 1;
-#X obj 672 274 s r_output_fx_all;
-#X msg 672 243 6;
-#X obj -139 450 s r_rnd_do;
-#X obj -38 450 s r_rnd_pres;
-#X obj -139 375 routeOSC /fireRandomButton /fireRandomPresentButton
-/VisualNr;
-#X obj 63 421 int;
-#X floatatom 63 447 5 0 0 0 - - -;
-#X obj 63 493 spigot;
-#X floatatom 113 447 5 0 0 0 - - -;
-#X obj 96 471 !=;
-#X obj 63 518 s r_current_visual;
-#X obj 638 9 import mrpeach;
-#X obj 221 570 s r_output_visual_all;
-#X obj 276 541 s r_output_visual_all;
-#X obj -146 220 routeOSC /knobR /knobG /knobB /knobThreshold /knobRotozoom
-;
-#X obj 61 302 * 255;
-#X obj 101 302 int;
-#X obj 61 324 s r_threshold;
-#X obj 108 252 * 255;
-#X obj 199 252 int;
-#X obj 108 274 s r_rotozoom_angle;
-#X obj 154 251 - 127;
-#X obj 601 41 routeOSC /randomToggleButton /activateTintButton /activateTresholdButton
-/activateRotozoomButton;
-#X obj 743 195 s r_output_fx_all;
-#X msg 743 164 7;
-#X obj 814 134 s r_output_fx_all;
-#X msg 814 103 2;
-#X obj 332 433 unpack s i;
-#X floatatom 374 464 5 0 0 0 - - -;
-#X obj 332 459 symbol2list /;
-#X obj 332 484 int;
-#X floatatom 428 481 5 0 0 0 - - -;
-#X floatatom 443 407 5 0 0 0 - - -;
-#X obj 443 432 moses 1;
-#X obj 428 506 moses 1;
-#X obj 428 533 s r_load_preset;
-#X obj 443 459 s r_save_preset;
-#X obj -139 418 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj -38 418 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 221 433 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 276 433 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 221 369 routeOSC /visualOneToAll /visualTwoToAll /currentPresent
-/loadPresent /savePresent /visualThreeToAll;
-#X obj 293 512 s r_selected_preset;
-#X obj 556 521 s r_output_visual_all;
-#X obj 556 413 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X msg 556 446 2;
-#X msg 221 466 0;
-#X msg 276 466 1;
-#X obj 672 215 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 814 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 743 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 652 370 routeOSC /visual1To1;
-#X obj 652 398 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 885 596 outlet;
-#X obj 829 336 pack s s s s;
-#X obj 824 383 print;
-#X obj 808 292 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X msg 858 271 \;;
-#X msg 897 297 CHANGE_OUTPUT_VISUAL;
-#X msg 837 247 CURRENT_OUTPUT 0 \; CUIRR;
-#X msg 652 429 send CURRENT_OUTPUT 0: CHANGE_OUTPUT_VISUAL 0: CURRENT_OUTPUT
-1: CHANGE_OUTPUT_VISUAL 1:;
-#X connect 0 0 59 0;
-#X connect 1 0 8 0;
-#X connect 1 0 0 0;
-#X connect 7 0 9 0;
-#X connect 8 0 2 0;
-#X connect 8 1 3 0;
-#X connect 8 2 4 0;
-#X connect 8 3 5 0;
-#X connect 8 4 7 0;
-#X connect 9 0 10 0;
-#X connect 10 0 11 0;
-#X connect 13 0 14 0;
-#X connect 14 0 15 0;
-#X connect 16 0 17 0;
-#X connect 17 0 18 0;
-#X connect 19 0 20 0;
-#X connect 20 0 21 0;
-#X connect 22 0 25 0;
-#X connect 22 1 28 0;
-#X connect 23 0 26 0;
-#X connect 24 0 32 0;
-#X connect 24 1 34 0;
-#X connect 25 0 23 0;
-#X connect 27 0 29 0;
-#X connect 28 0 27 0;
-#X connect 30 0 22 0;
-#X connect 30 1 24 0;
-#X connect 30 2 38 0;
-#X connect 30 3 67 0;
-#X connect 31 0 36 0;
-#X connect 32 0 31 0;
-#X connect 33 0 35 0;
-#X connect 34 0 33 0;
-#X connect 37 0 39 0;
-#X connect 38 0 37 0;
-#X connect 41 0 44 0;
-#X connect 42 0 41 0;
-#X connect 44 0 40 0;
-#X connect 44 1 43 0;
-#X connect 46 0 45 0;
-#X connect 49 0 82 0;
-#X connect 49 1 83 0;
-#X connect 49 2 50 0;
-#X connect 49 3 86 0;
-#X connect 50 0 51 0;
-#X connect 51 0 52 0;
-#X connect 51 0 54 0;
-#X connect 52 0 53 0;
-#X connect 52 0 55 0;
-#X connect 53 0 54 1;
-#X connect 54 0 52 1;
-#X connect 59 0 16 0;
-#X connect 59 1 19 0;
-#X connect 59 2 13 0;
-#X connect 59 3 60 0;
-#X connect 59 4 63 0;
-#X connect 59 5 30 0;
-#X connect 60 0 61 0;
-#X connect 61 0 62 0;
-#X connect 63 0 66 0;
-#X connect 64 0 65 0;
-#X connect 66 0 64 0;
-#X connect 67 0 42 0;
-#X connect 67 1 93 0;
-#X connect 67 2 95 0;
-#X connect 67 3 94 0;
-#X connect 67 4 49 0;
-#X connect 69 0 68 0;
-#X connect 71 0 70 0;
-#X connect 72 0 74 0;
-#X connect 73 0 87 0;
-#X connect 74 0 75 0;
-#X connect 75 0 73 0;
-#X connect 76 0 79 0;
-#X connect 77 0 78 0;
-#X connect 78 0 81 0;
-#X connect 79 0 80 0;
-#X connect 82 0 47 0;
-#X connect 83 0 48 0;
-#X connect 84 0 91 0;
-#X connect 85 0 92 0;
-#X connect 86 0 84 0;
-#X connect 86 1 85 0;
-#X connect 86 2 72 0;
-#X connect 86 3 76 0;
-#X connect 86 4 77 0;
-#X connect 86 5 89 0;
-#X connect 86 6 96 0;
-#X connect 89 0 90 0;
-#X connect 90 0 88 0;
-#X connect 91 0 57 0;
-#X connect 92 0 58 0;
-#X connect 93 0 46 0;
-#X connect 94 0 71 0;
-#X connect 95 0 69 0;
-#X connect 96 0 97 0;
-#X connect 97 0 105 0;
-#X connect 99 0 100 0;
-#X connect 101 0 99 0;
-#X connect 102 0 99 1;
-#X connect 102 0 99 3;
-#X connect 103 0 99 2;
-#X connect 104 0 99 0;
-#X connect 105 0 98 0;
-#X restore 82 268 pd osc;
+#X obj 63 196 r oscClient;
 #X connect 2 0 19 0;
 #X connect 2 0 6 0;
 #X connect 3 0 5 0;
@@ -834,12 +606,11 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 33 0 30 0;
 #X connect 33 1 30 0;
 #X connect 33 2 31 0;
-#X connect 39 0 37 0;
-#X connect 39 1 2 0;
+#X connect 38 0 37 0;
 #X coords 0 -1 1 1 205 110 1 50 50;
 #X restore 350 173 pd network;
 #X obj -187 9 vradio 15 1 0 17 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
--1 -1 1;
+-1 -1 10;
 #X text -170 7 Off;
 #X text -170 23 Blinken;
 #X text -170 38 Image;
@@ -891,7 +662,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X floatatom 327 77 5 0 0 0 - r_sel s_sel;
 #X obj 248 327 s r_sel;
 #X obj 70 74 hsl 250 25 0 127 0 0 empty r_selected_preset empty -2
--8 0 10 -262130 -1 -1 1569 1;
+-8 0 10 -262130 -1 -1 10200 1;
 #X connect 0 0 3 0;
 #X connect 1 0 12 0;
 #X connect 2 0 1 0;
@@ -1550,136 +1321,6 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X connect 18 7 11 0;
 #X connect 20 0 19 0;
 #X restore 92 157 pd keyboard;
-#N canvas 521 243 729 550 generaotor 0;
-#X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
-0;
-#X obj 16 241 send blinkenfile;
-#X obj 160 4 cnv 15 150 266 empty empty image 20 12 0 14 -203904 -66577
-0;
-#X obj 172 241 send image;
-#X obj 135 8 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17 7
-0 10 -260097 -1 -1 1 1;
-#X obj 290 8 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0 10
--260097 -1 -1 1 1;
-#X obj 316 4 cnv 15 180 266 empty empty texturedeform 20 12 0 14 -203904
--66577 0;
-#X obj 326 241 send change_lut;
-#X obj 320 34 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
--1 -1;
-#X obj 320 53 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
--1 -1;
-#X obj 384 34 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
--1 -1;
-#X obj 384 53 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
--1 -1;
-#X obj 450 34 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144 -1
--1;
-#X obj 450 53 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
--1;
-#X obj 477 8 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17 7
-0 10 -260097 -1 -1 1 1;
-#X obj 552 277 cnv 15 170 80 empty empty textwriter 20 12 0 14 -203904
--66577 0;
-#X obj 567 325 send textwriter;
-#X msg 16 28 torus.bml;
-#X msg 16 49 bnf_auge.bml;
-#X msg 16 70 bb-frogskin2.bml;
-#X msg 16 91 bb-rauten2.bml;
-#X msg 16 112 bb-spiral2fast.bml;
-#X msg 172 34 circle.jpg;
-#X msg 172 55 half.jpg;
-#X msg 172 76 gradient.jpg;
-#X msg 172 97 check.jpg;
-#X msg 326 78 ceiling.jpg;
-#X msg 326 120 circle.jpg;
-#X msg 326 141 gradient.jpg;
-#X msg 326 99 1316.jpg;
-#X msg 172 133 hsv.jpg;
-#X msg 172 154 hls.jpg;
-#X msg 16 133 flatter_flatter.bml;
-#X msg 16 154 badtv.bml;
-#X msg 172 188 right.jpg;
-#X msg 326 162 check.jpg;
-#X msg 417 139 hsv.jpg;
-#X msg 417 160 hls.jpg;
-#X msg 16 175 kreise-versetzt.bml;
-#X msg 40 207 blender.bml;
-#X msg 193 213 ff-logo-small.jpg;
-#X msg 242 188 logo.gif;
-#X msg 567 304 DEMODAYS 2011;
-#X obj 502 4 cnv 15 220 266 empty empty colorscroll 20 12 0 14 -203904
--66577 0;
-#X obj 551 249 send color_scroll;
-#X obj 509 34 vradio 15 1 1 14 empty empty empty 0 -8 0 10 -262144
--1 -1 12;
-#X text 529 33 Left to right;
-#X text 529 49 Right to left;
-#X text 529 64 Top to Bottom;
-#X text 530 79 Bottom to Top;
-#X text 529 94 Right bottom to left top;
-#X text 529 108 Left bottom to right top;
-#X text 530 124 Right top to left bottom;
-#X text 530 139 Left top to right bottom;
-#X text 530 155 Middle to sides vertical;
-#X text 530 171 Sides to middle vertical;
-#X text 530 200 Sides to middle horizontal;
-#X text 530 186 Middle to sides horizontal;
-#X text 530 214 Explode Circle;
-#X text 530 230 Implode Circle;
-#X obj 703 8 tgl 15 0 s_rndsel_colorscroll r_rndsel_colorscroll empty
-17 7 0 10 -260097 -1 -1 1 1;
-#X obj 5 277 cnv 15 539 216 empty empty color_maps 20 12 0 14 -203904
--66577 0;
-#X text 113 281 Define colors in hex \, no whitespaces \, use _ as
-seperator;
-#X obj 16 334 send color_scroll_map;
-#X obj 16 384 send color_fade_map;
-#X obj 16 434 send plasma_map;
-#X obj 552 365 cnv 15 170 128 empty empty fade_length 20 12 0 14 -203904
--66577 0;
-#X obj 568 397 nbx 3 14 1 500 0 0 empty empty empty 0 -8 0 10 -262144
--1 -1 8 256;
-#X obj 568 447 nbx 3 14 1 500 0 0 empty empty empty 0 -8 0 10 -262144
--1 -1 1 256;
-#X obj 568 417 send color_scroll_length;
-#X obj 568 467 send color_fade_length;
-#X msg 16 412 0xffff00_0x000000_0x0000ff_0x000000;
-#X msg 16 312 0xff8080_0xffff80_0x80ff80_0x80ffff_0x8080ff_0x000000
-;
-#X msg 16 362 0x00ff00_0xff00ff;
-#X connect 17 0 1 0;
-#X connect 18 0 1 0;
-#X connect 19 0 1 0;
-#X connect 20 0 1 0;
-#X connect 21 0 1 0;
-#X connect 22 0 3 0;
-#X connect 23 0 3 0;
-#X connect 24 0 3 0;
-#X connect 25 0 3 0;
-#X connect 26 0 7 0;
-#X connect 27 0 7 0;
-#X connect 28 0 7 0;
-#X connect 29 0 7 0;
-#X connect 30 0 3 0;
-#X connect 31 0 3 0;
-#X connect 32 0 1 0;
-#X connect 33 0 1 0;
-#X connect 34 0 3 0;
-#X connect 35 0 7 0;
-#X connect 36 0 7 0;
-#X connect 37 0 7 0;
-#X connect 38 0 1 0;
-#X connect 39 0 1 0;
-#X connect 40 0 3 0;
-#X connect 41 0 3 0;
-#X connect 42 0 16 0;
-#X connect 45 0 44 0;
-#X connect 67 0 69 0;
-#X connect 68 0 70 0;
-#X connect 71 0 65 0;
-#X connect 72 0 63 0;
-#X connect 73 0 64 0;
-#X restore 93 131 pd generaotor;
 #N canvas 0 22 324 262 pad 0;
 #N canvas 90 22 1046 592 xypad 0;
 #X floatatom 223 65 5 0 0 3 x_pos - -;
@@ -1860,7 +1501,7 @@ seperator;
 #X obj 167 222 hradio 15 1 0 5 s_output_visual_all r_output_visual_all
 Visual_Nr 0 -8 0 12 -261682 -1 -1 0;
 #X obj 59 93 vradio 15 1 0 10 s_output_fx_all r_output_fx_all Effect
-0 -8 0 12 -262130 -1 -1 6;
+0 -8 0 12 -262130 -1 -1 0;
 #X text 80 91 Off;
 #X text 79 107 Inverter;
 #X text 80 122 Rotozoom;
@@ -1884,3 +1525,350 @@ Fader 0 -8 0 12 -204800 -1 -1 0;
 #X text -54 249 ColorFade;
 #X text -170 68 ColorScroll;
 #X text -55 68 ColorScroll;
+#N canvas 0 22 736 507 generator 0;
+#X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
+0;
+#X obj 16 241 send blinkenfile;
+#X obj 160 4 cnv 15 150 266 empty empty image 20 12 0 14 -203904 -66577
+0;
+#X obj 172 241 send image;
+#X obj 135 8 tgl 15 0 s_rndsel_blinken r_rndsel_blinken empty 17 7
+0 10 -260097 -1 -1 0 1;
+#X obj 290 8 tgl 15 0 s_rndsel_image r_rndsel_image empty 17 7 0 10
+-260097 -1 -1 0 1;
+#X obj 316 4 cnv 15 180 266 empty empty texturedeform 20 12 0 14 -203904
+-66577 0;
+#X obj 326 241 send change_lut;
+#X obj 320 34 bng 15 250 50 0 s_td_5 empty tunnel 17 7 0 10 -262144
+-1 -1;
+#X obj 320 53 bng 15 250 50 0 s_td_7 empty cloud 17 7 0 10 -262144
+-1 -1;
+#X obj 384 34 bng 15 250 50 0 s_td_9 empty circle 17 7 0 10 -262144
+-1 -1;
+#X obj 384 53 bng 15 250 50 0 s_td_10 empty spiral 17 7 0 10 -262144
+-1 -1;
+#X obj 450 34 bng 15 250 50 0 s_td_4 empty star 17 7 0 10 -262144 -1
+-1;
+#X obj 450 53 bng 15 250 50 0 s_td_11 empty 3d 17 7 0 10 -262144 -1
+-1;
+#X obj 477 8 tgl 15 0 s_rndsel_textdef r_rndsel_textdef empty 17 7
+0 10 -260097 -1 -1 0 1;
+#X obj 552 277 cnv 15 170 80 empty empty textwriter 20 12 0 14 -203904
+-66577 0;
+#X obj 567 325 send textwriter;
+#X msg 16 28 torus.bml;
+#X msg 16 49 bnf_auge.bml;
+#X msg 16 70 bb-frogskin2.bml;
+#X msg 16 91 bb-rauten2.bml;
+#X msg 16 112 bb-spiral2fast.bml;
+#X msg 172 34 circle.jpg;
+#X msg 172 55 half.jpg;
+#X msg 172 76 gradient.jpg;
+#X msg 172 97 check.jpg;
+#X msg 326 78 ceiling.jpg;
+#X msg 326 120 circle.jpg;
+#X msg 326 141 gradient.jpg;
+#X msg 326 99 1316.jpg;
+#X msg 172 133 hsv.jpg;
+#X msg 172 154 hls.jpg;
+#X msg 16 133 flatter_flatter.bml;
+#X msg 16 154 badtv.bml;
+#X msg 172 188 right.jpg;
+#X msg 326 162 check.jpg;
+#X msg 417 139 hsv.jpg;
+#X msg 417 160 hls.jpg;
+#X msg 16 175 kreise-versetzt.bml;
+#X msg 40 207 blender.bml;
+#X msg 193 213 ff-logo-small.jpg;
+#X msg 242 188 logo.gif;
+#X msg 567 304 DEMODAYS 2011;
+#X obj 502 4 cnv 15 220 266 empty empty colorscroll 20 12 0 14 -203904
+-66577 0;
+#X obj 551 249 send color_scroll;
+#X obj 509 34 vradio 15 1 1 14 empty empty empty 0 -8 0 10 -262144
+-1 -1 12;
+#X text 529 33 Left to right;
+#X text 529 49 Right to left;
+#X text 529 64 Top to Bottom;
+#X text 530 79 Bottom to Top;
+#X text 529 94 Right bottom to left top;
+#X text 529 108 Left bottom to right top;
+#X text 530 124 Right top to left bottom;
+#X text 530 139 Left top to right bottom;
+#X text 530 155 Middle to sides vertical;
+#X text 530 171 Sides to middle vertical;
+#X text 530 200 Sides to middle horizontal;
+#X text 530 186 Middle to sides horizontal;
+#X text 530 214 Explode Circle;
+#X text 530 230 Implode Circle;
+#X obj 703 8 tgl 15 0 s_rndsel_colorscroll r_rndsel_colorscroll empty
+17 7 0 10 -260097 -1 -1 0 1;
+#X obj 5 277 cnv 15 539 216 empty empty color_maps 20 12 0 14 -203904
+-66577 0;
+#X text 113 281 Define colors in hex \, no whitespaces \, use _ as
+seperator;
+#X obj 355 385 send color_scroll_map;
+#X obj 16 384 send color_fade_map;
+#X obj 16 434 send plasma_map;
+#X obj 552 365 cnv 15 170 128 empty empty fade_length 20 12 0 14 -203904
+-66577 0;
+#X obj 568 397 nbx 3 14 1 500 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 1 256;
+#X obj 568 447 nbx 3 14 1 500 0 0 empty empty empty 0 -8 0 10 -262144
+-1 -1 1 256;
+#X obj 568 417 send color_scroll_length;
+#X obj 568 467 send color_fade_length;
+#X msg 16 412 0xffff00_0x000000_0x0000ff_0x000000;
+#X msg 16 362 0x00ff00_0xff00ff;
+#X msg 186 332 0xF5B71E_0xa87e14_0x51a9c2_0xd1f5ff_0x0a0a0a_0xf5f5f5
+;
+#X msg 326 185 logo.gif;
+#X msg 16 312 0xffffff_0xFF12D4_0xB35482_0x000000;
+#X connect 17 0 1 0;
+#X connect 18 0 1 0;
+#X connect 19 0 1 0;
+#X connect 20 0 1 0;
+#X connect 21 0 1 0;
+#X connect 22 0 3 0;
+#X connect 23 0 3 0;
+#X connect 24 0 3 0;
+#X connect 25 0 3 0;
+#X connect 26 0 7 0;
+#X connect 27 0 7 0;
+#X connect 28 0 7 0;
+#X connect 29 0 7 0;
+#X connect 30 0 3 0;
+#X connect 31 0 3 0;
+#X connect 32 0 1 0;
+#X connect 33 0 1 0;
+#X connect 34 0 3 0;
+#X connect 35 0 7 0;
+#X connect 36 0 7 0;
+#X connect 37 0 7 0;
+#X connect 38 0 1 0;
+#X connect 39 0 1 0;
+#X connect 40 0 3 0;
+#X connect 41 0 3 0;
+#X connect 42 0 16 0;
+#X connect 45 0 44 0;
+#X connect 67 0 69 0;
+#X connect 68 0 70 0;
+#X connect 71 0 65 0;
+#X connect 72 0 64 0;
+#X connect 73 0 63 0;
+#X connect 74 0 7 0;
+#X connect 75 0 63 0;
+#X restore 93 128 pd generator;
+#N canvas 51 22 1219 625 osc 0;
+#X obj -146 39 unpackOSC;
+#X obj -146 8 udpreceive 4443;
+#X floatatom -76 65 3 0 0 0 - - -;
+#X floatatom -49 65 3 0 0 0 - - -;
+#X floatatom -22 65 3 0 0 0 - - -;
+#X floatatom 5 65 3 0 0 0 - - -;
+#X text -119 64 from;
+#X floatatom 33 65 5 0 0 0 - - -;
+#X obj -76 39 unpack 0 0 0 0 0;
+#X obj 33 91 > 0;
+#X floatatom 33 119 5 0 0 0 - - -;
+#X obj -32 252 * 255;
+#X obj 8 252 int;
+#X obj -32 274 s r_tint_b;
+#X obj -146 252 * 255;
+#X obj -106 252 int;
+#X obj -146 274 s r_tint_r;
+#X obj -77 302 * 255;
+#X obj -37 302 int;
+#X obj -77 324 s r_tint_g;
+#X obj 280 91 routeOSC /0 /1;
+#X floatatom 280 140 5 0 0 0 - - -;
+#X obj 400 91 routeOSC /0 /1;
+#X obj 280 115 int;
+#X obj 264 164 s r_gen1;
+#X floatatom 327 140 5 0 0 0 - - -;
+#X obj 327 115 int;
+#X obj 327 164 s r_gen_b1;
+#X obj 280 41 routeOSC /SliderGen /SliderEffect /SliderMix;
+#X floatatom 418 140 5 0 0 0 - - -;
+#X obj 418 115 int;
+#X floatatom 465 140 5 0 0 0 - - -;
+#X obj 465 115 int;
+#X obj 465 164 s r_fx_b1;
+#X obj 402 164 s r_fx1;
+#X floatatom 535 110 5 0 0 0 - - -;
+#X obj 535 85 int;
+#X obj 535 134 s r_mix1;
+#X obj 591 186 s r_rnd_on;
+#X floatatom 601 109 5 0 0 0 - - -;
+#X obj 601 85 int;
+#X obj 596 162 s r_rnd_off;
+#X obj 601 138 moses 1;
+#X obj 672 274 s r_output_fx_all;
+#X msg 672 243 6;
+#X obj -139 450 s r_rnd_do;
+#X obj -38 450 s r_rnd_pres;
+#X obj -139 375 routeOSC /fireRandomButton /fireRandomPresentButton
+/VisualNr;
+#X obj 63 421 int;
+#X floatatom 63 447 5 0 0 0 - - -;
+#X obj 63 493 spigot;
+#X floatatom 113 447 5 0 0 0 - - -;
+#X obj 96 471 !=;
+#X obj 63 518 s r_current_visual;
+#X obj 638 9 import mrpeach;
+#X obj 221 570 s r_output_visual_all;
+#X obj 276 541 s r_output_visual_all;
+#X obj -146 220 routeOSC /knobR /knobG /knobB /knobThreshold /knobRotozoom
+;
+#X obj 61 302 * 255;
+#X obj 101 302 int;
+#X obj 61 324 s r_threshold;
+#X obj 108 252 * 255;
+#X obj 199 252 int;
+#X obj 108 274 s r_rotozoom_angle;
+#X obj 154 251 - 127;
+#X obj 601 41 routeOSC /randomToggleButton /activateTintButton /activateTresholdButton
+/activateRotozoomButton;
+#X obj 743 195 s r_output_fx_all;
+#X msg 743 164 7;
+#X obj 814 134 s r_output_fx_all;
+#X msg 814 103 2;
+#X obj 332 412 unpack s i;
+#X floatatom 374 464 5 0 0 0 - - -;
+#X obj 332 438 symbol2list /;
+#X obj 332 484 int;
+#X floatatom 428 481 5 0 0 0 - - -;
+#X floatatom 443 407 5 0 0 0 - - -;
+#X obj 443 432 moses 1;
+#X obj 428 506 moses 1;
+#X obj 428 533 s r_load_preset;
+#X obj 443 459 s r_save_preset;
+#X obj -139 418 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj -38 418 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 221 433 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 276 433 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 221 369 routeOSC /visualOneToAll /visualTwoToAll /currentPresent
+/loadPresent /savePresent /visualThreeToAll;
+#X obj 293 512 s r_selected_preset;
+#X obj 556 521 s r_output_visual_all;
+#X obj 556 413 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 556 446 2;
+#X msg 221 466 0;
+#X msg 276 466 1;
+#X obj 672 215 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 814 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 743 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 652 370 routeOSC /visual1To1;
+#X obj 652 398 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 652 429 send CURRENT_OUTPUT 0: CHANGE_OUTPUT_VISUAL 0: CURRENT_OUTPUT
+1: CHANGE_OUTPUT_VISUAL 1:;
+#X obj 33 171 s oscClient;
+#X obj 761 513 s to_server;
+#X connect 0 0 57 0;
+#X connect 1 0 8 0;
+#X connect 1 0 0 0;
+#X connect 7 0 9 0;
+#X connect 8 0 2 0;
+#X connect 8 1 3 0;
+#X connect 8 2 4 0;
+#X connect 8 3 5 0;
+#X connect 8 4 7 0;
+#X connect 9 0 10 0;
+#X connect 10 0 97 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 20 0 23 0;
+#X connect 20 1 26 0;
+#X connect 21 0 24 0;
+#X connect 22 0 30 0;
+#X connect 22 1 32 0;
+#X connect 23 0 21 0;
+#X connect 25 0 27 0;
+#X connect 26 0 25 0;
+#X connect 28 0 20 0;
+#X connect 28 1 22 0;
+#X connect 28 2 36 0;
+#X connect 28 3 65 0;
+#X connect 29 0 34 0;
+#X connect 30 0 29 0;
+#X connect 31 0 33 0;
+#X connect 32 0 31 0;
+#X connect 35 0 37 0;
+#X connect 36 0 35 0;
+#X connect 39 0 42 0;
+#X connect 40 0 39 0;
+#X connect 42 0 38 0;
+#X connect 42 1 41 0;
+#X connect 44 0 43 0;
+#X connect 47 0 80 0;
+#X connect 47 1 81 0;
+#X connect 47 2 48 0;
+#X connect 47 3 84 0;
+#X connect 48 0 49 0;
+#X connect 49 0 50 0;
+#X connect 49 0 52 0;
+#X connect 50 0 51 0;
+#X connect 50 0 53 0;
+#X connect 51 0 52 1;
+#X connect 52 0 50 1;
+#X connect 57 0 14 0;
+#X connect 57 1 17 0;
+#X connect 57 2 11 0;
+#X connect 57 3 58 0;
+#X connect 57 4 61 0;
+#X connect 57 5 28 0;
+#X connect 58 0 59 0;
+#X connect 59 0 60 0;
+#X connect 61 0 64 0;
+#X connect 62 0 63 0;
+#X connect 64 0 62 0;
+#X connect 65 0 40 0;
+#X connect 65 1 91 0;
+#X connect 65 2 93 0;
+#X connect 65 3 92 0;
+#X connect 65 4 47 0;
+#X connect 67 0 66 0;
+#X connect 69 0 68 0;
+#X connect 70 0 72 0;
+#X connect 71 0 85 0;
+#X connect 72 0 73 0;
+#X connect 73 0 71 0;
+#X connect 74 0 77 0;
+#X connect 75 0 76 0;
+#X connect 76 0 79 0;
+#X connect 77 0 78 0;
+#X connect 80 0 45 0;
+#X connect 81 0 46 0;
+#X connect 82 0 89 0;
+#X connect 83 0 90 0;
+#X connect 84 0 82 0;
+#X connect 84 1 83 0;
+#X connect 84 2 70 0;
+#X connect 84 3 74 0;
+#X connect 84 4 75 0;
+#X connect 84 5 87 0;
+#X connect 84 6 94 0;
+#X connect 87 0 88 0;
+#X connect 88 0 86 0;
+#X connect 89 0 55 0;
+#X connect 90 0 56 0;
+#X connect 91 0 44 0;
+#X connect 92 0 69 0;
+#X connect 93 0 67 0;
+#X connect 94 0 95 0;
+#X connect 95 0 96 0;
+#X connect 96 0 98 0;
+#X restore 146 211 pd osc;
