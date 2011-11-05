@@ -118,6 +118,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	 * a DMX universe can address up to 512 channels - this means up to
 	 * 170 RGB LED (510 Channels)
 	 * 
+	 * Just for myself:
+	 * ArtNet packets are made up of the Ethernet data (source and destination IP addresses), followed by
+	 * the ArtNet Subnet (0 to 15) and the ArtNet universe (0 to 15), and finally the DMX data for that
+	 * universe).
+	 *
 	 * @param artnetReceiver
 	 * @param frameBuf
 	 */
