@@ -1,7 +1,7 @@
 TODO PixelController
 --------------------
 -WIP: palette/color concept (greyscale, rgb, hsv...), currently we're mixing b/w, rgb and hsv, plus there is a tint effect
--WIP: particle generator (rain,snow,fireworks...) remember: rip from cocos2d particle system
+-particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 -rewrite output selection/configuration, 
 -more effects/mixer...
 -move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
