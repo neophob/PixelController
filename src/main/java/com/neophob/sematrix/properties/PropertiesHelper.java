@@ -464,6 +464,16 @@ public class PropertiesHelper {
     }
 
     /**
+     * get first arnet universe id
+     * @return
+     */
+    public int getArtNetStartUniverseId() {
+        return parseInt(ConfigConstant.ARTNET_FIRST_UNIVERSE_ID, 0);
+    }
+
+    
+
+    /**
      * Parses the art net devices.
      *
      * @return the int

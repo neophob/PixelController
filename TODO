@@ -7,7 +7,6 @@ TODO PixelController
 -move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
 -more layouts (what kind of layouts?)
 -do not freeze application if output fails (disconnect controller)
--artnet output: make universe id configurable
 -artnet output: support multiple output devices / multiple universe
 -MatrixData: make internal buffersize configurable (currently deviceSize*8) 
  
@@ -25,3 +24,4 @@ Changelog v1.0.3 to v1.1
 -manual mapping to support fancy led mapping (OnePanelResolutionAwareOutput class). define a configuration property like 
  output.mapping=1,2,5,6,3,4,7,8 ...
 -Log output to a file instead the command line
+-artnet output: make first universe id configurable

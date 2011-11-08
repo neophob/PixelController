@@ -45,6 +45,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	private int sequenceID;
 	private int pixelsPerUniverse;
 	private int nrOfUniverse;
+	private int firstUniverseId;
 	private ArtNet artnet;
 	private boolean initialized;
 	
@@ -61,7 +62,8 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		this.artnet = new ArtNet();				
 		try {
 			this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
-		    this.targetAdress = InetAddress.getByName(ph.getArtNetIp());			
+		    this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
+		    this.firstUniverseId = ph.getArtNetStartUniverseId();
 		    this.artnet.init();
 		    this.artnet.start();
 		    
@@ -126,11 +128,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	 * @param artnetReceiver
 	 * @param frameBuf
 	 */
-	private void sendBufferToArtnetReceiver(int universeId, byte[] buffer) {
+	private void sendBufferToArtnetReceiver(int universeOffset, byte[] buffer) {
 		ArtDmxPacket dmx = new ArtDmxPacket();
 		
 		//parameter: int subnetID, int universeID
-		dmx.setUniverse(0, universeId);
+		dmx.setUniverse(0, this.firstUniverseId+universeOffset);
 		dmx.setSequenceID(sequenceID % 255);
 		dmx.setDMX(buffer, buffer.length);
 		this.artnet.unicastPacket(dmx, this.targetAdress);

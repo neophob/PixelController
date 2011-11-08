@@ -2,6 +2,7 @@ package com.neophob;
 
 import static org.junit.Assert.assertTrue;
 
+import java.awt.HeadlessException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,9 @@ public class PixelControllerTest extends PApplet {
     
 	@Test
 	public void testMain() {
-		PApplet.main(new String[] { "com.neophob.PixelControllerTest" });
+		try {
+			PApplet.main(new String[] { "com.neophob.PixelControllerTest" });			
+		} catch (HeadlessException e) {}
 		
 		assertTrue(Collector.getInstance().getPresent().size() > 0);		
 		assertTrue(Collector.getInstance().getPixelControllerGenerator().getSize() > 0);
