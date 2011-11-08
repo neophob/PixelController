@@ -216,4 +216,23 @@ public class PropertiesHelperTest {
         assertEquals(5, l.size());
         assertEquals(Integer.valueOf(16744576), l.get(0));
     }
+    
+    @Test
+    public void testLoadPresetOnStartup() {
+        Properties config = new Properties();
+        PropertiesHelper ph = new PropertiesHelper(config);
+        int presetNr = ph.loadPresetOnStart();
+        assertEquals(-1, presetNr);
+        
+        config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "22");
+        ph = new PropertiesHelper(config);
+        presetNr = ph.loadPresetOnStart();
+        assertEquals(22, presetNr);
+        
+        config = new Properties();
+        config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "2222");
+        ph = new PropertiesHelper(config);
+        presetNr = ph.loadPresetOnStart();
+        assertEquals(-1, presetNr);
+    }
 }

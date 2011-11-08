@@ -565,6 +565,17 @@ public class PropertiesHelper {
         return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_Y, 64);        
     }
 
+    /**
+     * 
+     * @return
+     */
+    public int loadPresetOnStart() {
+        int val = parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
+        if (val < Collector.NR_OF_PRESENT_SLOTS) {
+            return val;
+        }
+        return -1;
+    }
     
     /**
      * Start randommode.

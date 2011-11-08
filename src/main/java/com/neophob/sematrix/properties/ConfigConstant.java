@@ -68,6 +68,7 @@ public final class ConfigConstant {
 
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
+    public static final String STARTUP_LOAD_PRESET_NR = "startup.load.preset.nr";
 
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String SOUND_AWARE_GENERATORS = "update.generators.by.sound";
@@ -111,4 +112,5 @@ public final class ConfigConstant {
 	public static final String COLORFADE_RGBCOLOR = "colorfade.rgbcolor";
         
     public static final String PLASMA_RGBCOLOR = "plasma.rgbcolor";
+   
 }

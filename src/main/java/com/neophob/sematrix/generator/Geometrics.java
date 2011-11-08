@@ -66,7 +66,7 @@ public class Geometrics extends Generator {
 	 * @param controller the controller
 	 */
 	public Geometrics(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.GEOMETRICS, ResizeName.QUALITY_RESIZE);
+		super(controller, GeneratorName.DROPS, ResizeName.QUALITY_RESIZE);
 		//drops = new CopyOnWriteArrayList<Drop>();
 		drops = new ArrayList<Drop>();
 		tmp = new ArrayList<Drop>();

@@ -345,7 +345,7 @@ public class Visual {
 				new Visual(GeneratorName.TEXTURE_DEFORMATION);
 				break;
 			case 8:
-				new Visual(GeneratorName.GEOMETRICS);
+				new Visual(GeneratorName.DROPS);
 				break;
 			case 9:
 				new Visual(GeneratorName.PLASMA_ADVANCED);

@@ -19,6 +19,7 @@
 
 package com.neophob;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +72,8 @@ public class PixelController extends PApplet {
 	 * prepare.
 	 */
 	public void setup() {
+	    LOG.log(Level.INFO, "");
+	    LOG.log(Level.INFO, "-----------------------------------");
 		LOG.log(Level.INFO, "--- PixelController Setup START ---");
 
 		Properties config = new Properties();
@@ -127,7 +130,18 @@ public class PixelController extends PApplet {
 			this.collector.setRandomMode(true);
 		}
 		
-		LOG.log(Level.INFO,"--- PixelController Setup END ---");
+		int presetNr = ph.loadPresetOnStart();
+		if (presetNr != -1) {
+		    LOG.log(Level.INFO,"Load preset "+presetNr);
+	        List<String> present = this.collector.getPresent().get(presetNr).getPresent();
+	        if (present!=null) { 
+	            this.collector.setCurrentStatus(present);
+	        }		    
+		}
+		
+		LOG.log(Level.INFO, "--- PixelController Setup END ---");
+		LOG.log(Level.INFO, "---------------------------------");
+		LOG.log(Level.INFO, "");
 	}
 
 	/* (non-Javadoc)
