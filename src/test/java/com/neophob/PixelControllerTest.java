@@ -2,7 +2,6 @@ package com.neophob;
 
 import static org.junit.Assert.assertTrue;
 
-import java.awt.HeadlessException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,9 +26,11 @@ public class PixelControllerTest extends PApplet {
     
 	@Test
 	public void testMain() {
-		try {
+
+		if (!java.awt.GraphicsEnvironment.isHeadless()) {
+			//Jenkins is headless, so this test would not work
 			PApplet.main(new String[] { "com.neophob.PixelControllerTest" });			
-		} catch (HeadlessException e) {}
+		}
 		
 		assertTrue(Collector.getInstance().getPresent().size() > 0);		
 		assertTrue(Collector.getInstance().getPixelControllerGenerator().getSize() > 0);
@@ -38,6 +39,7 @@ public class PixelControllerTest extends PApplet {
 		assertTrue(Collector.getInstance().getPixelControllerResize().getAllResizers().size() > 0);
 		
 		assertTrue(PixelControllerFader.getFaderCount()>3);
+
 	}
 	
 
