@@ -29,34 +29,38 @@ public class PixelControllerTest {
 	        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
 		    PropertiesHelper ph = new PropertiesHelper(config);
 			Collector.getInstance().init(this, ph);
+			LOG.log(Level.INFO, "TestProcessingclass initialized");
 		}
 	}
 	
     private static final Logger LOG = Logger.getLogger(PixelControllerTest.class.getName());
-    
+
 	@Test
 	public void testMain() {
+		//Jenkins is headless, so this test would not work
 		if (!java.awt.GraphicsEnvironment.isHeadless()) {
-			PApplet pa = new TestProcessingclass();
-
-			//Jenkins is headless, so this test would not work
 		    LOG.log(Level.INFO,"public void setup");			
 			PApplet.main(new String[] { "com.neophob.PixelController" });			
 		}
-		
+	}
+
+	@Test
+	public void testSetup() {
+		if (!java.awt.GraphicsEnvironment.isHeadless()) {
+			PApplet pa = new TestProcessingclass();
+			pa.setup();
+		}
+	}
+	
+	@Test
+	public void testCollector() {
 		assertTrue(Collector.getInstance().getPresent().size() > 0);		
 		assertTrue(Collector.getInstance().getPixelControllerGenerator().getSize() > 0);
 		assertTrue(Collector.getInstance().getPixelControllerEffect().getSize() > 0);
 		assertTrue(Collector.getInstance().getPixelControllerMixer().getSize() > 0);
 		assertTrue(Collector.getInstance().getPixelControllerResize().getAllResizers().size() > 0);
-		
 		assertTrue(PixelControllerFader.getFaderCount()>3);
 	}
 	
-	@Test
-	public void testSetup() {
-		PixelController pc = new PixelController();
-		pc.setup();
-	}
 
 }
