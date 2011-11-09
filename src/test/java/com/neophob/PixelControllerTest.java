@@ -20,16 +20,28 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * @author michu
  *
  */
-public class PixelControllerTest extends PApplet {
+public class PixelControllerTest {
 
+	class TestProcessingclass extends PApplet {
+		public void setup() {
+		    Properties config = new Properties();
+	        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+	        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
+		    PropertiesHelper ph = new PropertiesHelper(config);
+			Collector.getInstance().init(this, ph);
+		}
+	}
+	
     private static final Logger LOG = Logger.getLogger(PixelControllerTest.class.getName());
     
 	@Test
 	public void testMain() {
-
 		if (!java.awt.GraphicsEnvironment.isHeadless()) {
+			PApplet pa = new TestProcessingclass();
+
 			//Jenkins is headless, so this test would not work
-			PApplet.main(new String[] { "com.neophob.PixelControllerTest" });			
+		    LOG.log(Level.INFO,"public void setup");			
+			PApplet.main(new String[] { "com.neophob.PixelController" });			
 		}
 		
 		assertTrue(Collector.getInstance().getPresent().size() > 0);		
@@ -39,22 +51,12 @@ public class PixelControllerTest extends PApplet {
 		assertTrue(Collector.getInstance().getPixelControllerResize().getAllResizers().size() > 0);
 		
 		assertTrue(PixelControllerFader.getFaderCount()>3);
+	}
+	
+	@Test
+	public void testSetup() {
+		PixelController pc = new PixelController();
+		pc.setup();
+	}
 
-	}
-	
-
-	
-	public void setup() { 
-	    LOG.log(Level.INFO,"public void setup");
-	    Properties config = new Properties();
-        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
-        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
-	    PropertiesHelper ph = new PropertiesHelper(config);
-		Collector.getInstance().init(this, ph);
-	}
-	
-	public void draw() {
-		
-	}
-	
 }
