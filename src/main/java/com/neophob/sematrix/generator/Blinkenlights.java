@@ -110,7 +110,6 @@ public class Blinkenlights extends Generator implements PConstants {
 		blinken.noLoop();
 		blinken.stop();
 		movieFrames = blinken.getNrOfFrames();
-		//frames=0;
 	}
 	
 	/* (non-Javadoc)

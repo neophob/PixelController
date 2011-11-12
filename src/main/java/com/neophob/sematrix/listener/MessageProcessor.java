@@ -27,9 +27,11 @@ import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.fader.PixelControllerFader;
+import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -76,7 +78,9 @@ public final class MessageProcessor {
 				try {
 					int nr = col.getCurrentVisual();
 					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setGenerator1(tmp);
+					Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
+					g.getId();
+					col.getVisual(nr).setGenerator1(g);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -87,7 +91,9 @@ public final class MessageProcessor {
 					//the new method - used by the gui
 					int nr = col.getCurrentVisual();
 					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setGenerator2(tmp);
+					Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
+					g.getId();
+					col.getVisual(nr).setGenerator2(g);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -96,8 +102,10 @@ public final class MessageProcessor {
 			case CHANGE_EFFECT_A:
 				try {
 					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);				
-					col.getVisual(nr).setEffect1(tmp);						
+					tmp=Integer.parseInt(msg[1]);
+					Effect e = col.getPixelControllerEffect().getEffect(tmp);
+					e.getId();
+					col.getVisual(nr).setEffect1(e);						
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -107,7 +115,9 @@ public final class MessageProcessor {
 				try {
 					int nr = col.getCurrentVisual();
 					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setEffect2(tmp);						
+					Effect e = col.getPixelControllerEffect().getEffect(tmp);
+					e.getId();
+					col.getVisual(nr).setEffect2(e);						
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -118,7 +128,9 @@ public final class MessageProcessor {
 					//the new method - used by the gui
 					int nr = col.getCurrentVisual();
 					tmp=Integer.parseInt(msg[1]);
-					col.getVisual(nr).setMixer(tmp);
+					Mixer m = col.getPixelControllerMixer().getMixer(tmp);
+					m.getId();
+					col.getVisual(nr).setMixer(m);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
