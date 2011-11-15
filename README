@@ -30,7 +30,7 @@ PixelController supports different (LED) matrix hardware devices:
 HOWTO BUILD PIXELCONTROLLER
 ---------------------------
 Prerequisite:
--Maven v2.x (do NOT use Maven 3.x!!)
+-Maven v2.x (if you use maven 3, make sure to read http://neophob.com/2011/11/maven-3-is-evil/ first!)
 -JDK 1.6+
 
 Then run 
