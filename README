@@ -18,6 +18,11 @@ Make sure your led matrix connected to you computer before the application is st
 configured your hardware ind the config.properties file.
 
 
+DEMO
+----
+Check out http://vimeo.com/27453711 to see PixelController in action on two PixelInvaders panels.
+
+
 SUPPORTED HARDWARE
 ------------------
 PixelController supports different (LED) matrix hardware devices:
