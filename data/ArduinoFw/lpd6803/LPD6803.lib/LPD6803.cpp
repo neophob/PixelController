@@ -182,7 +182,11 @@ void LPD6803::show(void) {
 
 //---
 void LPD6803::doSwapBuffersAsap(uint16_t idx) {
-  swapAsap = idx;
+  if (idx==0) {
+    show();
+  } else {
+    swapAsap = idx;
+  }
 }
 
 //---
