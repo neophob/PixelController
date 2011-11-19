@@ -110,10 +110,10 @@ public class Textwriter extends Generator {
 			tmp = new int[internalBuffer.length];
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			LOG.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
-			createTextImage(text);			
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to load font "+fontName+"!", e);
+			LOG.log(Level.WARNING, "Failed to load font "+fontName+":", e);
 		}
+		createTextImage(text);			
 	}
 
 	/**
