@@ -20,7 +20,7 @@
  * 	
  */
 
-#include <TimerOne.h>  
+//the lpd6803 library needs the timer1 library
 #include "LPD6803.h"
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
