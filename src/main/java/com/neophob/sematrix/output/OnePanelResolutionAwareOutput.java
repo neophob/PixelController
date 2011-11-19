@@ -53,6 +53,10 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
     
     /** Manual mapping */
     protected int[] mapping;
+    
+	/** The initialized. */
+    protected boolean initialized;
+
 
 
 	/**

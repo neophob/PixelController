@@ -51,6 +51,7 @@ import processing.core.PApplet;
 import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
+import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
@@ -319,7 +320,10 @@ public class Lpd6803 {
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
-		return sendFrame(ofs, convertBufferTo15bit(data, colorFormat));
+		if (data.length!=BUFFERSIZE) {
+			throw new IllegalArgumentException("data lenght must be 64 bytes!");
+		}
+		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
 	}
 
 
@@ -427,7 +431,7 @@ public class Lpd6803 {
 	 * @param cmdfull the cmdfull
 	 * @param frameData the frame data
 	 */
-	private void flipSecondScanline(byte cmdfull[], byte frameData[]) {
+	private static void flipSecondScanline(byte cmdfull[], byte frameData[]) {
 		int toggler=14;
 		for (int i=0; i<16; i++) {
 			cmdfull[   5+i] = frameData[i];
@@ -607,74 +611,7 @@ public class Lpd6803 {
 		}
 	}
 	
-	/**
-	 * Convert buffer to15bit.
-	 *
-	 * @param data the data
-	 * @param colorFormat the color format
-	 * @return the byte[]
-	 * @throws IllegalArgumentException the illegal argument exception
-	 */
-	public static byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
-		if (data.length!=BUFFERSIZE) {
-			throw new IllegalArgumentException("data lenght must be 64 bytes!");
-		}
 
-		int[] r = new int[BUFFERSIZE];
-		int[] g = new int[BUFFERSIZE];
-		int[] b = new int[BUFFERSIZE];
-		int tmp;
-		int ofs=0;
-
-		//step#1: split up r/g/b 
-		for (int n=0; n<BUFFERSIZE; n++) {
-			//one int contains the rgb color
-			tmp = data[ofs];
-
-			switch (colorFormat) {
-			case RGB:
-				r[ofs] = (int) ((tmp>>16) & 255);
-				g[ofs] = (int) ((tmp>>8)  & 255);
-				b[ofs] = (int) ( tmp      & 255);		
-				
-				break;
-			case RBG:
-				r[ofs] = (int) ((tmp>>16) & 255);
-				b[ofs] = (int) ((tmp>>8)  & 255);
-				g[ofs] = (int) ( tmp      & 255);		
-				
-				break;
-			}
-			ofs++;
-		}
-
-		return convertTo15Bit(r,g,b);
-	}
-
-	/**
-	 * Convert to15 bit.
-	 *
-	 * @param r the r
-	 * @param g the g
-	 * @param b the b
-	 * @return the byte[]
-	 */
-	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
-		int dst=0;
-		byte[] converted = new byte[128];
-		//convert to 24bpp to 15(16)bpp 
-		//output format: RRRRRGGG GGGBBBBB (64x)
-		for (int i=0; i<64;i++) {
-			byte b1 = (byte)(r[i]>>3);
-			byte b2 = (byte)(g[i]>>3);
-			byte b3 = (byte)(b[i]>>3);
-
-			converted[dst++] = (byte)((b1<<2) | (b2>>3));
-			converted[dst++] = (byte)(((b2&7)<<5) | b3);
-		}
-		
-		return converted;
-	}
 
 
 

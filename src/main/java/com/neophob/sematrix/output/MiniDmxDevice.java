@@ -40,10 +40,7 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 	
 	/** The mini dmx. */
 	private MiniDmxSerial miniDmx;
-	
-	/** The initialized. */
-	private boolean initialized;
-	
+		
 	/**
 	 * init the mini dmx devices.
 	 *

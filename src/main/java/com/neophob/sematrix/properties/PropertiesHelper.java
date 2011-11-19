@@ -106,7 +106,8 @@ public class PropertiesHelper {
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
         int nullDevices = parseNullOutputAddress();
-
+        int adalightDevices = parseAdalight();
+        
         //track how many output systems are enabled
         int enabledOutputs = 0;
 
@@ -142,6 +143,12 @@ public class PropertiesHelper {
             totalDevices = nullDevices;
             LOG.log(Level.INFO, "found Null device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.NULL;
+        } 
+        if (adalightDevices > 0) {
+            enabledOutputs++;
+            totalDevices = adalightDevices;
+            LOG.log(Level.INFO, "found Adalight device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.ADALIGHT;
         } 
 
 
@@ -444,7 +451,18 @@ public class PropertiesHelper {
         return row1+row2;
     }	
 
-
+    /**
+     * 
+     * @return
+     */
+    private int parseAdalight() {
+    	if (parseBoolean(ConfigConstant.ADALIGHT_DEVICE) &&
+    			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X)>0 && 
+    			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y)>0) {
+    		return 1;
+    	}
+        return 0;
+    }	
 
     /**
      * get configured artnet ip.

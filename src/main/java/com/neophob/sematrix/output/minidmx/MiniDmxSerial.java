@@ -50,6 +50,7 @@ import processing.core.PApplet;
 import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
+import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
@@ -375,7 +376,7 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(int[] data, ColorFormat colorFormat) {
-		return sendFrame(convertBufferTo24bit(data, colorFormat));
+		return sendFrame(OutputHelper.convertBufferTo24bit(data, colorFormat));
 	}
 
 
@@ -567,62 +568,6 @@ public class MiniDmxSerial {
 		}
 	}
 	
-	
-	/**
-	 * Convert buffer to24bit.
-	 *
-	 * @param data the data
-	 * @param colorFormat the color format
-	 * @return the byte[]
-	 * @throws IllegalArgumentException the illegal argument exception
-	 */
-	public byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
-	    /*int targetBuffersize = miniDmxPayload.getPayloadSize();
-		if (data.length!=targetBuffersize) {
-			throw new IllegalArgumentException("convertBufferTo24bit error, data lenght must be "+targetBuffersize+" bytes but is "+data.length+" bytes!");
-		}*/
-	    int targetBuffersize = data.length;
-		
-		int[] r = new int[targetBuffersize];
-		int[] g = new int[targetBuffersize];
-		int[] b = new int[targetBuffersize];
-		int tmp;
-		int ofs=0;
-
-		//step#1: split up r/g/b 
-		for (int n=0; n<targetBuffersize; n++) {
-			//one int contains the rgb color
-			tmp = data[ofs];
-
-			switch (colorFormat) {
-			case RGB:
-				r[ofs] = (int) ((tmp>>16) & 255);
-				g[ofs] = (int) ((tmp>>8)  & 255);
-				b[ofs] = (int) ( tmp      & 255);		
-				
-				break;
-			case RBG:
-				r[ofs] = (int) ((tmp>>16) & 255);
-				b[ofs] = (int) ((tmp>>8)  & 255);
-				g[ofs] = (int) ( tmp      & 255);		
-				
-				break;
-			}
-			ofs++;
-		}
-
-		ofs=0;
-		byte[] buffer = new byte[targetBuffersize*3];
-		for (int i=0; i<targetBuffersize; i++) {
-			buffer[ofs++] = (byte)r[i];
-			buffer[ofs++] = (byte)g[i];
-			buffer[ofs++] = (byte)b[i];
-		}
-		
-		return buffer;
-	}
-
-
 	/**
 	 * Gets the connection error counter.
 	 *

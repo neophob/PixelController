@@ -45,7 +45,9 @@ public final class ConfigConstant {
 	
 	/** The Constant NULLOUTPUT_ROW2. */
 	public static final String NULLOUTPUT_ROW2 = "nulloutput.devices.row2";
-	
+
+	public static final String ADALIGHT_DEVICE = "adalight.device.enabld";
+
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";
 

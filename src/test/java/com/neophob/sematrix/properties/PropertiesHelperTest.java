@@ -235,4 +235,23 @@ public class PropertiesHelperTest {
         presetNr = ph.loadPresetOnStart();
         assertEquals(-1, presetNr);
     }
+    
+    @Test
+    public void testAdaLight() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.ADALIGHT_DEVICE, "true");
+        PropertiesHelper ph = new PropertiesHelper(config);
+        assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
+    }
+    
+    @Test
+    public void testAdaLightCorrect() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.ADALIGHT_DEVICE, "true");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
+        PropertiesHelper ph = new PropertiesHelper(config);
+        assertEquals(OutputDeviceEnum.ADALIGHT, ph.getOutputDevice());
+    }
+    
 }

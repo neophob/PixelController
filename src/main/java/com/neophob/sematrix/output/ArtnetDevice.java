@@ -47,7 +47,6 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	private int nrOfUniverse;
 	private int firstUniverseId;
 	private ArtNet artnet;
-	private boolean initialized;
 	
 	private InetAddress targetAdress;
 

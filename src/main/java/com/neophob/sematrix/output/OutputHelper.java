@@ -22,6 +22,8 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.properties.ColorFormat;
+
 
 
 /**
@@ -100,4 +102,127 @@ public class OutputHelper {
 		
 		return buffer;
 	}
+	
+	
+	
+	
+	/**
+	 * Convert buffer to15bit.
+	 *
+	 * @param data the data
+	 * @param colorFormat the color format
+	 * @return the byte[]
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
+	public static byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
+		int[] r = new int[data.length];
+		int[] g = new int[data.length];
+		int[] b = new int[data.length];
+		int tmp;
+		int ofs=0;
+
+		//step#1: split up r/g/b 
+		for (int n=0; n<data.length; n++) {
+			//one int contains the rgb color
+			tmp = data[ofs];
+
+			switch (colorFormat) {
+			case RGB:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				g[ofs] = (int) ((tmp>>8)  & 255);
+				b[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			case RBG:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				b[ofs] = (int) ((tmp>>8)  & 255);
+				g[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			}
+			ofs++;
+		}
+
+		return convertTo15Bit(r,g,b);
+	}
+
+	/**
+	 * Convert to15 bit.
+	 *
+	 * @param r the r
+	 * @param g the g
+	 * @param b the b
+	 * @return the byte[]
+	 */
+	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
+		int dst=0;
+		byte[] converted = new byte[128];
+		//convert to 24bpp to 15(16)bpp 
+		//output format: RRRRRGGG GGGBBBBB (64x)
+		for (int i=0; i<64;i++) {
+			byte b1 = (byte)(r[i]>>3);
+			byte b2 = (byte)(g[i]>>3);
+			byte b3 = (byte)(b[i]>>3);
+
+			converted[dst++] = (byte)((b1<<2) | (b2>>3));
+			converted[dst++] = (byte)(((b2&7)<<5) | b3);
+		}
+		
+		return converted;
+	}
+	
+	
+	
+	/**
+	 * Convert internal buffer to 24bit byte buffer, using colorformat.
+	 *
+	 * @param data the data
+	 * @param colorFormat the color format
+	 * @return the byte[]
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
+	public static byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
+	    int targetBuffersize = data.length;
+		
+		int[] r = new int[targetBuffersize];
+		int[] g = new int[targetBuffersize];
+		int[] b = new int[targetBuffersize];
+		int tmp;
+		int ofs=0;
+
+		//step#1: split up r/g/b 
+		for (int n=0; n<targetBuffersize; n++) {
+			//one int contains the rgb color
+			tmp = data[ofs];
+
+			switch (colorFormat) {
+			case RGB:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				g[ofs] = (int) ((tmp>>8)  & 255);
+				b[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			case RBG:
+				r[ofs] = (int) ((tmp>>16) & 255);
+				b[ofs] = (int) ((tmp>>8)  & 255);
+				g[ofs] = (int) ( tmp      & 255);		
+				
+				break;
+			}
+			ofs++;
+		}
+
+		ofs=0;
+		byte[] buffer = new byte[targetBuffersize*3];
+		for (int i=0; i<targetBuffersize; i++) {
+			buffer[ofs++] = (byte)r[i];
+			buffer[ofs++] = (byte)g[i];
+			buffer[ofs++] = (byte)b[i];
+		}
+		
+		return buffer;
+	}
+
+
+	
 }

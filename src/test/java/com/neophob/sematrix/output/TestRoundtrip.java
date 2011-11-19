@@ -17,9 +17,11 @@
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.neophob.sematrix.output.lpd6803;
+package com.neophob.sematrix.output;
 
 import processing.core.PApplet;
+
+import com.neophob.sematrix.output.lpd6803.Lpd6803;
 
 /**
  * simply test class, only used to test the lib<br>
@@ -71,7 +73,7 @@ public class TestRoundtrip extends PApplet {
 	}
 	
 	public static void main(String args[]) {
-		PApplet.main(new String[] { "com.neophob.sematrix.output.lpd6803.TestRoundtrip" });
+		PApplet.main(new String[] { "com.neophob.sematrix.output.TestRoundtrip" });
 	}
 
 }

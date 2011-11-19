@@ -34,7 +34,10 @@ public enum OutputDeviceEnum {
 	
 	/** The MINIDMX. */
 	MINIDMX(MiniDmxDevice.class, true),
-	
+
+	/** The ADALIGHT. */
+	ADALIGHT(AdaLight.class, true),
+
 	/** The NULL Output. */
 	NULL(NullDevice.class, false);
 	
