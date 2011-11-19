@@ -46,8 +46,9 @@
 #define SERIAL_DELAY_LOOP 3
 #define SERIAL_WAIT_DELAY 3
 
+//define nr of Panels*2 here, 4 means 2 panels
+#define NR_OF_PANELS 4
 #define PIXELS_PER_PANEL 32
-#define NR_OF_PANELS 2
 
 //this should match RX_BUFFER_SIZE from HardwareSerial.cpp
 //array that will hold the serial input string
