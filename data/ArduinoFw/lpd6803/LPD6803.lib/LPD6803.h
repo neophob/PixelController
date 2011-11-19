@@ -27,7 +27,7 @@ class LPD6803 {
   LPD6803(uint16_t n, uint8_t dpin, uint8_t cpin);
   void begin();
   void show();
-  void doSwapBuffersAsap(uint16_t idx);
+  void doSwapBuffersAsap(int16_t idx);
   void setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b);
   void setPixelColor(uint16_t n, uint16_t c);
   void setCPUmax(uint8_t m);

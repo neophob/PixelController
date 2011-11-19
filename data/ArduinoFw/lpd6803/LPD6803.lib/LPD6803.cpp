@@ -49,7 +49,7 @@ static uint16_t  LedIndex;   // Used in interrupt - Which LED we are sending.
 static byte  BlankCounter;  //Used in interrupt.
 
 static byte lastdata = 0;
-static uint16_t swapAsap = 0;   //flag to indicate that the colors need an update asap
+static int16_t swapAsap = -1;   //flag to indicate that the colors need an update asap
 
 //Interrupt routine.
 //Frequency was set in setup(). Called once for every bit of data sent
@@ -60,13 +60,13 @@ void LedOut() {
 
   switch(SendMode) {
     case DONE:            //Done..just send clocks with zero data
-      if (swapAsap>0) {
+      if (swapAsap!=-1) {
         if(!BlankCounter)    //AS SOON AS CURRENT pwm IS DONE. BlankCounter 
       	{
         	BitCount = 0;
         	LedIndex = swapAsap;  //set current led
         	SendMode = HEADER;
-	      	swapAsap = 0;
+	      	swapAsap = -1;
       	}   	
       }
       break;
@@ -181,12 +181,8 @@ void LPD6803::show(void) {
 }
 
 //---
-void LPD6803::doSwapBuffersAsap(uint16_t idx) {
-  if (idx==0) {
-    show();
-  } else {
-    swapAsap = idx;
-  }
+void LPD6803::doSwapBuffersAsap(int16_t idx) {
+  swapAsap = idx;
 }
 
 //---
