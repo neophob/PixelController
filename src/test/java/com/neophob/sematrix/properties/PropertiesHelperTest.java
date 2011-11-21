@@ -251,7 +251,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
         PropertiesHelper ph = new PropertiesHelper(config);
-        assertEquals(OutputDeviceEnum.ADALIGHT, ph.getOutputDevice());
+        assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
     }
     
 }
