@@ -148,7 +148,7 @@ public class PropertiesHelper {
             enabledOutputs++;
             totalDevices = adalightDevices;
             LOG.log(Level.INFO, "found Adalight device: "+totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.ADALIGHT;
+            this.outputDeviceEnum = OutputDeviceEnum.ADAVISION;
         } 
 
 

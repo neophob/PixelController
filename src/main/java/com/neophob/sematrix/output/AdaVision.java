@@ -1,6 +1,5 @@
 package com.neophob.sematrix.output;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,10 +9,10 @@ import processing.serial.Serial;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
-public class AdaLight extends OnePanelResolutionAwareOutput {
+public class AdaVision extends OnePanelResolutionAwareOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(AdaLight.class.getName());
+	private static final Logger LOG = Logger.getLogger(AdaVision.class.getName());
 
 	private static final int BPS = 115200;
 	private static final int HEADERSIZE = 6;
@@ -25,12 +24,12 @@ public class AdaLight extends OnePanelResolutionAwareOutput {
 	private byte[] buffer;
 	private Serial port;
 	
-	public AdaLight(PropertiesHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.ADALIGHT, ph, controller, 8);
+	public AdaVision(PropertiesHelper ph, PixelControllerOutput controller) {
+		super(OutputDeviceEnum.ADAVISION, ph, controller, 8);
 
-		LOG.log(Level.INFO,	"Initialize AdaLight lib v{0}", VERSION);
+		LOG.log(Level.INFO,	"Initialize AdaVision lib v{0}", VERSION);
 
-		LOG.log(Level.INFO,  "AdaLight X resolution: {0}, Y resolution: {1}", new Object[] {
+		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}", new Object[] {
 		        this.xResolution, this.yResolution});
 
 		this.panelsize = this.xResolution*this.yResolution;
