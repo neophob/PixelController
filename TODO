@@ -9,6 +9,7 @@ TODO PixelController
 -do not freeze application if output fails (disconnect controller)
 -artnet output: support multiple output devices / multiple universe
 -MatrixData: make internal buffersize configurable (currently deviceSize*8)
+-Unit Testing is suboptimal, using the config.properties 
  
 Changelog v1.1 to v1.1.1
 -PixelInvaders Firmware, strip.doSwapBuffersAsap(0); does not work!
