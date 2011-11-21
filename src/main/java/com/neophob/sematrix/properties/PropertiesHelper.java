@@ -106,7 +106,7 @@ public class PropertiesHelper {
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
         int nullDevices = parseNullOutputAddress();
-        int adalightDevices = parseAdalight();
+        int adalightDevices = parseAdalightDevices();
         
         //track how many output systems are enabled
         int enabledOutputs = 0;
@@ -455,10 +455,14 @@ public class PropertiesHelper {
      * 
      * @return
      */
-    private int parseAdalight() {
+    private int parseAdalightDevices() {
     	if (parseBoolean(ConfigConstant.ADALIGHT_DEVICE) &&
     			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X)>0 && 
     			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y)>0) {
+            this.devicesInRow1=1;
+            this.devicesInRow2=0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
     		return 1;
     	}
         return 0;
