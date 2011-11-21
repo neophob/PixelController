@@ -312,9 +312,11 @@ public class PropertiesHelper {
      * @return
      */
     public DeviceConfig getOutputDeviceLayout() {
-    	String value = config.getProperty(ConfigConstant.OUTPUT_DEVICE_LAYOUT);
+    	String value = config.getProperty(ConfigConstant.OUTPUT_DEVICE_LAYOUT);    	
         try {
-            return DeviceConfig.valueOf(value);
+        	if (value != null) {
+                return DeviceConfig.valueOf(value);        		
+        	}
         } catch (Exception e) {
             LOG.log(Level.WARNING, FAILED_TO_PARSE, value);
         }
