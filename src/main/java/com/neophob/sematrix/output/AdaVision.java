@@ -29,8 +29,8 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 
 		LOG.log(Level.INFO,	"Initialize AdaVision lib v{0}", VERSION);
 
-		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}", new Object[] {
-		        this.xResolution, this.yResolution});
+		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2}", new Object[] {
+		        this.xResolution, this.yResolution, Serial.list()[0]});
 
 		this.panelsize = this.xResolution*this.yResolution;
 		//TODO should use autodetection someday
@@ -46,6 +46,8 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 		buffer[3] = (byte)((panelsize - 1) >> 8);      // LED count high byte
 		buffer[4] = (byte)((panelsize - 1) & 0xff);    // LED count low byte
 		buffer[5] = (byte)(buffer[3] ^ buffer[4] ^ 0x55); // Checksum
+		
+		initialized = true;
 	}
 
 	@Override
