@@ -58,16 +58,16 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 
 		LOG.log(Level.INFO,	"Initialize AdaVision lib v{0}", VERSION);
 
-		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2}", new Object[] {
-		        this.xResolution, this.yResolution, Serial.list()[0]});
-
-		this.panelsize = this.xResolution*this.yResolution;
 		//TODO should use autodetection someday
 		String serialPort = ph.getAdavisionSerialPort();
 		if (serialPort==null) {
 			serialPort = Serial.list()[0];
-			LOG.log(Level.INFO,	"Open Serialport {0}", serialPort);
 		}
+
+		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2}", new Object[] {
+		        this.xResolution, this.yResolution, serialPort});
+
+		this.panelsize = this.xResolution*this.yResolution;
  		port = new Serial(Collector.getInstance().getPapplet(), serialPort, BPS);
 				
 		// A special header / magic word is expected by the corresponding LED
