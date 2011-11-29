@@ -5,7 +5,7 @@
 	<artifactId>PixelController</artifactId>
 	<name>PixelController</name>
 	<packaging>jar</packaging>	
-	<version>1.2-SNAPSHOT</version>
+	<version>1.2</version>
 	<description>PixelController Driver</description>
 	<prerequisites>
 		<maven>2.2.1</maven>
