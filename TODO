@@ -10,7 +10,8 @@ TODO PixelController
 -artnet output: support multiple output devices / multiple universe
 -MatrixData: make internal buffersize configurable (currently deviceSize*8)
 -Unit Testing is suboptimal, using the config.properties 
- 
+-start PureData in the start script, for example (/Applications/Pd-extended.app/Contents/Resources/bin/pd -stderr -nomidi -noaudio -open mtxrev-main.pd -send "preset-file ../presets/main.coll;" &
+) 
 
 Changelog v1.1 to v1.1.1
 ------------------------
