@@ -106,7 +106,7 @@ public class PropertiesHelper {
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
         int nullDevices = parseNullOutputAddress();
-        int adalightDevices = parseAdalightDevices();
+        int adalightDevices = parseAdavisionDevices();
         
         //track how many output systems are enabled
         int enabledOutputs = 0;
@@ -457,8 +457,8 @@ public class PropertiesHelper {
      * 
      * @return
      */
-    private int parseAdalightDevices() {
-    	if (parseBoolean(ConfigConstant.ADALIGHT_DEVICE) &&
+    private int parseAdavisionDevices() {
+    	if (parseBoolean(ConfigConstant.ADAVISION_DEVICE) &&
     			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X)>0 && 
     			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y)>0) {
             this.devicesInRow1=1;
@@ -469,6 +469,15 @@ public class PropertiesHelper {
     	}
         return 0;
     }	
+
+    /**
+     * get configured artnet ip.
+     *
+     * @return the art net ip
+     */
+    public String getAdavisionSerialPort() {
+        return config.getProperty(ConfigConstant.ADAVISION_SERIAL_PORT);
+    }
 
     /**
      * get configured artnet ip.

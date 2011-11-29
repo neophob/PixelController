@@ -237,21 +237,34 @@ public class PropertiesHelperTest {
     }
     
     @Test
-    public void testAdaLight() {
+    public void testAdaVision() {
         Properties config = new Properties();        
-        config.put(ConfigConstant.ADALIGHT_DEVICE, "true");
+        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
         PropertiesHelper ph = new PropertiesHelper(config);
         assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
     }
     
     @Test
-    public void testAdaLightCorrect() {
+    public void testAdaVisionCorrect() {
         Properties config = new Properties();        
-        config.put(ConfigConstant.ADALIGHT_DEVICE, "true");
+        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
         PropertiesHelper ph = new PropertiesHelper(config);
         assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
+        assertEquals(null, ph.getAdavisionSerialPort());
     }
-    
+
+    @Test
+    public void testAdaVisionSerialPort() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
+        config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/xxx");
+        PropertiesHelper ph = new PropertiesHelper(config);
+        assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
+        assertEquals("/dev/xxx", ph.getAdavisionSerialPort());
+    }
+
 }

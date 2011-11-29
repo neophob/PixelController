@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+ *
+ * This file is part of PixelController.
+ *
+ * PixelController is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PixelController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.neophob.sematrix.output;
 
 import java.util.Arrays;
@@ -9,6 +27,12 @@ import processing.serial.Serial;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
+/**
+ * Output device for adavision
+ * 
+ * @author michu
+ *
+ */
 public class AdaVision extends OnePanelResolutionAwareOutput {
 
 	/** The log. */
@@ -17,13 +41,18 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 	private static final int BPS = 115200;
 	private static final int HEADERSIZE = 6;
 
-	private static final String VERSION = "0.1";
+	private static final String VERSION = "0.2";
 
 	private int panelsize;
 	
 	private byte[] buffer;
 	private Serial port;
 	
+	/**
+	 * 
+	 * @param ph
+	 * @param controller
+	 */
 	public AdaVision(PropertiesHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.ADAVISION, ph, controller, 8);
 
@@ -34,7 +63,12 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 
 		this.panelsize = this.xResolution*this.yResolution;
 		//TODO should use autodetection someday
-		port = new Serial(Collector.getInstance().getPapplet(), Serial.list()[0], BPS);
+		String serialPort = ph.getAdavisionSerialPort();
+		if (serialPort==null) {
+			serialPort = Serial.list()[0];
+			LOG.log(Level.INFO,	"Open Serialport {0}", serialPort);
+		}
+ 		port = new Serial(Collector.getInstance().getPapplet(), serialPort, BPS);
 				
 		// A special header / magic word is expected by the corresponding LED
 		// streaming code running on the Arduino.  This only needs to be initialized
