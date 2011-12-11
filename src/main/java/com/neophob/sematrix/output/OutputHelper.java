@@ -39,7 +39,7 @@ public class OutputHelper {
 	private OutputHelper() {
 		//no instance allowed
 	}
-	
+
 	/**
 	 * this function feed the framebufferdata (32 pixels a 2bytes (aka 16bit)
 	 * to the send array. each second scanline gets inverteds
@@ -49,7 +49,7 @@ public class OutputHelper {
 	 */
 	public static int[] flipSecondScanline(int buffer[], int xResolution, int yResolution) {
 		int bufferTwo[] = buffer.clone();
-		
+
 		for (int y=0; y<yResolution; y++) {
 			if (y%2==1) {
 				int ofs = y*xResolution;
@@ -57,13 +57,13 @@ public class OutputHelper {
 					bufferTwo[ofs+x] = buffer[xResolution+ofs-x-1];
 				}
 			}
-		}		
+		}
 		return bufferTwo;
 	}
-	
+
 	/**
 	 * do manual mapping, this is used to support a more exotic device configuration
-	 * 
+	 *
 	 * @param buffer
 	 * @param xResolution
 	 * @param yResolution
@@ -77,16 +77,16 @@ public class OutputHelper {
 			if (i+1>lenght) {
 				LOG.log(Level.SEVERE, "Your manual mapping is wrong,the first index is 0! Invalid entry index: {0}", i);
 			} else {
-				bufferTwo[ofs++] = src[i]; 				
+				bufferTwo[ofs++] = src[i];
 			}
 		}
 		return bufferTwo;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * 
+	 *
 	 * @param frameBuf
 	 * @return
 	 */
@@ -99,13 +99,13 @@ public class OutputHelper {
 			buffer[ofs++] = (byte) ((frameBuf[i]>>8)  & 0xff);
 			buffer[ofs  ] = (byte) ( frameBuf[i]      & 0xff);
 		}
-		
+
 		return buffer;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Convert buffer to15bit.
 	 *
@@ -121,7 +121,7 @@ public class OutputHelper {
 		int tmp;
 		int ofs=0;
 
-		//step#1: split up r/g/b 
+		//step#1: split up r/g/b
 		for (int n=0; n<data.length; n++) {
 			//one int contains the rgb color
 			tmp = data[ofs];
@@ -130,14 +130,14 @@ public class OutputHelper {
 			case RGB:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				g[ofs] = (int) ((tmp>>8)  & 255);
-				b[ofs] = (int) ( tmp      & 255);		
-				
+				b[ofs] = (int) ( tmp      & 255);
+
 				break;
 			case RBG:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				b[ofs] = (int) ((tmp>>8)  & 255);
-				g[ofs] = (int) ( tmp      & 255);		
-				
+				g[ofs] = (int) ( tmp      & 255);
+
 				break;
 			}
 			ofs++;
@@ -157,7 +157,7 @@ public class OutputHelper {
 	private static byte[] convertTo15Bit(int[] r, int[] g, int[] b) {
 		int dst=0;
 		byte[] converted = new byte[128];
-		//convert to 24bpp to 15(16)bpp 
+		//convert to 24bpp to 15(16)bpp
 		//output format: RRRRRGGG GGGBBBBB (64x)
 		for (int i=0; i<64;i++) {
 			byte b1 = (byte)(r[i]>>3);
@@ -167,12 +167,12 @@ public class OutputHelper {
 			converted[dst++] = (byte)((b1<<2) | (b2>>3));
 			converted[dst++] = (byte)(((b2&7)<<5) | b3);
 		}
-		
+
 		return converted;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Convert internal buffer to 24bit byte buffer, using colorformat.
 	 *
@@ -183,14 +183,14 @@ public class OutputHelper {
 	 */
 	public static byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
 	    int targetBuffersize = data.length;
-		
+
 		int[] r = new int[targetBuffersize];
 		int[] g = new int[targetBuffersize];
 		int[] b = new int[targetBuffersize];
 		int tmp;
 		int ofs=0;
 
-		//step#1: split up r/g/b 
+		//step#1: split up r/g/b
 		for (int n=0; n<targetBuffersize; n++) {
 			//one int contains the rgb color
 			tmp = data[ofs];
@@ -199,14 +199,38 @@ public class OutputHelper {
 			case RGB:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				g[ofs] = (int) ((tmp>>8)  & 255);
-				b[ofs] = (int) ( tmp      & 255);		
-				
+				b[ofs] = (int) ( tmp      & 255);
+
 				break;
 			case RBG:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				b[ofs] = (int) ((tmp>>8)  & 255);
-				g[ofs] = (int) ( tmp      & 255);		
-				
+				g[ofs] = (int) ( tmp      & 255);
+
+				break;
+			case BRG:
+				b[ofs] = (int) ((tmp>>16) & 255);
+				r[ofs] = (int) ((tmp>>8)  & 255);
+				g[ofs] = (int) ( tmp      & 255);
+
+				break;
+			case BGR:
+				b[ofs] = (int) ((tmp>>16) & 255);
+				g[ofs] = (int) ((tmp>>8)  & 255);
+				r[ofs] = (int) ( tmp      & 255);
+
+				break;
+			case GBR:
+				g[ofs] = (int) ((tmp>>16) & 255);
+				b[ofs] = (int) ((tmp>>8)  & 255);
+				r[ofs] = (int) ( tmp      & 255);
+
+				break;
+			case GRB:
+				g[ofs] = (int) ((tmp>>16) & 255);
+				r[ofs] = (int) ((tmp>>8)  & 255);
+				b[ofs] = (int) ( tmp      & 255);
+
 				break;
 			}
 			ofs++;
@@ -219,10 +243,10 @@ public class OutputHelper {
 			buffer[ofs++] = (byte)g[i];
 			buffer[ofs++] = (byte)b[i];
 		}
-		
+
 		return buffer;
 	}
 
 
-	
+
 }
