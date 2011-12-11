@@ -29,7 +29,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
  * Output device for adavision
- * 
+ *
  * @author michu
  *
  */
@@ -38,18 +38,18 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(AdaVision.class.getName());
 
-	private static final int BPS = 115200;
+	private static final int BPS = 500000; //  hardcoded BPS, works with arduino uno R2 (ATMEL 8U2 for USB-Serial); adopt BPS also in "ledstream.pde"
 	private static final int HEADERSIZE = 6;
 
 	private static final String VERSION = "0.2";
 
 	private int panelsize;
-	
+
 	private byte[] buffer;
 	private Serial port;
-	
+
 	/**
-	 * 
+	 *
 	 * @param ph
 	 * @param controller
 	 */
@@ -69,7 +69,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 
 		this.panelsize = this.xResolution*this.yResolution;
  		port = new Serial(Collector.getInstance().getPapplet(), serialPort, BPS);
-				
+
 		// A special header / magic word is expected by the corresponding LED
 		// streaming code running on the Arduino.  This only needs to be initialized
 		// once (not in draw() loop) because the number of LEDs remains constant:
@@ -80,19 +80,19 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 		buffer[3] = (byte)((panelsize - 1) >> 8);      // LED count high byte
 		buffer[4] = (byte)((panelsize - 1) & 0xff);    // LED count low byte
 		buffer[5] = (byte)(buffer[3] ^ buffer[4] ^ 0x55); // Checksum
-		
+
 		initialized = true;
 	}
 
 	@Override
 	public void update() {
-		if (initialized) {							
-			writeSerialData(OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat));			
-		}		
+		if (initialized) {
+			writeSerialData(OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat));
+		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @param buffer
 	 */
 	private synchronized void writeSerialData(byte[] rawBuffer) {
@@ -105,17 +105,17 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 			//and i discovered strange "hangs"...
 		} catch (Exception e) {
 			LOG.log(Level.INFO, "Error sending serial data!", e);
-		}		
+		}
 	}
-	
-	
+
+
 	@Override
 	public void close() {
 		if (initialized) {
 		    // Fill buffer (after header) with 0's, and issue to Arduino...
 		    Arrays.fill(buffer, HEADERSIZE, buffer.length, (byte)0);
 		    port.write(buffer);
-		    
+
 			port.dispose();
 		}
 	}

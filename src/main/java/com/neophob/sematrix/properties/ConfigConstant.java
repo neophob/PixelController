@@ -27,22 +27,22 @@ public final class ConfigConstant {
 	private ConfigConstant() {
 		//Utility Class
 	}
-	
+
 	/** The Constant DELIM. */
 	public static final String DELIM = ",";
-	
+
 	/** The Constant RAINBOWDUINO_ROW1. */
 	public static final String RAINBOWDUINO_ROW1 = "layout.row1.i2c.addr";
-	
+
 	/** The Constant RAINBOWDUINO_ROW2. */
 	public static final String RAINBOWDUINO_ROW2 = "layout.row2.i2c.addr";
-	
+
 	/** The Constant CFG_PANEL_COLOR_ORDER. */
 	public static final String CFG_PANEL_COLOR_ORDER = "panel.color.order";
 
 	/** The Constant NULLOUTPUT_ROW1. */
 	public static final String NULLOUTPUT_ROW1 = "nulloutput.devices.row1";
-	
+
 	/** The Constant NULLOUTPUT_ROW2. */
 	public static final String NULLOUTPUT_ROW2 = "nulloutput.devices.row2";
 
@@ -52,20 +52,20 @@ public final class ConfigConstant {
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";
 
-	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";	
-	public static final String ARTNET_FIRST_UNIVERSE_ID = "artnet.first.universe.id";	
-	
+	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";
+	public static final String ARTNET_FIRST_UNIVERSE_ID = "artnet.first.universe.id";
+
 	/** The Constant OUTPUT_DEVICE_RESOLUTION_X. */
 	public static final String OUTPUT_DEVICE_RESOLUTION_X = "output.resolution.x";
-	
+
 	/** The Constant OUTPUT_DEVICE_RESOLUTION_Y. */
 	public static final String OUTPUT_DEVICE_RESOLUTION_Y = "output.resolution.y";
-	
+
     /** The Constant OUTPUT_DEVICE_SNAKE_CABELING */
     public static final String OUTPUT_DEVICE_SNAKE_CABELING = "output.snake.cabling";
-    
-    /** The Constant MINIDMX_BAUDRATE */
-    public static final String OUTPUT_DEVICE_LAYOUT = "minidmx.layout";
+
+    /** The Constant OUTPUT_DEVICE_LAYOUT */
+    public static final String OUTPUT_DEVICE_LAYOUT = "output.layout";  //renamed to work with adavision
 
 	/**	The Constant MINIDMX_BAUDRATE */
 	public static final String MINIDMX_BAUDRATE = "minidmx.baudrate";
@@ -76,45 +76,45 @@ public final class ConfigConstant {
 
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
 	public static final String SOUND_AWARE_GENERATORS = "update.generators.by.sound";
-	
+
 	/** The Constant CFG_PIXEL_SIZE. */
 	public static final String CFG_PIXEL_SIZE = "led.pixel.size";
-	
+
 	/** The Constant PIXELINVADERS_ROW1. */
 	public static final String PIXELINVADERS_ROW1 = "pixelinvaders.layout.row1";
-	
+
 	/** The Constant PIXELINVADERS_ROW2. */
 	public static final String PIXELINVADERS_ROW2 = "pixelinvaders.layout.row2";
-	
+
 	/** The Constant NET_LISTENING_PORT. */
 	public static final String NET_LISTENING_PORT = "3448";
-	
+
 	/** The Constant NET_SEND_PORT. */
 	public static final String NET_SEND_PORT = "3449";
-	
+
 	/** The Constant NET_LISTENING_ADDR. */
 	public static final String NET_LISTENING_ADDR = "127.0.0.1";
-	
+
 	/** The Constant ADDITIONAL_VISUAL_SCREENS. */
 	public static final String ADDITIONAL_VISUAL_SCREENS = "additional.visual.screens";
-	
+
 	public static final String OUTPUT_MAPPING = "output.mapping";
-	
+
 	public static final String SHOW_DEBUG_WINDOW = "show.debug.window";
-	
+
 	public static final String DEBUG_WINDOW_MAX_X_SIZE = "maximal.debug.window.xsize";
-	
+
 	public static final String CAPTURE_OFFSET = "screen.capture.offset";
-	
+
 	public static final String CAPTURE_WINDOW_SIZE_X = "screen.capture.window.size.x";
 	public static final String CAPTURE_WINDOW_SIZE_Y = "screen.capture.window.size.y";
-	
+
 	public static final String FPS = "fps";
-	
+
 	public static final String COLORSCROLL_RGBCOLOR = "colorscroll.rgbcolor";
-	
+
 	public static final String COLORFADE_RGBCOLOR = "colorfade.rgbcolor";
-        
+
     public static final String PLASMA_RGBCOLOR = "plasma.rgbcolor";
-   
+
 }
