@@ -233,11 +233,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * Left to right.
      */
     private void leftToRight() {
-        int ySize = internalBufferYSize;
-
         for (int x = 0; x < internalBufferXSize; x++) {	
         	int col = getColor(x);
-            for (int y = 0; y < ySize; y++) {
+            for (int y = 0; y < internalBufferYSize; y++) {
                 this.internalBuffer[y * internalBufferXSize + x] = col;
             }
         }
@@ -247,13 +245,11 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * Right to left.
      */
     private void rightToLeft() {
-        int ySize = internalBufferYSize;
-
         for (int x = 0; x < internalBufferXSize; x++) {
             int xRev = internalBufferXSize - x - 1;
             
             int col = getColor(x);
-            for (int y = 0; y < ySize; y++) {
+            for (int y = 0; y < internalBufferYSize; y++) {
                 this.internalBuffer[y * internalBufferXSize + xRev] = col;
             }
         }
@@ -263,12 +259,10 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * Top to bottom.
      */
     private void topToBottom() {
-        int ySize = internalBufferXSize;
-
         for (int y = 0; y < internalBufferYSize; y++) {
             int yRev = internalBufferYSize - y - 1;
             int col = getColor(y);
-            for (int x = 0; x < ySize; x++) {
+            for (int x = 0; x < internalBufferXSize; x++) {
                 this.internalBuffer[yRev * internalBufferXSize + x] = col;
             }
         }
@@ -278,11 +272,9 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * Bottom to top.
      */
     private void bottomToTop() {
-        int ySize = internalBufferXSize;
-
         for (int y = 0; y < internalBufferYSize; y++) {
             int col = getColor(y);
-            for (int x = 0; x < ySize; x++) {
+            for (int x = 0; x < internalBufferXSize; x++) {
                 this.internalBuffer[y * internalBufferXSize + x] = col;
             }
         }
