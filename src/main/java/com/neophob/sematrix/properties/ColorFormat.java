@@ -23,12 +23,26 @@ package com.neophob.sematrix.properties;
  * color format of a hardware device.
  *
  * @author michu
+ * noxx6: added all possible RGB-LED color orders as valid input: 06.12.11
+ * 
  */
 public enum ColorFormat {
-	
+
 	/** The RGB. */
 	RGB,
-	
+
 	/** The RBG. */
-	RBG
+	RBG,
+
+	/** The BRG. */
+	BRG,
+
+	/** The BGR. */
+	BGR,
+
+	/** The GBR. */
+	GBR,
+
+	/** The GRB. */
+	GRB
 }

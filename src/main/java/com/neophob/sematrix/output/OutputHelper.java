@@ -39,7 +39,7 @@ public class OutputHelper {
 	private OutputHelper() {
 		//no instance allowed
 	}
-	
+
 	/**
 	 * this function feed the framebufferdata (32 pixels a 2bytes (aka 16bit)
 	 * to the send array. each second scanline gets inverteds
@@ -49,7 +49,7 @@ public class OutputHelper {
 	 */
 	public static int[] flipSecondScanline(int buffer[], int xResolution, int yResolution) {
 		int bufferTwo[] = buffer.clone();
-		
+
 		for (int y=0; y<yResolution; y++) {
 			if (y%2==1) {
 				int ofs = y*xResolution;
@@ -60,7 +60,7 @@ public class OutputHelper {
 		}		
 		return bufferTwo;
 	}
-	
+
 	/**
 	 * do manual mapping, this is used to support a more exotic device configuration
 	 * 
@@ -82,9 +82,9 @@ public class OutputHelper {
 		}
 		return bufferTwo;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * 
 	 * @param frameBuf
@@ -94,18 +94,18 @@ public class OutputHelper {
 		byte[] buffer = new byte[frameBuf.length*3];
 		int ofs;
 		for (int i = 0; i < frameBuf.length; i++) {
-		    ofs = i*3;
+			ofs = i*3;
 			buffer[ofs++] = (byte) ((frameBuf[i]>>16) & 0xff);
 			buffer[ofs++] = (byte) ((frameBuf[i]>>8)  & 0xff);
 			buffer[ofs  ] = (byte) ( frameBuf[i]      & 0xff);
 		}
-		
+
 		return buffer;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Convert buffer to15bit.
 	 *
@@ -131,13 +131,13 @@ public class OutputHelper {
 				r[ofs] = (int) ((tmp>>16) & 255);
 				g[ofs] = (int) ((tmp>>8)  & 255);
 				b[ofs] = (int) ( tmp      & 255);		
-				
+
 				break;
 			case RBG:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				b[ofs] = (int) ((tmp>>8)  & 255);
 				g[ofs] = (int) ( tmp      & 255);		
-				
+
 				break;
 			}
 			ofs++;
@@ -167,12 +167,12 @@ public class OutputHelper {
 			converted[dst++] = (byte)((b1<<2) | (b2>>3));
 			converted[dst++] = (byte)(((b2&7)<<5) | b3);
 		}
-		
+
 		return converted;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Convert internal buffer to 24bit byte buffer, using colorformat.
 	 *
@@ -182,8 +182,8 @@ public class OutputHelper {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public static byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat) throws IllegalArgumentException {
-	    int targetBuffersize = data.length;
-		
+		int targetBuffersize = data.length;
+
 		int[] r = new int[targetBuffersize];
 		int[] g = new int[targetBuffersize];
 		int[] b = new int[targetBuffersize];
@@ -199,15 +199,33 @@ public class OutputHelper {
 			case RGB:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				g[ofs] = (int) ((tmp>>8)  & 255);
-				b[ofs] = (int) ( tmp      & 255);		
-				
+				b[ofs] = (int) ( tmp      & 255);						
 				break;
 			case RBG:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				b[ofs] = (int) ((tmp>>8)  & 255);
-				g[ofs] = (int) ( tmp      & 255);		
-				
+				g[ofs] = (int) ( tmp      & 255);						
 				break;
+			case BRG:
+				b[ofs] = (int) ((tmp>>16) & 255);
+				r[ofs] = (int) ((tmp>>8)  & 255);
+				g[ofs] = (int) ( tmp      & 255);
+				break;
+			case BGR:
+				b[ofs] = (int) ((tmp>>16) & 255);
+				g[ofs] = (int) ((tmp>>8)  & 255);
+				r[ofs] = (int) ( tmp      & 255);
+				break;
+			case GBR:
+				g[ofs] = (int) ((tmp>>16) & 255);
+				b[ofs] = (int) ((tmp>>8)  & 255);
+				r[ofs] = (int) ( tmp      & 255);
+				break;
+			case GRB:
+				g[ofs] = (int) ((tmp>>16) & 255);
+				r[ofs] = (int) ((tmp>>8)  & 255);
+				b[ofs] = (int) ( tmp      & 255);
+				break;				
 			}
 			ofs++;
 		}
@@ -219,10 +237,10 @@ public class OutputHelper {
 			buffer[ofs++] = (byte)g[i];
 			buffer[ofs++] = (byte)b[i];
 		}
-		
+
 		return buffer;
 	}
 
 
-	
+
 }

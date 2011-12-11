@@ -65,7 +65,7 @@ public final class ConfigConstant {
     public static final String OUTPUT_DEVICE_SNAKE_CABELING = "output.snake.cabling";
     
     /** The Constant MINIDMX_BAUDRATE */
-    public static final String OUTPUT_DEVICE_LAYOUT = "minidmx.layout";
+    public static final String OUTPUT_DEVICE_LAYOUT = "output.layout";
 
 	/**	The Constant MINIDMX_BAUDRATE */
 	public static final String MINIDMX_BAUDRATE = "minidmx.baudrate";
