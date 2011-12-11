@@ -12,6 +12,10 @@ TODO PixelController
 -Unit Testing is suboptimal, using the config.properties 
 -start PureData in the start script, for example /Applications/Pd-extended.app/Contents/Resources/bin/pd -stderr -nomidi -noaudio -open mtxrev-main.pd -send "preset-file ../presets/main.coll;" & 
 
+Changelog v1.2 to v1.3
+------------------------
+-Support more output formate (not only RGB and RBG), thanks to noxx6
+-configuration fixes
 
 Changelog v1.1 to v1.2
 ------------------------
