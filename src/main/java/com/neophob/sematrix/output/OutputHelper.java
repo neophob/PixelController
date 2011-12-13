@@ -131,13 +131,11 @@ public class OutputHelper {
 				r[ofs] = (int) ((tmp>>16) & 255);
 				g[ofs] = (int) ((tmp>>8)  & 255);
 				b[ofs] = (int) ( tmp      & 255);		
-
 				break;
 			case RBG:
 				r[ofs] = (int) ((tmp>>16) & 255);
 				b[ofs] = (int) ((tmp>>8)  & 255);
 				g[ofs] = (int) ( tmp      & 255);		
-
 				break;
 			}
 			ofs++;
