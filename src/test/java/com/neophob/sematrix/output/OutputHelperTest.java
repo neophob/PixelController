@@ -80,7 +80,7 @@ public class OutputHelperTest {
     @Test
     public void testColorConvert() {
         //byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat)
-        int[] data = new int[64];    //2 pixel buffer
+        int[] data = new int[4];    //2 pixel buffer
         data[0] = 0xffffff;         //full white
         data[1] = 0x0000ff;         //b
         data[2] = 0x00ff00;         //g
@@ -89,7 +89,7 @@ public class OutputHelperTest {
         // -- 24 bit --
         byte[] result = OutputHelper.convertBufferTo24bit(data, ColorFormat.BGR);
                 
- //       assertEquals(data.length*3, result.length);    //verify size of array
+        assertEquals(data.length*3, result.length);    //verify size of array
         
         assertEquals((byte)255, result[0]); //verify white
         assertEquals((byte)255, result[1]);
@@ -108,15 +108,14 @@ public class OutputHelperTest {
         assertEquals((byte)255, result[11]);
 
         result = OutputHelper.convertBufferTo24bit(data, ColorFormat.RGB);
-//        assertEquals(data.length*3, result.length);    //verify size of array
+        assertEquals(data.length*3, result.length);    //verify size of array
         assertEquals((byte)0,   result[3]); //verify blue 
         assertEquals((byte)0,   result[4]);
         assertEquals((byte)255, result[5]);
         
         // -- 15 bit --
-        result = OutputHelper.convertBufferTo15bit(data, ColorFormat.RBG);
-        
-//        assertEquals(data.length*2, result.length);    //verify size of array, 1 rgb needs two bytes
+        result = OutputHelper.convertBufferTo15bit(data, ColorFormat.RBG);        
+        assertEquals(data.length*2, result.length);    //verify size of array, 1 rgb needs two bytes
         
         assertEquals((byte)127, result[0]); //verify white 0111 1111 1111 1111
         assertEquals((byte)255, result[1]);
@@ -131,7 +130,7 @@ public class OutputHelperTest {
         assertEquals((byte)0,   result[7]);
 
         result = OutputHelper.convertBufferTo15bit(data, ColorFormat.RGB);
-        //assertEquals(12, result.length);    //verify size of array
+        assertEquals(data.length*2, result.length);    //verify size of array
         assertEquals((byte)0,   result[2]); //verify blue 
         assertEquals((byte)31,   result[3]);
     }
