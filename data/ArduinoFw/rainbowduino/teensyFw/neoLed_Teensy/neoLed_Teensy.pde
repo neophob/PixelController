@@ -30,7 +30,7 @@
  */
 
 #include <Wire.h>
-#include "WProgram.h"
+#include "Arduino.h"
 
 extern "C" { 
 #include "utility/twi.h"  // from Wire library, so we can do bus scanning
