@@ -480,9 +480,9 @@ public class PropertiesHelper {
     }
 
     /**
-     * get configured artnet ip.
+     * get serial baudspeed for the adavision output
      *
-     * @return the art net ip
+     * @return bps for adavision device or 0 if not defined
      */
     public int getAdavisionSerialPortSpeed() {
     	return parseInt(ConfigConstant.ADAVISION_SERIAL_SPEED, 0);

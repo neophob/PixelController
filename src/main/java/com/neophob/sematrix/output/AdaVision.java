@@ -71,7 +71,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 			bps = BPS;
 		}
 		
-		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2} at {3}", 
+		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2} at {3} bps", 
 				new Object[] { this.xResolution, this.yResolution, serialPort, bps} );
 
  		port = new Serial(Collector.getInstance().getPapplet(), serialPort, bps);
