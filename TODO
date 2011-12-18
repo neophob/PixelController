@@ -4,7 +4,6 @@ TODO PixelController
 -particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 -rewrite output selection/configuration, 
 -more effects/mixer...
--move message handling out to effective classes (MessageProcessor.java, still unsure if this is a good idea..)
 -more layouts (what kind of layouts?)
 -do not freeze application if output fails (disconnect controller)
 -artnet output: support multiple output devices / multiple universe
@@ -12,10 +11,13 @@ TODO PixelController
 -Unit Testing is suboptimal, using the config.properties 
 -start PureData in the start script, for example /Applications/Pd-extended.app/Contents/Resources/bin/pd -stderr -nomidi -noaudio -open mtxrev-main.pd -send "preset-file ../presets/main.coll;" & 
 
+
 Changelog v1.2 to v1.3
 ------------------------
 -Support more output formate (not only RGB and RBG), thanks to noxx6
 -configuration fixes
+-update AdaVision driver
+
 
 Changelog v1.1 to v1.2
 ------------------------
