@@ -484,6 +484,15 @@ public class PropertiesHelper {
      *
      * @return the art net ip
      */
+    public int getAdavisionSerialPortSpeed() {
+    	return parseInt(ConfigConstant.ADAVISION_SERIAL_SPEED, 0);
+    }
+
+    /**
+     * get configured artnet ip.
+     *
+     * @return the art net ip
+     */
     public String getArtNetIp() {
         return config.getProperty(ConfigConstant.ARTNET_IP);
     }

@@ -48,6 +48,7 @@ public final class ConfigConstant {
 
 	public static final String ADAVISION_DEVICE = "adavision.device.enabled";
 	public static final String ADAVISION_SERIAL_PORT = "adavision.serial.port";
+	public static final String ADAVISION_SERIAL_SPEED = "adavision.serial.speed";
 
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";

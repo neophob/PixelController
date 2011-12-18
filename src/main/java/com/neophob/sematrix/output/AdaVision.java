@@ -41,7 +41,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 	private static final int BPS = 115200;
 	private static final int HEADERSIZE = 6;
 
-	private static final String VERSION = "0.2";
+	private static final String VERSION = "0.3";
 
 	private int panelsize;
 	
@@ -64,11 +64,17 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 			serialPort = Serial.list()[0];
 		}
 
-		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2}", new Object[] {
-		        this.xResolution, this.yResolution, serialPort});
-
 		this.panelsize = this.xResolution*this.yResolution;
- 		port = new Serial(Collector.getInstance().getPapplet(), serialPort, BPS);
+		int bps = ph.getAdavisionSerialPortSpeed();
+		if (bps<1) {
+			//use default value
+			bps = BPS;
+		}
+		
+		LOG.log(Level.INFO,  "AdaVision X resolution: {0}, Y resolution: {1}, using {2} at {3}", 
+				new Object[] { this.xResolution, this.yResolution, serialPort, bps} );
+
+ 		port = new Serial(Collector.getInstance().getPapplet(), serialPort, bps);
 				
 		// A special header / magic word is expected by the corresponding LED
 		// streaming code running on the Arduino.  This only needs to be initialized
