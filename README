@@ -20,7 +20,8 @@ configured your hardware ind the config.properties file.
 
 DEMO
 ----
-Check out http://vimeo.com/27453711 to see PixelController in action on two PixelInvaders panels.
+Check out http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
+on two PixelInvaders panels. 
 
 
 SUPPORTED HARDWARE
@@ -48,7 +49,8 @@ CREDITS
 Michael Vogt:       Project Lead, Main Coder		
 	
 Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements
-McGyver666:		    Contributor		
+McGyver666:         Contributor
 Rainer Ostendorf:   Artnet Output
 Pesi:               miniDMX Output, Tester
 Scott Wilson:       Arduino/Rainbowduino Howto
+Noxx6:              Bugfixes
