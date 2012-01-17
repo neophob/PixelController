@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
@@ -324,7 +325,29 @@ public final class Collector {
 		return nrOfScreens;
 	}
 
-
+	
+	/**
+	 * create screenshot
+	 */
+	public void saveScreenshot() {
+		int ofs=0;		
+		String suffix = frames+".png";
+		for (Visual v: allVisuals) {
+			String prefix = "screenshot/"+ofs;
+			PImage p = v.getGeneratorAsImage(0);
+			p.save(prefix+"-gen1-"+suffix);
+			p=v.getGeneratorAsImage(1);
+			p.save(prefix+"-gen2-"+suffix);
+			p=v.getEffectAsImage(0);
+			p.save(prefix+"-fx1-"+suffix);
+			p=v.getEffectAsImage(1);
+			p.save(prefix+"-fx2-"+suffix);
+			p=v.getMixerAsImage();
+			p.save(prefix+"-mix-"+suffix);
+			ofs++;
+		}
+	}
+	
 	/**
 	 * which fx for screenOutput?.
 	 *

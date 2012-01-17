@@ -500,6 +500,11 @@ public final class MessageProcessor {
 				}
 				break;
 
+			case SCREENSHOT:
+				Collector.getInstance().saveScreenshot();
+				LOG.log(Level.INFO, "Saved some screenshots");
+				break;
+				
 			default:
 				StringBuffer sb = new StringBuffer();
 				for (int i=0; i<msg.length;i++) {

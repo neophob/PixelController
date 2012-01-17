@@ -19,6 +19,9 @@
 
 package com.neophob.sematrix.glue;
 
+import processing.core.PApplet;
+import processing.core.PImage;
+
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Generator;
@@ -311,7 +314,55 @@ public class Visual {
 	public void setMixer(int index) {
 		this.mixer = Collector.getInstance().getPixelControllerMixer().getMixer(index);
 	}
+	
+	
+	/**
+	 * 
+	 * @param buffer
+	 * @return
+	 */
+	private PImage getBufferAsImage(int[] buffer) {
+		PImage pImage = Collector.getInstance().getPapplet().createImage
+							(generator1.getInternalBufferXSize() , generator1.getInternalBufferYSize(), PApplet.RGB );
+		pImage.loadPixels();
+		System.arraycopy(buffer, 0, pImage.pixels, 0, buffer.length);
+		pImage.updatePixels();
+		return pImage;
+	}
 
+	/**
+	 * get screenshot of generator
+	 * 
+	 * @param ofs
+	 * @return
+	 */
+	public PImage getGeneratorAsImage(int ofs) {
+		if (ofs==0) {
+			return getBufferAsImage(generator1.internalBuffer);			
+		}
+		return getBufferAsImage(generator2.internalBuffer);
+	}
+
+	/**
+	 * get screenshot of effects
+	 * @param ofs
+	 * @return
+	 */
+	public PImage getEffectAsImage(int ofs) {
+		if (ofs==0) {
+			return getBufferAsImage(effect1.getBuffer(generator1.internalBuffer));			
+		}
+		return getBufferAsImage(effect2.getBuffer(generator2.internalBuffer));
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public PImage getMixerAsImage() {
+		return getBufferAsImage(mixer.getBuffer(this));
+	}
+	
 	/**
 	 * initialize the visuals...
 	 *
