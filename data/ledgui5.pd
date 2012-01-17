@@ -1,4 +1,4 @@
-#N canvas 113 95 1024 600 10;
+#N canvas 632 98 1024 600 10;
 #X declare -lib mrpeach;
 #X obj -197 -30 cnv 15 400 490 empty empty //Visual 20 12 0 14 -204786
 -66577 0;
@@ -20,7 +20,7 @@
 #X obj 154 4 tgl 15 0 s_rndsel_threshold r_rndsel_threshold empty 17
 7 0 10 -260097 -1 -1 1 1;
 #X obj 49 28 knob 32 32 0 255 0 0 empty r_threshold empty 0 -8 0 8
--262144 -1 -1 1556 1;
+-262144 -1 -1 500 1;
 #X obj 33 71 cnv 15 140 160 empty empty //Tint 20 12 0 14 -262130 -66577
 0;
 #X obj 49 104 knob 32 32 0 255 0 0 empty r_tint_r R 38 16 0 12 -257985
@@ -28,7 +28,7 @@
 #X floatatom 116 112 5 0 255 0 - - s_tint_r;
 #X obj 89 111 int;
 #X obj 49 144 knob 32 32 0 255 0 0 empty r_tint_g G 38 16 0 12 -262144
--4034 -4034 3100 1;
+-4034 -4034 0 1;
 #X floatatom 116 151 5 0 255 0 - - s_tint_g;
 #X obj 89 151 int;
 #X obj 49 184 knob 32 32 0 255 0 0 empty r_tint_b B 38 16 0 12 -262144
@@ -169,7 +169,7 @@
 #X coords 0 -1 1 1 205 100 1 50 50;
 #X restore 350 287 pd random;
 #X obj 65 -4 hradio 22 1 0 5 s_current_visual r_current_visual current_visual
-6 -8 0 12 -258113 -86277 -1 1;
+6 -8 0 12 -258113 -86277 -1 2;
 #X obj 422 -4 hradio 22 1 0 4 s_current_output r_current_output select_output
 0 -8 0 12 -4034 -86277 -1 0;
 #N canvas 304 463 953 523 network 1;
@@ -598,7 +598,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 205 110 1 50 50;
 #X restore 350 173 pd network;
 #X obj -187 9 vradio 15 1 0 18 s_gen1 r_gen1 Generator1 0 -8 0 12 -203904
--1 -1 16;
+-1 -1 1;
 #X text -170 7 Off;
 #X text -170 23 Blinken;
 #X text -170 38 Image;
@@ -614,7 +614,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text -169 218 Drops;
 #X text -170 158 Image Zoomer;
 #X obj -73 9 vradio 15 1 0 17 s_gen_b1 r_gen_b1 Generator2 0 -8 0 12
--203904 -1 -1 0;
+-203904 -1 -1 5;
 #X obj -186 302 vradio 15 1 0 10 s_fx1 r_fx1 Effect1 0 -8 0 12 -262130
 -1 -1 0;
 #X text -166 300 Off;
@@ -665,7 +665,7 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X coords 0 -1 1 1 400 60 1 50 50;
 #X restore -198 461 pd presentStuff;
 #X obj 65 302 vradio 15 1 0 10 s_mix1 r_mix1 Mixer 0 -8 0 12 -99865
--1 -1 0;
+-1 -1 7;
 #X text -55 7 Off;
 #X text -55 23 Blinken;
 #X text -55 38 Image;
@@ -695,7 +695,6 @@ CHANGE_PRESENT CHANGE_TINT CHANGE_THRESHOLD_VALUE CHANGE_ROTOZOOM;
 #X text 84 330 Multiply;
 #X text 84 346 Mix;
 #X text 84 361 Neg;
-#X text 85 390 Multiply;
 #X text 84 375 Checkboard;
 #X text 84 405 Xor;
 #X text 85 420 MinusHalf;
@@ -1513,7 +1512,7 @@ Fader 0 -8 0 12 -204800 -1 -1 0;
 #X text -54 249 ColorFade;
 #X text -170 68 ColorScroll;
 #X text -55 68 ColorScroll;
-#N canvas 517 75 736 507 generator 1;
+#N canvas 449 153 736 507 generator 0;
 #X obj 4 4 cnv 15 150 266 empty empty blinken 20 12 0 14 -203904 -66577
 0;
 #X obj 16 241 send blinkenfile;
@@ -1574,7 +1573,7 @@ Fader 0 -8 0 12 -204800 -1 -1 0;
 -66577 0;
 #X obj 551 249 send color_scroll;
 #X obj 509 34 vradio 15 1 1 14 empty empty empty 0 -8 0 10 -262144
--1 -1 5;
+-1 -1 13;
 #X text 529 33 Left to right;
 #X text 529 49 Right to left;
 #X text 529 64 Top to Bottom;
@@ -1861,3 +1860,4 @@ seperator;
 #X connect 95 0 96 0;
 #X connect 96 0 98 0;
 #X restore 146 211 pd osc;
+#X text 85 390 Volume;
