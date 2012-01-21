@@ -17,6 +17,9 @@ Run PixelController.cmd on Windows and PixelController.sh on OSX/Linux to start 
 Make sure your led matrix connected to you computer before the application is started and you
 configured your hardware ind the config.properties file.
 
+Here is a very primitve diagram, how everything is connected:
+[PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]
+
 
 DEMO
 ----
@@ -42,6 +45,15 @@ Prerequisite:
 Then run 
 # mvn clean package
 this should build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
+
+
+IT DOES NOT WORK!
+-----------------
+Try to understand WHAT not works (which component, it's the frontend? PixelController itself? or no output?
+
+Here are some common errors:
+-Did you forgot to edit the configuration file "config.properties", take a look!
+-Did you flash the correct firmware to you Arduino/Teensy? (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
 
 
 CREDITS
