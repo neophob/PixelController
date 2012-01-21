@@ -61,9 +61,19 @@ public class P5EventListener implements ControlListener {
 
 		case MIXER_DROPDOWN:
 			LOG.log(Level.INFO, "MIXER Value: "+value);
-			handleMixer(value);
+			createMessage(ValidCommands.CHANGE_MIXER, value);
 			break;
 			
+		case BUTTON_RANDOM_CONFIGURATION:
+			LOG.log(Level.INFO, "BUTTON_RANDOM_CONFIGURATION Value: "+value);
+			createMessage(ValidCommands.RANDOMIZE, value);
+			break;
+			
+		case BUTTON_RANDOM_PRESENT:
+			LOG.log(Level.INFO, "BUTTON_RANDOM_PRESENT Value: "+value);
+			createMessage(ValidCommands.PRESET_RANDOM, value);
+			break;
+						
 			
 		default:
 			LOG.log(Level.INFO, "Invalid Object: "+selection);
@@ -77,9 +87,9 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */
-	private void handleMixer(float newValue) {
+	private static void createMessage(ValidCommands validCommand, float newValue) {
 		String msg[] = new String[2];		
-		msg[0] = ""+ValidCommands.CHANGE_MIXER;
+		msg[0] = ""+validCommand;
 		msg[1] = ""+(int)newValue;
 		MessageProcessor.processMsg(msg, true);
 	}
@@ -89,7 +99,7 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */
-	private void handleEffect(float newValue, GuiElement source) {
+	private static void handleEffect(float newValue, GuiElement source) {
 		String msg[] = new String[2];
 		
 		if (source == GuiElement.EFFECT_ONE_DROPDOWN) {
@@ -106,7 +116,7 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */	
-	private void handleGenerator(float newValue, GuiElement source) {
+	private static void handleGenerator(float newValue, GuiElement source) {
 		String msg[] = new String[2];
 		
 		if (source == GuiElement.GENERATOR_ONE_DROPDOWN) {
