@@ -45,7 +45,7 @@ import controlP5.DropdownList;
  * @author michu
  */
 public class InternalBuffer extends PApplet {
-	
+
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2344499301021L;
 
@@ -56,18 +56,20 @@ public class InternalBuffer extends PApplet {
 
 	/** The display horiz. */
 	private boolean displayHoriz;
-	
+
 	/** The y. */
 	private int x,y;
-	
+
 	/** The p image. */
 	private PImage pImage=null;
-	
+
 	private ControlP5 cp5;
 	private DropdownList generatorListOne, effectListOne;
-	
+
 	/** The target y size. */
 	private int targetXSize, targetYSize;
+	
+	private int p5GuiYOffset;
 
 	/**
 	 * Instantiates a new internal buffer.
@@ -84,95 +86,103 @@ public class InternalBuffer extends PApplet {
 		this.y = y+SELECTED_MARKER;
 		this.targetXSize = targetXSize;
 		this.targetYSize = targetYSize;
+		this.p5GuiYOffset = targetYSize + 100;
 	}
-	
-	private void customizeGeneratorDropdownList(DropdownList ddl) {
-		  // a convenience function to customize a DropdownList
-		  ddl.setBackgroundColor(color(190));
-		  ddl.setItemHeight(20);
-		  ddl.setBarHeight(15);
-		  
-		  int i=0;
-		  for (GeneratorName gn: GeneratorName.values()) {
-			  ddl.addItem(gn.name(), i++);
-		  }
-		  ddl.scroll(0);
-		  ddl.setColorBackground(color(60));
-		  ddl.setColorActive(color(255, 128));
-		}
 
-	private void customizeEffectDropdownList(DropdownList ddl) {
-		  // a convenience function to customize a DropdownList
-		  ddl.setBackgroundColor(color(190));
-		  ddl.setItemHeight(20);
-		  ddl.setBarHeight(15);
-		  
-		  int i=0;
-		  for (EffectName gn: EffectName.values()) {
-			  ddl.addItem(gn.name(), i++);
-		  }
-		  ddl.scroll(0);
-		  ddl.setColorBackground(color(60));
-		  ddl.setColorActive(color(255, 128));
-		}
-	
+	private void themeDropdownList(DropdownList ddl) {
+		// a convenience function to customize a DropdownList
+		ddl.setBackgroundColor(color(190));
+		ddl.setItemHeight(15);
+		ddl.setBarHeight(15);
+
+		ddl.captionLabel().set("dropdown");
+		ddl.captionLabel().style().marginTop = 3;
+		ddl.captionLabel().style().marginLeft = 3;
+		ddl.valueLabel().style().marginTop = 3;
+
+		ddl.scroll(0);
+		ddl.setColorBackground(color(60));
+		ddl.setColorActive(color(255, 128));
+	}
+
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#setup()
 	 */
-    public void setup() {
-    	LOG.log(Level.INFO, "create internal buffer with size "+x+"/"+y);
-        size(x,y+100);
-        noSmooth();
-        frameRate(Collector.getInstance().getFps());
-        background(0,0,0);
-        
-        int yGui = y;
-        cp5 = new ControlP5(this);
-        P5EventListener listener = new P5EventListener();
-        
-        generatorListOne = cp5.addDropdownList("genListOne", 20, yGui, 100, 120);
-        generatorListOne.update();
-        generatorListOne.addListener(listener);
-        
-        customizeGeneratorDropdownList(generatorListOne);
-        
-        effectListOne = cp5.addDropdownList("fxListOne", 90, yGui, 100, 120);
-        customizeEffectDropdownList(effectListOne);
-        
-    }
+	public void setup() {
+		LOG.log(Level.INFO, "create internal buffer with size "+x+"/"+y);
+		size(x,y+100);
+		noSmooth();
+		frameRate(Collector.getInstance().getFps());
+		background(0,0,0);
 
-    /**
-     * draw the whole internal buffer on screen.
-     */
+		
+		cp5 = new ControlP5(this);
+		cp5.setAutoDraw(false);
+        P5EventListener listener = new P5EventListener();
+        cp5.addListener(listener);
+
+		//Generator Test
+		generatorListOne = cp5.addDropdownList(GuiElemts.GENERATOR_ONE_DROPDOWN.toString(), 20, p5GuiYOffset, 100, 120);
+		themeDropdownList(generatorListOne);
+		int i=0;
+		for (GeneratorName gn: GeneratorName.values()) {
+			generatorListOne.addItem(gn.name(), i++);
+		}
+
+		//Effect Test
+		effectListOne = cp5.addDropdownList(GuiElemts.EFFECT_ONE_DROPDOWN.toString(), 130, p5GuiYOffset, 100, 120);
+		themeDropdownList(effectListOne);
+		i=0;
+		for (EffectName gn: EffectName.values()) {
+			effectListOne.addItem(gn.name(), i++);
+		}
+	
+	}
+
+	/**
+	 * draw the whole internal buffer on screen.
+	 */
 	public void draw() {
-		
 		long l = System.currentTimeMillis();
+
+		//draw gradient background
+		this.loadPixels();	
+		int ofs=this.width*(this.height-255);
 		
+		for (int y=0; y<255; y++) {
+			int pink = color(y/2, y/2, y/2);
+			for (int x=0; x<this.width; x++) {
+				this.pixels[ofs+x] = pink;				
+			}
+			ofs += this.width;
+		}
+		this.updatePixels();
+
 		int localX=0, localY=0;
 		int[] buffer;
 		Collector col = Collector.getInstance();
 		int currentVisual = col.getCurrentVisual();
-		
+
 		//set used to find out if visual is on screen
 		Set<Integer> outputId = new HashSet<Integer>();
 		for (OutputMapping om: col.getAllOutputMappings()) {
 			outputId.add(om.getVisualId());
 		}
-		
+
 		//draw output buffer and marker
-		int ofs=0;
+		ofs=0;
 		for (Visual v: col.getAllVisuals()) {
 			//get image
 			buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
-			
+
 			if (pImage==null) {
 				//create an image out of the buffer
-		 		pImage = col.getPapplet().createImage(targetXSize, targetYSize, PApplet.RGB );				
+				pImage = col.getPapplet().createImage(targetXSize, targetYSize, PApplet.RGB );				
 			}
 			pImage.loadPixels();
 			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
 			pImage.updatePixels();
-			
+
 			//draw current input
 			if (ofs==currentVisual) {
 				fill(200,66,66);
@@ -181,7 +191,7 @@ public class InternalBuffer extends PApplet {
 			}	
 			rect(localX, localY+targetYSize, targetXSize, SELECTED_MARKER);
 
-			
+
 			//draw current output
 			if (outputId.contains(ofs)) {
 				fill(66,200,66);
@@ -190,7 +200,7 @@ public class InternalBuffer extends PApplet {
 			}	
 			rect(localX, localY+targetYSize+SELECTED_MARKER, targetXSize, SELECTED_MARKER);				
 
-			
+
 			//display the image
 			image(pImage, localX, localY);
 			if (displayHoriz) {
@@ -208,13 +218,14 @@ public class InternalBuffer extends PApplet {
 		rect(0, localY+targetYSize+SELECTED_MARKER*2+2, frames, 5);
 		fill(55,55,55);
 		rect(frames, localY+targetYSize+SELECTED_MARKER*2+2, targetXSize-frames, 5);
-		
+
 		//beat detection
 		displaySoundStats(localY);
-		
+
 		//show mode
 		displayCurrentMode(localY, col.isRandomMode());
-		
+
+		cp5.draw();		
 		col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
 	}
 
@@ -224,13 +235,13 @@ public class InternalBuffer extends PApplet {
 	 */
 	private void displaySoundStats(int localY) {
 		Sound snd = Sound.getInstance();
-		
+
 		int xofs = targetXSize;
 		int xx = targetXSize/3;
-		
+
 		colorSelect(snd.isKick());
 		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
-	
+
 		xofs+=xx;
 		colorSelect(snd.isSnare());
 		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);
@@ -239,7 +250,7 @@ public class InternalBuffer extends PApplet {
 		colorSelect(snd.isHat());
 		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);		
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -248,8 +259,8 @@ public class InternalBuffer extends PApplet {
 		colorSelect(randomModeEnabled);
 		rect(0, localY+targetYSize+SELECTED_MARKER*3, targetXSize, 10);
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param b

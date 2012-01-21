@@ -49,7 +49,7 @@ public class InternalDebugWindow extends Frame {
 	 * @param the maximal x size of the window
 	 */
 	public InternalDebugWindow(boolean displayHoriz, int maximalXSize) {
-        super("debug buffer");        
+        super("PixelController Control Windows");        
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         
@@ -69,7 +69,7 @@ public class InternalDebugWindow extends Frame {
        
         //boarder stuff
         windowXSize+=10;
-        windowYSize+=80;
+        windowYSize+=80+200;
 
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
         setBounds(0, 0, windowXSize, windowYSize);
