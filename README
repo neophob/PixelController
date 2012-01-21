@@ -49,7 +49,7 @@ this should build PixelController, the distribution directory is "target/assembl
 
 IT DOES NOT WORK!
 -----------------
-Try to understand WHAT not works (which component, it's the frontend? PixelController itself? or no output?
+Try to understand WHAT not works, which component, it's the frontend? PixelController itself? or no output?
 
 Here are some common errors:
 -Did you forgot to edit the configuration file "config.properties", take a look!
