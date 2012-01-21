@@ -144,19 +144,8 @@ public class InternalBuffer extends PApplet {
 	 */
 	public void draw() {
 		long l = System.currentTimeMillis();
-
-		//draw gradient background
-		this.loadPixels();	
-		int ofs=this.width*(this.height-255);
 		
-		for (int y=0; y<255; y++) {
-			int pink = color(y/2, y/2, y/2);
-			for (int x=0; x<this.width; x++) {
-				this.pixels[ofs+x] = pink;				
-			}
-			ofs += this.width;
-		}
-		this.updatePixels();
+		drawGradientBackground();
 
 		int localX=0, localY=0;
 		int[] buffer;
@@ -170,7 +159,7 @@ public class InternalBuffer extends PApplet {
 		}
 
 		//draw output buffer and marker
-		ofs=0;
+		int ofs=0;
 		for (Visual v: col.getAllVisuals()) {
 			//get image
 			buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
@@ -228,7 +217,26 @@ public class InternalBuffer extends PApplet {
 		cp5.draw();		
 		col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
 	}
+	
 
+	/**
+	 * draw nice gradient at the end of the screen
+	 */
+	private void drawGradientBackground() {
+		this.loadPixels();	
+		int ofs=this.width*(this.height-255);
+		
+		for (int y=0; y<255; y++) {
+			int pink = color(y/2, y/2, y/2);
+			for (int x=0; x<this.width; x++) {
+				this.pixels[ofs+x] = pink;				
+			}
+			ofs += this.width;
+		}
+		this.updatePixels();		
+	}
+	
+	
 	/**
 	 * 
 	 * @param localY

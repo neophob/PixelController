@@ -3,14 +3,29 @@ package com.neophob.sematrix.output.emulatorhelper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.listener.MessageProcessor;
+import com.neophob.sematrix.properties.ValidCommands;
+
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
 
+/**
+ * GUI Listener
+ * 
+ * this class translate the gui stuff into a string array and send the result
+ * to the PixelController MessageProcessor
+ * 
+ * @author michu
+ *
+ */
 public class P5EventListener implements ControlListener {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(P5EventListener.class.getName());
 
+	/**
+	 * 
+	 */
 	public void controlEvent(ControlEvent theEvent) {
 		// DropdownList is of type ControlGroup.
 		// A controlEvent will be triggered from inside the ControlGroup class.
@@ -34,21 +49,51 @@ public class P5EventListener implements ControlListener {
 		switch (selection) {
 		case EFFECT_ONE_DROPDOWN:
 			LOG.log(Level.INFO, "EFFECT1 OFS: "+value);
+			handleEffect(value, selection);
 			break;
 
 		case GENERATOR_ONE_DROPDOWN:
 			LOG.log(Level.INFO, "GENERATOR1 OFS: "+value);
+			handleGenerator(value, selection);
 			break;
 
 		default:
 			break;
 		}
+	}
 
-		//		LOG.log(Level.INFO, "NAME "+theEvent.getName());
-		//		LOG.log(Level.INFO, "VALUE "+theEvent.getValue());
-		//		//		  LOG.log(Level.INFO, "STRING_VALUE "+theEvent.getStringValue());
-		//
-		//		LOG.log(Level.INFO, "TYPE "+theEvent.stringValue());
-		//		//		  LOG.log(Level.INFO, "TYPE "+theEvent.getType());
+	
+	/**
+	 * 
+	 * @param newValue
+	 * @param source
+	 */
+	private void handleEffect(float newValue, GuiElemts source) {
+		String msg[] = new String[2];
+		
+		if (source == GuiElemts.EFFECT_ONE_DROPDOWN) {
+			msg[0] = ""+ValidCommands.CHANGE_EFFECT_A;
+		} else {
+			msg[0] = ""+ValidCommands.CHANGE_EFFECT_B;
+		}
+		msg[1] = ""+(int)newValue;
+		MessageProcessor.processMsg(msg, true);
+	}
+
+	/**
+	 * 
+	 * @param newValue
+	 * @param source
+	 */	
+	private void handleGenerator(float newValue, GuiElemts source) {
+		String msg[] = new String[2];
+		
+		if (source == GuiElemts.GENERATOR_ONE_DROPDOWN) {
+			msg[0] = ""+ValidCommands.CHANGE_GENERATOR_A;
+		} else {
+			msg[0] = ""+ValidCommands.CHANGE_GENERATOR_B;
+		}
+		msg[1] = ""+(int)newValue;
+		MessageProcessor.processMsg(msg, true);
 	}
 }
