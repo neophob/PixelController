@@ -55,22 +55,27 @@ public class P5EventListener implements ControlListener {
 
 		case GENERATOR_ONE_DROPDOWN:
 		case GENERATOR_TWO_DROPDOWN:
-			LOG.log(Level.INFO, "GENERATOR Value: "+value);
+			LOG.log(Level.INFO, selection+" Value: "+value);
 			handleGenerator(value, selection);
 			break;
 
 		case MIXER_DROPDOWN:
-			LOG.log(Level.INFO, "MIXER Value: "+value);
+			LOG.log(Level.INFO, selection+" Value: "+value);
 			createMessage(ValidCommands.CHANGE_MIXER, value);
 			break;
 			
 		case BUTTON_RANDOM_CONFIGURATION:
-			LOG.log(Level.INFO, "BUTTON_RANDOM_CONFIGURATION Value: "+value);
+			LOG.log(Level.INFO, selection+" Value: "+value);
 			createMessage(ValidCommands.RANDOMIZE, value);
 			break;
 			
+		case BUTTON_TOGGLE_RANDOM_MODE:
+			LOG.log(Level.INFO, selection+" Value: "+value);
+			handleRandomMode(value);
+			break;
+			
 		case BUTTON_RANDOM_PRESENT:
-			LOG.log(Level.INFO, "BUTTON_RANDOM_PRESENT Value: "+value);
+			LOG.log(Level.INFO, selection+" Value: "+value);
 			createMessage(ValidCommands.PRESET_RANDOM, value);
 			break;
 						
@@ -94,6 +99,23 @@ public class P5EventListener implements ControlListener {
 		MessageProcessor.processMsg(msg, true);
 	}
 
+	
+	/**
+	 * toggle random mode on and off
+	 * @param newValue
+	 */
+	private static void handleRandomMode(float newValue) {
+		String msg[] = new String[2];		
+		msg[0] = ""+ValidCommands.RANDOM;		
+		if (newValue==0) {
+			msg[1] = "OFF";	
+		} else {
+			msg[1] = "ON";
+		}
+		MessageProcessor.processMsg(msg, true);		
+	}
+	
+	
 	/**
 	 * 
 	 * @param newValue

@@ -39,6 +39,7 @@ import com.neophob.sematrix.mixer.Mixer.MixerName;
 import controlP5.Button;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
+import controlP5.Toggle;
 
 
 /**
@@ -69,7 +70,8 @@ public class InternalBuffer extends PApplet {
 	private DropdownList generatorListOne, effectListOne;
 	private DropdownList generatorListTwo, effectListTwo;
 	private DropdownList mixerList;
-	private Button randomSelection, toggleRandom, randomPresets;
+	private Button randomSelection, randomPresets;
+	private Toggle toggleRandom;
 
 	/** The target y size. */
 	private int targetXSize, targetYSize;
@@ -174,6 +176,11 @@ public class InternalBuffer extends PApplet {
 		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
 				720, p5GuiYOffset+15, 100, 15);
 		randomPresets.setCaptionLabel("RANDOM PRESENT");
+		
+		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
+				720, p5GuiYOffset+45, 100, 15);
+		toggleRandom.setCaptionLabel("RANDOM MODE");
+		
 	}
 
 	/**
@@ -248,9 +255,6 @@ public class InternalBuffer extends PApplet {
 		//beat detection
 		displaySoundStats(localY);
 
-		//show mode
-		displayCurrentMode(localY, col.isRandomMode());
-
 		cp5.draw();		
 		col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
 	}
@@ -296,14 +300,6 @@ public class InternalBuffer extends PApplet {
 		rect(xofs, localY+targetYSize+SELECTED_MARKER*2+2, xx, 5);		
 	}
 
-	/**
-	 * 
-	 */
-	private void displayCurrentMode(int localY, boolean randomModeEnabled) {
-		//show if random mode is enabled
-		colorSelect(randomModeEnabled);
-		rect(0, localY+targetYSize+SELECTED_MARKER*3, targetXSize, 10);
-	}
 
 
 	/**
