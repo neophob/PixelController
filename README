@@ -43,8 +43,11 @@ Prerequisite:
 -JDK 1.6+
 
 Then run 
+# mvn initialize
+to install the needed packages in your local repo and
+
 # mvn clean package
-this should build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
+to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
 
 
 IT DOES NOT WORK!

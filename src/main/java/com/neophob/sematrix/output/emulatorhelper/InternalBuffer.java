@@ -27,11 +27,16 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
+
+import controlP5.ControlP5;
+import controlP5.DropdownList;
 
 
 /**
@@ -58,6 +63,9 @@ public class InternalBuffer extends PApplet {
 	/** The p image. */
 	private PImage pImage=null;
 	
+	private ControlP5 cp5;
+	private DropdownList generatorListOne, effectListOne;
+	
 	/** The target y size. */
 	private int targetXSize, targetYSize;
 
@@ -78,15 +86,59 @@ public class InternalBuffer extends PApplet {
 		this.targetYSize = targetYSize;
 	}
 	
+	private void customizeGeneratorDropdownList(DropdownList ddl) {
+		  // a convenience function to customize a DropdownList
+		  ddl.setBackgroundColor(color(190));
+		  ddl.setItemHeight(20);
+		  ddl.setBarHeight(15);
+		  
+		  int i=0;
+		  for (GeneratorName gn: GeneratorName.values()) {
+			  ddl.addItem(gn.name(), i++);
+		  }
+		  ddl.scroll(0);
+		  ddl.setColorBackground(color(60));
+		  ddl.setColorActive(color(255, 128));
+		}
+
+	private void customizeEffectDropdownList(DropdownList ddl) {
+		  // a convenience function to customize a DropdownList
+		  ddl.setBackgroundColor(color(190));
+		  ddl.setItemHeight(20);
+		  ddl.setBarHeight(15);
+		  
+		  int i=0;
+		  for (EffectName gn: EffectName.values()) {
+			  ddl.addItem(gn.name(), i++);
+		  }
+		  ddl.scroll(0);
+		  ddl.setColorBackground(color(60));
+		  ddl.setColorActive(color(255, 128));
+		}
+	
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#setup()
 	 */
     public void setup() {
     	LOG.log(Level.INFO, "create internal buffer with size "+x+"/"+y);
-        size(x,y);
+        size(x,y+100);
         noSmooth();
         frameRate(Collector.getInstance().getFps());
         background(0,0,0);
+        
+        int yGui = y;
+        cp5 = new ControlP5(this);
+        P5EventListener listener = new P5EventListener();
+        
+        generatorListOne = cp5.addDropdownList("genListOne", 20, yGui, 100, 120);
+        generatorListOne.update();
+        generatorListOne.addListener(listener);
+        
+        customizeGeneratorDropdownList(generatorListOne);
+        
+        effectListOne = cp5.addDropdownList("fxListOne", 90, yGui, 100, 120);
+        customizeEffectDropdownList(effectListOne);
+        
     }
 
     /**
