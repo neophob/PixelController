@@ -39,6 +39,7 @@ import com.neophob.sematrix.mixer.Mixer.MixerName;
 import controlP5.Button;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
+import controlP5.RadioButton;
 import controlP5.Toggle;
 
 
@@ -70,6 +71,7 @@ public class InternalBuffer extends PApplet {
 	private DropdownList generatorListOne, effectListOne;
 	private DropdownList generatorListTwo, effectListTwo;
 	private DropdownList mixerList;
+	private RadioButton selectedVisualList;
 	private Button randomSelection, randomPresets;
 	private Toggle toggleRandom;
 
@@ -111,6 +113,15 @@ public class InternalBuffer extends PApplet {
 		ddl.setColorBackground(color(60));
 		ddl.setColorActive(color(255, 128));
 	}
+	
+	void addToRadioButton(RadioButton theRadioButton, String theName, int theValue, int w) {
+		  Toggle t = theRadioButton.addItem(theName,theValue);
+		  t.captionLabel().setColorBackground(color(80));
+		  t.captionLabel().style().movePadding(2,0,-1,2);
+		  t.captionLabel().style().moveMargin(-2,0,0,-3);
+		  t.captionLabel().style().backgroundWidth = w;
+		}
+
 
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#setup()
@@ -128,19 +139,33 @@ public class InternalBuffer extends PApplet {
         P5EventListener listener = new P5EventListener();
         cp5.addListener(listener);
 
-		//Generator 
+        int i=0;        
+        
+        //selected visual
+        int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
+        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-50);
+        selectedVisualList.setItemsPerRow(nrOfVisuals);
+        selectedVisualList.setSpacingColumn(targetXSize);
+
+        for (i=0; i<nrOfVisuals; i++) {
+            addToRadioButton(selectedVisualList, "VISUAL "+(1+i), i, targetXSize);        	
+        }
+
+        //Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
 				20, p5GuiYOffset, 100, 140);
 		generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 
 				440, p5GuiYOffset, 100, 140);
 		themeDropdownList(generatorListOne);
 		themeDropdownList(generatorListTwo);
-		int i=0;
+		i=0;
 		for (GeneratorName gn: GeneratorName.values()) {
 			generatorListOne.addItem(gn.name(), i);
 			generatorListTwo.addItem(gn.name(), i);
 			i++;
 		}
+		generatorListOne.setLabel(generatorListOne.getItem(1).getName());
+		generatorListTwo.setLabel(generatorListTwo.getItem(0).getName());
 
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
@@ -155,7 +180,9 @@ public class InternalBuffer extends PApplet {
 			effectListTwo.addItem(gn.name(), i);
 			i++;
 		}
-		
+		effectListOne.setLabel(effectListOne.getItem(0).getName());
+		effectListTwo.setLabel(effectListTwo.getItem(0).getName());
+
 		
 		//Mixer 
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
@@ -166,7 +193,7 @@ public class InternalBuffer extends PApplet {
 			mixerList.addItem(gn.name(), i);
 			i++;
 		}
-		
+		mixerList.setLabel(mixerList.getItem(0).getName());
 		
 		//Button
 		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
