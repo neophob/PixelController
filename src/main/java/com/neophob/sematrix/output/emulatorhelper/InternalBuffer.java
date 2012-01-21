@@ -65,6 +65,7 @@ public class InternalBuffer extends PApplet {
 
 	private ControlP5 cp5;
 	private DropdownList generatorListOne, effectListOne;
+	private DropdownList generatorListTwo, effectListTwo;
 
 	/** The target y size. */
 	private int targetXSize, targetYSize;
@@ -121,20 +122,28 @@ public class InternalBuffer extends PApplet {
         P5EventListener listener = new P5EventListener();
         cp5.addListener(listener);
 
-		//Generator Test
-		generatorListOne = cp5.addDropdownList(GuiElemts.GENERATOR_ONE_DROPDOWN.toString(), 20, p5GuiYOffset, 100, 120);
+		//Generator 
+		generatorListOne = cp5.addDropdownList(GuiElemts.GENERATOR_ONE_DROPDOWN.toString(), 20, p5GuiYOffset, 100, 140);
+		generatorListTwo = cp5.addDropdownList(GuiElemts.GENERATOR_TWO_DROPDOWN.toString(), 320, p5GuiYOffset, 100, 140);
 		themeDropdownList(generatorListOne);
+		themeDropdownList(generatorListTwo);
 		int i=0;
 		for (GeneratorName gn: GeneratorName.values()) {
-			generatorListOne.addItem(gn.name(), i++);
+			generatorListOne.addItem(gn.name(), i);
+			generatorListTwo.addItem(gn.name(), i);
+			i++;
 		}
 
 		//Effect Test
-		effectListOne = cp5.addDropdownList(GuiElemts.EFFECT_ONE_DROPDOWN.toString(), 130, p5GuiYOffset, 100, 120);
+		effectListOne = cp5.addDropdownList(GuiElemts.EFFECT_ONE_DROPDOWN.toString(), 160, p5GuiYOffset, 100, 140);
+		effectListTwo = cp5.addDropdownList(GuiElemts.EFFECT_TWO_DROPDOWN.toString(), 460, p5GuiYOffset, 100, 140);
 		themeDropdownList(effectListOne);
+		themeDropdownList(effectListTwo);
 		i=0;
 		for (EffectName gn: EffectName.values()) {
-			effectListOne.addItem(gn.name(), i++);
+			effectListOne.addItem(gn.name(), i);
+			effectListTwo.addItem(gn.name(), i);
+			i++;
 		}
 	
 	}

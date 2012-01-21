@@ -48,12 +48,14 @@ public class P5EventListener implements ControlListener {
 
 		switch (selection) {
 		case EFFECT_ONE_DROPDOWN:
-			LOG.log(Level.INFO, "EFFECT1 OFS: "+value);
+		case EFFECT_TWO_DROPDOWN:			
+			LOG.log(Level.INFO, "EFFECT Value: "+value);
 			handleEffect(value, selection);
 			break;
 
 		case GENERATOR_ONE_DROPDOWN:
-			LOG.log(Level.INFO, "GENERATOR1 OFS: "+value);
+		case GENERATOR_TWO_DROPDOWN:
+			LOG.log(Level.INFO, "GENERATOR Value: "+value);
 			handleGenerator(value, selection);
 			break;
 
