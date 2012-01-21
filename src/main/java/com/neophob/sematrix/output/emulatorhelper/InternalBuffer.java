@@ -34,6 +34,7 @@ import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.mixer.Mixer.MixerName;
 
 import controlP5.ControlP5;
 import controlP5.DropdownList;
@@ -66,6 +67,7 @@ public class InternalBuffer extends PApplet {
 	private ControlP5 cp5;
 	private DropdownList generatorListOne, effectListOne;
 	private DropdownList generatorListTwo, effectListTwo;
+	private DropdownList mixerList;
 
 	/** The target y size. */
 	private int targetXSize, targetYSize;
@@ -123,8 +125,8 @@ public class InternalBuffer extends PApplet {
         cp5.addListener(listener);
 
 		//Generator 
-		generatorListOne = cp5.addDropdownList(GuiElemts.GENERATOR_ONE_DROPDOWN.toString(), 20, p5GuiYOffset, 100, 140);
-		generatorListTwo = cp5.addDropdownList(GuiElemts.GENERATOR_TWO_DROPDOWN.toString(), 320, p5GuiYOffset, 100, 140);
+		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 20, p5GuiYOffset, 100, 140);
+		generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 440, p5GuiYOffset, 100, 140);
 		themeDropdownList(generatorListOne);
 		themeDropdownList(generatorListTwo);
 		int i=0;
@@ -134,9 +136,9 @@ public class InternalBuffer extends PApplet {
 			i++;
 		}
 
-		//Effect Test
-		effectListOne = cp5.addDropdownList(GuiElemts.EFFECT_ONE_DROPDOWN.toString(), 160, p5GuiYOffset, 100, 140);
-		effectListTwo = cp5.addDropdownList(GuiElemts.EFFECT_TWO_DROPDOWN.toString(), 460, p5GuiYOffset, 100, 140);
+		//Effect 
+		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 160, p5GuiYOffset, 100, 140);
+		effectListTwo = cp5.addDropdownList(GuiElement.EFFECT_TWO_DROPDOWN.toString(), 580, p5GuiYOffset, 100, 140);
 		themeDropdownList(effectListOne);
 		themeDropdownList(effectListTwo);
 		i=0;
@@ -145,6 +147,17 @@ public class InternalBuffer extends PApplet {
 			effectListTwo.addItem(gn.name(), i);
 			i++;
 		}
+		
+		
+		//Mixer 
+		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 300, p5GuiYOffset, 100, 140);
+		themeDropdownList(mixerList);
+		i=0;
+		for (MixerName gn: MixerName.values()) {
+			mixerList.addItem(gn.name(), i);
+			i++;
+		}
+
 	
 	}
 

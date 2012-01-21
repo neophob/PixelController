@@ -44,7 +44,7 @@ public class P5EventListener implements ControlListener {
 			value = theEvent.getController().getValue();
 		}
 
-		GuiElemts selection = GuiElemts.valueOf(theEvent.getName());
+		GuiElement selection = GuiElement.valueOf(theEvent.getName());
 
 		switch (selection) {
 		case EFFECT_ONE_DROPDOWN:
@@ -59,21 +59,40 @@ public class P5EventListener implements ControlListener {
 			handleGenerator(value, selection);
 			break;
 
+		case MIXER_DROPDOWN:
+			LOG.log(Level.INFO, "MIXER Value: "+value);
+			handleMixer(value);
+			break;
+			
+			
 		default:
+			LOG.log(Level.INFO, "Invalid Object: "+selection);
 			break;
 		}
 	}
-
 	
+
 	/**
 	 * 
 	 * @param newValue
 	 * @param source
 	 */
-	private void handleEffect(float newValue, GuiElemts source) {
+	private void handleMixer(float newValue) {
+		String msg[] = new String[2];		
+		msg[0] = ""+ValidCommands.CHANGE_MIXER;
+		msg[1] = ""+(int)newValue;
+		MessageProcessor.processMsg(msg, true);
+	}
+
+	/**
+	 * 
+	 * @param newValue
+	 * @param source
+	 */
+	private void handleEffect(float newValue, GuiElement source) {
 		String msg[] = new String[2];
 		
-		if (source == GuiElemts.EFFECT_ONE_DROPDOWN) {
+		if (source == GuiElement.EFFECT_ONE_DROPDOWN) {
 			msg[0] = ""+ValidCommands.CHANGE_EFFECT_A;
 		} else {
 			msg[0] = ""+ValidCommands.CHANGE_EFFECT_B;
@@ -87,10 +106,10 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */	
-	private void handleGenerator(float newValue, GuiElemts source) {
+	private void handleGenerator(float newValue, GuiElement source) {
 		String msg[] = new String[2];
 		
-		if (source == GuiElemts.GENERATOR_ONE_DROPDOWN) {
+		if (source == GuiElement.GENERATOR_ONE_DROPDOWN) {
 			msg[0] = ""+ValidCommands.CHANGE_GENERATOR_A;
 		} else {
 			msg[0] = ""+ValidCommands.CHANGE_GENERATOR_B;
