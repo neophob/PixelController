@@ -157,9 +157,9 @@ public class GraphicalFrontEnd extends PApplet {
 
 		//Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
-				20, p5GuiYOffset, 100, 140);
+				20, p5GuiYOffset, 110, 140);
 		generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 
-				440, p5GuiYOffset, 100, 140);
+				440, p5GuiYOffset, 110, 140);
 		themeDropdownList(generatorListOne);
 		themeDropdownList(generatorListTwo);
 		i=0;
@@ -173,9 +173,9 @@ public class GraphicalFrontEnd extends PApplet {
 
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
-				160, p5GuiYOffset, 100, 140);
+				160, p5GuiYOffset, 110, 140);
 		effectListTwo = cp5.addDropdownList(GuiElement.EFFECT_TWO_DROPDOWN.toString(), 
-				580, p5GuiYOffset, 100, 140);
+				580, p5GuiYOffset, 110, 140);
 		themeDropdownList(effectListOne);
 		themeDropdownList(effectListTwo);
 		i=0;
@@ -190,7 +190,7 @@ public class GraphicalFrontEnd extends PApplet {
 
 		//Mixer 
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
-				300, p5GuiYOffset, 100, 140);
+				300, p5GuiYOffset, 110, 140);
 		themeDropdownList(mixerList);
 		i=0;
 		for (MixerName gn: MixerName.values()) {
