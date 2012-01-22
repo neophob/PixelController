@@ -77,7 +77,7 @@ public class InternalDebugWindow extends Frame {
         this.setSize(windowXSize, windowYSize);
 
         setLayout(new BorderLayout());
-        PApplet embed = new InternalBuffer(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
+        PApplet embed = new GraphicalFrontEnd(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
         
         add(embed, BorderLayout.CENTER);
 

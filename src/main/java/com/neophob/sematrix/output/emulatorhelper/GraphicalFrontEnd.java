@@ -48,7 +48,7 @@ import controlP5.Toggle;
  * 
  * @author michu
  */
-public class InternalBuffer extends PApplet {
+public class GraphicalFrontEnd extends PApplet {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2344499301021L;
@@ -56,7 +56,7 @@ public class InternalBuffer extends PApplet {
 	private static final int SELECTED_MARKER = 10;
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(InternalBuffer.class.getName());
+	private static final Logger LOG = Logger.getLogger(GraphicalFrontEnd.class.getName());
 
 	/** The display horiz. */
 	private boolean displayHoriz;
@@ -89,7 +89,7 @@ public class InternalBuffer extends PApplet {
 	 * @param targetXSize the target x size
 	 * @param targetYSize the target y size
 	 */
-	public InternalBuffer(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
+	public GraphicalFrontEnd(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
 		this.displayHoriz = displayHoriz;
 		this.x = x;
 		this.y = y+SELECTED_MARKER;
@@ -98,6 +98,7 @@ public class InternalBuffer extends PApplet {
 		this.p5GuiYOffset = targetYSize + 100;
 	}
 
+	@SuppressWarnings("deprecation")
 	private void themeDropdownList(DropdownList ddl) {
 		// a convenience function to customize a DropdownList
 		ddl.setBackgroundColor(color(190));
@@ -114,6 +115,7 @@ public class InternalBuffer extends PApplet {
 		ddl.setColorActive(color(255, 128));
 	}
 	
+	@SuppressWarnings("deprecation")
 	void addToRadioButton(RadioButton theRadioButton, String theName, int theValue, int w) {
 		  Toggle t = theRadioButton.addItem(theName,theValue);
 		  t.captionLabel().setColorBackground(color(80));
@@ -132,14 +134,12 @@ public class InternalBuffer extends PApplet {
 		noSmooth();
 		frameRate(Collector.getInstance().getFps());
 		background(0,0,0);
-
+        int i=0;        
 		
 		cp5 = new ControlP5(this);
 		cp5.setAutoDraw(false);
-        P5EventListener listener = new P5EventListener();
+        P5EventListener listener = new P5EventListener(this);
         cp5.addListener(listener);
-
-        int i=0;        
         
         //selected visual
         int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
@@ -206,8 +206,7 @@ public class InternalBuffer extends PApplet {
 		
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
 				720, p5GuiYOffset+45, 100, 15);
-		toggleRandom.setCaptionLabel("RANDOM MODE");
-		
+		toggleRandom.setCaptionLabel("RANDOM MODE");		
 	}
 
 	/**
@@ -339,6 +338,20 @@ public class InternalBuffer extends PApplet {
 		} else {
 			fill(55,55,55);	
 		}		
+	}
+	
+	/**
+	 * update only minimal parts of the gui
+	 */
+	public void callbackRefreshMini() {
+		LOG.log(Level.INFO, "Refresh Partitial GUI");
+	}
+	
+	/**
+	 * refresh whole gui
+	 */
+	public void callbackRefreshWholeGui() {
+		LOG.log(Level.INFO, "Refresh Whole GUI");
 	}
 
 }

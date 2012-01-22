@@ -23,6 +23,16 @@ public class P5EventListener implements ControlListener {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(P5EventListener.class.getName());
 
+	private GraphicalFrontEnd callback;
+	
+	/**
+	 * 
+	 * @param callback
+	 */
+	public P5EventListener(GraphicalFrontEnd callback) {
+		this.callback = callback;
+	}
+	
 	/**
 	 * 
 	 */
@@ -96,17 +106,17 @@ public class P5EventListener implements ControlListener {
 	 * 
 	 * @param msg
 	 */
-	private static void singleSendMessageOut(String msg[]) {
+	private void singleSendMessageOut(String msg[]) {
 
 		ValidCommands ret = MessageProcessor.processMsg(msg, true);
 		if (ret != null) {
 			switch (ret) {
 			case STATUS:
-//				sendStatusToGui();
+				callback.callbackRefreshMini();
 				break;
 
 			case STATUS_MINI:
-//				sendStatusToGuiMini();
+				callback.callbackRefreshWholeGui();
 				break;
 
 			default:
@@ -126,7 +136,7 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */
-	private static void createMessage(ValidCommands validCommand, float newValue) {
+	private void createMessage(ValidCommands validCommand, float newValue) {
 		String msg[] = new String[2];		
 		msg[0] = ""+validCommand;
 		msg[1] = ""+(int)newValue;
@@ -138,7 +148,7 @@ public class P5EventListener implements ControlListener {
 	 * toggle random mode on and off
 	 * @param newValue
 	 */
-	private static void handleRandomMode(float newValue) {
+	private void handleRandomMode(float newValue) {
 		String msg[] = new String[2];		
 		msg[0] = ""+ValidCommands.RANDOM;		
 		if (newValue==0) {
@@ -155,7 +165,7 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */
-	private static void handleEffect(float newValue, GuiElement source) {
+	private void handleEffect(float newValue, GuiElement source) {
 		String msg[] = new String[2];
 		
 		if (source == GuiElement.EFFECT_ONE_DROPDOWN) {
@@ -172,7 +182,7 @@ public class P5EventListener implements ControlListener {
 	 * @param newValue
 	 * @param source
 	 */	
-	private static void handleGenerator(float newValue, GuiElement source) {
+	private void handleGenerator(float newValue, GuiElement source) {
 		String msg[] = new String[2];
 		
 		if (source == GuiElement.GENERATOR_ONE_DROPDOWN) {
