@@ -121,7 +121,7 @@ public class GraphicalFrontEnd extends PApplet {
 
 	@SuppressWarnings("deprecation")
 	void addToRadioButton(RadioButton theRadioButton, String theName, int theValue, int w) {
-		Toggle t = theRadioButton.addItem(theName,theValue);
+		Toggle t = theRadioButton.addItem(theName, theValue);
 		t.captionLabel().setColorBackground(color(80));
 		t.captionLabel().style().movePadding(2,0,-1,2);
 		t.captionLabel().style().moveMargin(-2,0,0,-3);
@@ -154,6 +154,7 @@ public class GraphicalFrontEnd extends PApplet {
 		for (i=0; i<nrOfVisuals; i++) {
 			addToRadioButton(selectedVisualList, "EDIT VISUAL #"+(1+i), i, targetXSize-32);        	
 		}
+		//selectedVisualList.activate("EDIT VISUAL #1");
 
 		//Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
@@ -355,11 +356,14 @@ public class GraphicalFrontEnd extends PApplet {
 		Collector col = Collector.getInstance();		
 		Visual v = col.getVisual(col.getCurrentVisual());
 
-		generatorListOne.setLabel(generatorListOne.getItem(v.getGenerator1Idx()).getName());
-		generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
-		effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
-		effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
-		mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
+		if (v!=null) {
+			generatorListOne.setLabel(generatorListOne.getItem(v.getGenerator1Idx()).getName());
+			generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
+			effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
+			effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
+			mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());			
+		}
+
 
 		//get output status
 		//		OutputMapping om = ioMapping.get(currentOutput); 
@@ -390,7 +394,7 @@ public class GraphicalFrontEnd extends PApplet {
 				clickedOn.add(ge);				
 			}
 		}
-		
+
 		if (!clickedOn.contains(GuiElement.GENERATOR_ONE_DROPDOWN)) {
 			generatorListOne.setOpen(false);
 		}
@@ -406,8 +410,18 @@ public class GraphicalFrontEnd extends PApplet {
 		if (!clickedOn.contains(GuiElement.MIXER_DROPDOWN)) {
 			mixerList.setOpen(false);
 		}
-		
+	}
 
+	
+	/**
+	 * select visual by keypress
+	 */
+	public void keyPressed() {
+		if(key>='1' && key<'9') {
+			// convert a key-number (48-52) to an int between 0 and 4
+			int n = (int)key-49;
+			selectedVisualList.activate(n);
+		}
 	}
 
 }
