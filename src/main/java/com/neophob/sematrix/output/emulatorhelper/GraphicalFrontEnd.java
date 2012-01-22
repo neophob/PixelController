@@ -346,6 +346,21 @@ public class GraphicalFrontEnd extends PApplet {
 	 */
 	public void callbackRefreshMini() {
 		LOG.log(Level.INFO, "Refresh Partitial GUI");
+		//get visual status
+		Collector col = Collector.getInstance();		
+		Visual v = col.getVisual(col.getCurrentVisual());
+
+		generatorListOne.setLabel(generatorListOne.getItem(v.getGenerator1Idx()).getName());
+		generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
+		effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
+		effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
+		mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
+		
+		//get output status
+//		OutputMapping om = ioMapping.get(currentOutput); 
+//		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
+//		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
+//		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
 	}
 	
 	/**
@@ -353,6 +368,7 @@ public class GraphicalFrontEnd extends PApplet {
 	 */
 	public void callbackRefreshWholeGui() {
 		LOG.log(Level.INFO, "Refresh Whole GUI");
+		this.callbackRefreshMini();
 	}
 
 }

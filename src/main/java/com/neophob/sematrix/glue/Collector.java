@@ -484,7 +484,7 @@ public final class Collector {
 		
 		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);
 		ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+currentOutput);		
-		ret.add(ValidCommands.CURRENT_VISUAL+EMPTY_CHAR+currentVisual);
+		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
 		return ret;
 	}
 
