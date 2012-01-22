@@ -19,7 +19,10 @@
 
 package com.neophob.sematrix.output.emulatorhelper;
 
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +41,7 @@ import com.neophob.sematrix.mixer.Mixer.MixerName;
 
 import controlP5.Button;
 import controlP5.ControlP5;
+import controlP5.ControllerInterface;
 import controlP5.DropdownList;
 import controlP5.RadioButton;
 import controlP5.Toggle;
@@ -77,7 +81,7 @@ public class GraphicalFrontEnd extends PApplet {
 
 	/** The target y size. */
 	private int targetXSize, targetYSize;
-	
+
 	private int p5GuiYOffset;
 
 	/**
@@ -102,27 +106,27 @@ public class GraphicalFrontEnd extends PApplet {
 	private void themeDropdownList(DropdownList ddl) {
 		// a convenience function to customize a DropdownList
 		ddl.setBackgroundColor(color(190));
-		ddl.setItemHeight(15);
-		ddl.setBarHeight(15);
+		ddl.setItemHeight(12); //height of a element in the dropdown list
+		ddl.setBarHeight(15);  //size of the list
 
-		ddl.captionLabel().set("dropdown");
 		ddl.captionLabel().style().marginTop = 3;
 		ddl.captionLabel().style().marginLeft = 3;
 		ddl.valueLabel().style().marginTop = 3;
+		ddl.actAsPulldownMenu(true); //close menu after a selection was done
 
 		ddl.scroll(0);
 		ddl.setColorBackground(color(60));
 		ddl.setColorActive(color(255, 128));
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	void addToRadioButton(RadioButton theRadioButton, String theName, int theValue, int w) {
-		  Toggle t = theRadioButton.addItem(theName,theValue);
-		  t.captionLabel().setColorBackground(color(80));
-		  t.captionLabel().style().movePadding(2,0,-1,2);
-		  t.captionLabel().style().moveMargin(-2,0,0,-3);
-		  t.captionLabel().style().backgroundWidth = w;
-		}
+		Toggle t = theRadioButton.addItem(theName,theValue);
+		t.captionLabel().setColorBackground(color(80));
+		t.captionLabel().style().movePadding(2,0,-1,2);
+		t.captionLabel().style().moveMargin(-2,0,0,-3);
+		t.captionLabel().style().backgroundWidth = w;
+	}
 
 
 	/* (non-Javadoc)
@@ -134,24 +138,24 @@ public class GraphicalFrontEnd extends PApplet {
 		noSmooth();
 		frameRate(Collector.getInstance().getFps());
 		background(0,0,0);
-        int i=0;        
-		
+		int i=0;        
+
 		cp5 = new ControlP5(this);
 		cp5.setAutoDraw(false);
-        P5EventListener listener = new P5EventListener(this);
-        cp5.addListener(listener);
-        
-        //selected visual
-        int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
-        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-50);
-        selectedVisualList.setItemsPerRow(nrOfVisuals);
-        selectedVisualList.setSpacingColumn(targetXSize-10);
-        selectedVisualList.setNoneSelectedAllowed(false);
-        for (i=0; i<nrOfVisuals; i++) {
-            addToRadioButton(selectedVisualList, "EDIT VISUAL #"+(1+i), i, targetXSize-32);        	
-        }
+		P5EventListener listener = new P5EventListener(this);
+		cp5.addListener(listener);
 
-        //Generator 
+		//selected visual
+		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
+		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-50);
+		selectedVisualList.setItemsPerRow(nrOfVisuals);
+		selectedVisualList.setSpacingColumn(targetXSize-10);
+		selectedVisualList.setNoneSelectedAllowed(false);
+		for (i=0; i<nrOfVisuals; i++) {
+			addToRadioButton(selectedVisualList, "EDIT VISUAL #"+(1+i), i, targetXSize-32);        	
+		}
+
+		//Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
 				20, p5GuiYOffset, 100, 140);
 		generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 
@@ -183,7 +187,7 @@ public class GraphicalFrontEnd extends PApplet {
 		effectListOne.setLabel(effectListOne.getItem(0).getName());
 		effectListTwo.setLabel(effectListTwo.getItem(0).getName());
 
-		
+
 		//Mixer 
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
 				300, p5GuiYOffset, 100, 140);
@@ -194,7 +198,7 @@ public class GraphicalFrontEnd extends PApplet {
 			i++;
 		}
 		mixerList.setLabel(mixerList.getItem(0).getName());
-		
+
 		//Button
 		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
 				720, p5GuiYOffset-15, 100, 15);
@@ -203,19 +207,20 @@ public class GraphicalFrontEnd extends PApplet {
 		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
 				720, p5GuiYOffset+15, 100, 15);
 		randomPresets.setCaptionLabel("RANDOM PRESENT");
-		
+
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
 				720, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
 	}
 
+
 	/**
 	 * draw the whole internal buffer on screen.
 	 */
 	public void draw() {
 		long l = System.currentTimeMillis();
-		
+
 		drawGradientBackground();
 
 		int localX=0, localY=0;
@@ -285,7 +290,7 @@ public class GraphicalFrontEnd extends PApplet {
 		cp5.draw();		
 		col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
 	}
-	
+
 
 	/**
 	 * draw nice gradient at the end of the screen
@@ -293,7 +298,7 @@ public class GraphicalFrontEnd extends PApplet {
 	private void drawGradientBackground() {
 		this.loadPixels();	
 		int ofs=this.width*(this.height-255);
-		
+
 		for (int y=0; y<255; y++) {
 			int pink = color(y/2, y/2, y/2);
 			for (int x=0; x<this.width; x++) {
@@ -303,8 +308,8 @@ public class GraphicalFrontEnd extends PApplet {
 		}
 		this.updatePixels();		
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param localY
@@ -340,7 +345,7 @@ public class GraphicalFrontEnd extends PApplet {
 			fill(55,55,55);	
 		}		
 	}
-	
+
 	/**
 	 * update only minimal parts of the gui
 	 */
@@ -355,20 +360,54 @@ public class GraphicalFrontEnd extends PApplet {
 		effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
 		effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
 		mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
-		
+
 		//get output status
-//		OutputMapping om = ioMapping.get(currentOutput); 
-//		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
-//		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-//		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+		//		OutputMapping om = ioMapping.get(currentOutput); 
+		//		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
+		//		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
+		//		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
 	}
-	
+
 	/**
 	 * refresh whole gui
 	 */
 	public void callbackRefreshWholeGui() {
 		LOG.log(Level.INFO, "Refresh Whole GUI");
 		this.callbackRefreshMini();
+	}
+
+	/**
+	 * mouse listener, used to close dropdown lists
+	 * 
+	 */
+	public void mousePressed() {
+		// print the current mouseoverlist on mouse pressed
+		List <GuiElement> clickedOn = new ArrayList<GuiElement>();
+		List<ControllerInterface> lci = cp5.getWindow().getMouseOverList();
+		for (ControllerInterface ci: lci) {
+			GuiElement ge = GuiElement.getGuiElement(ci.getName());
+			if (ge!=null) {
+				clickedOn.add(ge);				
+			}
+		}
+		
+		if (!clickedOn.contains(GuiElement.GENERATOR_ONE_DROPDOWN)) {
+			generatorListOne.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.GENERATOR_TWO_DROPDOWN)) {
+			generatorListTwo.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.EFFECT_ONE_DROPDOWN)) {
+			effectListOne.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.EFFECT_TWO_DROPDOWN)) {
+			effectListTwo.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.MIXER_DROPDOWN)) {
+			mixerList.setOpen(false);
+		}
+		
+
 	}
 
 }

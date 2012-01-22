@@ -14,4 +14,13 @@ public enum GuiElement {
 	BUTTON_RANDOM_PRESENT,
 	BUTTON_TOGGLE_RANDOM_MODE,
 	;
+	
+	public static GuiElement getGuiElement(String s) {
+		for (GuiElement gw: GuiElement.values()) {
+			if (s.equalsIgnoreCase(gw.toString())) {
+				return gw;
+			}
+		}
+		return null;
+	}
 }
