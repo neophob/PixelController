@@ -79,7 +79,7 @@ public final class MessageProcessor {
 					int nr = col.getCurrentVisual();
 					tmp=Integer.parseInt(msg[1]);
 					Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
-					//silly check
+					//silly check of generator exists
 					g.getId();
 					col.getVisual(nr).setGenerator1(g);
 				} catch (Exception e) {

@@ -540,7 +540,7 @@ public final class Collector {
 	 * @return the visual
 	 */
 	public Visual getVisual(int index) {
-		if (index<allVisuals.size()) {
+		if (index>=0 && index<allVisuals.size()) {
 			return allVisuals.get(index);			
 		} 
 		return allVisuals.get(0);

@@ -145,10 +145,10 @@ public class InternalBuffer extends PApplet {
         int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
         selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-50);
         selectedVisualList.setItemsPerRow(nrOfVisuals);
-        selectedVisualList.setSpacingColumn(targetXSize);
-
+        selectedVisualList.setSpacingColumn(targetXSize-10);
+        selectedVisualList.setNoneSelectedAllowed(false);
         for (i=0; i<nrOfVisuals; i++) {
-            addToRadioButton(selectedVisualList, "VISUAL "+(1+i), i, targetXSize);        	
+            addToRadioButton(selectedVisualList, "EDIT VISUAL #"+(1+i), i, targetXSize-32);        	
         }
 
         //Generator 

@@ -91,6 +91,35 @@ public class P5EventListener implements ControlListener {
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param msg
+	 */
+	private static void singleSendMessageOut(String msg[]) {
+
+		ValidCommands ret = MessageProcessor.processMsg(msg, true);
+		if (ret != null) {
+			switch (ret) {
+			case STATUS:
+//				sendStatusToGui();
+				break;
+
+			case STATUS_MINI:
+//				sendStatusToGuiMini();
+				break;
+
+			default:
+				break;
+			}
+			try {
+				Thread.sleep(100);				
+			} catch (Exception e) {}
+			
+		}
+
+	}
+	
 
 	/**
 	 * 
@@ -101,7 +130,7 @@ public class P5EventListener implements ControlListener {
 		String msg[] = new String[2];		
 		msg[0] = ""+validCommand;
 		msg[1] = ""+(int)newValue;
-		MessageProcessor.processMsg(msg, true);
+		singleSendMessageOut(msg);
 	}
 
 	
@@ -117,7 +146,7 @@ public class P5EventListener implements ControlListener {
 		} else {
 			msg[1] = "ON";
 		}
-		MessageProcessor.processMsg(msg, true);		
+		singleSendMessageOut(msg);		
 	}
 	
 	
@@ -135,7 +164,7 @@ public class P5EventListener implements ControlListener {
 			msg[0] = ""+ValidCommands.CHANGE_EFFECT_B;
 		}
 		msg[1] = ""+(int)newValue;
-		MessageProcessor.processMsg(msg, true);
+		singleSendMessageOut(msg);
 	}
 
 	/**
@@ -152,6 +181,6 @@ public class P5EventListener implements ControlListener {
 			msg[0] = ""+ValidCommands.CHANGE_GENERATOR_B;
 		}
 		msg[1] = ""+(int)newValue;
-		MessageProcessor.processMsg(msg, true);
+		singleSendMessageOut(msg);
 	}
 }
