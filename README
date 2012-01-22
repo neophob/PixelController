@@ -58,7 +58,8 @@ Here are some common errors:
 -Did you forgot to edit the configuration file "config.properties", take a look!
 -Did you flash the correct firmware to you Arduino/Teensy? (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
 -A User reported that the pixelinvader firmware did not work on a new Arduino UNO r3 board. I think the reason
- for this is the big serial latency. However using a Arduno UNO r1 worked flawlessly. 
+ for this is the big serial latency. However using a Arduno UNO r1 worked flawlessly. Technically this is not a big
+ deal, as the timeout value cold be adjusted.
 
 CREDITS
 -------
