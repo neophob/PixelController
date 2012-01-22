@@ -154,8 +154,8 @@ public class GraphicalFrontEnd extends PApplet {
 		for (i=0; i<nrOfVisuals; i++) {
 			addToRadioButton(selectedVisualList, "EDIT VISUAL #"+(1+i), i, targetXSize-32);        	
 		}
-		//selectedVisualList.activate("EDIT VISUAL #1");
 
+		
 		//Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
 				20, p5GuiYOffset, 110, 140);
@@ -213,6 +213,9 @@ public class GraphicalFrontEnd extends PApplet {
 				720, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
+		
+		//select first visual
+		selectedVisualList.activate(0);
 	}
 
 
@@ -227,7 +230,6 @@ public class GraphicalFrontEnd extends PApplet {
 		int localX=0, localY=0;
 		int[] buffer;
 		Collector col = Collector.getInstance();
-		int currentVisual = col.getCurrentVisual();
 
 		//set used to find out if visual is on screen
 		Set<Integer> outputId = new HashSet<Integer>();
@@ -248,15 +250,6 @@ public class GraphicalFrontEnd extends PApplet {
 			pImage.loadPixels();
 			System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
 			pImage.updatePixels();
-
-			//draw current input
-			if (ofs==currentVisual) {
-				fill(200,66,66);
-			} else {
-				fill(55,55,55);
-			}	
-			rect(localX, localY+targetYSize, targetXSize, SELECTED_MARKER);
-
 
 			//draw current output
 			if (outputId.contains(ofs)) {
@@ -334,7 +327,6 @@ public class GraphicalFrontEnd extends PApplet {
 	}
 
 
-
 	/**
 	 * 
 	 * @param b
@@ -380,6 +372,7 @@ public class GraphicalFrontEnd extends PApplet {
 		this.callbackRefreshMini();
 	}
 
+	
 	/**
 	 * mouse listener, used to close dropdown lists
 	 * 
