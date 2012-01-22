@@ -206,7 +206,8 @@ public class GraphicalFrontEnd extends PApplet {
 		
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
 				720, p5GuiYOffset+45, 100, 15);
-		toggleRandom.setCaptionLabel("RANDOM MODE");		
+		toggleRandom.setCaptionLabel("RANDOM MODE");
+		toggleRandom.setState(false);
 	}
 
 	/**
