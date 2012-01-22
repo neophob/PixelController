@@ -31,7 +31,7 @@ SUPPORTED HARDWARE
 ------------------
 PixelController supports different (LED) matrix hardware devices:
 -PixelInvaders 3d Panels (see Readme.PixelInvaders)
--Seeedstudios Rainbowduino (see Readme.rainbowduino)
+-Seeedstudios Rainbowduino (see Readme.rainbowduino), hine the new v3 models are currently NOT supported!
 -ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 -MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
 
@@ -57,7 +57,8 @@ Try to understand WHAT not works, which component, it's the frontend? PixelContr
 Here are some common errors:
 -Did you forgot to edit the configuration file "config.properties", take a look!
 -Did you flash the correct firmware to you Arduino/Teensy? (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
-
+-A User reported that the pixelinvader firmware did not work on a new Arduino UNO r3 board. I think the reason
+ for this is the big serial latency. However using a Arduno UNO r1 worked flawlessly. 
 
 CREDITS
 -------
