@@ -3,6 +3,7 @@ package com.neophob.sematrix.output.emulatorhelper;
 public enum GuiElement {
 
 	CURRENT_VISUAL,
+	CURRENT_OUTPUT,
 	
 	GENERATOR_ONE_DROPDOWN,
 	GENERATOR_TWO_DROPDOWN,

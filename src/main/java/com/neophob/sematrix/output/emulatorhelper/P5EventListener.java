@@ -94,9 +94,13 @@ public class P5EventListener implements ControlListener {
 			createMessage(ValidCommands.CURRENT_VISUAL, value);
 			break;
 			
+		case CURRENT_OUTPUT:
+			LOG.log(Level.INFO, selection+" Value: "+value);
+			createMessage(ValidCommands.CURRENT_OUTPUT, value);
+			break;
 			
 		default:
-			LOG.log(Level.INFO, "Invalid Object: "+selection);
+			LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
 			break;
 		}
 	}
