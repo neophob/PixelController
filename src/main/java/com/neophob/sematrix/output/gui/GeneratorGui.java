@@ -40,11 +40,14 @@ import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 
 import controlP5.Button;
-import controlP5.CheckBox;
+import controlP5.ControlBehavior;
+import controlP5.ControlGroup;
 import controlP5.ControlP5;
+import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
 import controlP5.RadioButton;
+import controlP5.Tab;
 import controlP5.Toggle;
 
 
@@ -77,7 +80,7 @@ public class GeneratorGui extends PApplet {
 	private DropdownList generatorListTwo, effectListTwo;
 	private DropdownList mixerList;
 	private RadioButton selectedVisualList;
-	private CheckBox selectedOutputs;
+	//private CheckBox selectedOutputs;
 	private Button randomSelection, randomPresets;
 	private Toggle toggleRandom;
 
@@ -109,14 +112,19 @@ public class GeneratorGui extends PApplet {
 		// a convenience function to customize a DropdownList
 		ddl.setItemHeight(12); //height of a element in the dropdown list
 		ddl.setBarHeight(15);  //size of the list
-        ddl.actAsPulldownMenu(true); //close menu after a selection was done
-        
+		ddl.actAsPulldownMenu(true); //close menu after a selection was done
+
 		ddl.captionLabel().style().marginTop = 3;
 		ddl.captionLabel().style().marginLeft = 3;
 		ddl.valueLabel().style().marginTop = 3;
 	}
 
-
+/**
+    cw.tab("default").remove();
+    cw.addTab("noise");
+    cw.addTab("cliffs");
+    cw.activateTab("noise");
+ */
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#setup()
 	 */
@@ -131,6 +139,8 @@ public class GeneratorGui extends PApplet {
 		cp5 = new ControlP5(this);
 		cp5.setAutoDraw(false);
 
+//		ControllerGroup cg = new ControlGroup(cp5, null, "ALLWAYS", 0, 0, 200, 100);
+		
 
 		//selected visual
 		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
@@ -143,7 +153,7 @@ public class GeneratorGui extends PApplet {
 		}
 
 		//select outputs
-		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
+		/*		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
 		selectedOutputs = cp5.addCheckBox(GuiElement.CURRENT_OUTPUT.toString(), 0, p5GuiYOffset+80);
 		selectedOutputs.setItemsPerRow(nrOfOutputs);
 		selectedOutputs.setSpacingRow(10);
@@ -151,9 +161,9 @@ public class GeneratorGui extends PApplet {
 			Toggle t = selectedOutputs.addItem("PHYSICAL OUTPUT "+(i+1), i);
 			t.setWidth(targetXSize);			
 		}
-		selectedOutputs.deactivateAll();
+		selectedOutputs.deactivateAll();*/
 
-		
+
 		final int DROPBOXLIST_LENGTH = 110;
 		final int DROPBOX_XOFS = DROPBOXLIST_LENGTH + 23;
 		//Generator 
@@ -213,11 +223,41 @@ public class GeneratorGui extends PApplet {
 				5*DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
+		toggleRandom.setBehavior(new DummyBehavior());
 
+		//tab ---
 		
+		cp5.getWindow().setPositionOfTabs(0, 496);
+		
+/*		Tab t1 = new Tab(cp5, null, "tab1"); 
+		t1.setColorForeground(0xffff0000);
+		Tab t2 = new Tab(cp5, null, "tab2"); 
+		t2.setColorForeground(0xffff0000);
+		
+		ControllerGroup cg = new ControlGroup(cp5, null, "cg", 0, 0, 300, 350); 
+		cg.add(t1);
+		cg.add(t2);
+
+		cp5.register("aa", "aa", cg.getParent());*/
+		Tab t1 = cp5.addTab("EFFECT");
+		Tab t2 = cp5.addTab("GENERATOR");
+		Tab defaultTab = cp5.getTab("default");
+		
+		t1.setColorForeground(0xffff0000);
+		t2.setColorForeground(0xffff0000);
+		defaultTab.setColorForeground(0xffff0000);
+		
+		Button b1 = cp5.addButton("btn1");
+		Button b2 = cp5.addButton("btn2");
+		b1.setGroup(t1);
+		b2.setGroup(t1);  
+
+		Button b3 = cp5.addButton("btn3");
+		b3.setGroup(t2);  
+/**/
 		//register event listener
-        P5EventListener listener = new P5EventListener(this);
-        cp5.addListener(listener);
+		P5EventListener listener = new P5EventListener(this);
+		cp5.addListener(listener);
 
 		//select first visual
 		selectedVisualList.activate(0);		
@@ -418,7 +458,9 @@ public class GeneratorGui extends PApplet {
 			int n = (int)key-49;
 			selectedVisualList.activate(n);
 		}
-
 	}
+	
+
+
 
 }
