@@ -32,7 +32,6 @@ import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.output.AdaVision;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
-import com.neophob.sematrix.output.MatrixEmulator;
 import com.neophob.sematrix.output.MiniDmxDevice;
 import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
@@ -40,6 +39,7 @@ import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.gui.GeneratorGui;
+import com.neophob.sematrix.output.gui.MatrixEmulator;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
