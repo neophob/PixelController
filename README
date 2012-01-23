@@ -61,6 +61,15 @@ Here are some common errors:
  for this is the big serial latency. However using a Arduno UNO r1 worked flawlessly. Technically this is not a big
  deal, as the timeout value cold be adjusted.
 
+
+FRONTENDS
+---------
+There are different Frontends for PixelController:
+-PixConCli: Command Line interface for PixelController
+-PureData: PureData frontend, very flexible, extensible (OSC,MIDI)
+-Native Java: WIP
+
+
 CREDITS
 -------
 Michael Vogt:       Project Lead, Main Coder		
@@ -71,3 +80,5 @@ Rainer Ostendorf:   Artnet Output
 Pesi:               miniDMX Output, Tester
 Scott Wilson:       Arduino/Rainbowduino Howto
 Noxx6:              Bugfixes
+Psykon:             Example Visuals
+
