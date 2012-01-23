@@ -40,10 +40,7 @@ import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 
 import controlP5.Button;
-import controlP5.ControlBehavior;
-import controlP5.ControlGroup;
 import controlP5.ControlP5;
-import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
 import controlP5.RadioButton;
@@ -223,6 +220,8 @@ public class GeneratorGui extends PApplet {
 				5*DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
+		toggleRandom.setVisible(true);
+		
 
 		//tab ---
 		
@@ -445,6 +444,7 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.MIXER_DROPDOWN)) {
 			mixerList.setOpen(false);
 		}
+		
 	}
 
 
