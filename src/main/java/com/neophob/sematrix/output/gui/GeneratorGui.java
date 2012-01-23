@@ -223,7 +223,6 @@ public class GeneratorGui extends PApplet {
 				5*DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
-		toggleRandom.setBehavior(new DummyBehavior());
 
 		//tab ---
 		
