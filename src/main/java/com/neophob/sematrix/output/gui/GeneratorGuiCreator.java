@@ -77,7 +77,7 @@ public class GeneratorGuiCreator extends Frame {
         this.setSize(windowXSize, windowYSize);
 
         setLayout(new BorderLayout());
-        PApplet embed = new GraphicalFrontEnd(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
+        PApplet embed = new GeneratorGui(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
         
         add(embed, BorderLayout.CENTER);
 

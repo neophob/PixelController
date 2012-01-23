@@ -53,7 +53,7 @@ import controlP5.Toggle;
  * 
  * @author michu
  */
-public class GraphicalFrontEnd extends PApplet {
+public class GeneratorGui extends PApplet {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2344499301021L;
@@ -61,7 +61,7 @@ public class GraphicalFrontEnd extends PApplet {
 	private static final int SELECTED_MARKER = 10;
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(GraphicalFrontEnd.class.getName());
+	private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
 
 	/** The display horiz. */
 	private boolean displayHoriz;
@@ -94,7 +94,7 @@ public class GraphicalFrontEnd extends PApplet {
 	 * @param targetXSize the target x size
 	 * @param targetYSize the target y size
 	 */
-	public GraphicalFrontEnd(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
+	public GeneratorGui(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
 		this.displayHoriz = displayHoriz;
 		this.x = x;
 		this.y = y+SELECTED_MARKER;

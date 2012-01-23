@@ -25,13 +25,13 @@ public class P5EventListener implements ControlListener {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(P5EventListener.class.getName());
 
-	private GraphicalFrontEnd callback;
+	private GeneratorGui callback;
 	
 	/**
 	 * 
 	 * @param callback
 	 */
-	public P5EventListener(GraphicalFrontEnd callback) {
+	public P5EventListener(GeneratorGui callback) {
 		this.callback = callback;
 	}
 	
