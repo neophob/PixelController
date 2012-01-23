@@ -21,10 +21,12 @@ package com.neophob.sematrix.output.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
@@ -76,17 +78,30 @@ public class GeneratorGuiCreator extends Frame {
         this.setResizable(false);
         this.setSize(windowXSize, windowYSize);
 
+        //connect the new PApplet to our frame
         setLayout(new BorderLayout());
-        PApplet embed = new GeneratorGui(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
-        
+        PApplet embed = new GeneratorGui(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
         add(embed, BorderLayout.CENTER);
 
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
-        embed.init();
-        
-        setVisible(true); 		
+        embed.init();        
+        setVisible(true);
+        this.setIconImage(GeneratorGuiCreator.createIcon());
+	}
+	
+	/**
+	 * help function to load the pixelinvaders logo
+	 * @return
+	 */
+	public static Image createIcon() {
+	    PImage img = Collector.getInstance().getPapplet().loadImage("pics/logo.gif");
+	    if (img!=null) {
+	        return img.getImage();	        
+	    }
+	    img = new PImage(8,8);
+	    return img.getImage();
 	}
 
 }

@@ -125,7 +125,7 @@ public class GeneratorGui extends PApplet {
 		size(x,y+100);
 		noSmooth();
 		frameRate(Collector.getInstance().getFps());
-		background(0,0,0);
+		background(0,0,0);		
 		int i=0;        		
 
 		cp5 = new ControlP5(this);
@@ -220,7 +220,7 @@ public class GeneratorGui extends PApplet {
         cp5.addListener(listener);
 
 		//select first visual
-		selectedVisualList.activate(0);
+		selectedVisualList.activate(0);		
 	}
 
 
