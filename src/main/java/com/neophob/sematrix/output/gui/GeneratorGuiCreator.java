@@ -34,13 +34,13 @@ import com.neophob.sematrix.glue.Collector;
  *
  * @author michu
  */
-public class GeneratorGui extends Frame {
+public class GeneratorGuiCreator extends Frame {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2946906663946781980L;
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
+	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
 
 	/**
 	 * Instantiates a new internal debug window.
@@ -48,7 +48,7 @@ public class GeneratorGui extends Frame {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGui(boolean displayHoriz, int maximalXSize) {
+	public GeneratorGuiCreator(boolean displayHoriz, int maximalXSize) {
         super("PixelController Control Windows");        
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
