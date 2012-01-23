@@ -417,7 +417,7 @@ public final class MessageProcessor {
 				}
 				break;
 
-                        case TEXTDEF:
+            case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
 					col.getPixelControllerGenerator().setTextureDeformationLut(lut);
@@ -501,6 +501,7 @@ public final class MessageProcessor {
 				}
 				break;
 
+			//create a screenshot of all current buffers
 			case SCREENSHOT:
 				Collector.getInstance().saveScreenshot();
 				LOG.log(Level.INFO, "Saved some screenshots");

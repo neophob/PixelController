@@ -44,7 +44,6 @@ import controlP5.CheckBox;
 import controlP5.ControlP5;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
-import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Toggle;
 
@@ -108,18 +107,13 @@ public class GraphicalFrontEnd extends PApplet {
 	@SuppressWarnings("deprecation")
 	private void themeDropdownList(DropdownList ddl) {
 		// a convenience function to customize a DropdownList
-		ddl.setBackgroundColor(color(190));
 		ddl.setItemHeight(12); //height of a element in the dropdown list
 		ddl.setBarHeight(15);  //size of the list
-
+        ddl.actAsPulldownMenu(true); //close menu after a selection was done
+        
 		ddl.captionLabel().style().marginTop = 3;
 		ddl.captionLabel().style().marginLeft = 3;
 		ddl.valueLabel().style().marginTop = 3;
-		ddl.actAsPulldownMenu(true); //close menu after a selection was done
-
-		ddl.scroll(0);
-		ddl.setColorBackground(color(60));
-		ddl.setColorActive(color(255, 128));
 	}
 
 
@@ -136,33 +130,30 @@ public class GraphicalFrontEnd extends PApplet {
 
 		cp5 = new ControlP5(this);
 		cp5.setAutoDraw(false);
-		P5EventListener listener = new P5EventListener(this);
-		cp5.addListener(listener);
 
-
-		new Label(cp5, "PixelController");
 
 		//selected visual
 		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
 		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-40);
 		selectedVisualList.setItemsPerRow(nrOfVisuals);
-//		selectedVisualList.setSpacingColumn(targetXSize-80);
 		selectedVisualList.setNoneSelectedAllowed(false);
 		for (i=0; i<nrOfVisuals; i++) {
 			Toggle t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
 			t.setWidth(targetXSize);
 		}
 
+		//select outputs
+		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
 		selectedOutputs = cp5.addCheckBox(GuiElement.CURRENT_OUTPUT.toString(), 0, p5GuiYOffset+80);
-		selectedOutputs.setItemsPerRow(nrOfVisuals);
-		selectedOutputs.setSpacingColumn(targetXSize-80);
+		selectedOutputs.setItemsPerRow(nrOfOutputs);
 		selectedOutputs.setSpacingRow(10);
-
-		for (i=0; i<nrOfVisuals; i++) {
-			Toggle t = selectedOutputs.addItem("OUTPUT "+(i+1), i);
-			t.setWidth(80);
+		for (i=0; i<nrOfOutputs; i++) {
+			Toggle t = selectedOutputs.addItem("PHYSICAL OUTPUT "+(i+1), i);
+			t.setWidth(targetXSize);			
 		}
+		selectedOutputs.deactivateAll();
 
+		
 		final int DROPBOXLIST_LENGTH = 110;
 		final int DROPBOX_XOFS = DROPBOXLIST_LENGTH + 23;
 		//Generator 
@@ -223,8 +214,10 @@ public class GraphicalFrontEnd extends PApplet {
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
 
-		//		Toggle t = cp5.addToggle(arg0)
-		//		outputSelection.add();
+		
+		//register event listener
+        P5EventListener listener = new P5EventListener(this);
+        cp5.addListener(listener);
 
 		//select first visual
 		selectedVisualList.activate(0);
@@ -358,7 +351,7 @@ public class GraphicalFrontEnd extends PApplet {
 		Collector col = Collector.getInstance();		
 		Visual v = col.getVisual(col.getCurrentVisual());
 
-		if (v!=null) {
+		if (v!=null) {		    
 			generatorListOne.setLabel(generatorListOne.getItem(v.getGenerator1Idx()).getName());
 			generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
 			effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());

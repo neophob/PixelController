@@ -1,5 +1,7 @@
 package com.neophob.sematrix.output.emulatorhelper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,7 +97,11 @@ public class P5EventListener implements ControlListener {
 			break;
 			
 		case CURRENT_OUTPUT:
-			LOG.log(Level.INFO, selection+" Value: "+value);
+		    List<Boolean> outputs = new ArrayList<Boolean>();
+		    for (float f: theEvent.getGroup().getArrayValue()) {
+		        if (f==0 ? outputs.add(Boolean.FALSE) : outputs.add(Boolean.TRUE));
+		    }
+			LOG.log(Level.INFO, selection+"");
 			createMessage(ValidCommands.CURRENT_OUTPUT, value);
 			break;
 			
