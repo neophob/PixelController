@@ -90,6 +90,7 @@ public class OutputGui {
 		this.collector = Collector.getInstance();
 		this.parent = this.collector.getPapplet();
 		this.parent.size(x, y);
+		this.parent.frame.setTitle("PixelController Output Window");
 		this.parent.background(33,33,33);
 	}
 

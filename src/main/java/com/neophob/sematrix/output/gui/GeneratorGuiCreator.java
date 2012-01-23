@@ -49,7 +49,7 @@ public class GeneratorGuiCreator extends Frame {
 	 * @param the maximal x size of the window
 	 */
 	public GeneratorGuiCreator(boolean displayHoriz, int maximalXSize) {
-        super("PixelController Control Windows");        
+        super("PixelController Generator Window");        
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         
