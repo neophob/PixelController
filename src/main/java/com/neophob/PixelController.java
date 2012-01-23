@@ -39,7 +39,7 @@ import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.gui.GeneratorGui;
-import com.neophob.sematrix.output.gui.MatrixEmulator;
+import com.neophob.sematrix.output.gui.OutputGui;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
@@ -67,7 +67,7 @@ public class PixelController extends PApplet {
 	/** The output. */
 	private Output output;
 	
-	private MatrixEmulator matrixEmulator;
+	private OutputGui matrixEmulator;
 	
 	/**
 	 * prepare.
@@ -121,7 +121,7 @@ public class PixelController extends PApplet {
 			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
 		
-		this.matrixEmulator = new MatrixEmulator(ph, this.output);
+		this.matrixEmulator = new OutputGui(ph, this.output);
 		
 		if (ph.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
 			new GeneratorGui(true, ph.getDebugWindowMaximalXSize());	

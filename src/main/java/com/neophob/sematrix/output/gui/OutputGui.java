@@ -33,7 +33,7 @@ import com.neophob.sematrix.properties.PropertiesHelper;
  * @author michu
  * 
  */
-public class MatrixEmulator {
+public class OutputGui {
 
 	private static final int MAX_BPP = 8;
 	
@@ -66,7 +66,7 @@ public class MatrixEmulator {
 	 *
 	 * @param controller the controller
 	 */
-	public MatrixEmulator(PropertiesHelper ph, Output output) {
+	public OutputGui(PropertiesHelper ph, Output output) {
 		this.output = output;
 		this.ledSize = ph.getLedPixelSize();
 		this.collector = Collector.getInstance();
