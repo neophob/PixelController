@@ -39,7 +39,7 @@ import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.RainbowduinoDevice;
-import com.neophob.sematrix.output.emulatorhelper.InternalDebugWindow;
+import com.neophob.sematrix.output.gui.GeneratorGui;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
@@ -124,7 +124,7 @@ public class PixelController extends PApplet {
 		this.matrixEmulator = new MatrixEmulator(ph, this.output);
 		
 		if (ph.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
-			new InternalDebugWindow(true, ph.getDebugWindowMaximalXSize());	
+			new GeneratorGui(true, ph.getDebugWindowMaximalXSize());	
 		}
 		
 		//start in random mode?
