@@ -97,9 +97,9 @@ public class Blinkenlights extends Generator implements PConstants {
 			LOG.log(Level.INFO, "Load blinkenlights file "+file);
 			this.filename = file;
 			blinken.loadFile(PREFIX+file);
-			LOG.log(Level.INFO, "Load blinkenlights done!");
-		}
-		blinkenSettings();
+			blinkenSettings();
+			LOG.log(Level.INFO, "Load blinkenlights done!");			
+		}		
 	}
 	
 	/**

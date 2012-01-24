@@ -17,9 +17,9 @@ public enum GuiElement {
 	
 	THRESHOLD,
 	COLOR_PICKER,
-	COLOR_PICKER_RED,
-	COLOR_PICKER_BLUE,
-	COLOR_PICKER_GREEN,
+
+	BLINKENLIGHTS_DROPDOWN,
+	IMAGE_DROPDOWN
 	;
 	
 	public static GuiElement getGuiElement(String s) {

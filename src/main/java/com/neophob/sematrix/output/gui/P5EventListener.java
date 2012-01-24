@@ -46,6 +46,8 @@ public class P5EventListener implements ControlListener {
         // to avoid an error message thrown by controlP5.        
         float value = -1f;
         int intVal;
+        String name;
+        
         if (theEvent.isGroup()) {
             // check if the Event was triggered from a ControlGroup
             //LOG.log(Level.INFO, theEvent.getGroup().getValue()+" from "+theEvent.getGroup());
@@ -121,6 +123,18 @@ public class P5EventListener implements ControlListener {
                 handleTint(r, g, b);
                 break;
 
+            case BLINKENLIGHTS_DROPDOWN:
+            	name = theEvent.getGroup().getCaptionLabel().getText();
+            	LOG.log(Level.INFO, selection+" "+name);
+            	createMessage(ValidCommands.BLINKEN, name);
+            	break;
+            	
+            case IMAGE_DROPDOWN:
+            	name = theEvent.getGroup().getCaptionLabel().getText();
+            	LOG.log(Level.INFO, selection+" "+name);
+            	createMessage(ValidCommands.IMAGE, name);
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
@@ -169,6 +183,17 @@ public class P5EventListener implements ControlListener {
         singleSendMessageOut(msg);
     }
 
+    /**
+     * 
+     * @param validCommand
+     * @param newValue
+     */
+    private void createMessage(ValidCommands validCommand, String newValue) {
+        String msg[] = new String[2];		
+        msg[0] = ""+validCommand;
+        msg[1] = newValue;
+        singleSendMessageOut(msg);
+    }
 
 
     /**
