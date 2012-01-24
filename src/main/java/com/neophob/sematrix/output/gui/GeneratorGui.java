@@ -148,6 +148,7 @@ public class GeneratorGui extends PApplet {
 		for (i=0; i<nrOfVisuals; i++) {
 			Toggle t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
 			t.setWidth(targetXSize);
+			t.setHeight(14);
 		}
 		selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
@@ -235,23 +236,15 @@ public class GeneratorGui extends PApplet {
 		
 		cp5.getWindow().setPositionOfTabs(0, 492);
 		
-/*		Tab t1 = new Tab(cp5, null, "tab1"); 
-		t1.setColorForeground(0xffff0000);
-		Tab t2 = new Tab(cp5, null, "tab2"); 
-		t2.setColorForeground(0xffff0000);
-		
-		ControllerGroup cg = new ControlGroup(cp5, null, "cg", 0, 0, 300, 350); 
-		cg.add(t1);
-		cg.add(t2);
-
-		cp5.register("aa", "aa", cg.getParent());*/
-		Tab t1 = cp5.addTab("EFFECT");
+		//there a default tab which is present all the time. rename this tab
+		Tab t1 = cp5.getTab("default");
+		t1.setLabel("EFFECT");
 		Tab t2 = cp5.addTab("GENERATOR");
-		Tab defaultTab = cp5.getTab("default");
-		
+				
 		t1.setColorForeground(0xffff0000);
-		t2.setColorForeground(0xffff0000);
-		defaultTab.setColorForeground(0xffff0000);
+		t2.setColorForeground(0xffff0000);		
+
+		//EFFECT tab
 		
 		Button b1 = cp5.addButton("btn1");
 		Button b2 = cp5.addButton("btn2");
