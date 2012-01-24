@@ -46,16 +46,20 @@ public class P5EventListener implements ControlListener {
 		// to avoid an error message thrown by controlP5.
 
 		float value = -1f;
+		int intVal;
 		if (theEvent.isGroup()) {
 			// check if the Event was triggered from a ControlGroup
 			//LOG.log(Level.INFO, theEvent.getGroup().getValue()+" from "+theEvent.getGroup());
-			value = theEvent.getGroup().getValue();
-		} 
-		else if (theEvent.isController()) {
+			value = theEvent.getGroup().getValue();			
+		} else if (theEvent.isController()) {
 			//LOG.log(Level.INFO, theEvent.getController().getValue()+" from "+theEvent.getController());
-			value = theEvent.getController().getValue();
+			value = theEvent.getController().getValue();			
+		} else if (theEvent.isTab()) {
+		    //events from tabs are ignored
+		    return;
 		}
-
+		intVal = (int)value;
+		
 		GuiElement selection = GuiElement.valueOf(theEvent.getName());
 
 		switch (selection) {
@@ -104,7 +108,24 @@ public class P5EventListener implements ControlListener {
 			LOG.log(Level.INFO, selection+"");
 			createMessage(ValidCommands.CURRENT_OUTPUT, value);
 			break;
-			
+		
+		case THRESHOLD: 
+            LOG.log(Level.INFO, selection+": "+intVal);
+            createMessage(ValidCommands.CHANGE_THRESHOLD_VALUE, intVal);		    
+		    break;
+		    
+		case COLOR_PICKER:
+		case COLOR_PICKER_RED:
+		case COLOR_PICKER_BLUE:
+		case COLOR_PICKER_GREEN:
+		    int r = (int)theEvent.getController().getArrayValue(0);
+		    int g = (int)theEvent.getController().getArrayValue(1);
+		    int b = (int)theEvent.getController().getArrayValue(2);
+		    int col = r << 16 | g << 8 | b;
+		    LOG.log(Level.INFO, selection+": "+col+" "+value);
+		    //createMessage(ValidCommands.CHANGE_TINT, col);
+		    break;
+		    
 		default:
 			LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
 			break;

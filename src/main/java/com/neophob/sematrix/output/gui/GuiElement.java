@@ -15,7 +15,11 @@ public enum GuiElement {
 	BUTTON_RANDOM_PRESENT,
 	BUTTON_TOGGLE_RANDOM_MODE,
 	
-	TAB_EFFECT_COLOR_PIXER,
+	THRESHOLD,
+	COLOR_PICKER,
+	COLOR_PICKER_RED,
+	COLOR_PICKER_BLUE,
+	COLOR_PICKER_GREEN,
 	;
 	
 	public static GuiElement getGuiElement(String s) {

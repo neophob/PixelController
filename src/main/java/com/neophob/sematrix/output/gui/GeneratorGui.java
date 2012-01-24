@@ -38,13 +38,15 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
+import com.neophob.sematrix.output.gui.elements.SimpleColorPicker;
 
 import controlP5.Button;
-import controlP5.ColorPicker;
 import controlP5.ControlP5;
+import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
 import controlP5.RadioButton;
+import controlP5.Slider;
 import controlP5.Tab;
 import controlP5.Toggle;
 
@@ -81,8 +83,8 @@ public class GeneratorGui extends PApplet {
 	//private CheckBox selectedOutputs;
 	private Button randomSelection, randomPresets;
 	private Toggle toggleRandom;
-	private ColorPicker cp;
-
+	private SimpleColorPicker scp;
+	
 	/** The target y size. */
 	private int targetXSize, targetYSize;
 	private int p5GuiYOffset;
@@ -139,7 +141,7 @@ public class GeneratorGui extends PApplet {
 		cp5 = new ControlP5(this);
 		cp5.setAutoDraw(false);
 		cp5.getTooltip().setDelay(200);
-		  
+        P5EventListener listener = new P5EventListener(this);
 
 		//selected visual
 		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
@@ -249,18 +251,22 @@ public class GeneratorGui extends PApplet {
 		t2.setColorForeground(0xffff0000);		
 
 		//EFFECT tab
-		cp = cp5.addColorPicker("picker",0, 400, 300, 200);
-		cp.setGroup(t1);
-		cp.setStringValue("AAA");
+		Slider s = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 0, 350, 160, 14);
+		s.setSliderMode(Slider.FIX);
+		s.setGroup(t1);		
+		s.setDecimalPrecision(0);
 		
+		scp = new SimpleColorPicker(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
+		cp5.register(null, "SimpleColorPicker", scp);		
+		scp.addListener(listener);
 
 		Button b3 = cp5.addButton("btn3");
 		b3.setGroup(t2);  
-/**/
-		//register event listener
-		P5EventListener listener = new P5EventListener(this);
-		cp5.addListener(listener);
 
+		
+		//register event listener
+		cp5.addListener(listener);
+				
 		//select first visual
 		selectedVisualList.activate(0);		
 	}
