@@ -40,6 +40,7 @@ import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 
 import controlP5.Button;
+import controlP5.ColorPicker;
 import controlP5.ControlP5;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
@@ -80,6 +81,7 @@ public class GeneratorGui extends PApplet {
 	//private CheckBox selectedOutputs;
 	private Button randomSelection, randomPresets;
 	private Toggle toggleRandom;
+	private ColorPicker cp;
 
 	/** The target y size. */
 	private int targetXSize, targetYSize;
@@ -136,21 +138,21 @@ public class GeneratorGui extends PApplet {
 
 		cp5 = new ControlP5(this);
 		cp5.setAutoDraw(false);
-
-//		ControllerGroup cg = new ControlGroup(cp5, null, "ALLWAYS", 0, 0, 200, 100);
-		
+		cp5.getTooltip().setDelay(200);
+		  
 
 		//selected visual
 		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
 		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-40);
 		selectedVisualList.setItemsPerRow(nrOfVisuals);
-		selectedVisualList.setNoneSelectedAllowed(false);
+		selectedVisualList.setNoneSelectedAllowed(false);		
 		for (i=0; i<nrOfVisuals; i++) {
 			Toggle t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
 			t.setWidth(targetXSize);
 			t.setHeight(14);
 		}
 		selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
+		
 
 		//select outputs
 		/*		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
@@ -219,18 +221,20 @@ public class GeneratorGui extends PApplet {
 				5*DROPBOX_XOFS, p5GuiYOffset-15, 100, 15);
 		randomSelection.setCaptionLabel("RANDOMIZE");
 		randomSelection.moveTo(ALWAYS_VISIBLE_TAB);
+		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),"cross your fingers, randomize everything");
 		
 		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
 				5*DROPBOX_XOFS, p5GuiYOffset+15, 100, 15);
 		randomPresets.setCaptionLabel("RANDOM PRESENT");
 		randomPresets.moveTo(ALWAYS_VISIBLE_TAB);
+		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Loads a random preset");
 		
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
 				5*DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
 		toggleRandom.moveTo(ALWAYS_VISIBLE_TAB);
-		
+		cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(),"Toggle the random mode");		
 
 		//tab ---
 		
@@ -238,18 +242,17 @@ public class GeneratorGui extends PApplet {
 		
 		//there a default tab which is present all the time. rename this tab
 		Tab t1 = cp5.getTab("default");
-		t1.setLabel("EFFECT");
-		Tab t2 = cp5.addTab("GENERATOR");
-				
+		t1.setLabel("EFFECT");		
+		Tab t2 = cp5.addTab("GENERATOR");		
+		
 		t1.setColorForeground(0xffff0000);
 		t2.setColorForeground(0xffff0000);		
 
 		//EFFECT tab
+		cp = cp5.addColorPicker("picker",0, 400, 300, 200);
+		cp.setGroup(t1);
+		cp.setStringValue("AAA");
 		
-		Button b1 = cp5.addButton("btn1");
-		Button b2 = cp5.addButton("btn2");
-		b1.setGroup(t1);
-		b2.setGroup(t1);  
 
 		Button b3 = cp5.addButton("btn3");
 		b3.setGroup(t2);  
