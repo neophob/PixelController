@@ -33,6 +33,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
+import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
@@ -297,7 +298,8 @@ public class GeneratorGui extends PApplet {
 		}
 		imageList.setLabel(imageList.getItem(1).getName());
 		imageList.setGroup(t2);
-
+		imageList.setLabel("LLAABBLL");
+		
 
 		//register event listener
 		cp5.addListener(listener);
@@ -462,6 +464,10 @@ public class GeneratorGui extends PApplet {
 		scp.setColorValue((pce.getR() << 16) | (pce.getG() << 8) | pce.getB());
 
 		thresholdSlider.changeValue(pce.getThresholdValue());
+		
+		PixelControllerGenerator pcg = col.getPixelControllerGenerator();
+		blinkenLightsList.setLabel(pcg.getFileBlinken()); 
+		imageList.setLabel(pcg.getFileImageSimple());
 	}
 
 
