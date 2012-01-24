@@ -144,20 +144,6 @@ public class SimpleColorPicker extends ControlGroup {
         return this;
     }
 
-    public void setR(int r) {
-        sliderRed.changeValue(r);
-        _myArrayValue[0] = r;
-    }
-
-    public void setG(int g) {
-        sliderGreen.changeValue(g);
-        _myArrayValue[1] = g;
-    }
-
-    public void setB(int b) {
-        sliderBlue.changeValue(b);
-        _myArrayValue[2] = b;
-    }
 
     /**
      * {@inheritDoc}

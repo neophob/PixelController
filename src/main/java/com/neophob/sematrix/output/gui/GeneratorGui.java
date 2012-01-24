@@ -265,7 +265,7 @@ public class GeneratorGui extends PApplet {
 		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 0, 350, 160, 14);
 		thresholdSlider.setSliderMode(Slider.FIX);
 		thresholdSlider.setGroup(t1);		
-		thresholdSlider.setDecimalPrecision(0);
+		thresholdSlider.setDecimalPrecision(0);		
 		
 		scp = new SimpleColorPicker(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
@@ -436,9 +436,7 @@ public class GeneratorGui extends PApplet {
 		Collector col = this.callbackRefreshMini();		
 				
 		PixelControllerEffect pce = col.getPixelControllerEffect();
-		scp.setR(pce.getR());
-		scp.setG(pce.getG());
-		scp.setB(pce.getB());
+		scp.setColorValue((pce.getR() << 16) | (pce.getG() << 8) | pce.getB());
 		
 		thresholdSlider.changeValue(pce.getThresholdValue());
 		
