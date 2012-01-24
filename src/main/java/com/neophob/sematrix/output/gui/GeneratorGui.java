@@ -116,6 +116,7 @@ public class GeneratorGui extends PApplet {
 		ddl.valueLabel().style().marginTop = 3;
 	}
 
+	final String ALWAYS_VISIBLE_TAB = "global";
 /**
     cw.tab("default").remove();
     cw.addTab("noise");
@@ -148,6 +149,7 @@ public class GeneratorGui extends PApplet {
 			Toggle t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
 			t.setWidth(targetXSize);
 		}
+		selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
 		//select outputs
 		/*		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
@@ -178,6 +180,8 @@ public class GeneratorGui extends PApplet {
 		}
 		generatorListOne.setLabel(generatorListOne.getItem(1).getName());
 		generatorListTwo.setLabel(generatorListTwo.getItem(0).getName());
+		generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
+		generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
 
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
@@ -194,7 +198,8 @@ public class GeneratorGui extends PApplet {
 		}
 		effectListOne.setLabel(effectListOne.getItem(0).getName());
 		effectListTwo.setLabel(effectListTwo.getItem(0).getName());
-
+		effectListOne.moveTo(ALWAYS_VISIBLE_TAB);
+		effectListTwo.moveTo(ALWAYS_VISIBLE_TAB);
 
 		//Mixer 
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
@@ -206,26 +211,29 @@ public class GeneratorGui extends PApplet {
 			i++;
 		}
 		mixerList.setLabel(mixerList.getItem(0).getName());
-
+		mixerList.moveTo(ALWAYS_VISIBLE_TAB);
+		
 		//Button
 		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
 				5*DROPBOX_XOFS, p5GuiYOffset-15, 100, 15);
 		randomSelection.setCaptionLabel("RANDOMIZE");
-
+		randomSelection.moveTo(ALWAYS_VISIBLE_TAB);
+		
 		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
 				5*DROPBOX_XOFS, p5GuiYOffset+15, 100, 15);
 		randomPresets.setCaptionLabel("RANDOM PRESENT");
-
+		randomPresets.moveTo(ALWAYS_VISIBLE_TAB);
+		
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
 				5*DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
-		toggleRandom.setVisible(true);
+		toggleRandom.moveTo(ALWAYS_VISIBLE_TAB);
 		
 
 		//tab ---
 		
-		cp5.getWindow().setPositionOfTabs(0, 496);
+		cp5.getWindow().setPositionOfTabs(0, 492);
 		
 /*		Tab t1 = new Tab(cp5, null, "tab1"); 
 		t1.setColorForeground(0xffff0000);
