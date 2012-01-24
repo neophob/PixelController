@@ -137,12 +137,12 @@ public class P5EventListener implements ControlListener {
         ValidCommands ret = MessageProcessor.processMsg(msg, true);
         if (ret != null) {
             switch (ret) {
-                case STATUS:
-                    callback.callbackRefreshMini();
+                case STATUS:                    
+                    callback.callbackRefreshWholeGui();
                     break;
 
                 case STATUS_MINI:
-                    callback.callbackRefreshWholeGui();
+                	callback.callbackRefreshMini();
                     break;
 
                 default:

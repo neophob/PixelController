@@ -23,7 +23,6 @@ package com.neophob.sematrix.output.gui;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +31,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
@@ -84,7 +84,10 @@ public class GeneratorGui extends PApplet {
 	//private CheckBox selectedOutputs;
 	private Button randomSelection, randomPresets;
 	private Toggle toggleRandom;
+	
+	//Effect Tab
 	private SimpleColorPicker scp;
+	private Slider thresholdSlider;
 	
 	/** The target y size. */
 	private int targetXSize, targetYSize;
@@ -247,15 +250,17 @@ public class GeneratorGui extends PApplet {
 		Tab t1 = cp5.getTab("default");
 		t1.setLabel("EFFECT");		
 		Tab t2 = cp5.addTab("GENERATOR");		
+		Tab t3 = cp5.addTab("RANDOM MODE");		
 		
 		t1.setColorForeground(0xffff0000);
 		t2.setColorForeground(0xffff0000);		
-
+		t3.setColorForeground(0xffff0000);
+		
 		//EFFECT tab
-		Slider s = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 0, 350, 160, 14);
-		s.setSliderMode(Slider.FIX);
-		s.setGroup(t1);		
-		s.setDecimalPrecision(0);
+		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 0, 350, 160, 14);
+		thresholdSlider.setSliderMode(Slider.FIX);
+		thresholdSlider.setGroup(t1);		
+		thresholdSlider.setDecimalPrecision(0);
 		
 		scp = new SimpleColorPicker(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
@@ -425,9 +430,13 @@ public class GeneratorGui extends PApplet {
 		LOG.log(Level.INFO, "Refresh Whole GUI");
 		Collector col = this.callbackRefreshMini();		
 				
-		scp.setR(col.getPixelControllerEffect().getR());
-		scp.setG(col.getPixelControllerEffect().getG());
-		scp.setB(col.getPixelControllerEffect().getB());
+		PixelControllerEffect pce = col.getPixelControllerEffect();
+		scp.setR(pce.getR());
+		scp.setG(pce.getG());
+		scp.setB(pce.getB());
+		
+		thresholdSlider.changeValue(pce.getThresholdValue());
+		
 	}
 
 
