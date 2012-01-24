@@ -23,6 +23,7 @@ package com.neophob.sematrix.output.gui;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -258,6 +259,7 @@ public class GeneratorGui extends PApplet {
 		
 		scp = new SimpleColorPicker(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
+		scp.registerProperty("interval");
 		scp.addListener(listener);
 
 		Button b3 = cp5.addButton("btn3");
@@ -393,10 +395,11 @@ public class GeneratorGui extends PApplet {
 	/**
 	 * update only minimal parts of the gui
 	 */
-	public void callbackRefreshMini() {
+	public Collector callbackRefreshMini() {
 		LOG.log(Level.INFO, "Refresh Partitial GUI");
-		//get visual status
-		Collector col = Collector.getInstance();		
+		Collector col = Collector.getInstance();
+		
+		//get visual status			
 		Visual v = col.getVisual(col.getCurrentVisual());
 
 		if (v!=null) {		    
@@ -407,7 +410,7 @@ public class GeneratorGui extends PApplet {
 			mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());			
 		}
 
-
+		return col;
 		//get output status
 		//		OutputMapping om = ioMapping.get(currentOutput); 
 		//		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
@@ -420,7 +423,11 @@ public class GeneratorGui extends PApplet {
 	 */
 	public void callbackRefreshWholeGui() {
 		LOG.log(Level.INFO, "Refresh Whole GUI");
-		this.callbackRefreshMini();
+		Collector col = this.callbackRefreshMini();		
+				
+		scp.setR(col.getPixelControllerEffect().getR());
+		scp.setG(col.getPixelControllerEffect().getG());
+		scp.setB(col.getPixelControllerEffect().getB());
 	}
 
 

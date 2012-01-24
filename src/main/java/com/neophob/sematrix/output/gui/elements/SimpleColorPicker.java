@@ -34,6 +34,7 @@ import processing.core.PApplet;
 import controlP5.ControlEvent;
 import controlP5.ControlGroup;
 import controlP5.ControlP5;
+import controlP5.ControlP5Constants;
 import controlP5.ControlWindowCanvas;
 import controlP5.ControllerGroup;
 import controlP5.Slider;
@@ -49,6 +50,7 @@ public class SimpleColorPicker extends ControlGroup {
     protected Slider sliderGreen;
     protected Slider sliderBlue;    
     protected ControlWindowCanvas currentColor;
+    protected int col;
 
     public SimpleColorPicker(ControlP5 theControlP5, ControllerGroup theParent, String theName, int theX, int theY, int theWidth, int theHeight) {
         super(theControlP5, theParent, theName, theX, theY, theWidth, theHeight);
@@ -57,7 +59,7 @@ public class SimpleColorPicker extends ControlGroup {
         _myArrayValue = new float[] { 255, 255, 255, 255 };
 
         currentColor = addCanvas(new ColorField());
-        
+
 
         sliderRed = cp5.addSlider(theName + "_RED", 0, 255, 0, 0, theWidth, 10);
         cp5.removeProperty(sliderRed);
@@ -90,7 +92,7 @@ public class SimpleColorPicker extends ControlGroup {
         sliderGreen.setCaptionLabel("Tint Green");
         sliderGreen.setDecimalPrecision(0);
         sliderGreen.setHeight(14);
-        
+
         sliderBlue = cp5.addSlider(theName + "_BLUE", 0, 255, 0, 28, theWidth, 10);
         cp5.removeProperty(sliderBlue);
         sliderBlue.setId(2);
@@ -108,13 +110,24 @@ public class SimpleColorPicker extends ControlGroup {
         sliderBlue.setHeight(14);
     }
 
+    public SimpleColorPicker setInterval(int i) {
+        setColorValue(i);
+        return this;
+    }
+
+    public int getInterval() {
+        return getColorValue();
+    }
+
     /**
      * @exclude {@inheritDoc}
      */
     @Override
     public void controlEvent(ControlEvent theEvent) {
         _myArrayValue[theEvent.getId()] = theEvent.getValue();
-        //_myValue = getColorValue();
+
+        //maybe cbheck if event is active?
+        cp5.getControlBroadcaster().broadcast(new ControlEvent(this), ControlP5Constants.ARRAY);
     }
 
     /**
@@ -129,6 +142,21 @@ public class SimpleColorPicker extends ControlGroup {
         sliderBlue.setValue(theArray[2]);        
         _myArrayValue = theArray;
         return this;
+    }
+
+    public void setR(int r) {
+        sliderRed.setValue(r);
+        _myArrayValue[0] = r;
+    }
+
+    public void setG(int g) {
+        sliderRed.setValue(g);
+        _myArrayValue[1] = g;
+    }
+
+    public void setB(int b) {
+        sliderRed.setValue(b);
+        _myArrayValue[2] = b;
     }
 
     /**
