@@ -93,7 +93,7 @@ public class Fire extends Generator implements PConstants {
 	 */
 	@Override
 	public void update() {
-		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()- 1);
+		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()-1);
 
 		int random;
 		for (int i = 0; i < this.getInternalBufferXSize(); i++) {
@@ -106,7 +106,7 @@ public class Fire extends Generator implements PConstants {
 				this.buffer[j + i] = 0;
 			}
 		}  
-
+		
 		/* move fire upwards, start at bottom*/
 		int temp;
 		for (int index = 0; index < internalBufferYSize-1; index++) {

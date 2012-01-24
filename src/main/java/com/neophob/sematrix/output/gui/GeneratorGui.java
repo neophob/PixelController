@@ -191,7 +191,9 @@ public class GeneratorGui extends PApplet {
 		generatorListTwo.setLabel(generatorListTwo.getItem(0).getName());
 		generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
 		generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
-
+		generatorListOne.setBackgroundColor(0);
+		generatorListTwo.setBackgroundColor(0);
+		
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
 				1*DROPBOX_XOFS, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
@@ -209,7 +211,9 @@ public class GeneratorGui extends PApplet {
 		effectListTwo.setLabel(effectListTwo.getItem(0).getName());
 		effectListOne.moveTo(ALWAYS_VISIBLE_TAB);
 		effectListTwo.moveTo(ALWAYS_VISIBLE_TAB);
-
+		effectListOne.setBackgroundColor(0);
+		effectListTwo.setBackgroundColor(0);
+		
 		//Mixer 
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
 				2*DROPBOX_XOFS, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
@@ -221,6 +225,7 @@ public class GeneratorGui extends PApplet {
 		}
 		mixerList.setLabel(mixerList.getItem(0).getName());
 		mixerList.moveTo(ALWAYS_VISIBLE_TAB);
+		mixerList.setBackgroundColor(0);
 		
 		//Button
 		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
