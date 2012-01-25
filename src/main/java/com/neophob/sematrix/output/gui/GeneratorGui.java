@@ -147,14 +147,15 @@ public class GeneratorGui extends PApplet {
 
 		//selected visual
 		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
-		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-40);
+		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-45);
 		selectedVisualList.setItemsPerRow(nrOfVisuals);
 		selectedVisualList.setNoneSelectedAllowed(false);		
 		for (i=0; i<nrOfVisuals; i++) {
-			RadioButton t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
-			t.setWidth(targetXSize);
-			t.setItemWidth(targetXSize);
-			t.setHeight(14);
+			String s = "VISUAL #"+(1+i);			
+			Toggle t = cp5.addToggle(s, 0, 0, targetXSize, 11);
+			t.setCaptionLabel(s);
+			selectedVisualList.addItem(t, i);			
+			cp5.getTooltip().register(s, "Select Visual "+(1+i)+" to edit");			
 		}
 		selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
@@ -188,6 +189,7 @@ public class GeneratorGui extends PApplet {
 		generatorListTwo.setLabel(generatorListTwo.getItem(0).getName());
 		generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
 		generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
+		
 
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
@@ -230,7 +232,7 @@ public class GeneratorGui extends PApplet {
 				5*Theme.DROPBOX_XOFS, p5GuiYOffset+15, 100, 15);
 		randomPresets.setCaptionLabel("RANDOM PRESENT");
 		randomPresets.moveTo(ALWAYS_VISIBLE_TAB);
-		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Loads a random preset");
+		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Load a random preset");
 
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
 				5*Theme.DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
