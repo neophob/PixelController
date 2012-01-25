@@ -151,8 +151,9 @@ public class GeneratorGui extends PApplet {
 		selectedVisualList.setItemsPerRow(nrOfVisuals);
 		selectedVisualList.setNoneSelectedAllowed(false);		
 		for (i=0; i<nrOfVisuals; i++) {
-			Toggle t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
+			RadioButton t = selectedVisualList.addItem("EDIT VISUAL #"+(1+i), i);
 			t.setWidth(targetXSize);
+			t.setItemWidth(targetXSize);
 			t.setHeight(14);
 		}
 		selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
@@ -258,10 +259,10 @@ public class GeneratorGui extends PApplet {
 		thresholdSlider.setGroup(t1);	
 		thresholdSlider.setDecimalPrecision(0);		
 
-		scp = new SimpleColorPicker(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
+		scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
 
-		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 330, 380, 160, 14);
+		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 330, 380, 160, 14);
 		cp5.register(null, "OutputOptions", oo);
 		
 		//Generator tab
@@ -468,8 +469,8 @@ public class GeneratorGui extends PApplet {
 	public void mousePressed() {
 		// print the current mouseoverlist on mouse pressed
 		List <GuiElement> clickedOn = new ArrayList<GuiElement>();
-		List<ControllerInterface> lci = cp5.getWindow().getMouseOverList();
-		for (ControllerInterface ci: lci) {
+		List<ControllerInterface<?>> lci = cp5.getWindow().getMouseOverList();
+		for (ControllerInterface<?> ci: lci) {
 			GuiElement ge = GuiElement.getGuiElement(ci.getName());
 			if (ge!=null) {
 				clickedOn.add(ge);				
