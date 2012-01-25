@@ -32,6 +32,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.PixelControllerEffect;
+import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
@@ -40,7 +41,6 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
-import com.neophob.sematrix.output.gui.elements.OutputOptions;
 import com.neophob.sematrix.output.gui.elements.SimpleColorPicker;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
@@ -86,7 +86,7 @@ public class GeneratorGui extends PApplet {
 	private DropdownList generatorListTwo, effectListTwo;
 	private DropdownList mixerList;
 	private RadioButton selectedVisualList;
-	//private CheckBox selectedOutputs;
+	private RadioButton selectedOutputs;
 	private Button randomSelection, randomPresets;
 	private Toggle toggleRandom;
 
@@ -96,6 +96,11 @@ public class GeneratorGui extends PApplet {
 
 	//Generator Tab
 	private DropdownList blinkenLightsList, imageList;
+
+	//Output Tab
+	private DropdownList dropdownOutputVisual;
+	private DropdownList dropdownOutputEffect;
+	private DropdownList dropdownOutputFader;    
 
 
 	/** The target y size. */
@@ -223,6 +228,7 @@ public class GeneratorGui extends PApplet {
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
 				2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(mixerList);
+		
 		i=0;
 		for (MixerName gn: MixerName.values()) {
 			mixerList.addItem(gn.name(), i);
@@ -256,45 +262,31 @@ public class GeneratorGui extends PApplet {
 		//TABS
 		//---------------------------------
 
-		final int yPosStartTab = 400;
+		final int yPosStartLabel = 390;
+		final int yPosStartDrowdown = 376;
+		
 		cp5.getWindow().setPositionOfTabs(0, 492);		
 
 		//there a default tab which is present all the time. rename this tab
 		Tab generatorTab = cp5.getTab("default");
 		generatorTab.setLabel("GENERATOR");		
 		Tab effectTab = cp5.addTab("EFFECT");		
-		Tab randomTab = cp5.addTab("RANDOM MODE");		
+		Tab outputTab = cp5.addTab("OUTPUT MAPPING");		
 
 		generatorTab.setColorForeground(0xffff0000);
 		effectTab.setColorForeground(0xffff0000);		
-		randomTab.setColorForeground(0xffff0000);
+		outputTab.setColorForeground(0xffff0000);
 
-		//-------------
-		//EFFECT tab
-		//-------------
-		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, /*---*/ 2*Theme.DROPBOX_XOFS, yPosStartTab, 160, 14);
-		thresholdSlider.setSliderMode(Slider.FIX);
-		thresholdSlider.setGroup(effectTab);	
-		thresholdSlider.setDecimalPrecision(0);		
-
-		scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartTab, 160, 14);
-		cp5.register(null, "SimpleColorPicker", scp);		
-		scp.moveTo(effectTab);
-
-		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartTab, 160, 14);
-		cp5.register(null, "OutputOptions", oo);
-		oo.moveTo(randomTab);
-		
 		//-------------
 		//Generator tab
 		//-------------		
-		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, 3+yPosStartTab).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, 3+yPosStartTab).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, yPosStartLabel).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
-				0, yPosStartTab, Theme.DROPBOXLIST_LENGTH, 140);
+				0, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(blinkenLightsList);
 		i=0;
 		for (String s: FileUtils.findBlinkenFiles(path)) {
@@ -306,7 +298,7 @@ public class GeneratorGui extends PApplet {
 
 
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
-				Theme.DROPBOX_XOFS, yPosStartTab, Theme.DROPBOXLIST_LENGTH, 140);
+				Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(imageList);		
 		i=0;
 		for (String s: FileUtils.findImagesFiles(path)) {
@@ -316,7 +308,68 @@ public class GeneratorGui extends PApplet {
 		imageList.setLabel(imageList.getItem(1).getName());
 		imageList.setGroup(generatorTab);		
 
+		//-------------
+		//EFFECT tab
+		//-------------
+		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, /*---*/ 2*Theme.DROPBOX_XOFS, yPosStartDrowdown, 160, 14);
+		thresholdSlider.setSliderMode(Slider.FIX);
+		thresholdSlider.setGroup(effectTab);	
+		thresholdSlider.setDecimalPrecision(0);		
 
+		scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartDrowdown, 160, 14);
+		cp5.register(null, "SimpleColorPicker", scp);		
+		scp.moveTo(effectTab);
+
+		//-------------
+		//Output tab
+		//-------------				
+		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
+		selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.toString(), 0, yPosStartDrowdown);
+		selectedOutputs.setItemsPerRow(nrOfOutputs);
+		selectedOutputs.setNoneSelectedAllowed(false);		
+		for (i=0; i<nrOfOutputs; i++) {
+			String s = "OUTPUT #"+(1+i);			
+			Toggle t = cp5.addToggle(s, 0, 0, targetXSize, 13);
+			t.setCaptionLabel(s);
+			selectedOutputs.addItem(t, i);			
+			cp5.getTooltip().register(s, "Select Output "+(1+i)+" to edit");			
+		}
+		selectedOutputs.moveTo(outputTab);
+
+		//visual
+        dropdownOutputVisual = cp5.addDropdownList(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), 
+				0, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+        Theme.themeDropdownList(dropdownOutputVisual);
+        i=0;
+        for (i=0; i<nrOfVisuals; i++) {
+            dropdownOutputVisual.addItem("Visual #"+(1+i), i);
+        }
+        dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(0).getName());
+        dropdownOutputVisual.moveTo(outputTab);
+
+		//effect
+        dropdownOutputEffect = cp5.addDropdownList(GuiElement.OUTPUT_EFFECT_DROPDOWN.toString(), 
+        		Theme.DROPBOX_XOFS, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+        Theme.themeDropdownList(dropdownOutputEffect);
+        i=0;
+        for (EffectName gn: EffectName.values()) {
+            dropdownOutputEffect.addItem(gn.name(), i++);
+        }
+        dropdownOutputEffect.setLabel(dropdownOutputEffect.getItem(0).getName());
+        dropdownOutputEffect.moveTo(outputTab);
+
+        //Fader 
+        dropdownOutputFader = cp5.addDropdownList(GuiElement.OUTPUT_FADER_DROPDOWN.toString(),
+        		Theme.DROPBOX_XOFS*2, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+        Theme.themeDropdownList(dropdownOutputFader);
+        i=0;
+        for (FaderName fn: FaderName.values()) {
+            dropdownOutputFader.addItem(fn.name(), i++);
+        }
+        dropdownOutputFader.setLabel(dropdownOutputFader.getItem(0).getName());
+        dropdownOutputFader.moveTo(outputTab);
+        
+        
 		//register event listener
 		cp5.addListener(listener);
 
@@ -484,6 +537,8 @@ public class GeneratorGui extends PApplet {
 		PixelControllerGenerator pcg = col.getPixelControllerGenerator();
 		blinkenLightsList.setLabel(pcg.getFileBlinken()); 
 		imageList.setLabel(pcg.getFileImageSimple());
+		
+		
 	}
 
 
