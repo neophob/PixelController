@@ -252,7 +252,10 @@ public class GeneratorGui extends PApplet {
 		toggleRandom.moveTo(ALWAYS_VISIBLE_TAB);
 		cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(),"Toggle the random mode");		
 
-		//tab ---
+		//---------------------------------
+		//TABS
+		//---------------------------------
+
 		final int yPosStartTab = 400;
 		cp5.getWindow().setPositionOfTabs(0, 492);		
 
@@ -266,8 +269,10 @@ public class GeneratorGui extends PApplet {
 		effectTab.setColorForeground(0xffff0000);		
 		randomTab.setColorForeground(0xffff0000);
 
+		//-------------
 		//EFFECT tab
-		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 2*Theme.DROPBOX_XOFS, yPosStartTab, 160, 14);
+		//-------------
+		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, /*---*/ 2*Theme.DROPBOX_XOFS, yPosStartTab, 160, 14);
 		thresholdSlider.setSliderMode(Slider.FIX);
 		thresholdSlider.setGroup(effectTab);	
 		thresholdSlider.setDecimalPrecision(0);		
@@ -276,11 +281,16 @@ public class GeneratorGui extends PApplet {
 		cp5.register(null, "SimpleColorPicker", scp);		
 		scp.moveTo(effectTab);
 
-		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 330, 380, 160, 14);
+		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartTab, 160, 14);
 		cp5.register(null, "OutputOptions", oo);
 		oo.moveTo(randomTab);
 		
+		//-------------
 		//Generator tab
+		//-------------		
+		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, 3+yPosStartTab).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, 3+yPosStartTab).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
@@ -297,7 +307,7 @@ public class GeneratorGui extends PApplet {
 
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
 				Theme.DROPBOX_XOFS, yPosStartTab, Theme.DROPBOXLIST_LENGTH, 140);
-		Theme.themeDropdownList(imageList);
+		Theme.themeDropdownList(imageList);		
 		i=0;
 		for (String s: FileUtils.findImagesFiles(path)) {
 			imageList.addItem(s, i);
