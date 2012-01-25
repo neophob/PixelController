@@ -50,7 +50,6 @@ import controlP5.ControlP5;
 import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
-import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
@@ -254,36 +253,38 @@ public class GeneratorGui extends PApplet {
 		cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(),"Toggle the random mode");		
 
 		//tab ---
-
-		cp5.getWindow().setPositionOfTabs(0, 492);
+		final int yPosStartTab = 400;
+		cp5.getWindow().setPositionOfTabs(0, 492);		
 
 		//there a default tab which is present all the time. rename this tab
-		Tab t1 = cp5.getTab("default");
-		t1.setLabel("EFFECT");		
-		Tab t2 = cp5.addTab("GENERATOR");		
-		Tab t3 = cp5.addTab("RANDOM MODE");		
+		Tab generatorTab = cp5.getTab("default");
+		generatorTab.setLabel("GENERATOR");		
+		Tab effectTab = cp5.addTab("EFFECT");		
+		Tab randomTab = cp5.addTab("RANDOM MODE");		
 
-		t1.setColorForeground(0xffff0000);
-		t2.setColorForeground(0xffff0000);		
-		t3.setColorForeground(0xffff0000);
+		generatorTab.setColorForeground(0xffff0000);
+		effectTab.setColorForeground(0xffff0000);		
+		randomTab.setColorForeground(0xffff0000);
 
 		//EFFECT tab
-		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 0, 350, 160, 14);
+		thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, 2*Theme.DROPBOX_XOFS, yPosStartTab, 160, 14);
 		thresholdSlider.setSliderMode(Slider.FIX);
-		thresholdSlider.setGroup(t1);	
+		thresholdSlider.setGroup(effectTab);	
 		thresholdSlider.setDecimalPrecision(0);		
 
-		scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
+		scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartTab, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
+		scp.moveTo(effectTab);
 
 		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 330, 380, 160, 14);
 		cp5.register(null, "OutputOptions", oo);
-
+		oo.moveTo(randomTab);
+		
 		//Generator tab
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
-				0, 380, Theme.DROPBOXLIST_LENGTH, 140);
+				0, yPosStartTab, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(blinkenLightsList);
 		i=0;
 		for (String s: FileUtils.findBlinkenFiles(path)) {
@@ -291,11 +292,11 @@ public class GeneratorGui extends PApplet {
 			i++;
 		}
 		blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());
-		blinkenLightsList.setGroup(t2);
+		blinkenLightsList.setGroup(generatorTab);
 
 
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
-				Theme.DROPBOX_XOFS, 380, Theme.DROPBOXLIST_LENGTH, 140);
+				Theme.DROPBOX_XOFS, yPosStartTab, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(imageList);
 		i=0;
 		for (String s: FileUtils.findImagesFiles(path)) {
@@ -303,7 +304,7 @@ public class GeneratorGui extends PApplet {
 			i++;
 		}
 		imageList.setLabel(imageList.getItem(1).getName());
-		imageList.setGroup(t2);		
+		imageList.setGroup(generatorTab);		
 
 
 		//register event listener
