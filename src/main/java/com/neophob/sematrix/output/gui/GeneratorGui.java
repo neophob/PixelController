@@ -40,8 +40,10 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
+import com.neophob.sematrix.output.gui.elements.OutputOptions;
 import com.neophob.sematrix.output.gui.elements.SimpleColorPicker;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
+import com.neophob.sematrix.output.gui.helper.Theme;
 
 import controlP5.Button;
 import controlP5.ControlP5;
@@ -118,18 +120,6 @@ public class GeneratorGui extends PApplet {
 	}
 
 
-	@SuppressWarnings("deprecation")
-	private void themeDropdownList(DropdownList ddl) {
-		// a convenience function to customize a DropdownList
-		ddl.setItemHeight(12); //height of a element in the dropdown list
-		ddl.setBarHeight(15);  //size of the list
-		ddl.actAsPulldownMenu(true); //close menu after a selection was done
-		ddl.setBackgroundColor(0);
-
-		ddl.captionLabel().style().marginTop = 3;
-		ddl.captionLabel().style().marginLeft = 3;
-		ddl.valueLabel().style().marginTop = 3;
-	}
 
 
 	final String ALWAYS_VISIBLE_TAB = "global";
@@ -180,15 +170,13 @@ public class GeneratorGui extends PApplet {
 		selectedOutputs.deactivateAll();*/
 
 
-		final int DROPBOXLIST_LENGTH = 110;
-		final int DROPBOX_XOFS = DROPBOXLIST_LENGTH + 23;
 		//Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
-				0, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
+				0, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
 		generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 
-				3*DROPBOX_XOFS, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
-		themeDropdownList(generatorListOne);
-		themeDropdownList(generatorListTwo);
+				3*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(generatorListOne);
+		Theme.themeDropdownList(generatorListTwo);
 		i=0;
 		for (GeneratorName gn: GeneratorName.values()) {
 			generatorListOne.addItem(gn.name(), i);
@@ -202,11 +190,11 @@ public class GeneratorGui extends PApplet {
 
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
-				1*DROPBOX_XOFS, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
+				1*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
 		effectListTwo = cp5.addDropdownList(GuiElement.EFFECT_TWO_DROPDOWN.toString(), 
-				4*DROPBOX_XOFS, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
-		themeDropdownList(effectListOne);
-		themeDropdownList(effectListTwo);
+				4*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(effectListOne);
+		Theme.themeDropdownList(effectListTwo);
 		i=0;
 		for (EffectName gn: EffectName.values()) {
 			effectListOne.addItem(gn.name(), i);
@@ -220,8 +208,8 @@ public class GeneratorGui extends PApplet {
 
 		//Mixer 
 		mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
-				2*DROPBOX_XOFS, p5GuiYOffset, DROPBOXLIST_LENGTH, 140);
-		themeDropdownList(mixerList);
+				2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(mixerList);
 		i=0;
 		for (MixerName gn: MixerName.values()) {
 			mixerList.addItem(gn.name(), i);
@@ -232,19 +220,19 @@ public class GeneratorGui extends PApplet {
 
 		//Button
 		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
-				5*DROPBOX_XOFS, p5GuiYOffset-15, 100, 15);
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset-15, 100, 15);
 		randomSelection.setCaptionLabel("RANDOMIZE");
 		randomSelection.moveTo(ALWAYS_VISIBLE_TAB);
 		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),"cross your fingers, randomize everything");
 
 		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
-				5*DROPBOX_XOFS, p5GuiYOffset+15, 100, 15);
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset+15, 100, 15);
 		randomPresets.setCaptionLabel("RANDOM PRESENT");
 		randomPresets.moveTo(ALWAYS_VISIBLE_TAB);
 		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Loads a random preset");
 
 		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
-				5*DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
 		toggleRandom.setCaptionLabel("RANDOM MODE");
 		toggleRandom.setState(false);
 		toggleRandom.moveTo(ALWAYS_VISIBLE_TAB);
@@ -273,12 +261,15 @@ public class GeneratorGui extends PApplet {
 		scp = new SimpleColorPicker(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, 380, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
 
+		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 330, 380, 160, 14);
+		cp5.register(null, "OutputOptions", oo);
+		
 		//Generator tab
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
-				0, 380, DROPBOXLIST_LENGTH, 140);
-		themeDropdownList(blinkenLightsList);
+				0, 380, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(blinkenLightsList);
 		i=0;
 		for (String s: FileUtils.findBlinkenFiles(path)) {
 			blinkenLightsList.addItem(s, i);
@@ -289,16 +280,15 @@ public class GeneratorGui extends PApplet {
 
 		
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
-				DROPBOX_XOFS, 380, DROPBOXLIST_LENGTH, 140);
-		themeDropdownList(imageList);
+		        Theme.DROPBOX_XOFS, 380, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(imageList);
 		i=0;
 		for (String s: FileUtils.findImagesFiles(path)) {
 			imageList.addItem(s, i);
 			i++;
 		}
 		imageList.setLabel(imageList.getItem(1).getName());
-		imageList.setGroup(t2);
-		imageList.setLabel("LLAABBLL");
+		imageList.setGroup(t2);		
 		
 
 		//register event listener

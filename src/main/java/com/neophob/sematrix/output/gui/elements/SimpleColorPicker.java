@@ -110,15 +110,6 @@ public class SimpleColorPicker extends ControlGroup {
         sliderBlue.setHeight(14);
     }
 
-    public SimpleColorPicker setInterval(int i) {
-        setColorValue(i);
-        return this;
-    }
-
-    public int getInterval() {
-        return getColorValue();
-    }
-
     /**
      * @exclude {@inheritDoc}
      */
@@ -126,7 +117,7 @@ public class SimpleColorPicker extends ControlGroup {
     public void controlEvent(ControlEvent theEvent) {
         _myArrayValue[theEvent.getId()] = theEvent.getValue();
 
-        //maybe cbheck if event is active?
+        //maybe check if event is active?
         cp5.getControlBroadcaster().broadcast(new ControlEvent(this), ControlP5Constants.ARRAY);
     }
 
