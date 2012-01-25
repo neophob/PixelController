@@ -50,9 +50,11 @@ import controlP5.ControlP5;
 import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
+import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
+import controlP5.Textlabel;
 import controlP5.Toggle;
 
 
@@ -116,7 +118,7 @@ public class GeneratorGui extends PApplet {
 		this.y = y+SELECTED_MARKER;
 		this.targetXSize = targetXSize;
 		this.targetYSize = targetYSize;
-		this.p5GuiYOffset = targetYSize + 71;		
+		this.p5GuiYOffset = targetYSize + 80;		
 	}
 
 
@@ -147,12 +149,12 @@ public class GeneratorGui extends PApplet {
 
 		//selected visual
 		int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
-		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-45);
+		selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-58);
 		selectedVisualList.setItemsPerRow(nrOfVisuals);
 		selectedVisualList.setNoneSelectedAllowed(false);		
 		for (i=0; i<nrOfVisuals; i++) {
 			String s = "VISUAL #"+(1+i);			
-			Toggle t = cp5.addToggle(s, 0, 0, targetXSize, 11);
+			Toggle t = cp5.addToggle(s, 0, 0, targetXSize, 13);
 			t.setCaptionLabel(s);
 			selectedVisualList.addItem(t, i);			
 			cp5.getTooltip().register(s, "Select Visual "+(1+i)+" to edit");			
@@ -171,7 +173,17 @@ public class GeneratorGui extends PApplet {
 		}
 		selectedOutputs.deactivateAll();*/
 
+		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 520, 480);
+		tl.moveTo(ALWAYS_VISIBLE_TAB);
+		tl.setFont(ControlP5.synt24);
+		
+		cp5.addTextlabel("gen1", "GENERATOR#1", 3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("gen2", "GENERATOR#2", 3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("fx1", "EFFECT#1", 3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("fx2", "EFFECT#2", 3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("mix2", "MIXER#2", 3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
+		
 		//Generator 
 		generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
 				0, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
@@ -186,11 +198,10 @@ public class GeneratorGui extends PApplet {
 			i++;
 		}
 		generatorListOne.setLabel(generatorListOne.getItem(1).getName());
-		generatorListTwo.setLabel(generatorListTwo.getItem(0).getName());
+		generatorListTwo.setLabel(generatorListTwo.getItem(1).getName());
 		generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
 		generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
-		
-
+				
 		//Effect 
 		effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
 				1*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
@@ -221,6 +232,7 @@ public class GeneratorGui extends PApplet {
 		mixerList.setLabel(mixerList.getItem(0).getName());
 		mixerList.moveTo(ALWAYS_VISIBLE_TAB);
 
+		
 		//Button
 		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
 				5*Theme.DROPBOX_XOFS, p5GuiYOffset-15, 100, 15);
@@ -266,7 +278,7 @@ public class GeneratorGui extends PApplet {
 
 		OutputOptions oo = new OutputOptions(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 330, 380, 160, 14);
 		cp5.register(null, "OutputOptions", oo);
-		
+
 		//Generator tab
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
@@ -281,9 +293,9 @@ public class GeneratorGui extends PApplet {
 		blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());
 		blinkenLightsList.setGroup(t2);
 
-		
+
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
-		        Theme.DROPBOX_XOFS, 380, Theme.DROPBOXLIST_LENGTH, 140);
+				Theme.DROPBOX_XOFS, 380, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(imageList);
 		i=0;
 		for (String s: FileUtils.findImagesFiles(path)) {
@@ -292,7 +304,7 @@ public class GeneratorGui extends PApplet {
 		}
 		imageList.setLabel(imageList.getItem(1).getName());
 		imageList.setGroup(t2);		
-		
+
 
 		//register event listener
 		cp5.addListener(listener);
@@ -457,7 +469,7 @@ public class GeneratorGui extends PApplet {
 		scp.setColorValue((pce.getR() << 16) | (pce.getG() << 8) | pce.getB());
 
 		thresholdSlider.changeValue(pce.getThresholdValue());
-		
+
 		PixelControllerGenerator pcg = col.getPixelControllerGenerator();
 		blinkenLightsList.setLabel(pcg.getFileBlinken()); 
 		imageList.setLabel(pcg.getFileImageSimple());

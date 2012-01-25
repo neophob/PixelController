@@ -44,7 +44,7 @@ import controlP5.Slider;
  * 
  * @example controllers/ControlP5colorPicker
  */
-public class SimpleColorPicker extends ControlGroup {
+public class SimpleColorPicker extends ControlGroup<Object> {
 
     protected Slider sliderRed;
     protected Slider sliderGreen;
@@ -52,7 +52,7 @@ public class SimpleColorPicker extends ControlGroup {
     protected ControlWindowCanvas currentColor;
     protected int col;
 
-    public SimpleColorPicker(ControlP5 theControlP5, ControllerGroup theParent, String theName, int theX, int theY, int theWidth, int theHeight) {
+    public SimpleColorPicker(ControlP5 theControlP5, ControllerGroup<?> theParent, String theName, int theX, int theY, int theWidth, int theHeight) {
         super(theControlP5, theParent, theName, theX, theY, theWidth, theHeight);
         isBarVisible = false;
         isCollapse = false;
