@@ -52,19 +52,19 @@ public class ColorScroll extends ColorMapAwareGenerator {
     /**
      * The Enum ScrollMode.
      */
-    enum ScrollMode{
+    public enum ScrollMode{
 	    LEFT_TO_RIGHT(0),
 	    RIGHT_TO_LEFT(1),
 	    TOP_TO_BOTTOM(2),
 	    BOTTOM_TO_TOP(3),
-	    RIGHT_BOTTOM_TO_LEFT_TOP(4),
-	    LEFT_BOTTOM_TO_RIGHT_TOP(5),
-	    RIGHT_TOP_TO_LEFT_BOTTOM(6),
-	    LEFT_TOP_TO_RIGHT_BOTTOM(7),
-	    MIDDLE_TO_SIDES_VERTICAL(8),
-	    SIDES_TO_MIDDLE_VERTICAL(9),
-	    MIDDLE_TO_SIDES_HORIZONTAL(10),
-	    SIDES_TO_MIDDLE_HORIZONTAL(11),
+	    RIGHTBOTTOM_TO_LEFTTOP(4),
+	    LEFTBOTTOM_TO_RIGHTTOP(5),
+	    RIGHTTOP_TO_LEFTBOTTOM(6),
+	    LEFTTOP_TO_RIGHTBOTTOM(7),
+	    MIDDLE_TO_SIDES_VERT(8),
+	    SIDES_TO_MIDDLE_VERT(9),
+	    MIDDLE_TO_SIDES_HORIZ(10),
+	    SIDES_TO_MIDDLE_HORIZ(11),
 	    EXPLODE_CIRCLE(12),
 	    IMPLODE_CIRCLE(13);
     	
@@ -143,28 +143,28 @@ public class ColorScroll extends ColorMapAwareGenerator {
             case BOTTOM_TO_TOP:
                 bottomToTop();
                 break;
-            case RIGHT_BOTTOM_TO_LEFT_TOP:
+            case RIGHTBOTTOM_TO_LEFTTOP:
                 rightBottomToLeftTop();
                 break;
-            case LEFT_BOTTOM_TO_RIGHT_TOP:
+            case LEFTBOTTOM_TO_RIGHTTOP:
                 leftBottomToRightTop();
                 break;
-            case RIGHT_TOP_TO_LEFT_BOTTOM:
+            case RIGHTTOP_TO_LEFTBOTTOM:
                 rightTopToLeftBottom();
                 break;
-            case LEFT_TOP_TO_RIGHT_BOTTOM:
+            case LEFTTOP_TO_RIGHTBOTTOM:
                 leftTopToRightBottom();
                 break;
-            case MIDDLE_TO_SIDES_VERTICAL:
+            case MIDDLE_TO_SIDES_VERT:
                 middleToSidesVertical();
                 break;
-            case SIDES_TO_MIDDLE_VERTICAL:
+            case SIDES_TO_MIDDLE_VERT:
                 sidesToMiddleVertical();
                 break;
-            case MIDDLE_TO_SIDES_HORIZONTAL:
+            case MIDDLE_TO_SIDES_HORIZ:
                 middleToSidesHorizontal();
                 break;
-            case SIDES_TO_MIDDLE_HORIZONTAL:
+            case SIDES_TO_MIDDLE_HORIZ:
                 sidesToMiddleHorizontal();
                 break;
             case EXPLODE_CIRCLE:

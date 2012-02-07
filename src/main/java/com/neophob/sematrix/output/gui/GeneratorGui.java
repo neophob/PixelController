@@ -33,6 +33,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader.FaderName;
+import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
@@ -96,6 +97,7 @@ public class GeneratorGui extends PApplet {
 
 	//Generator Tab
 	private DropdownList blinkenLightsList, imageList, textureDeformList, textureDeformOptions;
+	private DropdownList colorScrollList;
 
 	//Output Tab
 	private DropdownList dropdownOutputVisual;
@@ -347,6 +349,19 @@ public class GeneratorGui extends PApplet {
 		textureDeformList.setGroup(generatorTab);		
 		textureDeformList.setHeight(100);
 
+		//colorscroll options
+		cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", 3+3*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+
+		colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.toString(), 
+				3*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(colorScrollList);		
+		
+		for (ScrollMode sm: ScrollMode.values()) {
+			colorScrollList.addItem(sm.name().replace("_", " "), sm.getMode());
+		}
+		colorScrollList.setLabel(colorScrollList.getItem(1).getName());
+		colorScrollList.setGroup(generatorTab);		
+		colorScrollList.setHeight(100);
 		
 		//-------------
 		//EFFECT tab
@@ -633,6 +648,9 @@ public class GeneratorGui extends PApplet {
 		}
 		if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_OPTIONS)) {
 			textureDeformOptions.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
+			colorScrollList.setOpen(false);
 		}
 		
 		
