@@ -153,6 +153,21 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.IMAGE, name);
             	break;
             	
+            case OUTPUT_EFFECT_DROPDOWN:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CHANGE_OUTPUT_EFFECT, value);
+            	break;
+
+            case OUTPUT_FADER_DROPDOWN:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CHANGE_OUTPUT_FADER, value);
+            	break;
+
+            case OUTPUT_SELECTED_VISUAL_DROPDOWN:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CHANGE_OUTPUT_VISUAL, value);
+            	break;
+
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
