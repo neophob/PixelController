@@ -95,7 +95,7 @@ public class GeneratorGui extends PApplet {
 	private Slider thresholdSlider;
 
 	//Generator Tab
-	private DropdownList blinkenLightsList, imageList;
+	private DropdownList blinkenLightsList, imageList, textureDeformList, textureDeformOptions;
 
 	//Output Tab
 	private DropdownList dropdownOutputVisual;
@@ -280,9 +280,7 @@ public class GeneratorGui extends PApplet {
 		//-------------
 		//Generator tab
 		//-------------		
-		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel+8).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, yPosStartLabel+8).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-
+		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
@@ -297,6 +295,8 @@ public class GeneratorGui extends PApplet {
 		blinkenLightsList.setGroup(generatorTab);
 		blinkenLightsList.setHeight(100);
 
+		//images
+		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
 				Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
@@ -309,6 +309,44 @@ public class GeneratorGui extends PApplet {
 		imageList.setLabel(imageList.getItem(1).getName());
 		imageList.setGroup(generatorTab);		
 		imageList.setHeight(100);
+		
+		cp5.addTextlabel("genTextdefImg", "LOAD TEXTUREDEFORM IMAGE", 3+2*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", 3+2*Theme.DROPBOX_XOFS, 32+yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+
+		//texturedeform options		
+		textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.toString(), 
+				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16*3, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(textureDeformOptions);		
+
+		textureDeformOptions.addItem("Anamorphosis", 1);
+		textureDeformOptions.addItem("Spiral", 2);
+		textureDeformOptions.addItem("Rotating Tunnel", 3);
+		textureDeformOptions.addItem("Star", 4);
+		textureDeformOptions.addItem("Tunnel", 5);
+		textureDeformOptions.addItem("Flower", 6);
+		textureDeformOptions.addItem("Cloud", 7);
+		textureDeformOptions.addItem("Planar", 8);
+		textureDeformOptions.addItem("Circle", 9);
+		textureDeformOptions.addItem("Spiral", 10);
+		textureDeformOptions.addItem("3D Ball", 11);
+		
+		textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
+		textureDeformOptions.setGroup(generatorTab);		
+		textureDeformOptions.setHeight(80);
+
+		//texturedeform image file
+		textureDeformList = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_IMAGE_DROPDOWN.toString(), 
+				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(textureDeformList);		
+		i=0;
+		for (String s: FileUtils.findImagesFiles(path)) {
+			textureDeformList.addItem(s, i);
+			i++;
+		}
+		textureDeformList.setLabel(textureDeformList.getItem(1).getName());
+		textureDeformList.setGroup(generatorTab);		
+		textureDeformList.setHeight(100);
+
 		
 		//-------------
 		//EFFECT tab
@@ -590,7 +628,14 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN)) {
 			dropdownOutputVisual.setOpen(false);
 		}
-
+		if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_IMAGE_DROPDOWN)) {
+			textureDeformList.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_OPTIONS)) {
+			textureDeformOptions.setOpen(false);
+		}
+		
+		
 		
 	}
 

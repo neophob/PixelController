@@ -168,6 +168,17 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.CHANGE_OUTPUT_VISUAL, value);
             	break;
 
+            case TEXTUREDEFORM_IMAGE_DROPDOWN:
+            	name = theEvent.getGroup().getCaptionLabel().getText();
+            	LOG.log(Level.INFO, selection+" "+name);
+            	createMessage(ValidCommands.TEXTDEF_FILE, name);
+            	break;
+            
+            case TEXTUREDEFORM_OPTIONS:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.TEXTDEF, value);            	
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
