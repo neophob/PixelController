@@ -122,9 +122,10 @@ public class ImageZoomer extends Generator {
 				throw new InvalidParameterException("invalid data");
 			}
 			this.updateTarget();
+			LOG.log(Level.INFO, "Image {0} loaded.", filename);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING,
-					"Failed to load image {0}!", new Object[] { filename });
+					"Failed to load image {0}: {1}", new Object[] { filename, e.getMessage() });
 		}	
 	}
 
