@@ -280,13 +280,13 @@ public class GeneratorGui extends PApplet {
 		//-------------
 		//Generator tab
 		//-------------		
-		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, yPosStartLabel).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel+8).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, yPosStartLabel+8).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
 		String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
-				0, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+				0, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(blinkenLightsList);
 		i=0;
 		for (String s: FileUtils.findBlinkenFiles(path)) {
@@ -295,10 +295,11 @@ public class GeneratorGui extends PApplet {
 		}
 		blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());
 		blinkenLightsList.setGroup(generatorTab);
+		blinkenLightsList.setHeight(100);
 
 
 		imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
-				Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+				Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(imageList);		
 		i=0;
 		for (String s: FileUtils.findImagesFiles(path)) {
@@ -307,7 +308,8 @@ public class GeneratorGui extends PApplet {
 		}
 		imageList.setLabel(imageList.getItem(1).getName());
 		imageList.setGroup(generatorTab);		
-
+		imageList.setHeight(100);
+		
 		//-------------
 		//EFFECT tab
 		//-------------
@@ -346,7 +348,8 @@ public class GeneratorGui extends PApplet {
         }
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(0).getName());
         dropdownOutputVisual.moveTo(outputTab);
-
+        dropdownOutputVisual.setHeight(70);
+        
 		//effect
         dropdownOutputEffect = cp5.addDropdownList(GuiElement.OUTPUT_EFFECT_DROPDOWN.toString(), 
         		Theme.DROPBOX_XOFS, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
@@ -357,7 +360,8 @@ public class GeneratorGui extends PApplet {
         }
         dropdownOutputEffect.setLabel(dropdownOutputEffect.getItem(0).getName());
         dropdownOutputEffect.moveTo(outputTab);
-
+        dropdownOutputEffect.setHeight(70);
+        
         //Fader 
         dropdownOutputFader = cp5.addDropdownList(GuiElement.OUTPUT_FADER_DROPDOWN.toString(),
         		Theme.DROPBOX_XOFS*2, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
@@ -368,7 +372,7 @@ public class GeneratorGui extends PApplet {
         }
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(0).getName());
         dropdownOutputFader.moveTo(outputTab);
-        
+        dropdownOutputFader.setHeight(70);
         
 		//register event listener
 		cp5.addListener(listener);
@@ -538,8 +542,6 @@ public class GeneratorGui extends PApplet {
 		PixelControllerGenerator pcg = col.getPixelControllerGenerator();
 		blinkenLightsList.setLabel(pcg.getFileBlinken()); 
 		imageList.setLabel(pcg.getFileImageSimple());
-		
-		
 	}
 
 
@@ -579,7 +581,17 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.IMAGE_DROPDOWN)) {
 			imageList.setOpen(false);
 		}
+		if (!clickedOn.contains(GuiElement.OUTPUT_FADER_DROPDOWN)) {
+			dropdownOutputFader.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.OUTPUT_EFFECT_DROPDOWN)) {
+			dropdownOutputEffect.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN)) {
+			dropdownOutputVisual.setOpen(false);
+		}
 
+		
 	}
 
 
