@@ -374,7 +374,8 @@ public class GeneratorGui extends PApplet {
 		cp5.addListener(listener);
 
 		//select first visual
-		selectedVisualList.activate(0);		
+		selectedVisualList.activate(0);
+		selectedOutputs.activate(0);
 	}
 
 
