@@ -54,6 +54,7 @@ import controlP5.DropdownList;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
+import controlP5.Textfield;
 import controlP5.Textlabel;
 import controlP5.Toggle;
 
@@ -363,6 +364,9 @@ public class GeneratorGui extends PApplet {
 		colorScrollList.setGroup(generatorTab);		
 		colorScrollList.setHeight(100);
 		
+		//add textfield
+		Textfield textfield = cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", 3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
+
 		//-------------
 		//EFFECT tab
 		//-------------

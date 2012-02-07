@@ -184,6 +184,12 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.COLOR_SCROLL_OPT, value);            	
             	break;
             	
+            case TEXTFIELD:
+            	name = theEvent.getStringValue();
+            	LOG.log(Level.INFO, selection+" "+name);
+            	createMessage(ValidCommands.TEXTWR, name);            	
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
