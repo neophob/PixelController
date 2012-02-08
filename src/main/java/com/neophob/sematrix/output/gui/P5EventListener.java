@@ -124,7 +124,7 @@ public class P5EventListener implements ControlListener {
                 for (float f: theEvent.getGroup().getArrayValue()) {
                     if (f==0 ? outputs.add(Boolean.FALSE) : outputs.add(Boolean.TRUE));
                 }
-                LOG.log(Level.INFO, selection+"");
+                LOG.log(Level.INFO, selection+": "+value);
                 createMessage(ValidCommands.CURRENT_OUTPUT, value);
                 break;
 
