@@ -121,7 +121,7 @@ unsigned int Wheel(byte WheelPos) {
 //     do some animation until serial data arrives
 // --------------------------------------------
 void rainbow() {
-  delay(2);
+  delay(1);
   
   k++;
   if (k>50) {
@@ -134,7 +134,7 @@ void rainbow() {
   	for (int i=0; i < strip.numPixels(); i++) {
     	 strip.setPixelColor(i, Wheel((i + j) % 96));
   	}
-  	strip.doSwapBuffersAsap(strip.numPixels());    
+  	strip.show(0);    
   }
 }
 
