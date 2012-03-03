@@ -19,7 +19,6 @@
  */
 package com.neophob.sematrix.output.tpm2;
 
-import java.awt.Color;
 
 public abstract class TPM2Protocol {
 
