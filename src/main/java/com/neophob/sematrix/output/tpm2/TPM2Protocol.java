@@ -23,60 +23,43 @@ import java.awt.Color;
 
 public abstract class TPM2Protocol {
 
+	private static final int HEADER_SIZE = 5;
+	
     private static final byte START_BYTE = (byte) 0xC9;
     private static final byte DATA_FRAME = (byte) 0xDA;
     private static final byte BLOCK_END = (byte) 0x36;
 
-    public static byte[] apply_tpm2_protocol(int[] frame) {
-        return do_protocol(frame);
-    }
-
-    public static byte[] apply_tpm2_protocol(Color[] frame) {
-        int[] int_frame = new int[frame.length];
-        for (int i = 0; i < int_frame.length; i++) {
-            int_frame[i] = frame[i].getRGB();
-        }
-        return do_protocol(int_frame);
-    }
-
-    private static byte[] do_protocol(int[] frame) {
-
-        byte[] output_buffer = new byte[frame.length * 3 + 5];
+    /**
+     * Create TPM2 Protocol
+     * 
+     * @param frame
+     * @return
+     */
+    public static byte[] doProtocol(int[] frame) {
 
         //3 colors per pixel
-        int frame_size = frame.length * 3;
-        byte frame_size_byte_high;
-        byte frame_size_byte_low;
-        int index;
-
-        index = 0;
+        int frameSize = frame.length * 3;
+        int index = 0;
+        byte[] output_buffer = new byte[frameSize + HEADER_SIZE];
 
         //Start-Byte
-        output_buffer[index] = START_BYTE;
-        index++;
+        output_buffer[index++] = START_BYTE;
 
         //Ident-Byte
-        output_buffer[index] = DATA_FRAME;
-        index++;
+        output_buffer[index++] = DATA_FRAME;
 
         //Raw Data Size
-        frame_size_byte_high = (byte) (frame_size >> 8 & 0xff);
-        frame_size_byte_low = (byte) (frame_size & 0xff);
-
-        output_buffer[index] = frame_size_byte_high;
-        index++;
-
-        output_buffer[index] = frame_size_byte_low;
-        index++;
+        byte frameSizeByteHigh = (byte) (frameSize >> 8 & 0xff);
+        byte frameSizeByteLow = (byte) (frameSize & 0xff);
+        output_buffer[index++] = frameSizeByteHigh;
+        output_buffer[index++] = frameSizeByteLow;
 
         //Raw Data
-        for (int i = 0; i < (frame_size); i++) {
-            output_buffer[index] = (byte) ((frame[i] >> 16) & 255);
-            index++;
-            output_buffer[index] = (byte) ((frame[i] >> 8) & 255);
-            index++;
-            output_buffer[index] = (byte) (frame[i] & 255);
-            index++;
+        //TODO respect color order
+        for (int i = 0; i < (frameSize); i++) {
+            output_buffer[index++] = (byte) ((frame[i] >> 16) & 255);
+            output_buffer[index++] = (byte) ((frame[i] >> 8) & 255);
+            output_buffer[index++] = (byte) (frame[i] & 255);
         }
 
         //Block-End-Byte
