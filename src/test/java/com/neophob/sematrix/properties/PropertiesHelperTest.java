@@ -281,5 +281,16 @@ public class PropertiesHelperTest {
         assertEquals(115200, ph.getAdavisionSerialPortSpeed());
     }
     
+    @Test
+    public void testMissingRgbValue() {
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.CFG_PANEL_COLOR_ORDER, "RBG");
+        PropertiesHelper ph = new PropertiesHelper(config);
+
+        assertEquals(2, ph.getNrOfScreens());
+        assertEquals(ColorFormat.RBG, ph.getColorFormat().get(0));        
+        assertEquals(ColorFormat.RGB, ph.getColorFormat().get(1));        
+    }
 
 }

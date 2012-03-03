@@ -180,9 +180,9 @@ public class PropertiesHelper {
 
         //add default color format RGB is nothing is configured
         int nrOfColorFormat = getColorFormatFromCfg();
-        if (nrOfColorFormat==0) {
+        if (nrOfColorFormat<totalDevices) {
             for (int i=0; i<totalDevices; i++) {
-                colorFormat.add(ColorFormat.RBG);
+                colorFormat.add(ColorFormat.RGB);
             }
         }
     }
