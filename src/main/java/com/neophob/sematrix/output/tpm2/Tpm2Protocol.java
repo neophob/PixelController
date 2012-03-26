@@ -20,7 +20,7 @@
 package com.neophob.sematrix.output.tpm2;
 
 
-public abstract class TPM2Protocol {
+public abstract class Tpm2Protocol {
 
 	private static final int HEADER_SIZE = 5;
 	

@@ -134,7 +134,7 @@ void rainbow() {
   	for (int i=0; i < strip.numPixels(); i++) {
     	 strip.setPixelColor(i, Wheel((i + j) % 96));
   	}
-  	strip.show(0);    
+  	strip.show();    
   }
 }
 
