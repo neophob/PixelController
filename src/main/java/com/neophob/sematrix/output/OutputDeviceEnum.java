@@ -39,7 +39,7 @@ public enum OutputDeviceEnum {
 	ADAVISION(AdaVision.class, true),
 
 	/** The TPM2. */
-	TPM2(TPM2Device.class, true),
+	TPM2(Tpm2.class, true),
 
 	/** The NULL Output. */
 	NULL(NullDevice.class, false);

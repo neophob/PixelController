@@ -576,7 +576,7 @@ public class GeneratorGui extends PApplet {
 			mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());			
 		}
 
-		TODO NEXT
+		//TODO NEXT
 		return col;
 		//get output status
 		//		OutputMapping om = ioMapping.get(currentOutput); 
