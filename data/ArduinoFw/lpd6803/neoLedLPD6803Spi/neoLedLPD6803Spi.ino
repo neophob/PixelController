@@ -2,6 +2,17 @@
  * PixelInvaders serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
  * Tested on Teensy and Arduino
  * 
+ * ------------------------------------------------------------------------
+ *
+ * This is the SPI version, unlike software SPI which is configurable, hardware 
+ * SPI works only on very specific pins. 
+ *
+ * On the Arduino Uno, Duemilanove, etc., clock = pin 13 and data = pin 11. 
+ * For the Arduino Mega, clock = pin 52, data = pin 51. 
+ * For the ATmega32u4 Breakout Board and Teensy, clock = pin B1, data = B2. 
+ *
+ * ------------------------------------------------------------------------
+ *
  * This file is part of PixelController.
  *
  * PixelController is free software; you can redistribute it and/or modify
@@ -49,7 +60,7 @@
 #define SERIAL_WAIT_DELAY 3
 
 //define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 2
+#define NR_OF_PANELS 4
 #define PIXELS_PER_PANEL 32
 
 //this should match RX_BUFFER_SIZE from HardwareSerial.cpp
@@ -158,7 +169,7 @@ void setup() {
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
 
-  strip.setCPUmax(80);  // start with 50% CPU usage. up this if the strand flickers or is slow  
+  strip.setCPUmax(90);  // start with 50% CPU usage. up this if the strand flickers or is slow  
   strip.begin();        // Start up the LED counter
 
   showInitImage();      // display some colors
