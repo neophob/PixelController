@@ -57,7 +57,7 @@ byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE];
 // Choose which 2 pins you will use for output.
 // Can be any valid output pins.
 int dataPin = 2;       // 'green' wire
-int clockPin = 3;      // 'blue' wire
+int clockPin = 1;      // 'blue' wire
 
 //initialize pixels
 LPD6803 strip = LPD6803(PIXELS_PER_PANEL*NR_OF_PANELS, dataPin, clockPin);

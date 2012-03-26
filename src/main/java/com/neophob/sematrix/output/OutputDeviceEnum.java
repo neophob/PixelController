@@ -24,7 +24,7 @@ package com.neophob.sematrix.output;
 public enum OutputDeviceEnum {
 	
 	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
-	PIXELINVADERS(Lpd6803Device.class, true),
+	PIXELINVADERS(PixelInvadersDevice.class, true),
 	
 	/** The RAINBOWDUINO. */
 	RAINBOWDUINO(RainbowduinoDevice.class, true),

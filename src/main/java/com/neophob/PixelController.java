@@ -114,6 +114,8 @@ public class PixelController extends PApplet {
 			case ADAVISION:
 				this.output = new AdaVision(ph, this.collector.getPixelControllerOutput());
 				break;
+			case TPM2:
+				//TODO
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
 			}
