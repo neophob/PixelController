@@ -23,7 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
+import com.neophob.sematrix.output.tpm2.Tpm2Protocol;
+import com.neophob.sematrix.output.tpm2.Tpm2Serial;
 import com.neophob.sematrix.properties.PropertiesHelper;
 
 /**
@@ -39,6 +40,8 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2.class.getName());
 			
+	private Tpm2Serial tpm2;
+	
 	/**
 	 * init the mini dmx devices.
 	 *
@@ -54,13 +57,12 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 		}
 
 		this.initialized = false;
-		//try {
-			//miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);			
-			//this.initialized = miniDmx.ping();
-			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
-		//} catch (NoSerialPortFoundException e) {
-		//	LOG.log(Level.WARNING, "failed to initialize serial port!");
-		//}
+		try {
+			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);
+			this.initialized = true;
+		} catch (NoSerialPortFoundException e) {
+			LOG.log(Level.WARNING, "failed to initialize serial port!");
+		}
 	}
 	
 
@@ -68,7 +70,8 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	 * @see com.neophob.sematrix.output.Output#update()
 	 */
 	public void update() {		
-		if (initialized) {							
+		if (initialized) {					
+			tpm2.sendFrame(Tpm2Protocol.doProtocol(getTransformedBuffer(), colorFormat));
 			//miniDmx.sendRgbFrame(getTransformedBuffer(), colorFormat);
 		}
 	}
