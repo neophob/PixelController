@@ -10,7 +10,8 @@ TODO PixelController
 -MatrixData: make internal buffersize configurable (currently deviceSize*8)
 -Unit Testing is suboptimal, using the config.properties 
 -start PureData in the start script, for example /Applications/Pd-extended.app/Contents/Resources/bin/pd -stderr -nomidi -noaudio -open mtxrev-main.pd -send "preset-file ../presets/main.coll;" & 
-
+-support TPM2
+-finish basic version of the gui
 
 Changelog v1.2 to v1.3
 ------------------------

@@ -13,9 +13,9 @@ Prerequisite:
 -Java Runtime, v1.6+
 -PureData (http://puredata.info/), download the extended Version
 
-Run PixelController.cmd on Windows and PixelController.sh on OSX/Linux to start the application.
-Make sure your led matrix connected to you computer before the application is started and you
-configured your hardware ind the config.properties file.
+Run PixelController.cmd on Windows, PixelController.command on OSX and PixelController.sh on Linux to start the application.
+Make sure your led matrix connected to you computer before the application is started and you configured your hardware in 
+the config.properties file.
 
 Here is a very primitve diagram, how everything is connected:
 [PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]
@@ -34,20 +34,15 @@ PixelController supports different (LED) matrix hardware devices:
 -Seeedstudios Rainbowduino (see Readme.rainbowduino), hint: the new v3 models are currently NOT supported!
 -ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 -MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
+-Adavision (http://www.ladyada.net/make/adavision/)
 
 
-HOWTO BUILD PIXELCONTROLLER
----------------------------
-Prerequisite:
--Maven v2.x (if you use maven 3, make sure to read http://neophob.com/2011/11/maven-3-is-evil/ first!)
--JDK 1.6+
-
-Then run 
-# mvn initialize
-to install the needed packages in your local repo and
-
-# mvn clean package
-to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
+FRONTENDS
+---------
+There are different frontends for PixelController:
+-PixConCli: Command Line interface for PixelController, 
+-PureData: PureData frontend, very flexible, extensible (OSC, MIDI)
+-Native Java: WIP
 
 
 IT DOES NOT WORK!
@@ -57,17 +52,23 @@ Try to understand WHAT not works, which component, it's the frontend? PixelContr
 Here are some common errors:
 -Did you forgot to edit the configuration file "config.properties", take a look!
 -Did you flash the correct firmware to you Arduino/Teensy? (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
--A User reported that the pixelinvader firmware did not work on a new Arduino UNO r3 board. I think the reason
- for this is the big serial latency. However using a Arduno UNO r1 worked flawlessly. Technically this is not a big
+-A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
+ for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
  deal, as the timeout value cold be adjusted.
 
 
-FRONTENDS
----------
-There are different Frontends for PixelController:
--PixConCli: Command Line interface for PixelController
--PureData: PureData frontend, very flexible, extensible (OSC,MIDI)
--Native Java: WIP
+HOWTO BUILD PIXELCONTROLLER
+---------------------------
+Prerequisite:
+-Maven v2.x (if you use Maven 3, make sure to read http://neophob.com/2011/11/maven-3-is-evil/ first!)
+-JDK 1.6+
+
+Then run 
+# mvn initialize
+to install the needed packages in your local repo and
+
+# mvn clean package
+to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
 
 
 CREDITS
