@@ -133,6 +133,11 @@ public class P5EventListener implements ControlListener {
                 createMessage(ValidCommands.CHANGE_THRESHOLD_VALUE, intVal);		    
                 break;
 
+            case FX_ROTOZOOMER:
+                LOG.log(Level.INFO, selection+": "+intVal);
+                createMessage(ValidCommands.CHANGE_ROTOZOOM, intVal);		    
+                break;
+            	
             case COLOR_PICKER:
                 float[] f = theEvent.getGroup().getArrayValue();
                 int r = (int)f[0];

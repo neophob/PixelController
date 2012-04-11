@@ -378,6 +378,12 @@ public class GeneratorGui extends PApplet {
 		thresholdSlider.setGroup(effectTab);	
 		thresholdSlider.setDecimalPrecision(0);		
 
+		Slider fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
+				-127, 127, 0, 2*Theme.DROPBOX_XOFS, yPosStartDrowdown+20, 160, 14);
+		fxRotoSlider.setSliderMode(Slider.FIX);
+		fxRotoSlider.setGroup(effectTab);
+		fxRotoSlider.setDecimalPrecision(0);
+		
 		scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartDrowdown, 160, 14);
 		cp5.register(null, "SimpleColorPicker", scp);		
 		scp.moveTo(effectTab);
