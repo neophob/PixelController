@@ -180,7 +180,7 @@ public class GeneratorGui extends PApplet {
 		}
 		selectedOutputs.deactivateAll();*/
 
-		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 520, 480);
+		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 520, p5GuiYOffset+140);//480
 		tl.moveTo(ALWAYS_VISIBLE_TAB);
 		tl.setFont(ControlP5.synt24);
 		
@@ -265,10 +265,10 @@ public class GeneratorGui extends PApplet {
 		//TABS
 		//---------------------------------
 
-		final int yPosStartLabel = 390;
-		final int yPosStartDrowdown = 376;
+		final int yPosStartLabel = p5GuiYOffset+50;
+		final int yPosStartDrowdown = p5GuiYOffset+36;
 		
-		cp5.getWindow().setPositionOfTabs(0, 492);		
+		cp5.getWindow().setPositionOfTabs(0, p5GuiYOffset+152);		
 
 		//there a default tab which is present all the time. rename this tab
 		Tab generatorTab = cp5.getTab("default");
