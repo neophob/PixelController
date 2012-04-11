@@ -416,6 +416,10 @@ public class GeneratorGui extends PApplet {
 		//--------------
 		//All Output tab
 		//--------------				
+        
+		cp5.addTextlabel("x", "CHANGE ALL OUTPUT MAPPINGS", 0, 53+p5GuiYOffset)
+			.moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
+
         DropdownList allVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
         		GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
         allVis.moveTo(allOutputTab);
