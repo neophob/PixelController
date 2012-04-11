@@ -444,8 +444,11 @@ public class GeneratorGui extends PApplet {
 		//----------
 		//RANDOM Tab
 		//----------				
-        
-        
+
+        // select for gen1/gen2/fx1/fx2/mixer
+        // threshold/tint/rotozoom
+        // out fx/out fader/outvisual
+
 		//register event listener
 		cp5.addListener(listener);
 
