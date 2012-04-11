@@ -168,6 +168,21 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.CHANGE_OUTPUT_VISUAL, value);
             	break;
 
+            case OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_VISUAL, value);
+            	break;
+            	
+            case OUTPUT_ALL_EFFECT_DROPDOWN:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_EFFECT, value);
+            	break;
+            	
+            case OUTPUT_ALL_FADER_DROPDOWN:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_FADER, value);
+            	break;
+            	
             case TEXTUREDEFORM_IMAGE_DROPDOWN:
             	name = theEvent.getGroup().getCaptionLabel().getText();
             	LOG.log(Level.INFO, selection+" "+name);

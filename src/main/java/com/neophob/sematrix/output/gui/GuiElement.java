@@ -46,10 +46,17 @@ public enum GuiElement {
 	COLORSCROLL_OPTIONS,
 	
 	TEXTFIELD,
-	
+
+	//single output settings
 	OUTPUT_SELECTED_VISUAL_DROPDOWN,
 	OUTPUT_EFFECT_DROPDOWN,
 	OUTPUT_FADER_DROPDOWN,
+
+	//all output settings
+	OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN,
+	OUTPUT_ALL_EFFECT_DROPDOWN,
+	OUTPUT_ALL_FADER_DROPDOWN,
+
 	;
 	
 	public static GuiElement getGuiElement(String s) {

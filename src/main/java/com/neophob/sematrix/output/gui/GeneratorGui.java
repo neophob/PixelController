@@ -32,7 +32,6 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.PixelControllerEffect;
-import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
@@ -180,7 +179,7 @@ public class GeneratorGui extends PApplet {
 		}
 		selectedOutputs.deactivateAll();*/
 
-		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 520, p5GuiYOffset+140);//480
+		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 520, p5GuiYOffset+145);//480
 		tl.moveTo(ALWAYS_VISIBLE_TAB);
 		tl.setFont(ControlP5.synt24);
 		
@@ -273,13 +272,17 @@ public class GeneratorGui extends PApplet {
 		//there a default tab which is present all the time. rename this tab
 		Tab generatorTab = cp5.getTab("default");
 		generatorTab.setLabel("GENERATOR");		
-		Tab effectTab = cp5.addTab("EFFECT");		
-		Tab outputTab = cp5.addTab("OUTPUT MAPPING");		
+		Tab effectTab = cp5.addTab("EFFECT");
+		Tab outputTab = cp5.addTab("SINGLE OUTPUT MAPPING");
+		Tab allOutputTab = cp5.addTab("ALL OUTPUT MAPPING");		
+		Tab randomTab = cp5.addTab("RANDOM SELECTION");		
 
 		generatorTab.setColorForeground(0xffff0000);
 		effectTab.setColorForeground(0xffff0000);		
 		outputTab.setColorForeground(0xffff0000);
-
+		allOutputTab.setColorForeground(0xffff0000);
+		randomTab.setColorForeground(0xffff0000);
+		
 		//-------------
 		//Generator tab
 		//-------------		
@@ -379,9 +382,9 @@ public class GeneratorGui extends PApplet {
 		cp5.register(null, "SimpleColorPicker", scp);		
 		scp.moveTo(effectTab);
 
-		//-------------
-		//Output tab
-		//-------------				
+		//-----------------
+		//Single Output tab
+		//-----------------				
 		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
 		selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.toString(), 0, yPosStartDrowdown);
 		selectedOutputs.setItemsPerRow(nrOfOutputs);
@@ -396,40 +399,42 @@ public class GeneratorGui extends PApplet {
 		selectedOutputs.moveTo(outputTab);
 
 		//visual
-        dropdownOutputVisual = cp5.addDropdownList(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), 
-				0, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
-        Theme.themeDropdownList(dropdownOutputVisual);
-        i=0;
-        for (i=0; i<nrOfVisuals; i++) {
-            dropdownOutputVisual.addItem("Visual #"+(1+i), i);
-        }
-        dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(0).getName());
+        dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
+        		GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
-        dropdownOutputVisual.setHeight(70);
         
 		//effect
-        dropdownOutputEffect = cp5.addDropdownList(GuiElement.OUTPUT_EFFECT_DROPDOWN.toString(), 
-        		Theme.DROPBOX_XOFS, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
-        Theme.themeDropdownList(dropdownOutputEffect);
-        i=0;
-        for (EffectName gn: EffectName.values()) {
-            dropdownOutputEffect.addItem(gn.name(), i++);
-        }
-        dropdownOutputEffect.setLabel(dropdownOutputEffect.getItem(0).getName());
+        dropdownOutputEffect = GeneratorGuiHelper.createEffectDropdown(cp5, 
+        		GuiElement.OUTPUT_EFFECT_DROPDOWN.toString(), yPosStartDrowdown); 
         dropdownOutputEffect.moveTo(outputTab);
-        dropdownOutputEffect.setHeight(70);
         
-        //Fader 
-        dropdownOutputFader = cp5.addDropdownList(GuiElement.OUTPUT_FADER_DROPDOWN.toString(),
-        		Theme.DROPBOX_XOFS*2, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
-        Theme.themeDropdownList(dropdownOutputFader);
-        i=0;
-        for (FaderName fn: FaderName.values()) {
-            dropdownOutputFader.addItem(fn.name(), i++);
-        }
-        dropdownOutputFader.setLabel(dropdownOutputFader.getItem(0).getName());
+        //Fader         
+        dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
+        		GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
         dropdownOutputFader.moveTo(outputTab);
-        dropdownOutputFader.setHeight(70);
+        
+		//--------------
+		//All Output tab
+		//--------------				
+        DropdownList allVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
+        		GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
+        allVis.moveTo(allOutputTab);
+        
+		//effect
+        DropdownList allFx = GeneratorGuiHelper.createEffectDropdown(cp5, 
+        		GuiElement.OUTPUT_ALL_EFFECT_DROPDOWN.toString(), yPosStartDrowdown); 
+        allFx.moveTo(allOutputTab);
+        
+        //Fader         
+        DropdownList allFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
+        		GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
+        allFader.moveTo(allOutputTab);
+
+        
+		//----------
+		//RANDOM Tab
+		//----------				
+        
         
 		//register event listener
 		cp5.addListener(listener);
