@@ -576,13 +576,14 @@ public class GeneratorGui extends PApplet {
 			mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());			
 		}
 
-		//TODO NEXT
-		return col;
 		//get output status
-		//		OutputMapping om = ioMapping.get(currentOutput); 
-		//		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
-		//		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-		//		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+		OutputMapping om = col.getOutputMappings(col.getCurrentOutput()); 
+		dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
+		dropdownOutputEffect.setLabel(dropdownOutputEffect.getItem(om.getEffect().getId()).getName());
+		dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
+
+		return col;
+
 	}
 
 	/**
