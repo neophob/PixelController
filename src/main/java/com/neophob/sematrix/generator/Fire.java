@@ -23,6 +23,8 @@ import java.util.Random;
 
 import processing.core.PConstants;
 
+import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -33,10 +35,6 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Fire extends Generator implements PConstants {
 
-	/* paletter */
-	/** The colors. */
-	private int[] colors;
-	
 	/** The r. */
 	private Random r;
 	
@@ -52,40 +50,8 @@ public class Fire extends Generator implements PConstants {
 	public Fire(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
-		//Setup palette
-		colors = new int[256];
 		buffer = new int[internalBufferXSize*internalBufferYSize];
-		for (int i = 0; i < 32; ++i) {
-			/* black to blue, 32 values*/
-			colors[i]=getColor(0, 0, i << 1);
-
-			/* blue to red, 32 values*/
-			colors[i + 32]=getColor(i << 3, 0, 64 - (i << 1));
-
-			/*red to yellow, 32 values*/
-			colors[i + 64]=getColor(255, i << 3, 0);
-
-			/* yellow to white, 162 */
-			colors[i + 96]=getColor(255, 255, i << 2);
-			colors[i + 128]=getColor(255, 255, 64+(i << 2));
-			colors[i + 160]=getColor(255, 255, 128+(i << 2));
-			colors[i + 192]=getColor(255, 255, 192+i);
-			colors[i + 224]=getColor(255, 255, 224+i);
-		} 
-
 		r = new Random();
-	}
-
-	/**
-	 * Gets the color.
-	 *
-	 * @param r the r
-	 * @param g the g
-	 * @param b the b
-	 * @return the color
-	 */
-	private int getColor(int r, int g, int b) {
-		return (r << 16) | (g << 8) | (b);
 	}
 
 	/* (non-Javadoc)
@@ -93,6 +59,8 @@ public class Fire extends Generator implements PConstants {
 	 */
 	@Override
 	public void update() {
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
+
 		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()-1);
 
 		int random;
@@ -136,7 +104,7 @@ public class Fire extends Generator implements PConstants {
 					temp --; 
 				}
 				this.buffer[j - internalBufferXSize + i] = temp;
-				this.internalBuffer[j - internalBufferXSize + i] = colors[temp];
+				this.internalBuffer[j - internalBufferXSize + i] = cs.getSmoothColor(temp);
 			}
 			j -= this.getInternalBufferXSize();
 		}      
