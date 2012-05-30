@@ -35,22 +35,41 @@ public class ColorSet {
   
   private int boarderCount;
 
+  /**
+   * 
+   * @param name
+   * @param colors
+   */
   public ColorSet(String name, int[] colors) {
     this.name = name;
     this.colors = colors.clone();
     this.boarderCount = 255 / colors.length;
   }
 
+  /**
+   * get ColorSet name
+   * @return
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * returns a random color of this set
+   * @return
+   */
   public int getRandomColor() {
 	Random r = new Random();
     return this.colors[r.nextInt(colors.length)];
   }
 
-  int getSmoothColor(int pos) {
+  /**
+   * return a color defined in this color set 
+   * 
+   * @param pos
+   * @return
+   */
+  public int getSmoothColor(int pos) {
     pos %= 255;
     int ofs=0;
     while (pos > boarderCount) {
@@ -59,11 +78,16 @@ public class ColorSet {
     }
     
     int targetOfs = (ofs+1)%colors.length;
-    //println("ofs:"+ofs+" targetofs:"+targetOfs);
     return calcSmoothColor(colors[targetOfs], colors[ofs], pos);
   }
   
-  
+  /**
+   * 
+   * @param col1
+   * @param col2
+   * @param pos
+   * @return
+   */
   private int calcSmoothColor(int col1, int col2, int pos) {
     int b= col1&255;
     int g=(col1>>8)&255;
