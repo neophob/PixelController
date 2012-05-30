@@ -122,7 +122,7 @@ gelesen von der mitte!
 			doInvader();
 		}
 		
-		if (frame==0 || frame%4==0) {			
+		if (frame==0 || frame%2==0) {			
 			ColorSet cs = Collector.getInstance().getActiveColorSet();
 			
 			int xofs, yofs=-1, dst=0;

@@ -139,6 +139,11 @@ public final class Shuffler {
 				screenNr++;
 			}
 		}
+		
+		if (col.getShufflerSelect(ShufflerOffset.COLORSET)) {
+			int colorSets = col.getColorSets().size();
+			col.setCurrentColorSet(rand.nextInt(colorSets));			
+		}
 
 	}
 

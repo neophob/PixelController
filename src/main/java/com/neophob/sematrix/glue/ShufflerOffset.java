@@ -69,7 +69,10 @@ public enum ShufflerOffset {
 	ROTOZOOMER(13),
 	
 	/** COLOR_SCROLL */
-	COLOR_SCROLL(14);
+	COLOR_SCROLL(14),
+	
+	COLORSET(15)
+	;
 	
 	
 	/** The ofs. */
