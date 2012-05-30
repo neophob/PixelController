@@ -19,7 +19,6 @@
 
 package com.neophob.sematrix.generator;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +26,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -52,7 +53,7 @@ public class Geometrics extends Generator {
 	private List<Drop> tmp;
 
 	/** The drop hue. */
-	private int dropHue = 0;
+	//private int dropHue = 0;
 
 	/** The sound. */
 	private Sound sound;
@@ -91,19 +92,17 @@ public class Geometrics extends Generator {
 	 */
 	@Override
 	public void update() {
-
 		Arrays.fill(this.internalBuffer, 0);
 		//maximal 4 actice drops
 		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {
+			
+			ColorSet cs = Collector.getInstance().getActiveColorSet();
+			
 			drops.add(
 					new Drop(
 							random(THICKNESS, internalBufferXSize), 
-							random(THICKNESS, internalBufferYSize), dropHue)
+							random(THICKNESS, internalBufferYSize), cs.getSmoothColor(random(0,255)))
 					);
-			dropHue += 4;
-			if (dropHue > 100) {
-				dropHue -= 100;
-			}
 		}
 
 		tmp.clear();
@@ -142,10 +141,10 @@ public class Geometrics extends Generator {
 		 * @param y the y
 		 * @param c the c
 		 */
-		private Drop (int x, int y, int c) {
+		private Drop (int x, int y, int color) {
 			xpos = x;
 			ypos = y;
-			dropcolor = Color.HSBtoRGB(255f/(float)c, 0.98f, 0.9f);
+			dropcolor = color;
 			finished = false;
 		}
 
