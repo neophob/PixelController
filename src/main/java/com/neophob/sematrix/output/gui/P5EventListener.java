@@ -209,6 +209,11 @@ public class P5EventListener implements ControlListener {
             	LOG.log(Level.INFO, selection+" "+name);
             	createMessage(ValidCommands.TEXTWR, name);            	
             	break;
+            
+            case RANDOM_ELEMENT:
+            	name = theEvent.getStringValue();
+            	LOG.log(Level.INFO, selection+" "+name);
+            	break;
             	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);

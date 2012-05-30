@@ -103,6 +103,12 @@ public class GeneratorGui extends PApplet {
 	private DropdownList dropdownOutputVisual;
 	private DropdownList dropdownOutputEffect;
 	private DropdownList dropdownOutputFader;    
+	
+	//All Output Tab
+	private DropdownList allOutputTabVis;
+	private DropdownList allOutputTabFx;
+	private DropdownList allOutputTabFader;
+	
 
 
 	/** The target y size. */
@@ -423,22 +429,22 @@ public class GeneratorGui extends PApplet {
 		//All Output tab
 		//--------------				
         
-		cp5.addTextlabel("x", "CHANGE ALL OUTPUT MAPPINGS", 0, 53+p5GuiYOffset)
+		cp5.addTextlabel("allOutputTabLabel", "CHANGE ALL OUTPUT MAPPINGS", 0, 53+p5GuiYOffset)
 			.moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
 
-        DropdownList allVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
+        allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
         		GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
-        allVis.moveTo(allOutputTab);
+        allOutputTabVis.moveTo(allOutputTab);
         
 		//effect
-        DropdownList allFx = GeneratorGuiHelper.createEffectDropdown(cp5, 
+        allOutputTabFx = GeneratorGuiHelper.createEffectDropdown(cp5, 
         		GuiElement.OUTPUT_ALL_EFFECT_DROPDOWN.toString(), yPosStartDrowdown); 
-        allFx.moveTo(allOutputTab);
+        allOutputTabFx.moveTo(allOutputTab);
         
         //Fader         
-        DropdownList allFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
+        allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
         		GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
-        allFader.moveTo(allOutputTab);
+        allOutputTabFader.moveTo(allOutputTab);
 
         
 		//----------
@@ -448,7 +454,19 @@ public class GeneratorGui extends PApplet {
         // select for gen1/gen2/fx1/fx2/mixer
         // threshold/tint/rotozoom
         // out fx/out fader/outvisual
-
+        cp5.addMatrix(GuiElement.RANDOM_ELEMENT.toString())
+        .setPosition(50, yPosStartDrowdown)
+        .setSize(600, 20)
+        .setGrid(11, 1)
+        .setGap(4, 1)
+        .setInterval(0)
+        .setColorActive(255)
+        .setColorBackground(128)
+        .setColorForeground(192)
+        .setMode(ControlP5.MULTIPLES)
+        .moveTo(randomTab)
+        ;
+        
 		//register event listener
 		cp5.addListener(listener);
 
@@ -457,6 +475,9 @@ public class GeneratorGui extends PApplet {
 		selectedOutputs.activate(0);
 	}
 
+	public void RANDOM_ELEMENT(int x, int y) {
+		LOG.log(Level.INFO, "MATRIX "+x+" "+y);
+	}
 
 	/**
 	 * draw the whole internal buffer on screen.
@@ -676,6 +697,18 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
 			colorScrollList.setOpen(false);
 		}
+
+		if (!clickedOn.contains(GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN)) {
+			allOutputTabVis.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.OUTPUT_ALL_FADER_DROPDOWN)) {
+			allOutputTabFader.setOpen(false);
+		}
+		if (!clickedOn.contains(GuiElement.OUTPUT_ALL_EFFECT_DROPDOWN)) {
+			allOutputTabFx.setOpen(false);
+		}
+
+		
 		
 		
 		
