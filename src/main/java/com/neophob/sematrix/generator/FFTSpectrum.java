@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.generator;
 
+import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -61,7 +63,7 @@ public class FFTSpectrum extends Generator {
 	@Override
 	public void update() {
 		int avg = sound.getFftAvg();
-		int col;
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
 		
 		for (int i = 0; i < avg; i++) {
 			
@@ -73,8 +75,7 @@ public class FFTSpectrum extends Generator {
 		    	h=255;
 		    }
 		    h = h*h/255;
-		    col = (h << 16) | (h << 8) | h;
-		    rect(col, 0, i*yBlock, this.internalBufferXSize, i*yBlock+yBlock);
+		    rect(cs.getSmoothColor(h), 0, i*yBlock, this.internalBufferXSize, i*yBlock+yBlock);
 		}		
 	}
 	
