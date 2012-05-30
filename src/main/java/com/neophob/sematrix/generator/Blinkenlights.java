@@ -158,8 +158,7 @@ public class Blinkenlights extends Generator implements PConstants {
 						xSrc-=xDiff;
 					}				
 					ofs=xofs+yofs*blinken.width;
-					this.internalBuffer[dst++]=cs.getSmoothColor(blinken.pixels[ofs]);
-//					this.internalBuffer[dst++]=blinken.pixels[ofs];
+					this.internalBuffer[dst++]=cs.getSmoothColor(blinken.pixels[ofs]&255);
 					xSrc++;
 				}
 				ySrc++;
