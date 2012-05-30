@@ -21,6 +21,8 @@ package com.neophob.sematrix.generator;
 
 import java.util.Random;
 
+import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -58,35 +60,6 @@ public class PlasmaAdvanced extends Generator {
 	/** The Constant MAX_FACTOR. */
 	private static final int MAX_FACTOR = 10;
 
-
-	/** The rf. */
-	private int rf = 4;
-
-	/** The gf. */
-	private int gf = 2;
-
-	/** The bf. */
-	private int bf = 1;
-
-	/** The rd. */
-	private int rd = 0;
-
-	/** The gd. */
-	private int gd = GRADIENTLEN / gf;
-
-	/** The bd. */
-	private int bd = GRADIENTLEN / bf / 2;
-
-	// gradient & swing curve arrays
-	/** The fade color steps. */
-	private int fadeColorSteps = 0;
-
-	/** The color grad. */
-	private int[] colorGrad  = new int[GRADIENTLEN];
-
-	/** The color grad tmp. */
-	private int[] colorGradTmp  = new int[GRADIENTLEN];
-
 	/** The fade swing steps. */
 	private int fadeSwingSteps = 0;
 
@@ -111,7 +84,6 @@ public class PlasmaAdvanced extends Generator {
 		super(controller, GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 		random = new Random();
-		makeGradient();
 		makeSwingCurve();		
 	}
 
@@ -120,14 +92,9 @@ public class PlasmaAdvanced extends Generator {
 	 */
 	@Override
 	public void update() {
-		frameCount++;
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
 
-		if (frameCount%55==3) {
-			makeGradient();
-		}
-		if (fadeColorSteps>0) {
-			fadeColorGradient();
-		}
+		frameCount++;
 
 		if (frameCount%57==33) {
 			makeSwingCurve();
@@ -146,7 +113,7 @@ public class PlasmaAdvanced extends Generator {
 				// this is where the magic happens: map x, y, t around
 				// the swing curves and lookup a color from the gradient
 				// the "formula" was found by a lot of experimentation
-				this.internalBuffer[y*internalBufferXSize+x] = gradient(
+				this.internalBuffer[y*internalBufferXSize+x] = cs.getSmoothColor(				
 						swing(swing(x + swingT) + swingYT) +
 						swing(swing(x + t     ) + swingY ));
 			}
@@ -173,94 +140,7 @@ public class PlasmaAdvanced extends Generator {
 		}
 		fadeSwingSteps = FADE_STEPS;
 	}
-
-
-	/**
-	 * create a smooth, colorful gradient by cosinus curves in the RGB channels
-	 */
-	private void makeGradient() {
-		int val = random.nextInt(12);
-		switch (val) {
-		case 0: rf = random.nextInt(4)+1;
-		break;
-		case 1: gf = random.nextInt(4)+1;
-		break;
-		case 2: bf = random.nextInt(4)+1;
-		break;
-		case 3: rd = random.nextInt(GRADIENTLEN);
-		break;
-		case 4: gd = random.nextInt(GRADIENTLEN);
-		break;
-		case 5: bd = random.nextInt(GRADIENTLEN);
-		break;
-		}
-
-		// fill gradient array
-		for (int i = 0; i < GRADIENTLEN; i++) {
-			int r = cos256(GRADIENTLEN / rf, i + rd);
-			int g = cos256(GRADIENTLEN / gf, i + gd);
-			int b = cos256(GRADIENTLEN / bf, i + bd);
-			colorGradTmp[i] = color(r, g, b);
-			fadeColorSteps = FADE_STEPS;
-		}
-	}
-
-	/**
-	 * Gets the r.
-	 *
-	 * @param col the col
-	 * @return the r
-	 */
-	private int getR(int col) {
-		return (col>>16)&255;
-	}
-
-	/**
-	 * Gets the g.
-	 *
-	 * @param col the col
-	 * @return the g
-	 */
-	private int getG(int col) {
-		return (col>>8)&255;
-	}
-
-	/**
-	 * Gets the b.
-	 *
-	 * @param col the col
-	 * @return the b
-	 */
-	private int getB(int col) {
-		return (col&255);
-	}
-
-	//---------------------------
-	/**
-	 * Fade color gradient.
-	 */
-	private void fadeColorGradient() {
-		fadeColorSteps--;
-
-		if (fadeColorSteps==0) {
-			//arraycopy(Object src, int srcPos, Object dest, int destPos, int length) 
-			System.arraycopy(colorGradTmp, 0, colorGrad, 0, GRADIENTLEN);
-			return;
-		}
-
-		for (int i = 0; i < GRADIENTLEN; i++) {
-			int colorS = colorGradTmp[i]; //target
-			int colorD = colorGrad[i];    //current value
-
-			int r = getR(colorD)+( (getR(colorS) - getR(colorD)) / fadeColorSteps);
-			int g = getG(colorD)+( (getG(colorS) - getG(colorD)) / fadeColorSteps);
-			int b = getB(colorD)+( (getB(colorS) - getB(colorD)) / fadeColorSteps);
-
-			colorGrad[i] = color(r, g, b);
-			//		    colorGrad[i] = color(g, g, g);
-		}
-
-	}
+	
 
 	/**
 	 * Fade swing curve.
@@ -282,17 +162,6 @@ public class PlasmaAdvanced extends Generator {
 
 	}
 
-	// helper: get cosinus sample normalized to 0..255
-	/**
-	 * Cos256.
-	 *
-	 * @param amplitude the amplitude
-	 * @param x the x
-	 * @return the int
-	 */
-	private int cos256(int amplitude, int x) {
-		return (int) (Math.cos(x * TWO_PI / amplitude) * 127 + 127);
-	}
 
 	// helper: get a swing curve sample
 	/**
@@ -303,17 +172,6 @@ public class PlasmaAdvanced extends Generator {
 	 */
 	private int swing(int i) {
 		return swingCurve[i % SWINGLEN];
-	}
-
-	// helper: get a gradient sample
-	/**
-	 * Gradient.
-	 *
-	 * @param i the i
-	 * @return the int
-	 */
-	private int gradient(int i) {
-		return colorGrad[i % GRADIENTLEN];
 	}
 
 	/**

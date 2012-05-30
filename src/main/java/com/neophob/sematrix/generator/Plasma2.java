@@ -21,6 +21,7 @@ package com.neophob.sematrix.generator;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -50,6 +51,8 @@ public class Plasma2 extends Generator {
 	 */
 	@Override
 	public void update() {
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
+		
 		float  xc = 20;
 		// Enable this to control the speed of animation regardless of CPU power
 		// int timeDisplacement = millis()/30;
@@ -72,29 +75,11 @@ public class Plasma2 extends Generator {
 				float s2 = aaa + aaa * (float)Math.sin(PApplet.radians(yc) * calculation2 );
 				float s3 = aaa + aaa * (float)Math.sin(PApplet.radians((xc + yc + timeDisplacement * 5) / 2));  
 				float s  = (s1+ s2 + s3) / (6f*255f);
-				this.internalBuffer[y*internalBufferXSize+x] = getColor(s);
-//				this.internalBuffer[y*internalBufferXSize+x] = colorSet.getSmoothColor((int)(s));
+				this.internalBuffer[y*internalBufferXSize+x] = cs.getSmoothColor((int)(s*255));
 			}
 		}   
 	}
 
-	/**
-	 * 
-	 * @param s
-	 * @return
-	 */
-	private int getColor(float s) {		
-		//reduce s to [0-1]
-//		s = (s - (float) Math.floor(s)) * colorMap.size();
 
-//		int colornumber = (int) Math.floor(s);
-//		int nextcolornumber = (colornumber + 1) % colorMap.size();
-
-		//use sinus as cross over function for much smoother transitions
-//		float ratio = (float)(Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;
-
-//		return super.getColor(colornumber, nextcolornumber, ratio);
-		return Collector.getInstance().getActiveColorSet().getSmoothColor((int)(s*255));
-	}
 
 }
