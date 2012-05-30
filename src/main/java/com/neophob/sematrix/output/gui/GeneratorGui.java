@@ -51,7 +51,6 @@ import controlP5.ControlP5;
 import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
-import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
