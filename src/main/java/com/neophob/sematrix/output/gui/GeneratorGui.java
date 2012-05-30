@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
@@ -94,7 +95,8 @@ public class GeneratorGui extends PApplet {
 	//Effect Tab
 	private SimpleColorPicker scp;
 	private Slider thresholdSlider;
-
+	private DropdownList colorSetList;
+	
 	//Generator Tab
 	private DropdownList blinkenLightsList, imageList, textureDeformList, textureDeformOptions;
 	private DropdownList colorScrollList;
@@ -394,6 +396,20 @@ public class GeneratorGui extends PApplet {
 		cp5.register(null, "SimpleColorPicker", scp);		
 		scp.moveTo(effectTab);
 
+		//palette dropdown list	
+		colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.toString(), 
+				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+56, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(colorSetList);		
+		i=0;
+		for (ColorSet cs: Collector.getInstance().getColorSets()) {
+			colorSetList.addItem(cs.getName(), i);
+			i++;
+		}		
+		colorSetList.setLabel(colorSetList.getItem(1).getName());
+		colorSetList.setGroup(effectTab);		
+		colorSetList.setHeight(100);
+
+				
 		//-----------------
 		//Single Output tab
 		//-----------------				

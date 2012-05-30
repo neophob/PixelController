@@ -19,7 +19,6 @@
 
 package com.neophob.sematrix.generator;
 
-import java.util.List;
 import java.util.Random;
 
 import com.neophob.sematrix.glue.Collector;
@@ -31,7 +30,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  *
  * @author McGyver
  */
-public class ColorScroll extends ColorMapAwareGenerator {
+public class ColorScroll extends Generator {
 
     /** The fade. */
     private int fade;
@@ -112,8 +111,8 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * @param controller the controller
      * @param colorList the color list
      */
-    public ColorScroll(PixelControllerGenerator controller, List<Integer> colorList) {
-        super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE, colorList);
+    public ColorScroll(PixelControllerGenerator controller) {
+        super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
 
         fade = 30;
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
@@ -216,7 +215,7 @@ public class ColorScroll extends ColorMapAwareGenerator {
      * @return the color
      */
     private int getColor(int val) {
-    	int saveFade = this.fade;
+/*    	int saveFade = this.fade;
     	if (saveFade==0) {
     		saveFade = 1;
     	}
@@ -225,7 +224,8 @@ public class ColorScroll extends ColorMapAwareGenerator {
         colornumber = colornumber % colorMap.size();
         int nextcolornumber = (colornumber + 1) % colorMap.size();
         float ratio = ((val + frameCount) % saveFade) / (float)saveFade;
-        return super.getColor(colornumber, nextcolornumber, ratio);
+        return super.getColor(colornumber, nextcolornumber, ratio);*/
+    	return Collector.getInstance().getActiveColorSet().getSmoothColor(val+frameCount);
     }
     
 

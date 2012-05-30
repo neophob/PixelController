@@ -140,7 +140,7 @@ public abstract class Generator implements RandomizeState {
 	
 	/** is the generator selected and thus active? */
 	protected boolean active;
-	
+		
 	/**
 	 * Instantiates a new generator.
 	 *

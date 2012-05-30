@@ -20,18 +20,17 @@
 package com.neophob.sematrix.generator;
 
 import java.util.Arrays;
-import java.util.List;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  *              
  * @author McGyver
  */
-public class ColorFade extends ColorMapAwareGenerator {
+public class ColorFade extends Generator {
 
     private int colorFadeTime;
-    private int maxFrames;
     private int frameCount;
 
     /**
@@ -39,26 +38,21 @@ public class ColorFade extends ColorMapAwareGenerator {
      *
      * @param controller the controller
      */
-    public ColorFade(PixelControllerGenerator controller, List<Integer> colorList) {
-        super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE, colorList);
+    public ColorFade(PixelControllerGenerator controller) {
+        super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
 
         colorFadeTime = 30;
-        maxFrames = colorMap.size() * colorFadeTime;
     }
 
     @Override
     public void update() {
-        frameCount = (frameCount + 1) % maxFrames;
-        
-        float s = (float) frameCount / colorFadeTime;       
-        int colornumber = (int) Math.floor(s);
-        int nextcolornumber = (colornumber + 1) % colorMap.size();
-        
         //use sinus as cross over function for much smoother transitions DOES NOT WORK YET
-        float ratio = (float)(Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;        
-        int col = super.getColor(colornumber, nextcolornumber, ratio);
-        
+        //float ratio = (float)(Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;        
+        //int col = super.getColor(colornumber, nextcolornumber, ratio);
+        int col = Collector.getInstance().getActiveColorSet().getSmoothColor(frameCount);
         Arrays.fill(this.internalBuffer, col);
+        
+        frameCount++;
     }
 
 
@@ -74,7 +68,6 @@ public class ColorFade extends ColorMapAwareGenerator {
      */
     public void setColorFadeTime(int colorFadeTime) {
         this.colorFadeTime = colorFadeTime;
-        maxFrames = colorMap.size() * colorFadeTime;
     }
     
     

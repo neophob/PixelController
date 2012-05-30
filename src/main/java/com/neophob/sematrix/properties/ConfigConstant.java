@@ -110,12 +110,5 @@ public final class ConfigConstant {
 	public static final String CAPTURE_WINDOW_SIZE_X = "screen.capture.window.size.x";
 	public static final String CAPTURE_WINDOW_SIZE_Y = "screen.capture.window.size.y";
 	
-	public static final String FPS = "fps";
-	
-	public static final String COLORSCROLL_RGBCOLOR = "colorscroll.rgbcolor";
-	
-	public static final String COLORFADE_RGBCOLOR = "colorfade.rgbcolor";
-        
-    public static final String PLASMA_RGBCOLOR = "plasma.rgbcolor";
-   
+	public static final String FPS = "fps";	
 }

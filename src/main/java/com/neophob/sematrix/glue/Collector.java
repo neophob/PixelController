@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
@@ -135,6 +136,9 @@ public final class Collector {
 	
 	private PixelControllerStatus pixConStat;
 
+	private List<ColorSet> colorSets;
+	
+	private int currentColorSet;
 	
 	/**
 	 * Instantiates a new collector.
@@ -485,6 +489,7 @@ public final class Collector {
 		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);
 		ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+currentOutput);		
 		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
+		ret.add(ValidCommands.CURRENT_COLORSET +EMPTY_CHAR+currentColorSet);
 		return ret;
 	}
 
@@ -766,6 +771,34 @@ public final class Collector {
 	public PixelControllerStatus getPixConStat() {
 		return pixConStat;
 	}
+
+	
+	public List<ColorSet> getColorSets() {
+		return colorSets;
+	}
+
+	public void setColorSets(List<ColorSet> colorSets) {
+		this.colorSets = colorSets;
+	}
+
+	/**
+	 * @return the currentColorSet
+	 */
+	public int getCurrentColorSet() {
+		return currentColorSet;
+	}
+
+	public ColorSet getActiveColorSet() {
+		return this.colorSets.get(currentColorSet);
+	}
+
+	/**
+	 * @param currentColorSet the currentColorSet to set
+	 */
+	public void setCurrentColorSet(int currentColorSet) {
+		this.currentColorSet = currentColorSet;
+	}
+
     
     
 

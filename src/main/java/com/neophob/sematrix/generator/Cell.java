@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -77,6 +79,8 @@ public class Cell extends Generator {
 	 */
 	@Override
 	public void update() {
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
+		
 		for (int x=0;x<internalBufferXSize/RENDERSIZE;x+=RENDERSIZE) {
 			for (int y=0;y<internalBufferYSize/RENDERSIZE;y+=RENDERSIZE) {
 
@@ -109,8 +113,8 @@ public class Cell extends Generator {
 				}*/				
 				//int col = ((a.r/2+l/2) << 16) | ((a.g/2+l/2) << 8) | (a.b/2+l/2);
 				
-				int col = (a.r << 16) | (a.g << 8) | a.b;
-				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, col);				
+//				int col = (a.r << 16) | (a.g << 8) | a.b;
+				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, cs.getSmoothColor(a.color));				
 			}
 		}
 
@@ -162,8 +166,8 @@ public class Cell extends Generator {
 		/** The dy. */
 		int dy;
 		
-		/** The b. */
-		int r,g,b;
+		/** The color */
+		int color;
 
 		/**
 		 * Instantiates a new attractor.
@@ -177,9 +181,7 @@ public class Cell extends Generator {
 			while (this.dy==0) {
 				this.dy=-1+random.nextInt(2); 
 			}
-			this.r=random.nextInt(255);
-			this.g=random.nextInt(255);
-			this.b=random.nextInt(255);
+			this.color=random.nextInt(255);
 		}
 
 		/**
@@ -195,17 +197,12 @@ public class Cell extends Generator {
 			if (this.y<0 || this.y>internalBufferYSize/RENDERSIZE) {
 				this.dy=-this.dy;
 			}
-
-			int rnd = random.nextInt(111);
+			
+			int rnd = random.nextInt(100);
 			if (rnd==3) {
-				this.r=random.nextInt(255);
+				this.color=random.nextInt(255);
 			}
-			if (rnd==44) {
-				this.g=random.nextInt(255);
-			}
-			if (rnd==99) {
-				this.b=random.nextInt(255);
-			}
+			
 		}
 		
 		/**

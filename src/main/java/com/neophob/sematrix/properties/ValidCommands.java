@@ -104,16 +104,7 @@ public enum ValidCommands {
 	
 	/** The COLOR_SCROLL_OPT. */
 	COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
-	
-	/** The COLOR_SCROLL_OPT. */
-	COLOR_SCROLL_MAP(CommandGroup.GENERATOR, 1, "<STRING> color map for the color scroll generator"),
-	
-	/** The COLOR_SCROLL_OPT. */
-	COLOR_FADE_MAP(CommandGroup.GENERATOR, 1, "<STRING> color map for the color fade generator"),
-	
-	/** The COLOR_SCROLL_OPT. */
-	PLASMA_MAP(CommandGroup.GENERATOR, 1, "<STRING> color map for the plasma generator"),
-	
+		
 	/** The COLOR_SCROLL_OPT. */
 	COLOR_FADE_LENGTH (CommandGroup.GENERATOR, 1, "<INT> fading length for the color fade generator"),
 	
@@ -134,6 +125,8 @@ public enum ValidCommands {
 	
 	/** The CURRENT visual. */
 	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual"),
+
+	CURRENT_COLORSET(CommandGroup.VISUAL, 1, "<INT> select actual ColorSet"),
 
 	/** The CURRENT output. */
 	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output"),

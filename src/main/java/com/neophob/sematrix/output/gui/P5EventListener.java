@@ -214,6 +214,11 @@ public class P5EventListener implements ControlListener {
             	name = theEvent.getStringValue();
             	LOG.log(Level.INFO, selection+" "+name);
             	break;
+            
+            case COLOR_SET_DROPDOWN:            	
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.CURRENT_COLORSET, value);
+            	break;
             	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);

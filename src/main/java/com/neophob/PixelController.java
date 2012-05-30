@@ -154,6 +154,12 @@ public class PixelController extends PApplet {
 
 		ApplicationConfigurationHelper applicationConfig = getAppliactionConfiguration();		
 		this.collector = Collector.getInstance();
+		
+		//load palette
+		List<ColorSet> colorSets = getColorPalettes();
+		this.collector.setColorSets(colorSets);
+		this.collector.setCurrentColorSet(0);
+		
 		this.collector.init(this, applicationConfig);
 		
 		//set processing related settings
@@ -162,10 +168,7 @@ public class PixelController extends PApplet {
 				
 		//load output device
 		getOutputDevice(applicationConfig);
-		
-		//load palette
-		List<ColorSet> colorSets = getColorPalettes();
-		
+				
 		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 		
 		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {

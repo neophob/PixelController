@@ -372,33 +372,6 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case COLOR_SCROLL_MAP:
-				try {
-					String colorMap = msg[1];
-					col.getPixelControllerGenerator().setColorScrollColorMap(colorMap);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
-			case COLOR_FADE_MAP:
-				try {
-					String colorMap = msg[1];
-					col.getPixelControllerGenerator().setColorFadeColorMap(colorMap);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
-			case PLASMA_MAP:
-				try {
-					String colorMap = msg[1];
-					col.getPixelControllerGenerator().setPlasmaColorMap(colorMap);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
 			case COLOR_FADE_LENGTH:
 				try {
 					int length = Integer.parseInt(msg[1]);
@@ -506,6 +479,12 @@ public final class MessageProcessor {
 				Collector.getInstance().saveScreenshot();
 				LOG.log(Level.INFO, "Saved some screenshots");
 				break;
+				
+			//change current colorset
+			case CURRENT_COLORSET:
+				int a = Integer.parseInt(msg[1]);
+				Collector.getInstance().setCurrentColorSet(a);
+				return ValidCommands.STATUS_MINI;
 				
 			default:
 				StringBuffer sb = new StringBuffer();

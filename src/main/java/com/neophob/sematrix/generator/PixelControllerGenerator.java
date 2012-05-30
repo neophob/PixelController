@@ -76,9 +76,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The textwriter. */
     private Textwriter textwriter;
     
-    /** The Plasma2 */
-    private Plasma2 plasma2;
-
     private ApplicationConfigurationHelper ph;
 
     /**
@@ -100,7 +97,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
         image = new Image(this, fileImageSimple);
 
-        plasma2 = new Plasma2(this, ph.getPlasmaColorValues());
+        new Plasma2(this);
         
         new PlasmaAdvanced(this);
         new Fire(this);
@@ -123,8 +120,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new FFTSpectrum(this);
         new Geometrics(this);                
         new ScreenCapture(this, ph.parseScreenCaptureOffset(), ph.parseScreenCaptureWindowSizeX(), ph.parseScreenCaptureWindowSizeY());
-        colorScroll = new ColorScroll(this, ph.getColorScrollValues());
-        colorFade = new ColorFade(this, ph.getColorFadeValues());
+        colorScroll = new ColorScroll(this);
+        colorFade = new ColorFade(this);
     }
 
     /* (non-Javadoc)
@@ -140,13 +137,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
-        ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());
-        ret.add(ValidCommands.COLOR_SCROLL_MAP+" "+colorScroll.getColorMapAsString());
-        
+        ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());        
         ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());        
-        ret.add(ValidCommands.COLOR_FADE_MAP+" "+colorFade.getColorMapAsString());
         
-        ret.add(ValidCommands.PLASMA_MAP+" "+plasma2.getColorMapAsString());
         return ret;
     }
 
@@ -376,18 +369,5 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public void setText(String text) {
         textwriter.createTextImage(text);
     }
-
-    public void setColorScrollColorMap(String colorMap) {
-        colorScroll.setColorMap(colorMap);
-    }
-
-    public void setColorFadeColorMap(String colorMap) {
-        colorFade.setColorMap(colorMap);
-    }
-
-    public void setPlasmaColorMap(String colorMap) {
-        plasma2.setColorMap(colorMap);
-    }
-
 
 }

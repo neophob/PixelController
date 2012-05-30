@@ -772,13 +772,6 @@ public class ApplicationConfigurationHelper {
     	return list;
     }
 
-    /**
-     * 
-     * @return
-     */
-    public List<Integer> getColorScrollValues() {
-    	return parseRgbColors(ConfigConstant.COLORSCROLL_RGBCOLOR);
-    }
 
     /**
      * 
@@ -806,23 +799,6 @@ public class ApplicationConfigurationHelper {
 			}	
     	}
     	return ret;
-    }
-    
-    
-    /**
-     * 
-     * @return
-     */
-    public List<Integer> getColorFadeValues() {
-    	return parseRgbColors(ConfigConstant.COLORFADE_RGBCOLOR);
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public List<Integer> getPlasmaColorValues() {
-        return parseRgbColors(ConfigConstant.PLASMA_RGBCOLOR);
     }
 
 }
