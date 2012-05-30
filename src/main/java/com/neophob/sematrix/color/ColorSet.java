@@ -78,15 +78,20 @@ public class ColorSet {
 	 * @return
 	 */
 	public int getSmoothColor(int pos) {
-		pos %= 255;
-		int ofs=0;
-		while (pos > boarderCount) {
-			pos -= boarderCount;
-			ofs++;
-		}
+		try {
+			pos %= 255;
+			int ofs=0;
+			while (pos > boarderCount) {
+				pos -= boarderCount;
+				ofs++;
+			}
 
-		int targetOfs = (ofs+1)%colors.length;
-		return calcSmoothColor(colors[targetOfs], colors[ofs], pos);
+			int targetOfs = (ofs+1)%colors.length;
+			return calcSmoothColor(colors[targetOfs], colors[ofs], pos);			
+		} catch (Exception e) {
+			//if we switch to another smooth color, an exception must be catched here
+			return 0;
+		}
 	}
 
 	/**
