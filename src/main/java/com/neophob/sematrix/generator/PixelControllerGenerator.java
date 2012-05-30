@@ -31,7 +31,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -79,12 +79,12 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The Plasma2 */
     private Plasma2 plasma2;
 
-    private PropertiesHelper ph;
+    private ApplicationConfigurationHelper ph;
 
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(PropertiesHelper ph) {
+    public PixelControllerGenerator(ApplicationConfigurationHelper ph) {
         allGenerators = new CopyOnWriteArrayList<Generator>();	
         this.ph = ph;
     }

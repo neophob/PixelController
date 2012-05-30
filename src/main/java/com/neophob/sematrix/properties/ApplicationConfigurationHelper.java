@@ -41,10 +41,10 @@ import com.neophob.sematrix.output.OutputDeviceEnum;
  *
  * @author michu
  */
-public class PropertiesHelper {
+public class ApplicationConfigurationHelper {
 
     /** The log. */
-    private static final Logger LOG = Logger.getLogger(PropertiesHelper.class.getName());
+    private static final Logger LOG = Logger.getLogger(ApplicationConfigurationHelper.class.getName());
 
     private static final int DEFAULT_RESOLUTION = 8;
     
@@ -98,7 +98,7 @@ public class PropertiesHelper {
      *
      * @param input the input
      */
-    public PropertiesHelper(Properties config) {
+    public ApplicationConfigurationHelper(Properties config) {
         this.config = config;
         
         int rainbowduinoDevices = parseI2cAddress();

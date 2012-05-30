@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import processing.serial.Serial;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Output device for adavision
@@ -53,7 +53,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 	 * @param ph
 	 * @param controller
 	 */
-	public AdaVision(PropertiesHelper ph, PixelControllerOutput controller) {
+	public AdaVision(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.ADAVISION, ph, controller, 8);
 
 		LOG.log(Level.INFO,	"Initialize AdaVision lib v{0}", VERSION);

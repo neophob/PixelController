@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * The Class ArduinoOutput.
@@ -50,7 +50,7 @@ public abstract class ArduinoOutput extends Output {
 	 * @param ph the ph
 	 * @param controller the controller
 	 */
-	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		super(outputDeviceEnum, ph, controller, bpp);
 	}
 	

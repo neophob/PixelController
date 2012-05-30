@@ -39,7 +39,7 @@ public class PropertiesHelperTest {
     @Test
     public void testEmptyConfig() {	    
         Properties config = new Properties();     
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
         assertEquals(0, ph.getDeviceXResolution());
@@ -56,7 +56,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
         config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
         assertEquals(8, ph.getDeviceXResolution());
@@ -72,7 +72,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.RAINBOWDUINO_ROW1, "5,6");
         config.put(ConfigConstant.RAINBOWDUINO_ROW2, "0x7,8");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
         assertEquals(8, ph.getDeviceXResolution());
@@ -87,7 +87,7 @@ public class PropertiesHelperTest {
     public void testArtnetConfig() {     
         Properties config = new Properties();
         config.put(ConfigConstant.ARTNET_IP, "192.168.1.1");        
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
         assertEquals(8, ph.getDeviceXResolution());
@@ -106,7 +106,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "13");
         config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
         config.put(ConfigConstant.MINIDMX_BAUDRATE, "115200");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
         assertEquals(10, ph.getDeviceXResolution());
@@ -123,7 +123,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "4");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "4");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(8, ph.getNrOfScreens());
         assertEquals(8, ph.getDeviceXResolution());
@@ -139,7 +139,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
         config.put(ConfigConstant.ARTNET_IP, "192.168.4.2");
-        new PropertiesHelper(config);
+        new ApplicationConfigurationHelper(config);
     }
 
 
@@ -148,7 +148,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
         config.put(ConfigConstant.PIXELINVADERS_ROW2, "NO_ROTATE");
-        new PropertiesHelper(config);
+        new ApplicationConfigurationHelper(config);
     }    
 
     @Test(expected = IllegalStateException.class)
@@ -156,7 +156,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "4");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "2");
-        new PropertiesHelper(config).getLayout();        
+        new ApplicationConfigurationHelper(config).getLayout();        
     }    
 
     @Test(expected = IllegalArgumentException.class)
@@ -164,7 +164,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,4,2,1,8");
         config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
-        new PropertiesHelper(config).getLayout();        
+        new ApplicationConfigurationHelper(config).getLayout();        
     }    
 
     @Test
@@ -174,7 +174,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "2");
         config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,7");
         config.put(ConfigConstant.ARTNET_IP, "1.1.1.1");        
-        new PropertiesHelper(config).getLayout();        
+        new ApplicationConfigurationHelper(config).getLayout();        
     }        
 
     @Test(expected = IllegalArgumentException.class)
@@ -184,7 +184,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "2");
         config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,4,2,1,8");
         config.put(ConfigConstant.ARTNET_IP, "1.1.1.1");
-        new PropertiesHelper(config).getLayout();        
+        new ApplicationConfigurationHelper(config).getLayout();        
     }    
 
     @Test
@@ -192,7 +192,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "3");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
-        PropertiesHelper ph = new PropertiesHelper(config);        
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);        
         assertEquals(3, ph.getNrOfScreens());
         assertEquals(LayoutName.HORIZONTAL, ph.getLayout().getLayoutName());
     }    
@@ -202,7 +202,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "3");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "3");
-        PropertiesHelper ph = new PropertiesHelper(config);        
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);        
         assertEquals(6, ph.getNrOfScreens());
         assertEquals(LayoutName.BOX, ph.getLayout().getLayoutName());
     }    
@@ -211,7 +211,7 @@ public class PropertiesHelperTest {
     public void testColorScroll() {
         Properties config = new Properties();
         config.put(ConfigConstant.COLORSCROLL_RGBCOLOR, "0xff8080, 0xffff00, 0x80ff80, 0xff0080, 0xff0080");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         List<Integer> l = ph.getColorScrollValues();
         assertEquals(5, l.size());
         assertEquals(Integer.valueOf(16744576), l.get(0));
@@ -220,18 +220,18 @@ public class PropertiesHelperTest {
     @Test
     public void testLoadPresetOnStartup() {
         Properties config = new Properties();
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         int presetNr = ph.loadPresetOnStart();
         assertEquals(-1, presetNr);
         
         config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "22");
-        ph = new PropertiesHelper(config);
+        ph = new ApplicationConfigurationHelper(config);
         presetNr = ph.loadPresetOnStart();
         assertEquals(22, presetNr);
         
         config = new Properties();
         config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "2222");
-        ph = new PropertiesHelper(config);
+        ph = new ApplicationConfigurationHelper(config);
         presetNr = ph.loadPresetOnStart();
         assertEquals(-1, presetNr);
     }
@@ -240,7 +240,7 @@ public class PropertiesHelperTest {
     public void testAdaVision() {
         Properties config = new Properties();        
         config.put(ConfigConstant.ADAVISION_DEVICE, "true");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
     }
     
@@ -250,7 +250,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.ADAVISION_DEVICE, "true");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
         assertEquals(null, ph.getAdavisionSerialPort());
     }
@@ -262,7 +262,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
         config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/xxx");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
         assertEquals("/dev/xxx", ph.getAdavisionSerialPort());
     }
@@ -273,11 +273,11 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.ADAVISION_DEVICE, "true");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(0, ph.getAdavisionSerialPortSpeed());
         
         config.put(ConfigConstant.ADAVISION_SERIAL_SPEED, "115200");
-        ph = new PropertiesHelper(config);
+        ph = new ApplicationConfigurationHelper(config);
         assertEquals(115200, ph.getAdavisionSerialPortSpeed());
     }
     
@@ -286,7 +286,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
         config.put(ConfigConstant.CFG_PANEL_COLOR_ORDER, "RBG");
-        PropertiesHelper ph = new PropertiesHelper(config);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(2, ph.getNrOfScreens());
         assertEquals(ColorFormat.RBG, ph.getColorFormat().get(0));        

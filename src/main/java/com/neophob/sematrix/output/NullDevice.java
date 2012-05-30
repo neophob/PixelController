@@ -19,7 +19,7 @@
 
 package com.neophob.sematrix.output;
 
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * does nothin.
@@ -33,7 +33,7 @@ public class NullDevice extends Output {
 	 *
 	 * @param controller the controller
 	 */
-	public NullDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+	public NullDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.NULL, ph, controller, 8);
 	}
 	

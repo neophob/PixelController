@@ -30,7 +30,7 @@ import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.layout.LayoutModel;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * parent output class.
@@ -76,7 +76,7 @@ public abstract class Output {
 	 * @param controller the controller
 	 * @param bpp the bpp
 	 */
-	public Output(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+	public Output(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		this.outputDeviceEnum = outputDeviceEnum;
 		
 		this.collector = Collector.getInstance();

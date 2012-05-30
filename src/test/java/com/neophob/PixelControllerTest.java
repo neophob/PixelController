@@ -13,7 +13,7 @@ import processing.core.PApplet;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * test start
@@ -27,7 +27,7 @@ public class PixelControllerTest {
 		    Properties config = new Properties();
 	        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
 	        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
-		    PropertiesHelper ph = new PropertiesHelper(config);
+		    ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 			Collector.getInstance().init(this, ph);
 			LOG.log(Level.INFO, "TestProcessingclass initialized");
 		}

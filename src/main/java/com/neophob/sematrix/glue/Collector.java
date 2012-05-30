@@ -44,7 +44,7 @@ import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
 
@@ -126,7 +126,7 @@ public final class Collector {
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
-	private PropertiesHelper ph;
+	private ApplicationConfigurationHelper ph;
 	
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
@@ -162,7 +162,7 @@ public final class Collector {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(PApplet papplet, PropertiesHelper ph) {
+	public synchronized void init(PApplet papplet, ApplicationConfigurationHelper ph) {
 		if (initialized) {
 			return;
 		}
@@ -746,7 +746,7 @@ public final class Collector {
     /**
      * @return the ph
      */
-    public PropertiesHelper getPh() {
+    public ApplicationConfigurationHelper getPh() {
         return ph;
     }
 

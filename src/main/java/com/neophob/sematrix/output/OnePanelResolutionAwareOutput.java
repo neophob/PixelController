@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * The Class ResolutionAwareOutput.
@@ -66,7 +66,7 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
 	 * @param ph the ph
 	 * @param controller the controller
 	 */
-	public OnePanelResolutionAwareOutput(OutputDeviceEnum outputDeviceEnum, PropertiesHelper ph, PixelControllerOutput controller, int bpp) {
+	public OnePanelResolutionAwareOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		super(outputDeviceEnum, ph, controller, bpp);
 		
         this.xResolution = ph.parseOutputXResolution();

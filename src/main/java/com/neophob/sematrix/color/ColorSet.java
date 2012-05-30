@@ -22,6 +22,7 @@ package com.neophob.sematrix.color;
 import java.util.Random;
 
 /**
+ * This class defines a color set
  * 
  * @author michu
  *

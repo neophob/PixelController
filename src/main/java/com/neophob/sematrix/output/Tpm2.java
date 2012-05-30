@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.tpm2.Tpm2Protocol;
 import com.neophob.sematrix.output.tpm2.Tpm2Serial;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to a Tpm2 Device. this protocol is a successor of miniDMX aand
@@ -47,7 +47,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	 *
 	 * @param controller the controller
 	 */
-	public Tpm2(PropertiesHelper ph, PixelControllerOutput controller) {
+	public Tpm2(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.TPM2, ph, controller, 8);
 		
 		int baud = ph.parseMiniDmxBaudRate();

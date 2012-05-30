@@ -27,7 +27,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to the PixelInvaders Device.
@@ -56,7 +56,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public PixelInvadersDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+	public PixelInvadersDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);
 		
 		this.displayOptions = ph.getLpdDevice();

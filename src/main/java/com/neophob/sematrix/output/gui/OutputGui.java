@@ -25,7 +25,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * The low resolution software matrix 
@@ -66,7 +66,7 @@ public class OutputGui {
 	 *
 	 * @param controller the controller
 	 */
-	public OutputGui(PropertiesHelper ph, Output output) {
+	public OutputGui(ApplicationConfigurationHelper ph, Output output) {
 		this.output = output;
 		this.ledSize = ph.getLedPixelSize();
 		this.collector = Collector.getInstance();

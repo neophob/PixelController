@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to a miniDMX Device via serial line
@@ -46,7 +46,7 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 	 *
 	 * @param controller the controller
 	 */
-	public MiniDmxDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+	public MiniDmxDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.MINIDMX, ph, controller, 8);
 		
 		int baud = ph.parseMiniDmxBaudRate();

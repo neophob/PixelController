@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.neorainbowduino.Rainbowduino;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to Rainbowduino.
@@ -49,7 +49,7 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	 * @param controller the controller
 	 * @param allI2cAddress the all i2c address
 	 */
-	public RainbowduinoDevice(PropertiesHelper ph, PixelControllerOutput controller) {
+	public RainbowduinoDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.RAINBOWDUINO, ph, controller, 4);
 		
 		this.allI2cAddress = ph.getI2cAddr();		

@@ -41,7 +41,7 @@ import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.output.gui.OutputGui;
 import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.properties.PropertiesHelper;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * The Class PixelController.
@@ -53,8 +53,8 @@ public class PixelController extends PApplet {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
 
-	/** The Constant CONFIG_FILENAME. */
-	private static final String CONFIG_FILENAME = "data/config.properties";
+	/** The Constant APPLICATION_CONFIG_FILENAME. */
+	private static final String APPLICATION_CONFIG_FILENAME = "data/config.properties";
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
@@ -79,40 +79,39 @@ public class PixelController extends PApplet {
 
 		Properties config = new Properties();
 		try {
-			config.load(createInput(CONFIG_FILENAME));
+			config.load(createInput(APPLICATION_CONFIG_FILENAME));
 			LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to load Config", e);
 			throw new IllegalArgumentException("Configuration error!", e);
 		}
-
-		PropertiesHelper ph = new PropertiesHelper(config);
+		ApplicationConfigurationHelper applicationConfig = new ApplicationConfigurationHelper(config);
 
 		this.collector = Collector.getInstance();
-		this.collector.init(this, ph);
-		frameRate(ph.parseFps());
+		this.collector.init(this, applicationConfig);
+		frameRate(applicationConfig.parseFps());
 		noSmooth();
 		
-		OutputDeviceEnum outputDeviceEnum = ph.getOutputDevice();
+		OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
 			case PIXELINVADERS:
-				this.output = new PixelInvadersDevice(ph, this.collector.getPixelControllerOutput());
+				this.output = new PixelInvadersDevice(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case RAINBOWDUINO:
-				this.output = new RainbowduinoDevice(ph, this.collector.getPixelControllerOutput());
+				this.output = new RainbowduinoDevice(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case ARTNET:
-				this.output = new ArtnetDevice(ph, this.collector.getPixelControllerOutput());
+				this.output = new ArtnetDevice(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case MINIDMX:
-				this.output = new MiniDmxDevice(ph, this.collector.getPixelControllerOutput());
+				this.output = new MiniDmxDevice(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case NULL:
-				this.output = new NullDevice(ph, this.collector.getPixelControllerOutput());
+				this.output = new NullDevice(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case ADAVISION:
-				this.output = new AdaVision(ph, this.collector.getPixelControllerOutput());
+				this.output = new AdaVision(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case TPM2:
 				//TODO
@@ -123,20 +122,20 @@ public class PixelController extends PApplet {
 			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
 		
-		this.matrixEmulator = new OutputGui(ph, this.output);
+		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 		
-		if (ph.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
-			new GeneratorGuiCreator(true, ph.getDebugWindowMaximalXSize());	
+		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
+			new GeneratorGuiCreator(true, applicationConfig.getDebugWindowMaximalXSize());	
 		}
 		
 		//start in random mode?
-		if (ph.startRandommode()) {
+		if (applicationConfig.startRandommode()) {
 			LOG.log(Level.INFO,"Random Mode enabled");
 			Shuffler.manualShuffleStuff();
 			this.collector.setRandomMode(true);
 		}
 		
-		int presetNr = ph.loadPresetOnStart();
+		int presetNr = applicationConfig.loadPresetOnStart();
 		if (presetNr != -1) {
 		    LOG.log(Level.INFO,"Load preset "+presetNr);
 	        List<String> present = this.collector.getPresent().get(presetNr).getPresent();
