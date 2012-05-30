@@ -17,10 +17,11 @@ TODO PixelController
 
 Changelog v1.2 to v1.3
 ------------------------
--Support more output formate (not only RGB and RBG), thanks to noxx6
+-Support more output formats (not only RGB and RBG), thanks to noxx6
 -configuration fixes
 -update AdaVision driver
 -add start scripts for OSX
+-add colorsets, predefined color definition for most effects
 
 
 Changelog v1.1 to v1.2
