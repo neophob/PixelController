@@ -70,7 +70,7 @@ public class GeneratorGuiCreator extends Frame {
         }
        
         //boarder stuff
-        //windowXSize+=2;
+        windowXSize+=20;
         windowYSize+=80+200;
 
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);

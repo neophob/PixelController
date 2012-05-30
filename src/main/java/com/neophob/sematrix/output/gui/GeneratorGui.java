@@ -51,6 +51,7 @@ import controlP5.ControlP5;
 import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
+import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
@@ -139,12 +140,7 @@ public class GeneratorGui extends PApplet {
 
 
 	final String ALWAYS_VISIBLE_TAB = "global";
-	/**
-    cw.tab("default").remove();
-    cw.addTab("noise");
-    cw.addTab("cliffs");
-    cw.activateTab("noise");
-	 */
+
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#setup()
 	 */
@@ -187,7 +183,7 @@ public class GeneratorGui extends PApplet {
 		}
 		selectedOutputs.deactivateAll();*/
 
-		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 520, p5GuiYOffset+145);//480
+		Textlabel tl = cp5.addTextlabel("logo", "PixelController", 540, p5GuiYOffset+145);//480
 		tl.moveTo(ALWAYS_VISIBLE_TAB);
 		tl.setFont(ControlP5.synt24);
 		
@@ -248,26 +244,6 @@ public class GeneratorGui extends PApplet {
 		mixerList.moveTo(ALWAYS_VISIBLE_TAB);
 
 		
-		//Button
-		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
-				5*Theme.DROPBOX_XOFS, p5GuiYOffset-15, 100, 15);
-		randomSelection.setCaptionLabel("RANDOMIZE");
-		randomSelection.moveTo(ALWAYS_VISIBLE_TAB);
-		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),"cross your fingers, randomize everything");
-
-		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
-				5*Theme.DROPBOX_XOFS, p5GuiYOffset+15, 100, 15);
-		randomPresets.setCaptionLabel("RANDOM PRESENT");
-		randomPresets.moveTo(ALWAYS_VISIBLE_TAB);
-		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Load a random preset");
-
-		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
-				5*Theme.DROPBOX_XOFS, p5GuiYOffset+45, 100, 15);
-		toggleRandom.setCaptionLabel("RANDOM MODE");
-		toggleRandom.setState(false);
-		toggleRandom.moveTo(ALWAYS_VISIBLE_TAB);
-		cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(),"Toggle the random mode");		
-
 		//---------------------------------
 		//TABS
 		//---------------------------------
@@ -396,19 +372,6 @@ public class GeneratorGui extends PApplet {
 		cp5.register(null, "SimpleColorPicker", scp);		
 		scp.moveTo(effectTab);
 
-		//palette dropdown list	
-		colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.toString(), 
-				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+56, Theme.DROPBOXLIST_LENGTH, 140);
-		Theme.themeDropdownList(colorSetList);		
-		i=0;
-		for (ColorSet cs: Collector.getInstance().getColorSets()) {
-			colorSetList.addItem(cs.getName(), i);
-			i++;
-		}		
-		colorSetList.setLabel(colorSetList.getItem(1).getName());
-		colorSetList.setGroup(effectTab);		
-		colorSetList.setHeight(100);
-
 				
 		//-----------------
 		//Single Output tab
@@ -462,7 +425,21 @@ public class GeneratorGui extends PApplet {
         		GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
         allOutputTabFader.moveTo(allOutputTab);
 
-        
+		//palette dropdown list	
+		cp5.addTextlabel("colSet", "SELECT COLORSET", 5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+		
+		colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.toString(), 
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+		Theme.themeDropdownList(colorSetList);		
+		i=0;
+		for (ColorSet cs: Collector.getInstance().getColorSets()) {
+			colorSetList.addItem(cs.getName(), i);
+			i++;
+		}		
+		colorSetList.setLabel(colorSetList.getItem(1).getName());
+		colorSetList.setHeight(100);
+		colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
+		
 		//----------
 		//RANDOM Tab
 		//----------				
@@ -482,6 +459,27 @@ public class GeneratorGui extends PApplet {
         .setMode(ControlP5.MULTIPLES)
         .moveTo(randomTab)
         ;
+        
+		//Button
+		randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
+		randomSelection.setCaptionLabel("RANDOMIZE");
+		randomSelection.moveTo(randomTab);
+		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),"cross your fingers, randomize everything");
+
+		randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 100, 15);
+		randomPresets.setCaptionLabel("RANDOM PRESENT");
+		randomPresets.moveTo(randomTab);
+		cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Load a random preset");
+
+		toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
+				5*Theme.DROPBOX_XOFS, p5GuiYOffset+80, 100, 15);
+		toggleRandom.setCaptionLabel("RANDOM MODE");
+		toggleRandom.setState(false);
+		toggleRandom.moveTo(randomTab);
+		cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(),"Toggle the random mode");		
+
         
 		//register event listener
 		cp5.addListener(listener);
@@ -689,6 +687,10 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.MIXER_DROPDOWN)) {
 			mixerList.setOpen(false);
 		}
+		if (!clickedOn.contains(GuiElement.COLOR_SET_DROPDOWN)) {
+			colorSetList.setOpen(false);
+		}
+		
 		if (!clickedOn.contains(GuiElement.BLINKENLIGHTS_DROPDOWN)) {
 			blinkenLightsList.setOpen(false);
 		}
