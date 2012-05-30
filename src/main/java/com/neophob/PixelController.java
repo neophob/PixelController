@@ -144,6 +144,7 @@ public class PixelController extends PApplet {
 			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
 	}
+	
 	/**
 	 * prepare.
 	 */

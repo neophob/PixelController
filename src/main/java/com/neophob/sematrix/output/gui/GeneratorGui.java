@@ -94,12 +94,10 @@ public class GeneratorGui extends PApplet {
 
 	//Effect Tab
 	private SimpleColorPicker scp;
-	private Slider thresholdSlider;
-	private DropdownList colorSetList;
+	private Slider thresholdSlider;	
 	
 	//Generator Tab
-	private DropdownList blinkenLightsList, imageList, textureDeformList, textureDeformOptions;
-	private DropdownList colorScrollList;
+	private DropdownList blinkenLightsList, imageList, textureDeformList, textureDeformOptions;	
 
 	//Output Tab
 	private DropdownList dropdownOutputVisual;
@@ -110,7 +108,8 @@ public class GeneratorGui extends PApplet {
 	private DropdownList allOutputTabVis;
 	private DropdownList allOutputTabFx;
 	private DropdownList allOutputTabFader;
-	
+	private DropdownList colorScrollList;
+	private DropdownList colorSetList;
 
 
 	/** The target y size. */
@@ -346,7 +345,7 @@ public class GeneratorGui extends PApplet {
 		for (ScrollMode sm: ScrollMode.values()) {
 			colorScrollList.addItem(sm.name().replace("_", " "), sm.getMode());
 		}
-		colorScrollList.setLabel(colorScrollList.getItem(1).getName());
+		colorScrollList.setLabel(colorScrollList.getItem(0).getName());
 		colorScrollList.setGroup(generatorTab);		
 		colorScrollList.setHeight(100);
 		
@@ -619,7 +618,6 @@ public class GeneratorGui extends PApplet {
 
 		//get visual status			
 		Visual v = col.getVisual(col.getCurrentVisual());
-
 		if (v!=null) {		    
 			generatorListOne.setLabel(generatorListOne.getItem(v.getGenerator1Idx()).getName());
 			generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
@@ -633,7 +631,10 @@ public class GeneratorGui extends PApplet {
 		dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
 		dropdownOutputEffect.setLabel(dropdownOutputEffect.getItem(om.getEffect().getId()).getName());
 		dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
-
+		
+		ColorSet cs = col.getActiveColorSet();
+		colorSetList.setLabel(cs.getName());
+		
 		return col;
 
 	}
