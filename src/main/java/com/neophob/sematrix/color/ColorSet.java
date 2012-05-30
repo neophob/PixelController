@@ -19,7 +19,13 @@
 
 package com.neophob.sematrix.color;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class defines a color set
@@ -28,84 +34,115 @@ import java.util.Random;
  *
  */
 public class ColorSet {
+	
+	private static final Logger LOG = Logger.getLogger(ColorSet.class.getName());
 
-  private String name;
+	private String name;
 
-  private int[] colors;
-  
-  private int boarderCount;
+	private int[] colors;
 
-  /**
-   * 
-   * @param name
-   * @param colors
-   */
-  public ColorSet(String name, int[] colors) {
-    this.name = name;
-    this.colors = colors.clone();
-    this.boarderCount = 255 / colors.length;
-  }
+	private int boarderCount;
 
-  /**
-   * get ColorSet name
-   * @return
-   */
-  public String getName() {
-    return name;
-  }
+	/**
+	 * 
+	 * @param name
+	 * @param colors
+	 */
+	public ColorSet(String name, int[] colors) {
+		this.name = name;
+		this.colors = colors.clone();
+		this.boarderCount = 255 / colors.length;
+	}
 
-  /**
-   * returns a random color of this set
-   * @return
-   */
-  public int getRandomColor() {
-	Random r = new Random();
-    return this.colors[r.nextInt(colors.length)];
-  }
+	/**
+	 * get ColorSet name
+	 * @return
+	 */
+	public String getName() {
+		return name;
+	}
 
-  /**
-   * return a color defined in this color set 
-   * 
-   * @param pos
-   * @return
-   */
-  public int getSmoothColor(int pos) {
-    pos %= 255;
-    int ofs=0;
-    while (pos > boarderCount) {
-      pos -= boarderCount;
-      ofs++;
-    }
-    
-    int targetOfs = (ofs+1)%colors.length;
-    return calcSmoothColor(colors[targetOfs], colors[ofs], pos);
-  }
-  
-  /**
-   * 
-   * @param col1
-   * @param col2
-   * @param pos
-   * @return
-   */
-  private int calcSmoothColor(int col1, int col2, int pos) {
-    int b= col1&255;
-    int g=(col1>>8)&255;
-    int r=(col1>>16)&255;
-    int b2= col2&255;
-    int g2=(col2>>8)&255;
-    int r2=(col2>>16)&255;
+	/**
+	 * returns a random color of this set
+	 * @return
+	 */
+	public int getRandomColor() {
+		Random r = new Random();
+		return this.colors[r.nextInt(colors.length)];
+	}
 
-    int mul=pos*colors.length;
-    int oppisiteColor = 255-mul;
-    r=(r*mul)/255;
-    g=(g*mul)/255;
-    b=(b*mul)/255;
-    r+=(r2*oppisiteColor)/255;
-    g+=(g2*oppisiteColor)/255;
-    b+=(b2*oppisiteColor)/255;
+	/**
+	 * return a color defined in this color set 
+	 * 
+	 * @param pos
+	 * @return
+	 */
+	public int getSmoothColor(int pos) {
+		pos %= 255;
+		int ofs=0;
+		while (pos > boarderCount) {
+			pos -= boarderCount;
+			ofs++;
+		}
 
-    return (r << 16) | (g << 8) | (b);
-  }
-  
+		int targetOfs = (ofs+1)%colors.length;
+		return calcSmoothColor(colors[targetOfs], colors[ofs], pos);
+	}
+
+	/**
+	 * 
+	 * @param col1
+	 * @param col2
+	 * @param pos
+	 * @return
+	 */
+	private int calcSmoothColor(int col1, int col2, int pos) {
+		int b= col1&255;
+		int g=(col1>>8)&255;
+		int r=(col1>>16)&255;
+		int b2= col2&255;
+		int g2=(col2>>8)&255;
+		int r2=(col2>>16)&255;
+
+		int mul=pos*colors.length;
+		int oppisiteColor = 255-mul;
+		r=(r*mul)/255;
+		g=(g*mul)/255;
+		b=(b*mul)/255;
+		r+=(r2*oppisiteColor)/255;
+		g+=(g2*oppisiteColor)/255;
+		b+=(b2*oppisiteColor)/255;
+
+		return (r << 16) | (g << 8) | (b);
+	}
+
+	/**
+	 * convert entries from the properties file into colorset objects
+	 * @param palette
+	 * @return
+	 */
+	public static List<ColorSet> loadAllEntries(Properties palette) {
+		List<ColorSet> ret = new ArrayList<ColorSet>();
+
+		for (Entry<Object, Object> entry : palette.entrySet()) {
+			try {
+				String setName = (String)entry.getKey();
+				String setColors = (String)entry.getValue();
+				String[] colorsAsString = setColors.split(",");
+				
+				//convert hex string into int
+				int[] colorsAsInt = new int[colorsAsString.length];
+				int ofs=0;
+				for (String s: colorsAsString) {
+					colorsAsInt[ofs++] = Integer.decode(s.trim());
+				}
+				ColorSet cs = new ColorSet(setName, colorsAsInt);
+				ret.add(cs);				
+			} catch (Exception e) {
+				LOG.log(Level.SEVERE, "Failed to load Palette entry!", e);
+			}
+		}
+
+		return ret;
+	}
 }

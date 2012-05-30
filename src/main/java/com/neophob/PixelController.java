@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
@@ -55,6 +56,7 @@ public class PixelController extends PApplet {
 
 	/** The Constant APPLICATION_CONFIG_FILENAME. */
 	private static final String APPLICATION_CONFIG_FILENAME = "data/config.properties";
+	private static final String PALETTE_CONFIG_FILENAME = "data/palette.properties";
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
@@ -70,13 +72,31 @@ public class PixelController extends PApplet {
 	private OutputGui matrixEmulator;
 	
 	/**
-	 * prepare.
+	 * 
+	 * @return
+	 * @throws IllegalArgumentException
 	 */
-	public void setup() {
-	    LOG.log(Level.INFO, "");
-	    LOG.log(Level.INFO, "-----------------------------------");
-		LOG.log(Level.INFO, "--- PixelController Setup START ---");
+	protected List<ColorSet> getColorPalettes() throws IllegalArgumentException {
+		//load palette
+		Properties palette = new Properties();
+		try {
+			palette.load(createInput(PALETTE_CONFIG_FILENAME));
+			List<ColorSet> colorSets = ColorSet.loadAllEntries(palette);
 
+			LOG.log(Level.INFO, "ColorSets loaded, {0} entries", colorSets.size());
+			return colorSets;
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Failed to load Config", e);
+			throw new IllegalArgumentException("Configuration error!", e);
+		}				
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	protected ApplicationConfigurationHelper getAppliactionConfiguration() throws IllegalArgumentException {
 		Properties config = new Properties();
 		try {
 			config.load(createInput(APPLICATION_CONFIG_FILENAME));
@@ -85,13 +105,15 @@ public class PixelController extends PApplet {
 			LOG.log(Level.SEVERE, "Failed to load Config", e);
 			throw new IllegalArgumentException("Configuration error!", e);
 		}
-		ApplicationConfigurationHelper applicationConfig = new ApplicationConfigurationHelper(config);
+		return new ApplicationConfigurationHelper(config);		
+	}
 
-		this.collector = Collector.getInstance();
-		this.collector.init(this, applicationConfig);
-		frameRate(applicationConfig.parseFps());
-		noSmooth();
-		
+	/**
+	 * 
+	 * @param applicationConfig
+	 * @throws IllegalArgumentException
+	 */
+	protected void getOutputDevice(ApplicationConfigurationHelper applicationConfig) throws IllegalArgumentException {
 		OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
 		try {
 			switch (outputDeviceEnum) {
@@ -121,6 +143,28 @@ public class PixelController extends PApplet {
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
 		}
+	}
+	/**
+	 * prepare.
+	 */
+	public void setup() {
+	    LOG.log(Level.INFO, "");
+	    LOG.log(Level.INFO, "-----------------------------------");
+		LOG.log(Level.INFO, "--- PixelController Setup START ---");
+
+		ApplicationConfigurationHelper applicationConfig = getAppliactionConfiguration();		
+		this.collector = Collector.getInstance();
+		this.collector.init(this, applicationConfig);
+		
+		//set processing related settings
+		frameRate(applicationConfig.parseFps());
+		noSmooth();
+				
+		//load output device
+		getOutputDevice(applicationConfig);
+		
+		//load palette
+		List<ColorSet> colorSets = getColorPalettes();
 		
 		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 		
@@ -135,6 +179,7 @@ public class PixelController extends PApplet {
 			this.collector.setRandomMode(true);
 		}
 		
+		//load saves presets
 		int presetNr = applicationConfig.loadPresetOnStart();
 		if (presetNr != -1) {
 		    LOG.log(Level.INFO,"Load preset "+presetNr);
