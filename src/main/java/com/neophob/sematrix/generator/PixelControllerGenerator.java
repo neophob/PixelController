@@ -49,7 +49,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private static final String DEFAULT_TEXT = "PixelInvaders!";
     private static final String DEFAULT_TTF = "04B_03__.TTF";
     private static final String DEFAULT_TTF_SIZE = "82";
-    private static final String DEFAULT_IMAGE_ZOOMER = "bnz20.jpg";
 
     /** The all generators. */
     private List<Generator> allGenerators;
@@ -59,9 +58,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /** The image. */
     private Image image;
-
-    /** The image zoomer. */
-    private ImageZoomer imageZoomer;
 
     /** The ColorScroller. */
     private ColorScroll colorScroll;
@@ -107,8 +103,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
                 ph.getProperty(Textwriter.INITIAL_TEXT, DEFAULT_TEXT)
         );
 
-        String fileImageZoomer = ph.getProperty(ImageZoomer.INITIAL_IMAGE, DEFAULT_IMAGE_ZOOMER);
-        imageZoomer = new ImageZoomer(this, fileImageZoomer);
         new Cell(this);
         new FFTSpectrum(this);
         new Geometrics(this);                
@@ -125,7 +119,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
         ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
         ret.add(ValidCommands.IMAGE+" "+image.getFilename());
-        ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());        
@@ -261,24 +254,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         image.loadFile(fileImageSimple);
 
     }	
-
-    /**
-     * Gets the file image zoomer.
-     *
-     * @return the file image zoomer
-     */
-    public String getFileImageZoomer() {
-        return imageZoomer.getFilename();
-    }
-
-    /**
-     * Sets the file image zoomer.
-     *
-     * @param fileImageZoomer the new file image zoomer
-     */
-    public void setFileImageZoomer(String fileImageZoomer) {
-        imageZoomer.loadImage(fileImageZoomer);
-    }
 
     /**
      * Sets the color scroll direction.

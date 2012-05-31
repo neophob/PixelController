@@ -354,15 +354,6 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case IMAGE_ZOOMER:
-				try {
-					String fileToLoad = msg[1];
-					col.getPixelControllerGenerator().setFileImageZoomer(fileToLoad);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
 			case COLOR_SCROLL_OPT:
 				try {
 					int dir = Integer.parseInt(msg[1]);

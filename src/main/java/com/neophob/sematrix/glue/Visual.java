@@ -390,7 +390,7 @@ public class Visual {
 				new Visual(GeneratorName.FIRE);
 				break;
 			case 6:
-				new Visual(GeneratorName.IMAGE_ZOOMER);
+				new Visual(GeneratorName.FFT);
 				break;
 			case 7:
 				new Visual(GeneratorName.CELL);

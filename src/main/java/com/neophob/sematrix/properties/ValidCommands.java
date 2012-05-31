@@ -93,9 +93,6 @@ public enum ValidCommands {
 	/** The IMAGE. */
 	IMAGE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the simple image generator"),
 	
-	/** The IMAGE zoomer. */
-	IMAGE_ZOOMER(CommandGroup.GENERATOR, 1, "<STRING> image to load for the image zoomer generator"),
-	
 	/** The TEXTDEF. */
 	TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
 	

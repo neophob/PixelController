@@ -70,14 +70,13 @@ public abstract class Generator implements RandomizeState {
 		/** The PIXELIMAGE. */
 		PIXELIMAGE(7),
 		
-		/** The TEXTURE deformation. */
-		//TEXTURE_DEFORMATION(8),
+		COLOR_FADE(8),
 		
 		/** The TEXTWRITER. */
 		TEXTWRITER(9),
 		
 		/** The IMAGE zoomer. */
-		IMAGE_ZOOMER(10),
+		DROPS(10),
 		
 		/** The CELL. */
 		CELL(11),
@@ -88,14 +87,10 @@ public abstract class Generator implements RandomizeState {
 		/** The FFT. */
 		FFT(13),
 		
-		/** The DROPS. */
-		DROPS(14),
-		
 		/** The SCREEN_CAPTURE. */
-		SCREEN_CAPTURE(15), 
-                
-        /** The COLOR_FADE */
-        COLOR_FADE(16);
+		SCREEN_CAPTURE(14), 
+        
+		;
 		
 		/** The id. */
 		private int id;
