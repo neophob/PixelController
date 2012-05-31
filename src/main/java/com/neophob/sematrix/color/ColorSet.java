@@ -87,8 +87,8 @@ public class ColorSet {
 			}
 
 			int targetOfs = (ofs+1)%colors.length;
-			return calcSmoothColor(colors[targetOfs], colors[ofs], pos);			
-		} catch (Exception e) {
+			return calcSmoothColor(colors[targetOfs], colors[ofs%colors.length], pos);			
+		} catch (Exception e) {			
 			//if we switch to another smooth color, an exception must be catched here
 			return 0;
 		}
