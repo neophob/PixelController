@@ -53,8 +53,7 @@ public class PixelControllerMixer implements PixelControllerElement {
 		new NegativeMultiply(this);
 		new Checkbox(this);
 		new Voluminizer(this);
-		new Xor(this);
-		new MinusHalf(this);
+		new GreyMix(this);
 		new Either(this);
 	}
 	

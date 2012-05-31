@@ -22,6 +22,9 @@ Changelog v1.2 to v1.3
 -add start scripts for OSX
 -add colorsets, predefined color definition for most effects
 -add flip effects
+-add GreyMixer
+-removed emboss effect, as the result was ugly
+-removed Xor and MinusHalf mixer, as the result was ugly
 
 
 Changelog v1.1 to v1.2

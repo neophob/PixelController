@@ -73,7 +73,7 @@ public class AddSat extends Mixer {
 				b = 255;
 			}
 			
-			dst[i] = (int)(r << 16) | (g << 8) | b;
+			dst[i] = (int)(r << 16) | (g << 8) | b;		
 		}
 
 		return dst;

@@ -72,7 +72,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		new Voluminize(this);
 		tint = new Tint(this);
 		threshold = new Threshold(this);
-		new Emboss(this);
+		
 		new Zoom(this);
 		new FlipY(this);
 		new FlipX(this);

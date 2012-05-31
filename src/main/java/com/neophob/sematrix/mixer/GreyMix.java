@@ -19,57 +19,59 @@
 
 package com.neophob.sematrix.mixer;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * The Class Xor.
+ * convert rgb values as greyscale
  */
-public class Xor extends Mixer {
+public class GreyMix extends Mixer {
 
 	/**
 	 * Instantiates a new xor.
 	 *
 	 * @param controller the controller
 	 */
-	public Xor(PixelControllerMixer controller) {
-		super(controller, MixerName.XOR, ResizeName.QUALITY_RESIZE);
+	public GreyMix(PixelControllerMixer controller) {
+		super(controller, MixerName.GREYMIX, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
 	 */
-	public int[] getBuffer(Visual visual) {
-		short redSource, greenSource, blueSource;
-		short redDest, greenDest, blueDest;
-		int col;
-		
+	public int[] getBuffer(Visual visual) {		
 		if (visual.getEffect2() == null) {
 			return visual.getEffect1Buffer();
 		}
 		
+		short r,g,b;
+		int col_s;
+
 		Generator gen1 = visual.getGenerator1();		
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
 		int[] dst = new int [gen1.internalBuffer.length];
 
-		for (int i=0; i<gen1.internalBuffer.length; i++){
-			col = src1[i];
-    		redSource=(short) ((col>>16)&255);
-    		greenSource=(short) ((col>>8) &255);
-    		blueSource=(short) ( col     &255);
-    		
-			col = src2[i];
-    		redDest  =(short) ((col>>16)&255);
-    		greenDest=(short) ((col>>8) &255);
-    		blueDest =(short) ( col     &255);
-    		
-    		redDest   = (short) (redDest ^ redSource);
-    		greenDest = (short) (greenDest ^ greenSource);
-    		blueDest  = (short) (blueDest ^ blueSource);
-    		
-    		dst[i]=(int) ((redDest << 16) | (greenDest << 8) | blueDest);
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
+		
+		for (int i=0; i<gen1.internalBuffer.length; i++){	
+			col_s = src1[i];
+			r = (short) ((col_s>>16) & 255);
+			g = (short) ((col_s>>8)  & 255);
+			b = (short) ( col_s      & 255);
+			int val = (int)(r*0.3f+g*0.59f+b*0.11f);
+
+			col_s = src2[i];
+			r = (short) ((col_s>>16) & 255);
+			g = (short) ((col_s>>8)  & 255);
+			b = (short) ( col_s      & 255);
+			val += (int)(r*0.3f+g*0.59f+b*0.11f);
+			
+			val/=2;
+    		dst[i]=cs.getSmoothColor(val);
           }
 	
 		return dst;
