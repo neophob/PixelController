@@ -66,8 +66,9 @@ public abstract class Effect implements RandomizeState {
 		/** The ZOOM. */
 		ZOOM(9),
 		
-		FLIP_Y(10)
+		FLIP_Y(10),
 		
+		FLIP_X(11),
 		;
 
 		/** The id. */

@@ -75,6 +75,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		new Emboss(this);
 		new Zoom(this);
 		new FlipY(this);
+		new FlipX(this);
 	}
 	
 	/* (non-Javadoc)
