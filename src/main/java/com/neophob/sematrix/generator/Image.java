@@ -64,6 +64,8 @@ public class Image extends Generator {
 	//store applied color set
 	private String colorSetName;
 	
+	private PImage tmp;
+	
 	/**
 	 * Instantiates a new image.
 	 *
@@ -81,44 +83,19 @@ public class Image extends Generator {
 	 * @param filename the filename
 	 */
 	public void loadFile(String filename) {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-
 		//only load if needed
-		if (StringUtils.equals(filename, this.filename) && cs.getName().equals(colorSetName)) {
+		if (StringUtils.equals(filename, this.filename)) {
 			LOG.log(Level.INFO, "new filename does not differ from old: "+Image.PREFIX+filename);
 			return;
 		}
 		
 		this.filename = filename;
 		try {
-			PImage tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
+			tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
 			if (tmp==null || tmp.height<2) {
 				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename+" "+tmp);
 				return;
-			}
-			LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-
-			PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
-			
-			tmp.loadPixels();
-			this.internalBuffer = res.resizeImage(RESIZE_TYP, tmp.pixels, 
-					tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
-			tmp.updatePixels();
-			
-			//convert image to greyscale, the use to colorset to colorize it
-			short r,g,b;
-			int rgbColor;
-			colorSetName = cs.getName();
-			
-			for (int i=0; i<this.internalBuffer.length; i++){
-				rgbColor = this.internalBuffer[i];
-				r = (short) ((rgbColor>>16) & 255);
-				g = (short) ((rgbColor>>8)  & 255);
-				b = (short) ( rgbColor      & 255);
-				int val = (int)(r*0.3f+g*0.59f+b*0.11f);
-				this.internalBuffer[i]=cs.getSmoothColor(val);
-			}
-
+			}			
 		} catch (Exception e) {			
 			LOG.log(Level.WARNING,
 					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
@@ -131,7 +108,34 @@ public class Image extends Generator {
 	 */
 	@Override
 	public void update() {
-		//just relax here...
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
+		
+		//colorize if needed
+		if (cs.getName().equals(colorSetName)) {
+			return;
+		}
+		
+		LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
+		PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
+		tmp.loadPixels();
+		this.internalBuffer = res.resizeImage(RESIZE_TYP, tmp.pixels, 
+				tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
+		tmp.updatePixels();
+
+		//convert image to greyscale, the use to colorset to colorize it
+		short r,g,b;
+		int rgbColor;
+		colorSetName = cs.getName();
+		
+		for (int i=0; i<this.internalBuffer.length; i++){
+			rgbColor = this.internalBuffer[i];
+			r = (short) ((rgbColor>>16) & 255);
+			g = (short) ((rgbColor>>8)  & 255);
+			b = (short) ( rgbColor      & 255);
+			int val = (int)(r*0.3f+g*0.59f+b*0.11f);
+			this.internalBuffer[i]=cs.getSmoothColor(val);
+		}
+
 	}
 
 	/* (non-Javadoc)
