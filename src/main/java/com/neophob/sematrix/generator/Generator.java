@@ -71,7 +71,7 @@ public abstract class Generator implements RandomizeState {
 		PIXELIMAGE(7),
 		
 		/** The TEXTURE deformation. */
-		TEXTURE_DEFORMATION(8),
+		//TEXTURE_DEFORMATION(8),
 		
 		/** The TEXTWRITER. */
 		TEXTWRITER(9),

@@ -260,7 +260,7 @@ public final class Shuffler {
 			}
 			
 			if (blah == 12) {
-				col.getPixelControllerGenerator().getGenerator(GeneratorName.TEXTURE_DEFORMATION).shuffle();
+				col.getPixelControllerEffect().getEffect(EffectName.TEXTURE_DEFORMATION).shuffle();
 			}
 
 			if (blah == 16) {

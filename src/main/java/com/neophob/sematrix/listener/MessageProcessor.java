@@ -393,16 +393,7 @@ public final class MessageProcessor {
             case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
-					col.getPixelControllerGenerator().setTextureDeformationLut(lut);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
-			case TEXTDEF_FILE:
-				try {
-					String fileToLoad = msg[1];
-					col.getPixelControllerGenerator().setFileTextureDeformation(fileToLoad);
+					col.getPixelControllerEffect().setTextureDeformationLut(lut);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}

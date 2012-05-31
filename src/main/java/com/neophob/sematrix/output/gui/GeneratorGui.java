@@ -97,7 +97,7 @@ public class GeneratorGui extends PApplet {
 	private Slider thresholdSlider;	
 	
 	//Generator Tab
-	private DropdownList blinkenLightsList, imageList, textureDeformList, textureDeformOptions;	
+	private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
 
 	//Output Tab
 	private DropdownList dropdownOutputVisual;
@@ -298,12 +298,11 @@ public class GeneratorGui extends PApplet {
 		imageList.setGroup(generatorTab);		
 		imageList.setHeight(100);
 		
-		cp5.addTextlabel("genTextdefImg", "LOAD TEXTUREDEFORM IMAGE", 3+2*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-		cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", 3+2*Theme.DROPBOX_XOFS, 32+yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+		cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", 3+2*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
 		//texturedeform options		
 		textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.toString(), 
-				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16*3, Theme.DROPBOXLIST_LENGTH, 140);
+				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(textureDeformOptions);		
 
 		textureDeformOptions.addItem("Anamorphosis", 1);
@@ -321,19 +320,6 @@ public class GeneratorGui extends PApplet {
 		textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
 		textureDeformOptions.setGroup(generatorTab);		
 		textureDeformOptions.setHeight(80);
-
-		//texturedeform image file
-		textureDeformList = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_IMAGE_DROPDOWN.toString(), 
-				2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
-		Theme.themeDropdownList(textureDeformList);		
-		i=0;
-		for (String s: FileUtils.findImagesFiles(path)) {
-			textureDeformList.addItem(s, i);
-			i++;
-		}
-		textureDeformList.setLabel(textureDeformList.getItem(1).getName());
-		textureDeformList.setGroup(generatorTab);		
-		textureDeformList.setHeight(100);
 
 		//colorscroll options
 		cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", 3+3*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
@@ -706,9 +692,6 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN)) {
 			dropdownOutputVisual.setOpen(false);
 		}
-		if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_IMAGE_DROPDOWN)) {
-			textureDeformList.setOpen(false);
-		}
 		if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_OPTIONS)) {
 			textureDeformOptions.setOpen(false);
 		}
@@ -725,10 +708,6 @@ public class GeneratorGui extends PApplet {
 		if (!clickedOn.contains(GuiElement.OUTPUT_ALL_EFFECT_DROPDOWN)) {
 			allOutputTabFx.setOpen(false);
 		}
-
-		
-		
-		
 		
 	}
 

@@ -23,6 +23,7 @@ Changelog v1.2 to v1.3
 -add colorsets, predefined color definition for most effects
 -add flip effects
 -add GreyMixer
+-Texturedeform is not a generator anymore but an effect
 -removed emboss effect, as the result was ugly
 -removed Xor and MinusHalf mixer, as the result was ugly
 

@@ -17,71 +17,100 @@
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.neophob.sematrix.generator;
+package com.neophob.sematrix.effect;
 
-import java.security.InvalidParameterException;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import processing.core.PConstants;
-import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
+
 /**
- * The Class TextureDeformation.
- *
- * @author michu
+ * The Class Tint.
  */
-public class TextureDeformation extends Generator {	
-
-    public static final String INITIAL_IMAGE = "initial.texture";
-    
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(TextureDeformation.class.getName());
-
-	//TODO should be dynamic someday, maybe move settings to the properties file
-	private static final String TEXTURE_FILES[] = new String[] {
-			"1316.jpg", "ceiling.jpg", "circle.jpg", "gradient.jpg", 
-			"check.jpg", "hsv.jpg", "hls.jpg"};
+public class TextureDeformation extends Effect {
 
 	/** The h. */
 	private int w, h;
-	
+
 	/** The m lut. */
 	private int[] lookUpTable;
-	
-	/** The texture img. */
-	private PImage textureImg;
-	
+
 	/** The time displacement. */
 	private int timeDisplacement;
-	
+
 	/** The lut. */
 	private int selectedLut;
-	
-	/** The filename. */
-	private String filename;
 
 	/**
-	 * Instantiates a new texture deformation.
+	 * Instantiates a new tint.
 	 *
 	 * @param controller the controller
-	 * @param filename the filename
 	 */
-	public TextureDeformation(PixelControllerGenerator controller, String filename) {
-		super(controller, GeneratorName.TEXTURE_DEFORMATION, ResizeName.PIXEL_RESIZE);
-		w = getInternalBufferXSize();
-		h = getInternalBufferYSize();
+	public TextureDeformation(PixelControllerEffect controller) {
+		super(controller, EffectName.TEXTURE_DEFORMATION, ResizeName.QUALITY_RESIZE);
+
+		w = this.internalBufferXSize;
+		h = this.internalBufferYSize;
 		lookUpTable =  new int[3 * w * h];
-		
+
 		// use higher resolution textures if things get to pixelated
-		this.selectedLut=9;
-		loadFile(filename);
+		this.selectedLut=7;
+		changeLUT(selectedLut);
 	}
+
+
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
+	 */
+	public int[] getBuffer(int[] buffer) {
+		int[] ret = new int[buffer.length];
+
+		for (int pixelCount = 0; pixelCount < buffer.length; pixelCount++)
+		{
+			int o = (pixelCount << 1) + pixelCount;  // equivalent to 3 * pixelCount
+			int u = lookUpTable[o+0] + timeDisplacement;    // to look like its animating, add timeDisplacement
+			int v = lookUpTable[o+1] + timeDisplacement;
+			int adjustBrightness = lookUpTable[o+2];
+
+			// get the R,G,B values from texture
+			//int currentPixel = textureImg.pixels[textureImg.width * (v & textureImg.height-1) + (u & textureImg.width-1)];
+			int currentPixel = buffer[w * (v & h-1) + (u & w-1)];
+
+			// only apply brightness if it was calculated
+			if (adjustBrightness != 0) {       
+				int r,g,b;
+
+				// disassemble pixel using bit mask to remove color components for greater speed
+				r = currentPixel >> 16 & 0xFF;  
+			g = currentPixel >> 8 & 0xFF;   
+		b = currentPixel & 0xFF;              
+
+		// make darker or brighter
+		r += adjustBrightness;
+		g += adjustBrightness;
+		b += adjustBrightness;
+
+		// constrain RGB to make sure they are within 0-255 color range
+		r = constrain(r,0,255);
+		g = constrain(g,0,255);
+		b = constrain(b,0,255);
+
+		// reassemble colors back into pixel
+		currentPixel = (r << 16) | (g << 8) | (b);
+			}
+
+			// put texture pixel on buffer screen
+			ret[pixelCount] = currentPixel;
+		}
+		timeDisplacement++;
+
+		return ret;
+	}
+
 
 	/**
 	 * Change lut.
@@ -92,75 +121,27 @@ public class TextureDeformation extends Generator {
 		this.selectedLut = lut;
 		createLut(lut);
 	}
-	
+
 	/**
-	 * Load file.
+	 * Gets the lut.
 	 *
-	 * @param fileName the file name
+	 * @return the lut
 	 */
-	public void loadFile(String fileName) {
-		this.filename = fileName;
-		try {
-			PImage tmpImage = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+fileName);
-			if (tmpImage==null || tmpImage.height<2) {
-				throw new InvalidParameterException("invalid data");
-			}
-			textureImg = tmpImage;
-			LOG.log(Level.INFO,
-					"Loaded texture {0} ", new Object[] { fileName });
-			createLut(selectedLut);
-		} catch (Exception e) {
-			LOG.log(Level.WARNING,
-					"Failed to load texture {0}!", new Object[] { fileName });
-		}
+	public int getLut() {
+		return selectedLut;
 	}
-	
+
 	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#update()
+	 * @see com.neophob.sematrix.effect.Effect#shuffle()
 	 */
 	@Override
-	public void update() {
-		textureImg.loadPixels();
-		for (int pixelCount = 0; pixelCount < getInternalBufferSize(); pixelCount++)
-		{
-			int o = (pixelCount << 1) + pixelCount;  // equivalent to 3 * pixelCount
-			int u = lookUpTable[o+0] + timeDisplacement;    // to look like its animating, add timeDisplacement
-			int v = lookUpTable[o+1] + timeDisplacement;
-			int adjustBrightness = lookUpTable[o+2];
-
-			// get the R,G,B values from texture
-			int currentPixel = textureImg.pixels[textureImg.width * (v & textureImg.height-1) + (u & textureImg.width-1)];
-
-			// only apply brightness if it was calculated
-			if (adjustBrightness != 0) {       
-				int r,g,b;
-
-				// disassemble pixel using bit mask to remove color components for greater speed
-				r = currentPixel >> 16 & 0xFF;  
-				g = currentPixel >> 8 & 0xFF;   
-				b = currentPixel & 0xFF;              
-		
-				// make darker or brighter
-				r += adjustBrightness;
-				g += adjustBrightness;
-				b += adjustBrightness;
-		
-				// constrain RGB to make sure they are within 0-255 color range
-				r = constrain(r,0,255);
-				g = constrain(g,0,255);
-				b = constrain(b,0,255);
-		
-				// reassemble colors back into pixel
-				currentPixel = (r << 16) | (g << 8) | (b);
-			}
-
-			// put texture pixel on buffer screen
-			internalBuffer[pixelCount] = currentPixel;
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
+			Random rand = new Random();
+			this.changeLUT(rand.nextInt(12));
 		}
-		textureImg.updatePixels();
-		//this.internalBuffer = BoxFilter.applyBoxFilter(0, 1, tmpArray, getInternalBufferXSize());
-		timeDisplacement++;
 	}
+
 
 	/**
 	 * Constrain.
@@ -185,7 +166,7 @@ public class TextureDeformation extends Generator {
 	public static final float constrain(float amt, float low, float high) {
 		return (amt < low) ? low : ((amt > high) ? high : amt);
 	}
-	
+
 	/**
 	 * Creates the lut.
 	 *
@@ -198,11 +179,10 @@ public class TextureDeformation extends Generator {
 		// u and v are euclidean coordinates  
 		float u,v,bright = 0; 
 
-		for( int j=0; j < h; j++ )
-		{
+		for (int j=0; j < h; j++ ) {
 			float y = -1.00f + 2.00f*(float)j/(float)h;
-			for( int i=0; i < w; i++ )
-			{
+
+			for (int i=0; i < w; i++ ) {
 				float x = -1.00f + 2.00f*(float)i/(float)w;
 				float d = (float)Math.sqrt( x*x + y*y );
 				float a = (float)Math.atan2( y, x );
@@ -269,44 +249,11 @@ public class TextureDeformation extends Generator {
 					bright = 0;
 					break;
 				}
-				lookUpTable[k++] = (int)(textureImg.width*u) & textureImg.width-1;
-				lookUpTable[k++] = (int)(textureImg.height*v) & textureImg.height-1;
+				lookUpTable[k++] = (int)(w*u) & w-1;
+				lookUpTable[k++] = (int)(h*v) & h-1;
 				lookUpTable[k++] = (int)(bright);
 			}
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#shuffle()
-	 */
-	@Override
-	public void shuffle() {
-		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORMATION)) {
-			Random rand = new Random();
-			this.changeLUT(rand.nextInt(12));
-
-			int nr = rand.nextInt(TEXTURE_FILES.length);
-			loadFile(TEXTURE_FILES[nr]);		
-		}
-	}
-
-	/**
-	 * Gets the filename.
-	 *
-	 * @return the filename
-	 */
-	public String getFilename() {
-		return filename;
-	}
-	
-
-	/**
-	 * Gets the lut.
-	 *
-	 * @return the lut
-	 */
-	public int getLut() {
-		return selectedLut;
 	}
 
 }

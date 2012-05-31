@@ -393,7 +393,7 @@ public class Visual {
 				new Visual(GeneratorName.IMAGE_ZOOMER);
 				break;
 			case 7:
-				new Visual(GeneratorName.TEXTURE_DEFORMATION);
+				new Visual(GeneratorName.CELL);
 				break;
 			case 8:
 				new Visual(GeneratorName.DROPS);

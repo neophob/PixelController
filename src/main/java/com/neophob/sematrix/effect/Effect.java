@@ -67,6 +67,8 @@ public abstract class Effect implements RandomizeState {
 		
 		FLIP_Y(10),
 		
+		TEXTURE_DEFORMATION(11),
+		
 		;
 
 		/** The id. */

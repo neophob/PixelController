@@ -41,6 +41,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 	/** The threshold. */
 	private Threshold threshold;
 	
+	private TextureDeformation textureDeformation;
+	
 	/**
 	 * Instantiates a new pixel controller effect.
 	 */
@@ -76,6 +78,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 		new Zoom(this);
 		new FlipY(this);
 		new FlipX(this);
+		
+		textureDeformation = new TextureDeformation(this);
 	}
 	
 	/* (non-Javadoc)
@@ -88,6 +92,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		ret.add(ValidCommands.CHANGE_TINT+" "+tint.getR()+" "+tint.getG()+" "+tint.getB());
 		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+threshold.getThreshold());
+        ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
 
 		return ret;
 	}
@@ -214,6 +219,23 @@ public class PixelControllerEffect implements PixelControllerElement {
 	}
 
 
+    /**
+     * Sets the texture deformation lut.
+     *
+     * @param textureDeformationLut the new texture deformation lut
+     */
+    public void setTextureDeformationLut(int textureDeformationLut) {
+        textureDeformation.changeLUT(textureDeformationLut);
+    }
+    
+    /**
+     * Gets the texture deformation lut.
+     *
+     * @return the texture deformation lut
+     */
+    public int getTextureDeformationLut() {
+        return textureDeformation.getLut();
+    }
 
 
 }

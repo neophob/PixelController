@@ -99,9 +99,6 @@ public enum ValidCommands {
 	/** The TEXTDEF. */
 	TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
 	
-	/** The TEXTDE file. */
-	TEXTDEF_FILE(CommandGroup.GENERATOR, 1, "<STRING> image to load for the texture deformation generator"),
-	
 	/** The COLOR_SCROLL_OPT. */
 	COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
 		

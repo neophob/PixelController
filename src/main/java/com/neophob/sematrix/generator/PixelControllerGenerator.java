@@ -46,7 +46,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private static final String DEFAULT_BLINKENLIGHTS = "torus.bml";
     private static final String DEFAULT_IMAGE = "logo.gif";
-    private static final String DEFAULT_TEXTUREDEFORMATION = "logo.gif";
     private static final String DEFAULT_TEXT = "PixelInvaders!";
     private static final String DEFAULT_TTF = "04B_03__.TTF";
     private static final String DEFAULT_TTF_SIZE = "82";
@@ -64,9 +63,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The image zoomer. */
     private ImageZoomer imageZoomer;
 
-    /** The texture deformation. */
-    private TextureDeformation textureDeformation;
-    
     /** The ColorScroller. */
     private ColorScroll colorScroll;
 
@@ -105,9 +101,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new Metaballs(this);
         new PixelImage(this);
         
-        String fileTextureDeformation = ph.getProperty(TextureDeformation.INITIAL_IMAGE, DEFAULT_TEXTUREDEFORMATION);
-        textureDeformation = new TextureDeformation(this, fileTextureDeformation);
-
         textwriter = new Textwriter(this, 
                 ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
                 Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)),
@@ -133,8 +126,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
         ret.add(ValidCommands.IMAGE+" "+image.getFilename());
         ret.add(ValidCommands.IMAGE_ZOOMER+" "+imageZoomer.getFilename());
-        ret.add(ValidCommands.TEXTDEF_FILE+" "+textureDeformation.getFilename());
-        ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());        
@@ -290,33 +281,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     }
 
     /**
-     * Gets the file texture deformation.
-     *
-     * @return the file texture deformation
-     */
-    public String getFileTextureDeformation() {
-        return textureDeformation.getFilename();
-    }
-
-    /**
-     * Sets the file texture deformation.
-     *
-     * @param fileTextureDeformation the new file texture deformation
-     */
-    public void setFileTextureDeformation(String fileTextureDeformation) {
-        textureDeformation.loadFile(fileTextureDeformation);
-    }
-
-    /**
-     * Gets the texture deformation lut.
-     *
-     * @return the texture deformation lut
-     */
-    public int getTextureDeformationLut() {
-        return textureDeformation.getLut();
-    }
-
-    /**
      * Sets the color scroll direction.
      *
      * @param colorScrollDir the newcolor scroll direction
@@ -341,15 +305,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public void setColorFadeTime(int colorFadeTime) {
         colorFade.setColorFadeTime(colorFadeTime);
-    }
-    
-    /**
-     * Sets the texture deformation lut.
-     *
-     * @param textureDeformationLut the new texture deformation lut
-     */
-    public void setTextureDeformationLut(int textureDeformationLut) {
-        textureDeformation.changeLUT(textureDeformationLut);
     }
 
     /**
