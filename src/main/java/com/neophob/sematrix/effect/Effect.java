@@ -59,15 +59,15 @@ public abstract class Effect implements RandomizeState {
 		
 		/** The THRESHOLD. */
 		THRESHOLD(7),
+				
+		TEXTURE_DEFORMATION(8),
 		
-		FLIP_X(8),
-
 		/** The ZOOM. */
 		ZOOM(9),
 		
-		FLIP_Y(10),
+		FLIP_X(10),
 		
-		TEXTURE_DEFORMATION(11),
+		FLIP_Y(11),		
 		
 		;
 
