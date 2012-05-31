@@ -65,7 +65,7 @@ public class Image extends Generator {
 	private String colorSetName;
 	
 	private PImage tmp;
-	
+		
 	/**
 	 * Instantiates a new image.
 	 *
@@ -89,13 +89,15 @@ public class Image extends Generator {
 			return;
 		}
 		
-		this.filename = filename;
+		this.filename = filename;		
 		try {
-			tmp = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
-			if (tmp==null || tmp.height<2) {
-				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename+" "+tmp);
+			PImage img = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
+			if (img==null || img.height<2) {
+				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename+" "+img);
 				return;
 			}			
+			tmp=img;
+			colorSetName = "";
 		} catch (Exception e) {			
 			LOG.log(Level.WARNING,
 					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
