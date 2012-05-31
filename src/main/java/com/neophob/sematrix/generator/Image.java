@@ -124,20 +124,8 @@ public class Image extends Generator {
 				tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
 		tmp.updatePixels();
 
-		//convert image to greyscale, the use to colorset to colorize it
-		short r,g,b;
-		int rgbColor;
 		colorSetName = cs.getName();
-		
-		for (int i=0; i<this.internalBuffer.length; i++){
-			rgbColor = this.internalBuffer[i];
-			r = (short) ((rgbColor>>16) & 255);
-			g = (short) ((rgbColor>>8)  & 255);
-			b = (short) ( rgbColor      & 255);
-			int val = (int)(r*0.3f+g*0.59f+b*0.11f);
-			this.internalBuffer[i]=cs.getSmoothColor(val);
-		}
-
+		this.internalBuffer = ColorSet.convertToColorSetImage(internalBuffer, cs);
 	}
 
 	/* (non-Javadoc)

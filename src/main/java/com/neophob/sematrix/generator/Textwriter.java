@@ -35,6 +35,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -85,12 +86,17 @@ public class Textwriter extends Generator {
 
 	/** The text buffer. */
 	private int[] textBuffer;
+	private int[] rawTexBuffer;
 	
 	/** The tmp. */
 	private int[] tmp;
 	
 	/** The text. */
 	private String text;
+	
+	//store applied color set
+	private String colorSetName;
+
 
 	/**
 	 * Instantiates a new textwriter.
@@ -101,8 +107,8 @@ public class Textwriter extends Generator {
 	 * @param text the text
 	 */
 	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text) {
-		super(controller, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
-		color = new Color(255,255,255);
+		super(controller, GeneratorName.TEXTWRITER, ResizeName.QUALITY_RESIZE);
+		color = new Color(128,128,128);
 		xpos=0;
 		ypos=internalBufferYSize;
 		try {
@@ -158,8 +164,9 @@ public class Textwriter extends Generator {
 
 		g2.drawString(text, xpos, ypos);
 		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
-		textBuffer=dbi.getData();
-		g2.dispose();
+		rawTexBuffer=dbi.getData();		
+		colorSetName = "";
+		g2.dispose();		
 
 		wait = 0;
 		xofs = 0;
@@ -172,7 +179,15 @@ public class Textwriter extends Generator {
 	 */
 	@Override
 	public void update() {
+
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
 		
+		//colorize if needed
+		if (!cs.getName().equals(colorSetName)) {
+			textBuffer = ColorSet.convertToColorSetImage(rawTexBuffer, Collector.getInstance().getActiveColorSet());
+			colorSetName = cs.getName();
+		}
+
 		if (wait>0) {
 			wait--;
 		} else {

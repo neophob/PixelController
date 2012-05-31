@@ -150,4 +150,31 @@ public class ColorSet {
 
 		return ret;
 	}
+	
+	
+	/**
+	 * 
+	 * @param buffer
+	 * @param cs
+	 * @return
+	 */
+	public static int[] convertToColorSetImage(int[] buffer, ColorSet cs) {
+		
+		int[] ret = new int[buffer.length];
+		
+		//convert image to greyscale, the use to colorset to colorize it
+		short r,g,b;
+		int rgbColor;
+		
+		for (int i=0; i<buffer.length; i++){
+			rgbColor = buffer[i];
+			r = (short) ((rgbColor>>16) & 255);
+			g = (short) ((rgbColor>>8)  & 255);
+			b = (short) ( rgbColor      & 255);
+			int val = (int)(r*0.3f+g*0.59f+b*0.11f);
+			ret[i]=cs.getSmoothColor(val);
+		}
+		
+		return ret;	
+	}
 }
