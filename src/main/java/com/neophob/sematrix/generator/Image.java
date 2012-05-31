@@ -100,6 +100,7 @@ public class Image extends Generator {
 					tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
 			tmp.updatePixels();
 			
+			//convert image to greyscale, the use to colorset to colorize it
 			short r,g,b;
 			int rgbColor;
 			ColorSet cs = Collector.getInstance().getActiveColorSet();
