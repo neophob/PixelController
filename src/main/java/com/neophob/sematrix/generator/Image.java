@@ -59,7 +59,10 @@ public class Image extends Generator {
 	private static final Logger LOG = Logger.getLogger(Image.class.getName());
 	
 	/** The filename. */
-	private String filename="http://neophob.com";
+	private String filename;
+	
+	//store applied color set
+	private String colorSetName;
 	
 	/**
 	 * Instantiates a new image.
@@ -78,8 +81,10 @@ public class Image extends Generator {
 	 * @param filename the filename
 	 */
 	public void loadFile(String filename) {
+		ColorSet cs = Collector.getInstance().getActiveColorSet();
+
 		//only load if needed
-		if (StringUtils.equals(filename, this.filename)) {
+		if (StringUtils.equals(filename, this.filename) && cs.getName().equals(colorSetName)) {
 			LOG.log(Level.INFO, "new filename does not differ from old: "+Image.PREFIX+filename);
 			return;
 		}
@@ -103,8 +108,8 @@ public class Image extends Generator {
 			//convert image to greyscale, the use to colorset to colorize it
 			short r,g,b;
 			int rgbColor;
-			ColorSet cs = Collector.getInstance().getActiveColorSet();
-
+			colorSetName = cs.getName();
+			
 			for (int i=0; i<this.internalBuffer.length; i++){
 				rgbColor = this.internalBuffer[i];
 				r = (short) ((rgbColor>>16) & 255);
