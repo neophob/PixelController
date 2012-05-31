@@ -74,6 +74,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		threshold = new Threshold(this);
 		new Emboss(this);
 		new Zoom(this);
+		new FlipY(this);
 	}
 	
 	/* (non-Javadoc)
