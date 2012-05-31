@@ -48,7 +48,7 @@ public class GreyMix extends Mixer {
 		}
 		
 		short r,g,b;
-		int col_s;
+		int rgbColor;
 
 		Generator gen1 = visual.getGenerator1();		
 		int[] src1 = visual.getEffect1Buffer();
@@ -58,16 +58,16 @@ public class GreyMix extends Mixer {
 		ColorSet cs = Collector.getInstance().getActiveColorSet();
 		
 		for (int i=0; i<gen1.internalBuffer.length; i++){	
-			col_s = src1[i];
-			r = (short) ((col_s>>16) & 255);
-			g = (short) ((col_s>>8)  & 255);
-			b = (short) ( col_s      & 255);
+			rgbColor = src1[i];
+			r = (short) ((rgbColor>>16) & 255);
+			g = (short) ((rgbColor>>8)  & 255);
+			b = (short) ( rgbColor      & 255);
 			int val = (int)(r*0.3f+g*0.59f+b*0.11f);
 
-			col_s = src2[i];
-			r = (short) ((col_s>>16) & 255);
-			g = (short) ((col_s>>8)  & 255);
-			b = (short) ( col_s      & 255);
+			rgbColor = src2[i];
+			r = (short) ((rgbColor>>16) & 255);
+			g = (short) ((rgbColor>>8)  & 255);
+			b = (short) ( rgbColor      & 255);
 			val += (int)(r*0.3f+g*0.59f+b*0.11f);
 			
 			val/=2;

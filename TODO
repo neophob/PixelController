@@ -2,7 +2,6 @@ TODO PixelController
 --------------------
 -particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 -rewrite output selection/configuration, 
--more effects/mixer...
 -more layouts (what kind of layouts?)
 -do not freeze application if output fails (disconnect controller)
 -artnet output: support multiple output devices / multiple universe
@@ -10,17 +9,17 @@ TODO PixelController
 -Unit Testing is suboptimal, using the config.properties 
 -start PureData in the start script, for example /Applications/Pd-extended.app/Contents/Resources/bin/pd -stderr -nomidi -noaudio -open mtxrev-main.pd -send "preset-file ../presets/main.coll;" & 
 -support TPM2 devices
--finish basic version of the gui
 -support Kinect for Xbox 360 
 
 
 Changelog v1.2 to v1.3
 ------------------------
+-a integrated GUI!
+-add colorsets, predefined color definition for most effects
 -Support more output formats (not only RGB and RBG), thanks to noxx6
 -configuration fixes
 -update AdaVision driver
 -add start scripts for OSX
--add colorsets, predefined color definition for most effects
 -add flip effects
 -add GreyMixer
 -Texturedeform is not a generator anymore but an effect

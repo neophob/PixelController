@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 
 import processing.core.PImage;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.PixelControllerResize;
@@ -98,6 +99,20 @@ public class Image extends Generator {
 			this.internalBuffer = res.resizeImage(RESIZE_TYP, tmp.pixels, 
 					tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
 			tmp.updatePixels();
+			
+			short r,g,b;
+			int rgbColor;
+			ColorSet cs = Collector.getInstance().getActiveColorSet();
+
+			for (int i=0; i<this.internalBuffer.length; i++){
+				rgbColor = this.internalBuffer[i];
+				r = (short) ((rgbColor>>16) & 255);
+				g = (short) ((rgbColor>>8)  & 255);
+				b = (short) ( rgbColor      & 255);
+				int val = (int)(r*0.3f+g*0.59f+b*0.11f);
+				this.internalBuffer[i]=cs.getSmoothColor(val);
+			}
+
 		} catch (Exception e) {			
 			LOG.log(Level.WARNING,
 					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
