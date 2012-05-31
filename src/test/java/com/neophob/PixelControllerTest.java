@@ -44,17 +44,6 @@ public class PixelControllerTest {
 		}
 	}
 
-	@Test
-	public void testSetup() {
-		if (!java.awt.GraphicsEnvironment.isHeadless()) {
-			PApplet pa = new TestProcessingclass();
-			pa.setup();
-			assertTrue(Collector.getInstance().getPixelControllerGenerator().getSize() > 0);
-			assertTrue(Collector.getInstance().getPixelControllerEffect().getSize() > 0);
-			assertTrue(Collector.getInstance().getPixelControllerMixer().getSize() > 0);
-			assertTrue(Collector.getInstance().getPixelControllerResize().getAllResizers().size() > 0);
-		}
-	}
 	
 	@Test
 	public void testCollector() {
