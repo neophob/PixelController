@@ -530,6 +530,15 @@ public class GeneratorGui extends PApplet {
     public void PRESET_BUTTONS(int val) {
         //unused
     }
+
+    /**
+     * this callback method is needed by the library but unused
+     * @param val
+     */
+    public void CURRENT_VISUAL(int val) {
+        //unused
+    }
+
     
     /**
      * draw the whole internal buffer on screen.
