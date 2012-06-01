@@ -35,9 +35,6 @@ public class PixelControllerEffect implements PixelControllerElement {
 	/** The all effects. */
 	private List<Effect> allEffects;
 	
-	/** The tint. */
-	private Tint tint;
-	
 	/** The threshold. */
 	private Threshold threshold;
 	
@@ -72,7 +69,6 @@ public class PixelControllerEffect implements PixelControllerElement {
 		new BeatVerticalShift(this);
 		new BeatHorizShift(this);
 		new Voluminize(this);
-		tint = new Tint(this);
 		threshold = new Threshold(this);
 		
 		new Zoom(this);
@@ -89,7 +85,6 @@ public class PixelControllerEffect implements PixelControllerElement {
 	public List<String> getCurrentState() {
 		List<String> ret = new ArrayList<String>();
 				
-		ret.add(ValidCommands.CHANGE_TINT+" "+tint.getR()+" "+tint.getG()+" "+tint.getB());
 		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+threshold.getThreshold());
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
@@ -179,45 +174,6 @@ public class PixelControllerEffect implements PixelControllerElement {
 		return this.threshold.getThreshold();
 	}
 	
-	
-	/**
-	 * Sets the rgb.
-	 *
-	 * @param r the r
-	 * @param g the g
-	 * @param b the b
-	 */
-	public void setRGB(int r, int g, int b) {
-		tint.setColor(r, g, b);
-	}
-
-	/**
-	 * Gets the r.
-	 *
-	 * @return the r
-	 */
-	public int getR() {
-		return tint.getR();
-	}
-
-	/**
-	 * Gets the g.
-	 *
-	 * @return the g
-	 */
-	public int getG() {
-		return tint.getG();
-	}
-
-	/**
-	 * Gets the b.
-	 *
-	 * @return the b
-	 */
-	public int getB() {
-		return tint.getB();
-	}
-
 
     /**
      * Sets the texture deformation lut.

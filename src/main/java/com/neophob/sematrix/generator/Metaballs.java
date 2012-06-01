@@ -19,8 +19,6 @@
 
 package com.neophob.sematrix.generator;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -67,12 +65,9 @@ public class Metaballs extends Generator {
 	 */
 	@Override
 	public void update() {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-
 		float f;
 		for (int i=1; i<NUM_BLOBS; ++i) {
 			f = (float)Math.sin((i+1)*3+5*blobPx[i]);
-			//f = (float)Math.sin((i+1)*3+5*blobPx[i]);
 			f*=3f;
 			if (f<0) {
 				f=0-f;
@@ -81,7 +76,6 @@ public class Metaballs extends Generator {
 			blobPx[i]+=blobDx[i]*f;
 
 			f = (float)Math.cos(a%256+(i+3)*blobPy[i]);
-//			f = (float)Math.cos(a%256+3*blobPy[i]);
 			f*=3f;
 			if (f<0) {
 				f=0-f;
@@ -124,18 +118,12 @@ public class Metaballs extends Generator {
 					// Increase this number to make your blobs bigger
 					m += 60000/(vy[i][y] + vx[i][x]+1);
 				}
-				//pg.pixels[x+y*pg.width] = color(0, m+x, (x+m+y)/2);
 				
 				int b = (x+m+y)/3;
 				if (b>255) {
 					b=255;
 				}
-/*				int g = m+x;
- 				if (g>255) {
-					g=255;
-				}
-				this.internalBuffer[y*internalBufferXSize+x] = (0 << 16) | (g << 8) | (b);
-*/				this.internalBuffer[y*internalBufferXSize+x]=cs.getSmoothColor(b);
+				this.internalBuffer[y*internalBufferXSize+x]=b;
 
 			}
 		}

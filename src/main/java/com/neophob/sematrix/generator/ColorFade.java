@@ -21,7 +21,6 @@ package com.neophob.sematrix.generator;
 
 import java.util.Arrays;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -49,7 +48,7 @@ public class ColorFade extends Generator {
         //use sinus as cross over function for much smoother transitions DOES NOT WORK YET
         //float ratio = (float)(Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;        
         //int col = super.getColor(colornumber, nextcolornumber, ratio);
-        int col = Collector.getInstance().getActiveColorSet().getSmoothColor(frameCount);
+        int col = frameCount;
         Arrays.fill(this.internalBuffer, col);
         
         frameCount++;

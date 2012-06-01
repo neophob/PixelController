@@ -24,8 +24,6 @@ import java.util.Random;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -123,8 +121,6 @@ gelesen von der mitte!
 		}
 		
 		if (frame==0 || frame%2==0) {			
-			ColorSet cs = Collector.getInstance().getActiveColorSet();
-			
 			int xofs, yofs=-1, dst=0;
 
 			//resize image from 8x8 to 128x128
@@ -138,7 +134,7 @@ gelesen von der mitte!
 						xofs++;
 					}
 					int col = 128*this.grid[xofs][yofs];
-					this.internalBuffer[dst++] = cs.getSmoothColor(col+frame);// (col << 16) | (col << 8)  | col;
+					this.internalBuffer[dst++] = (col+frame)%255;
 				}				
 			}
 		}

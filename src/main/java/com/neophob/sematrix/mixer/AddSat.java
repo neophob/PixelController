@@ -50,30 +50,17 @@ public class AddSat extends Mixer {
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
 		int[] dst = new int [gen1.internalBuffer.length];
-		short r,g,b;
-		int col_s, col_d;
+		
+		int col;
 		
 		for (int i=0; i<src1.length; i++) {
-			col_s = src1[i];
-			r = (short) ((col_s>>16) & 255);
-			g = (short) ((col_s>>8)  & 255);
-			b = (short) ( col_s      & 255);
-			col_d = src2[i];
-			r += (short) ((col_d>>16) & 255);
-			g += (short) ((col_d>>8)  & 255);
-			b += (short) ( col_d      & 255);
+			col = src1[i] + src2[i];
 
-			if (r > 255) {
-				r = 255;
+			if (col > 255) {
+			    col = 255;
 			}
-			if (g > 255) {
-				g = 255;
-			}
-			if (b > 255) {
-				b = 255;
-			}
-			
-			dst[i] = (int)(r << 16) | (g << 8) | b;		
+
+			dst[i] = col;		
 		}
 
 		return dst;

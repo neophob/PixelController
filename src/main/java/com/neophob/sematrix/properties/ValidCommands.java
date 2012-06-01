@@ -66,9 +66,6 @@ public enum ValidCommands {
 	/** The CHANGE fader. */
 	CHANGE_ALL_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for all outputs"),
 
-	/** The CHANGE tint. */
-	CHANGE_TINT(CommandGroup.EFFECT, 3, "<INT> <INT> <INT> select rgb value for the tint effect, 0-255"),
-	
 	/** The CHANGE present. */
 	CHANGE_PRESENT(CommandGroup.MISC, 1, "<INT> select current present id"),
 	

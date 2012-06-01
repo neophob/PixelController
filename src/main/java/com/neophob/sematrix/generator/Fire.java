@@ -23,8 +23,6 @@ import java.util.Random;
 
 import processing.core.PConstants;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -59,8 +57,6 @@ public class Fire extends Generator implements PConstants {
 	 */
 	@Override
 	public void update() {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-
 		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()-1);
 
 		int random;
@@ -104,7 +100,7 @@ public class Fire extends Generator implements PConstants {
 					temp --; 
 				}
 				this.buffer[j - internalBufferXSize + i] = temp;
-				this.internalBuffer[j - internalBufferXSize + i] = cs.getSmoothColor(temp);
+				this.internalBuffer[j - internalBufferXSize + i] = temp;
 			}
 			j -= this.getInternalBufferXSize();
 		}      

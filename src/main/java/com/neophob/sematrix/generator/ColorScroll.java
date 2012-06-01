@@ -215,17 +215,7 @@ public class ColorScroll extends Generator {
      * @return the color
      */
     private int getColor(int val) {
-/*    	int saveFade = this.fade;
-    	if (saveFade==0) {
-    		saveFade = 1;
-    	}
-    	
-        int colornumber = (int) (Math.round(Math.floor((val + frameCount) / saveFade)));
-        colornumber = colornumber % colorMap.size();
-        int nextcolornumber = (colornumber + 1) % colorMap.size();
-        float ratio = ((val + frameCount) % saveFade) / (float)saveFade;
-        return super.getColor(colornumber, nextcolornumber, ratio);*/
-    	return Collector.getInstance().getActiveColorSet().getSmoothColor(val+frameCount);
+    	return val+frameCount;
     }
     
 

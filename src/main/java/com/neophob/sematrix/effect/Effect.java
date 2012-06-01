@@ -54,20 +54,17 @@ public abstract class Effect implements RandomizeState {
 		/** The VOLUMINIZE. */
 		VOLUMINIZE(5),
 		
-		/** The TINT. */
-		TINT(6),
-		
 		/** The THRESHOLD. */
-		THRESHOLD(7),
+		THRESHOLD(6),
 				
-		TEXTURE_DEFORMATION(8),
+		TEXTURE_DEFORMATION(7),
 		
 		/** The ZOOM. */
-		ZOOM(9),
+		ZOOM(8),
 		
-		FLIP_X(10),
+		FLIP_X(9),
 		
-		FLIP_Y(11),		
+		FLIP_Y(10),		
 		
 		;
 

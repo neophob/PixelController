@@ -106,7 +106,11 @@ public class PixelControllerGenerator implements PixelControllerElement {
         new Cell(this);
         new FFTSpectrum(this);
         new Geometrics(this);                
-        new ScreenCapture(this, ph.parseScreenCaptureOffset(), ph.parseScreenCaptureWindowSizeX(), ph.parseScreenCaptureWindowSizeY());
+        
+        int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
+        if (screenCapureXSize>0) {
+            new ScreenCapture(this, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY());            
+        }
         colorScroll = new ColorScroll(this);
         colorFade = new ColorFade(this);
     }

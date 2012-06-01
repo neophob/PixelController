@@ -34,147 +34,158 @@ import java.util.logging.Logger;
  *
  */
 public class ColorSet {
-	
-	private static final Logger LOG = Logger.getLogger(ColorSet.class.getName());
 
-	private String name;
+    private static final Logger LOG = Logger.getLogger(ColorSet.class.getName());
 
-	private int[] colors;
+    private String name;
 
-	private int boarderCount;
+    private int[] colors;
 
-	/**
-	 * 
-	 * @param name
-	 * @param colors
-	 */
-	public ColorSet(String name, int[] colors) {
-		this.name = name;
-		this.colors = colors.clone();
-		this.boarderCount = 255 / colors.length;
-	}
+    private int boarderCount;
 
-	/**
-	 * get ColorSet name
-	 * @return
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * 
+     * @param name
+     * @param colors
+     */
+    public ColorSet(String name, int[] colors) {
+        this.name = name;
+        this.colors = colors.clone();
+        this.boarderCount = 255 / colors.length;
+    }
 
-	/**
-	 * returns a random color of this set
-	 * @return
-	 */
-	public int getRandomColor() {
-		Random r = new Random();
-		return this.colors[r.nextInt(colors.length)];
-	}
+    /**
+     * get ColorSet name
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * return a color defined in this color set 
-	 * 
-	 * @param pos
-	 * @return
-	 */
-	public int getSmoothColor(int pos) {
-		try {
-			pos %= 255;
-			int ofs=0;
-			while (pos > boarderCount) {
-				pos -= boarderCount;
-				ofs++;
-			}
+    /**
+     * returns a random color of this set
+     * @return
+     */
+    public int getRandomColor() {
+        Random r = new Random();
+        return this.colors[r.nextInt(colors.length)];
+    }
 
-			int targetOfs = (ofs+1)%colors.length;
-			return calcSmoothColor(colors[targetOfs], colors[ofs%colors.length], pos);			
-		} catch (Exception e) {			
-			//if we switch to another smooth color, an exception must be catched here
-			return 0;
-		}
-	}
+    /**
+     * return a color defined in this color set 
+     * 
+     * @param pos
+     * @return
+     */
+    public int getSmoothColor(int pos) {
+        try {
+            pos %= 255;
+            int ofs=0;
+            while (pos > boarderCount) {
+                pos -= boarderCount;
+                ofs++;
+            }
 
-	/**
-	 * 
-	 * @param col1
-	 * @param col2
-	 * @param pos
-	 * @return
-	 */
-	private int calcSmoothColor(int col1, int col2, int pos) {
-		int b= col1&255;
-		int g=(col1>>8)&255;
-		int r=(col1>>16)&255;
-		int b2= col2&255;
-		int g2=(col2>>8)&255;
-		int r2=(col2>>16)&255;
+            int targetOfs = ofs+1;
+            return calcSmoothColor(colors[targetOfs%colors.length], colors[ofs%colors.length], pos);			
+        } catch (Exception e) {			
+            //if we switch to another smooth color, an exception must be catched here
+            return 0;
+        }
+    }
 
-		int mul=pos*colors.length;
-		int oppisiteColor = 255-mul;
-		r=(r*mul)/255;
-		g=(g*mul)/255;
-		b=(b*mul)/255;
-		r+=(r2*oppisiteColor)/255;
-		g+=(g2*oppisiteColor)/255;
-		b+=(b2*oppisiteColor)/255;
+    /**
+     * 
+     * @param color
+     * @return
+     */
+    public int getInvertedColor(int color) {
 
-		return (r << 16) | (g << 8) | (b);
-	}
+        int b= color&255;
+        int g=(color>>8)&255;
+        int r=(color>>16)&255;        
+        
+        //convert it to greyscale, not really correct
+        int val = (int)(r*0.3f+g*0.59f+b*0.11f);
+    
+        return getSmoothColor(val+128);
+    }
+        
+    
+    /**
+     * 
+     * @param col1
+     * @param col2
+     * @param pos
+     * @return
+     */
+    private int calcSmoothColor(int col1, int col2, int pos) {
+        int b= col1&255;
+        int g=(col1>>8)&255;
+        int r=(col1>>16)&255;
+        int b2= col2&255;
+        int g2=(col2>>8)&255;
+        int r2=(col2>>16)&255;
 
-	/**
-	 * convert entries from the properties file into colorset objects
-	 * @param palette
-	 * @return
-	 */
-	public static List<ColorSet> loadAllEntries(Properties palette) {
-		List<ColorSet> ret = new ArrayList<ColorSet>();
+        int mul=pos*colors.length;
+        int oppositeColor = 255-mul;
+        r=(r*mul)/255;
+        g=(g*mul)/255;
+        b=(b*mul)/255;
+        r+=(r2*oppositeColor)/255;
+        g+=(g2*oppositeColor)/255;
+        b+=(b2*oppositeColor)/255;
 
-		for (Entry<Object, Object> entry : palette.entrySet()) {
-			try {
-				String setName = (String)entry.getKey();
-				String setColors = (String)entry.getValue();
-				String[] colorsAsString = setColors.split(",");
-				
-				//convert hex string into int
-				int[] colorsAsInt = new int[colorsAsString.length];
-				int ofs=0;
-				for (String s: colorsAsString) {
-					colorsAsInt[ofs++] = Integer.decode(s.trim());
-				}
-				ColorSet cs = new ColorSet(setName, colorsAsInt);
-				ret.add(cs);				
-			} catch (Exception e) {
-				LOG.log(Level.SEVERE, "Failed to load Palette entry!", e);
-			}
-		}
+        return (r << 16) | (g << 8) | (b);
+    }
 
-		return ret;
-	}
-	
-	
-	/**
-	 * 
-	 * @param buffer
-	 * @param cs
-	 * @return
-	 */
-	public static int[] convertToColorSetImage(int[] buffer, ColorSet cs) {
-		
-		int[] ret = new int[buffer.length];
-		
-		//convert image to greyscale, the use to colorset to colorize it
-		short r,g,b;
-		int rgbColor;
-		
-		for (int i=0; i<buffer.length; i++){
-			rgbColor = buffer[i];
-			r = (short) ((rgbColor>>16) & 255);
-			g = (short) ((rgbColor>>8)  & 255);
-			b = (short) ( rgbColor      & 255);
-			int val = (int)(r*0.3f+g*0.59f+b*0.11f);
-			ret[i]=cs.getSmoothColor(val);
-		}
-		
-		return ret;	
-	}
+    /**
+     * convert entries from the properties file into colorset objects
+     * @param palette
+     * @return
+     */
+    public static List<ColorSet> loadAllEntries(Properties palette) {
+        List<ColorSet> ret = new ArrayList<ColorSet>();
+
+        for (Entry<Object, Object> entry : palette.entrySet()) {
+            try {
+                String setName = (String)entry.getKey();
+                String setColors = (String)entry.getValue();
+                String[] colorsAsString = setColors.split(",");
+
+                //convert hex string into int
+                int[] colorsAsInt = new int[colorsAsString.length];
+                int ofs=0;
+                for (String s: colorsAsString) {
+                    colorsAsInt[ofs++] = Integer.decode(s.trim());
+                }
+                ColorSet cs = new ColorSet(setName, colorsAsInt);
+                ret.add(cs);				
+            } catch (Exception e) {
+                LOG.log(Level.SEVERE, "Failed to load Palette entry!", e);
+            }
+        }
+
+        return ret;
+    }
+
+
+    /**
+     * colorize an image buffer
+     * 
+     * @param buffer
+     * @param cs
+     * @return
+     */
+    public static int[] convertToColorSetImage(int[] buffer, ColorSet cs) {
+
+        int[] ret = new int[buffer.length];
+
+        for (int i=0; i<buffer.length; i++){
+            //use only 8bpp here!
+            ret[i]=cs.getSmoothColor(buffer[i]&255);
+        }
+
+        return ret;	
+    }
 }

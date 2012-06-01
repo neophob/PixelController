@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 
 import processing.core.PImage;
 
-import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.PixelControllerResize;
@@ -60,11 +59,6 @@ public class Image extends Generator {
 	
 	/** The filename. */
 	private String filename;
-	
-	//store applied color set
-	private String colorSetName;
-	
-	private PImage tmp;
 		
 	/**
 	 * Instantiates a new image.
@@ -95,9 +89,29 @@ public class Image extends Generator {
 			if (img==null || img.height<2) {
 				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename+" "+img);
 				return;
-			}			
-			tmp=img;
-			colorSetName = "";
+			}						
+	        
+	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
+	        PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
+	        img.loadPixels();
+	        this.internalBuffer = res.resizeImage(RESIZE_TYP, img.pixels, 
+	                img.width, img.height, internalBufferXSize, internalBufferYSize);
+	        img.updatePixels();	        
+	       
+	        //this.internalBuffer = ColorSet.convertToColorSetImage(internalBuffer, cs);
+	        short r,g,b;
+	        int rgbColor;
+
+	        //greyscale it
+	        for (int i=0; i<internalBuffer.length; i++){
+	            rgbColor = internalBuffer[i];
+	            r = (short) ((rgbColor>>16) & 255);
+	            g = (short) ((rgbColor>>8)  & 255);
+	            b = (short) ( rgbColor      & 255);
+	            int val = (int)(r*0.3f+g*0.59f+b*0.11f);
+	            internalBuffer[i]=val;
+	        }
+	        
 		} catch (Exception e) {			
 			LOG.log(Level.WARNING,
 					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
@@ -110,22 +124,7 @@ public class Image extends Generator {
 	 */
 	@Override
 	public void update() {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-		
-		//colorize if needed
-		if (cs.getName().equals(colorSetName)) {
-			return;
-		}
-		
-		LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-		PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
-		tmp.loadPixels();
-		this.internalBuffer = res.resizeImage(RESIZE_TYP, tmp.pixels, 
-				tmp.width, tmp.height, internalBufferXSize, internalBufferYSize);
-		tmp.updatePixels();
 
-		colorSetName = cs.getName();
-		this.internalBuffer = ColorSet.convertToColorSetImage(internalBuffer, cs);
 	}
 
 	/* (non-Javadoc)

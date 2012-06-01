@@ -42,13 +42,11 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
-import com.neophob.sematrix.output.gui.elements.SimpleColorPicker;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
 
 import controlP5.Button;
 import controlP5.ControlP5;
-import controlP5.ControllerGroup;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
 import controlP5.RadioButton;
@@ -92,8 +90,7 @@ public class GeneratorGui extends PApplet {
     private Button randomSelection, randomPresets;
     private Toggle toggleRandom;
 
-    //Effect Tab
-    private SimpleColorPicker scp;
+    //Effect Tab    
     private Slider thresholdSlider;	
 
     //Generator Tab
@@ -356,11 +353,6 @@ public class GeneratorGui extends PApplet {
         fxRotoSlider.setSliderMode(Slider.FIX);
         fxRotoSlider.setGroup(effectTab);
         fxRotoSlider.setDecimalPrecision(0);
-
-        scp = new SimpleColorPicker(cp5, (ControllerGroup<?>)cp5.controlWindow.getTabs().get(1), GuiElement.COLOR_PICKER.toString(), 0, yPosStartDrowdown, 160, 14);
-        cp5.register(null, "SimpleColorPicker", scp);		
-        scp.moveTo(effectTab);
-
 
         //-----------------
         //Single Output tab
@@ -697,7 +689,6 @@ public class GeneratorGui extends PApplet {
         Collector col = this.callbackRefreshMini();		
 
         PixelControllerEffect pce = col.getPixelControllerEffect();
-        scp.setColorValue((pce.getR() << 16) | (pce.getG() << 8) | pce.getB());
 
         thresholdSlider.changeValue(pce.getThresholdValue());
 

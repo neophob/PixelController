@@ -48,10 +48,6 @@ public class Voluminizer extends Mixer {
 			return visual.getEffect1Buffer();
 		}
 
-		short redSource, greenSource, blueSource;
-		short redDest, greenDest, blueDest;
-		int col;
-
 		Generator gen1 = visual.getGenerator1();		
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
@@ -59,22 +55,8 @@ public class Voluminizer extends Mixer {
 
 		float sound = Sound.getInstance().getVolumeNormalized();
 		for (int i=0; i<gen1.internalBuffer.length; i++){
-			col = src1[i];
-    		redSource=(short) ((col>>16)&255);
-    		greenSource=(short) ((col>>8) &255);
-    		blueSource=(short) ( col     &255);
-    		
-			col = src2[i];
-    		redDest=(short) ((col>>16)&255);
-    		greenDest=(short) ((col>>8) &255);
-    		blueDest=(short) ( col     &255);
-    		
-    		redDest = (short) (redDest*sound + ((1.0f-sound)*redSource) );
-    		greenDest = (short) (greenDest*sound + ((1.0f-sound)*greenSource));
-    		blueDest = (short) (blueDest*sound + ((1.0f-sound)*blueSource));
-    		
-    		dst[i]=(int) ((redDest << 16) | (greenDest << 8) | blueDest);
-          }
+    		dst[i]=(int)(src2[i]*sound + ((1.0f-sound)*src1[i]));
+        }
 	
 		return dst;
 	}

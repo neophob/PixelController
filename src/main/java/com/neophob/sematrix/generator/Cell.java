@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -79,8 +77,6 @@ public class Cell extends Generator {
 	 */
 	@Override
 	public void update() {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-		
 		for (int x=0;x<internalBufferXSize/RENDERSIZE;x+=RENDERSIZE) {
 			for (int y=0;y<internalBufferYSize/RENDERSIZE;y+=RENDERSIZE) {
 
@@ -97,24 +93,8 @@ public class Cell extends Generator {
 				}
 
 				Attractor a=(Attractor)points.get(nearest);
-				/*int l = (int)(255-4*closest);
 
-				int r = l-a.r;
-				if (r<0) {
-					r=0;
-				}
-				int g = l-a.g;
-				if (g<0) {
-					g=0;
-				}
-				int b = l-a.b;
-				if (b<0) {
-					b=0;
-				}*/				
-				//int col = ((a.r/2+l/2) << 16) | ((a.g/2+l/2) << 8) | (a.b/2+l/2);
-				
-//				int col = (a.r << 16) | (a.g << 8) | a.b;
-				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, cs.getSmoothColor(a.color));				
+				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, a.color);				
 			}
 		}
 

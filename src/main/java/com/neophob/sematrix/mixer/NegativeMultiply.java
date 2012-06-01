@@ -28,51 +28,35 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class NegativeMultiply extends Mixer {
 
-	/**
-	 * Instantiates a new negative multiply.
-	 *
-	 * @param controller the controller
-	 */
-	public NegativeMultiply(PixelControllerMixer controller) {
-		super(controller, MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
-	}
+    /**
+     * Instantiates a new negative multiply.
+     *
+     * @param controller the controller
+     */
+    public NegativeMultiply(PixelControllerMixer controller) {
+        super(controller, MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
-	 */
-	public int[] getBuffer(Visual visual) {
-		if (visual.getEffect2() == null) {
-			return visual.getEffect1Buffer();
-		}
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
+     */
+    public int[] getBuffer(Visual visual) {
+        if (visual.getEffect2() == null) {
+            return visual.getEffect1Buffer();
+        }
 
-		short redSource, greenSource, blueSource;
-		short redDest, greenDest, blueDest;
-		int col;
-		
-		Generator gen1 = visual.getGenerator1();		
-		int[] src1 = visual.getEffect1Buffer();
-		int[] src2 = visual.getEffect2Buffer();
-		int[] dst = new int [gen1.internalBuffer.length];
+        Generator gen1 = visual.getGenerator1();		
+        int[] src1 = visual.getEffect1Buffer();
+        int[] src2 = visual.getEffect2Buffer();
+        int[] dst = new int [gen1.internalBuffer.length];
 
-		for (int i=0; i<gen1.internalBuffer.length; i++){
-			col = src1[i];
-    		redSource=(short) ((col>>16)&255);
-    		greenSource=(short) ((col>>8)&255);
-    		blueSource=(short) ( col&255);
+        for (int i=0; i<gen1.internalBuffer.length; i++){
+            int pixelOne = src1[i]&255;
+            int pixelTwo = src2[i]&255;   
+            dst[i]=(255-((255-pixelOne) * (255-pixelTwo) / 256));
+        }
 
-    		col = src2[i];
-    		redDest=(short) ((col>>16)&255);
-    		greenDest=(short) ((col>>8)&255);
-    		blueDest=(short) ( col&255);
-    		
-    		redDest = (short) (255-((255-redDest) * (255-redSource) / 256));
-    		greenDest = (short) (255-((255-greenDest) * (255-greenSource) / 256));
-    		blueDest = (short) (255-((255-blueDest) * (255-blueSource) / 256));
-    		
-    		dst[i]=(int) ((redDest << 16) | (greenDest << 8) | blueDest);
-          }
-	
-		return dst;
-	}
+        return dst;
+    }
 
 }

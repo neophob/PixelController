@@ -26,8 +26,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -96,12 +94,10 @@ public class Geometrics extends Generator {
 		//maximal 4 actice drops
 		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {
 			
-			ColorSet cs = Collector.getInstance().getActiveColorSet();
-			
 			drops.add(
 					new Drop(
 							random(THICKNESS, internalBufferXSize), 
-							random(THICKNESS, internalBufferYSize), cs.getSmoothColor(random(0,255)))
+							random(THICKNESS, internalBufferYSize), random(0,255))
 					);
 		}
 

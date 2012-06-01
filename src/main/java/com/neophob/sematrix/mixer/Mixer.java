@@ -55,11 +55,8 @@ public abstract class Mixer {
 		/** The VOLUMINIZER. */
 		VOLUMINIZER(6),
 		
-		/** The GREYMIX. */
-		GREYMIX(7),
-		
 		/** The EITHER. */
-		EITHER(8);
+		EITHER(7);
 		
 		/** The id. */
 		private int id;

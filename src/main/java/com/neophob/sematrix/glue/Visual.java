@@ -22,6 +22,7 @@ package com.neophob.sematrix.glue;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Generator;
@@ -285,7 +286,10 @@ public class Visual {
 	 * @return the mixer buffer
 	 */
 	public int[] getMixerBuffer() {
-		return mixer.getBuffer(this);
+	    //get gryscale buffer
+		int buffer[] = mixer.getBuffer(this);
+		
+		return ColorSet.convertToColorSetImage(buffer, Collector.getInstance().getActiveColorSet());
 	}
 
 	/**
@@ -360,7 +364,7 @@ public class Visual {
 	 * @return
 	 */
 	public PImage getMixerAsImage() {
-		return getBufferAsImage(mixer.getBuffer(this));
+		return getBufferAsImage(getMixerBuffer());
 	}
 	
 	/**

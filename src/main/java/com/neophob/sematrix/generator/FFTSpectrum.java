@@ -63,7 +63,6 @@ public class FFTSpectrum extends Generator {
 	@Override
 	public void update() {
 		int avg = sound.getFftAvg();
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
 		
 		for (int i = 0; i < avg; i++) {
 			
@@ -75,7 +74,7 @@ public class FFTSpectrum extends Generator {
 		    	h=255;
 		    }
 		    h = h*h/255;
-		    rect(cs.getSmoothColor(h), 0, i*yBlock, this.internalBufferXSize, i*yBlock+yBlock);
+		    rect(h, 0, i*yBlock, this.internalBufferXSize, i*yBlock+yBlock);
 		}		
 	}
 	

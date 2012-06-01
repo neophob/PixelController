@@ -83,25 +83,19 @@ public class TextureDeformation extends Effect {
 
             // only apply brightness if it was calculated
             if (adjustBrightness != 0) {       
-                int r,g,b;
+                int b;
 
                 // disassemble pixel using bit mask to remove color components for greater speed
-                r = (currentPixel >> 16) & 0xFF;  
-                g = (currentPixel >> 8) & 0xFF;   
                 b = currentPixel & 0xFF;              
 
                 // make darker or brighter
-                r += adjustBrightness;
-                g += adjustBrightness;
                 b += adjustBrightness;
 
                 // constrain RGB to make sure they are within 0-255 color range
-                r = constrain(r,0,255);
-                g = constrain(g,0,255);
                 b = constrain(b,0,255);
 
                 // reassemble colors back into pixel
-                currentPixel = (r << 16) | (g << 8) | (b);
+                currentPixel = b;
             }
 
             // put texture pixel on buffer screen

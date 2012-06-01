@@ -21,8 +21,6 @@ package com.neophob.sematrix.generator;
 
 import java.util.Random;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -92,8 +90,6 @@ public class PlasmaAdvanced extends Generator {
 	 */
 	@Override
 	public void update() {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-
 		frameCount++;
 
 		if (frameCount%57==33) {
@@ -113,9 +109,9 @@ public class PlasmaAdvanced extends Generator {
 				// this is where the magic happens: map x, y, t around
 				// the swing curves and lookup a color from the gradient
 				// the "formula" was found by a lot of experimentation
-				this.internalBuffer[y*internalBufferXSize+x] = cs.getSmoothColor(				
+				this.internalBuffer[y*internalBufferXSize+x] = 				
 						swing(swing(x + swingT) + swingYT) +
-						swing(swing(x + t     ) + swingY ));
+						swing(swing(x + t     ) + swingY );
 			}
 		}
 	}

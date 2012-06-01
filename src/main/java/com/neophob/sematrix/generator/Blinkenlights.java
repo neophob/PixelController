@@ -29,7 +29,6 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.lib.blinken.BlinkenLibrary;
 
-import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -118,9 +117,7 @@ public class Blinkenlights extends Generator implements PConstants {
 	 * @see com.neophob.sematrix.generator.Generator#update()
 	 */
 	@Override
-	public void update() {
-		ColorSet cs = Collector.getInstance().getActiveColorSet();
-		
+	public void update() {		
 		if (random) {
 			blinken.jump(
 					rand.nextInt(blinken.getNrOfFrames())
@@ -158,7 +155,7 @@ public class Blinkenlights extends Generator implements PConstants {
 						xSrc-=xDiff;
 					}				
 					ofs=xofs+yofs*blinken.width;
-					this.internalBuffer[dst++]=cs.getSmoothColor(blinken.pixels[ofs]&255);
+					this.internalBuffer[dst++]=blinken.pixels[ofs]&255;
 					xSrc++;
 				}
 				ySrc++;
