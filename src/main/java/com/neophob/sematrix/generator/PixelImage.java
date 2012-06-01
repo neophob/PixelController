@@ -117,10 +117,9 @@ gelesen von der mitte!
 	public void update() {
 		if (frame==0 || Sound.getInstance().getVolumeNormalized()>0.5f && frame>8 || 
 				Sound.getInstance().isKick() && frame>40) {
+			frame=0;
 			doInvader();
-		}
-		
-		if (frame==0 || frame%2==0) {			
+			
 			int xofs, yofs=-1, dst=0;
 
 			//resize image from 8x8 to 128x128
@@ -134,7 +133,7 @@ gelesen von der mitte!
 						xofs++;
 					}
 					int col = 128*this.grid[xofs][yofs];
-					this.internalBuffer[dst++] = (col+frame)%255;
+					this.internalBuffer[dst++] = (col)%255;
 				}				
 			}
 		}
