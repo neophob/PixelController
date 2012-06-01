@@ -214,6 +214,21 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.CURRENT_COLORSET, value);
             	break;
             	
+            case PRESET_BUTTONS:
+                LOG.log(Level.INFO, selection+" "+intVal);
+                createMessage(ValidCommands.CHANGE_PRESENT, intVal);
+                break;
+                
+            case LOAD_PRESET:
+                LOG.log(Level.INFO, "LOAD_PRESET");
+                createMessage(ValidCommands.LOAD_PRESENT, "");
+                break;
+            	
+            case SAVE_PRESET:
+                LOG.log(Level.INFO, "SAVE_PRESET");
+                createMessage(ValidCommands.SAVE_PRESENT, "");
+                break;
+                
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
@@ -244,7 +259,6 @@ public class P5EventListener implements ControlListener {
             try {
                 Thread.sleep(100);				
             } catch (Exception e) {}
-
         }
 
     }

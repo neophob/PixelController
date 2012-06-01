@@ -60,7 +60,13 @@ public enum GuiElement {
 	OUTPUT_ALL_EFFECT_DROPDOWN,
 	OUTPUT_ALL_FADER_DROPDOWN,
 
-	COLOR_SET_DROPDOWN
+	COLOR_SET_DROPDOWN,
+	
+	//preset tab
+	PRESET_BUTTONS,
+	LOAD_PRESET,
+	SAVE_PRESET,
+	
 	;
 	
 	public static GuiElement getGuiElement(String s) {
