@@ -38,7 +38,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
-import com.neophob.sematrix.glue.PixelControllerShufflerSelect;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
@@ -431,18 +431,18 @@ public class GeneratorGui extends PApplet {
 
 		randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.toString())
                 .setPosition(20, yPosStartDrowdown)
-                .setSize(50, 20)
+                .setSize(40, 20)
                 .setColorForeground(color(120))
                 .setColorActive(color(255))
                 .setColorLabel(color(255))
-                .setItemsPerRow(7)
-                .setSpacingColumn(40)
+                .setItemsPerRow(5)
+                .setSpacingColumn(90)
 		;
 		
-        for (i=0; i<PixelControllerShufflerSelect.SHUFFLER_OPTIONS; i++) {
-            String label = ""+(i+1);
-            randomCheckbox.addItem(label, i);
+        for (ShufflerOffset so: ShufflerOffset.values()) {
+            randomCheckbox.addItem(so.name(), i);
         }
+        randomCheckbox.activateAll();
         randomCheckbox.moveTo(randomTab);
 
 

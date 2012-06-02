@@ -225,10 +225,6 @@ public final class Shuffler {
 				}
 			}
 
-			if (blah == 11) {
-				col.getPixelControllerEffect().getEffect(EffectName.TINT).shuffle();
-			}
-			
 	
 			if (blah == 15) {
 				col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM).shuffle();

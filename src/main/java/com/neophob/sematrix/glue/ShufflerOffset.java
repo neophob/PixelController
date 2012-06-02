@@ -56,22 +56,19 @@ public enum ShufflerOffset {
 	/** The IMAGE. */
 	IMAGE(9),
 	
-	/** The TINT. */
-	TINT(10),
-	
 	/** The TEXTURE deformation. */
-	TEXTURE_DEFORMATION(11),
+	TEXTURE_DEFORM(10),
 	
 	/** The THRESHOLD value. */
-	THRESHOLD_VALUE(12),
+	THRESHOLD_VALUE(11),
 	
 	/** The ROTOZOOMER. */
-	ROTOZOOMER(13),
+	ROTOZOOMER(12),
 	
 	/** COLOR_SCROLL */
-	COLOR_SCROLL(14),
+	COLOR_SCROLL(13),
 	
-	COLORSET(15)
+	COLORSET(14)
 	;
 	
 	

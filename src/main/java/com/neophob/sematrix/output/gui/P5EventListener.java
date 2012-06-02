@@ -197,8 +197,16 @@ public class P5EventListener implements ControlListener {
             	break;
             
             case RANDOM_ELEMENT:            	
-            	float[] f = theEvent.getGroup().getArrayValue();
-            	LOG.log(Level.INFO, selection+" "+f);
+            	String param = "";            	
+            	for (float ff: theEvent.getGroup().getArrayValue()) {
+            		if (ff<0.5f) {
+            			param += "0 ";
+            		} else {
+            			param += "1 ";            			
+            		}
+            	}
+            	LOG.log(Level.INFO, selection+" "+param);            	
+            	createShufflerMessage(param);
             	break;
             
             case COLOR_SET_DROPDOWN:            	
@@ -280,6 +288,13 @@ public class P5EventListener implements ControlListener {
         singleSendMessageOut(msg);
     }
 
+    private void createShufflerMessage(String param) {
+        String msg[] = new String[param.length()+1];		
+        msg[0] = ""+ValidCommands.CHANGE_SHUFFLER_SELECT;
+        String tmp[] = param.split(" ");
+        System.arraycopy(tmp, 0, msg, 1, tmp.length);
+        singleSendMessageOut(msg);
+    }
 
     /**
      * toggle random mode on and off

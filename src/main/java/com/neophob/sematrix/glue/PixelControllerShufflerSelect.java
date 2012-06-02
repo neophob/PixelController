@@ -29,10 +29,6 @@ import com.neophob.sematrix.properties.ValidCommands;
  * The Class PixelControllerShufflerSelect.
  */
 public class PixelControllerShufflerSelect implements PixelControllerElement {
-
-	/** The Constant SHUFFLER_OPTIONS. */
-	public static final int SHUFFLER_OPTIONS = 16;
-
 	
 	/** fx to screen mapping. */
 	private List<Boolean> shufflerSelect;
@@ -42,7 +38,8 @@ public class PixelControllerShufflerSelect implements PixelControllerElement {
 	 */
 	public PixelControllerShufflerSelect() {
 		shufflerSelect = new CopyOnWriteArrayList<Boolean>();
-		for (int n=0; n<SHUFFLER_OPTIONS; n++) {
+		
+		for (int n=0; n<ShufflerOffset.values().length; n++) {
 			shufflerSelect.add(true);
 		}
 
