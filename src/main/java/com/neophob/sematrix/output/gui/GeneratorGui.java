@@ -174,17 +174,6 @@ public class GeneratorGui extends PApplet {
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
-        //select outputs
-        /*		int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
-		selectedOutputs = cp5.addCheckBox(GuiElement.CURRENT_OUTPUT.toString(), 0, p5GuiYOffset+80);
-		selectedOutputs.setItemsPerRow(nrOfOutputs);
-		selectedOutputs.setSpacingRow(10);
-		for (i=0; i<nrOfOutputs; i++) {
-			Toggle t = selectedOutputs.addItem("PHYSICAL OUTPUT "+(i+1), i);
-			t.setWidth(targetXSize);			
-		}
-		selectedOutputs.deactivateAll();*/
-
         Textlabel tl = cp5.addTextlabel("logo", "PixelController", 540, p5GuiYOffset+145);//480
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
@@ -519,7 +508,15 @@ public class GeneratorGui extends PApplet {
     public void RANDOM_ELEMENT(int val) {
         //unused
     }
-
+    
+    /**
+     * this callback method is needed by the library but unused
+     * @param val
+     */
+    public void CURRENT_OUTPUT(int val) {
+        //unused
+    }
+    
     /**
      * this callback method is needed by the library but unused
      * @param val
