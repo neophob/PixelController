@@ -33,7 +33,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Threshold extends Effect {
 
 	/** The threshold. */
-	private short threshold;
+	private int threshold;
 	
 	/**
 	 * Instantiates a new threshold.
@@ -53,9 +53,9 @@ public class Threshold extends Effect {
 		
 		for (int i=0; i<buffer.length; i++){
     		if (buffer[i]<this.threshold) {
-    		    buffer[i]=0; 
+    		    ret[i]=128; 
     		} else {
-    		    buffer[i]=255;
+    		    ret[i]=0;
     		}
 		}
 		return ret;
@@ -78,7 +78,7 @@ public class Threshold extends Effect {
 	 * @param threshold the new threshold
 	 */
 	public void setThreshold(int threshold) {
-		this.threshold = (short)threshold;
+		this.threshold = threshold;
 	}	
 	
 	/**
@@ -86,7 +86,7 @@ public class Threshold extends Effect {
 	 *
 	 * @return the threshold
 	 */
-	public short getThreshold() {
+	public int getThreshold() {
 		return threshold;
 	}
 	
