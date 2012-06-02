@@ -236,7 +236,6 @@ public final class MessageProcessor {
 					if (size>msgLength) {
 						size=msgLength;
 					}
-					System.out.println("size: "+size);
 					boolean b;
 					for (int i=0; i<size; i++) {
 						b = false;
@@ -244,7 +243,6 @@ public final class MessageProcessor {
 							b = true;
 						}
 						col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
-						System.out.println("setShufflerSelect: "+i+": "+b);
 					}					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
