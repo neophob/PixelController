@@ -137,14 +137,6 @@ public class P5EventListener implements ControlListener {
                 LOG.log(Level.INFO, selection+": "+intVal);
                 createMessage(ValidCommands.CHANGE_ROTOZOOM, intVal);		    
                 break;
-            	
-            case COLOR_PICKER:
-                float[] f = theEvent.getGroup().getArrayValue();
-                int r = (int)f[0];
-                int g = (int)f[1];
-                int b = (int)f[2];                
-                handleTint(r, g, b);
-                break;
 
             case BLINKENLIGHTS_DROPDOWN:
             	name = theEvent.getGroup().getCaptionLabel().getText();
@@ -204,9 +196,9 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.TEXTWR, name);            	
             	break;
             
-            case RANDOM_ELEMENT:
-            	name = theEvent.getStringValue();
-            	LOG.log(Level.INFO, selection+" "+name);
+            case RANDOM_ELEMENT:            	
+            	float[] f = theEvent.getGroup().getArrayValue();
+            	LOG.log(Level.INFO, selection+" "+f);
             	break;
             
             case COLOR_SET_DROPDOWN:            	
@@ -339,19 +331,5 @@ public class P5EventListener implements ControlListener {
         singleSendMessageOut(msg);
     }
 
-    /**
-     * 
-     * @param r
-     * @param r
-     * @param g
-     */
-    private void handleTint(int r, int g, int b) {
-        String msg[] = new String[4];       
-        msg[0] = ""+ValidCommands.CHANGE_TINT;
-        msg[1] = ""+r;
-        msg[2] = ""+g;
-        msg[3] = ""+b;
-        singleSendMessageOut(msg);
-    }
 
 }

@@ -36,7 +36,6 @@ public enum GuiElement {
 	
 	//effects
 	THRESHOLD,
-	COLOR_PICKER,
 	FX_ROTOZOOMER,
 
 	RANDOM_ELEMENT,

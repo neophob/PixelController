@@ -38,6 +38,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
+import com.neophob.sematrix.glue.PixelControllerShufflerSelect;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
@@ -46,6 +47,7 @@ import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
 
 import controlP5.Button;
+import controlP5.CheckBox;
 import controlP5.ControlP5;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
@@ -111,6 +113,8 @@ public class GeneratorGui extends PApplet {
     //preset tab
     private RadioButton presetButtons;
     private Button loadPreset, savePreset;
+    
+    private CheckBox randomCheckbox;
     
     /** The target y size. */
     private int targetXSize, targetYSize;
@@ -425,21 +429,22 @@ public class GeneratorGui extends PApplet {
         //RANDOM Tab
         //----------				
 
-        // select for gen1/gen2/fx1/fx2/mixer
-        // threshold/tint/rotozoom
-        // out fx/out fader/outvisual
-        cp5.addMatrix(GuiElement.RANDOM_ELEMENT.toString())
-        .setPosition(50, yPosStartDrowdown)
-        .setSize(600, 20)
-        .setGrid(11, 1)
-        .setGap(4, 1)
-        .setInterval(0)
-        .setColorActive(255)
-        .setColorBackground(128)
-        .setColorForeground(192)
-        .setMode(ControlP5.MULTIPLES)
-        .moveTo(randomTab)
-        ;
+		randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.toString())
+                .setPosition(20, yPosStartDrowdown)
+                .setSize(50, 20)
+                .setColorForeground(color(120))
+                .setColorActive(color(255))
+                .setColorLabel(color(255))
+                .setItemsPerRow(7)
+                .setSpacingColumn(40)
+		;
+		
+        for (i=0; i<PixelControllerShufflerSelect.SHUFFLER_OPTIONS; i++) {
+            String label = ""+(i+1);
+            randomCheckbox.addItem(label, i);
+        }
+        randomCheckbox.moveTo(randomTab);
+
 
         //Button
         randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
@@ -511,8 +516,8 @@ public class GeneratorGui extends PApplet {
         selectedOutputs.activate(0);
     }
 
-    public void RANDOM_ELEMENT(int x, int y) {
-        LOG.log(Level.INFO, "MATRIX "+x+" "+y);
+    public void RANDOM_ELEMENT(int val) {
+        //unused
     }
 
     /**

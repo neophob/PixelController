@@ -31,7 +31,7 @@ import com.neophob.sematrix.properties.ValidCommands;
 public class PixelControllerShufflerSelect implements PixelControllerElement {
 
 	/** The Constant SHUFFLER_OPTIONS. */
-	private static final int SHUFFLER_OPTIONS = 16;
+	public static final int SHUFFLER_OPTIONS = 16;
 
 	
 	/** fx to screen mapping. */
