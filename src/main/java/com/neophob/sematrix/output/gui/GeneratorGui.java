@@ -246,15 +246,13 @@ public class GeneratorGui extends PApplet {
 
         //there a default tab which is present all the time. rename this tab
         Tab generatorTab = cp5.getTab("default");
-        generatorTab.setLabel("GENERATOR");		
-        Tab effectTab = cp5.addTab("EFFECT");
+        generatorTab.setLabel("GENERATOR/EFFECT");		
         Tab outputTab = cp5.addTab("SINGLE OUTPUT MAPPING");
         Tab allOutputTab = cp5.addTab("ALL OUTPUT MAPPING");		
         Tab randomTab = cp5.addTab("RANDOM SELECTION");		
         Tab presetTab = cp5.addTab("PRESETS");
 
         generatorTab.setColorForeground(0xffff0000);
-        effectTab.setColorForeground(0xffff0000);		
         outputTab.setColorForeground(0xffff0000);
         allOutputTab.setColorForeground(0xffff0000);
         randomTab.setColorForeground(0xffff0000);
@@ -336,15 +334,16 @@ public class GeneratorGui extends PApplet {
         //-------------
         //EFFECT tab
         //-------------
-        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 0, 255, 255, /*---*/ 2*Theme.DROPBOX_XOFS, yPosStartDrowdown, 160, 14);
+        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 
+        		0, 255, 255, 4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         thresholdSlider.setSliderMode(Slider.FIX);
-        thresholdSlider.setGroup(effectTab);	
+        thresholdSlider.setGroup(generatorTab);	
         thresholdSlider.setDecimalPrecision(0);		
 
         Slider fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
-                -127, 127, 0, 2*Theme.DROPBOX_XOFS, yPosStartDrowdown+20, 160, 14);
+                -127, 127, 0, 2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         fxRotoSlider.setSliderMode(Slider.FIX);
-        fxRotoSlider.setGroup(effectTab);
+        fxRotoSlider.setGroup(generatorTab);
         fxRotoSlider.setDecimalPrecision(0);
 
         //-----------------
@@ -418,8 +417,13 @@ public class GeneratorGui extends PApplet {
         //RANDOM Tab
         //----------				
 
-		randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.toString())
-                .setPosition(20, yPosStartDrowdown)
+        Textlabel t2 = cp5.addTextlabel("rndDesc", 
+        		"Select the elements that should be changed in random mode:", 
+        		20, yPosStartDrowdown);
+        t2.moveTo(randomTab);
+        
+        randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.toString())
+                .setPosition(35, 20+yPosStartDrowdown)
                 .setSize(40, 20)
                 .setColorForeground(color(120))
                 .setColorActive(color(255))
