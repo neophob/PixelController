@@ -477,7 +477,7 @@ public class GeneratorGui extends PApplet {
 
         for (i=0; i<70; i++) {
             String label = ""+(i+1);
-            if (i<10) {
+            if (i<9) {
                 label = "0"+(i+1);
             }
             presetButtons.addItem(label, i);
