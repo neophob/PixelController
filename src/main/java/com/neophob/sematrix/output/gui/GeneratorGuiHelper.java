@@ -45,7 +45,7 @@ public class GeneratorGuiHelper {
 	 */
 	public static DropdownList createFaderDropdown(ControlP5 cp5, String name, int yPosStartDrowdown) {
 		DropdownList dropdownOutputFader = cp5.addDropdownList(name,
-        		Theme.DROPBOX_XOFS*2, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+        		35+Theme.DROPBOX_XOFS*2, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(dropdownOutputFader);
         int i=0;
         for (FaderName fn: FaderName.values()) {
@@ -65,7 +65,7 @@ public class GeneratorGuiHelper {
 	 */
 	public static DropdownList createEffectDropdown(ControlP5 cp5, String name, int yPosStartDrowdown) {
 		DropdownList dropdownOutputEffect = cp5.addDropdownList(name, 
-        		Theme.DROPBOX_XOFS, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+        		35+Theme.DROPBOX_XOFS, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(dropdownOutputEffect);
         int i=0;
         for (EffectName gn: EffectName.values()) {
@@ -86,7 +86,7 @@ public class GeneratorGuiHelper {
 	 */
 	public static DropdownList createVisualDropdown(ControlP5 cp5, String name, int yPosStartDrowdown, int nrOfVisuals) {
 		DropdownList dropdownOutputVisual = cp5.addDropdownList(name, 
-				0, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
+				35, 45+yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(dropdownOutputVisual);
         int i=0;
         for (i=0; i<nrOfVisuals; i++) {

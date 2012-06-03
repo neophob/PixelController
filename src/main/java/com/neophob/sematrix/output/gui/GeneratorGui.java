@@ -381,7 +381,7 @@ public class GeneratorGui extends PApplet {
         //All Output tab
         //--------------				
 
-        cp5.addTextlabel("allOutputTabLabel", "CHANGE ALL OUTPUT MAPPINGS", 0, 53+p5GuiYOffset)
+        cp5.addTextlabel("allOutputTabLabel", "CHANGE ALL OUTPUT MAPPINGS", 20, yPosStartDrowdown)
         .moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
 
         allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
@@ -418,9 +418,10 @@ public class GeneratorGui extends PApplet {
         //----------				
 
         Textlabel t2 = cp5.addTextlabel("rndDesc", 
-        		"Select the elements that should be changed in random mode:", 
+        		"SELECT THE ELEMENTS THAT SHOULD BE CHANGED IN RANDOM MODE:", 
         		20, yPosStartDrowdown);
-        t2.moveTo(randomTab);
+        t2.moveTo(randomTab).getValueLabel().setFont(ControlP5.standard58);
+        
         
         randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.toString())
                 .setPosition(35, 20+yPosStartDrowdown)
