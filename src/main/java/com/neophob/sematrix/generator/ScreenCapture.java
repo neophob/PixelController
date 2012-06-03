@@ -48,10 +48,10 @@ public class ScreenCapture extends Generator {
 	private static final Logger LOG = Logger.getLogger(ScreenCapture.class.getName());
 
 	private static final int BORDER_SIZE = 20;
-	
+
 	private Robot robot;
 	private Rectangle rectangleCaptureArea;
-	
+
 	private JFrame top,bottom,left,right;
 	/**
 	 * Instantiates a new ScreenCapture Generator.
@@ -62,10 +62,10 @@ public class ScreenCapture extends Generator {
 		super(controller, GeneratorName.SCREEN_CAPTURE, ResizeName.QUALITY_RESIZE);
 
 		if (width<1) {
-		    width=internalBufferXSize*2;
+			width=internalBufferXSize*2;
 		}
 		if (height<1) {
-		    height=internalBufferYSize*2;
+			height=internalBufferYSize*2;
 		}
 		rectangleCaptureArea = new Rectangle(offset, offset, width, height);		
 
@@ -73,10 +73,10 @@ public class ScreenCapture extends Generator {
 			robot = new Robot();
 			LOG.log(Level.INFO, "ScreenCapture initialized, offset "+rectangleCaptureArea.x+"/"+rectangleCaptureArea.y
 					+", size: "+rectangleCaptureArea.width+"/"+rectangleCaptureArea.height);
-			
+
 			Frame frame = new Frame();
 			frame.setName("PixelController ScreenCapture Area");
-			
+
 			//draw border
 			left = drawReadBorder(frame, BORDER_SIZE, height, offset-BORDER_SIZE, offset);			
 			right = drawReadBorder(frame, BORDER_SIZE, height, offset+width, offset);
@@ -87,7 +87,7 @@ public class ScreenCapture extends Generator {
 		}
 
 	}
-	
+
 	/**
 	 * draw a single border
 	 * 
@@ -96,42 +96,42 @@ public class ScreenCapture extends Generator {
 	 * @param y
 	 */
 	private static JFrame drawReadBorder(Frame frame, int width, int height, int x, int y) {
-        JFrame window = new JFrame(frame.getGraphicsConfiguration());
+		JFrame window = new JFrame(frame.getGraphicsConfiguration());
 
-        //Set the size and location of the window  
-        window.setSize(width, height);
-        window.setLocation(x,y);          
-        window.setUndecorated(true);
-        
-        //color window
-        Container container = window.getContentPane();
-        container.setBackground(Color.RED);         
-        setOpacity(window, 0.5f);
-        
-        //update window property
-        window.setAlwaysOnTop(true);            
-        window.setVisible(false);
-        
-        return window;
+		//Set the size and location of the window  
+		window.setSize(width, height);
+		window.setLocation(x,y);          
+		window.setUndecorated(true);
+
+		//color window
+		Container container = window.getContentPane();
+		container.setBackground(Color.RED);         
+		setOpacity(window, 0.5f);
+
+		//update window property
+		window.setAlwaysOnTop(true);            
+		window.setVisible(false);
+
+		return window;
 	}
-	
+
 	/**
 	 * see http://java.sun.com/developer/technicalArticles/GUI/translucent_shaped_windows/
 	 * @param window
 	 * @param f
 	 */
 	private static void setOpacity(JFrame window, float f) {
-	    try { 
-	        Class<?> utils = Class.forName("com.sun.awt.AWTUtilities");
-	        //use reflection to check if this method is available
-	        Method method = utils.getMethod("setWindowOpacity", Window.class, float.class);
-	        method.invoke(null, window, f);
-	     }
-	     catch(Exception e) {
-	         LOG.log(Level.SEVERE, "Failed to set Window Opacity: {0}", e);
-	     }	    
+		try { 
+			Class<?> utils = Class.forName("com.sun.awt.AWTUtilities");
+			//use reflection to check if this method is available
+			Method method = utils.getMethod("setWindowOpacity", Window.class, float.class);
+			method.invoke(null, window, f);
+		}
+		catch(Exception e) {
+			LOG.log(Level.SEVERE, "Failed to set Window Opacity: {0}", e);
+		}	    
 	}
-	
+
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.generator.Generator#update()
@@ -139,17 +139,24 @@ public class ScreenCapture extends Generator {
 	@Override
 	public void update() {		
 		if (robot != null) {
-		    //get screenshot
+			//get screenshot
 			BufferedImage screencapture = robot.createScreenCapture(rectangleCaptureArea);
-			
+
 			//resize it to internalBufferSize
 			screencapture = ScalrOld.resize(screencapture, ScalrOld.Method.QUALITY, internalBufferXSize, internalBufferYSize);
 
-			//convert it to raw buffer
-			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);
+			int[] rgbImage = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);
+			short r,g,b;
+			for (int i=0; i<rgbImage.length; i++){
+				int rgbColor = rgbImage[i];
+				r = (short) ((rgbColor>>16) & 255);
+				g = (short) ((rgbColor>>8)  & 255);
+				b = (short) ( rgbColor      & 255);
+				this.internalBuffer[i]=(int)(r*0.3f+g*0.59f+b*0.11f);
+			}
 		}		
 	}
-	
+
 	@Override
 	protected void nowActive() {
 		left.setVisible(true);
