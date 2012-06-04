@@ -1,0 +1,113 @@
+# WHAT
+PixelController - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012
+I want to create an easy to use matrix controller software which creates stunning visuals!
+
+Primary Website: http://www.pixelinvaders.ch
+My Blog: http://www.neophob.com
+
+
+## HOWTO USE PIXELCONTROLLER
+Prerequisite:
+* Java Runtime, v1.6+
+* PureData (http://puredata.info/), download the extended Version
+
+Run PixelController.cmd on Windows, PixelController.command on OSX and PixelController.sh on Linux to start the application.
+Make sure your led matrix connected to you computer before the application is started and you configured your hardware in 
+the config.properties file.
+
+Here is a very primitve diagram, how everything is connected:
+[PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]
+
+
+## DEMO
+Check out http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
+on two PixelInvaders panels. 
+
+
+## SUPPORTED HARDWARE
+PixelController supports different (LED) matrix hardware devices:
+* PixelInvaders 3d Panels (see Readme.PixelInvaders)
+* Seeedstudios Rainbowduino (see Readme.rainbowduino), hint: the new v3 models are currently NOT supported!
+* ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
+* MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
+* Adavision (http://www.ladyada.net/make/adavision/)
+
+
+## FRONTENDS
+There are different frontends for PixelController:
+* PixConCli: Command Line interface for PixelController, 
+* PureData: PureData frontend, very flexible, extensible (OSC, MIDI)
+* Native Java: WIP
+
+
+## IT DOES NOT WORK!
+Try to understand WHAT not works, which component, it's the frontend? PixelController itself? or no output?
+
+Here are some common errors:
+* Did you forgot to edit the configuration file "config.properties", take a look!
+* Did you flash the correct firmware to you Arduino/Teensy? PixelInvaders should display an animated Rainbow
+   if powered on (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
+* A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
+   for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
+   deal, as the timeout value cold be adjusted.
+
+
+## HOWTO BUILD PIXELCONTROLLER
+Prerequisite:
+* Maven v2.x (if you use Maven 3, make sure to read http://neophob.com/2011/11/maven-3-is-evil/ first!)
+* JDK 1.6+
+
+Then run 
+    # mvn initialize
+    to install the needed packages in your local repo and
+    
+    # mvn clean package
+    to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
+
+
+## PERFORMANCE
+With the JMX interface you can monitor the status of your PixelController instance in real time. This 
+will provide you with useful data such as required time for each layer (generator, effect, mixer…), the 
+frame rate of your instance, allowing you to diagnose problems or performance issues. To read the JMX 
+data, you will need to use a JMX client or the PixConCli util.
+
+Example how to use PixConCli:
+    localhost:PixelController-1.3-SNAPSHOT michu$ ./PixConCli.sh -c JMX_STAT -p 1337
+    <...>
+    Create an RMI connector client and connect it to the RMI connector server 127.0.0.1:1337
+    Get an MBeanServerConnection...
+    
+    Generic:
+    server version           : 1.1
+    current fps              : 20,036 (100% of configured fps: 20)
+    frame count              : 1771
+    running since            : 0:01:28.980
+    
+    The following average times have been collected during the last 10.007 seconds:
+       generator             : 0,310ms
+       effect                : 0,000ms
+       output schedule       : 0,140ms
+       fader                 : 0,000ms
+       debug window          : 15,210ms
+       output prepare wait   : 0,005ms
+       output update wait    : 0,005ms
+       matrix emulator window: 0,440ms
+    
+    Ouput-specific average times for output #1: NULL (NullDevice)
+       prepare               : 1,550ms
+       update                : 0,000ms
+    
+    Close the connection to the server
+
+
+## CREDITS
+Michael Vogt:       Project Lead, Main Coder		
+	
+Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements
+McGyver666:         Contributor
+Rainer Ostendorf:   Artnet Output
+Pesi:               miniDMX Output, Tester
+Scott Wilson:       Arduino/Rainbowduino Howto
+Noxx6:              Bugfixes
+Psykon:             Example Visuals
+
