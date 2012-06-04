@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.PixelController;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 
@@ -50,8 +51,8 @@ public class GeneratorGuiCreator extends Frame {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGuiCreator(boolean displayHoriz, int maximalXSize) {
-        super("PixelController Generator Window");        
+	public GeneratorGuiCreator(int maximalXSize) {
+        super("PixelController Generator Window "+PixelController.VERSION);        
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         
@@ -63,11 +64,7 @@ public class GeneratorGuiCreator extends Frame {
         int windowXSize=singleVisualXSize;
         int windowYSize=singleVisualYSize;
 
-        if (displayHoriz) {
-        	windowXSize*=nrOfScreens;
-        } else {
-        	windowYSize*=nrOfScreens;
-        }
+       	windowXSize*=nrOfScreens;
        
         //boarder stuff
         windowXSize+=20;
@@ -80,7 +77,7 @@ public class GeneratorGuiCreator extends Frame {
 
         //connect the new PApplet to our frame
         setLayout(new BorderLayout());
-        PApplet embed = new GeneratorGui(displayHoriz, windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
+        PApplet embed = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
         add(embed, BorderLayout.CENTER);
 
         // important to call this whenever embedding a PApplet.

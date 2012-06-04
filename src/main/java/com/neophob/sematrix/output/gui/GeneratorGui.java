@@ -74,9 +74,6 @@ public class GeneratorGui extends PApplet {
     /** The log. */
     private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
 
-    /** The display horiz. */
-    private boolean displayHoriz;
-
     /** The y. */
     private int x,y;
 
@@ -129,8 +126,7 @@ public class GeneratorGui extends PApplet {
      * @param targetXSize the target x size
      * @param targetYSize the target y size
      */
-    public GeneratorGui(boolean displayHoriz, int x, int y, int targetXSize, int targetYSize) {
-        this.displayHoriz = displayHoriz;
+    public GeneratorGui(int x, int y, int targetXSize, int targetYSize) {
         this.x = x;
         this.y = y+SELECTED_MARKER;
         this.targetXSize = targetXSize;
@@ -581,11 +577,7 @@ public class GeneratorGui extends PApplet {
 
             //display the image
             image(pImage, localX, localY);
-            if (displayHoriz) {
-                localX += pImage.width;
-            } else {
-                localY += pImage.height;
-            }
+            localX += pImage.width;
             ofs++;
         }
 

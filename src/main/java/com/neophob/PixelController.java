@@ -63,7 +63,10 @@ public class PixelController extends PApplet {
 	
 	/** The Constant FPS. */
 	public static final int FPS = 20;
-	
+
+	/** The Constant FPS. */
+	public static final String VERSION = "v1.3-SNAPSHOT";
+
 	private Collector collector;
 
 	/** The output. */
@@ -173,7 +176,7 @@ public class PixelController extends PApplet {
 		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 		
 		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
-			new GeneratorGuiCreator(true, applicationConfig.getDebugWindowMaximalXSize());	
+			new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());	
 		}
 		
 		//start in random mode?
