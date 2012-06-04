@@ -1,6 +1,5 @@
 # PixelController
-**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012
-I want to create an easy to use matrix controller software which creates stunning visuals!
+**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
 Primary Website: http://www.pixelinvaders.ch
 My Blog: http://www.neophob.com
@@ -58,9 +57,9 @@ Prerequisite:
 * JDK 1.6+
 
 Then run 
+
     # mvn initialize
-    to install the needed packages in your local repo and
-    
+    to install the needed packages in your local repo and    
     # mvn clean package
     to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
 
@@ -72,8 +71,8 @@ frame rate of your instance, allowing you to diagnose problems or performance is
 data, you will need to use a JMX client or the PixConCli util.
 
 Example how to use PixConCli:
+
     localhost:PixelController-1.3-SNAPSHOT michu$ ./PixConCli.sh -c JMX_STAT -p 1337
-    <...>
     Create an RMI connector client and connect it to the RMI connector server 127.0.0.1:1337
     Get an MBeanServerConnection...
     
@@ -101,12 +100,12 @@ Example how to use PixConCli:
 
 
 ## CREDITS
-* Michael Vogt:       Project Lead, Main Coder		
-* Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements
-* McGyver666:         Contributor
-* Rainer Ostendorf:   Artnet Output
-* Pesi:               miniDMX Output, Tester
-* Scott Wilson:       Arduino/Rainbowduino Howto
-* Noxx6:              Bugfixes
-* Psykon:             Example Visuals
+* **Michael Vogt**       Project Lead, Main Coder		
+* **Markus Lang**        Maven enhancements, Output enhancements, Performance enhancements
+* **McGyver666**         Contributor
+* **Rainer Ostendorf**   Artnet Output
+* **Pesi**               miniDMX Output, Tester
+* **Scott Wilson**       Arduino/Rainbowduino Howto
+* **Noxx6**              Bugfixes
+* **Psykon**             Example Visuals
 
