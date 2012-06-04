@@ -255,8 +255,25 @@ public class GeneratorGui extends PApplet {
         presetTab.setColorForeground(0xffff0000);
 
         //-------------
+        //EFFECT tab
+        //-------------
+        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 
+        		0, 255, 255, 0*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
+        thresholdSlider.setSliderMode(Slider.FIX);
+        thresholdSlider.setGroup(generatorTab);	
+        thresholdSlider.setDecimalPrecision(0);		
+
+        Slider fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
+                -127, 127, 0, 2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
+        fxRotoSlider.setSliderMode(Slider.FIX);
+        fxRotoSlider.setGroup(generatorTab);
+        fxRotoSlider.setDecimalPrecision(0);
+
+        
+        //-------------
         //Generator tab
-        //-------------		
+        //-------------
+        
         cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
         String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
@@ -327,20 +344,6 @@ public class GeneratorGui extends PApplet {
         //add textfield
         Textfield textfield = cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", 3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
 
-        //-------------
-        //EFFECT tab
-        //-------------
-        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 
-        		0, 255, 255, 4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
-        thresholdSlider.setSliderMode(Slider.FIX);
-        thresholdSlider.setGroup(generatorTab);	
-        thresholdSlider.setDecimalPrecision(0);		
-
-        Slider fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
-                -127, 127, 0, 2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
-        fxRotoSlider.setSliderMode(Slider.FIX);
-        fxRotoSlider.setGroup(generatorTab);
-        fxRotoSlider.setDecimalPrecision(0);
 
         //-----------------
         //Single Output tab
