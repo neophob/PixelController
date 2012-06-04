@@ -11,12 +11,12 @@ Prerequisite:
 * Java Runtime, v1.6+
 * PureData (http://puredata.info/), download the extended Version
 
-Run `PixelController.cmd` on Windows, PixelController.command on OSX and PixelController.sh on Linux to start the application.
+Run `PixelController.cmd` on Windows, `PixelController.command` on OSX and `PixelController.sh` on Linux to start the application.
 Make sure your led matrix connected to you computer before the application is started and you configured your hardware in 
 the config.properties file.
 
 Here is a very primitve diagram, how everything is connected:
-    [PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]
+    `[PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]`
 
 
 ## DEMO
@@ -26,7 +26,7 @@ on two PixelInvaders panels.
 
 ## SUPPORTED HARDWARE
 PixelController supports different (LED) matrix hardware devices:
-* PixelInvaders 3d Panels (see Readme.PixelInvaders)
+* PixelInvaders 3d Panels (see Readme.PixelInvaders, http://www.pixelinvaders.ch)
 * Seeedstudios Rainbowduino (see Readme.rainbowduino), hint: the new v3 models are currently NOT supported!
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 * MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
