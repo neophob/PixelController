@@ -45,6 +45,8 @@ public class GeneratorGuiCreator extends Frame {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
 
+    private static final int MINIMAL_WINDOW_X_SIZE = 800;
+
 	/**
 	 * Instantiates a new internal debug window.
 	 *
@@ -70,6 +72,10 @@ public class GeneratorGuiCreator extends Frame {
         windowXSize+=20;
         windowYSize+=80+200;
 
+        if (windowXSize<MINIMAL_WINDOW_X_SIZE) {
+        	windowXSize = MINIMAL_WINDOW_X_SIZE;
+        }
+        
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
         setBounds(0, 0, windowXSize, windowYSize);
         this.setResizable(false);
