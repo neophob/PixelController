@@ -1,9 +1,9 @@
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
-Primary Website: http://www.pixelinvaders.ch
+**Primary Website**: http://www.pixelinvaders.ch
 
-My Blog: http://www.neophob.com
+**My Blog**: http://www.neophob.com
 
 
 ## HOWTO USE PIXELCONTROLLER
@@ -11,7 +11,7 @@ Prerequisite:
 * Java Runtime, v1.6+
 * PureData (http://puredata.info/), download the extended Version
 
-Run PixelController.cmd on Windows, PixelController.command on OSX and PixelController.sh on Linux to start the application.
+Run `PixelController.cmd` on Windows, PixelController.command on OSX and PixelController.sh on Linux to start the application.
 Make sure your led matrix connected to you computer before the application is started and you configured your hardware in 
 the config.properties file.
 
