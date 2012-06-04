@@ -26,7 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -44,8 +44,8 @@ import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
-import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
 

@@ -28,7 +28,7 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
-import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.PixelControllerStatusMBean;

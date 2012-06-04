@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PresentSettings;
