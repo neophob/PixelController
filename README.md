@@ -1,5 +1,5 @@
-# WHAT
-PixelController - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012
+# PixelController
+**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012
 I want to create an easy to use matrix controller software which creates stunning visuals!
 
 Primary Website: http://www.pixelinvaders.ch
@@ -16,7 +16,7 @@ Make sure your led matrix connected to you computer before the application is st
 the config.properties file.
 
 Here is a very primitve diagram, how everything is connected:
-[PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]
+    [PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]
 
 
 ## DEMO
@@ -101,13 +101,12 @@ Example how to use PixConCli:
 
 
 ## CREDITS
-Michael Vogt:       Project Lead, Main Coder		
-	
-Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements
-McGyver666:         Contributor
-Rainer Ostendorf:   Artnet Output
-Pesi:               miniDMX Output, Tester
-Scott Wilson:       Arduino/Rainbowduino Howto
-Noxx6:              Bugfixes
-Psykon:             Example Visuals
+* Michael Vogt:       Project Lead, Main Coder		
+* Markus Lang:        Maven enhancements, Output enhancements, Performance enhancements
+* McGyver666:         Contributor
+* Rainer Ostendorf:   Artnet Output
+* Pesi:               miniDMX Output, Tester
+* Scott Wilson:       Arduino/Rainbowduino Howto
+* Noxx6:              Bugfixes
+* Psykon:             Example Visuals
 
