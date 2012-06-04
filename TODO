@@ -5,23 +5,21 @@ TODO PixelController
 -more layouts (what kind of layouts?)
 -do not freeze application if output fails (disconnect controller)
 -artnet output: support multiple output devices / multiple universe
--MatrixData: make internal buffersize configurable (currently deviceSize*8)
--Unit Testing is suboptimal, using the config.properties 
--start PureData in the start script, for example /Applications/Pd-extended.app/Contents/Resources/bin/pd -stderr -nomidi -noaudio -open mtxrev-main.pd -send "preset-file ../presets/main.coll;" & 
+-MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
+-Unit Testing is suboptimal, the file config.properties is not used 
 -support TPM2 devices
 -support Kinect for Xbox 360 
 
 
 Changelog v1.2 to v1.3
 ------------------------
--a integrated GUI!
--add colorsets, predefined color definition for most effects
--Support more output formats (not only RGB and RBG), thanks to noxx6
+-add integrated GUI!
+-add colorsets, predefined color definition for all generators, effects and mixers
+-support more output formats (not only RGB and RBG), thanks to noxx6
 -configuration fixes
 -update AdaVision driver
 -add start scripts for OSX
--add flip effects
--add GreyMixer
+-add flipX and flipY effects
 -Texturedeform is not a generator anymore but an effect
 -removed emboss effect, as the result was ugly
 -removed Xor and MinusHalf mixer, as the result was ugly
