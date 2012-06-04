@@ -12,7 +12,7 @@ Prerequisite:
 * PureData (http://puredata.info/), download the extended Version
 
 Run `PixelController.cmd` on Windows, `PixelController.command` on OSX and `PixelController.sh` on Linux to start the application.
-Make sure your led matrix connected to you computer before the application is started and you configured your hardware in 
+Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
 the config.properties file.
 
 Here is a very primitve diagram, how everything is connected:
