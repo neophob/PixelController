@@ -2,6 +2,7 @@
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
 Primary Website: http://www.pixelinvaders.ch
+
 My Blog: http://www.neophob.com
 
 
@@ -40,10 +41,10 @@ There are different frontends for PixelController:
 
 
 ## IT DOES NOT WORK!
-Try to understand WHAT not works, which component, it's the frontend? PixelController itself? or no output?
+Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
 
 Here are some common errors:
-* Did you forgot to edit the configuration file "config.properties", take a look!
+* Did you forgot to edit the configuration file "config.properties". Take a look at the config.examples subdirectory!
 * Did you flash the correct firmware to you Arduino/Teensy? PixelInvaders should display an animated Rainbow
    if powered on (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
 * A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
@@ -100,12 +101,12 @@ Example how to use PixConCli:
 
 
 ## CREDITS
-* **Michael Vogt**       Project Lead, Main Coder		
-* **Markus Lang**        Maven enhancements, Output enhancements, Performance enhancements
-* **McGyver666**         Contributor
-* **Rainer Ostendorf**   Artnet Output
-* **Pesi**               miniDMX Output, Tester
-* **Scott Wilson**       Arduino/Rainbowduino Howto
-* **Noxx6**              Bugfixes
-* **Psykon**             Example Visuals
+* **Michael Vogt**:       Project Lead, Main Developer		
+* **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements
+* **McGyver666**:         Contributor
+* **Rainer Ostendorf**:   Artnet Output
+* **Pesi**:               miniDMX Output, Tester
+* **Scott Wilson**:       Arduino/Rainbowduino Howto
+* **Noxx6**:              Bugfixes
+* **Psykon**:             Example Visuals
 
