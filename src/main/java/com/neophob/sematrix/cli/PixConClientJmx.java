@@ -42,6 +42,7 @@ import com.neophob.sematrix.jmx.TimeMeasureItemOutput;
  *
  */
 public final class PixConClientJmx {
+	
 	private static final NumberFormat PERCENT_FORMAT = DecimalFormat.getPercentInstance();
 
 	private PixConClientJmx() {
@@ -55,12 +56,11 @@ public final class PixConClientJmx {
 	 */
 	public static void queryJmxServer(String hostname, int port) {
 		System.setSecurityManager(new java.rmi.RMISecurityManager());
-
-		System.out.println("Create an RMI connector client and connect it to the RMI connector server");
 		
 		JMXServiceURL url;
 		JMXConnector jmxc;
 		hostname=hostname+":"+port;
+		System.out.println("Create an RMI connector client and connect it to the RMI connector server "+hostname);
 		try {
 			url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://"+hostname+"/jmxrmi");
 			jmxc = JMXConnectorFactory.connect(url, null);
