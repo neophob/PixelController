@@ -453,22 +453,28 @@ public final class Collector {
 		List<String> ret = new ArrayList<String>();
 		
 		//get visual status
-		Visual v = allVisuals.get(currentVisual);
-		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
-		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
-		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
-		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
-		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
+		int n=0;
+		for (Visual v: allVisuals) {
+			ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+n++);
+			ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
+			ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
+			ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
+			ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
+			ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());			
+		}
 
 		//get output status
-		OutputMapping om = ioMapping.get(currentOutput); 
+		for (OutputMapping om: ioMapping) {
+			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+om.getVisualId());
+			ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
+			ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
+			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());			
+		}
+/*		OutputMapping om = ioMapping.get(currentOutput); 
 		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
 		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
 		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
-		
-		LOG.log(Level.INFO, "currentOutput: {0}, check: {1}, visual: {2} "
-				, new Object[] { currentOutput, om.getVisualId(), om.getVisualId() });
-		
+	*/	
 		return ret;
 	}
 
@@ -486,9 +492,7 @@ public final class Collector {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
-		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);
-		ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+currentOutput);		
-		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
+		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);						
 		ret.add(ValidCommands.CURRENT_COLORSET +EMPTY_CHAR+currentColorSet);
 		return ret;
 	}
