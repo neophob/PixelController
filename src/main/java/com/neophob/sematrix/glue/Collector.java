@@ -466,15 +466,10 @@ public final class Collector {
 		//get output status
 		for (OutputMapping om: ioMapping) {
 			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+om.getVisualId());
-			ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
 			ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
 			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());			
 		}
-/*		OutputMapping om = ioMapping.get(currentOutput); 
-		ret.add(ValidCommands.CHANGE_OUTPUT_EFFECT+EMPTY_CHAR+om.getEffect().getId());
-		ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-		ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
-	*/	
+
 		return ret;
 	}
 

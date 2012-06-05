@@ -55,9 +55,8 @@ public class Crossfader extends Fader {
 			if (super.isDone()) {
 				return newBuffer;
 			}
-			float f = getCurrentStep();
 			
-			return CrossfaderHelper.getBuffer(f, buffer, newBuffer);			
+			return CrossfaderHelper.getBuffer(getCurrentStep(), buffer, newBuffer);			
 		} catch (Exception e) {
 			super.setDone();
 			return buffer;

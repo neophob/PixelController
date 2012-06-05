@@ -97,12 +97,10 @@ public class GeneratorGui extends PApplet {
 
     //Output Tab
     private DropdownList dropdownOutputVisual;
-    private DropdownList dropdownOutputEffect;
     private DropdownList dropdownOutputFader;    
 
     //All Output Tab
     private DropdownList allOutputTabVis;
-    private DropdownList allOutputTabFx;
     private DropdownList allOutputTabFader;
     private DropdownList colorScrollList;
     private DropdownList colorSetList;
@@ -366,11 +364,6 @@ public class GeneratorGui extends PApplet {
                 GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
 
-        //effect
-        dropdownOutputEffect = GeneratorGuiHelper.createEffectDropdown(cp5, 
-                GuiElement.OUTPUT_EFFECT_DROPDOWN.toString(), yPosStartDrowdown); 
-        dropdownOutputEffect.moveTo(outputTab);
-
         //Fader         
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                 GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
@@ -386,11 +379,6 @@ public class GeneratorGui extends PApplet {
         allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
                 GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
         allOutputTabVis.moveTo(allOutputTab);
-
-        //effect
-        allOutputTabFx = GeneratorGuiHelper.createEffectDropdown(cp5, 
-                GuiElement.OUTPUT_ALL_EFFECT_DROPDOWN.toString(), yPosStartDrowdown); 
-        allOutputTabFx.moveTo(allOutputTab);
 
         //Fader         
         allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
@@ -674,7 +662,6 @@ public class GeneratorGui extends PApplet {
         //get output status
         OutputMapping om = col.getOutputMappings(col.getCurrentOutput()); 
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
-        dropdownOutputEffect.setLabel(dropdownOutputEffect.getItem(om.getEffect().getId()).getName());
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
 
         ColorSet cs = col.getActiveColorSet();
@@ -743,9 +730,6 @@ public class GeneratorGui extends PApplet {
         if (!clickedOn.contains(GuiElement.OUTPUT_FADER_DROPDOWN)) {
             dropdownOutputFader.setOpen(false);
         }
-        if (!clickedOn.contains(GuiElement.OUTPUT_EFFECT_DROPDOWN)) {
-            dropdownOutputEffect.setOpen(false);
-        }
         if (!clickedOn.contains(GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN)) {
             dropdownOutputVisual.setOpen(false);
         }
@@ -761,9 +745,6 @@ public class GeneratorGui extends PApplet {
         }
         if (!clickedOn.contains(GuiElement.OUTPUT_ALL_FADER_DROPDOWN)) {
             allOutputTabFader.setOpen(false);
-        }
-        if (!clickedOn.contains(GuiElement.OUTPUT_ALL_EFFECT_DROPDOWN)) {
-            allOutputTabFx.setOpen(false);
         }
 
     }

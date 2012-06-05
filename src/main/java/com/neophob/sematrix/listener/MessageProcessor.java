@@ -181,28 +181,6 @@ public final class MessageProcessor {
 				}
 				break;
 				
-			case CHANGE_OUTPUT_EFFECT:
-				try {
-					int nr = col.getCurrentOutput();
-					tmp=Integer.parseInt(msg[1]);
-					col.getOutputMappings(nr).setEffect(col.getPixelControllerEffect().getEffect(tmp));
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
-			case CHANGE_ALL_OUTPUT_EFFECT:
-				try {
-					tmp=Integer.parseInt(msg[1]);					
-					Effect e = col.getPixelControllerEffect().getEffect(tmp);
-					for (OutputMapping om: col.getAllOutputMappings()) {
-						om.setEffect(e);
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
 			case CHANGE_OUTPUT_FADER:
 				try {
 					int nr = col.getCurrentOutput();

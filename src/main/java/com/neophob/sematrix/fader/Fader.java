@@ -202,8 +202,8 @@ public abstract class Fader {
 	 * @return the new buffer
 	 */
 	protected int[] getNewBuffer() {
-		int[] buffer = Collector.getInstance().getVisual(newVisual).getBuffer();
-		return outputMapping.getEffect().getBuffer(buffer);
+//		int[] buffer = Collector.getInstance().getVisual(newVisual).getBuffer();
+		return outputMapping.getBuffer();
 	}
 
 	/**

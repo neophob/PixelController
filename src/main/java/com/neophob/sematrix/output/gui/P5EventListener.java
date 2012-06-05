@@ -150,11 +150,6 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.IMAGE, name);
             	break;
             	
-            case OUTPUT_EFFECT_DROPDOWN:
-            	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CHANGE_OUTPUT_EFFECT, value);
-            	break;
-
             case OUTPUT_FADER_DROPDOWN:
             	LOG.log(Level.INFO, selection+" "+value);
             	createMessage(ValidCommands.CHANGE_OUTPUT_FADER, value);
@@ -169,12 +164,7 @@ public class P5EventListener implements ControlListener {
             	LOG.log(Level.INFO, selection+" "+value);
             	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_VISUAL, value);
             	break;
-            	
-            case OUTPUT_ALL_EFFECT_DROPDOWN:
-            	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_EFFECT, value);
-            	break;
-            	
+            	            	
             case OUTPUT_ALL_FADER_DROPDOWN:
             	LOG.log(Level.INFO, selection+" "+value);
             	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_FADER, value);

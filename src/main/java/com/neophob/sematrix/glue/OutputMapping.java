@@ -19,11 +19,9 @@
 
 package com.neophob.sematrix.glue;
 
-import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
-import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.fader.Fader.FaderName;
+import com.neophob.sematrix.fader.PixelControllerFader;
 
 /**
  * class used to store input/ouput mapping.
@@ -32,23 +30,18 @@ import com.neophob.sematrix.fader.Fader.FaderName;
  */
 public class OutputMapping {
 
-	/** the visual input object. */
-	private int visualId;
+	/** the visual number (offset) */
+	private int visualNumber;
 	
 	/** The fader. */
 	private Fader fader;
-	
-	/** The effect. */
-	private Effect effect;
 	
 	/**
 	 * default setting.
 	 */
 	public OutputMapping() {
-		this.visualId = 0;
-		
+		this.visualNumber = 0;		
 		this.fader = PixelControllerFader.getFader(FaderName.SWITCH);
-		this.effect = Collector.getInstance().getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
 	}
 
 	/**
@@ -57,9 +50,9 @@ public class OutputMapping {
 	 * @param visualId the visual id
 	 * @param screenNr the screen nr
 	 */
-	public OutputMapping(int visualId) {
+	public OutputMapping(int visualNumber) {
 		this();
-		this.visualId = visualId;
+		this.visualNumber = visualNumber;
 	}
 
 	/**
@@ -68,7 +61,7 @@ public class OutputMapping {
 	 * @return the visual id
 	 */
 	public int getVisualId() {
-		return visualId;
+		return visualNumber;
 	}
 
 	/**
@@ -77,25 +70,7 @@ public class OutputMapping {
 	 * @param visualId the new visual id
 	 */
 	public void setVisualId(int visualId) {
-		this.visualId = visualId;
-	}
-
-	/**
-	 * Gets the effect.
-	 *
-	 * @return the effect
-	 */
-	public Effect getEffect() {
-		return effect;
-	}
-
-	/**
-	 * Sets the effect.
-	 *
-	 * @param effect the new effect
-	 */
-	public void setEffect(Effect effect) {
-		this.effect = effect;
+		this.visualNumber = visualId;
 	}
 
 	/**
@@ -114,6 +89,14 @@ public class OutputMapping {
 	 */
 	public void setFader(Fader fader) {
 		this.fader = fader;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int[] getBuffer() {
+		return Collector.getInstance().getVisual(visualNumber).getBuffer();
 	}
 	
 }

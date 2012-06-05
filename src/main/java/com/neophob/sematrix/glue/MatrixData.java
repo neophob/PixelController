@@ -94,6 +94,7 @@ public class MatrixData {
 	 */
 	private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
 		Fader fader = map.getFader();
+	
 		if (fader.isStarted()) {
 			buffer=fader.getBuffer(buffer);
 			//do not cleanup fader here, the box layout gets messed up!
@@ -119,7 +120,7 @@ public class MatrixData {
 	public int[] getScreenBufferForDevice(Visual visual, OutputMapping map) {
 		int[] buffer = visual.getBuffer();
 		//apply output specific effect
-		buffer = map.getEffect().getBuffer(buffer);
+		buffer = map.getBuffer();
 		
 		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);
@@ -142,7 +143,7 @@ public class MatrixData {
 		int[] buffer = visual.getBuffer();
 		
 		//apply output specific effect
-		buffer = map.getEffect().getBuffer(buffer);
+		buffer = map.getBuffer();
 		
 		//apply the fader (if needed)
 		buffer = doTheFaderBaby(buffer, map);

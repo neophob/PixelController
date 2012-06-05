@@ -51,17 +51,11 @@ public enum ValidCommands {
 	/** The CHANGE output. */
 	CHANGE_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for current output"),
 	
-	/** The CHANGE output effect. */
-	CHANGE_OUTPUT_EFFECT(CommandGroup.OUTPUT, 1, "<INT> change effect for current output"),
-	
 	/** The CHANGE fader. */
 	CHANGE_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for current output"),
 
 	/** The CHANGE output. */
 	CHANGE_ALL_OUTPUT_VISUAL(CommandGroup.OUTPUT, 1, "<INT> change visual for all outputs"),
-	
-	/** The CHANGE output effect. */
-	CHANGE_ALL_OUTPUT_EFFECT(CommandGroup.OUTPUT, 1, "<INT> change effect for all outputs"),
 	
 	/** The CHANGE fader. */
 	CHANGE_ALL_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for all outputs"),
