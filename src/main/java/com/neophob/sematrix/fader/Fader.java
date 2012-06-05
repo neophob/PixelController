@@ -33,6 +33,8 @@ import com.neophob.sematrix.glue.OutputMapping;
  * 
  * reason: the timer - after the time is over we switch the mapping in the collector class
  * 
+ * Use 24bpp buffer
+ * 
  * @author mvogt
  *
  */

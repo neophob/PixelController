@@ -93,7 +93,7 @@ public class OutputMapping {
 
 	/**
 	 * 
-	 * @return
+	 * @return 24bpp image of the visual (fader is not applied)
 	 */
 	public int[] getBuffer() {
 		return Collector.getInstance().getVisual(visualNumber).getBuffer();

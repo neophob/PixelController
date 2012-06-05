@@ -173,9 +173,9 @@ public class ColorSet {
     /**
      * colorize an image buffer
      * 
-     * @param buffer
-     * @param cs
-     * @return
+     * @param buffer 8bpp image
+     * @param cs ColorSet to apply
+     * @return 24 bpp image
      */
     public static int[] convertToColorSetImage(int[] buffer, ColorSet cs) {
 
