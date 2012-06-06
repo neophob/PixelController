@@ -40,7 +40,6 @@ public class SlideLeftRight extends Fader {
 		currentStep++;	
 
 		try {
-			int[] newBuffer = getNewBuffer();
 			if (super.isDone()) {
 				return newBuffer;
 			}

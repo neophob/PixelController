@@ -40,13 +40,11 @@ public class SlideUpsideDown extends Fader {
 		currentStep++;		
 
 		try {
-			int[] newBuffer = getNewBuffer();
 			if (super.isDone()) {
 				return newBuffer;
 			}
 
 			int[] ret = new int[buffer.length];
-
 			float f = getCurrentStep();
 
 			int ammount=(int)(internalBufferYSize*f)*internalBufferXSize;

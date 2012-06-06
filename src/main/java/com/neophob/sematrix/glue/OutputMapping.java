@@ -90,13 +90,5 @@ public class OutputMapping {
 	public void setFader(Fader fader) {
 		this.fader = fader;
 	}
-
-	/**
-	 * 
-	 * @return 24bpp image of the visual (fader is not applied)
-	 */
-	public int[] getBuffer() {
-		return Collector.getInstance().getVisual(visualNumber).getBuffer();
-	}
 	
 }

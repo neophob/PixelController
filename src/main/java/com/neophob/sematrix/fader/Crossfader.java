@@ -20,6 +20,7 @@
 package com.neophob.sematrix.fader;
 
 
+
 /**
  * crossfader.
  *
@@ -50,8 +51,7 @@ public class Crossfader extends Fader {
 	public int[] getBuffer(int[] buffer) {
 		currentStep++;		
 		
-		try {
-			int[] newBuffer = getNewBuffer();
+		try {			
 			if (super.isDone()) {
 				return newBuffer;
 			}

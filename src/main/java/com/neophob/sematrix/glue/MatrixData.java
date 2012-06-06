@@ -94,7 +94,6 @@ public class MatrixData {
 	 */
 	private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
 		Fader fader = map.getFader();
-	
 		if (fader.isStarted()) {
 			buffer=fader.getBuffer(buffer);
 			//do not cleanup fader here, the box layout gets messed up!
