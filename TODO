@@ -7,6 +7,7 @@ TODO PixelController
 -artnet output: support multiple output devices / multiple universe
 -MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
 -Unit Testing is suboptimal, the file config.properties is not used 
+-Integrate OSC Server
 -support TPM2 devices
 -support Kinect for Xbox 360 
 
