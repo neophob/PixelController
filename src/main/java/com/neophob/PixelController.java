@@ -156,7 +156,14 @@ public class PixelController extends PApplet {
 	    LOG.log(Level.INFO, "-----------------------------------");
 		LOG.log(Level.INFO, "--- PixelController Setup START ---");
 
-		ApplicationConfigurationHelper applicationConfig = getAppliactionConfiguration();		
+		ApplicationConfigurationHelper applicationConfig = null;
+		try {
+			applicationConfig = getAppliactionConfiguration();	
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Configuration Error: ", e);
+			System.exit(10);
+		}
+				
 		this.collector = Collector.getInstance();
 		
 		//load palette
@@ -181,7 +188,7 @@ public class PixelController extends PApplet {
 		
 		//start in random mode?
 		if (applicationConfig.startRandommode()) {
-			LOG.log(Level.INFO,"Random Mode enabled");
+			LOG.log(Level.INFO, "Random Mode enabled");
 			Shuffler.manualShuffleStuff();
 			this.collector.setRandomMode(true);
 		}
