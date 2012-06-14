@@ -119,7 +119,10 @@ public enum ValidCommands {
 	/** The CURRENT output. */
 	JMX_STAT(CommandGroup.MISC, 0, "show JMX runtime statistic, default port: 1337"),
 
-	SCREENSHOT(CommandGroup.MISC, 0, "save screenhot");
+	SCREENSHOT(CommandGroup.MISC, 0, "save screenhot"),
+	
+	FREEZE(CommandGroup.MISC, 0, "toggle pause mode"),
+	;
 	
 	/** The nr of params. */
 	private int nrOfParams;

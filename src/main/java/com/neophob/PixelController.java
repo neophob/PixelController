@@ -211,7 +211,13 @@ public class PixelController extends PApplet {
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
-	public void draw() { 
+	public void draw() {
+		
+		if (Collector.getInstance().isInPauseMode()) {
+			//no update here, we're in pause mode
+			return;
+		}
+		
 		// update all generators
 		Collector.getInstance().updateSystem();
 		// update matrixEmulator instance

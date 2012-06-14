@@ -140,6 +140,10 @@ public final class Collector {
 	
 	private int currentColorSet;
 	
+	/** The random mode. */
+	private boolean inPauseMode = false;
+
+	
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -798,6 +802,17 @@ public final class Collector {
 		this.currentColorSet = currentColorSet;
 	}
 
+    public void togglePauseMode() {
+    	if (inPauseMode) {
+    		inPauseMode=false;
+    	} else {
+    		inPauseMode=true;
+    	}
+    }
+
+	public boolean isInPauseMode() {
+		return inPauseMode;
+	}
     
     
 

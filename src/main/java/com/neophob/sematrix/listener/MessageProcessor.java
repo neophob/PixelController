@@ -417,6 +417,10 @@ public final class MessageProcessor {
 				Collector.getInstance().setCurrentColorSet(a);
 				return ValidCommands.STATUS_MINI;
 				
+			case FREEZE:
+				Collector.getInstance().togglePauseMode();
+				break;
+				
 			default:
 				StringBuffer sb = new StringBuffer();
 				for (int i=0; i<msg.length;i++) {
