@@ -68,6 +68,12 @@ public class PixelInvadersDevice extends ArduinoOutput {
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
 			LOG.log(Level.WARNING, "failed to initialize serial port!");
+		} catch (Throwable e) {
+			//catch really ALL excetions here!
+			LOG.log(Level.SEVERE, "\n\n\n\nSERIOUS ERROR, check your RXTX installation!", e);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e1) {}
 		}
 	}
 	

@@ -64,6 +64,9 @@ Then run
     # mvn clean package
     to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
 
+Hint: if you're using eclipse and you see an error like this
+`java.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersionjava.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersion`
+make sure you add the lib/serial directory as "Native library location"
 
 ## PERFORMANCE
 With the JMX interface you can monitor the status of your PixelController instance in real time. This 
