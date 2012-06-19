@@ -54,6 +54,7 @@ public class PixelControllerMixer implements PixelControllerElement {
 		new Checkbox(this);
 		new Voluminizer(this);
 		new Either(this);
+		new SubSat(this);
 	}
 	
 	/* (non-Javadoc)

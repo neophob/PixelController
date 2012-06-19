@@ -56,7 +56,10 @@ public abstract class Mixer {
 		VOLUMINIZER(6),
 		
 		/** The EITHER. */
-		EITHER(7);
+		EITHER(7),
+		
+		SUBSAT(8),
+		;
 		
 		/** The id. */
 		private int id;
