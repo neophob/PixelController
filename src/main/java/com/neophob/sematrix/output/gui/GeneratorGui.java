@@ -593,11 +593,12 @@ public class GeneratorGui extends PApplet {
      * draw nice gradient at the end of the screen
      */
     private void drawGradientBackground() {
-        this.loadPixels();	
-        int ofs=this.width*(this.height-255);
+        //there is an issue with this.height, it changes!
+        int ofs=this.width*(424-255);//(this.height-255);
 
+        this.loadPixels();        
         for (int y=0; y<255; y++) {
-            int pink = color(y/2, y/2, y/2);
+            int pink = color(y/2, 128);
             for (int x=0; x<this.width; x++) {
                 this.pixels[ofs+x] = pink;				
             }

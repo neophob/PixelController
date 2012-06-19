@@ -89,7 +89,8 @@ public class GeneratorGuiCreator extends Frame {
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
-        embed.init();        
+        embed.init();
+        embed.setVisible(true);
         setVisible(true);
         this.setIconImage(GeneratorGuiCreator.createIcon());
 	}
