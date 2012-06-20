@@ -94,7 +94,8 @@ public class GeneratorGui extends PApplet {
 
     //Generator Tab
     private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
-
+    private Button freezeUpdate;
+    
     //Output Tab
     private DropdownList dropdownOutputVisual;
     private DropdownList dropdownOutputFader;    
@@ -342,6 +343,11 @@ public class GeneratorGui extends PApplet {
         //add textfield
         Textfield textfield = cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", 3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
 
+		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
+                5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
+		freezeUpdate.setCaptionLabel("Toggle Freeze");
+		freezeUpdate.setGroup(generatorTab);
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.toString(),"freeze update");
 
         //-----------------
         //Single Output tab

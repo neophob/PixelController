@@ -218,7 +218,11 @@ public class P5EventListener implements ControlListener {
                 LOG.log(Level.INFO, "SAVE_PRESET");
                 createMessage(ValidCommands.SAVE_PRESENT, "");
                 break;
-                
+              
+            case BUTTON_TOGGLE_FREEZE:
+            	createMessage(ValidCommands.FREEZE, "");
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
