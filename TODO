@@ -17,6 +17,7 @@ Changelog v1.2 to v1.3
 -add integrated GUI!
 -add colorsets, predefined color definition for all generators, effects and mixers
 -support more output formats (not only RGB and RBG), thanks to noxx6
+-added PixelInvaders SPI firmware, faster than the bit banging version
 -configuration fixes
 -update AdaVision driver
 -add start scripts for OSX
