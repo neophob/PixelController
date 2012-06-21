@@ -47,7 +47,7 @@ public class Zoom extends RotoZoomEffect {
 	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {		
-		return rotoZoom(0.4f, 0, buffer);
+		return rotoZoom(0.5f, 0, buffer);
 	}
 
 
