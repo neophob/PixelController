@@ -34,10 +34,12 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Cell extends Generator {
 
 	/** The Constant BUBBLES. */
-	private static final int BUBBLES=8;
+	private static final int NR_OF_CELLS=5;
 	
 	/** The Constant RENDERSIZE. */
 	private static final int RENDERSIZE=2;
+
+	private static final int RENDERSIZE_SQRT=RENDERSIZE*RENDERSIZE;
 
 	/** The random. */
 	private Random random=new Random();
@@ -65,7 +67,7 @@ public class Cell extends Generator {
 			}
 		}
 
-		for (int i=0;i<BUBBLES;i++) {
+		for (int i=0;i<NR_OF_CELLS;i++) {
 			points.add(new Attractor());   
 		}
 
@@ -93,8 +95,7 @@ public class Cell extends Generator {
 				}
 
 				Attractor a=(Attractor)points.get(nearest);
-
-				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE*RENDERSIZE, RENDERSIZE*RENDERSIZE, a.color);				
+				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE_SQRT, RENDERSIZE_SQRT, a.color);				
 			}
 		}
 
