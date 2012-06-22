@@ -82,7 +82,10 @@ public class Blinkenlights extends Generator implements PConstants {
 		this.filename = filename;
 		PApplet parent = Collector.getInstance().getPapplet();
 		random=false;
-		blinken = new BlinkenLibrary(parent, PREFIX+filename);
+		
+		blinken = new BlinkenLibrary(parent);
+		blinken.loadFile(PREFIX+filename, this.internalBufferXSize);
+		
 		blinkenSettings();
 	}
 
@@ -97,7 +100,7 @@ public class Blinkenlights extends Generator implements PConstants {
 			long start = System.currentTimeMillis();
 			LOG.log(Level.INFO, "Load blinkenlights file "+file);
 			this.filename = file;
-			blinken.loadFile(PREFIX+file);
+			blinken.loadFile(PREFIX+file, this.internalBufferXSize);
 			blinkenSettings();
 			LOG.log(Level.INFO, "Load blinkenlights done, needed time in ms: "+(System.currentTimeMillis()-start));			
 		}		
@@ -159,7 +162,7 @@ public class Blinkenlights extends Generator implements PConstants {
 					xSrc++;
 				}
 				ySrc++;
-			}			
+			}		
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOG.log(Level.SEVERE, "Failed to update internal buffer", e);
 		}
