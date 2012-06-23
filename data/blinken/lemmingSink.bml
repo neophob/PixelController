@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blm width="8" height="8" bits="4">
+    <header>
+        <title>lemmingsink.gif</title>
+        <creator>blib 1.1.7</creator>
+        <duration>15000</duration>
+    </header>
+    <frame duration="1000">
+        <row>ff888fff</row>
+        <row>ff8dddff</row>
+        <row>ff8dd8ff</row>
+        <row>fdd22dff</row>
+        <row>fff22fff</row>
+        <row>fff22fff</row>
+        <row>ff222fff</row>
+        <row>ff2222ff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>ff8dd8ff</row>
+        <row>fd8dd8df</row>
+        <row>ffd22dff</row>
+        <row>fff22fff</row>
+        <row>fffd2fff</row>
+        <row>ffd2ddff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>ff8dd8ff</row>
+        <row>fd8dd8df</row>
+        <row>ffd22dff</row>
+        <row>fff22fff</row>
+        <row>fddd2dff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>ff8dd8ff</row>
+        <row>fd8dd8df</row>
+        <row>fdd22dff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fdf88fff</row>
+        <row>fd8dd8ff</row>
+        <row>f28dd8df</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>dff88fff</row>
+        <row>df8dd8ff</row>
+        <row>fd8dd8df</row>
+        <row>ff222dff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>dff88fff</row>
+        <row>df8dd8ff</row>
+        <row>fd8dd8df</row>
+        <row>ff222dff</row>
+        <row>fff22fff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>ff8dd8ff</row>
+        <row>df8dd8df</row>
+        <row>fdd22dff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>ff8dd8df</row>
+        <row>fd8dd8df</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88ffd</row>
+        <row>ff8dd8fd</row>
+        <row>fd8dd8df</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fdf</row>
+        <row>ff8dd8df</row>
+        <row>fd8dd8df</row>
+        <row>ffd22dff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>fd8dd8df</row>
+        <row>fd8dd8df</row>
+        <row>ffd22dff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fff88fff</row>
+        <row>fd8dd8ff</row>
+        <row>fd8dd8df</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>fdf88fff</row>
+        <row>fd8dd8ff</row>
+    </frame>
+    <frame duration="1000">
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>ffffffff</row>
+        <row>dfffffff</row>
+        <row>dfffffff</row>
+        <row>fdf88fff</row>
+    </frame>
+</blm>
