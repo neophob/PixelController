@@ -9,21 +9,21 @@
         <row>00888000</row>
         <row>008ddd00</row>
         <row>008dd800</row>
-        <row>0dd22d00</row>
-        <row>00022000</row>
-        <row>00022000</row>
-        <row>00222000</row>
-        <row>00222200</row>
+        <row>0dd44d00</row>
+        <row>00044000</row>
+        <row>00044000</row>
+        <row>00444000</row>
+        <row>00444400</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
         <row>00088000</row>
         <row>008dd800</row>
         <row>0d8dd8d0</row>
-        <row>00d22d00</row>
-        <row>00022000</row>
-        <row>000d2000</row>
-        <row>00d2dd00</row>
+        <row>00d44d00</row>
+        <row>00044000</row>
+        <row>000d4000</row>
+        <row>00d4dd00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -31,9 +31,9 @@
         <row>00088000</row>
         <row>008dd800</row>
         <row>0d8dd8d0</row>
-        <row>00d22d00</row>
-        <row>00022000</row>
-        <row>0ddd2d00</row>
+        <row>00d44d00</row>
+        <row>00044000</row>
+        <row>0ddd4d00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -43,7 +43,7 @@
         <row>00088000</row>
         <row>008dd800</row>
         <row>0d8dd8d0</row>
-        <row>0dd22d00</row>
+        <row>0dd44d00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -53,7 +53,7 @@
         <row>00000000</row>
         <row>0d088000</row>
         <row>0d8dd800</row>
-        <row>f28dd8d0</row>
+        <row>f48dd8d0</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -63,7 +63,7 @@
         <row>d0088000</row>
         <row>d08dd800</row>
         <row>0d8dd8d0</row>
-        <row>00222d00</row>
+        <row>00444d00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -72,8 +72,8 @@
         <row>d0088000</row>
         <row>d08dd800</row>
         <row>0d8dd8d0</row>
-        <row>00222d00</row>
-        <row>00022000</row>
+        <row>00444d00</row>
+        <row>00044000</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -83,7 +83,7 @@
         <row>00088000</row>
         <row>008dd800</row>
         <row>d08dd8d0</row>
-        <row>0dd22d00</row>
+        <row>0dd44d00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -113,7 +113,7 @@
         <row>000880d0</row>
         <row>008dd8d0</row>
         <row>0d8dd8d0</row>
-        <row>00d22d00</row>
+        <row>00d44d00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
@@ -123,7 +123,7 @@
         <row>00088000</row>
         <row>0d8dd8d0</row>
         <row>0d8dd8d0</row>
-        <row>00d22d00</row>
+        <row>00d44d00</row>
     </frame>
     <frame duration="1000">
         <row>00000000</row>
