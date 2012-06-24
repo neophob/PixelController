@@ -59,6 +59,8 @@ public abstract class Mixer {
 		EITHER(7),
 		
 		SUBSAT(8),
+
+		HALFHALF(9),
 		;
 		
 		/** The id. */
