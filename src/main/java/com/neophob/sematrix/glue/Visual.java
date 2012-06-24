@@ -342,9 +342,9 @@ public class Visual {
 	 */
 	public PImage getGeneratorAsImage(int ofs) {
 		if (ofs==0) {
-			return getBufferAsImage(generator1.internalBuffer);			
+			return getBufferAsImage(ColorSet.convertToColorSetImage(generator1.internalBuffer, Collector.getInstance().getActiveColorSet()));			
 		}
-		return getBufferAsImage(generator2.internalBuffer);
+		return getBufferAsImage(ColorSet.convertToColorSetImage(generator2.internalBuffer, Collector.getInstance().getActiveColorSet()));
 	}
 
 	/**
@@ -354,9 +354,13 @@ public class Visual {
 	 */
 	public PImage getEffectAsImage(int ofs) {
 		if (ofs==0) {
-			return getBufferAsImage(effect1.getBuffer(generator1.internalBuffer));			
+			return getBufferAsImage(
+					ColorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer), Collector.getInstance().getActiveColorSet())
+			);			
 		}
-		return getBufferAsImage(effect2.getBuffer(generator2.internalBuffer));
+		return getBufferAsImage(
+				ColorSet.convertToColorSetImage(effect2.getBuffer(generator2.internalBuffer), Collector.getInstance().getActiveColorSet())
+		);			
 	}
 	
 	/**
