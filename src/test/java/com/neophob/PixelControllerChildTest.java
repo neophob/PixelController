@@ -23,7 +23,7 @@ public class PixelControllerChildTest extends PixelController {
 	public void testSetup() {
 		List<ColorSet> colorSets = super.getColorPalettes();
 		
-		ApplicationConfigurationHelper applicationConfig = super.getAppliactionConfiguration();
+		ApplicationConfigurationHelper applicationConfig = super.getApplicationConfiguration();
 		
 		super.getOutputDevice(applicationConfig);
 		

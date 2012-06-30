@@ -99,7 +99,7 @@ public class PixelController extends PApplet {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	protected ApplicationConfigurationHelper getAppliactionConfiguration() throws IllegalArgumentException {
+	protected ApplicationConfigurationHelper getApplicationConfiguration() throws IllegalArgumentException {
 		Properties config = new Properties();
 		try {
 			config.load(createInput(APPLICATION_CONFIG_FILENAME));
@@ -158,7 +158,7 @@ public class PixelController extends PApplet {
 
 		ApplicationConfigurationHelper applicationConfig = null;
 		try {
-			applicationConfig = getAppliactionConfiguration();	
+			applicationConfig = getApplicationConfiguration();	
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Configuration Error: ", e);
 			System.exit(10);
