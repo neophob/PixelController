@@ -53,7 +53,7 @@ public class Either extends Mixer {
 		int[] dst = new int [gen1.internalBuffer.length];
 
 		for (int i=0; i<gen1.internalBuffer.length; i++){
-    		if (src1[i]>0) {
+    		if (src1[i]>128) {
     		    dst[i] = src1[i];
     		} else {
     		    dst[i] = src2[i];
