@@ -393,6 +393,8 @@ public class MD5 {
         state.state[3] += d;
     }
     
+    static final int MAX_LENGTH = 65536; // prevent stack overflow in JNI
+    
     /**
      * Updates hash with the bytebuffer given (using at maximum length bytes from
      * that buffer)
@@ -436,7 +438,7 @@ public class MD5 {
                 
                 int transformLength = length - partlen;
                 int transformOffset = partlen + offset;
-                final int MAX_LENGTH = 65536; // prevent stack overflow in JNI
+                
                 while (true) {
                     if (transformLength > MAX_LENGTH) {
                         Transform_native(stat.state, buffer, transformOffset, MAX_LENGTH);

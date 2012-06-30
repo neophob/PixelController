@@ -745,33 +745,6 @@ public class ApplicationConfigurationHelper {
         return deviceYResolution;
     }
 
-    /**
-     * 
-     * @return
-     */
-    private List<Integer> parseRgbColors(String cfg) {
-    	String rawConfig = config.getProperty(cfg);
-    	if (rawConfig==null) {
-    		return new ArrayList<Integer>();
-    	}
-
-    	String[] tmp = rawConfig.split(",");
-    	if (tmp==null || tmp.length==0) {
-    		return new ArrayList<Integer>();
-    	}
-    	
-    	List<Integer> list = new ArrayList<Integer>();
-    	for (String s: tmp) {
-    		try {
-    			list.add( Integer.decode(s.trim()) );
-    		} catch (Exception e) {
-    			LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-			}	
-    	}
-    	
-    	return list;
-    }
-
 
     /**
      * 

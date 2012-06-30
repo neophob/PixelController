@@ -28,6 +28,10 @@ import java.io.FilenameFilter;
  */
 public class FileUtils {
 
+	private FileUtils() {
+		//no instance allowed
+	}
+	
 	/**
 	 * get files by extension
 	 * not recursive

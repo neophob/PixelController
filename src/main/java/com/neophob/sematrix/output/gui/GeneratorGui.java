@@ -54,7 +54,6 @@ import controlP5.DropdownList;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
-import controlP5.Textfield;
 import controlP5.Textlabel;
 import controlP5.Toggle;
 
@@ -136,7 +135,7 @@ public class GeneratorGui extends PApplet {
 
 
 
-    final String ALWAYS_VISIBLE_TAB = "global";
+    private final String ALWAYS_VISIBLE_TAB = "global";
 
     /* (non-Javadoc)
      * @see processing.core.PApplet#setup()
@@ -341,7 +340,8 @@ public class GeneratorGui extends PApplet {
         colorScrollList.setHeight(100);
 
         //add textfield
-        Textfield textfield = cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", 3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
+        //Textfield textfield = 
+        cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", 3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
 
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
                 5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
@@ -603,8 +603,8 @@ public class GeneratorGui extends PApplet {
         int ofs=this.width*(424-255);//(this.height-255);
 
         this.loadPixels();        
-        for (int y=0; y<255; y++) {
-            int pink = color(y/2, 128);
+        for (int yy=0; yy<255; yy++) {
+            int pink = color(yy/2, 128);
             for (int x=0; x<this.width; x++) {
                 this.pixels[ofs+x] = pink;				
             }
