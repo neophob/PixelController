@@ -27,7 +27,6 @@ import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
-import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
 
@@ -240,7 +239,7 @@ public class Tpm2Serial {
 	 * send the data to the serial port.
 	 *
 	 * @param cmdfull the cmdfull
-	 * @throws SerialPortException the serial port exception
+	 * 
 	 */
 	private synchronized void writeSerialData(byte[] cmdfull) {
 		if (port==null) {
