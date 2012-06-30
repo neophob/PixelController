@@ -9,7 +9,7 @@
 ## HOWTO USE PIXELCONTROLLER
 Prerequisite:
 * Java Runtime, v1.6+
-* PureData (http://puredata.info/), download the extended Version
+* If you want OSC Messages, use PureData (http://puredata.info/), download the extended Version.
 
 Run `PixelController.cmd` on Windows, `PixelController.command` on OSX and `PixelController.sh` on Linux to start the application.
 Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
@@ -68,6 +68,11 @@ Hint: if you're using eclipse and you see an error like this
 `java.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersionjava.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersion`
 make sure you add the lib/serial directory as "Native library location"
 
+## ADD NEW HARDWARE SUPPORT
+It should be pretty simple to add support for new hardware. All Output code should go into the com.neophob.sematrix.output package (`src/main/java/com/neophob/sematrix/output` directory). All you need to do in the Output class is, take an array of int's (one int is used to store the 24 bpp) and send this buffer to your output device (via serial port, ethernet, bluetooth...). Maybe you need to reduce the color depth, flip each second scanline due hardware wiring, such helper methods should go into the `OutputHelper.java` class.
+
+As a string point, add your hardware in the `OutputDeviceEnum.java` class and have a look where the other entries are referenced. **Take a look at the existing Output classes**, this should help you!
+
 ## PERFORMANCE
 With the JMX interface you can monitor the status of your PixelController instance in real time. This 
 will provide you with useful data such as required time for each layer (generator, effect, mixer…), the 
@@ -104,7 +109,7 @@ Example how to use PixConCli:
 
 
 ## CREDITS
-* **Michael Vogt**:       Project Lead, Main Developer		
+* **Michael Vogt**:       Project Lead, Main Developer    	
 * **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements
 * **McGyver666**:         Contributor
 * **Rainer Ostendorf**:   Artnet Output
