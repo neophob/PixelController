@@ -26,6 +26,9 @@ public enum OutputDeviceEnum {
 	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
 	PIXELINVADERS(PixelInvadersDevice.class, true),
 	
+	/** The Element STEALTH LED PANELS. */
+	STEALTH(StealthDevice.class, true),
+
 	/** The RAINBOWDUINO. */
 	RAINBOWDUINO(RainbowduinoDevice.class, true),
 	
