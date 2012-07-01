@@ -1,6 +1,7 @@
 /*
- * PixelInvaders serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
- * Tested on Teensy and Arduino
+ * Element Stealth LED Panel serial-led-gateway, by Steven Noreyko and Christian Miller
+ * Based on PixelInvaders gateway Copyright (C) 2011 michael vogt <michu@neophob.com>
+ * Tested on Teensy
  * 
  * ------------------------------------------------------------------------
  *
