@@ -218,21 +218,8 @@ void loop() {
 
 void updatePixels(byte ofs, byte* buffer) {
 	int i, j;
-	uint16_t currentLed = ofs*PIXELS_PER_PANEL;
+//	uint16_t currentLed = ofs*PIXELS_PER_PANEL;
 	byte x=0;
-/*
-	for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-		//get 15 bit color
-		tmpBits = buffer[x] << 8 | buffer[x+1];
-		//convert it to 24 bit per color
-		byte bz = tmpBits & 0x1F;
-		byte gz = (tmpBits >> 5) & 0x1F;
-		byte rz= (tmpBits >> 10) & 0x1F;
-		panel.drawPixelNum(currentLed, make_color(rz<<3, gz<<3, bz<<3));
-		x+=2;
-		currentLed++;
-	}	 
-*/
 				
 	//this is working on 8x8 grid
 	if (ofs == 0){
