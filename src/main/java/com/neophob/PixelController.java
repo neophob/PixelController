@@ -38,6 +38,7 @@ import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.PixelInvadersDevice;
+import com.neophob.sematrix.output.StealthDevice;
 import com.neophob.sematrix.output.RainbowduinoDevice;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.output.gui.OutputGui;
@@ -122,6 +123,9 @@ public class PixelController extends PApplet {
 			switch (outputDeviceEnum) {
 			case PIXELINVADERS:
 				this.output = new PixelInvadersDevice(applicationConfig, this.collector.getPixelControllerOutput());
+				break;
+			case STEALTH:
+				this.output = new StealthDevice(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
 			case RAINBOWDUINO:
 				this.output = new RainbowduinoDevice(applicationConfig, this.collector.getPixelControllerOutput());
