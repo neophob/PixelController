@@ -90,7 +90,7 @@ public final class ConfigConstant {
 	/** The Constant STEALTH_ROW1. */
 	public static final String STEALTH_ROW1 = "stealth.layout.row1";
 	
-	/** The Constant PIXELINVADERS_ROW2. */
+	/** The Constant STEALTH_ROW2. */
 	public static final String STEALTH_ROW2 = "stealth.layout.row2";
 
 	/** The Constant NET_LISTENING_PORT. */
