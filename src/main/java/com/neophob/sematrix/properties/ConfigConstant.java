@@ -86,7 +86,13 @@ public final class ConfigConstant {
 	
 	/** The Constant PIXELINVADERS_ROW2. */
 	public static final String PIXELINVADERS_ROW2 = "pixelinvaders.layout.row2";
+
+	/** The Constant STEALTH_ROW1. */
+	public static final String STEALTH_ROW1 = "stealth.layout.row1";
 	
+	/** The Constant PIXELINVADERS_ROW2. */
+	public static final String STEALTH_ROW2 = "stealth.layout.row2";
+
 	/** The Constant NET_LISTENING_PORT. */
 	public static final String NET_LISTENING_PORT = "3448";
 	
