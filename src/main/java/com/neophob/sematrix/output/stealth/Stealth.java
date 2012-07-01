@@ -374,18 +374,18 @@ public class Stealth {
 
 		byte ofsOne = (byte)(ofs*2);
 		byte ofsTwo = (byte)(ofsOne+1);
-		byte ofsThree = (byte)(ofsTwo+1);
-		byte ofsFour = (byte)(ofsThree+1);
+//		byte ofsThree = (byte)(ofsTwo+1);
+//		byte ofsFour = (byte)(ofsThree+1);
 		byte frameOne[] = new byte[BUFFERSIZE];
 		byte frameTwo[] = new byte[BUFFERSIZE];
-		byte frameThree[] = new byte[BUFFERSIZE];
-		byte frameFour[] = new byte[BUFFERSIZE];
+//		byte frameThree[] = new byte[BUFFERSIZE];
+//		byte frameFour[] = new byte[BUFFERSIZE];
 		boolean returnValue = false;
 		
 		System.arraycopy(data, 0, frameOne, 0, BUFFERSIZE);
 		System.arraycopy(data, BUFFERSIZE, frameTwo, 0, BUFFERSIZE);
-		System.arraycopy(data, BUFFERSIZE*2, frameThree, 0, BUFFERSIZE);
-		System.arraycopy(data, BUFFERSIZE*3, frameFour, 0, BUFFERSIZE);
+//		System.arraycopy(data, BUFFERSIZE*2, frameThree, 0, BUFFERSIZE);
+//		System.arraycopy(data, BUFFERSIZE*3, frameFour, 0, BUFFERSIZE);
 
 		byte sendlen = BUFFERSIZE;
 		byte cmdfull[] = new byte[sendlen+7];
@@ -424,6 +424,7 @@ public class Stealth {
 				lastDataMap.put(ofsTwo, "");
 			}
 		}
+/*
 		//send frame Three
 		if (didFrameChange(ofsThree, frameThree)) {
 			cmdfull[1] = ofsThree;
@@ -444,7 +445,7 @@ public class Stealth {
 				lastDataMap.put(ofsFour, "");
 			}
 		}		
-		
+*/		
 		/**/
 		return returnValue;
 	}
