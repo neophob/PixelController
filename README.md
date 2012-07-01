@@ -117,4 +117,5 @@ Example how to use PixConCli:
 * **Scott Wilson**:       Arduino/Rainbowduino Howto
 * **Noxx6**:              Bugfixes
 * **Psykon**:             Example Visuals
+* **okyeron**:            Stealth output device
 
