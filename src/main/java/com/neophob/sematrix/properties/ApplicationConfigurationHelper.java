@@ -384,8 +384,8 @@ public class ApplicationConfigurationHelper {
 
         String value = config.getProperty(ConfigConstant.STEALTH_ROW1);
         if (StringUtils.isNotBlank(value)) {
-            this.deviceXResolution = 8;
-            this.deviceYResolution = 8;
+            this.deviceXResolution = 16;
+            this.deviceYResolution = 16;
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
                     DeviceConfig cfg = DeviceConfig.valueOf(s);

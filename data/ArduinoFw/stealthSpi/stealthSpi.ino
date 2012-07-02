@@ -41,7 +41,10 @@ Element_GFX panel;
 
 // LED panel output pins
 int led_latch = 24; // latch pin is 24/B4 = PB4 on Teensy
-int numLeds = 256;
+//int numLeds = 256;
+
+#define PANEL_SIZE 256
+#define NUM_PANELS 1
 
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
@@ -218,41 +221,55 @@ void loop() {
 // --------------------------------------------
 
 void updatePixels(byte ofs, byte* buffer) {
-	int i, j;
-//	uint16_t currentLed = ofs*PIXELS_PER_PANEL;
+	int i, j, num;
+	uint16_t currentLed = ofs*PIXELS_PER_PANEL; // this is offset * amount of bytes of data in each packet
 	byte x=0;
-				
-	//this is working on 8x8 grid
-	if (ofs == 0){
-		for (i = 0; i < panel.width()/4; i++)	{
-			for (j = 0; j < panel.height()/2; j++){
-				//get 15 bit color
-				tmpBits = buffer[x] << 8 | buffer[x+1];
-				//convert it to 24 bit per color
-				byte bz = tmpBits & 0x1F;
-				byte gz = (tmpBits >> 5) & 0x1F;
-				byte rz= (tmpBits >> 10) & 0x1F;
-				panel.drawPixel(i, j, make_color(rz<<3, gz<<3, bz<<3));
-				x+=2;
-			}
-		}
-	}
-	if (ofs == 1){
-		for (i = panel.width()/4; i < panel.width()/2; i++)	{
-			for (j = 0; j < panel.height()/2; j++){
-				//get 15 bit color
-				tmpBits = buffer[x] << 8 | buffer[x+1];
-				//convert it to 24 bit per color
-				byte bz = tmpBits & 0x1F;
-				byte gz = (tmpBits >> 5) & 0x1F;
-				byte rz= (tmpBits >> 10) & 0x1F;
-				panel.drawPixel(i, j, make_color(rz<<3, gz<<3, bz<<3));
-				x+=2;
-			}
-		}
-		
-	}
 
+	for (byte i=0; i < PIXELS_PER_PANEL; i++) {	
+			//get 15 bit color
+			tmpBits = buffer[x] << 8 | buffer[x+1];
+			//convert it to 24 bit per color
+			byte bz = tmpBits & 0x1F;
+			byte gz = (tmpBits >> 5) & 0x1F;
+			byte rz= (tmpBits >> 10) & 0x1F;
+		panel.drawPixelNum(currentLed, make_color(rz<<2, gz<<2, bz<<2));
+		x+=2;
+		currentLed++;
+	}	 
+
+/*	//this is working on 8x8 grid
+		if (ofs == 0){
+			for (i = 0; i < panel.width()/4; i++) {
+				for (j = 0; j < panel.height()/2; j++){
+					//get 15 bit color
+					tmpBits = buffer[x] << 8 | buffer[x+1];
+					//convert it to 24 bit per color
+					byte bz = tmpBits & 0x1F;
+					byte gz = (tmpBits >> 5) & 0x1F;
+					byte rz= (tmpBits >> 10) & 0x1F;
+					panel.drawPixel(i, j, make_color(rz<<3, gz<<3, bz<<3));
+					x+=2;
+				}
+			}
+		}
+		if (ofs == 1){
+			for (i = panel.width()/4; i < panel.width()/2; i++) {
+				for (j = 0; j < panel.height()/2; j++){
+					//get 15 bit color
+					tmpBits = buffer[x] << 8 | buffer[x+1];
+					//convert it to 24 bit per color
+					byte bz = tmpBits & 0x1F;
+					byte gz = (tmpBits >> 5) & 0x1F;
+					byte rz= (tmpBits >> 10) & 0x1F;
+					panel.drawPixel(i, j, make_color(rz<<3, gz<<3, bz<<3));
+					x+=2;
+				}
+			}
+		}
+	}
+*/
+
+	
 }
 
 
