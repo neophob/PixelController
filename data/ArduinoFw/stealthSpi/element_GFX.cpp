@@ -49,6 +49,15 @@ void Element_GFX::transfer(uint8_t data)
   while(!(SPSR & (1<<SPIF)));
 }
 
+void Element_GFX::drawPixelNum(int16_t num, uint32_t color)
+{
+  int idx;
+  idx = 3 * num;
+  
+  framebuffer[idx + 0] = (color & 0xFF0000) >> 16;
+  framebuffer[idx + 1] = (color & 0x00FF00) >> 8;
+  framebuffer[idx + 2] = (color & 0x0000FF) >> 0;
+}
 void Element_GFX::drawPixel(int16_t x, int16_t y, uint32_t color)
 {
   if (x < 0 || x >= _width || y < 0 || y >= _height)

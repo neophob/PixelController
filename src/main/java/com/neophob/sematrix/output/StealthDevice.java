@@ -60,7 +60,7 @@ public class StealthDevice extends ArduinoOutput {
 	public StealthDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.STEALTH, ph, controller, 5);
 		
-		this.displayOptions = ph.getLpdDevice();
+		this.displayOptions = ph.getStealthDevice();
 		this.colorFormat = ph.getColorFormat();
 		this.initialized = false;		
 		try {

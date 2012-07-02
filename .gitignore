@@ -14,3 +14,6 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+data/.DS_Store
+
+data/ArduinoFw/.DS_Store

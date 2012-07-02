@@ -69,13 +69,14 @@ public class Stealth {
 	private static final Logger LOG = Logger.getLogger(Stealth.class.getName());
 
 	/** number of leds horizontal<br> TODO: should be dynamic, someday. */
-	public static final int NR_OF_LED_HORIZONTAL = 8;
+	public static final int NR_OF_LED_HORIZONTAL = 16;
 
 	/** number of leds vertical<br> TODO: should be dynamic, someday. */
 	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
 
 	/** The Constant BUFFERSIZE. */
-	private static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
+	private static final int PANELBUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
+	private static final int DATABUFFERSIZE = 64;
 	
 	/** internal lib version. */
 	public static final String VERSION = "1.0";
@@ -320,10 +321,12 @@ public class Stealth {
 	 * @return true if send was successful
 	 */
 	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
-		if (data.length!=BUFFERSIZE) {
-			throw new IllegalArgumentException("data lenght must be 64 bytes!");
+		//LOG.log(Level.INFO,	"RGB data length: "+data.length);
+		if (data.length!=PANELBUFFERSIZE) {
+			throw new IllegalArgumentException("data length must be 256 bytes!");
 		}
 		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
+//		return sendFrame(ofs, OutputHelper.convertBufferTo24bit(data, colorFormat));
 	}
 
 
@@ -363,8 +366,9 @@ public class Stealth {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
-		if (data.length!=128) {
-			throw new IllegalArgumentException("data lenght must be 128 bytes!");
+		//LOG.log(Level.INFO,	"data length: "+data.length);
+		if (data.length!=512) {
+			throw new IllegalArgumentException("data length must be 128 bytes! ");
 		}
 		
 /*		//TODO stop if connection counter > n
@@ -374,20 +378,32 @@ public class Stealth {
 
 		byte ofsOne = (byte)(ofs*2);
 		byte ofsTwo = (byte)(ofsOne+1);
-//		byte ofsThree = (byte)(ofsTwo+1);
-//		byte ofsFour = (byte)(ofsThree+1);
-		byte frameOne[] = new byte[BUFFERSIZE];
-		byte frameTwo[] = new byte[BUFFERSIZE];
-//		byte frameThree[] = new byte[BUFFERSIZE];
-//		byte frameFour[] = new byte[BUFFERSIZE];
+		byte ofsThree = (byte)(ofsTwo+1);
+		byte ofsFour = (byte)(ofsThree+1);
+		byte ofsFive = (byte)(ofsFour+1);
+		byte ofsSix = (byte)(ofsFive+1);
+		byte ofsSeven = (byte)(ofsSix+1);
+		byte ofsEight = (byte)(ofsSeven+1);
+		byte frameOne[] = new byte[DATABUFFERSIZE];
+		byte frameTwo[] = new byte[DATABUFFERSIZE];
+		byte frameThree[] = new byte[DATABUFFERSIZE];
+		byte frameFour[] = new byte[DATABUFFERSIZE];
+		byte frameFive[] = new byte[DATABUFFERSIZE];
+		byte frameSix[] = new byte[DATABUFFERSIZE];
+		byte frameSeven[] = new byte[DATABUFFERSIZE];
+		byte frameEight[] = new byte[DATABUFFERSIZE];
 		boolean returnValue = false;
 		
-		System.arraycopy(data, 0, frameOne, 0, BUFFERSIZE);
-		System.arraycopy(data, BUFFERSIZE, frameTwo, 0, BUFFERSIZE);
-//		System.arraycopy(data, BUFFERSIZE*2, frameThree, 0, BUFFERSIZE);
-//		System.arraycopy(data, BUFFERSIZE*3, frameFour, 0, BUFFERSIZE);
+		System.arraycopy(data, 0, frameOne, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE, frameTwo, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE*2, frameThree, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE*3, frameFour, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE*4, frameFive, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE*5, frameSix, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE*6, frameSeven, 0, DATABUFFERSIZE);
+		System.arraycopy(data, DATABUFFERSIZE*7, frameEight, 0, DATABUFFERSIZE);
 
-		byte sendlen = BUFFERSIZE;
+		byte sendlen = DATABUFFERSIZE;
 		byte cmdfull[] = new byte[sendlen+7];
 		
 		cmdfull[0] = START_OF_CMD;
@@ -403,10 +419,8 @@ public class Stealth {
 		//send frame one
 		if (didFrameChange(ofsOne, frameOne)) {
 			cmdfull[1] = ofsOne;
-			
 			//this is needed due the hardware-wirings 
 			flipSecondScanline(cmdfull, frameOne);
-			
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
@@ -424,8 +438,7 @@ public class Stealth {
 				lastDataMap.put(ofsTwo, "");
 			}
 		}
-/*
-		//send frame Three
+		//send frame three
 		if (didFrameChange(ofsThree, frameThree)) {
 			cmdfull[1] = ofsThree;
 			flipSecondScanline(cmdfull, frameThree);
@@ -434,8 +447,8 @@ public class Stealth {
 			} else {
 				lastDataMap.put(ofsThree, "");
 			}
-		}		
-		//send frame Three
+		}
+		//send frame four
 		if (didFrameChange(ofsFour, frameFour)) {
 			cmdfull[1] = ofsFour;
 			flipSecondScanline(cmdfull, frameFour);
@@ -444,8 +457,51 @@ public class Stealth {
 			} else {
 				lastDataMap.put(ofsFour, "");
 			}
-		}		
-*/		
+		}
+		//send frame Five
+		if (didFrameChange(ofsFive, frameFive)) {
+			cmdfull[1] = ofsFive;
+			flipSecondScanline(cmdfull, frameFive);
+			if (sendSerialData(cmdfull)) {
+				returnValue=true;
+			} else {
+				lastDataMap.put(ofsFive, "");
+			}
+		}
+
+		//send frame Six
+		if (didFrameChange(ofsSix, frameSix)) {
+			cmdfull[1] = ofsSix;
+			flipSecondScanline(cmdfull, frameSix);
+			if (sendSerialData(cmdfull)) {
+				returnValue=true;
+			} else {
+				lastDataMap.put(ofsSix, "");
+			}
+		}
+
+		//send frame Seven
+		if (didFrameChange(ofsSeven, frameSeven)) {
+			cmdfull[1] = ofsSeven;
+			flipSecondScanline(cmdfull, frameSeven);
+			if (sendSerialData(cmdfull)) {
+				returnValue=true;
+			} else {
+				lastDataMap.put(ofsSeven, "");
+			}
+		}
+
+		//send frame Eight
+		if (didFrameChange(ofsEight, frameEight)) {
+			cmdfull[1] = ofsEight;
+			flipSecondScanline(cmdfull, frameEight);
+			if (sendSerialData(cmdfull)) {
+				returnValue=true;
+			} else {
+				lastDataMap.put(ofsEight, "");
+			}
+		}
+
 		/**/
 		return returnValue;
 	}
@@ -458,7 +514,15 @@ public class Stealth {
 	 * @param frameData the frame data
 	 */
 	private static void flipSecondScanline(byte cmdfull[], byte frameData[]) {
-		int toggler=14;
+		for (int i=0; i<16; i++) {
+			cmdfull[   5+i] = frameData[i];
+			cmdfull[16+5+i] = frameData[i+16];
+			cmdfull[32+5+i] = frameData[i+32];
+			cmdfull[48+5+i] = frameData[i+48];
+			
+		}
+
+/*		int toggler=14;
 		for (int i=0; i<16; i++) {
 			cmdfull[   5+i] = frameData[i];
 			cmdfull[32+5+i] = frameData[i+32];
@@ -472,6 +536,7 @@ public class Stealth {
 				toggler-=3;
 			}
 		}
+*/
 	}
 
 	/**

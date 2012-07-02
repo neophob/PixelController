@@ -20,6 +20,7 @@ class Element_GFX : public Adafruit_GFX
   void transfer(uint8_t data);
   
   virtual void drawPixel(int16_t x, int16_t y, uint32_t color);
+  virtual void drawPixelNum(int16_t num, uint32_t color);
   virtual void invertDisplay(boolean i);
   
   void sendFrame();
