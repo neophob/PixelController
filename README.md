@@ -31,6 +31,7 @@ PixelController supports different (LED) matrix hardware devices:
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 * MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
 * Adavision (http://www.ladyada.net/make/adavision/)
+* Element Labs Stealth LED panel (http://www.barco.com/en/products/)
 
 
 ## FRONTENDS
