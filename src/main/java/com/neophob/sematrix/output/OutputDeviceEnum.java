@@ -45,7 +45,7 @@ public enum OutputDeviceEnum {
 	TPM2(Tpm2.class, true),
 
 	/** The NULL Output. */
-	NULL(NullDevice.class, false);
+	NULL(NullDevice.class, true);
 	
 	/** The implementing class. */
 	private Class<? extends Output> implementingClass;

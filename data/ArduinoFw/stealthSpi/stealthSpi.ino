@@ -232,7 +232,7 @@ void updatePixels(byte ofs, byte* buffer) {
 			byte bz = tmpBits & 0x1F;
 			byte gz = (tmpBits >> 5) & 0x1F;
 			byte rz= (tmpBits >> 10) & 0x1F;
-		panel.drawPixelNum(currentLed, make_color(rz, gz, bz));
+		panel.drawPixelNum(currentLed, make_color(rz<<2, gz<<2, bz<<2));
 		x+=2;
 		currentLed++;
 	}	 
