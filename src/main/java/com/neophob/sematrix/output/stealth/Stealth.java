@@ -76,7 +76,10 @@ public class Stealth {
 
 	/** The Constant BUFFERSIZE. */
 	private static final int PANELBUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
-	private static final int DATABUFFERSIZE = 64;
+	// payload buffer is 64 bytes for 15bit color
+//	private static final int DATABUFFERSIZE = 64;
+	// payload buffer is 96 bytes for 24 bit color
+	private static final int DATABUFFERSIZE = 96;
 	
 	/** internal lib version. */
 	public static final String VERSION = "1.0";
@@ -325,8 +328,8 @@ public class Stealth {
 		if (data.length!=PANELBUFFERSIZE) {
 			throw new IllegalArgumentException("data length must be 256 bytes!");
 		}
-		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
-//		return sendFrame(ofs, OutputHelper.convertBufferTo24bit(data, colorFormat));
+//		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
+		return sendFrame(ofs, OutputHelper.convertBufferTo24bit(data, colorFormat));
 	}
 
 
@@ -367,8 +370,8 @@ public class Stealth {
 	 */
 	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
 		//LOG.log(Level.INFO,	"data length: "+data.length);
-		if (data.length!=512) {
-			throw new IllegalArgumentException("data length must be 128 bytes! ");
+		if (data.length!=(8*DATABUFFERSIZE)) {
+			throw new IllegalArgumentException("data length must be 768 bytes! ");
 		}
 		
 /*		//TODO stop if connection counter > n
@@ -384,6 +387,7 @@ public class Stealth {
 		byte ofsSix = (byte)(ofsFive+1);
 		byte ofsSeven = (byte)(ofsSix+1);
 		byte ofsEight = (byte)(ofsSeven+1);
+//		byte ofsNine = (byte)(ofsEight+1);
 		byte frameOne[] = new byte[DATABUFFERSIZE];
 		byte frameTwo[] = new byte[DATABUFFERSIZE];
 		byte frameThree[] = new byte[DATABUFFERSIZE];
@@ -392,6 +396,7 @@ public class Stealth {
 		byte frameSix[] = new byte[DATABUFFERSIZE];
 		byte frameSeven[] = new byte[DATABUFFERSIZE];
 		byte frameEight[] = new byte[DATABUFFERSIZE];
+//		byte frameNine[] = new byte[DATABUFFERSIZE];
 		boolean returnValue = false;
 		
 		System.arraycopy(data, 0, frameOne, 0, DATABUFFERSIZE);
@@ -402,6 +407,7 @@ public class Stealth {
 		System.arraycopy(data, DATABUFFERSIZE*5, frameSix, 0, DATABUFFERSIZE);
 		System.arraycopy(data, DATABUFFERSIZE*6, frameSeven, 0, DATABUFFERSIZE);
 		System.arraycopy(data, DATABUFFERSIZE*7, frameEight, 0, DATABUFFERSIZE);
+//		System.arraycopy(data, DATABUFFERSIZE*8, frameNine, 0, DATABUFFERSIZE);
 
 		byte sendlen = DATABUFFERSIZE;
 		byte cmdfull[] = new byte[sendlen+7];
@@ -502,12 +508,23 @@ public class Stealth {
 			}
 		}
 
+/*		//send frame Nine
+		if (didFrameChange(ofsNine, frameNine)) {
+			cmdfull[1] = ofsNine;
+			flipSecondScanline(cmdfull, frameNine);
+			if (sendSerialData(cmdfull)) {
+				returnValue=true;
+			} else {
+				lastDataMap.put(ofsNine, "");
+			}
+		}
+*/
 		/**/
 		return returnValue;
 	}
 	
 	/**
-	 * this function feed the framebufferdata (32 pixels a 2bytes (aka 16bit)
+	 * this function feed the framebufferdata (32 pixels a 3bytes (aka 24bit)
 	 * to the send array. each second scanline gets inverteds
 	 *
 	 * @param cmdfull the cmdfull
@@ -519,6 +536,8 @@ public class Stealth {
 			cmdfull[16+5+i] = frameData[i+16];
 			cmdfull[32+5+i] = frameData[i+32];
 			cmdfull[48+5+i] = frameData[i+48];
+			cmdfull[64+5+i] = frameData[i+64];
+			cmdfull[80+5+i] = frameData[i+80];
 			
 		}
 
