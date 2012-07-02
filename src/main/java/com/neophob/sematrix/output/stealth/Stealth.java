@@ -69,13 +69,14 @@ public class Stealth {
 	private static final Logger LOG = Logger.getLogger(Stealth.class.getName());
 
 	/** number of leds horizontal<br> TODO: should be dynamic, someday. */
-	public static final int NR_OF_LED_HORIZONTAL = 8;
+	public static final int NR_OF_LED_HORIZONTAL = 16;
 
 	/** number of leds vertical<br> TODO: should be dynamic, someday. */
 	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
 
 	/** The Constant BUFFERSIZE. */
-	private static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
+//	private static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
+	private static final int BUFFERSIZE = 64;
 	
 	/** internal lib version. */
 	public static final String VERSION = "1.0";
@@ -324,6 +325,7 @@ public class Stealth {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
 		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
+//		return sendFrame(ofs, OutputHelper.convertBufferTo24bit(data, colorFormat));
 	}
 
 
@@ -374,18 +376,12 @@ public class Stealth {
 
 		byte ofsOne = (byte)(ofs*2);
 		byte ofsTwo = (byte)(ofsOne+1);
-//		byte ofsThree = (byte)(ofsTwo+1);
-//		byte ofsFour = (byte)(ofsThree+1);
 		byte frameOne[] = new byte[BUFFERSIZE];
 		byte frameTwo[] = new byte[BUFFERSIZE];
-//		byte frameThree[] = new byte[BUFFERSIZE];
-//		byte frameFour[] = new byte[BUFFERSIZE];
 		boolean returnValue = false;
 		
 		System.arraycopy(data, 0, frameOne, 0, BUFFERSIZE);
 		System.arraycopy(data, BUFFERSIZE, frameTwo, 0, BUFFERSIZE);
-//		System.arraycopy(data, BUFFERSIZE*2, frameThree, 0, BUFFERSIZE);
-//		System.arraycopy(data, BUFFERSIZE*3, frameFour, 0, BUFFERSIZE);
 
 		byte sendlen = BUFFERSIZE;
 		byte cmdfull[] = new byte[sendlen+7];
@@ -424,28 +420,6 @@ public class Stealth {
 				lastDataMap.put(ofsTwo, "");
 			}
 		}
-/*
-		//send frame Three
-		if (didFrameChange(ofsThree, frameThree)) {
-			cmdfull[1] = ofsThree;
-			flipSecondScanline(cmdfull, frameThree);
-			if (sendSerialData(cmdfull)) {
-				returnValue=true;
-			} else {
-				lastDataMap.put(ofsThree, "");
-			}
-		}		
-		//send frame Three
-		if (didFrameChange(ofsFour, frameFour)) {
-			cmdfull[1] = ofsFour;
-			flipSecondScanline(cmdfull, frameFour);
-			if (sendSerialData(cmdfull)) {
-				returnValue=true;
-			} else {
-				lastDataMap.put(ofsFour, "");
-			}
-		}		
-*/		
 		/**/
 		return returnValue;
 	}
