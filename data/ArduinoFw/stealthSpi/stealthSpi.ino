@@ -61,8 +61,7 @@ int led_latch = 24; // latch pin is 24/B4 = PB4 on Teensy
 #define END_OF_DATA 0x20
 
 //frame size for specific color resolution
-//32pixels * 2 byte per color (15bit - one bit wasted)
-#define COLOR_5BIT_FRAME_SIZE 64
+#define COLOR_5BIT_FRAME_SIZE 96
 #define SERIAL_HEADER_SIZE 5
 //--- protocol data end
 
@@ -71,15 +70,12 @@ int led_latch = 24; // latch pin is 24/B4 = PB4 on Teensy
 #define SERIAL_WAIT_DELAY 3
 
 //define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 8
+#define NR_OF_PANELS 4
 #define PIXELS_PER_PANEL 32
 
 //this should match RX_BUFFER_SIZE from HardwareSerial.cpp
 //array that will hold the serial input string
 byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE];					 
-
-//initialize pixels
-//Neophob_LPD6803 strip = Neophob_LPD6803(PIXELS_PER_PANEL*NR_OF_PANELS);
 
 #define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
@@ -153,7 +149,6 @@ void setup() {
 
 	panel.fillScreen(make_color(64, 0, 0)); // flash red to show update is good
 	panel.sendFrame();
-//	delay(100);
 	
 	serialDataRecv = 0;		//no serial data received yet	 
 }
@@ -225,18 +220,29 @@ void updatePixels(byte ofs, byte* buffer) {
 	uint16_t currentLed = ofs*PIXELS_PER_PANEL; // this is offset * amount of bytes of data in each packet
 	byte x=0;
 
+	// draw 32 pixels per ofs packet chunk
+	for (byte i=0; i < PIXELS_PER_PANEL; i++) {	
+		//convert buffer to bytes
+		byte rz = buffer[x];
+		byte gz = buffer[x+1];
+		byte bz = buffer[x+2];
+		panel.drawPixelNum(currentLed, make_color(rz, gz, bz));
+		x+=3;
+		currentLed++;
+	}	 
+/*
 	for (byte i=0; i < PIXELS_PER_PANEL; i++) {	
 			//get 15 bit color
 			tmpBits = buffer[x] << 8 | buffer[x+1];
 			//convert it to 24 bit per color
 			byte bz = tmpBits & 0x1F;
 			byte gz = (tmpBits >> 5) & 0x1F;
-			byte rz= (tmpBits >> 10) & 0x1F;
+			byte rz = (tmpBits >> 10) & 0x1F;
 		panel.drawPixelNum(currentLed, make_color(rz<<2, gz<<2, bz<<2));
 		x+=2;
 		currentLed++;
 	}	 
-
+*/
 /*	//this is working on 8x8 grid
 		if (ofs == 0){
 			for (i = 0; i < panel.width()/4; i++) {
