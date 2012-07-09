@@ -21,8 +21,9 @@ thanks phil!
 Neophob_LPD6803 strip = Neophob_LPD6803(LED_MODULES);
 
 void setup() {
-  strip.setCPUmax(70);
-  strip.begin();
+  //just play with those values!
+  strip.setCPUmax(50);
+  strip.begin(SPI_CLOCK_DIV64);
   strip.show();
 }
 
@@ -115,4 +116,3 @@ unsigned int Wheel(byte WheelPos)
   }
   return(Color(r,g,b));
 }
-

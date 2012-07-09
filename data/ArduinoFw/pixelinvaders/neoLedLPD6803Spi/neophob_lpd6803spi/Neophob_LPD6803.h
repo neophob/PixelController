@@ -13,7 +13,7 @@ class Neophob_LPD6803 {
   Neophob_LPD6803(uint16_t n);
 
   void
-    begin(void),
+    begin(uint8_t divider),
     show(void),
     setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
     setPixelColor(uint16_t n, uint16_t c),    
@@ -32,6 +32,6 @@ class Neophob_LPD6803 {
   volatile uint8_t
     *clkport  , *dataport;   // Clock & data PORT registers
   void    
-    startSPI(void),
+    startSPI(uint8_t divider),
     LedOut();
 };

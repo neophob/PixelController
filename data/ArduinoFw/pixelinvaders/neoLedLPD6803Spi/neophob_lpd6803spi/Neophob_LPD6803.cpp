@@ -67,7 +67,7 @@ static void isr() {
   	//frame and data frame both are shift by high-bit, every data is input on DCLK rising edge.
   	
     register uint16_t command;
-    command = 0x8000 | *(pixelDataCurrent++);       //get current pixel, the first bit of the color word must be set
+    command = 0x8000 | *(pixelDataCurrent++);       //get current pixel
   	//SPI_LOAD_BYTE( (command>>8) & 0xFF);
     //SPI_WAIT_TILL_TRANSMITED;                      	//send 8bits
     //SPI_LOAD_BYTE( command & 0xFF);
@@ -85,8 +85,8 @@ static void isr() {
 
 
 // Activate hard/soft SPI as appropriate:
-void Neophob_LPD6803::begin(void) {
-  startSPI();
+void Neophob_LPD6803::begin(uint8_t divider) {
+  startSPI(divider);
 
   setCPUmax(cpumax);
   Timer1.attachInterrupt(isr);
@@ -104,11 +104,12 @@ void Neophob_LPD6803::setCPUmax(uint8_t max) {
 
 
 // Enable SPI hardware and set up protocol details:
-void Neophob_LPD6803::startSPI(void) {
+void Neophob_LPD6803::startSPI(uint8_t divider) {
   SPI.begin();
   SPI.setBitOrder(MSBFIRST);
   SPI.setDataMode(SPI_MODE0);
-  SPI.setClockDivider(SPI_CLOCK_DIV2);  // 8 MHz
+  SPI.setClockDivider(divider);  // 0.25 MHz  
+//  SPI.setClockDivider(SPI_CLOCK_DIV2);  // 8 MHz
 //  SPI.setClockDivider(SPI_CLOCK_DIV8);  // 2 MHz
 // SPI.setClockDivider(SPI_CLOCK_DIV16);  // 1 MHz  
 // SPI.setClockDivider(SPI_CLOCK_DIV32);  // 0.5 MHz  
@@ -148,6 +149,7 @@ void Neophob_LPD6803::setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b)
   data |= b & 0x1F;
   data <<= 5;
   data |= r & 0x1F;
+  data |= 0x8000; 
 
   pixelData[n] = data;
 }
@@ -164,7 +166,7 @@ void Neophob_LPD6803::setPixelColor(uint16_t n, uint16_t c) {
 	   and no second pixel buffer required. */
   while(nState==0); 
 
-  pixelData[n] = c; //the first bit of the color word must be set
+  pixelData[n] = 0x8000 | c; //the first bit of the color word must be set
 }
 
 
