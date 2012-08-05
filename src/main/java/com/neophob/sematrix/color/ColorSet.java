@@ -116,7 +116,7 @@ public class ColorSet {
      * 
      * @param col1
      * @param col2
-     * @param pos
+     * @param pos which position (which color offset)
      * @return
      */
     private int calcSmoothColor(int col1, int col2, int pos) {
@@ -129,12 +129,10 @@ public class ColorSet {
 
         int mul=pos*colors.length;
         int oppositeColor = 255-mul;
-        r=(r*mul)/255;
-        g=(g*mul)/255;
-        b=(b*mul)/255;
-        r+=(r2*oppositeColor)/255;
-        g+=(g2*oppositeColor)/255;
-        b+=(b2*oppositeColor)/255;
+
+        r=(r*mul + r2*oppositeColor) >> 8;
+        g=(g*mul + g2*oppositeColor) >> 8;
+        b=(b*mul + b2*oppositeColor) >> 8;
 
         return (r << 16) | (g << 8) | (b);
     }
