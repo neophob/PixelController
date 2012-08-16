@@ -269,7 +269,18 @@ public class PropertiesHelperTest {
         ph = new ApplicationConfigurationHelper(config);
         assertEquals(115200, ph.getAdavisionSerialPortSpeed());
     }
-    
+
+    @Test
+    public void testUdpDevice() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.UDP_IP, "1.2.3.4");
+        config.put(ConfigConstant.UDP_PORT, "15");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        assertEquals(OutputDeviceEnum.UDP, ph.getOutputDevice());
+        assertEquals("1.2.3.4", ph.getUdpIp());
+        assertEquals(15, ph.getUdpPort());
+    }
+
     @Test
     public void testMissingRgbValue() {
         Properties config = new Properties();

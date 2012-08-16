@@ -55,7 +55,10 @@ public final class ConfigConstant {
 
 	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";	
 	public static final String ARTNET_FIRST_UNIVERSE_ID = "artnet.first.universe.id";	
-	
+
+	public static final String UDP_IP = "udp.ip";
+	public static final String UDP_PORT = "udp.port";
+
 	/** The Constant OUTPUT_DEVICE_RESOLUTION_X. */
 	public static final String OUTPUT_DEVICE_RESOLUTION_X = "output.resolution.x";
 	

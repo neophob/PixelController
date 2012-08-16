@@ -44,6 +44,9 @@ public enum OutputDeviceEnum {
 	/** The TPM2. */
 	TPM2(Tpm2.class, true),
 
+	/** The UDP. */
+	UDP(UdpDevice.class, true),
+
 	/** The NULL Output. */
 	NULL(NullDevice.class, true);
 	

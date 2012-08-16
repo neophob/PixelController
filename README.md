@@ -34,13 +34,14 @@ PixelController supports different (LED) matrix hardware devices:
 * MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
 * Adavision (http://www.adafruit.com/products/611)
 * Element Labs Stealth LED panel. No longer in production (http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf)
+* Generic UDP Devices
 
 
 ## FRONTENDS
 There are different frontends for PixelController:
+* Native Java: based on P5
 * PixConCli: Command Line interface for PixelController, 
 * PureData: PureData frontend, very flexible, extensible (OSC, MIDI)
-* Native Java: WIP
 
 
 ## IT DOES NOT WORK!

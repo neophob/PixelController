@@ -90,6 +90,7 @@ public class PixelController extends PApplet {
 			LOG.log(Level.INFO, "ColorSets loaded, {0} entries", colorSets.size());
 			return colorSets;
 		} catch (Exception e) {
+			
 			LOG.log(Level.SEVERE, "Failed to load Config", e);
 			throw new IllegalArgumentException("Configuration error!", e);
 		}				

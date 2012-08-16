@@ -111,7 +111,7 @@ public class ApplicationConfigurationHelper {
         int miniDmxDevices = parseMiniDmxDevices();
         int nullDevices = parseNullOutputAddress();
         int adalightDevices = parseAdavisionDevices();
-        
+        int udpDevices = parseUdpDevices();       
         //track how many output systems are enabled
         int enabledOutputs = 0;
 
@@ -159,6 +159,12 @@ public class ApplicationConfigurationHelper {
             totalDevices = adalightDevices;
             LOG.log(Level.INFO, "found Adalight device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.ADAVISION;
+        } 
+        if (udpDevices > 0) {
+            enabledOutputs++;
+            totalDevices = udpDevices;
+            LOG.log(Level.INFO, "found UDP device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.UDP;
         } 
 
 
@@ -539,6 +545,24 @@ public class ApplicationConfigurationHelper {
     }
 
     /**
+     * get configured udp ip.
+     *
+     * @return the udp ip
+     */
+    public String getUdpIp() {
+        return config.getProperty(ConfigConstant.UDP_IP);
+    }
+
+    /**
+     * get configured udp port.
+     *
+     * @return the udp port
+     */
+    public int getUdpPort() {
+        return parseInt(ConfigConstant.UDP_PORT, 6803);
+    }
+
+    /**
      * get configured artnet ip.
      *
      * @return the art net ip
@@ -573,6 +597,22 @@ public class ApplicationConfigurationHelper {
     private int parseArtNetDevices() {
         //minimal ip length 1.1.1.1
         if (StringUtils.length(getArtNetIp())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
+            this.devicesInRow1=1;
+            this.devicesInRow2=0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
+            return 1;
+        }
+
+        return 0;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    private int parseUdpDevices() {    	    	
+        if (StringUtils.length(getUdpIp())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
             this.devicesInRow1=1;
             this.devicesInRow2=0;
             this.deviceXResolution = parseOutputXResolution();

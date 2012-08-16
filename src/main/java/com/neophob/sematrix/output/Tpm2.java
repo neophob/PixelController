@@ -32,6 +32,8 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  * created by people at the ledstyles.de forum.
  * 
  * There is only ONE Matrix supported per output.
+ * 
+ * TODO not finished yet!
  *
  * @author michu
  */
