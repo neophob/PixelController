@@ -52,8 +52,8 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 	public UdpDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.UDP, ph, controller, 8);
 
-		targetHost = "127.0.0.1";
-		targetPort = 6803;
+		targetHost = ph.getUdpIp();
+		targetPort = ph.getUdpPort();
 		
 		try {
 			address = InetAddress.getByName(targetHost);
@@ -62,10 +62,10 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 			
 			this.initialized = true;
 			LOG.log(Level.INFO, "UDP device initialized, send data to {0}:{1}", 
-					new Object[] {this.targetHost, this.targetPort});
+					new String[] {this.targetHost, ""+this.targetPort});
 
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "failed to initialize UDP device:", e);
+			LOG.log(Level.WARNING, "failed to initialize UDP device", e);
 		}
 	}
 

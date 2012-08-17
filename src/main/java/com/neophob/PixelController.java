@@ -38,12 +38,13 @@ import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.PixelInvadersDevice;
-import com.neophob.sematrix.output.StealthDevice;
 import com.neophob.sematrix.output.RainbowduinoDevice;
+import com.neophob.sematrix.output.StealthDevice;
+import com.neophob.sematrix.output.UdpDevice;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.output.gui.OutputGui;
-import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.properties.ConfigConstant;
 
 /**
  * The Class PixelController.
@@ -143,13 +144,16 @@ public class PixelController extends PApplet {
 			case ADAVISION:
 				this.output = new AdaVision(applicationConfig, this.collector.getPixelControllerOutput());
 				break;
+            case UDP:
+                this.output = new UdpDevice(applicationConfig, this.collector.getPixelControllerOutput());
+                break;
 			case TPM2:
 				//TODO
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
 			}
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE,"Unable to initialize output device: " + outputDeviceEnum, e);
+			LOG.log(Level.SEVERE,"\n\nERROR: Unable to initialize output device: " + outputDeviceEnum, e);
 		}
 	}
 	
