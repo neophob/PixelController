@@ -34,7 +34,7 @@ PixelController supports different (LED) matrix hardware devices:
 * MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
 * Adavision (http://www.adafruit.com/products/611)
 * Element Labs Stealth LED panel. No longer in production (http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf)
-* Generic UDP Devices
+* Generic UDP Devices (for example Raspberry Pi)
 
 
 ## FRONTENDS
