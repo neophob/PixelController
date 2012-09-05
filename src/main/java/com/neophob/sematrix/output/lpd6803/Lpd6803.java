@@ -95,6 +95,12 @@ public class Lpd6803 {
 	/** The Constant END_OF_DATA. */
 	private static final byte END_OF_DATA = 0x20;
 
+	//how many attemps are made to get the data
+	private static final int TIMEOUT_LOOP = 8;
+	
+	//wait TIMEOUT_SLEEP ms, until next loop
+	private static final int TIMEOUT_SLEEP = 4;
+
 	/** The app. */
 	private PApplet app;
 
@@ -537,6 +543,7 @@ public class Lpd6803 {
 		}		
 	}
 	
+	
 	/**
 	 * read data from serial port, wait for ACK.
 	 *
@@ -545,10 +552,10 @@ public class Lpd6803 {
 	private synchronized boolean waitForAck() {		
 		//TODO some more tuning is needed here.
 		long start = System.currentTimeMillis();
-		int timeout=8; //wait up to 50ms
+		int timeout=TIMEOUT_LOOP; //wait up to 50ms
 		//log.log(Level.INFO, "wait for ack");
 		while (timeout > 0 && port.available() < 2) {
-			sleep(4); //in ms
+			sleep(TIMEOUT_SLEEP); //in ms
 			timeout--;
 		}
 
