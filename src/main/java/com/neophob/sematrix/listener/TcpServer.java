@@ -319,7 +319,7 @@ public final class TcpServer implements Runnable {
 			LOG.log(Level.INFO,	"Pure Data Client connected at "+sendHost+":"+sendPort+"!");
 			pdClientConnected=true;
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Pure Data Client not found at "+sendHost+":"+sendPort);
+			LOG.log(Level.INFO, "Pure Data Client not found at "+sendHost+":"+sendPort);
 			pdClientConnected=false;
 			client = null;
 			if (socket!=null) {
