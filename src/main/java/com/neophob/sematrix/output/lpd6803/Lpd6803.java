@@ -96,7 +96,7 @@ public class Lpd6803 {
 	private static final byte END_OF_DATA = 0x20;
 
 	//how many attemps are made to get the data
-	private static final int TIMEOUT_LOOP = 8;
+	private static final int TIMEOUT_LOOP = 80;
 	
 	//wait TIMEOUT_SLEEP ms, until next loop
 	private static final int TIMEOUT_SLEEP = 4;
