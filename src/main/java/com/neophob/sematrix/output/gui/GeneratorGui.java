@@ -74,7 +74,7 @@ public class GeneratorGui extends PApplet {
     private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
 
     /** The y. */
-    private int x,y;
+    private int windowWidth,windowHeight;
 
     /** The p image. */
     private PImage pImage=null;
@@ -125,8 +125,8 @@ public class GeneratorGui extends PApplet {
      * @param targetYSize the target y size
      */
     public GeneratorGui(int x, int y, int targetXSize, int targetYSize) {
-        this.x = x;
-        this.y = y+SELECTED_MARKER;
+        this.windowWidth = x;
+        this.windowHeight = y+SELECTED_MARKER+100;
         this.targetXSize = targetXSize;
         this.targetYSize = targetYSize;
         this.p5GuiYOffset = targetYSize + 80;		
@@ -141,8 +141,8 @@ public class GeneratorGui extends PApplet {
      * @see processing.core.PApplet#setup()
      */
     public void setup() {
-        LOG.log(Level.INFO, "create internal buffer with size "+x+"/"+y);
-        size(x,y+100);
+        LOG.log(Level.INFO, "create internal buffer with size "+windowWidth+"/"+windowHeight);
+        size(windowWidth,windowHeight);
         noSmooth();
         frameRate(Collector.getInstance().getFps());
         background(0,0,0);		
@@ -593,24 +593,30 @@ public class GeneratorGui extends PApplet {
     }
 
 
-
     
     /**
      * draw nice gradient at the end of the screen
      */
     private void drawGradientBackground() {
         //there is an issue with this.height, it changes!
-        int ofs=this.width*(424-255);//(this.height-255);
+    		
+        int ofs=windowWidth*(windowHeight-355);
+        //System.out.println(windowWidth+" "+windowHeight);
 
-        this.loadPixels();        
-        for (int yy=0; yy<255; yy++) {
-            int pink = color(yy/2, 128);
-            for (int x=0; x<this.width; x++) {
-                this.pixels[ofs+x] = pink;				
-            }
-            ofs += this.width;
-        }
-        this.updatePixels();		
+        this.loadPixels();
+        try {
+            for (int yy=0; yy<255; yy++) {
+            	int pink = color(yy/2, 128);
+            	for (int xx=0; xx<windowWidth; xx++) {
+            		this.pixels[ofs+xx] = pink;
+            	}
+            	ofs += windowWidth;
+            }        	        	
+        } catch (Exception e) {
+        	LOG.log(Level.WARNING, "Failed to draw Gradient background "+ofs+": "+this.pixels.length);
+		}
+        this.updatePixels();	
+
     }
 
 
