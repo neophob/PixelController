@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)]
+
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
