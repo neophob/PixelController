@@ -538,7 +538,7 @@ public class GeneratorGui extends PApplet {
     public void draw() {
         long l = System.currentTimeMillis();
 
-        drawGradientBackground();
+        drawSolidBackground();
 
         int localX=0, localY=0;
         int[] buffer;
@@ -598,19 +598,9 @@ public class GeneratorGui extends PApplet {
     /**
      * draw nice gradient at the end of the screen
      */
-    private void drawGradientBackground() {
-        //there is an issue with this.height, it changes!
-        int ofs=this.width*(424-255);//(this.height-255);
-
-        this.loadPixels();        
-        for (int yy=0; yy<255; yy++) {
-            int pink = color(yy/2, 128);
-            for (int x=0; x<this.width; x++) {
-                this.pixels[ofs+x] = pink;				
-            }
-            ofs += this.width;
-        }
-        this.updatePixels();		
+    private void drawSolidBackground() {
+    	fill(20);
+    	rect(0,0,this.width,this.height);
     }
 
 
