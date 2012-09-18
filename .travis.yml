@@ -1,2 +1,12 @@
 language: java
-install: mvn initialize install -DskipTests=true
+before_install:
+  - mvn initialize
+install: mvn install -DskipTests=true
+jdk:
+  - oraclejdk7
+#env: JAVA_OPTS="-server -Djruby.cext.enabled=false -Djruby.compile.invokedynamic=false"
+notifications:
+  # Email notifications are disabled to not annoy anybody.
+  # See http://about.travis-ci.org/docs/user/build-configuration/ to learn more
+  # about configuring notification recipients and more.
+  email: false
