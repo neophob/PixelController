@@ -548,7 +548,7 @@ public class GeneratorGui extends PApplet {
 
         drawGradientBackground();
 
-        int localX=0, localY=0;
+        int localX=0, localY=20;
         int[] buffer;
         Collector col = Collector.getInstance();
 
