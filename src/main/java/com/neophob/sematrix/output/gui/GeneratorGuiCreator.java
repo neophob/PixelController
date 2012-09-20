@@ -68,9 +68,9 @@ public class GeneratorGuiCreator extends Frame {
 
        	windowXSize*=nrOfScreens;
        
-        //boarder stuff
+        //ugly boarder stuff
         windowXSize+=20;
-        windowYSize+=80+200;
+        windowYSize+=280;
 
         if (windowXSize<MINIMAL_WINDOW_X_SIZE) {
         	windowXSize = MINIMAL_WINDOW_X_SIZE;
@@ -80,19 +80,19 @@ public class GeneratorGuiCreator extends Frame {
         setBounds(0, 0, windowXSize, windowYSize);
         this.setResizable(false);
         this.setSize(windowXSize, windowYSize);
-
+        this.setIconImage(GeneratorGuiCreator.createIcon());
+        
         //connect the new PApplet to our frame
         setLayout(new BorderLayout());
         PApplet embed = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
-        add(embed, BorderLayout.CENTER);
 
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
         embed.init();
-        embed.setVisible(true);
-        setVisible(true);
-        this.setIconImage(GeneratorGuiCreator.createIcon());
+        add(embed, BorderLayout.CENTER);
+//        embed.setVisible(true);
+        setVisible(true);        
 	}
 	
 	/**

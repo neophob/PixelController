@@ -125,11 +125,14 @@ public class GeneratorGui extends PApplet {
      * @param targetYSize the target y size
      */
     public GeneratorGui(int x, int y, int targetXSize, int targetYSize) {
+    	super();        
         this.windowWidth = x;
         this.windowHeight = y+SELECTED_MARKER+100;
         this.targetXSize = targetXSize;
         this.targetYSize = targetYSize;
-        this.p5GuiYOffset = targetYSize + 80;		
+        this.p5GuiYOffset = targetYSize + 80;
+        
+    	LOG.log(Level.INFO, "Create GUI Window with size "+windowWidth+"/"+windowHeight);
     }
 
 
@@ -141,12 +144,23 @@ public class GeneratorGui extends PApplet {
      * @see processing.core.PApplet#setup()
      */
     public void setup() {
-        LOG.log(Level.INFO, "create internal buffer with size "+windowWidth+"/"+windowHeight);
-        size(windowWidth,windowHeight);
+    	setBounds(0, 0, windowWidth, windowHeight);
+        size(windowWidth, windowHeight);         
+        
+        if (super.getHeight() < windowHeight) {
+        	LOG.log(Level.WARNING, "Set Height failed! "+super.getHeight());
+        }
+        
         noSmooth();
         frameRate(Collector.getInstance().getFps());
         background(0,0,0);		
-        int i=0;        		
+        int i=0;
+        
+/*    	System.out.println("NAME:"+this.getName());
+    	System.out.println("HEIGHT:"+this.getHeight());
+    	System.out.println("SIZE:"+this.getSize());
+    	System.out.println("INFO:"+this.getAppletInfo());
+    	System.out.println("PRNT:"+this.getParent());*/
 
         cp5 = new ControlP5(this);
         cp5.setAutoDraw(false);
