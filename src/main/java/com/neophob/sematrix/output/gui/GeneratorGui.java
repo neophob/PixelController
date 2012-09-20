@@ -130,7 +130,7 @@ public class GeneratorGui extends PApplet {
         this.windowHeight = y+SELECTED_MARKER+100;
         this.targetXSize = targetXSize;
         this.targetYSize = targetYSize;
-        this.p5GuiYOffset = targetYSize + 80;
+        this.p5GuiYOffset = targetYSize + 100;
         
     	LOG.log(Level.INFO, "Create GUI Window with size "+windowWidth+"/"+windowHeight);
     }
@@ -156,12 +156,6 @@ public class GeneratorGui extends PApplet {
         background(0,0,0);		
         int i=0;
         
-/*    	System.out.println("NAME:"+this.getName());
-    	System.out.println("HEIGHT:"+this.getHeight());
-    	System.out.println("SIZE:"+this.getSize());
-    	System.out.println("INFO:"+this.getAppletInfo());
-    	System.out.println("PRNT:"+this.getParent());*/
-
         cp5 = new ControlP5(this);
         cp5.setAutoDraw(false);
         cp5.getTooltip().setDelay(200);
