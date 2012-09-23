@@ -29,9 +29,12 @@ public enum OutputDeviceEnum {
 	/** The Element STEALTH LED PANELS. */
 	STEALTH(StealthDevice.class, true),
 
-	/** The RAINBOWDUINO. */
-	RAINBOWDUINO(RainbowduinoDevice.class, true),
+	/** The RAINBOWDUINO_V2. */
+	RAINBOWDUINO_V2(RainbowduinoV2Device.class, true),
 	
+	/** The RAINBOWDUINO_V3. */
+	RAINBOWDUINO_V3(RainbowduinoV3Device.class, true),
+
 	/** The ARTNET. */
 	ARTNET(ArtnetDevice.class, true),
 	

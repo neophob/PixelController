@@ -364,6 +364,20 @@
 							<goal>install-file</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>rv3sf_api.jar</id>
+						<configuration>
+							<file>lib/rv3sf_api-0.1.jar</file>
+							<groupId>rv3sf_api</groupId>
+							<artifactId>rv3sf_api</artifactId>
+							<version>0.1</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
@@ -556,6 +570,22 @@
 			<groupId>controlP5</groupId>
 			<artifactId>controlP5</artifactId>
 			<version>0.7.1</version>
+		</dependency>
+		<!-- src: https://code.google.com/p/rainbowduino-v3-streaming-firmware/ -->
+		<dependency>
+			<groupId>rv3sf_api</groupId>
+			<artifactId>rv3sf_api</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.6.3</version>
 		</dependency>
 	</dependencies>
 
