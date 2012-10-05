@@ -1,5 +1,5 @@
-Rainbowduino Firmware
----------------------
+Rainbowduino V2 Firmware
+------------------------
 
 Content:
 -3rdParty: 3rd party libraries the firmware needs, install them

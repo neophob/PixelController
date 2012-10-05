@@ -73,6 +73,8 @@ public class ApplicationConfigurationHelper {
     //output specific settings
     /** The i2c addr. */
     private List<Integer> i2cAddr=null;
+    
+    private List<String> rainbowduinoV3SerialDevices = null;
 
     /** The lpd device. */
     private List<DeviceConfig> lpdDevice=null;
@@ -104,7 +106,8 @@ public class ApplicationConfigurationHelper {
     public ApplicationConfigurationHelper(Properties config) {
         this.config = config;
         
-        int rainbowduinoDevices = parseI2cAddress();
+        int rainbowduinoV2Devices = parseI2cAddress();
+        int rainbowduinoV3Devices = parseRainbowduinoV3Config();
         int pixelInvadersDevices = parsePixelInvaderConfig();        
         int stealthDevices = parseStealthConfig();        
         int artnetDevices = parseArtNetDevices();
@@ -118,12 +121,18 @@ public class ApplicationConfigurationHelper {
         //track how many ouput devices are configured
         int totalDevices = 0;
 
-        if (rainbowduinoDevices > 0) {
+        if (rainbowduinoV2Devices > 0) {
             enabledOutputs++;
-            totalDevices = rainbowduinoDevices;
-            LOG.log(Level.INFO, "found Rainbowduino device: "+totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO;
+            totalDevices = rainbowduinoV2Devices;
+            LOG.log(Level.INFO, "found RainbowduinoV2 device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO_V2;
         }  
+        if (rainbowduinoV3Devices > 0) {
+           enabledOutputs++;
+           totalDevices = rainbowduinoV3Devices;
+           LOG.log(Level.INFO, "found RainbowduinoV3 device: "+totalDevices);
+           this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO_V3;
+       }  
         if (stealthDevices > 0) {
             enabledOutputs++;
             totalDevices = stealthDevices;
@@ -203,8 +212,7 @@ public class ApplicationConfigurationHelper {
         }
     }
 
-
-    /**
+	/**
      * Parses the boolean.
      *
      * @param property the property
@@ -469,7 +477,7 @@ public class ApplicationConfigurationHelper {
     private int parseI2cAddress() {
         i2cAddr = new ArrayList<Integer>();
 
-        String rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_ROW1);
+        String rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_V2_ROW1);
         if (StringUtils.isNotBlank(rawConfig)) {
             this.deviceXResolution = 8;
             this.deviceYResolution = 8;
@@ -479,7 +487,7 @@ public class ApplicationConfigurationHelper {
                 devicesInRow1++;
             }
         }
-        rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_ROW2);
+        rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_V2_ROW2);
         if (StringUtils.isNotBlank(rawConfig)) {
             for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 i2cAddr.add( Integer.decode(s));
@@ -489,7 +497,27 @@ public class ApplicationConfigurationHelper {
 
         return i2cAddr.size();
     }
-
+    
+	private int parseRainbowduinoV3Config() {
+		this.rainbowduinoV3SerialDevices = new ArrayList<String>();
+		String row1String = this.config.getProperty(ConfigConstant.RAINBOWDUINO_V3_ROW1);
+		if (StringUtils.isNotBlank(row1String)) {
+			this.deviceXResolution = 8;
+			this.deviceYResolution = 8;
+			for (String string : row1String.split(ConfigConstant.DELIM)) {
+				this.rainbowduinoV3SerialDevices.add(string);
+				this.devicesInRow1++;
+			}
+		}
+		String row2String = this.config.getProperty(ConfigConstant.RAINBOWDUINO_V3_ROW2);
+		if (StringUtils.isNotBlank(row2String)) {
+			for (String string : row2String.split(ConfigConstant.DELIM)) {
+				this.rainbowduinoV3SerialDevices.add(string);
+				this.devicesInRow2++;
+			}
+		}
+		return this.rainbowduinoV3SerialDevices.size();
+	}
 
     /**
      * Parses the null output settings.
@@ -788,6 +816,10 @@ public class ApplicationConfigurationHelper {
      */
     public List<Integer> getI2cAddr() {
         return i2cAddr;
+    }
+    
+    public List<String> getRainbowduinoV3SerialDevices() {
+        return this.rainbowduinoV3SerialDevices;
     }
 
     /**

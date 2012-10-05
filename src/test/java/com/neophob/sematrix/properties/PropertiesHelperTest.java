@@ -69,8 +69,8 @@ public class PropertiesHelperTest {
     @Test
     public void testRainbowduinosConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.RAINBOWDUINO_ROW1, "5,6");
-        config.put(ConfigConstant.RAINBOWDUINO_ROW2, "0x7,8");
+        config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "5,6");
+        config.put(ConfigConstant.RAINBOWDUINO_V2_ROW2, "0x7,8");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
@@ -79,7 +79,7 @@ public class PropertiesHelperTest {
 
         assertEquals(4, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
-        assertEquals(OutputDeviceEnum.RAINBOWDUINO, ph.getOutputDevice());
+        assertEquals(OutputDeviceEnum.RAINBOWDUINO_V2, ph.getOutputDevice());
     }
 
     @Test
@@ -136,7 +136,7 @@ public class PropertiesHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void testMultipleConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
+        config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "4");
         config.put(ConfigConstant.ARTNET_IP, "192.168.4.2");
         new ApplicationConfigurationHelper(config);
     }
@@ -145,7 +145,7 @@ public class PropertiesHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void testMultiple2Config() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.RAINBOWDUINO_ROW1, "4");
+        config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "4");
         config.put(ConfigConstant.PIXELINVADERS_ROW2, "NO_ROTATE");
         new ApplicationConfigurationHelper(config);
     }    
