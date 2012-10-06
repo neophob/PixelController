@@ -32,10 +32,10 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  *
  * @author michu
  */
-public class RainbowduinoDevice extends ArduinoOutput {
+public class RainbowduinoV2Device extends ArduinoOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(RainbowduinoDevice.class.getName());
+	private static final Logger LOG = Logger.getLogger(RainbowduinoV2Device.class.getName());
 	
 	/** The all i2c address. */
 	private List<Integer> allI2cAddress;
@@ -49,8 +49,8 @@ public class RainbowduinoDevice extends ArduinoOutput {
 	 * @param controller the controller
 	 * @param allI2cAddress the all i2c address
 	 */
-	public RainbowduinoDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.RAINBOWDUINO, ph, controller, 4);
+	public RainbowduinoV2Device(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
+		super(OutputDeviceEnum.RAINBOWDUINO_V2, ph, controller, 4);
 		
 		this.allI2cAddress = ph.getI2cAddr();		
 		this.initialized = false;		

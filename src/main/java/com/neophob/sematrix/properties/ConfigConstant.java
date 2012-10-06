@@ -31,11 +31,14 @@ public final class ConfigConstant {
 	/** The Constant DELIM. */
 	public static final String DELIM = ",";
 	
-	/** The Constant RAINBOWDUINO_ROW1. */
-	public static final String RAINBOWDUINO_ROW1 = "layout.row1.i2c.addr";
+	/** The Constant RAINBOWDUINO_V2_ROW1. */
+	public static final String RAINBOWDUINO_V2_ROW1 = "layout.row1.i2c.addr";
 	
-	/** The Constant RAINBOWDUINO_ROW2. */
-	public static final String RAINBOWDUINO_ROW2 = "layout.row2.i2c.addr";
+	/** The Constant RAINBOWDUINO_V2_ROW2. */
+	public static final String RAINBOWDUINO_V2_ROW2 = "layout.row2.i2c.addr";
+	
+	public static final String RAINBOWDUINO_V3_ROW1 = "layout.row1.serial.devices";
+	public static final String RAINBOWDUINO_V3_ROW2 = "layout.row2.serial.devices";
 	
 	/** The Constant CFG_PANEL_COLOR_ORDER. */
 	public static final String CFG_PANEL_COLOR_ORDER = "panel.color.order";
