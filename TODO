@@ -15,11 +15,13 @@ TODO PixelController
 Changelog v1.2 to v1.3
 ------------------------
 -add integrated GUI!
--add colorsets, predefined color definition for all generators, effects and mixers
+-add Color-Sets, predefined color definition for all generators, effects and mixers
 -support more output formats (not only RGB and RBG), thanks to noxx6
 -added PixelInvaders SPI firmware, faster than the bit banging version
 -configuration fixes
 -update AdaVision driver
+-add UDP output device
+-support rainbowduino v3
 -add start scripts for OSX
 -add flipX and flipY effects
 -Texturedeform is not a generator anymore but an effect
