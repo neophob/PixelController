@@ -1,7 +1,7 @@
 /*
  * Element Stealth LED Panel serial-led-gateway, by Steven Noreyko and Christian Miller
  * Based on PixelInvaders gateway Copyright (C) 2011 michael vogt <michu@neophob.com>
- * Tested on Teensy
+ * Tested on Maple Mini
  * 
  * ------------------------------------------------------------------------
  *
@@ -11,6 +11,9 @@
  * On the Arduino Uno, Duemilanove, etc., clock = pin 13 and data = pin 11. 
  * For the Arduino Mega, clock = pin 52, data = pin 51. 
  * For the ATmega32u4 Breakout Board and Teensy, clock = pin B1, data = B2. 
+ * For Maple Mini are setup by Hardware, SPI choice is set in element_GFX.cpp
+ * SPI1 (SCK = 6, MOSI = 4) or SPI2 (SCK = 30, MOSI = 28) 
+ * 	On Maple. Latch pin is configured in element_GFX.cpp
  *
  * ------------------------------------------------------------------------
  *
@@ -32,20 +35,13 @@
  *	
  */
 
-#include <TimerOne.h>
-#include "SPI.h"
+#include <string.h>
+
 #include "element_GFX.h"
 
 Element_GFX panel;
 
-
-// LED panel output pins
-int led_latch = 24; // latch pin is 24/B4 = PB4 on Teensy
-//int numLeds = 256;
-
-#define PANEL_SIZE 256
-#define NUM_PANELS 1
-
+// SPI LATCH PIN AND NUMBER OF PANELS ARE SET IN - element_GFX.h
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
@@ -85,7 +81,6 @@ byte g_errorCounter;
 
 int j=0,k=0;
 byte serialDataRecv;
-uint16_t tmpBits;
 
 
 // --------------------------------------------
@@ -94,20 +89,12 @@ uint16_t tmpBits;
 static void sendAck() {
 	serialResonse[0] = 'A';
 	serialResonse[1] = 'K';
-	serialResonse[2] = Serial.available();
+	serialResonse[2] = SerialUSB.available();
 	serialResonse[3] = g_errorCounter;
-	Serial.write(serialResonse, SERIALBUFFERSIZE);
+	SerialUSB.write(serialResonse, SERIALBUFFERSIZE);
 
-	//comment out next line on arduino!
-	//Serial.send_now();
 }
 
-/*
-unsigned int Color(byte r, byte g, byte b) {
-	//Take the lowest 5 bits of each value and append them end to end
-	return( ((unsigned int)g & 0x1F )<<10 | ((unsigned int)b & 0x1F)<<5 | (unsigned int)r & 0x1F);
-}
-*/
 // --------------------------------------------
 //		 Input a value 0 to 127 to get a color value.
 //		 The colours are a transition r - g -b - back to r
@@ -129,15 +116,15 @@ unsigned int Color(byte r, byte g, byte b) {
 //			setup
 // --------------------------------------------
 void setup() {
-	SPI.begin();
 	panel.constructor();
 	panel.setRotation(0); // options are 0, 1, 2, 3
 
 	memset(serialResonse, 0, SERIALBUFFERSIZE);
 
 	//im your slave and wait for your commands, master!
-	Serial.begin(BAUD_RATE); //Setup high speed Serial
-	Serial.flush();
+	// these dont apply on Maple
+//	SerialUSB.begin(BAUD_RATE); //Setup high speed USBSerial
+//	SerialUSB.flush();
 
 	//cpu use and SPI clock must be adjusted
 //	strip.setCPUmax(50);	// start with 50% CPU usage. up this if the strand flickers or is slow	
@@ -217,7 +204,7 @@ void loop() {
 
 void updatePixels(byte ofs, byte* buffer) {
 	int i, j, num;
-	uint16_t currentLed = ofs*PIXELS_PER_PANEL; // this is offset * amount of bytes of data in each packet
+	uint16 currentLed = ofs*PIXELS_PER_PANEL; // this is offset * amount of bytes of data in each packet
 	byte x=0;
 
 	// draw 32 pixels per ofs packet chunk
@@ -230,51 +217,6 @@ void updatePixels(byte ofs, byte* buffer) {
 		x+=3;
 		currentLed++;
 	}	 
-/*
-	for (byte i=0; i < PIXELS_PER_PANEL; i++) {	
-			//get 15 bit color
-			tmpBits = buffer[x] << 8 | buffer[x+1];
-			//convert it to 24 bit per color
-			byte bz = tmpBits & 0x1F;
-			byte gz = (tmpBits >> 5) & 0x1F;
-			byte rz = (tmpBits >> 10) & 0x1F;
-		panel.drawPixelNum(currentLed, make_color(rz<<2, gz<<2, bz<<2));
-		x+=2;
-		currentLed++;
-	}	 
-*/
-/*	//this is working on 8x8 grid
-		if (ofs == 0){
-			for (i = 0; i < panel.width()/4; i++) {
-				for (j = 0; j < panel.height()/2; j++){
-					//get 15 bit color
-					tmpBits = buffer[x] << 8 | buffer[x+1];
-					//convert it to 24 bit per color
-					byte bz = tmpBits & 0x1F;
-					byte gz = (tmpBits >> 5) & 0x1F;
-					byte rz= (tmpBits >> 10) & 0x1F;
-					panel.drawPixel(i, j, make_color(rz<<3, gz<<3, bz<<3));
-					x+=2;
-				}
-			}
-		}
-		if (ofs == 1){
-			for (i = panel.width()/4; i < panel.width()/2; i++) {
-				for (j = 0; j < panel.height()/2; j++){
-					//get 15 bit color
-					tmpBits = buffer[x] << 8 | buffer[x+1];
-					//convert it to 24 bit per color
-					byte bz = tmpBits & 0x1F;
-					byte gz = (tmpBits >> 5) & 0x1F;
-					byte rz= (tmpBits >> 10) & 0x1F;
-					panel.drawPixel(i, j, make_color(rz<<3, gz<<3, bz<<3));
-					x+=2;
-				}
-			}
-		}
-	}
-*/
-
 	
 }
 
@@ -304,8 +246,8 @@ byte readCommand(byte *str) {
 
 	//wait until we get a CMD_START_BYTE or queue is empty
 	i=0;
-	while (Serial.available()>0 && i==0) {
-		b = Serial.read();
+	while (SerialUSB.available()>0 && i==0) {
+		b = SerialUSB.read();
 		if (b == CMD_START_BYTE) {
 			i=1;
 		}
@@ -321,8 +263,8 @@ byte readCommand(byte *str) {
 	i=1;
 	b=SERIAL_DELAY_LOOP;
 	while (i<SERIAL_HEADER_SIZE) {
-		if (Serial.available()) {
-			str[i++] = Serial.read();
+		if (SerialUSB.available()) {
+			str[i++] = SerialUSB.read();
 		} 
 		else {
 			delay(SERIAL_WAIT_DELAY); 
@@ -348,8 +290,8 @@ byte readCommand(byte *str) {
 	i=0;
 	b=SERIAL_DELAY_LOOP;
 	while (i<sendlen+1) {
-		if (Serial.available()) {
-			str[SERIAL_HEADER_SIZE+i++] = Serial.read();
+		if (SerialUSB.available()) {
+			str[SERIAL_HEADER_SIZE+i++] = SerialUSB.read();
 		} 
 		else {
 			delay(SERIAL_WAIT_DELAY); 
