@@ -90,7 +90,7 @@ static void sendAck() {
   Serial.write(serialResonse, SERIALBUFFERSIZE);
 
   //comment out next line on arduino!
-  //Serial.send_now();
+  Serial.send_now();
 }
 
 
@@ -169,10 +169,13 @@ void setup() {
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
 
-  //cpu use and SPI clock must be adjusted
-  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or is slow  
-//  strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.25MHz - 8uS
-  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+  //cpu use and SPI clock MUST be adjusted
+  // setting for 6 panels, cpu max:45 spi_clock_div128
+  // setting for 2 panels, cpu max:PLAY!
+  
+  strip.setCPUmax(45);  // start with 50% CPU usage. up this if the strand flickers or is slow  
+  strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
 //  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
 //  strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
   showInitImage();      // display some colors
