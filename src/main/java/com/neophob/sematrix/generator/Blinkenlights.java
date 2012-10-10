@@ -95,6 +95,11 @@ public class Blinkenlights extends Generator implements PConstants {
 	 * @param file the file
 	 */
 	public void loadFile(String file) {
+		if (StringUtils.isBlank(file)) {
+			LOG.log(Level.INFO, "Empty filename provided, call ignored!");
+			return;
+		}
+		
 		//only load if needed
 		if (!StringUtils.equals(file, this.filename)) {
 			long start = System.currentTimeMillis();
@@ -103,7 +108,7 @@ public class Blinkenlights extends Generator implements PConstants {
 			blinken.loadFile(PREFIX+file, this.internalBufferXSize);
 			blinkenSettings();
 			LOG.log(Level.INFO, "Load blinkenlights done, needed time in ms: "+(System.currentTimeMillis()-start));			
-		}		
+		}
 	}
 	
 	/**
