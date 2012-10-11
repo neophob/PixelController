@@ -158,7 +158,7 @@ public class OutputGui {
 
 		//mark the active visual
 		if (nr == currentOutput) {
-			parent.fill(200,66,66);
+			parent.fill(66,66,66);
 		} else {
 			parent.fill(33,33,33);
 		}
