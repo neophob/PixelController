@@ -75,8 +75,8 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 	 */
 	@Override
 	public void update() {
-		if (this.initialized) {
-			byte[] buffer = OutputHelper.convertIntToByteBuffer(getTransformedBuffer());
+		if (this.initialized) {			
+			byte[] buffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
 			packet.setData(buffer);
 			packet.setLength(buffer.length);
 			try {
