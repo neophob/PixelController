@@ -260,7 +260,6 @@ public class PixelController extends PApplet {
 			if (currentColorSet++>=colorSetsNrs-1) {
 				currentColorSet=0;
 			}
-			System.out.println("NEXT COLORSET: "+currentColorSet);
 			col.setCurrentColorSet(currentColorSet);			
 			break;
 
