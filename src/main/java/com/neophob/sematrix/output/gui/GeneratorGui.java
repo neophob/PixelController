@@ -621,7 +621,7 @@ public class GeneratorGui extends PApplet {
             	ofs += windowWidth;
             }        	        	
         } catch (Exception e) {
-        	LOG.log(Level.WARNING, "(Bug 24) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
+        	LOG.log(Level.WARNING, "(Issue 21) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
 		}
         this.updatePixels();	
 
@@ -769,6 +769,40 @@ public class GeneratorGui extends PApplet {
         }
 
     }
+
+
+    /**
+     * Keyhandler
+     * 
+     * select visual by keypress
+     */
+    public void keyPressed() {
+    	Collector col = Collector.getInstance();
+    	switch (key) {
+    	
+    	//change current Colorset
+    	case 'C':			
+    		int currentColorSet = col.getCurrentColorSet();
+			int colorSetsNrs = col.getColorSets().size();
+			
+			if (currentColorSet++>=colorSetsNrs-1) {
+				currentColorSet=0;
+			}
+			col.setCurrentColorSet(currentColorSet);			
+			break;
+
+		default:
+			break;
+		}    	
+
+    	
+        if(key>='1' && key<'9') {
+            // convert a key-number (48-52) to an int between 0 and 4
+            int n = (int)key-49;
+            selectedVisualList.activate(n);
+        }   
+    }
+
 
 
 
