@@ -621,7 +621,7 @@ public class GeneratorGui extends PApplet {
             	ofs += windowWidth;
             }        	        	
         } catch (Exception e) {
-        	LOG.log(Level.WARNING, "Failed to draw Gradient background "+ofs+": "+this.pixels.length);
+        	LOG.log(Level.WARNING, "(Bug 24) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
 		}
         this.updatePixels();	
 
