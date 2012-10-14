@@ -242,6 +242,32 @@ public class PixelController extends PApplet {
 			this.output.logStatistics();
 		}
 	}
+	
+	
+	/**
+	 * Keyhandler
+	 */
+	public void keyReleased() {
+		
+    	Collector col = Collector.getInstance();
+    	switch (key) {
+    	
+    	//change current Colorset
+    	case 'C':			
+    		int currentColorSet = col.getCurrentColorSet();
+			int colorSetsNrs = col.getColorSets().size();
+			
+			if (currentColorSet++>=colorSetsNrs-1) {
+				currentColorSet=0;
+			}
+			System.out.println("NEXT COLORSET: "+currentColorSet);
+			col.setCurrentColorSet(currentColorSet);			
+			break;
+
+		default:
+			break;
+		}    	
+	}
 
 	/**
 	 * The main method.

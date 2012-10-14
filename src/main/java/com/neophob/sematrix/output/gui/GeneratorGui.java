@@ -413,7 +413,7 @@ public class GeneratorGui extends PApplet {
         colorSetList.setLabel(colorSetList.getItem(1).getName());
         colorSetList.setHeight(100);
         colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
-
+        
         //----------
         //RANDOM Tab
         //----------				
@@ -769,19 +769,6 @@ public class GeneratorGui extends PApplet {
         }
 
     }
-
-
-    /**
-     * select visual by keypress
-     */
-    public void keyPressed() {
-        if(key>='1' && key<'9') {
-            // convert a key-number (48-52) to an int between 0 and 4
-            int n = (int)key-49;
-            selectedVisualList.activate(n);
-        }
-    }
-
 
 
 
