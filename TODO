@@ -10,6 +10,7 @@ TODO PixelController
 -Integrate OSC Server
 -support TPM2 devices
 -support Kinect for Xbox 360 
+-support Renard Protocol
 
 
 Changelog v1.2 to v1.3
