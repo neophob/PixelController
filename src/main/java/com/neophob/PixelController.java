@@ -192,11 +192,9 @@ public class PixelController extends PApplet {
 				
 		//load output device
 		getOutputDevice(applicationConfig);
-		
-		//show the matrix emulator (lowres) output window
+				
 		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 		
-		//show gui and debug output window
 		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
 			new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());	
 		}

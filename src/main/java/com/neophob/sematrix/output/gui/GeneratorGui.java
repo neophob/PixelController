@@ -69,6 +69,10 @@ public class GeneratorGui extends PApplet {
     private static final long serialVersionUID = 2344499301021L;
 
     private static final int SELECTED_MARKER = 10;
+    
+    private static final int GENERIC_X_OFS = 10;
+
+    private static final String ALWAYS_VISIBLE_TAB = "global";
 
     /** The log. */
     private static final Logger LOG = Logger.getLogger(GeneratorGui.class.getName());
@@ -127,27 +131,21 @@ public class GeneratorGui extends PApplet {
     public GeneratorGui(int windowWidth, int windowHeigth, int singleVisualXSize, int singleVisualYSize) {
     	super();        
         this.windowWidth = windowWidth;
-        this.windowHeight = windowHeigth+SELECTED_MARKER+100;
+        this.windowHeight = windowHeigth;//+SELECTED_MARKER+100;
         this.singleVisualXSize = singleVisualXSize;
         this.singleVisualYSize = singleVisualYSize;
-        this.p5GuiYOffset = this.singleVisualYSize + 100;
-        
-    	LOG.log(Level.INFO, "Create GUI Window with size "+this.windowWidth+"/"+this.windowHeight);
+        this.p5GuiYOffset = this.singleVisualYSize + 100;        
     }
-
-
-
-
-    private final String ALWAYS_VISIBLE_TAB = "global";
 
     /* (non-Javadoc)
      * @see processing.core.PApplet#setup()
      */
     public void setup() {
         size(windowWidth, windowHeight);         
-        
-        noSmooth();
+    	LOG.log(Level.INFO, "Create GUI Window with size "+this.getWidth()+"/"+this.getHeight());
+
         frameRate(Collector.getInstance().getFps());
+        noSmooth();
         background(0,0,0);		
         int i=0;
         
@@ -158,7 +156,7 @@ public class GeneratorGui extends PApplet {
 
         //selected visual
         int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
-        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), 0, p5GuiYOffset-58);
+        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), GENERIC_X_OFS, p5GuiYOffset-58);
         selectedVisualList.setItemsPerRow(nrOfVisuals);
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
@@ -175,18 +173,18 @@ public class GeneratorGui extends PApplet {
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
 
-        cp5.addTextlabel("gen1", "GENERATOR#1", 3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("gen2", "GENERATOR#2", 3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("fx1", "EFFECT#1", 3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("fx2", "EFFECT#2", 3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("mix2", "MIXER#2", 3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("gen1", "GENERATOR#1", GENERIC_X_OFS+3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("gen2", "GENERATOR#2", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("fx1", "EFFECT#1", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("fx2", "EFFECT#2", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("mix2", "MIXER#2", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
 
         //Generator 
         generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
-                0, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 
-                3*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(generatorListOne);
         Theme.themeDropdownList(generatorListTwo);
         i=0;
@@ -202,9 +200,9 @@ public class GeneratorGui extends PApplet {
 
         //Effect 
         effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
-                1*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+1*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         effectListTwo = cp5.addDropdownList(GuiElement.EFFECT_TWO_DROPDOWN.toString(), 
-                4*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(effectListOne);
         Theme.themeDropdownList(effectListTwo);
         i=0;
@@ -220,7 +218,7 @@ public class GeneratorGui extends PApplet {
 
         //Mixer 
         mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
-                2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(mixerList);
 
         i=0;
@@ -239,7 +237,7 @@ public class GeneratorGui extends PApplet {
         final int yPosStartLabel = p5GuiYOffset+50;
         final int yPosStartDrowdown = p5GuiYOffset+36;
 
-        cp5.getWindow().setPositionOfTabs(0, this.getHeight()-20);
+        cp5.getWindow().setPositionOfTabs(GENERIC_X_OFS, this.getHeight()-20);
 
         //there a default tab which is present all the time. rename this tab
         Tab generatorTab = cp5.getTab("default");
@@ -259,13 +257,13 @@ public class GeneratorGui extends PApplet {
         //EFFECT tab
         //-------------
         thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 
-        		0, 255, 255, 0*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
+        		0, 255, 255, GENERIC_X_OFS+0*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         thresholdSlider.setSliderMode(Slider.FIX);
         thresholdSlider.setGroup(generatorTab);	
         thresholdSlider.setDecimalPrecision(0);		
 
         Slider fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
-                -127, 127, 0, 2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
+                -127, 127, 0, GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         fxRotoSlider.setSliderMode(Slider.FIX);
         fxRotoSlider.setGroup(generatorTab);
         fxRotoSlider.setDecimalPrecision(0);
@@ -275,11 +273,11 @@ public class GeneratorGui extends PApplet {
         //Generator tab
         //-------------
         
-        cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", 3, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", GENERIC_X_OFS+3, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
         String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
 
         blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
-                0, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
         i=0;
         for (String s: FileUtils.findBlinkenFiles(path)) {
@@ -291,10 +289,10 @@ public class GeneratorGui extends PApplet {
         blinkenLightsList.setHeight(100);
 
         //images
-        cp5.addTextlabel("genImg", "LOAD IMAGE FILE", 3+1*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genImg", "LOAD IMAGE FILE", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
         imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
-                Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
         i=0;
         for (String s: FileUtils.findImagesFiles(path)) {
@@ -305,11 +303,11 @@ public class GeneratorGui extends PApplet {
         imageList.setGroup(generatorTab);		
         imageList.setHeight(100);
 
-        cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", 3+2*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
         //texturedeform options		
         textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.toString(), 
-                2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(textureDeformOptions);		
 
         textureDeformOptions.addItem("Anamorphosis", 1);
@@ -329,10 +327,10 @@ public class GeneratorGui extends PApplet {
         textureDeformOptions.setHeight(80);
 
         //colorscroll options
-        cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", 3+3*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
         colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.toString(), 
-                3*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorScrollList);		
 
         for (ScrollMode sm: ScrollMode.values()) {
@@ -344,10 +342,10 @@ public class GeneratorGui extends PApplet {
 
         //add textfield
         //Textfield textfield = 
-        cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", 3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
+        cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
 
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
-                5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
+				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
 		freezeUpdate.setCaptionLabel("Toggle Freeze");
 		freezeUpdate.setGroup(generatorTab);
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.toString(),"freeze update");
@@ -356,7 +354,7 @@ public class GeneratorGui extends PApplet {
         //Single Output tab
         //-----------------				
         int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
-        selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.toString(), 0, yPosStartDrowdown);
+        selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.toString(), GENERIC_X_OFS, yPosStartDrowdown);
         selectedOutputs.setItemsPerRow(nrOfOutputs);
         selectedOutputs.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfOutputs; i++) {
@@ -395,10 +393,10 @@ public class GeneratorGui extends PApplet {
         allOutputTabFader.moveTo(allOutputTab);
 
         //palette dropdown list	
-        cp5.addTextlabel("colSet", "SELECT COLORSET", 5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("colSet", "SELECT COLORSET", GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
         colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.toString(), 
-                5*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorSetList);		
         i=0;
         for (ColorSet cs: Collector.getInstance().getColorSets()) {
@@ -482,13 +480,13 @@ public class GeneratorGui extends PApplet {
         presetButtons.moveTo(presetTab);
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.toString(), 0,
-                2*Theme.DROPBOX_XOFS, yPosStartDrowdown+80, 100, 15);
+        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+80, 100, 15);
         loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.toString());
         loadPreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.LOAD_PRESET.toString(),"Load a stored preset");
 
         savePreset = cp5.addButton(GuiElement.SAVE_PRESET.toString(), 0,
-                3*Theme.DROPBOX_XOFS, yPosStartDrowdown+80, 100, 15);
+        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+80, 100, 15);
         savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.toString());
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.toString(),"Save a preset");
@@ -543,7 +541,7 @@ public class GeneratorGui extends PApplet {
 
         drawGradientBackground();
 
-        int localX=0, localY=20;
+        int localX=GENERIC_X_OFS, localY=10;
         int[] buffer;
         Collector col = Collector.getInstance();
 
@@ -584,9 +582,9 @@ public class GeneratorGui extends PApplet {
         //display frame progress
         int frames = col.getFrames() % singleVisualXSize;
         fill(200,200,200);
-        rect(0, localY+singleVisualYSize+SELECTED_MARKER+4, frames, 5);
+        rect(GENERIC_X_OFS, localY+singleVisualYSize+SELECTED_MARKER+4, frames, 5);
         fill(55,55,55);
-        rect(frames, localY+singleVisualYSize+SELECTED_MARKER+4, singleVisualXSize-frames, 5);
+        rect(GENERIC_X_OFS+frames, localY+singleVisualYSize+SELECTED_MARKER+4, singleVisualXSize-frames, 5);
 
         //beat detection
         displaySoundStats(localY);
@@ -602,7 +600,6 @@ public class GeneratorGui extends PApplet {
      */
     private void drawGradientBackground() {
         //there is an issue with this.height, it changes!
-    		
         int ofs=this.getWidth()*(this.getHeight()-255);
 
         this.loadPixels();
@@ -629,7 +626,7 @@ public class GeneratorGui extends PApplet {
     private void displaySoundStats(int localY) {
         Sound snd = Sound.getInstance();
 
-        int xofs = singleVisualXSize+2;
+        int xofs = GENERIC_X_OFS+singleVisualXSize+2;
         int xx = singleVisualXSize/3-2;
 
         colorSelect(snd.isKick());
