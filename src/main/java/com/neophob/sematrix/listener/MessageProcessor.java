@@ -417,10 +417,12 @@ public final class MessageProcessor {
 				Collector.getInstance().setCurrentColorSet(a);
 				return ValidCommands.STATUS_MINI;
 				
+			//pause output, needed to create screenshots or take an image of the output
 			case FREEZE:
 				Collector.getInstance().togglePauseMode();
 				break;
 				
+			//unkown message
 			default:
 				StringBuffer sb = new StringBuffer();
 				for (int i=0; i<msg.length;i++) {

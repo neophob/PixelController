@@ -240,7 +240,6 @@ public class GeneratorGui extends PApplet {
         final int yPosStartDrowdown = p5GuiYOffset+36;
 
         cp5.getWindow().setPositionOfTabs(0, this.getHeight()-20);
-        //cp5.getWindow().setPositionOfTabs(0, p5GuiYOffset+152);
 
         //there a default tab which is present all the time. rename this tab
         Tab generatorTab = cp5.getTab("default");
