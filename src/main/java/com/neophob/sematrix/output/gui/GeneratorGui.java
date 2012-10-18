@@ -132,7 +132,7 @@ public class GeneratorGui extends PApplet {
         this.singleVisualYSize = singleVisualYSize;
         this.p5GuiYOffset = this.singleVisualYSize + 100;
         
-    	LOG.log(Level.INFO, "Create GUI Window with size "+windowWidth+"/"+windowHeight);
+    	LOG.log(Level.INFO, "Create GUI Window with size "+this.windowWidth+"/"+this.windowHeight);
     }
 
 
