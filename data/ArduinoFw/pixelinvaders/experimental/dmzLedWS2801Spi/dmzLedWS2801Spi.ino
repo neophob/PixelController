@@ -1,5 +1,5 @@
 /*
- * PixelInvaders serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
+ * PixelInvaders serial-led-gateway, Copyright (C) 2012 michael vogt <michu@neophob.com>
  * Tested on Teensy and Arduino
  * 
  * ------------------------------------------------------------------------
@@ -28,7 +28,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- * 	
+ *   
  */
 
 //the lpd6803 library needs the timer1 library
@@ -36,11 +36,16 @@
 #include <SPI.h>
 #include <WS2801.h>
 
+// debugging
+int debug = 0;
+
 // blink LED when drawing rainbow
 int ledPin = 11;
 int ledon = 0;
 elapsedMillis LEDTime;
 elapsedMillis nextdemo;
+elapsedMillis messagetimer;
+elapsedMillis delaytimer;
 int whichdemo = random(9);
 
 // one color for when demo is one color, no need to refresh every loop
@@ -218,6 +223,7 @@ void Rainbow1() {
 
     for (int i=0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel((i + j) % 96));
+      // strip.setPixelColor(i, WheelWS2801((i + j) % 96));
     }
     strip.show();    
   }
@@ -246,6 +252,13 @@ void setup() {
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
 
+//  cpu use and SPI clock must be adjusted
+//  not in 2801  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or is slow  
+//  strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.25MHz - 8uS
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+//  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+//  strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
+
   strip.begin();
   showInitImage();      // display some colors
 
@@ -266,7 +279,7 @@ void setup() {
   
   //christmas animations
   fadeToNewColor();
-  newAnimation();
+  newAnimation();  
 }
 
 // --------------------------------------------
@@ -285,26 +298,42 @@ void loop() {
     if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
       if ( whichdemo==1 || whichdemo==3 || whichdemo==5 || whichdemo==8) {
         if (nextdemo >= 5000) {
+          j = 0;
+          k = 0;
           nextdemo = 0;
           onecolor = 0;
+          delaytimer = 0;
           whichdemo = random(9);
         }
       } else {
         if (nextdemo >= 30000) {
+          j = 0;
+          k = 0;
           nextdemo = 0;
+          delaytimer = 0;          
           whichdemo = random(9);
         }    
-      }    
+      }  
+      if (debug) {  
+        if (messagetimer > 1000) {
+          messagetimer = 0;
+          Serial.print(" Demo: ");
+          Serial.print(whichdemo);
+          Serial.print(" | DemoTimer: ");
+          Serial.println(nextdemo);
+        }
+      }
+  
       BlinkLED();
       if (whichdemo==0) { BlinkChristmas(); }
-      if (whichdemo==1) { if (onecolor!=1) { colorWipe(Color(255, 0, 0), 50); onecolor = 1; } }
+      if (whichdemo==1) { if (onecolor!=1) { colorWipefull(Color(255, 0, 0)); onecolor = 1; } }
       if (whichdemo==2) { Rainbow1(); }      
-      if (whichdemo==3) { if (onecolor!=1) { colorWipe(Color(0, 255, 0), 50); onecolor = 1; } }
+      if (whichdemo==3) { if (onecolor!=1) { colorWipefull(Color(0, 255, 0)); onecolor = 1; } }
       if (whichdemo==4) { Rainbow2(DELAY); }      
       if (whichdemo==5) { if (onecolor!=1) { colorWipefull(Color(random(255), random(255), random(255))); onecolor = 1; } } 
       if (whichdemo==6) { BlinkStars(); }      
       if (whichdemo==7) { rainbowCycle(DELAY); }      
-      if (whichdemo==8) { if (onecolor!=1) { colorWipe(Color(0, 0, 255), 50); onecolor = 1; } }
+      if (whichdemo==8) { if (onecolor!=1) { colorWipefull(Color(0, 0, 255)); onecolor = 1; } }
     }    
     return;
   }
@@ -462,75 +491,77 @@ void BlinkLED() {
 }
 
 void BlinkStars() {
-  for (int i=0; i < strip.numPixels(); i++) {
-    
-    // ====
-    // INIT
-    // ====
-    if (stars[i].pos == 0) {
-      if (random(RND)==2) {
-        initStar(i);
-      }
-    } else
-
-    // =======
-    // FADE IN
-    // =======
-    if (stars[i].pos == 1) {
+  if (delaytimer > DELAY) {
+    delaytimer = 0;
+    for (int i=0; i < strip.numPixels(); i++) {
       
-      //decrease color...
-      uint32_t ccol = stars[i].currentCol;
-      currentB = ccol & 0xff;
-      ccol >>= 8;
-      currentG = ccol & 0xff;
-      ccol >>= 8;
-      currentR = ccol & 0xff;
-
-      uint32_t ecol = stars[i].endCol;
-      endB = ecol & 0xff;
-      ecol >>= 8;
-      endG = ecol & 0xff;
-      ecol >>= 8;
-      endR = ecol & 0xff;
-      
-      if (currentR<endR) currentR+=2; else currentR=endR;
-      if (currentG<endG) currentG+=2; else currentG=endG;
-      if (currentB>endB) currentB+=2; else currentB=endB;
-      
-      if (currentR==endR && currentG==endG && currentB == endB) {
-        stars[i].pos = 2;
-      }
-
-      stars[i].currentCol = ColorWS2801(currentR, currentG, currentB);      
-    } else 
-
-    // ========
-    // FADE OUT
-    // ========
-    if (stars[i].pos == 2) {
-      //decrease color...
-      uint32_t ccol = stars[i].currentCol;
-      currentB = ccol & 0xff;
-      ccol >>= 8;
-      currentG = ccol & 0xff;
-      ccol >>= 8;
-      currentR = ccol & 0xff;
-
-      if (currentR>2) currentR-=3; else currentR=0;
-      if (currentG>2) currentG-=3; else currentG=0;
-      if (currentB>2) currentB-=3; else currentB=0;
-
-      stars[i].currentCol = ColorWS2801(currentR, currentG, currentB);
-
-      if (stars[i].currentCol == 0) {
-        stars[i].pos = 0;
-      }
-    }    
-    //update color
-    strip.setPixelColor(i, stars[i].currentCol);
+      // ====
+      // INIT
+      // ====
+      if (stars[i].pos == 0) {
+        if (random(RND)==2) {
+          initStar(i);
+        }
+      } else
+  
+      // =======
+      // FADE IN
+      // =======
+      if (stars[i].pos == 1) {
+        
+        //decrease color...
+        uint32_t ccol = stars[i].currentCol;
+        currentB = ccol & 0xff;
+        ccol >>= 8;
+        currentG = ccol & 0xff;
+        ccol >>= 8;
+        currentR = ccol & 0xff;
+  
+        uint32_t ecol = stars[i].endCol;
+        endB = ecol & 0xff;
+        ecol >>= 8;
+        endG = ecol & 0xff;
+        ecol >>= 8;
+        endR = ecol & 0xff;
+        
+        if (currentR<endR) currentR+=2; else currentR=endR;
+        if (currentG<endG) currentG+=2; else currentG=endG;
+        if (currentB>endB) currentB+=2; else currentB=endB;
+        
+        if (currentR==endR && currentG==endG && currentB == endB) {
+          stars[i].pos = 2;
+        }
+  
+        stars[i].currentCol = ColorWS2801(currentR, currentG, currentB);      
+      } else 
+  
+      // ========
+      // FADE OUT
+      // ========
+      if (stars[i].pos == 2) {
+        //decrease color...
+        uint32_t ccol = stars[i].currentCol;
+        currentB = ccol & 0xff;
+        ccol >>= 8;
+        currentG = ccol & 0xff;
+        ccol >>= 8;
+        currentR = ccol & 0xff;
+  
+        if (currentR>2) currentR-=3; else currentR=0;
+        if (currentG>2) currentG-=3; else currentG=0;
+        if (currentB>2) currentB-=3; else currentB=0;
+  
+        stars[i].currentCol = ColorWS2801(currentR, currentG, currentB);
+  
+        if (stars[i].currentCol == 0) {
+          stars[i].pos = 0;
+        }
+      }    
+      //update color
+      strip.setPixelColor(i, stars[i].currentCol);
+    }
+    strip.show(); 
   }
-  strip.show(); 
-  delay(DELAY);  
 }
 
 //init new star
@@ -545,26 +576,28 @@ void initStar(int i) {
 
 // christmas animations
 void BlinkChristmas() {
-  if ((mover.pos > 0 && mover.pos == mover.del) || mover.pos > strip.numPixels()) {
-    newAnimation();
-  }
-  
-  if (mover.pos > mover.length) {
-    mover.del++;
-  } else {
-    mover.pos++;      
-  }
+  if (delaytimer > DELAY) {
+    delaytimer = 0;
+    if ((mover.pos > 0 && mover.pos == mover.del) || mover.pos > strip.numPixels()) {
+      newAnimation();
+    }
     
-  for (int i=0; i < strip.numPixels(); i++) {
-    if (i>=mover.ofs+mover.del && i<mover.ofs+mover.pos) {
-      strip.setPixelColor(i, mover.col);
+    if (mover.pos > mover.length) {
+      mover.del++;
     } else {
-      strip.setPixelColor(i, clearCol);
-    }      
+      mover.pos++;      
+    }
+      
+    for (int i=0; i < strip.numPixels(); i++) {
+      if (i>=mover.ofs+mover.del && i<mover.ofs+mover.pos) {
+        strip.setPixelColor(i, mover.col);
+      } else {
+        strip.setPixelColor(i, clearCol);
+      }      
+    }
+    
+    strip.show(); 
   }
-  
-  strip.show(); 
-  delay(DELAY);  
 }
 
 //init a new line animation
@@ -597,48 +630,54 @@ void fadeToNewColor() {
   float stepsG = (clearColG-oldG)/(float)steps;
   float stepsB = (clearColB-oldB)/(float)steps;
 
-  for (int s=0; s<steps+1; s++) {
-    uint8_t rr=oldR+stepsR*s;    
-    uint8_t gg=oldG+stepsG*s;
-    uint8_t bb=oldB+stepsB*s;
-    uint32_t c = ColorWS2801(rr, gg, bb);
-    
-    for (int i=0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, c);
+  if (delaytimer > DELAY) {
+    delaytimer = 0;
+    for (int s=0; s<steps+1; s++) {
+      uint8_t rr=oldR+stepsR*s;    
+      uint8_t gg=oldG+stepsG*s;
+      uint8_t bb=oldB+stepsB*s;
+      uint32_t c = ColorWS2801(rr, gg, bb);
+      
+      for (int i=0; i < strip.numPixels(); i++) {
+        strip.setPixelColor(i, c);
+      }
+      strip.show(); 
     }
-    strip.show(); 
-    delay(DELAY);
   }
 }
 
 // other rainbows
 void Rainbow2(uint8_t wait) {
-  int i, j;
+  int i;
    
-  for (j=0; j < 256; j++) {     // 3 cycles of all 256 colors in the wheel
+  if (delaytimer > wait) {
+    delaytimer = 0;
+    if (j < 256) { j++; }
+    else { j = 0; }  // 3 cycles of all 256 colors in the wheel
     for (i=0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, WheelWS2801( (i + j) % 255));
     }  
     strip.show();   // write all the pixels out
-    delay(wait);
   }
 }
 
 // Slightly different, this one makes the rainbow wheel equally distributed 
 // along the chain
 void rainbowCycle(uint8_t wait) {
-  int i, j;
+  int i;
   
-  for (j=0; j < 256 * 5; j++) {     // 5 cycles of all 25 colors in the wheel
-    for (i=0; i < strip.numPixels(); i++) {
-      // tricky math! we use each pixel as a fraction of the full 96-color wheel
-      // (thats the i / strip.numPixels() part)
-      // Then add in j which makes the colors go around per pixel
-      // the % 96 is to make the wheel cycle around
-      strip.setPixelColor(i, WheelWS2801( ((i * 256 / strip.numPixels()) + j) % 256) );
-    }  
-    strip.show();   // write all the pixels out
-    delay(wait);
+  if (delaytimer > wait) {
+    delaytimer = 0;
+    if (j < 256 * 5) { j++; } 
+    else { j = 0; } // 5 cycles of all 25 colors in the wheel
+      for (i=0; i < strip.numPixels(); i++) {
+        // tricky math! we use each pixel as a fraction of the full 96-color wheel
+        // (thats the i / strip.numPixels() part)
+        // Then add in j which makes the colors go around per pixel
+        // the % 96 is to make the wheel cycle around
+        strip.setPixelColor(i, WheelWS2801( ((i * 256 / strip.numPixels()) + j) % 256) );
+      }  
+      strip.show();   // write all the pixels out
   }
 }
 
@@ -662,4 +701,3 @@ void colorWipefull(uint32_t c) {
   }
   strip.show();
 }
-
