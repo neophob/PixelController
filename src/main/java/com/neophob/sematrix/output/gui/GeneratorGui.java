@@ -345,7 +345,7 @@ public class GeneratorGui extends PApplet {
         cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
 
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
-				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
+				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 15);
 		freezeUpdate.setCaptionLabel("Toggle Freeze");
 		freezeUpdate.setGroup(generatorTab);
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.toString(),"freeze update");
@@ -436,19 +436,19 @@ public class GeneratorGui extends PApplet {
 
         //Button
         randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
-                5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
         randomSelection.setCaptionLabel("RANDOMIZE");
         randomSelection.moveTo(randomTab);
         cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),"cross your fingers, randomize everything");
 
         randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
-                5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 100, 15);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 100, 15);
         randomPresets.setCaptionLabel("RANDOM PRESENT");
         randomPresets.moveTo(randomTab);
         cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Load a random preset");
 
         toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
-                5*Theme.DROPBOX_XOFS, p5GuiYOffset+80, 100, 15);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+80, 100, 15);
         toggleRandom.setCaptionLabel("RANDOM MODE");
         toggleRandom.setState(false);
         toggleRandom.moveTo(randomTab);
