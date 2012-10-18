@@ -69,14 +69,14 @@ public class GeneratorGuiCreator extends Frame {
        
         //ugly boarder stuff
         windowXSize+=20;
-        windowYSize+=300+00;
+        windowYSize+=300;
 
         if (windowXSize<MINIMAL_WINDOW_X_SIZE) {
         	windowXSize = MINIMAL_WINDOW_X_SIZE;
         }
         
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
-        //this.setResizable(false);
+        this.setResizable(false);
         this.setIconImage(GeneratorGuiCreator.createIcon());
         
         //connect the new PApplet to our frame
@@ -90,7 +90,6 @@ public class GeneratorGuiCreator extends Frame {
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
-
         setVisible(true);        
 	}
 	

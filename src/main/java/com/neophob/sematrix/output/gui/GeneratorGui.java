@@ -161,7 +161,7 @@ public class GeneratorGui extends PApplet {
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
             String s = "VISUAL #"+(1+i);			
-            Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize, 13);
+            Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize-1, 13);
             t.setCaptionLabel(s);
             selectedVisualList.addItem(t, i);			
             cp5.getTooltip().register(s, "Select Visual "+(1+i)+" to edit");			
@@ -169,7 +169,7 @@ public class GeneratorGui extends PApplet {
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
-        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 540, this.getHeight()-40);
+        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 560, this.getHeight()-40);
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
 
