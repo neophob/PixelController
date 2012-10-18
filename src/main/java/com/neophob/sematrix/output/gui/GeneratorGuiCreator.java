@@ -70,7 +70,7 @@ public class GeneratorGuiCreator extends Frame {
        
         //ugly boarder stuff
         windowXSize+=20;
-        windowYSize+=280;
+        windowYSize+=300;
 
         if (windowXSize<MINIMAL_WINDOW_X_SIZE) {
         	windowXSize = MINIMAL_WINDOW_X_SIZE;
@@ -79,11 +79,9 @@ public class GeneratorGuiCreator extends Frame {
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
         setBounds(0, 0, windowXSize, windowYSize);
         this.setResizable(false);
-        this.setSize(windowXSize, windowYSize);
         this.setIconImage(GeneratorGuiCreator.createIcon());
         
         //connect the new PApplet to our frame
-        setLayout(new BorderLayout());
         PApplet embed = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
 
         // important to call this whenever embedding a PApplet.
@@ -91,7 +89,7 @@ public class GeneratorGuiCreator extends Frame {
         // that other internal variables are properly set.
         embed.init();
         add(embed, BorderLayout.CENTER);
-//        embed.setVisible(true);
+        embed.setVisible(true);
         setVisible(true);        
 	}
 	

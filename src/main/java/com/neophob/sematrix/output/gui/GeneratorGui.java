@@ -112,7 +112,7 @@ public class GeneratorGui extends PApplet {
     private CheckBox randomCheckbox;
     
     /** The target y size. */
-    private int targetXSize, targetYSize;
+    private int singleVisualXSize, singleVisualYSize;
     private int p5GuiYOffset;
 
     /**
@@ -121,16 +121,16 @@ public class GeneratorGui extends PApplet {
      * @param displayHoriz the display horiz
      * @param x the x
      * @param y the y
-     * @param targetXSize the target x size
-     * @param targetYSize the target y size
+     * @param singleVisualXSize the target x size
+     * @param singleVisualYSize the target y size 
      */
-    public GeneratorGui(int x, int y, int targetXSize, int targetYSize) {
+    public GeneratorGui(int windowWidth, int windowHeigth, int singleVisualXSize, int singleVisualYSize) {
     	super();        
-        this.windowWidth = x;
-        this.windowHeight = y+SELECTED_MARKER+100;
-        this.targetXSize = targetXSize;
-        this.targetYSize = targetYSize;
-        this.p5GuiYOffset = targetYSize + 100;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeigth+SELECTED_MARKER+100;
+        this.singleVisualXSize = singleVisualXSize;
+        this.singleVisualYSize = singleVisualYSize;
+        this.p5GuiYOffset = this.singleVisualYSize + 100;
         
     	LOG.log(Level.INFO, "Create GUI Window with size "+windowWidth+"/"+windowHeight);
     }
@@ -144,12 +144,7 @@ public class GeneratorGui extends PApplet {
      * @see processing.core.PApplet#setup()
      */
     public void setup() {
-    	setBounds(0, 0, windowWidth, windowHeight);
         size(windowWidth, windowHeight);         
-        
-        if (super.getHeight() < windowHeight) {
-        	LOG.log(Level.WARNING, "Set Height failed! "+super.getHeight());
-        }
         
         noSmooth();
         frameRate(Collector.getInstance().getFps());
@@ -168,7 +163,7 @@ public class GeneratorGui extends PApplet {
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
             String s = "VISUAL #"+(1+i);			
-            Toggle t = cp5.addToggle(s, 0, 0, targetXSize, 13);
+            Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize, 13);
             t.setCaptionLabel(s);
             selectedVisualList.addItem(t, i);			
             cp5.getTooltip().register(s, "Select Visual "+(1+i)+" to edit");			
@@ -176,7 +171,7 @@ public class GeneratorGui extends PApplet {
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
-        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 540, p5GuiYOffset+145);//480
+        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 540, this.getHeight()-40);
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
 
@@ -244,7 +239,8 @@ public class GeneratorGui extends PApplet {
         final int yPosStartLabel = p5GuiYOffset+50;
         final int yPosStartDrowdown = p5GuiYOffset+36;
 
-        cp5.getWindow().setPositionOfTabs(0, p5GuiYOffset+152);		
+        cp5.getWindow().setPositionOfTabs(0, this.getHeight()-20);
+        //cp5.getWindow().setPositionOfTabs(0, p5GuiYOffset+152);
 
         //there a default tab which is present all the time. rename this tab
         Tab generatorTab = cp5.getTab("default");
@@ -366,7 +362,7 @@ public class GeneratorGui extends PApplet {
         selectedOutputs.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfOutputs; i++) {
             String s = "OUTPUT #"+(1+i);			
-            Toggle t = cp5.addToggle(s, 0, 0, targetXSize, 13);
+            Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize, 13);
             t.setCaptionLabel(s);
             selectedOutputs.addItem(t, i);			
             cp5.getTooltip().register(s, "Select Output "+(1+i)+" to edit");			
@@ -562,14 +558,14 @@ public class GeneratorGui extends PApplet {
         int ofs=0;
         for (Visual v: col.getAllVisuals()) {
             //get image
-            buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), targetXSize, targetYSize);
+            buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), singleVisualXSize, singleVisualYSize);
 
             if (pImage==null) {
                 //create an image out of the buffer
-                pImage = col.getPapplet().createImage(targetXSize, targetYSize, PApplet.RGB );				
+                pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );				
             }
             pImage.loadPixels();
-            System.arraycopy(buffer, 0, pImage.pixels, 0, targetXSize*targetYSize);
+            System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
             pImage.updatePixels();
 
             //draw current output
@@ -578,7 +574,7 @@ public class GeneratorGui extends PApplet {
             } else {
                 fill(55,55,55);
             }	
-            rect(localX, localY+targetYSize+2, targetXSize, SELECTED_MARKER);				
+            rect(localX, localY+singleVisualYSize+2, singleVisualXSize, SELECTED_MARKER);				
 
             //display the image
             image(pImage, localX, localY);
@@ -587,11 +583,11 @@ public class GeneratorGui extends PApplet {
         }
 
         //display frame progress
-        int frames = col.getFrames() % targetXSize;
+        int frames = col.getFrames() % singleVisualXSize;
         fill(200,200,200);
-        rect(0, localY+targetYSize+SELECTED_MARKER+4, frames, 5);
+        rect(0, localY+singleVisualYSize+SELECTED_MARKER+4, frames, 5);
         fill(55,55,55);
-        rect(frames, localY+targetYSize+SELECTED_MARKER+4, targetXSize-frames, 5);
+        rect(frames, localY+singleVisualYSize+SELECTED_MARKER+4, singleVisualXSize-frames, 5);
 
         //beat detection
         displaySoundStats(localY);
@@ -608,17 +604,16 @@ public class GeneratorGui extends PApplet {
     private void drawGradientBackground() {
         //there is an issue with this.height, it changes!
     		
-        int ofs=windowWidth*(windowHeight-355);
-        //System.out.println(windowWidth+" "+windowHeight);
+        int ofs=this.getWidth()*(this.getHeight()-255);
 
         this.loadPixels();
         try {
             for (int yy=0; yy<255; yy++) {
             	int pink = color(yy/2, 128);
-            	for (int xx=0; xx<windowWidth; xx++) {
+            	for (int xx=0; xx<this.getWidth(); xx++) {
             		this.pixels[ofs+xx] = pink;
             	}
-            	ofs += windowWidth;
+            	ofs += this.getWidth();
             }        	        	
         } catch (Exception e) {
         	LOG.log(Level.WARNING, "(Issue 21) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
@@ -635,19 +630,19 @@ public class GeneratorGui extends PApplet {
     private void displaySoundStats(int localY) {
         Sound snd = Sound.getInstance();
 
-        int xofs = targetXSize+2;
-        int xx = targetXSize/3-2;
+        int xofs = singleVisualXSize+2;
+        int xx = singleVisualXSize/3-2;
 
         colorSelect(snd.isKick());
-        rect(xofs, localY+targetYSize+SELECTED_MARKER+4, xx, 5);
+        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
 
         xofs+=xx+2;
         colorSelect(snd.isSnare());
-        rect(xofs, localY+targetYSize+SELECTED_MARKER+4, xx, 5);
+        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
 
         xofs+=xx+2;
         colorSelect(snd.isHat());
-        rect(xofs, localY+targetYSize+SELECTED_MARKER+4, xx, 5);		
+        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);		
     }
 
 
