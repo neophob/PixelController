@@ -63,7 +63,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		this.colorFormat = ph.getColorFormat();
 		this.initialized = false;		
 		try {
-			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet() );			
+			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist() );			
 			this.initialized = lpd6803.ping();
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {

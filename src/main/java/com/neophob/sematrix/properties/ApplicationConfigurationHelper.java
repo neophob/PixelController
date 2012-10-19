@@ -85,6 +85,8 @@ public class ApplicationConfigurationHelper {
     /** The color format. */
     private List<ColorFormat> colorFormat=null;
 
+    private List<String> pixelInvadersBlacklist;
+    
     //how many output screens are used? needed to define layouts
     /** The devices in row1. */
     private int devicesInRow1 = 0;
@@ -385,6 +387,15 @@ public class ApplicationConfigurationHelper {
             }
         }
 
+        //get blacklist devices
+        String blacklist = config.getProperty(ConfigConstant.PIXELINVADERS_BLACKLIST);
+        if (blacklist != null) {
+            pixelInvadersBlacklist = new ArrayList<String>();
+            for (String s: blacklist.split(",")) {
+                pixelInvadersBlacklist.add(s);
+            }
+        }
+        
         return lpdDevice.size();
     }
 
@@ -904,5 +915,15 @@ public class ApplicationConfigurationHelper {
     	}
     	return ret;
     }
+
+    /**
+     * @return the pixelInvadersBlacklist
+     */
+    public List<String> getPixelInvadersBlacklist() {
+        return pixelInvadersBlacklist;
+    }
+    
+    
+    
 
 }

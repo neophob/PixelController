@@ -43,6 +43,7 @@ Boston, MA  02111-1307  USA
 package com.neophob.sematrix.output.lpd6803;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -137,8 +138,8 @@ public class Lpd6803 {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app) throws NoSerialPortFoundException {
-		this(app, null, 0);
+	public Lpd6803(PApplet app, List<String> portBlacklist) throws NoSerialPortFoundException {
+		this(app, null, 0, portBlacklist);
 	}
 
 	/**
@@ -148,8 +149,8 @@ public class Lpd6803 {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, int baud) throws NoSerialPortFoundException {
-		this(app, null, baud);
+	public Lpd6803(PApplet app, int baud, List<String> portBlacklist) throws NoSerialPortFoundException {
+		this(app, null, baud, portBlacklist);
 	}
 
 	/**
@@ -159,8 +160,8 @@ public class Lpd6803 {
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName) throws NoSerialPortFoundException {
-		this(app, portName, 0);
+	public Lpd6803(PApplet app, String portName, List<String> portBlacklist) throws NoSerialPortFoundException {
+		this(app, portName, 0, portBlacklist);
 	}
 
 
@@ -172,7 +173,7 @@ public class Lpd6803 {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, int baud) throws NoSerialPortFoundException {
+	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist) throws NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
@@ -194,7 +195,14 @@ public class Lpd6803 {
 		} else {
 			//try to find the port
 			String[] ports = Serial.list();
+						
 			for (int i=0; port==null && i<ports.length; i++) {
+		         //check blacklist
+	            if (portBlacklist!=null && portBlacklist.contains(ports[i])) {
+	                LOG.log(Level.INFO, "ignore blacklist port: {0}", ports[i]);
+	                continue;
+	            }
+
 				LOG.log(Level.INFO,	"open port: {0}", ports[i]);
 				try {
 					serialPortName = ports[i];

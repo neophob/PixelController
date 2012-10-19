@@ -292,5 +292,36 @@ public class PropertiesHelperTest {
         assertEquals(ColorFormat.RBG, ph.getColorFormat().get(0));        
         assertEquals(ColorFormat.RGB, ph.getColorFormat().get(1));        
     }
+    
+    
+    @Test
+    public void testPixelInvadersBlacklist() {     
+        final String devOne = "/dev/blah";
+        final String devTwo = "/dev/two";
+        
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_BLACKLIST, devOne);
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);        
+        assertEquals(ph.getPixelInvadersBlacklist().get(0), devOne);
+
+        config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_BLACKLIST, devOne+","+devTwo);
+        ph = new ApplicationConfigurationHelper(config);
+        
+        boolean foundOne=false, foundTwo=false;
+        for (String s: ph.getPixelInvadersBlacklist()) {
+            if (s.equalsIgnoreCase(devOne)) {
+                foundOne = true;
+            }
+            if (s.equalsIgnoreCase(devTwo)) {
+                foundTwo = true;
+            }
+        }
+        assertEquals(foundOne, true);
+        assertEquals(foundTwo, true);
+
+    }
 
 }
