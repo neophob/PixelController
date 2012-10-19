@@ -50,7 +50,7 @@ public class TestRoundtrip extends PApplet {
 		frameRate(500);
 		
 		try {
-			r = new Lpd6803(this, 9600);
+			r = new Lpd6803(this, 9600, null);
 			long l1 = System.currentTimeMillis();
 			r.ping();
 			long l2= System.currentTimeMillis()-l1;
