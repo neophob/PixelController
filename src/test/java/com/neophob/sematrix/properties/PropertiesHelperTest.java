@@ -321,7 +321,16 @@ public class PropertiesHelperTest {
         }
         assertEquals(foundOne, true);
         assertEquals(foundTwo, true);
-
     }
+    
+    @Test
+    public void testTpm2() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.TPM2_BAUDRATE, "128000");
+        config.put(ConfigConstant.TPM2_DEVICE, "/dev/blah");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        assertEquals(OutputDeviceEnum.TPM2, ph.getOutputDevice());
+    }
+
 
 }

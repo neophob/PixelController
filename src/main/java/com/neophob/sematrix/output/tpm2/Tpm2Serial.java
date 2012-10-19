@@ -22,6 +22,8 @@ package com.neophob.sematrix.output.tpm2;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import processing.core.PApplet;
 import processing.serial.Serial;
 
@@ -102,16 +104,16 @@ public class Tpm2Serial {
 		
 		String serialPortName="";	
 		
-		if (portName!=null && !portName.trim().isEmpty()) {
+		if (StringUtils.isNotBlank(portName)) {
 			//open specific port
-			LOG.log(Level.INFO,	"open port: {0}", portName);
+			LOG.log(Level.INFO,	"Open specific port: {0}", portName);
 			serialPortName = portName;
-			openPort(portName);
+			openPort(portName);			
 		} else {
 			//try to find the port
 			String[] ports = Serial.list();
 			for (int i=0; port==null && i<ports.length; i++) {
-				LOG.log(Level.INFO,	"open port: {0}", ports[i]);
+				LOG.log(Level.INFO,	"Open port: {0}", ports[i]);
 				try {
 					serialPortName = ports[i];
 					openPort(ports[i]);
@@ -171,6 +173,7 @@ public class Tpm2Serial {
 	private void openPort(String portName) throws NoSerialPortFoundException {
 		try {
 			port = new Serial(app, portName, this.baud);
+			port.output.write("PXL".getBytes());
 		} catch (Exception e) {	
 			LOG.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});
 			if (port != null) {

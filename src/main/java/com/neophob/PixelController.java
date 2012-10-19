@@ -41,6 +41,7 @@ import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.RainbowduinoV2Device;
 import com.neophob.sematrix.output.RainbowduinoV3Device;
 import com.neophob.sematrix.output.StealthDevice;
+import com.neophob.sematrix.output.Tpm2;
 import com.neophob.sematrix.output.UdpDevice;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.output.gui.OutputGui;
@@ -152,7 +153,8 @@ public class PixelController extends PApplet {
                 this.output = new UdpDevice(applicationConfig, this.collector.getPixelControllerOutput());
                 break;
 			case TPM2:
-				//TODO
+				this.output = new Tpm2(applicationConfig, this.collector.getPixelControllerOutput());
+				break;
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
 			}

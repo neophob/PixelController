@@ -52,18 +52,18 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	public Tpm2(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.TPM2, ph, controller, 8);
 		
-		int baud = ph.parseMiniDmxBaudRate();
+		int baud = ph.parseTpm2BaudRate();
 		if (baud==0) {
 		    //set default
 		    baud = 115200;
 		}
-
+		String serialPort = ph.getTpm2Device();
 		this.initialized = false;
 		try {
-			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);
-			this.initialized = true;
+			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, serialPort, baud);
+			this.initialized = true;			
 		} catch (NoSerialPortFoundException e) {
-			LOG.log(Level.WARNING, "failed to initialize serial port!");
+			LOG.log(Level.WARNING, "failed to initialize serial port!", e);
 		}
 	}
 	
@@ -74,7 +74,6 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	public void update() {		
 		if (initialized) {					
 			tpm2.sendFrame(Tpm2Protocol.doProtocol(getTransformedBuffer(), colorFormat));
-			//miniDmx.sendRgbFrame(getTransformedBuffer(), colorFormat);
 		}
 	}
 
@@ -86,7 +85,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	@Override
 	public void close() {
 		if (initialized) {
-			//miniDmx.dispose();			
+			tpm2.dispose();
 		}
 	}
 

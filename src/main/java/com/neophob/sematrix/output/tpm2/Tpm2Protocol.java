@@ -37,35 +37,33 @@ public abstract class Tpm2Protocol {
      * @return
      */
     public static byte[] doProtocol(int[] frame, ColorFormat colorFormat) {
-
         //3 colors per pixel
-        int frameSize = frame.length * 3;
         int index = 0;
-        byte[] output_buffer = new byte[frameSize + HEADER_SIZE];
+        byte[] outputBuffer = new byte[frame.length*3 + HEADER_SIZE];
 
         //Start-Byte
-        output_buffer[index++] = START_BYTE;
+        outputBuffer[index++] = START_BYTE;
 
         //Ident-Byte
-        output_buffer[index++] = DATA_FRAME;
+        outputBuffer[index++] = DATA_FRAME;
 
         //Raw Data Size
-        byte frameSizeByteHigh = (byte) (frameSize >> 8 & 0xff);
-        byte frameSizeByteLow = (byte) (frameSize & 0xff);
-        output_buffer[index++] = frameSizeByteHigh;
-        output_buffer[index++] = frameSizeByteLow;
+        byte frameSizeByteHigh = (byte) (frame.length >> 8 & 0xff);
+        byte frameSizeByteLow = (byte) (frame.length & 0xff);
+        outputBuffer[index++] = frameSizeByteHigh;
+        outputBuffer[index++] = frameSizeByteLow;
 
         //Raw Data
         //TODO respect color order
-        for (int i = 0; i < (frameSize); i++) {
-            output_buffer[index++] = (byte) ((frame[i] >> 16) & 255);
-            output_buffer[index++] = (byte) ((frame[i] >> 8) & 255);
-            output_buffer[index++] = (byte) (frame[i] & 255);
+        for (int i = 0; i < frame.length; i++) {
+            outputBuffer[index++] = (byte) ((frame[i] >> 16) & 255);
+            outputBuffer[index++] = (byte) ((frame[i] >> 8) & 255);
+            outputBuffer[index++] = (byte) (frame[i] & 255);
         }
 
         //Block-End-Byte
-        output_buffer[index] = BLOCK_END;
+        outputBuffer[index] = BLOCK_END;
 
-        return output_buffer;
+        return outputBuffer;
     }
 }

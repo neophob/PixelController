@@ -99,6 +99,7 @@ public class ApplicationConfigurationHelper {
 
     /** The output device y resolution. */
     private int deviceYResolution;
+    
 
     /**
      * Instantiates a new properties helper.
@@ -114,6 +115,7 @@ public class ApplicationConfigurationHelper {
         int stealthDevices = parseStealthConfig();        
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
+        int tpm2Devices = parseTpm2Devices();
         int nullDevices = parseNullOutputAddress();
         int adalightDevices = parseAdavisionDevices();
         int udpDevices = parseUdpDevices();       
@@ -159,6 +161,12 @@ public class ApplicationConfigurationHelper {
             LOG.log(Level.INFO, "found miniDMX device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.MINIDMX;
         } 
+        if (tpm2Devices > 0) {
+            enabledOutputs++;
+            totalDevices = tpm2Devices;
+            LOG.log(Level.INFO, "found tpm2Devices device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.TPM2;
+        }         
         if (nullDevices > 0) {
             enabledOutputs++;
             totalDevices = nullDevices;
@@ -201,7 +209,7 @@ public class ApplicationConfigurationHelper {
             enabledOutputs=1;
             totalDevices = 1;
             devicesInRow1 = 1;
-            LOG.log(Level.INFO, "no output device defined, use NULL output");
+            LOG.log(Level.WARNING, "no output device defined, use NULL output");
             this.outputDeviceEnum = OutputDeviceEnum.NULL;
         }
 
@@ -509,6 +517,10 @@ public class ApplicationConfigurationHelper {
         return i2cAddr.size();
     }
     
+    /**
+     * 
+     * @return
+     */
 	private int parseRainbowduinoV3Config() {
 		this.rainbowduinoV3SerialDevices = new ArrayList<String>();
 		String row1String = this.config.getProperty(ConfigConstant.RAINBOWDUINO_V3_ROW1);
@@ -667,7 +679,7 @@ public class ApplicationConfigurationHelper {
      *
      * @return the int
      */
-    private int parseMiniDmxDevices() {        
+    private int parseMiniDmxDevices() {
         if (parseMiniDmxBaudRate()>100 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
             this.devicesInRow1=1;
             this.devicesInRow2=0;
@@ -676,6 +688,21 @@ public class ApplicationConfigurationHelper {
             return 1;
         }
         return 0;
+    }
+    
+    /**
+     * Parses tpm2 devices
+     * @return
+     */
+    private int parseTpm2Devices() {
+        if (StringUtils.isNotBlank(getTpm2Device()) && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
+            this.devicesInRow1=1;
+            this.devicesInRow2=0;
+            this.deviceXResolution = parseOutputXResolution();            
+            this.deviceYResolution = parseOutputYResolution();
+            return 1;
+        }
+        return 0;    	
     }
 
     /**
@@ -712,6 +739,23 @@ public class ApplicationConfigurationHelper {
     public int parseMiniDmxBaudRate() {
         return parseInt(ConfigConstant.MINIDMX_BAUDRATE);        
     }
+
+    /**
+     * 
+     * @return
+     */
+    public int parseTpm2BaudRate() {
+    	return parseInt(ConfigConstant.TPM2_BAUDRATE);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String getTpm2Device() {
+        return config.getProperty(ConfigConstant.TPM2_DEVICE);
+    }
+
 
     /**
      * baudrate of the minidmx device
@@ -829,6 +873,10 @@ public class ApplicationConfigurationHelper {
         return i2cAddr;
     }
     
+    /**
+     * 
+     * @return
+     */
     public List<String> getRainbowduinoV3SerialDevices() {
         return this.rainbowduinoV3SerialDevices;
     }
