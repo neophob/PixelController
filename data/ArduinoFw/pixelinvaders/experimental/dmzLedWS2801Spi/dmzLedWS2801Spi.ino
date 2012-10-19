@@ -1,5 +1,5 @@
 /*
- * PixelInvaders serial-led-gateway, Copyright (C) 2012 michael vogt <michu@neophob.com>
+ * PixelInvaders serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
  * Tested on Teensy and Arduino
  * 
  * ------------------------------------------------------------------------
@@ -28,7 +28,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *   
+ * 
+ *
+ * WS2801 hack with random demo created by David M. Zendzian - dmz@zzservers.com - @dmz006 on twitter
+ * WS2801 funtions liberated from PixelController WS2801 demo apps
+ * 2012/10/18
  */
 
 //the lpd6803 library needs the timer1 library
@@ -37,6 +41,9 @@
 #include <WS2801.h>
 
 // debugging
+// 0 = off
+// 1 = blink LED on pin 11
+// 2 = print debugging output to serial
 int debug = 0;
 
 // blink LED when drawing rainbow
@@ -47,6 +54,7 @@ elapsedMillis nextdemo;
 elapsedMillis messagetimer;
 elapsedMillis delaytimer;
 int whichdemo = random(9);
+int rundemo = 0;
 
 // one color for when demo is one color, no need to refresh every loop
 int onecolor = 0;
@@ -131,105 +139,6 @@ byte g_errorCounter;
 int j=0,k=0;
 byte serialDataRecv;
 
-
-// --------------------------------------------
-//     send status back to library
-// --------------------------------------------
-static void sendAck() {
-  serialResonse[0] = 'A';
-  serialResonse[1] = 'K';
-  serialResonse[2] = Serial.available();
-  serialResonse[3] = g_errorCounter;
-  Serial.write(serialResonse, SERIALBUFFERSIZE);
-
-  //comment out next line on arduino!
-  //Serial.send_now();
-}
-
-
-unsigned int Color(byte r, byte g, byte b) {
-  //Take the lowest 5 bits of each value and append them end to end
-  return( ((unsigned int)g & 0x1F )<<10 | ((unsigned int)b & 0x1F)<<5 | (unsigned int)r & 0x1F);
-}
-
-// Create a 24 bit color value from R,G,B
-uint32_t ColorWS2801(byte r, byte g, byte b)
-{
-  uint32_t c;
-  c = r;
-  c <<= 8;
-  c |= g;
-  c <<= 8;
-  c |= b;
-  return c;
-}
-
-
-// --------------------------------------------
-//     Input a value 0 to 127 to get a color value.
-//     The colours are a transition r - g -b - back to r
-// --------------------------------------------
-unsigned int WheelWS2801(byte WheelPos) {
-  byte r,g,b;
-  switch(WheelPos >> 5) {
-  case 0:
-    r=31- WheelPos % 32;   //Red down
-    g=WheelPos % 32;      // Green up
-    b=0;                  //blue off
-    break; 
-  case 1:
-    g=31- WheelPos % 32;  //green down
-    b=WheelPos % 32;      //blue up
-    r=0;                  //red off
-    break; 
-  case 2:
-    b=31- WheelPos % 32;  //blue down 
-    r=WheelPos % 32;      //red up
-    g=0;                  //green off
-    break; 
-  }
-  return(ColorWS2801(r,g,b));
-}
-
-
-//Input a value 0 to 255 to get a color value.
-//The colours are a transition r - g -b - back to r
-uint32_t Wheel(byte WheelPos)
-{
-  if (WheelPos < 85) {
-   return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-  } else if (WheelPos < 170) {
-   WheelPos -= 85;
-   return Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  } else {
-   WheelPos -= 170; 
-   return Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-}
-
-// --------------------------------------------
-//     do some animation until serial data arrives
-// --------------------------------------------
-void Rainbow1() {
-  delay(1);
-
-  k++;
-  if (k>50) {
-    k=0;
-    j++;
-    if (j>96*3) {  // 3 cycles of all 96 colors in the wheel
-      j=0; 
-    }
-
-    for (int i=0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel((i + j) % 96));
-      // strip.setPixelColor(i, WheelWS2801((i + j) % 96));
-    }
-    strip.show();    
-  }
-}
-
-
 // --------------------------------------------
 //     create initial image
 // --------------------------------------------
@@ -241,7 +150,6 @@ void showInitImage() {
   strip.show();
 }
 
-
 // --------------------------------------------
 //      setup
 // --------------------------------------------
@@ -250,7 +158,9 @@ void setup() {
 
   //im your slave and wait for your commands, master!
   Serial.begin(BAUD_RATE); //Setup high speed Serial
-  Serial.flush();
+  if (Serial.dtr()) {
+    Serial.flush();
+  }
 
 //  cpu use and SPI clock must be adjusted
 //  not in 2801  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or is slow  
@@ -287,105 +197,95 @@ void setup() {
 // --------------------------------------------
 void loop() {
   g_errorCounter=0;
+  rundemo = 0;
 
   // see if we got a proper command string yet
-  if (readCommand(serInStr) == 0) {
-    //nope, nothing arrived yet...
-    if (g_errorCounter!=0 && g_errorCounter!=102) {
-      sendAck();
-    }
-
-    if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
-      if ( whichdemo==1 || whichdemo==3 || whichdemo==5 || whichdemo==8) {
-        if (nextdemo >= 5000) {
-          j = 0;
-          k = 0;
-          nextdemo = 0;
-          onecolor = 0;
-          delaytimer = 0;
-          whichdemo = random(9);
-        }
-      } else {
-        if (nextdemo >= 30000) {
-          j = 0;
-          k = 0;
-          nextdemo = 0;
-          delaytimer = 0;          
-          whichdemo = random(9);
-        }    
-      }  
-      if (debug) {  
-        if (messagetimer > 1000) {
-          messagetimer = 0;
-          Serial.print(" Demo: ");
-          Serial.print(whichdemo);
-          Serial.print(" | DemoTimer: ");
-          Serial.println(nextdemo);
-        }
+  if (Serial.dtr()) {
+    if (readCommand(serInStr) == 0) {
+      //nope, nothing arrived yet...
+      if (g_errorCounter!=0 && g_errorCounter!=102) {
+        sendAck();
       }
   
-      BlinkLED();
-      if (whichdemo==0) { BlinkChristmas(); }
-      if (whichdemo==1) { if (onecolor!=1) { colorWipefull(Color(255, 0, 0)); onecolor = 1; } }
-      if (whichdemo==2) { Rainbow1(); }      
-      if (whichdemo==3) { if (onecolor!=1) { colorWipefull(Color(0, 255, 0)); onecolor = 1; } }
-      if (whichdemo==4) { Rainbow2(DELAY); }      
-      if (whichdemo==5) { if (onecolor!=1) { colorWipefull(Color(random(255), random(255), random(255))); onecolor = 1; } } 
-      if (whichdemo==6) { BlinkStars(); }      
-      if (whichdemo==7) { rainbowCycle(DELAY); }      
-      if (whichdemo==8) { if (onecolor!=1) { colorWipefull(Color(0, 0, 255)); onecolor = 1; } }
-    }    
-    return;
-  }
-
-  //led offset
-  byte ofs    = serInStr[1];
-  //how many bytes we're sending
-  byte sendlen = serInStr[2];
-  //what kind of command we send
-  byte type = serInStr[3];
-  //get the image data
-  byte* cmd    = serInStr+5;
-
-  switch (type) {
-  case CMD_SENDFRAME:
-    //the size of an image must be exactly 64bytes for 8*4 pixels
-    if (sendlen == COLOR_5BIT_FRAME_SIZE) {
-      updatePixels(ofs, cmd);
-    } 
-    else {
-      g_errorCounter=100;
+      if (serialDataRecv==0) { //if no serial data arrived yet run demo
+        rundemo = 1;
+      }      
+      //led offset
+      byte ofs    = serInStr[1];
+      //how many bytes we're sending
+      byte sendlen = serInStr[2];
+      //what kind of command we send
+      byte type = serInStr[3];
+      //get the image data
+      byte* cmd    = serInStr+5;
+    
+      switch (type) {
+      case CMD_SENDFRAME:
+        //the size of an image must be exactly 64bytes for 8*4 pixels
+        if (sendlen == COLOR_5BIT_FRAME_SIZE) {
+          updatePixels(ofs, cmd);
+        } 
+        else {
+          g_errorCounter=100;
+        }
+        break;
+    
+      case CMD_PING:
+        //just send the ack!
+        serialDataRecv = 1;        
+        break;
+    
+      default:
+        //invalid command
+        g_errorCounter=130; 
+        break;
+      }    
+      //send ack to library - command processed
+      sendAck();      
     }
-    break;
-
-  case CMD_PING:
-    //just send the ack!
-    serialDataRecv = 1;        
-    break;
-
-  default:
-    //invalid command
-    g_errorCounter=130; 
-    break;
+  } else {
+    rundemo = 1;
   }
-
-  //send ack to library - command processed
-  sendAck();
-}
-
-// --------------------------------------------
-//    update 32 bytes of the led matrix
-//    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
-// --------------------------------------------
-void updatePixels(byte ofs, byte* buffer) {
-  uint16_t currentLed = ofs*PIXELS_PER_PANEL;
-  byte x=0;
-  for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-    strip.setPixelColor(currentLed, buffer[x]<<8 | buffer[x+1]);
-    x+=2;
-    currentLed++;
-  }  
-  strip.show();   // write all the pixels out
+  if (rundemo == 1) {
+    if ( whichdemo==1 || whichdemo==3 || whichdemo==5 || whichdemo==8) {
+      if (nextdemo >= 5000) {
+        j = 0;
+        k = 0;
+        nextdemo = 0;
+        onecolor = 0;
+        delaytimer = 0;
+        whichdemo = random(9);
+      }
+    } else {
+      if (nextdemo >= 30000) {
+        j = 0;
+        k = 0;
+        nextdemo = 0;
+        delaytimer = 0;          
+        whichdemo = random(9);
+      }    
+    }  
+    if (debug) {  
+      if ((messagetimer > 1000) && (debug == 2)) {
+        messagetimer = 0;
+        Serial.print(" Demo: ");
+        Serial.print(whichdemo);
+        Serial.print(" | DemoTimer: ");
+        Serial.println(nextdemo);
+      }
+      BlinkLED();
+    }
+  
+    if (whichdemo==0) { BlinkChristmas(); }
+    if (whichdemo==1) { if (onecolor!=1) { colorWipefull(Color(255, 0, 0)); onecolor = 1; } }
+    if (whichdemo==2) { Rainbow1(); }      
+    if (whichdemo==3) { if (onecolor!=1) { colorWipefull(Color(0, 255, 0)); onecolor = 1; } }
+    if (whichdemo==4) { Rainbow2(DELAY); }      
+    if (whichdemo==5) { if (onecolor!=1) { colorWipefull(Color(random(255), random(255), random(255))); onecolor = 1; } } 
+    if (whichdemo==6) { BlinkStars(); }      
+    if (whichdemo==7) { rainbowCycle(DELAY); }      
+    if (whichdemo==8) { if (onecolor!=1) { colorWipefull(Color(0, 0, 255)); onecolor = 1; } }
+  }    
 }
 
 /* 
@@ -475,6 +375,93 @@ byte readCommand(byte *str) {
 
   //return data size (without meta data)
   return sendlen;
+}
+
+// --------------------------------------------
+//     send status back to library
+// --------------------------------------------
+static void sendAck() {
+  serialResonse[0] = 'A';
+  serialResonse[1] = 'K';
+  serialResonse[2] = Serial.available();
+  serialResonse[3] = g_errorCounter;
+  Serial.write(serialResonse, SERIALBUFFERSIZE);
+
+  //comment out next line on arduino!
+  //Serial.send_now();
+}
+
+// --------------------------------------------
+//    update 32 bytes of the led matrix
+//    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
+// --------------------------------------------
+void updatePixels(byte ofs, byte* buffer) {
+  uint16_t currentLed = ofs*PIXELS_PER_PANEL;
+  byte x=0;
+  for (byte i=0; i < PIXELS_PER_PANEL; i++) {
+    strip.setPixelColor(currentLed, buffer[x]<<8 | buffer[x+1]);
+    x+=2;
+    currentLed++;
+  }  
+  strip.show();   // write all the pixels out
+}
+
+unsigned int Color(byte r, byte g, byte b) {
+  //Take the lowest 5 bits of each value and append them end to end
+  return( ((unsigned int)g & 0x1F )<<10 | ((unsigned int)b & 0x1F)<<5 | (unsigned int)r & 0x1F);
+}
+
+// Create a 24 bit color value from R,G,B
+uint32_t ColorWS2801(byte r, byte g, byte b)
+{
+  uint32_t c;
+  c = r;
+  c <<= 8;
+  c |= g;
+  c <<= 8;
+  c |= b;
+  return c;
+}
+
+// --------------------------------------------
+//     Input a value 0 to 127 to get a color value.
+//     The colours are a transition r - g -b - back to r
+// --------------------------------------------
+unsigned int WheelWS2801(byte WheelPos) {
+  byte r,g,b;
+  switch(WheelPos >> 5) {
+  case 0:
+    r=31- WheelPos % 32;   //Red down
+    g=WheelPos % 32;      // Green up
+    b=0;                  //blue off
+    break; 
+  case 1:
+    g=31- WheelPos % 32;  //green down
+    b=WheelPos % 32;      //blue up
+    r=0;                  //red off
+    break; 
+  case 2:
+    b=31- WheelPos % 32;  //blue down 
+    r=WheelPos % 32;      //red up
+    g=0;                  //green off
+    break; 
+  }
+  return(ColorWS2801(r,g,b));
+}
+
+//Input a value 0 to 255 to get a color value.
+//The colours are a transition r - g -b - back to r
+uint32_t Wheel(byte WheelPos)
+{
+  if (WheelPos < 85) {
+   return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } else if (WheelPos < 170) {
+   WheelPos -= 85;
+   return Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else {
+   WheelPos -= 170; 
+   return Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
 }
 
 void BlinkLED() {
@@ -573,7 +560,6 @@ void initStar(int i) {
     stars[i].currentCol=0;  
 }
 
-
 // christmas animations
 void BlinkChristmas() {
   if (delaytimer > DELAY) {
@@ -646,6 +632,28 @@ void fadeToNewColor() {
   }
 }
 
+// --------------------------------------------
+//     do some animation until serial data arrives
+// --------------------------------------------
+void Rainbow1() {
+  delay(1);
+
+  k++;
+  if (k>50) {
+    k=0;
+    j++;
+    if (j>96*3) {  // 3 cycles of all 96 colors in the wheel
+      j=0; 
+    }
+
+    for (int i=0; i < strip.numPixels(); i++) {
+      strip.setPixelColor(i, Wheel((i + j) % 96));
+      // strip.setPixelColor(i, WheelWS2801((i + j) % 96));
+    }
+    strip.show();    
+  }
+}
+
 // other rainbows
 void Rainbow2(uint8_t wait) {
   int i;
@@ -701,3 +709,4 @@ void colorWipefull(uint32_t c) {
   }
   strip.show();
 }
+
