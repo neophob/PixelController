@@ -8,7 +8,6 @@ TODO PixelController
 -MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Integrate OSC Server
--support TPM2 devices
 -support Kinect for Xbox 360 
 -support Renard Protocol
 
@@ -22,7 +21,8 @@ Changelog v1.2 to v1.3
 -configuration fixes
 -update AdaVision driver
 -add UDP output device
--support rainbowduino v3
+-add TPM2 output devices
+-support rainbowduino v3 output devices
 -add start scripts for OSX
 -add flipX and flipY effects
 -Texturedeform is not a generator anymore but an effect
