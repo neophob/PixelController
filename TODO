@@ -1,13 +1,12 @@
 TODO PixelController
 --------------------
--particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
--rewrite output selection/configuration, 
--more layouts (what kind of layouts?)
--do not freeze application if output fails (disconnect controller)
--artnet output: support multiple output devices / multiple universe
--MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
--Unit Testing is suboptimal, the file config.properties is not used 
 -Integrate OSC Server
+-MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
+-do not freeze application if output fails (disconnect controller)
+-particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
+-more layouts (what kind of layouts?)
+-artnet output: support multiple output devices / multiple universe
+-Unit Testing is suboptimal, the file config.properties is not used 
 -support Kinect for Xbox 360 
 -support Renard Protocol
 
