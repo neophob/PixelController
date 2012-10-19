@@ -19,7 +19,8 @@
 
 package com.neophob.sematrix.color;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -33,7 +34,7 @@ import java.util.logging.Logger;
  * @author michu
  *
  */
-public class ColorSet {
+public class ColorSet implements Comparable<ColorSet> {
 
     private static final Logger LOG = Logger.getLogger(ColorSet.class.getName());
 
@@ -143,7 +144,7 @@ public class ColorSet {
      * @return
      */
     public static List<ColorSet> loadAllEntries(Properties palette) {
-        List<ColorSet> ret = new ArrayList<ColorSet>();
+        List<ColorSet> ret = new LinkedList<ColorSet>();
 
         for (Entry<Object, Object> entry : palette.entrySet()) {
             try {
@@ -163,6 +164,9 @@ public class ColorSet {
                 LOG.log(Level.SEVERE, "Failed to load Palette entry!", e);
             }
         }
+        
+        //sorty by name
+        Collections.sort(ret);
 
         return ret;
     }
@@ -185,5 +189,24 @@ public class ColorSet {
         }
 
         return ret;	
+    }
+    
+    
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(ColorSet otherColorSet) {
+        if (otherColorSet.getName() == null && this.getName() == null) {
+            return 0;
+        }
+        if (this.getName() == null) {
+            return 1;
+        }
+        if (otherColorSet.getName() == null) {
+            return -1;
+        }
+        return this.getName().compareTo(otherColorSet.getName());    
     }
 }
