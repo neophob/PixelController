@@ -173,11 +173,11 @@ public class GeneratorGui extends PApplet {
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
 
-        cp5.addTextlabel("gen1", "GENERATOR#1", GENERIC_X_OFS+3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("gen2", "GENERATOR#2", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("fx1", "EFFECT#1", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("fx2", "EFFECT#2", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("mix2", "MIXER", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("gen1", "GENERATOR LAYER 1", GENERIC_X_OFS+3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("gen2", "GENERATOR LAYER 2", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("fx1", "EFFECT LAYER 1", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("fx2", "EFFECT LAYER 2", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("mix2", "LAYER MIXER", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
         cp5.getTooltip().register("gen1", "Generate an animation on layer 1");
         cp5.getTooltip().register("gen2", "Generate an animation on layer 2");
@@ -272,6 +272,7 @@ public class GeneratorGui extends PApplet {
         fxRotoSlider.setSliderMode(Slider.FIX);
         fxRotoSlider.setGroup(generatorTab);
         fxRotoSlider.setDecimalPrecision(0);
+        fxRotoSlider.setCaptionLabel("ROTOZOOM SPEED");
 
         
         //-------------
@@ -545,7 +546,10 @@ public class GeneratorGui extends PApplet {
     public void draw() {
         long l = System.currentTimeMillis();
 
-        drawGradientBackground();
+        //reduce cpu load
+        if (l%2==1) {
+        	drawGradientBackground();
+        }
 
         int localX=GENERIC_X_OFS, localY=10;
         int[] buffer;
@@ -611,14 +615,14 @@ public class GeneratorGui extends PApplet {
         this.loadPixels();
         try {
             for (int yy=0; yy<255; yy++) {
-            	int pink = color(yy/2, 128);
+            	int col = color(yy/2, 128);
             	for (int xx=0; xx<this.getWidth(); xx++) {
-            		this.pixels[ofs+xx] = pink;
+            		this.pixels[ofs+xx] = col;
             	}
             	ofs += this.getWidth();
             }        	        	
         } catch (Exception e) {
-        	LOG.log(Level.WARNING, "(Issue 21) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
+        	LOG.log(Level.WARNING, "(Issue 24) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
 		}
         this.updatePixels();	
 
