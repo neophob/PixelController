@@ -131,7 +131,7 @@ public class GeneratorGui extends PApplet {
     public GeneratorGui(int windowWidth, int windowHeigth, int singleVisualXSize, int singleVisualYSize) {
     	super();        
         this.windowWidth = windowWidth;
-        this.windowHeight = windowHeigth;//+SELECTED_MARKER+100;
+        this.windowHeight = windowHeigth;
         this.singleVisualXSize = singleVisualXSize;
         this.singleVisualYSize = singleVisualYSize;
         this.p5GuiYOffset = this.singleVisualYSize + 100;        
@@ -177,8 +177,13 @@ public class GeneratorGui extends PApplet {
         cp5.addTextlabel("gen2", "GENERATOR#2", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         cp5.addTextlabel("fx1", "EFFECT#1", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         cp5.addTextlabel("fx2", "EFFECT#2", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("mix2", "MIXER#2", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("mix2", "MIXER", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
+        cp5.getTooltip().register("gen1", "Generate an animation on layer 1");
+        cp5.getTooltip().register("gen2", "Generate an animation on layer 2");
+        cp5.getTooltip().register("fx1", "Apply Effect on generator 1");
+        cp5.getTooltip().register("fx2", "Apply Effect on generator 2");
+        cp5.getTooltip().register("mix2", "Mix Layer 1 and Layer 2 together");
 
         //Generator 
         generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
@@ -328,7 +333,7 @@ public class GeneratorGui extends PApplet {
 
         //colorscroll options
         cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-
+        
         colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.toString(), 
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorScrollList);		
@@ -341,7 +346,6 @@ public class GeneratorGui extends PApplet {
         colorScrollList.setHeight(100);
 
         //add textfield
-        //Textfield textfield = 
         cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
 
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
@@ -406,6 +410,8 @@ public class GeneratorGui extends PApplet {
         colorSetList.setLabel(colorSetList.getItem(1).getName());
         colorSetList.setHeight(100);
         colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
+        cp5.getTooltip().register("colSet", "Change current colorset, Keybinding: 'C'");
+
         
         //----------
         //RANDOM Tab
