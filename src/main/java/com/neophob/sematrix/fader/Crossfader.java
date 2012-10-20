@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.fader;
 
+import com.neophob.sematrix.glue.Collector;
+
 
 
 /**
@@ -32,7 +34,7 @@ public class Crossfader extends Fader {
 	 * Instantiates a new crossfader.
 	 */
 	public Crossfader() {
-		super(FaderName.CROSSFADE, 2500);
+		super(FaderName.CROSSFADE, 1500);
 	}
 
 	/**
@@ -55,7 +57,7 @@ public class Crossfader extends Fader {
 			if (super.isDone()) {
 				return newBuffer;
 			}
-			
+			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
 			return CrossfaderHelper.getBuffer(getCurrentStep(), buffer, newBuffer);			
 		} catch (Exception e) {
 			super.setDone();

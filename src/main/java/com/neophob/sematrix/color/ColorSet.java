@@ -183,7 +183,7 @@ public class ColorSet implements Comparable<ColorSet> {
 
         int[] ret = new int[buffer.length];
 
-        for (int i=0; i<buffer.length; i++){
+        for (int i=0; i<ret.length; i++){
             //use only 8bpp here!
             ret[i]=cs.getSmoothColor(buffer[i]&255);
         }

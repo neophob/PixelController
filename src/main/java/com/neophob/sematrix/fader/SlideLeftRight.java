@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.fader;
 
+import com.neophob.sematrix.glue.Collector;
+
 
 /**
  * The Class SlideLeftRight.
@@ -49,6 +51,8 @@ public class SlideLeftRight extends Fader {
 			
 			int ammount=(int)(internalBufferXSize*f);
 			int ofs,x,idx=0;
+			
+			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
 
 			int linesize=internalBufferXSize;
 			for (int y=0; y<internalBufferYSize; y++) {
