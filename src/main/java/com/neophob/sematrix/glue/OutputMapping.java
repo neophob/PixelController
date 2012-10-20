@@ -25,6 +25,8 @@ import com.neophob.sematrix.fader.PixelControllerFader;
 
 /**
  * class used to store input/ouput mapping.
+ * 
+ * each visual is assigned to 0 or n screens, each screen h
  *
  * @author michu
  */

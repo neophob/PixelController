@@ -54,10 +54,10 @@ public class Crossfader extends Fader {
 		currentStep++;		
 		
 		try {			
+			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
 			if (super.isDone()) {
 				return newBuffer;
 			}
-			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
 			return CrossfaderHelper.getBuffer(getCurrentStep(), buffer, newBuffer);			
 		} catch (Exception e) {
 			super.setDone();

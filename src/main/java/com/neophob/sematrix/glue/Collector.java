@@ -301,7 +301,7 @@ public final class Collector {
 		for (OutputMapping om: ioMapping) {
 			Fader fader = om.getFader();
 			if (fader.isDone()) {
-				//fading is finished
+				//fading is finished, cleanup
 				fader.cleanUp();
 			}
 		}

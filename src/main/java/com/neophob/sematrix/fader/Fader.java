@@ -159,8 +159,8 @@ public abstract class Fader {
 		currentStep = 0;
 		started = true;
 		
-		LOG.log(Level.INFO, "Started fader {0}, duration {1}, steps {2}", 
-				new Object[] { faderName.toString(), fadeTime, steps });
+		LOG.log(Level.INFO, "Started fader {0}, duration {1}, steps {2}, new visual {3}, output screen {4}", 
+				new Object[] { faderName.toString(), fadeTime, steps, newVisual, screenNr });
 	}
 	
 	/**
@@ -173,8 +173,8 @@ public abstract class Fader {
 		
 		started=false;
 		Collector.getInstance().mapInputToScreen(screenOutput, newVisual);
-		LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}", 
-				new Object[] { faderName.toString(), newVisual });
+		LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}, output screen: {2}", 
+				new Object[] { faderName.toString(), newVisual, screenOutput });
 	}
 	
 	/**
