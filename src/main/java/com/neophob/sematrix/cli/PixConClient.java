@@ -156,7 +156,7 @@ public class PixConClient {
         System.out.println("\t"+cmd);
         
         if (cmd.getCommand() == ValidCommands.JMX_STAT) {
-            System.out.println("Connect to JMX, make sure you use the JMX port (default port 1337): "+cmd.getPort());
+            System.out.println("Connect to JMX, make sure you use the JMX port (WARNING! Make sure you select the JMX Port, per default 1337): "+cmd.getPort());
         	PixConClientJmx.queryJmxServer(cmd.getHostname(), cmd.getPort());
         } else {
             Client c = connectToServer(cmd);       
