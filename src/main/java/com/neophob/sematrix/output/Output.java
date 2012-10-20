@@ -126,12 +126,11 @@ public abstract class Output {
 		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
 			LayoutModel lm = this.layout.getDataForScreen(screen);
 			OutputMapping map = this.collector.getOutputMappings(screen);
+			v = this.collector.getVisual(lm.getFxInput());
 			
 			if (lm.screenDoesNotNeedStretching()) {
-				v = this.collector.getVisual(lm.getFxInput());
 				buffer = this.matrixData.getScreenBufferForDevice(v, map);
 			} else {
-				v = this.collector.getVisual(lm.getFxInput());
 				buffer = this.matrixData.getScreenBufferForDevice(v, lm, map, this);
 			}
 			
