@@ -373,12 +373,12 @@ public class GeneratorGui extends PApplet {
 
         //visual
         dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
-                GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
+                GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
 
         //Fader         
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
-                GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
+                GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
         dropdownOutputFader.moveTo(outputTab);
 
         //--------------
@@ -389,12 +389,12 @@ public class GeneratorGui extends PApplet {
         .moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
 
         allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
-                GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown, nrOfVisuals); 
+                GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
         allOutputTabVis.moveTo(allOutputTab);
 
         //Fader         
         allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
-                GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown); 
+                GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
         allOutputTabFader.moveTo(allOutputTab);
 
         //palette dropdown list	
