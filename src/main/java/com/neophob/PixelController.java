@@ -167,6 +167,7 @@ public class PixelController extends PApplet {
 	 * prepare.
 	 */
 	public void setup() {
+	    LOG.log(Level.INFO, "\n\nPixelController v"+VERSION+" - http://www.pixelinvaders.ch\n\n");
 	    LOG.log(Level.INFO, "");
 	    LOG.log(Level.INFO, "-----------------------------------");
 		LOG.log(Level.INFO, "--- PixelController Setup START ---");
