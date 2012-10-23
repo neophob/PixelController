@@ -468,15 +468,15 @@ public class GeneratorGui extends PApplet {
 
         presetButtons = cp5.addRadioButton(GuiElement.PRESET_BUTTONS.toString())
                 .setPosition(20, yPosStartDrowdown)
-                .setSize(12, 12)
+                .setSize(14, 14)
                 .setColorForeground(color(120))
                 .setColorActive(color(255))
                 .setColorLabel(color(255))
-                .setItemsPerRow(14)
-                .setSpacingColumn(40)
+                .setItemsPerRow(16)
+                .setSpacingColumn(36)
                 .setNoneSelectedAllowed(false);
 
-        for (i=0; i<70; i++) {
+        for (i=0; i<96; i++) {
             String label = ""+(i+1);
             if (i<9) {
                 label = "0"+(i+1);
@@ -487,13 +487,13 @@ public class GeneratorGui extends PApplet {
         presetButtons.moveTo(presetTab);
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.toString(), 0,
-        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+80, 100, 15);
+        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
         loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.toString());
         loadPreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.LOAD_PRESET.toString(),"Load a stored preset");
 
         savePreset = cp5.addButton(GuiElement.SAVE_PRESET.toString(), 0,
-        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+80, 100, 15);
+        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
         savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.toString());
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.toString(),"Save a preset");
