@@ -617,6 +617,7 @@ public class GeneratorGui extends PApplet {
             stroke(color(yy/2));
             line(0, ypos, this.getWidth(), ypos);
         }
+        stroke(0);
     }
 
 
