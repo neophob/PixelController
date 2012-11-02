@@ -599,7 +599,10 @@ public class GeneratorGui extends PApplet {
         //beat detection
         displaySoundStats(localY);
 
-        cp5.draw();		
+        //update gui
+        cp5.draw();	
+
+        //track used time
         col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
     }
 
@@ -609,23 +612,11 @@ public class GeneratorGui extends PApplet {
      * draw nice gradient at the end of the screen
      */
     private void drawGradientBackground() {
-        //there is an issue with this.height, it changes!
-        int ofs=this.getWidth()*(this.getHeight()-255);
-
-        this.loadPixels();
-        try {
-            for (int yy=0; yy<255; yy++) {
-            	int col = color(yy/2, 128);
-            	for (int xx=0; xx<this.getWidth(); xx++) {
-            		this.pixels[ofs+xx] = col;
-            	}
-            	ofs += this.getWidth();
-            }        	        	
-        } catch (Exception e) {
-        	LOG.log(Level.WARNING, "(Issue 24) Failed to draw Gradient background "+ofs+": "+this.pixels.length);
-		}
-        this.updatePixels();	
-
+        int ypos = this.getHeight()-255;
+        for (int yy=0; yy<255; yy++, ypos++) {            
+            stroke(color(yy/2));
+            line(0, ypos, this.getWidth(), ypos);
+        }
     }
 
 
