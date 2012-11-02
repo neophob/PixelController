@@ -41,6 +41,7 @@ import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.MessageProcessor;
+import com.neophob.sematrix.listener.OscServer;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.PixelControllerOutput;
@@ -126,6 +127,9 @@ public final class Collector {
 	/** The pd srv. */
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
+	
+	@SuppressWarnings("unused")
+	private OscServer oscServer;
 	
 	private ApplicationConfigurationHelper ph;
 	
@@ -223,7 +227,7 @@ public final class Collector {
 			ioMapping.add(new OutputMapping(n));			
 		}
 
-		//Start tcp server
+		//Start TCP server (FUDI Interface)
 		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
 		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
 		String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
@@ -235,6 +239,14 @@ public final class Collector {
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "failed to start TCP Server", e);
         }
+		
+		//Start OSC Server (OSC Interface)
+		try {		    
+			oscServer = new OscServer(papplet, 9876);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "failed to start OSC Server", e);
+        }
+				
 
 		pixConStat = new PixelControllerStatus(fps);
 		

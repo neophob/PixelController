@@ -378,6 +378,20 @@
 							<goal>install-file</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>oscP5.jar</id>
+						<configuration>
+							<file>lib/oscP5.jar</file>
+							<groupId>oscp5</groupId>
+							<artifactId>oscp5</artifactId>
+							<version>0.9.8</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
@@ -586,6 +600,12 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>1.6.3</version>
+		</dependency>
+		<!-- OSCP5 -->
+		<dependency>
+			<groupId>oscp5</groupId>
+			<artifactId>oscp5</artifactId>
+			<version>0.9.8</version>
 		</dependency>
 	</dependencies>
 
