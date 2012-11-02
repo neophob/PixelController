@@ -102,10 +102,11 @@ public class Blinkenlights extends Generator implements PConstants {
 		
 		//only load if needed
 		if (!StringUtils.equals(file, this.filename)) {
-			long start = System.currentTimeMillis();
-			LOG.log(Level.INFO, "Load blinkenlights file "+file);
+			long start = System.currentTimeMillis();			
 			this.filename = file;
+			LOG.log(Level.INFO, "Load blinkenlights file {0}.", file);
 			blinken.loadFile(PREFIX+file, this.internalBufferXSize);
+			LOG.log(Level.INFO, "DONE");
 			blinkenSettings();
 			LOG.log(Level.INFO, "Load blinkenlights done, needed time in ms: "+(System.currentTimeMillis()-start));			
 		}

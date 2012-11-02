@@ -174,7 +174,7 @@
 							<file>lib/blinkenlights.jar</file>
 							<groupId>com.neophob</groupId>
 							<artifactId>processing-blinkenlight</artifactId>
-							<version>0.62</version>
+							<version>0.63</version>
 							<packaging>jar</packaging>
 						</configuration>
 						<phase>initialize</phase>
@@ -571,7 +571,7 @@
 		<dependency>
 			<groupId>com.neophob</groupId>
 			<artifactId>processing-blinkenlight</artifactId>
-			<version>0.62</version>
+			<version>0.63</version>
 		</dependency>
 		<!-- src: http://code.google.com/p/artnet4j/ -->
 		<dependency>
