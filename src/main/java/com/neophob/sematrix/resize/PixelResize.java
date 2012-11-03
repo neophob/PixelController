@@ -21,7 +21,7 @@ package com.neophob.sematrix.resize;
 
 import java.awt.image.BufferedImage;
 
-import com.neophob.sematrix.resize.util.Scalr42;
+import com.neophob.sematrix.resize.util.ScalrOld;
 
 /**
  * This filter is optimized for pixel oriented images.
@@ -45,8 +45,7 @@ public class PixelResize extends Resize {
 	public int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
 		
-//		bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, deviceXSize, deviceYSize);
-		bi = Scalr42.resize(bi, Scalr42.Method.SPEED, deviceXSize, deviceYSize);
+		bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, deviceXSize, deviceYSize);
 
 		int[] ret = getPixelsFromImage(bi, deviceXSize, deviceYSize);
 		
