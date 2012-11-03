@@ -45,6 +45,7 @@ import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 import controlP5.Button;
 import controlP5.CheckBox;
@@ -145,7 +146,7 @@ public class GeneratorGui extends PApplet {
     	LOG.log(Level.INFO, "Create GUI Window with size "+this.getWidth()+"/"+this.getHeight());
 
         frameRate(Collector.getInstance().getFps());
-        noSmooth();
+        smooth();
         background(0,0,0);		
         int i=0;
         
@@ -538,7 +539,8 @@ public class GeneratorGui extends PApplet {
     public void CURRENT_VISUAL(int val) {
         //unused
     }
-
+    
+    int[] buffer = null;
     
     /**
      * draw the whole internal buffer on screen.
@@ -546,49 +548,49 @@ public class GeneratorGui extends PApplet {
     public void draw() {
         long l = System.currentTimeMillis();
 
-        //reduce cpu load
-        if (l%2==1) {
-        	drawGradientBackground();
-        }
+        background(0);
 
-        int localX=GENERIC_X_OFS, localY=10;
-        int[] buffer;
+        int localX = GENERIC_X_OFS, localY=10;
         Collector col = Collector.getInstance();
-
+        
         //set used to find out if visual is on screen
         Set<Integer> outputId = new HashSet<Integer>();
         for (OutputMapping om: col.getAllOutputMappings()) {
             outputId.add(om.getVisualId());
         }
 
+        //lazy init
+        if (pImage==null) {
+            //create an image out of the buffer
+            pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
+        }
+
         //draw output buffer and marker
         int ofs=0;
         for (Visual v: col.getAllVisuals()) {
-            //get image
-            buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), v.getResizeOption(), singleVisualXSize, singleVisualYSize);
 
-            if (pImage==null) {
-                //create an image out of the buffer
-                pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );				
-            }
-            pImage.loadPixels();
-            System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
-            pImage.updatePixels();
+            //use always the pixel resize option to reduce cpu load
+        	buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), /*v.getResizeOption()*/ ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
+        	
+        	pImage.loadPixels();
+        	System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
+        	pImage.updatePixels();
 
-            //draw current output
-            if (outputId.contains(ofs)) {
-                fill(66,200,66);
-            } else {
-                fill(55,55,55);
-            }	
-            rect(localX, localY+singleVisualYSize+2, singleVisualXSize, SELECTED_MARKER);				
+        	//draw current output
+        	if (outputId.contains(ofs)) {
+        		fill(66,200,66);
+        	} else {
+        		fill(55,55,55);
+        	}	
+        	rect(localX, localY+singleVisualYSize+2, singleVisualXSize, SELECTED_MARKER);				
 
-            //display the image
-            image(pImage, localX, localY);
+        	//display the image
+        	image(pImage, localX, localY);        		
+
             localX += pImage.width;
             ofs++;
         }
-
+        
         //display frame progress
         int frames = col.getFrames() % singleVisualXSize;
         fill(200,200,200);
@@ -611,14 +613,14 @@ public class GeneratorGui extends PApplet {
     /**
      * draw nice gradient at the end of the screen
      */
-    private void drawGradientBackground() {
+/*    private void drawGradientBackground() {
         int ypos = this.getHeight()-255;
         for (int yy=0; yy<255; yy++, ypos++) {            
             stroke(color(yy/2));
             line(0, ypos, this.getWidth(), ypos);
         }
         stroke(0);
-    }
+    }*/
 
 
     /**
