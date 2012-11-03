@@ -66,7 +66,7 @@ public class PixelController extends PApplet {
 	private static final long serialVersionUID = -1336765543826338205L;
 	
 	/** The Constant FPS. */
-	public static final int FPS = 20;
+	public static final int FPS = 25;
 
 	/** The Constant FPS. */
 	public static final String VERSION = "v1.3-SNAPSHOT";
