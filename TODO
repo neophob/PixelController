@@ -1,6 +1,5 @@
 TODO PixelController
 --------------------
--Integrate OSC Server
 -MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
 -do not freeze application if output fails (disconnect controller)
 -particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
@@ -19,8 +18,8 @@ Changelog v1.2 to v1.3
 -added PixelInvaders SPI firmware, faster than the bit banging version
 -configuration fixes
 -update AdaVision driver
--add UDP output device
--add TPM2 output devices
+-support UDP output device
+-support TPM2 output devices (untested)
 -support rainbowduino v3 output devices
 -add start scripts for OSX
 -add flipX and flipY effects
@@ -28,6 +27,9 @@ Changelog v1.2 to v1.3
 -removed emboss effect, as the result was ugly
 -removed Xor and MinusHalf mixer, as the result was ugly
 -removed image zoomer generator, as it looks ugly and was a duplicate.
+-Integrate OSC Server
+-Reduce CPU load
+-fixed Blinkenlight video player race condition
 
 
 Changelog v1.1 to v1.2
