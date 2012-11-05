@@ -1,0 +1,1 @@
+Example how to send OSC messages to PixelController with Processing.
