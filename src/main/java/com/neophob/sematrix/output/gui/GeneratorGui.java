@@ -544,6 +544,7 @@ public class GeneratorGui extends PApplet {
     
     /**
      * draw the whole internal buffer on screen.
+     * this method is quite cpu intensive
      */
     public void draw() {
         long l = System.currentTimeMillis();
