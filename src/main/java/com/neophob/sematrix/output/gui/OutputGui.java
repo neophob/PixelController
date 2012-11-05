@@ -112,6 +112,9 @@ public class OutputGui {
 		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+ledSize);
 	}
 
+	/**
+	 * draw simulated output
+	 */
 	public void update() {
 		frame++;
 		

@@ -94,7 +94,7 @@ public class GeneratorGuiCreator extends Frame {
 	}
 	
 	/**
-	 * help function to load the pixelinvaders logo
+	 * helper function to load the pixelinvaders logo
 	 * @return
 	 */
 	public static Image createIcon() {
