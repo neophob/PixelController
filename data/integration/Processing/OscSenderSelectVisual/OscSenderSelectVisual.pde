@@ -16,7 +16,7 @@ void setup() {
   long now=System.currentTimeMillis();  
 
   oscP5.send("/CURRENT_VISUAL", new Object[] { 0 }, myRemoteLocation);
-  oscP5.send("/CHANGE_GENERATOR_A", new Object[] { 0 }, myRemoteLocation);
+  oscP5.send("/CHANGE_GENERATOR_A", new Object[] { 3 }, myRemoteLocation);
   oscP5.send("/CHANGE_EFFECT_A", new Object[] { 0 }, myRemoteLocation);
   oscP5.send("/CHANGE_MIXER", new Object[] { 0 }, myRemoteLocation);
 
