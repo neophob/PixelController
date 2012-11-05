@@ -13,11 +13,10 @@
 ## HOWTO USE PIXELCONTROLLER
 Prerequisite:
 * Java Runtime, v1.6+
-* If you want OSC Messages, use PureData (http://puredata.info/), download the extended Version.
 
 Run `PixelController.cmd` on Windows, `PixelController.command` on OSX and `PixelController.sh` on Linux to start the application.
 Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
-the config.properties file.
+the data/config.properties file.
 
 Here is a very primitve diagram, how everything is connected:
     `[PURE DATA FRONTEND]---<TCP>---[PIXELCONTROLLER]---<SERIAL>---[ARDUINO OR TEENSY]---[LED MODULES]`
@@ -42,9 +41,9 @@ PixelController supports different (LED) matrix hardware devices:
 
 ## FRONTENDS
 There are different frontends for PixelController:
-* Native Java: based on P5
+* Native Java: based on P5, default
 * PixConCli: Command Line interface for PixelController, 
-* PureData: PureData frontend, very flexible, extensible (OSC, MIDI)
+* PureData: PureData frontend (http://puredata.info/ download the extended Version), very flexible, extensible (OSC, MIDI)
 
 
 ## IT DOES NOT WORK!
