@@ -39,8 +39,6 @@ public class OscServer implements OscEventListener {
 	 * @param theOscMessage
 	 */
 	public void oscEvent(OscMessage theOscMessage) {
-		LOG.log(Level.INFO,	" >> >> >> >> >>");
-		
 		//sanity check
 		if (StringUtils.isBlank(theOscMessage.addrPattern())) {
 			LOG.log(Level.INFO,	"Ignore empty OSC message...");
@@ -54,12 +52,12 @@ public class OscServer implements OscEventListener {
 			String[] msg = new String[1+command.getNrOfParams()];
 			msg[0] = pattern;
 			for (int i=0; i<command.getNrOfParams(); i++) {
-				msg[i] = ""+theOscMessage.get(i);
+				//theOscMessage.get(i).intValue();
+				msg[i] = theOscMessage.get(i).stringValue();
 			}
 			MessageProcessor.processMsg(msg, true);
 		} catch (Exception e) {
-			//ignore invalid command
-			e.printStackTrace();
+			LOG.log(Level.WARNING, "Failed to parse OSC Message", e);
 			return;
 		}
 		LOG.log(Level.INFO,	"Received an osc message. with address pattern {0} typetag {1}.", 

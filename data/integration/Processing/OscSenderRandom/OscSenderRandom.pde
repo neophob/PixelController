@@ -4,9 +4,8 @@ import netP5.*;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 Random r;
-// roove of concept, send pixelinformation as osc message (OFFSET, PIXEL1, PIXEL2, PIXEL3, PIXEL4)
-// take less than 5ms to send 320 32bit pixe data.
 
+//send OSC RANDOMIZE message to pixelcontroller
 
 void setup() {
   size(400, 400);
