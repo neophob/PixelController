@@ -48,12 +48,22 @@ public class OscServer implements OscEventListener {
 		//address pattern -> internal message mapping
 		String pattern = theOscMessage.addrPattern().trim().substring(1).toUpperCase();
 		try {
+
 			ValidCommands command = ValidCommands.valueOf(pattern);
 			String[] msg = new String[1+command.getNrOfParams()];
 			msg[0] = pattern;
 			for (int i=0; i<command.getNrOfParams(); i++) {
-				//theOscMessage.get(i).intValue();
-				msg[i] = theOscMessage.get(i).stringValue();
+
+				//parse osc message
+				if (theOscMessage.checkTypetag("s")) {
+					msg[i+1] = theOscMessage.get(i).stringValue();	
+				} else
+					if (theOscMessage.checkTypetag("i")) {
+						msg[i+1] = ""+theOscMessage.get(i).intValue();	
+					} else
+						if (theOscMessage.checkTypetag("f")) {
+							msg[i+1] = ""+theOscMessage.get(i).floatValue();	
+						}				
 			}
 			MessageProcessor.processMsg(msg, true);
 		} catch (Exception e) {
