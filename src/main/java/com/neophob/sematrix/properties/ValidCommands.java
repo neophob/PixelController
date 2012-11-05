@@ -117,7 +117,7 @@ public enum ValidCommands {
 	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output"),
 
 	/** The CURRENT output. */
-	JMX_STAT(CommandGroup.MISC, 0, "show JMX runtime statistic, default port: 1337"),
+	JMX_STAT(CommandGroup.MISC, 0, "show JMX runtime statistic, default port: 1337 (use the -p switch)"),
 
 	SCREENSHOT(CommandGroup.MISC, 0, "save screenhot"),
 	
