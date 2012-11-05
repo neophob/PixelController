@@ -31,7 +31,11 @@ public class OscServer implements OscEventListener {
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });
 		this.oscP5 = new OscP5(papplet, this.listeningPort);
 		this.oscP5.addListener(this);
-		OscP5.setLogStatus(netP5.Logger.ALL, netP5.Logger.ON);
+		
+		//log only error and warnings
+		OscP5.setLogStatus(netP5.Logger.ALL, netP5.Logger.OFF);
+		OscP5.setLogStatus(netP5.Logger.ERROR, netP5.Logger.ON);
+		OscP5.setLogStatus(netP5.Logger.WARNING, netP5.Logger.ON);
 	}
 
 	/**
@@ -45,10 +49,12 @@ public class OscServer implements OscEventListener {
 			return;
 		}
 		
+		LOG.log(Level.INFO,	"Received an osc message. with address pattern {0} typetag {1}.", 
+				new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });		
+
 		//address pattern -> internal message mapping
 		String pattern = theOscMessage.addrPattern().trim().substring(1).toUpperCase();
 		try {
-
 			ValidCommands command = ValidCommands.valueOf(pattern);
 			String[] msg = new String[1+command.getNrOfParams()];
 			msg[0] = pattern;
@@ -69,10 +75,7 @@ public class OscServer implements OscEventListener {
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to parse OSC Message", e);
 			return;
-		}
-		LOG.log(Level.INFO,	"Received an osc message. with address pattern {0} typetag {1}.", 
-				new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });		
-		
+		}		
 	}
 
 	@Override
