@@ -19,6 +19,7 @@ void setup() {
   oscP5.send("/CHANGE_GENERATOR_A", new Object[] { 3 }, myRemoteLocation);
   oscP5.send("/CHANGE_EFFECT_A", new Object[] { 0 }, myRemoteLocation);
   oscP5.send("/CHANGE_MIXER", new Object[] { 0 }, myRemoteLocation);
+  oscP5.send("/IMAGE", new Object[] { "does-not-exist" }, myRemoteLocation);
 
   long needed = System.currentTimeMillis()-now;
   println("Sendtime: "+needed+"ms");

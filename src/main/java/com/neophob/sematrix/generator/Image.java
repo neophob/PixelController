@@ -87,7 +87,7 @@ public class Image extends Generator {
 		try {
 			PImage img = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
 			if (img==null || img.height<2) {
-				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename+" "+img);
+				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename);
 				return;
 			}						
 	        
