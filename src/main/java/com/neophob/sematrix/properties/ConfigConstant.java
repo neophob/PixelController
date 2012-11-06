@@ -105,13 +105,15 @@ public final class ConfigConstant {
 	public static final String STEALTH_ROW2 = "stealth.layout.row2";
 
 	/** The Constant NET_LISTENING_PORT. */
-	public static final String NET_LISTENING_PORT = "3448";
-	
+	public static final String NET_LISTENING_PORT = "net.listening.port";
+
+	public static final String NET_OSC_LISTENING_PORT = "osc.listening.port";
+
 	/** The Constant NET_SEND_PORT. */
-	public static final String NET_SEND_PORT = "3449";
+	public static final String NET_SEND_PORT = "net.send.port";
 	
 	/** The Constant NET_LISTENING_ADDR. */
-	public static final String NET_LISTENING_ADDR = "127.0.0.1";
+	public static final String NET_LISTENING_ADDR = "net.listening.addr";
 	
 	/** The Constant ADDITIONAL_VISUAL_SCREENS. */
 	public static final String ADDITIONAL_VISUAL_SCREENS = "additional.visual.screens";

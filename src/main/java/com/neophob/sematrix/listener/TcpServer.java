@@ -36,7 +36,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
- * The Class TcpServer.
+ * FUDI TCP listener, used to communicate with PureData Sketch
  *
  * @author michu
  */

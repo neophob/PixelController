@@ -226,14 +226,13 @@ public final class Collector {
 		for (int n=0; n<nrOfScreens; n++) {
 			ioMapping.add(new OutputMapping(n));			
 		}
-
-		//Start TCP server (FUDI Interface)
-		int listeningPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
-		int sendPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
-		String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
 		
 		try {		    
-			pdSrv = new TcpServer(papplet, listeningPort, listeningIp, sendPort);
+			//Start TCP server (FUDI Interface)
+			int listeningFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
+			int sendFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
+			String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
+			pdSrv = new TcpServer(papplet, listeningFudiPort, listeningIp, sendFudiPort);
 		} catch (BindException e) {
 		    LOG.log(Level.SEVERE, "failed to start TCP Server", e);
         } catch (Exception e) {
@@ -242,7 +241,8 @@ public final class Collector {
 		
 		//Start OSC Server (OSC Interface)
 		try {		    
-			oscServer = new OscServer(papplet, 9876);
+			int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
+			oscServer = new OscServer(papplet, listeningOscPort);
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "failed to start OSC Server", e);
         }

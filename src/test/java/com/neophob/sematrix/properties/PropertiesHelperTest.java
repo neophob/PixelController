@@ -332,5 +332,17 @@ public class PropertiesHelperTest {
         assertEquals(OutputDeviceEnum.TPM2, ph.getOutputDevice());
     }
 
+    @Test
+    public void testNetworkSettings() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.NET_LISTENING_ADDR, "1.2.3.4");
+        config.put(ConfigConstant.NET_LISTENING_PORT, "4444");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        
+        int fudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "1") );
+        System.out.println(fudiPort);
+        assertEquals(4444, fudiPort);
+    }
+
 
 }
