@@ -41,10 +41,13 @@ PixelController supports different (LED) matrix hardware devices:
 
 ## FRONTENDS
 There are different frontends for PixelController:
-* Native Java: based on P5, default
-* PixConCli: Command Line interface for PixelController, 
+* Native Java: based on P5, default frontend
+* PixConCli: Command Line Interface for PixelController, works also remote
 * PureData: PureData frontend (http://puredata.info/ download the extended Version), very flexible, extensible (OSC, MIDI)
 
+##INTERFACES
+* OSC interface, default listening port 9876. Processing examples included how to communicate with PixelController via OSC protocol
+* FUDI interface, default listening port 3448, used to communicate with PureData
 
 ## IT DOES NOT WORK!
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
