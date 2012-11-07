@@ -51,11 +51,10 @@ Try to understand **WHAT** does not work, which component? is it the frontend? P
 
 Here are some common errors:
 * Did you forgot to **edit the configuration file** `config.properties`. Take a look at the config.examples subdirectory!
-* Did you flash the **correct firmware** to you Arduino/Teensy? PixelInvaders should display an animated Rainbow
-   if powered on (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
+* Did you flash the **correct firmware** to you Arduino/Teensy?
 * **PixelInvaders panels**: Make sure that the Panel shows an **animated rainbow pattern** when the panels are powered on (make sure 
   that you also power the Arduino/Teensy board). If you don't see a animated rainbow, make sure the directon of the modules is correct and that
-  the Arduino/Teensy, Led Modules and PSU share common ground.
+  the Arduino/Teensy, LED modules and PSU share common ground.
 * **PixelInvaders panels**: A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
    for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
    deal, as the timeout value cold be adjusted in the firmware.
