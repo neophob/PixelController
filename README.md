@@ -34,7 +34,7 @@ PixelController supports different (LED) matrix hardware devices:
 * Element Labs Stealth LED panel. No longer in production (http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf)
 * Generic UDP Devices (for example Raspberry Pi, check out the PixelPi Software)
 
-Check out the data/ArduinoFW directory, all Arduino based firmware files are stored there.
+Check out the `data/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
 ## FRONTENDS
 There are different frontends for PixelController:
@@ -50,15 +50,15 @@ There are different frontends for PixelController:
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
 
 Here are some common errors:
-* Did you forgot to edit the configuration file "config.properties". Take a look at the config.examples subdirectory!
-* Did you flash the correct firmware to you Arduino/Teensy? PixelInvaders should display an animated Rainbow
+* Did you forgot to **edit the configuration file** `config.properties`. Take a look at the config.examples subdirectory!
+* Did you flash the **correct firmware** to you Arduino/Teensy? PixelInvaders should display an animated Rainbow
    if powered on (https://github.com/neophob/PixelController/tree/master/data/ArduinoFw/lpd6803/neoLedLPD6803)
-* PixelInvaders panels: Make sure that the Panel shows an animated rainbow pattern when the panels are powered on (make sure 
+* **PixelInvaders panels**: Make sure that the Panel shows an **animated rainbow pattern** when the panels are powered on (make sure 
   that you also power the Arduino/Teensy board). If you don't see a animated rainbow, make sure the directon of the modules is correct and that
   the Arduino/Teensy, Led Modules and PSU share common ground.
-* PixelInvaders panels: A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
+* **PixelInvaders panels**: A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
    for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
-   deal, as the timeout value cold be adjusted.
+   deal, as the timeout value cold be adjusted in the firmware.
 
 
 ## HOWTO BUILD PIXELCONTROLLER
@@ -119,7 +119,7 @@ Example how to use PixConCli:
 
 ## CREDITS
 * **Michael Vogt**:       Project Lead, Main Developer    	
-* **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements
+* **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements, Rainbowduino V3 support
 * **McGyver666**:         Contributor
 * **Rainer Ostendorf**:   Artnet Output
 * **Pesi**:               miniDMX Output, Tester
