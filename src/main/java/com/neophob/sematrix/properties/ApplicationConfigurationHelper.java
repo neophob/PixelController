@@ -22,6 +22,7 @@ package com.neophob.sematrix.properties;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -84,6 +85,9 @@ public class ApplicationConfigurationHelper {
 
     /** The color format. */
     private List<ColorFormat> colorFormat=null;
+
+    /** define how the panels are arranged, used by pixelinvaders panels */
+    private List<Integer> panelOrder=null;
 
     private List<String> pixelInvadersBlacklist;
     
@@ -213,12 +217,20 @@ public class ApplicationConfigurationHelper {
             this.outputDeviceEnum = OutputDeviceEnum.NULL;
         }
 
-        //add default color format RGB is nothing is configured
+        //add default color format RGB if nothing is configured
         int nrOfColorFormat = getColorFormatFromCfg();
         if (nrOfColorFormat<totalDevices) {
             for (int i=0; i<totalDevices; i++) {
                 colorFormat.add(ColorFormat.RGB);
             }
+        }
+        
+        //add default order if nothing is configured
+        int nrOfPanelOrder = getPanelOrderFromCfg(totalDevices);
+        if (nrOfPanelOrder<totalDevices) {
+            for (int i=0; i<totalDevices; i++) {
+                this.panelOrder.add(i);
+            }        	
         }
     }
 
@@ -486,6 +498,36 @@ public class ApplicationConfigurationHelper {
         }
 
         return colorFormat.size();
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    private int getPanelOrderFromCfg(int totalDevices) {
+    	panelOrder = new LinkedList<Integer>();
+    	String rawConfig = config.getProperty(ConfigConstant.PIXELINVADERS_PANEL_ORDER);
+    	
+    	if (StringUtils.isNotBlank(rawConfig)) {
+            for (String s: rawConfig.split(ConfigConstant.DELIM)) {
+                try {
+                    Integer order = Integer.parseInt(s);
+                    
+                    //sanity check
+                    if (order >= totalDevices) {
+                    	LOG.log(Level.WARNING, ConfigConstant.PIXELINVADERS_PANEL_ORDER+": Error parsing, "+
+                    			"order value "+order+" >= total panels "+totalDevices+". Settings igored!");
+                    	panelOrder.clear();
+                    	return 0;
+                    }
+                    panelOrder.add(order);					
+                } catch (Exception e) {
+                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                }
+            }			    		
+    	}
+    	
+    	return panelOrder.size();
     }
 
     /**
@@ -906,6 +948,15 @@ public class ApplicationConfigurationHelper {
      */
     public List<ColorFormat> getColorFormat() {
         return colorFormat;
+    }
+    
+    /**
+     * 
+     * @param nrOfPanels
+     * @return
+     */
+    public List<Integer> getPanelOrder() {
+    	return panelOrder;
     }
 
     /**

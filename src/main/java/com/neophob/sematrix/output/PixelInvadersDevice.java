@@ -46,6 +46,9 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	/** The output color format. */
 	private List<ColorFormat> colorFormat;
 	
+	/** define how the panels are arranged */
+	private List<Integer> panelOrder;
+	
 	/** The lpd6803. */
 	private Lpd6803 lpd6803 = null;
 
@@ -61,6 +64,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();
+		this.panelOrder = ph.getPanelOrder();
 		this.initialized = false;		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist() );			
@@ -115,11 +119,15 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		if (initialized) {			
 			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
 				//draw only on available screens!
+				
+				//get the effective panel buffer
+				int panelNr = this.panelOrder.get(ofs);
+				
 				int[] transformedBuffer = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs),
+					RotateBuffer.transformImage(super.getBufferForScreen(panelNr), displayOptions.get(panelNr),
 							Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
-				if (lpd6803.sendRgbFrame((byte)ofs, transformedBuffer, colorFormat.get(ofs))) {
+				if (lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr))) {
 					needUpdate++;
 				} else {
 					noUpdate++;

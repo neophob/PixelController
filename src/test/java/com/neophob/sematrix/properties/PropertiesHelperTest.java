@@ -21,6 +21,7 @@ package com.neophob.sematrix.properties;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -55,12 +56,19 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
         config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0,3,1,2");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
         assertEquals(8, ph.getDeviceXResolution());
         assertEquals(8, ph.getDeviceYResolution());
-
+        
+        List<Integer> order = ph.getPanelOrder(); 
+        assertEquals(Integer.valueOf(0), order.get(0));
+        assertEquals(Integer.valueOf(3), order.get(1));
+        assertEquals(Integer.valueOf(1), order.get(2));
+        assertEquals(Integer.valueOf(2), order.get(3));
+        
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(4, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.PIXELINVADERS, ph.getOutputDevice());

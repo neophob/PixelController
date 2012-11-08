@@ -97,6 +97,8 @@ public final class ConfigConstant {
 	public static final String PIXELINVADERS_ROW2 = "pixelinvaders.layout.row2";
 	
 	public static final String PIXELINVADERS_BLACKLIST = "pixelinvaders.blacklist.devices";
+	
+	public static final String PIXELINVADERS_PANEL_ORDER = "pixelinvaders.panel.order";
 
 	/** The Constant STEALTH_ROW1. */
 	public static final String STEALTH_ROW1 = "stealth.layout.row1";
