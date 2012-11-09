@@ -220,14 +220,21 @@ public class ApplicationConfigurationHelper {
         //add default color format RGB if nothing is configured
         int nrOfColorFormat = getColorFormatFromCfg();
         if (nrOfColorFormat<totalDevices) {
-            for (int i=0; i<totalDevices; i++) {
+        	if (nrOfColorFormat>0) {
+            	LOG.log(Level.WARNING, "ColorFormat count mismatch, use RGB as default value!");        		
+        	}
+            for (int i=nrOfColorFormat; i<totalDevices; i++) {
                 colorFormat.add(ColorFormat.RGB);
             }
         }
         
         //add default order if nothing is configured
         int nrOfPanelOrder = getPanelOrderFromCfg(totalDevices);
-        if (nrOfPanelOrder<totalDevices) {
+        if (nrOfPanelOrder<totalDevices) {        	
+        	if (nrOfPanelOrder>0) {
+            	LOG.log(Level.WARNING, "PixelInvaders Panel Order count mismatch, use default!");        		
+        	}
+        	this.panelOrder.clear();
             for (int i=0; i<totalDevices; i++) {
                 this.panelOrder.add(i);
             }        	

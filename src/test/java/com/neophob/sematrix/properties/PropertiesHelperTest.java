@@ -95,6 +95,38 @@ public class PropertiesHelperTest {
     }
 
     @Test
+    public void testInvalidPixelInvadersConfigOne() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0,4,1,2");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+
+        //panel order is ignored, due invalid value
+        List<Integer> order = ph.getPanelOrder(); 
+        assertEquals(Integer.valueOf(0), order.get(0));
+        assertEquals(Integer.valueOf(1), order.get(1));
+        assertEquals(Integer.valueOf(2), order.get(2));
+        assertEquals(Integer.valueOf(3), order.get(3));
+    }
+
+    @Test
+    public void testInvalidPixelInvadersConfigTwo() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+
+        //panel order is ignored, due invalid value
+        List<Integer> order = ph.getPanelOrder(); 
+        assertEquals(Integer.valueOf(0), order.get(0));
+        assertEquals(Integer.valueOf(1), order.get(1));
+        assertEquals(Integer.valueOf(2), order.get(2));
+        assertEquals(Integer.valueOf(3), order.get(3));
+    }
+
+    @Test
     public void testRainbowduinosConfig() {     
         Properties config = new Properties();
         config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "5,6");
