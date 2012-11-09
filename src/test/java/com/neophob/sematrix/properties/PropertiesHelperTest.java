@@ -52,6 +52,26 @@ public class PropertiesHelperTest {
     }
 
     @Test
+    public void testPixelInvadersDefaultConfig() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");       
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        
+        List<Integer> order = ph.getPanelOrder(); 
+        assertEquals(Integer.valueOf(0), order.get(0));
+        assertEquals(Integer.valueOf(1), order.get(1));
+        assertEquals(Integer.valueOf(2), order.get(2));
+        assertEquals(Integer.valueOf(3), order.get(3));
+        
+        List<ColorFormat> colorFormat = ph.getColorFormat();
+        assertEquals(ColorFormat.RGB, colorFormat.get(0));
+        assertEquals(ColorFormat.RGB, colorFormat.get(1));
+        assertEquals(ColorFormat.RGB, colorFormat.get(2));
+        assertEquals(ColorFormat.RGB, colorFormat.get(3));
+    }
+    
+    @Test
     public void testPixelInvadersConfig() {     
         Properties config = new Properties();
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
