@@ -8,6 +8,7 @@ TODO PixelController
 -Unit Testing is suboptimal, the file config.properties is not used 
 -support Kinect for Xbox 360 
 -support Renard Protocol
+-Manual for v1.3
 
 
 Changelog v1.2 to v1.3
