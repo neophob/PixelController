@@ -68,6 +68,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The textwriter. */
     private Textwriter textwriter;
     
+	private float brightness = 1.0f;	
+    
     private ApplicationConfigurationHelper ph;
 
     /**
@@ -126,7 +128,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());        
-        ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());        
+        ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());
+        int brightnessInt = (int)(this.brightness*100f);
+        ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
         
         return ret;
     }
@@ -303,5 +307,24 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public void setText(String text) {
         textwriter.createTextImage(text);
     }
+    
+	/**
+	 * @return the brightness
+	 */
+	public float getBrightness() {
+		return brightness;
+	}
+
+	/**
+	 * @param brightness the brightness to set
+	 */
+	public void setBrightness(float brightness) {
+		if (brightness<0f || brightness>1.0f) {
+			LOG.log(Level.WARNING, "Invalid brightness value: {0}", brightness);
+			return;
+		}
+		this.brightness = brightness;
+	}
+
 
 }

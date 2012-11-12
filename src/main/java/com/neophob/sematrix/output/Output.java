@@ -113,7 +113,7 @@ public abstract class Output {
 	 */
 	public int[] getBufferForScreen(int screenNr) {
 		int[] buffer = this.bufferMap.get(switchBuffer+screenNr);
-		float brightness = this.collector.getBrightness();		
+		float brightness = this.collector.getPixelControllerGenerator().getBrightness();		
 		return OutputHelper.applyBrightness(buffer, brightness);
 	}
 	

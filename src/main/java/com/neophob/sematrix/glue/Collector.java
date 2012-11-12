@@ -90,8 +90,6 @@ public final class Collector {
 	/** The fps. */
 	private int fps;
 	
-	private float brightness = 1.0f;
-	
 	/** The frames. */
 	private int frames;
 	private int framesEffective;
@@ -826,26 +824,7 @@ public final class Collector {
 
 	public boolean isInPauseMode() {
 		return inPauseMode;
-	}
-
-	/**
-	 * @return the brightness
-	 */
-	public float getBrightness() {
-		return brightness;
-	}
-
-	/**
-	 * @param brightness the brightness to set
-	 */
-	public void setBrightness(float brightness) {
-		if (brightness<0f || brightness>1.0f) {
-			LOG.log(Level.WARNING, "Invalid brightness value: {0}", brightness);
-			return;
-		}
-		this.brightness = brightness;
-	}
-    
+	}    
     
 
 }

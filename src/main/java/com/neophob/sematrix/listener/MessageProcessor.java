@@ -413,7 +413,7 @@ public final class MessageProcessor {
 						break;
 					} else {
 						float f = a/100f;
-						Collector.getInstance().setBrightness(f);
+						Collector.getInstance().getPixelControllerGenerator().setBrightness(f);
 						return ValidCommands.STATUS_MINI;						
 					}
 				} catch (Exception e) {
