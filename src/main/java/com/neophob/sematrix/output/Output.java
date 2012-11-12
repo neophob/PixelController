@@ -106,13 +106,15 @@ public abstract class Output {
 	public abstract void close(); 
 
 	/**
-	 * get buffer for a output, this method respect the mapping.
+	 * get buffer for a output, this method respect the mapping and brightness
 	 *
 	 * @param screenNr the screen nr
 	 * @return the buffer for screen
 	 */
 	public int[] getBufferForScreen(int screenNr) {
-		return this.bufferMap.get(switchBuffer+screenNr);
+		int[] buffer = this.bufferMap.get(switchBuffer+screenNr);
+		float brightness = this.collector.getBrightness();		
+		return OutputHelper.applyBrightness(buffer, brightness);
 	}
 	
 

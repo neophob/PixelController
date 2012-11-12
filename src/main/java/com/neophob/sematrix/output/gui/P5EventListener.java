@@ -224,7 +224,8 @@ public class P5EventListener implements ControlListener {
             	break;
             	
             case BRIGHTNESS:
-            	createMessage(ValidCommands.CHANGE_BRIGHTNESS, value);
+            	float brightness = value;
+            	createMessage(ValidCommands.CHANGE_BRIGHTNESS, brightness);
             	break;
             	
             default:

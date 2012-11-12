@@ -361,7 +361,7 @@ public class GeneratorGui extends PApplet {
                 
         brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.toString(), 
         		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
-        brightnessControll.setSliderMode(Slider.FLEXIBLE);
+        brightnessControll.setSliderMode(Slider.FIX);
         brightnessControll.setGroup(generatorTab);	
         brightnessControll.setDecimalPrecision(0);
         brightnessControll.setNumberOfTickMarks(11);

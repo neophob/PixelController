@@ -123,7 +123,7 @@ public enum ValidCommands {
 	
 	FREEZE(CommandGroup.MISC, 0, "toggle pause mode"),
 	
-	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<float> output brightness 0.0 .. 1.0"),
+	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<int> output brightness 0 .. 100"),
 	;
 	
 	/** The nr of params. */

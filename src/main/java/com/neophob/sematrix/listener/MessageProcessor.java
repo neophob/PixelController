@@ -407,7 +407,8 @@ public final class MessageProcessor {
 
 			case CHANGE_BRIGHTNESS:
 				try {
-					float f = Float.parseFloat(msg[1]);
+					int a = Integer.parseInt(msg[1]);
+					float f = a/100f;
 					Collector.getInstance().setBrightness(f);
 					return ValidCommands.STATUS_MINI;
 				} catch (Exception e) {
