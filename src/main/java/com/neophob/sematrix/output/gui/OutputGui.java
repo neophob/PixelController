@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.output.gui;
 
+import java.util.List;
+
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
@@ -60,6 +62,10 @@ public class OutputGui {
 	private Collector collector;
 	
 	private Output output;
+	
+	/** define how the panels are arranged */
+	private List<Integer> panelOrder;
+
 
 	/**
 	 * Instantiates a new matrix emulator.
@@ -72,6 +78,7 @@ public class OutputGui {
 		this.collector = Collector.getInstance();
 		this.matrixData = this.collector.getMatrix();
 		this.layout = ph.getLayout();
+		this.panelOrder = ph.getPanelOrder();
 		
 		int x,y;
 		switch (layout.getLayoutName()) {
@@ -129,18 +136,27 @@ public class OutputGui {
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<this.collector.getNrOfScreens(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen), currentOutput);
+
+				//get the effective panel buffer
+				int panelNr = this.panelOrder.get(screen);
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(panelNr), currentOutput);
 			}
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen), currentOutput);
+				//get the effective panel buffer
+				int panelNr = this.panelOrder.get(screen);
+
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(panelNr), currentOutput);
 				ofs++;
 			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen), currentOutput);
+				//get the effective panel buffer
+				int panelNr = this.panelOrder.get(ofs+screen);
+
+				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(panelNr), currentOutput);
 			}
 			break;
 		}
