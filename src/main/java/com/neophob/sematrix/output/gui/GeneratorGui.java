@@ -709,7 +709,7 @@ public class GeneratorGui extends PApplet {
         PixelControllerEffect pce = col.getPixelControllerEffect();
 
         thresholdSlider.changeValue(pce.getThresholdValue());
-        brightnessControll.changeValue(col.getBrightness());
+        brightnessControll.changeValue(col.getBrightness()*100);
         
         PixelControllerGenerator pcg = col.getPixelControllerGenerator();
         blinkenLightsList.setLabel(pcg.getFileBlinken()); 

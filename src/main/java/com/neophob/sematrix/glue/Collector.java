@@ -839,7 +839,7 @@ public final class Collector {
 	 * @param brightness the brightness to set
 	 */
 	public void setBrightness(float brightness) {
-		if (brightness<0 || brightness>1.0) {
+		if (brightness<0f || brightness>1.0f) {
 			LOG.log(Level.WARNING, "Invalid brightness value: {0}", brightness);
 			return;
 		}

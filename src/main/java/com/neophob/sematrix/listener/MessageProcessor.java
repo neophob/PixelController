@@ -408,9 +408,14 @@ public final class MessageProcessor {
 			case CHANGE_BRIGHTNESS:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					float f = a/100f;
-					Collector.getInstance().setBrightness(f);
-					return ValidCommands.STATUS_MINI;
+					if (a<0 || a>100) {
+						LOG.log(Level.WARNING, IGNORE_COMMAND, "Invalid brightness value: "+a);
+						break;
+					} else {
+						float f = a/100f;
+						Collector.getInstance().setBrightness(f);
+						return ValidCommands.STATUS_MINI;						
+					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
