@@ -414,7 +414,6 @@ public final class MessageProcessor {
 					} else {
 						float f = a/100f;
 						Collector.getInstance().getPixelControllerGenerator().setBrightness(f);
-						return ValidCommands.STATUS_MINI;						
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
