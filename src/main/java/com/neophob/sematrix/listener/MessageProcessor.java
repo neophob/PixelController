@@ -405,6 +405,16 @@ public final class MessageProcessor {
 				}
 				break;
 
+			case CHANGE_BRIGHTNESS:
+				try {
+					float f = Float.parseFloat(msg[1]);
+					Collector.getInstance().setBrightness(f);
+					return ValidCommands.STATUS_MINI;
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				break;
+				
 			//create a screenshot of all current buffers
 			case SCREENSHOT:
 				Collector.getInstance().saveScreenshot();

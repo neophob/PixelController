@@ -93,9 +93,11 @@ public class GeneratorGui extends PApplet {
     private Button randomSelection, randomPresets;
     private Toggle toggleRandom;
 
+    private Slider brightnessControll;
+    
     //Effect Tab    
     private Slider thresholdSlider;	
-
+    
     //Generator Tab
     private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
     private Button freezeUpdate;
@@ -356,6 +358,15 @@ public class GeneratorGui extends PApplet {
 		freezeUpdate.setGroup(generatorTab);
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.toString(),"freeze update");
 
+                
+        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.toString(), 
+        		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
+        brightnessControll.setSliderMode(Slider.FLEXIBLE);
+        brightnessControll.setGroup(generatorTab);	
+        brightnessControll.setDecimalPrecision(0);
+        brightnessControll.setNumberOfTickMarks(11);
+        brightnessControll.setRange(0, 100);
+        
         //-----------------
         //Single Output tab
         //-----------------				
@@ -539,7 +550,8 @@ public class GeneratorGui extends PApplet {
     public void CURRENT_VISUAL(int val) {
         //unused
     }
-    
+
+
     int[] buffer = null;
     
     /**
@@ -697,7 +709,8 @@ public class GeneratorGui extends PApplet {
         PixelControllerEffect pce = col.getPixelControllerEffect();
 
         thresholdSlider.changeValue(pce.getThresholdValue());
-
+        brightnessControll.changeValue(col.getBrightness());
+        
         PixelControllerGenerator pcg = col.getPixelControllerGenerator();
         blinkenLightsList.setLabel(pcg.getFileBlinken()); 
         imageList.setLabel(pcg.getFileImageSimple());

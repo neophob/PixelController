@@ -223,6 +223,10 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.FREEZE, "");
             	break;
             	
+            case BRIGHTNESS:
+            	createMessage(ValidCommands.CHANGE_BRIGHTNESS, value);
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;

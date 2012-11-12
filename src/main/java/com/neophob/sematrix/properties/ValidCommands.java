@@ -122,6 +122,8 @@ public enum ValidCommands {
 	SCREENSHOT(CommandGroup.MISC, 0, "save screenhot"),
 	
 	FREEZE(CommandGroup.MISC, 0, "toggle pause mode"),
+	
+	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<float> output brightness 0.0 .. 1.0"),
 	;
 	
 	/** The nr of params. */
