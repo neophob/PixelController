@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import artnet4j.ArtNet;
+import artnet4j.ArtNetServer;
 import artnet4j.packets.ArtDmxPacket;
 
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -63,6 +64,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 			this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
 		    this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
 		    this.firstUniverseId = ph.getArtNetStartUniverseId();
+
+			LOG.log(Level.INFO, "Initialize ArtNet device IP: {0}, broadcast IP: {1}, Port: {2}",  
+					new Object[] { this.targetAdress.toString(), ArtNetServer.DEFAULT_BROADCAST_IP, ArtNetServer.DEFAULT_PORT}
+			);
+
 		    this.artnet.init();
 		    this.artnet.start();
 		    
@@ -77,10 +83,12 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		    }
 		    
 		    this.initialized = true;
-			LOG.log(Level.INFO, "ArtNet device initialized at {0}, using {1} universe with {2} pixels.", 
-					new Object[] {this.targetAdress.toString(), this.nrOfUniverse, this.pixelsPerUniverse});
+			LOG.log(Level.INFO, "ArtNet device initialized using {0} universe with {1} pixels.", 
+					new Object[] { this.nrOfUniverse, this.pixelsPerUniverse }
+			);
+			
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "failed to initialize ArtNet port:", e);
+			LOG.log(Level.WARNING, "failed to initialize ArtNet device:", e);
 		}
 	}
 	
