@@ -20,6 +20,7 @@
 
 package com.neophob.sematrix.output;
 
+import java.net.BindException;
 import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -87,8 +88,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 					new Object[] { this.nrOfUniverse, this.pixelsPerUniverse }
 			);
 			
+		} catch (BindException e) {
+			LOG.log(Level.WARNING, "\nFailed to initialize ArtNet device:", e);
+			LOG.log(Level.WARNING, "Make sure no ArtNet Tools like DMX-Workshop is running!");
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "failed to initialize ArtNet device:", e);
+			LOG.log(Level.WARNING, "Failed to initialize ArtNet device:", e);
 		}
 	}
 	
