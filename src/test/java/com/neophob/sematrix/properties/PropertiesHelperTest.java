@@ -286,28 +286,19 @@ public class PropertiesHelperTest {
     }
     
     @Test
-    public void testAdaVision() {
-        Properties config = new Properties();        
-        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
-    }
-    
-    @Test
     public void testAdaVisionCorrect() {
         Properties config = new Properties();        
-        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
+        config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/pille.palle");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
-        assertEquals(null, ph.getAdavisionSerialPort());
+        assertEquals("/dev/pille.palle", ph.getAdavisionSerialPort());
     }
 
     @Test
     public void testAdaVisionSerialPort() {
-        Properties config = new Properties();        
-        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
+        Properties config = new Properties();                
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
         config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/xxx");
@@ -319,7 +310,7 @@ public class PropertiesHelperTest {
     @Test
     public void testAdaVisionSerialPortSpeed() {
         Properties config = new Properties();        
-        config.put(ConfigConstant.ADAVISION_DEVICE, "true");
+        config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/pille.palle");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);

@@ -49,7 +49,6 @@ public final class ConfigConstant {
 	/** The Constant NULLOUTPUT_ROW2. */
 	public static final String NULLOUTPUT_ROW2 = "nulloutput.devices.row2";
 
-	public static final String ADAVISION_DEVICE = "adavision.device.enabled";
 	public static final String ADAVISION_SERIAL_PORT = "adavision.serial.port";
 	public static final String ADAVISION_SERIAL_SPEED = "adavision.serial.speed";
 

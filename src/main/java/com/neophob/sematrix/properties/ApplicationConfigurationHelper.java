@@ -613,8 +613,8 @@ public class ApplicationConfigurationHelper {
      * 
      * @return
      */
-    private int parseAdavisionDevices() {
-    	if (parseBoolean(ConfigConstant.ADAVISION_DEVICE) &&
+    private int parseAdavisionDevices() {        
+    	if (StringUtils.isNotBlank(getAdavisionSerialPort()) &&
     			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X)>0 && 
     			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y)>0) {
             this.devicesInRow1=1;

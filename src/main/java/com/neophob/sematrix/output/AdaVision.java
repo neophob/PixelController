@@ -59,7 +59,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 		LOG.log(Level.INFO,	"Initialize AdaVision lib v{0}", VERSION);
 
 		//TODO should use autodetection someday
-		String serialPort = ph.getAdavisionSerialPort();
+		String serialPort = ph.getAdavisionSerialPort().toUpperCase();
 		if (serialPort==null) {
 			serialPort = Serial.list()[0];
 		}
