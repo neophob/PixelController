@@ -57,7 +57,9 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 		    //set default
 		    baud = 115200;
 		}
-		String serialPort = ph.getTpm2Device();
+		
+		//HINT: on windows you need to (for example) use COM1, com1 will not work! (case sensitive)
+		String serialPort = ph.getTpm2Device().toUpperCase();
 		this.initialized = false;
 		try {
 			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, serialPort, baud);
