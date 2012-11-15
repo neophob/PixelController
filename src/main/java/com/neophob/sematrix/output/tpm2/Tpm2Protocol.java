@@ -21,7 +21,11 @@ package com.neophob.sematrix.output.tpm2;
 
 import com.neophob.sematrix.properties.ColorFormat;
 
-
+/**
+ * TPM protocol convert
+ * @author michu
+ *
+ */
 public abstract class Tpm2Protocol {
 
 	private static final int HEADER_SIZE = 5;
@@ -39,7 +43,8 @@ public abstract class Tpm2Protocol {
     public static byte[] doProtocol(int[] frame, ColorFormat colorFormat) {
         //3 colors per pixel
         int index = 0;
-        byte[] outputBuffer = new byte[frame.length*3 + HEADER_SIZE];
+        int frameSize = frame.length*3;
+        byte[] outputBuffer = new byte[frameSize + HEADER_SIZE];
 
         //Start-Byte
         outputBuffer[index++] = START_BYTE;
@@ -48,13 +53,12 @@ public abstract class Tpm2Protocol {
         outputBuffer[index++] = DATA_FRAME;
 
         //Raw Data Size
-        byte frameSizeByteHigh = (byte) (frame.length >> 8 & 0xff);
-        byte frameSizeByteLow = (byte) (frame.length & 0xff);
+        byte frameSizeByteHigh = (byte) (frameSize >> 8 & 0xff);
+        byte frameSizeByteLow = (byte) (frameSize & 0xff);
         outputBuffer[index++] = frameSizeByteHigh;
         outputBuffer[index++] = frameSizeByteLow;
 
         //Raw Data
-        //TODO respect color order
         for (int i = 0; i < frame.length; i++) {
             outputBuffer[index++] = (byte) ((frame[i] >> 16) & 255);
             outputBuffer[index++] = (byte) ((frame[i] >> 8) & 255);

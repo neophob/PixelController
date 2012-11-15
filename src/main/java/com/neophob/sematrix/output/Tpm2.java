@@ -33,8 +33,6 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  * 
  * There is only ONE Matrix supported per output.
  * 
- * TODO not finished yet!
- *
  * @author michu
  */
 public class Tpm2 extends OnePanelResolutionAwareOutput {
