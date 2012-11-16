@@ -26,6 +26,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.layout.Layout.LayoutName;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 
@@ -94,6 +95,28 @@ public class PropertiesHelperTest {
         assertEquals(OutputDeviceEnum.PIXELINVADERS, ph.getOutputDevice());
     }
 
+    @Test
+    public void testPixelInvadersAdvancedConfig() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180_FLIPPEDY,NO_ROTATE,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_180_FLIPPEDY,NO_ROTATE,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0,3,1,4,2,5");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+
+        assertEquals(6, ph.getNrOfScreens());
+        assertEquals(8, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        
+        List<Integer> order = ph.getPanelOrder();
+        List<DeviceConfig> displayOptions = ph.getLpdDevice();
+        
+        for (int ofs=0; ofs<ph.getNrOfScreens(); ofs++) {
+            int panelNr = order.get(ofs);            
+            System.out.println("physical ofs "+ofs+", virtual ofs: "+panelNr+", layout: "+displayOptions.get(panelNr));
+        }
+    }
+    
+    
     @Test
     public void testInvalidPixelInvadersConfigOne() {     
         Properties config = new Properties();
