@@ -112,7 +112,7 @@ public class PropertiesHelperTest {
         
         for (int ofs=0; ofs<ph.getNrOfScreens(); ofs++) {
             int panelNr = order.get(ofs);            
-            System.out.println("physical ofs "+ofs+", virtual ofs: "+panelNr+", layout: "+displayOptions.get(panelNr));
+            System.out.println("visual "+ofs+", panel ofs: "+panelNr+", layout: "+displayOptions.get(panelNr));
         }
     }
     
