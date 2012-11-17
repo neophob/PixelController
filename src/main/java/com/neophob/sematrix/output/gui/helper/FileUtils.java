@@ -75,7 +75,7 @@ public class FileUtils {
 	 */
 	static class BlinkenlightsFilter implements FilenameFilter {		
 		public boolean accept(File dir, String name) {
-	        return (name.endsWith(".bml"));
+	        return (name.toLowerCase().endsWith(".bml"));
 	    }
 	}
 
@@ -86,7 +86,7 @@ public class FileUtils {
 	 */
 	static class ImageFilter implements FilenameFilter {		
 	    public boolean accept(File dir, String name) {
-	        return (name.endsWith(".jpg") || name.endsWith(".gif"));
+	        return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".gif") || name.toLowerCase().endsWith(".jpeg"));
 	    }
 	}
 	
