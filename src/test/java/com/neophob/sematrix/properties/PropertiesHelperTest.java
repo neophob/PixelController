@@ -26,7 +26,6 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.layout.Layout.LayoutName;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 
@@ -107,12 +106,14 @@ public class PropertiesHelperTest {
         assertEquals(8, ph.getDeviceXResolution());
         assertEquals(8, ph.getDeviceYResolution());
         
+        List<ColorFormat> colorFormat = ph.getColorFormat();
         List<Integer> order = ph.getPanelOrder();
         List<DeviceConfig> displayOptions = ph.getLpdDevice();
         
         for (int ofs=0; ofs<ph.getNrOfScreens(); ofs++) {
             int panelNr = order.get(ofs);            
-            System.out.println("visual "+ofs+", panel ofs: "+panelNr+", layout: "+displayOptions.get(panelNr));
+            System.out.println("visual "+ofs+", panel ofs: "+panelNr+", layout: "+displayOptions.get(panelNr)+
+            		" colorformat: "+colorFormat.get(panelNr));
         }
     }
     
