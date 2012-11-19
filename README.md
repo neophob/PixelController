@@ -48,11 +48,11 @@ There are different frontends for PixelController:
 * FUDI interface, default listening port 3448, used to communicate with PureData
 
 Valid commands:
-`michu-> ./PixConCli.sh 
-PixelController Client v0.3
-Usage: Client [-h hostname] [-p port] -c ValidCommand
-Valid commands:
-  CHANGE_GENERATOR_A	# of parameter: 1	<INT> change first generator for current visual
+    michu-> ./PixConCli.sh 
+    PixelController Client v0.3
+    Usage: Client [-h hostname] [-p port] -c ValidCommand
+    Valid commands:
+        CHANGE_GENERATOR_A	# of parameter: 1	<INT> change first generator for current visual
 	CHANGE_GENERATOR_B	# of parameter: 1	<INT> change first generator for current visual
 	CHANGE_EFFECT_A	# of parameter: 1	<INT> change first effect for current visual
 	CHANGE_EFFECT_B	# of parameter: 1	<INT> change second effect for current visual
@@ -90,7 +90,7 @@ Valid commands:
 	JMX_STAT	# of parameter: 0	show JMX runtime statistic, default port: 1337 (use the -p switch)
 	SCREENSHOT	# of parameter: 0	save screenhot
 	FREEZE	# of parameter: 0	toggle pause mode
-`
+
 
 ## IT DOES NOT WORK!
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
