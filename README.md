@@ -48,10 +48,10 @@ There are different frontends for PixelController:
 * FUDI interface, default listening port 3448, used to communicate with PureData
 
 Valid commands:
-    michu-> ./PixConCli.sh 
-    PixelController Client v0.3
-    Usage: Client [-h hostname] [-p port] -c ValidCommand
-    Valid commands:
+        michu-> ./PixConCli.sh 
+        PixelController Client v0.3
+        Usage: Client [-h hostname] [-p port] -c ValidCommand
+        Valid commands:
         CHANGE_GENERATOR_A	# of parameter: 1	<INT> change first generator for current visual
 	CHANGE_GENERATOR_B	# of parameter: 1	<INT> change first generator for current visual
 	CHANGE_EFFECT_A	# of parameter: 1	<INT> change first effect for current visual
