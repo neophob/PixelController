@@ -49,13 +49,13 @@ There are different frontends for PixelController:
 
 **Valid commands**:
 
-        CHANGE_GENERATOR_A	# of parameter: 1	<INT> change first generator for current visual
-        CHANGE_GENERATOR_B	# of parameter: 1	<INT> change first generator for current visual
-        CHANGE_EFFECT_A	# of parameter: 1	<INT> change first effect for current visual
-        CHANGE_EFFECT_B	# of parameter: 1	<INT> change second effect for current visual
-        CHANGE_MIXER	# of parameter: 1	<INT> change mixer for current visual
-        CURRENT_VISUAL	# of parameter: 1	<INT> select actual visual
-        CURRENT_COLORSET	# of parameter: 1	<INT> select actual ColorSet
+    CHANGE_GENERATOR_A	# of parameter: 1	<INT> change first generator for current visual
+    CHANGE_GENERATOR_B	# of parameter: 1	<INT> change first generator for current visual
+    CHANGE_EFFECT_A	# of parameter: 1	<INT> change first effect for current visual
+    CHANGE_EFFECT_B	# of parameter: 1	<INT> change second effect for current visual
+    CHANGE_MIXER	# of parameter: 1	<INT> change mixer for current visual
+    CURRENT_VISUAL	# of parameter: 1	<INT> select actual visual
+    CURRENT_COLORSET	# of parameter: 1	<INT> select actual ColorSet
 
 	CHANGE_OUTPUT_VISUAL	# of parameter: 1	<INT> change visual for current output
 	CHANGE_OUTPUT_FADER	# of parameter: 1	<INT> change fader for current output
