@@ -37,14 +37,6 @@ public class OutputMapping {
 	
 	/** The fader. */
 	private Fader fader;
-	
-	/**
-	 * default setting.
-	 */
-	public OutputMapping() {
-		this.visualNumber = 0;		
-		this.fader = PixelControllerFader.getFader(FaderName.SWITCH);
-	}
 
 	/**
 	 * initialize the mapping.
@@ -53,7 +45,7 @@ public class OutputMapping {
 	 * @param screenNr the screen nr
 	 */
 	public OutputMapping(int visualNumber) {
-		this();
+		this.fader = PixelControllerFader.getFader(FaderName.SWITCH);
 		this.visualNumber = visualNumber;
 	}
 

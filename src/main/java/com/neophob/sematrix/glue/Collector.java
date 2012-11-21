@@ -480,10 +480,12 @@ public final class Collector {
 		}
 
 		//get output status
+		int ofs=0;
 		for (OutputMapping om: ioMapping) {
-			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+om.getVisualId());
+			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+ofs);
 			ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());			
+			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+			ofs++;
 		}
 
 		return ret;
