@@ -74,9 +74,10 @@ public class Tpm2Net extends Output {
 	public Tpm2Net(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.TPM2NET, ph, controller, 8);
 		
-		this.displayOptions = ph.getLpdDevice();
+		this.displayOptions = ph.getLpdDevice();		
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
+		
 		String targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 
@@ -131,7 +132,9 @@ public class Tpm2Net extends Output {
 				int panelNr = this.panelOrder.get(ofs);
 
 				int[] transformedBuffer = 
-						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
+						RotateBuffer.transformImage(super.getBufferForScreen(ofs), /*displayOptions.get(panelNr)*/
+								//TODO add/support device config
+								DeviceConfig.NO_ROTATE,
 								Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
