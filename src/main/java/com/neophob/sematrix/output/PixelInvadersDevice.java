@@ -31,7 +31,7 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to the PixelInvaders Device.
- * A Pixelinvaders Panel is always 8x8
+ * A Pixelinvaders Panel is always 8x8 but supports multiple panels
  *
  * @author michu
  */
