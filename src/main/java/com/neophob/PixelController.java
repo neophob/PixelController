@@ -42,6 +42,7 @@ import com.neophob.sematrix.output.RainbowduinoV2Device;
 import com.neophob.sematrix.output.RainbowduinoV3Device;
 import com.neophob.sematrix.output.StealthDevice;
 import com.neophob.sematrix.output.Tpm2;
+import com.neophob.sematrix.output.Tpm2Net;
 import com.neophob.sematrix.output.UdpDevice;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.output.gui.OutputGui;
@@ -154,6 +155,9 @@ public class PixelController extends PApplet {
                 break;
 			case TPM2:
 				this.output = new Tpm2(applicationConfig, this.collector.getPixelControllerOutput());
+				break;
+			case TPM2NET:
+				this.output = new Tpm2Net(applicationConfig, this.collector.getPixelControllerOutput());				
 				break;
 			default:
 				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);

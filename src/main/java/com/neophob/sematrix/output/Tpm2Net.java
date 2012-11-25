@@ -77,7 +77,7 @@ public class Tpm2Net extends Output {
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
-		String targetAddrStr = "localhost";
+		String targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 
 		try {

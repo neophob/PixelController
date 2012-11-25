@@ -120,6 +120,7 @@ public class ApplicationConfigurationHelper {
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
         int tpm2Devices = parseTpm2Devices();
+        int tpm2NetDevices = parseTpm2NetDevices();
         int nullDevices = parseNullOutputAddress();
         int adalightDevices = parseAdavisionDevices();
         int udpDevices = parseUdpDevices();       
@@ -168,9 +169,15 @@ public class ApplicationConfigurationHelper {
         if (tpm2Devices > 0) {
             enabledOutputs++;
             totalDevices = tpm2Devices;
-            LOG.log(Level.INFO, "found tpm2Devices device: "+totalDevices);
+            LOG.log(Level.INFO, "found Tpm2 serial device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.TPM2;
-        }         
+        }       
+        if (tpm2NetDevices > 0) {
+            enabledOutputs++;
+            totalDevices = tpm2NetDevices;
+            LOG.log(Level.INFO, "found Tpm2 Net device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.TPM2NET;
+        }       
         if (nullDevices > 0) {
             enabledOutputs++;
             totalDevices = nullDevices;
@@ -753,6 +760,20 @@ public class ApplicationConfigurationHelper {
         }
         return 0;    	
     }
+    
+    /**
+     * Parses tpm2net devices
+     * @return
+     */
+    private int parseTpm2NetDevices() {
+    	if (StringUtils.isNotBlank(getTpm2NetIpAddress()) && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
+            this.deviceXResolution = parseOutputXResolution();            
+            this.deviceYResolution = parseOutputYResolution();
+            //TODO add support for multiple devices
+            return 1;
+    	}
+    	return 0;
+    }
 
     /**
      * Parses the mini dmx devices x.
@@ -1027,6 +1048,16 @@ public class ApplicationConfigurationHelper {
      */
     public List<String> getPixelInvadersBlacklist() {
         return pixelInvadersBlacklist;
+    }
+    
+    
+    /**
+     * get configured tpm2net ip.
+     *
+     * @return the tpm2net ip
+     */
+    public String getTpm2NetIpAddress() {
+        return config.getProperty(ConfigConstant.TPM2NET_IP);
     }
     
     
