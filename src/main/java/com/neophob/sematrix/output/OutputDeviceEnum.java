@@ -47,6 +47,9 @@ public enum OutputDeviceEnum {
 	/** The TPM2. */
 	TPM2(Tpm2.class, true),
 
+	/** The TPM2Net. */
+	TPM2NET(Tpm2Net.class, true),
+
 	/** The UDP. */
 	UDP(UdpDevice.class, true),
 
