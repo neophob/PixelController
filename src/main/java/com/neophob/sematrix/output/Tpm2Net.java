@@ -103,7 +103,7 @@ public class Tpm2Net extends Output {
 	 * @param data
 	 */
 	private void sendTpm2NetPacketOut(int universeId, int frameSize, byte[] data) {
-        byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE];
+        byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
 		outputBuffer[0] = (byte)0x9c;
 		outputBuffer[1] = (byte)0xda;
 		outputBuffer[2] = ((byte)(frameSize >> 8 & 0xFF));
@@ -140,7 +140,7 @@ public class Tpm2Net extends Output {
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 				
 				//TODO optimize packt sender
-				sendTpm2NetPacketOut(0, 3*rgbBuffer.length, rgbBuffer);
+				sendTpm2NetPacketOut(0, rgbBuffer.length, rgbBuffer);
 			}
 		}
 	}
