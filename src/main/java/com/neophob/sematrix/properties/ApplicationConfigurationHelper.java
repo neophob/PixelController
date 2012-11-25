@@ -770,6 +770,8 @@ public class ApplicationConfigurationHelper {
             this.deviceXResolution = parseOutputXResolution();            
             this.deviceYResolution = parseOutputYResolution();
             //TODO add support for multiple devices
+            this.devicesInRow1=1;
+            this.devicesInRow2=0;
             return 1;
     	}
     	return 0;
