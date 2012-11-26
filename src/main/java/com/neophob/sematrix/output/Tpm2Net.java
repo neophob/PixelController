@@ -133,14 +133,12 @@ public class Tpm2Net extends Output {
 
 				int[] transformedBuffer = 
 						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
-								//TODO add/support device config
-								//DeviceConfig.NO_ROTATE,
 								Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 				
 				//TODO optimize packt sender
-				sendTpm2NetPacketOut(0, rgbBuffer.length, rgbBuffer);
+				sendTpm2NetPacketOut(ofs, rgbBuffer.length, rgbBuffer);
 			}
 		}
 	}
