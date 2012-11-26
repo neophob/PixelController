@@ -83,6 +83,9 @@ public class ApplicationConfigurationHelper {
     /** The stealth device. */
     private List<DeviceConfig> stealthDevice=null;
 
+    /** The stealth device. */
+    private List<DeviceConfig> tpm2netDevice=null;
+
     /** The color format. */
     private List<ColorFormat> colorFormat=null;
 
@@ -766,15 +769,39 @@ public class ApplicationConfigurationHelper {
      * @return
      */
     private int parseTpm2NetDevices() {
+        tpm2netDevice = new ArrayList<DeviceConfig>();
+
     	if (StringUtils.isNotBlank(getTpm2NetIpAddress()) && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
             this.deviceXResolution = parseOutputXResolution();            
             this.deviceYResolution = parseOutputYResolution();
-            //TODO add support for multiple devices
-            this.devicesInRow1=1;
-            this.devicesInRow2=0;
-            return 1;
+            
+            String value = config.getProperty(ConfigConstant.TPM2NET_ROW1);
+            if (StringUtils.isNotBlank(value)) {
+                for (String s: value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(s);
+                        tpm2netDevice.add(cfg);
+                        devicesInRow1++;
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
+
+            value = config.getProperty(ConfigConstant.TPM2NET_ROW2);
+            if (StringUtils.isNotBlank(value)) {
+                for (String s: value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(s);
+                        tpm2netDevice.add(cfg);
+                        devicesInRow2++;				
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
     	}
-    	return 0;
+    	return tpm2netDevice.size();
     }
 
     /**
@@ -970,6 +997,16 @@ public class ApplicationConfigurationHelper {
     public List<DeviceConfig> getStealthDevice() {
         return stealthDevice;
     }
+    
+    /**
+     * Gets the tpm2net device.
+     *
+     * @return options to display Stealth displays
+     */
+    public List<DeviceConfig> getTpm2NetDevice() {
+        return tpm2netDevice;
+    }
+    
 
     /**
      * Gets the color format.

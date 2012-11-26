@@ -408,6 +408,18 @@ public class PropertiesHelperTest {
     }
 
     @Test
+    public void testTpm2Net() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.TPM2NET_IP, "1.2.3.4");
+        config.put(ConfigConstant.TPM2NET_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.TPM2NET_ROW2, "NO_ROTATE,NO_ROTATE");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        assertEquals(OutputDeviceEnum.TPM2NET, ph.getOutputDevice());
+        assertEquals(4, ph.getTpm2NetDevice().size());
+        assertEquals("1.2.3.4", ph.getTpm2NetIpAddress());
+    }
+
+    @Test
     public void testNetworkSettings() {
         Properties config = new Properties();        
         config.put(ConfigConstant.NET_LISTENING_ADDR, "1.2.3.4");

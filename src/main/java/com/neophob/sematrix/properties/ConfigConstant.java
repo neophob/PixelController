@@ -133,4 +133,6 @@ public final class ConfigConstant {
 	public static final String FPS = "fps";	
 	
 	public static final String TPM2NET_IP ="tpm2net.ip";
+	public static final String TPM2NET_ROW1 = "tpm2net.layout.row1";
+	public static final String TPM2NET_ROW2 = "tpm2net.layout.row2";
 }
