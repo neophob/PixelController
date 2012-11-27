@@ -39,6 +39,23 @@ import com.neophob.sematrix.properties.DeviceConfig;
  * 
  * see http://www.ledstyles.de/ftopic18969.html for more details
  * 
+ * Protocol:
+ * Blockstart-Byte:        0x9C
+ * 
+ * Block-Art:              0xDA = Datenframe (DAta) *oder*
+ *                         0xC0 = Befehl (Command) *oder*
+ *                         0xAA = Angeforderte Antwort (vom Datenempfänger an den Sender)
+ * 
+ * Framegrösse in 16 Bit:  High-Byte zuerst, dann
+ *                         Low-Byte
+ * 
+ * Paketnummer:            0-255
+ * 
+ * Nutzdaten:              1 - 65.535 Bytes Daten oder Befehle mit Parametern
+ * 
+ * Blockende-Byte:         0x36
+ * 
+ * 
  * 
  * @author michu
  *
@@ -98,13 +115,15 @@ public class Tpm2Net extends Output {
 
 	
 	/**
-	 * 
-	 * @param targetAddr
-	 * @param universeId
+	 * send out a tpm2net paket
+	 *  
+	 * @param packetNumber: a tpm2net frame can consists out of multiple udp packets
+	 *                      HINT: this violate the tpm2net protocol!
+	 *                      TODO 
 	 * @param frameSize
 	 * @param data
 	 */
-	private void sendTpm2NetPacketOut(int universeId, byte[] data) {
+	private void sendTpm2NetPacketOut(int packetNumber, byte[] data) {
 		int frameSize = data.length;
         byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
         
@@ -113,7 +132,7 @@ public class Tpm2Net extends Output {
 		outputBuffer[1] = (byte)0xda;
 		outputBuffer[2] = ((byte)(frameSize >> 8 & 0xFF));
 		outputBuffer[3] = ((byte)(frameSize & 0xFF));
-		outputBuffer[4] = ((byte)universeId);
+		outputBuffer[4] = ((byte)packetNumber);
 		
 		//write footer
 		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = (byte)0x36;		
