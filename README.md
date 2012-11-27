@@ -34,6 +34,7 @@ PixelController supports different (LED) matrix hardware devices:
 * Element Labs Stealth LED panel. No longer in production (http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf)
 * Generic UDP Devices (for example Raspberry Pi, check out the PixelPi Software)
 * TPM2 Serial devices (see http://ledstyles.de for more information)
+* TPM2 Net devices (see http://ledstyles.de for more information)
 
 Check out the `data/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
