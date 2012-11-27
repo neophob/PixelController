@@ -66,6 +66,8 @@ public class Tpm2Net extends Output {
 	/** define how the panels are arranged */
 	private List<Integer> panelOrder;
 
+	private DatagramPacket tpm2UdpPacket;
+	
 	/**
 	 * 
 	 * @param ph
@@ -84,7 +86,8 @@ public class Tpm2Net extends Output {
 		try {
 			this.targetAddr = InetAddress.getByName(targetAddrStr);			
 			this.outputSocket = new DatagramSocket();
-			
+			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, TPM2_NET_PORT);
+
 			this.initialized = true;
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to resolve target address: {0}", e);
@@ -92,7 +95,6 @@ public class Tpm2Net extends Output {
 
 
 	}
-
 
 	
 	/**
@@ -102,20 +104,23 @@ public class Tpm2Net extends Output {
 	 * @param frameSize
 	 * @param data
 	 */
-	private void sendTpm2NetPacketOut(int universeId, int frameSize, byte[] data) {
+	private void sendTpm2NetPacketOut(int universeId, byte[] data) {
+		int frameSize = data.length;
         byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
+        
+        //write header of udp packet
 		outputBuffer[0] = (byte)0x9c;
 		outputBuffer[1] = (byte)0xda;
 		outputBuffer[2] = ((byte)(frameSize >> 8 & 0xFF));
 		outputBuffer[3] = ((byte)(frameSize & 0xFF));
 		outputBuffer[4] = ((byte)universeId);
-
-		System.arraycopy(data, 0, outputBuffer, TPM2_NET_HEADER_SIZE, frameSize);
-		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = (byte)0x36;
-
-		DatagramPacket tpm2UdpPacket = new DatagramPacket(outputBuffer, frameSize + TPM2_NET_HEADER_SIZE + 1, 
-				targetAddr, TPM2_NET_PORT);
 		
+		//write footer
+		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = (byte)0x36;		
+		System.arraycopy(data, 0, outputBuffer, TPM2_NET_HEADER_SIZE, frameSize);		
+		
+		tpm2UdpPacket.setData(outputBuffer);
+
 		try {
 			this.outputSocket.send(tpm2UdpPacket);
 		} catch (Exception e) {
@@ -138,7 +143,7 @@ public class Tpm2Net extends Output {
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 				
 				//TODO optimize packt sender
-				sendTpm2NetPacketOut(ofs, rgbBuffer.length, rgbBuffer);
+				sendTpm2NetPacketOut(ofs, rgbBuffer);
 			}
 		}
 	}
