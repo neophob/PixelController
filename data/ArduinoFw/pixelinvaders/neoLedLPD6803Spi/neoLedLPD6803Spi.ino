@@ -89,8 +89,10 @@ static void sendAck() {
   serialResonse[3] = g_errorCounter;
   Serial.write(serialResonse, SERIALBUFFERSIZE);
 
-  //comment out next line on arduino!
+#if defined (CORE_TEENSY_SERIAL)
+  //Teensy supports send now
   Serial.send_now();
+#endif
 }
 
 
@@ -287,6 +289,8 @@ byte readCommand(byte *str) {
     g_errorCounter = 102;
     return 0;    
   }
+  
+  
 
   //read header  
   i=1;
