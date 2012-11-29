@@ -134,7 +134,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 				}
 			}
 			
-			if ((noUpdate+needUpdate)%100==0) {
+			if ((noUpdate+needUpdate)%1000==0) {
 				float f = noUpdate+needUpdate;
 				float result = (100.0f/f)*needUpdate;
 				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
