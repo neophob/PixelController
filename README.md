@@ -102,7 +102,7 @@ Here are some common errors:
 * **PixelInvaders panels**: A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
    for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
    deal, as the timeout value cold be adjusted in the firmware.
-
+* Make sure you're using an up-to date Java Runtime (JRE), this usually helps when JVM crashes.
 
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
