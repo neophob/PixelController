@@ -172,7 +172,7 @@ void setup() {
   Serial.flush();
 
   //cpu use and SPI clock MUST be adjusted
-  // setting for 6 panels, cpu max:45 spi_clock_div128
+  // setting for 6 panels, cpu max:43 SPI_CLOCK_DIV64
   // setting for 2 panels, cpu max:PLAY!
   
   strip.setCPUmax(45);  // start with 50% CPU usage. up this if the strand flickers or is slow  
