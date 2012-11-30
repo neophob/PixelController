@@ -38,7 +38,6 @@
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
-//#define BAUD_RATE 230400//
 #define BAUD_RATE 115200
 
 //--- protocol data start
@@ -175,9 +174,13 @@ void setup() {
   // setting for 6 panels, cpu max:43 SPI_CLOCK_DIV64
   // setting for 2 panels, cpu max:PLAY!
   
-  strip.setCPUmax(45);  // start with 50% CPU usage. up this if the strand flickers or is slow  
-  strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
-//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+  strip.setCPUmax(45);  // start with 50% CPU usage. up this if the strand flickers or is slow
+  
+  //HINT: SPI_CLOCK_DIV16 shift out the data very fast, this means the uP has more time to recieve
+  //      serial data -> faster FPS. However SPI_CLOCK_DIV16 is very fragil an may have some issues
+  //      depending on your installation (cable length...). So experiment.
+  //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
+  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
 //  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
 //  strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
   showInitImage();      // display some colors
