@@ -209,10 +209,6 @@ public final class Collector {
 		
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
-		if (additionalVisuals>32) {
-			//just make sure we don't kill the cpu...
-			additionalVisuals = 32;
-		}
 		Visual.initializeVisuals(nrOfScreens+additionalVisuals);
 				
 		pixelControllerOutput = new PixelControllerOutput();

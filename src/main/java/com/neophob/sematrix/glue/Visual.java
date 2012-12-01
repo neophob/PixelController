@@ -371,13 +371,18 @@ public class Visual {
 		return getBufferAsImage(getMixerBuffer());
 	}
 	
+	//TODO make configurable
+	private static final int MAX_NR_OF_VISUALS = 12;
+	
 	/**
 	 * initialize the visuals...
+	 * 
+	 * TODO move me away
 	 *
 	 * @param nrOfScreens the nr of screens
 	 */
 	public static void initializeVisuals(int nrOfScreens) {
-		for (int n=0; n<nrOfScreens; n++) {
+		for (int n=0; n<nrOfScreens && n<MAX_NR_OF_VISUALS; n++) {
 			switch (n%10) {
 			case 0:
 				new Visual(GeneratorName.BLINKENLIGHTS);
