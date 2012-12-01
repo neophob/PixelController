@@ -37,6 +37,7 @@ public class BoxLayout extends Layout {
 	private static final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
 	
 	private final int YSIZE = 2;
+	private final int MAXVAL = 1000;
 	
 	/** The io mapping size. */
 	private int ioMappingSize;
@@ -63,14 +64,13 @@ public class BoxLayout extends Layout {
 	 */
 	private int howManyScreensShareThisFxOnTheXAxis(int fxInput) {
 		int max=0;
-		int min=10;
+		int min=MAXVAL;
 		OutputMapping o;
 
 		//we only have 2 rows
-		int xsize=ioMappingSize/2;
 		for (int y=0; y<YSIZE; y++) {	
-			for (int x=0; x<xsize; x++) {
-				o = Collector.getInstance().getOutputMappings(xsize*y+x);
+			for (int x=0; x<row1Size; x++) {
+				o = Collector.getInstance().getOutputMappings(row1Size*y+x);
 				if (o.getVisualId()==fxInput) {
 					if (x<min) {
 						min=x;
@@ -94,14 +94,13 @@ public class BoxLayout extends Layout {
 	 */
 	private int howManyScreensShareThisFxOnTheYAxis(int fxInput) {
 		int max=0;
-		int min=10;
+		int min=MAXVAL;
 		OutputMapping o;
 
 		//we only have 2 rows
-		int xsize=ioMappingSize/2;
-		for (int x=0; x<xsize; x++) {
+		for (int x=0; x<row1Size; x++) {
 			for (int y=0; y<YSIZE; y++) {
-				o = Collector.getInstance().getOutputMappings(xsize*y+x);
+				o = Collector.getInstance().getOutputMappings(row1Size*y+x);
 
 				if (o.getVisualId()==fxInput) {
 					if (y<min) {
@@ -129,8 +128,8 @@ public class BoxLayout extends Layout {
 	 */
 	private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens, int visualId) {
 		int ret = screenNr;
-		if (ret>=ioMappingSize/2) {
-			ret-=ioMappingSize/2;
+		if (ret>=row1Size) {
+			ret-=row1Size;
 		}
 
 		if (fxOnHowMayScreens==1 || ret==0) {
@@ -176,8 +175,7 @@ public class BoxLayout extends Layout {
 			return 0;
 		}
 
-		if (screenNr>=ioMappingSize/2) {
-			//System.out.println(fxOnHowMayScreens);
+		if (screenNr>=row1Size) {
 			return 1;
 		}
 
