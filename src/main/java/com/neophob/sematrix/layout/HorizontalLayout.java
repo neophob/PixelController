@@ -19,6 +19,9 @@
 
 package com.neophob.sematrix.layout;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 
@@ -31,6 +34,8 @@ import com.neophob.sematrix.glue.OutputMapping;
  */
 public class HorizontalLayout extends Layout {
 
+	private static final Logger LOG = Logger.getLogger(HorizontalLayout.class.getName());
+	
 	/**
 	 * Instantiates a new horizontal layout.
 	 *
@@ -39,6 +44,9 @@ public class HorizontalLayout extends Layout {
 	 */
 	public HorizontalLayout(int row1Size, int row2Size) {
 		super(LayoutName.HORIZONTAL, row1Size, row2Size);
+		
+		LOG.log(Level.INFO,	"HorizontalLayout created, size row1: {0}, row 2:{1}", new Object[] {row1Size, row2Size});
+
 	}
 
 	/**

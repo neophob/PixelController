@@ -19,6 +19,9 @@
 
 package com.neophob.sematrix.layout;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 
@@ -31,6 +34,10 @@ import com.neophob.sematrix.glue.OutputMapping;
  */
 public class BoxLayout extends Layout {
 
+	private static final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
+	
+	private final int YSIZE = 2;
+	
 	/** The io mapping size. */
 	private int ioMappingSize;
 
@@ -43,6 +50,8 @@ public class BoxLayout extends Layout {
 	public BoxLayout(int row1Size, int row2Size) {
 		super(LayoutName.BOX, row1Size, row2Size);
 		ioMappingSize = Collector.getInstance().getAllOutputMappings().size();
+		
+		LOG.log(Level.INFO,	"BoxLayout created, size row1: {0}, row 2: {1}, mapping size: {2}", new Object[] {row1Size, row2Size, ioMappingSize});
 	}
 
 
@@ -59,7 +68,7 @@ public class BoxLayout extends Layout {
 
 		//we only have 2 rows
 		int xsize=ioMappingSize/2;
-		for (int y=0; y<2; y++) {	
+		for (int y=0; y<YSIZE; y++) {	
 			for (int x=0; x<xsize; x++) {
 				o = Collector.getInstance().getOutputMappings(xsize*y+x);
 				if (o.getVisualId()==fxInput) {
@@ -91,7 +100,7 @@ public class BoxLayout extends Layout {
 		//we only have 2 rows
 		int xsize=ioMappingSize/2;
 		for (int x=0; x<xsize; x++) {
-			for (int y=0; y<2; y++) {
+			for (int y=0; y<YSIZE; y++) {
 				o = Collector.getInstance().getOutputMappings(xsize*y+x);
 
 				if (o.getVisualId()==fxInput) {
@@ -111,23 +120,45 @@ public class BoxLayout extends Layout {
 
 
 	/**
-	 * return y offset of screen position
+	 * return x offset of screen position
 	 * (0=first row, 1=second row...)
 	 *
 	 * @param screenNr the screen nr
 	 * @param fxOnHowMayScreens the fx on how may screens
 	 * @return the x offset for screen
 	 */
-	private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
-		if (fxOnHowMayScreens==1 || screenNr==0) {
+	private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens, int visualId) {
+		int ret = screenNr;
+		if (ret>=ioMappingSize/2) {
+			ret-=ioMappingSize/2;
+		}
+
+		if (fxOnHowMayScreens==1 || ret==0) {
 			return 0;
 		}
 
-		if (screenNr>=ioMappingSize/2) {
-			screenNr-=ioMappingSize/2;
-		}
+		//Bug x offset is not correct if start
 
-		return screenNr;
+		//get start offset, example:
+		//
+		// O X X
+		// O X X
+		//
+		// O = Visual 1
+		// X = Visual 2
+		//
+		int xOfs = ret;
+		for (int i=0; i<ret; i++) {
+			OutputMapping o1 = Collector.getInstance().getOutputMappings(0+i);
+			OutputMapping o2 = Collector.getInstance().getOutputMappings(row1Size+i);
+			if ((o1.getVisualId()==o2.getVisualId()) && (o2.getVisualId()!=visualId)) {
+				if (xOfs>0) {
+					xOfs--;
+				}
+			}			
+		}
+		return xOfs;
+		
 	}
 
 	/**
@@ -159,17 +190,17 @@ public class BoxLayout extends Layout {
 	 * @see com.neophob.sematrix.layout.Layout#getDataForScreen(int)
 	 */
 	public LayoutModel getDataForScreen(int screenNr) {
-		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
+		int visualId = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
 
-		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(fxInput);
-		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(fxInput);
+		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(visualId);
+		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(visualId);
 
 		return new LayoutModel(
 				fxOnHowMayScreensX, 
 				fxOnHowMayScreensY,
-				this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX),
+				this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX, visualId),
 				this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY),
-				fxInput);
+				visualId);
 	}
 
 }
