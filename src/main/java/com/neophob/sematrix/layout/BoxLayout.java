@@ -137,9 +137,7 @@ public class BoxLayout extends Layout {
 			return 0;
 		}
 
-		//Bug x offset is not correct if start
-
-		//get start offset, example:
+		//Get start X offset, example:
 		//
 		// O X X
 		// O X X
@@ -151,7 +149,7 @@ public class BoxLayout extends Layout {
 		for (int i=0; i<ret; i++) {
 			OutputMapping o1 = Collector.getInstance().getOutputMappings(0+i);
 			OutputMapping o2 = Collector.getInstance().getOutputMappings(row1Size+i);
-			if ((o1.getVisualId()==o2.getVisualId()) && (o2.getVisualId()!=visualId)) {
+			if ((o1.getVisualId()!=visualId) && (o2.getVisualId()!=visualId)) {				
 				if (xOfs>0) {
 					xOfs--;
 				}
