@@ -1,17 +1,21 @@
 TODO PixelController
 --------------------
 -MatrixData: make internal buffersize configurable (currently deviceSize*8) to reduce cpu load
--do not freeze application if output fails (disconnect controller)
--particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
+-Do not freeze application if output fails (disconnect controller)
+-Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 -More layouts (Half/Half, 3/1...). Current layouts are hardware dependant. New layout shouldn't be. 
- Example: 3/1 Layout defines two virtual panels, panel 1 using physical panel a and b, panel 2 using physical panel c
    +---+---+---+
    | a | b | c |
    +---+---+---+   
--artnet output: support multiple output devices / multiple universe
+   | d | e | f |
+   +---+---+---+   
+ Example: 3/1 Layout defines 2 virtual panels, panel 1 using physical panel a,b,d,e panel 2 using physical panel c and f.
+ Example: Fancy Layout defines 3 virtual panels, panel 1 using physical panel a,b,d,e, panel 2 using physical panel c
+          panel 3 using physical panel f
+-Artnet output: support multiple output devices / multiple universe
 -Unit Testing is suboptimal, the file config.properties is not used 
--support Kinect for Xbox 360 
--support Renard Protocol
+-Support Kinect for Xbox 360 
+-Support Renard Protocol
 -Manual for v1.3
 
 
@@ -36,7 +40,7 @@ Changelog v1.2 to v1.3
 -Integrate OSC Server
 -Reduce CPU load
 -fixed Blinkenlight video player race condition
--improved rxtx lib
+-improved rxtx lib, fix some 64bit issus
 
 
 Changelog v1.1 to v1.2
