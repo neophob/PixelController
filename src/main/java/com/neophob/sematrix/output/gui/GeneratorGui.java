@@ -514,6 +514,14 @@ public class GeneratorGui extends PApplet {
         //----------
         // MISC
         //----------    
+        
+        Textlabel tSnd = cp5.addTextlabel("sndDesc", " Kick/Snare/Hat Detection", GENERIC_X_OFS+singleVisualXSize-5, singleVisualYSize+SELECTED_MARKER+21);
+        tSnd.moveTo(ALWAYS_VISIBLE_TAB);
+        tSnd.setColor(0x6e6e6e);
+
+        Textlabel tFrameProg = cp5.addTextlabel("frameDesc", "Frame Progress", GENERIC_X_OFS-3, singleVisualYSize+SELECTED_MARKER+21);
+        tFrameProg.moveTo(ALWAYS_VISIBLE_TAB);        
+        tFrameProg.setColor(0x6e6e6e);
 
         //register event listener
         cp5.addListener(listener);
