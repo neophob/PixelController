@@ -77,7 +77,7 @@ public class OscServer implements OscEventListener {
 				new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });		
 
 		//address pattern -> internal message mapping
-		String pattern = theOscMessage.addrPattern().trim().substring(1).toUpperCase();
+		String pattern = theOscMessage.addrPattern().trim().toUpperCase();
 		try {
 			ValidCommands command = ValidCommands.valueOf(pattern);
 			String[] msg = new String[1+command.getNrOfParams()];
