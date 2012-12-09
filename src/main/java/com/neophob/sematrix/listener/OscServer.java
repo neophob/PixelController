@@ -86,7 +86,8 @@ public class OscServer implements OscEventListener {
 
 				//parse osc message
 				if (theOscMessage.checkTypetag("s")) {
-					msg[i+1] = theOscMessage.get(i).stringValue();	
+					msg[i+1] = theOscMessage.get(i).stringValue();
+					LOG.log(Level.INFO,	"PARAM {0}", msg[i+1]); 
 				} else
 					if (theOscMessage.checkTypetag("i")) {
 						msg[i+1] = ""+theOscMessage.get(i).intValue();	
