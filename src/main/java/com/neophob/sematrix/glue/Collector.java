@@ -801,8 +801,15 @@ public final class Collector {
 		return currentColorSet;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ColorSet getActiveColorSet() {
-		return this.colorSets.get(currentColorSet);
+		if (currentColorSet<this.colorSets.size()) {
+			return this.colorSets.get(currentColorSet);			
+		}
+		return this.colorSets.get(0);
 	}
 
 	/**
