@@ -22,7 +22,8 @@ package com.neophob.sematrix.output.tpm2;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
- * TPM protocol convert
+ * TPM serial protocol converter
+ * 
  * @author michu
  *
  */
