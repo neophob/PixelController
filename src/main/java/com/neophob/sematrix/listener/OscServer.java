@@ -78,7 +78,7 @@ public class OscServer implements OscEventListener {
 				new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });		
 
 		//address pattern -> internal message mapping
-		String pattern = theOscMessage.addrPattern().trim().substring(1).toUpperCase();
+		String pattern = theOscMessage.addrPattern().trim().toUpperCase();
 		try {
 			ValidCommands command = ValidCommands.valueOf(pattern);
 			String[] msg = new String[1+command.getNrOfParams()];
@@ -87,7 +87,8 @@ public class OscServer implements OscEventListener {
 
 				//parse osc message
 				if (theOscMessage.checkTypetag("s")) {
-					msg[i+1] = theOscMessage.get(i).stringValue();	
+					msg[i+1] = theOscMessage.get(i).stringValue();
+					LOG.log(Level.INFO,	"PARAM {0}", msg[i+1]); 
 				} else
 					if (theOscMessage.checkTypetag("i")) {
 						msg[i+1] = ""+theOscMessage.get(i).intValue();	

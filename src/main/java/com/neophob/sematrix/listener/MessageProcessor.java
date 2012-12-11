@@ -353,9 +353,11 @@ public final class MessageProcessor {
 					String onOrOff = msg[1];
 					if (onOrOff.equalsIgnoreCase("ON")) {
 						col.setRandomMode(true);
+						LOG.log(Level.INFO, "Random Mode enabled");
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
 						col.setRandomMode(false);
+						LOG.log(Level.INFO, "Random Mode disabled");
 						return ValidCommands.STATUS;
 					}
 				} catch (Exception e) {
