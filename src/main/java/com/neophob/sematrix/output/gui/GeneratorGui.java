@@ -122,6 +122,8 @@ public class GeneratorGui extends PApplet {
     private int singleVisualXSize, singleVisualYSize;
     private int p5GuiYOffset;
 
+    private int frameCount;
+    
     /**
      * Instantiates a new internal buffer.
      *
@@ -622,8 +624,14 @@ public class GeneratorGui extends PApplet {
         //beat detection
         displaySoundStats(localY);
 
+        //refresh gui from time to time
+        if (col.isTriggerGuiRefresh() || frameCount++%50==2) {
+            callbackRefreshWholeGui();
+            col.setTriggerGuiRefresh(false);
+        }
+
         //update gui
-        cp5.draw();	
+        cp5.draw(); 
 
         //track used time
         col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);

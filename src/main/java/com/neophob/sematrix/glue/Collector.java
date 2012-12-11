@@ -147,6 +147,8 @@ public final class Collector {
 	/** The random mode. */
 	private boolean inPauseMode = false;
 
+	/** flag to trigger a gui refresh (update current settings from the app to the gui)*/
+	private boolean triggerGuiRefresh = false;
 	
 	/**
 	 * Instantiates a new collector.
@@ -823,7 +825,22 @@ public final class Collector {
 
 	public boolean isInPauseMode() {
 		return inPauseMode;
-	}    
+	}
+
+    /**
+     * @return the triggerGuiRefresh
+     */
+    public boolean isTriggerGuiRefresh() {
+        return triggerGuiRefresh;
+    }
+
+    /**
+     * @param triggerGuiRefresh the triggerGuiRefresh to set
+     */
+    public void setTriggerGuiRefresh(boolean triggerGuiRefresh) {
+        this.triggerGuiRefresh = triggerGuiRefresh;
+    }    
     
+	
 
 }

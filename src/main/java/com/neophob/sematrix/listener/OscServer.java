@@ -29,6 +29,7 @@ import oscP5.OscP5;
 import oscP5.OscStatus;
 import processing.core.PApplet;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -96,6 +97,9 @@ public class OscServer implements OscEventListener {
 						}				
 			}
 			MessageProcessor.processMsg(msg, true);
+			
+			//refresh gui
+			Collector.getInstance().setTriggerGuiRefresh(true);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to parse OSC Message", e);
 			return;
