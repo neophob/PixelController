@@ -192,6 +192,7 @@ public final class Collector {
 			Sound.getInstance().setImplementation(new SoundDummy());
 		}
 		
+		//create the device with specific size
 		new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
 		pixelControllerResize = new PixelControllerResize();

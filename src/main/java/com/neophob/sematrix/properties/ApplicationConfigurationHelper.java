@@ -612,8 +612,16 @@ public class ApplicationConfigurationHelper {
         if (row1+row2>0) {
             devicesInRow1 = row1;
             devicesInRow2 = row2;
-            this.deviceXResolution = 8;
-            this.deviceYResolution = 8;
+
+            //check for a user specific output size
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
+            
+            //fallback
+            if (deviceXResolution < 1 || deviceYResolution < 1) {
+                this.deviceXResolution = 8;
+                this.deviceYResolution = 8;                
+            }
         }
 
         return row1+row2;
