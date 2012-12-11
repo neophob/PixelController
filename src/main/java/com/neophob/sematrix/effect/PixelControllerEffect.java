@@ -37,6 +37,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 	
 	/** The threshold. */
 	private Threshold threshold;
+	private RotoZoom rotoZoom;
 	
 	private TextureDeformation textureDeformation;
 	
@@ -65,7 +66,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		//create effects
 		new Inverter(this);
 		new PassThru(this);
-		new RotoZoom(this, 1.5f, 2.3f);
+		rotoZoom = new RotoZoom(this, 1.5f, 2.3f);
 		new BeatVerticalShift(this);
 		new BeatHorizShift(this);
 		new Voluminize(this);
@@ -173,7 +174,22 @@ public class PixelControllerEffect implements PixelControllerElement {
 	public int getThresholdValue() {
 		return this.threshold.getThreshold();
 	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getRotoZoomAngle() {
+	    return this.rotoZoom.getAngle();
+	}
 	
+	/**
+	 * 
+	 * @param angle
+	 */
+	public void setRotoZoomAngle(int angle) {
+	    this.rotoZoom.setAngle(angle);
+	}
 
     /**
      * Sets the texture deformation lut.

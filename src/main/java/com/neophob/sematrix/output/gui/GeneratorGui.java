@@ -96,7 +96,7 @@ public class GeneratorGui extends PApplet {
     private Slider brightnessControll;
     
     //Effect Tab    
-    private Slider thresholdSlider;	
+    private Slider thresholdSlider, fxRotoSlider;	
     
     //Generator Tab
     private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
@@ -272,7 +272,7 @@ public class GeneratorGui extends PApplet {
         thresholdSlider.setGroup(generatorTab);	
         thresholdSlider.setDecimalPrecision(0);		
 
-        Slider fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
+        fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
                 -127, 127, 0, GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         fxRotoSlider.setSliderMode(Slider.FIX);
         fxRotoSlider.setGroup(generatorTab);
@@ -709,6 +709,7 @@ public class GeneratorGui extends PApplet {
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
 
+        // update current color set
         ColorSet cs = col.getActiveColorSet();
         colorSetList.setLabel(cs.getName());
 
@@ -726,10 +727,14 @@ public class GeneratorGui extends PApplet {
 
         thresholdSlider.changeValue(pce.getThresholdValue());
         brightnessControll.changeValue(col.getPixelControllerGenerator().getBrightness()*100);
+        fxRotoSlider.changeValue(pce.getRotoZoomAngle());
         
         PixelControllerGenerator pcg = col.getPixelControllerGenerator();
         blinkenLightsList.setLabel(pcg.getFileBlinken()); 
         imageList.setLabel(pcg.getFileImageSimple());
+        
+        // update current visual
+        selectedVisualList.activate(col.getCurrentVisual());
     }
 
 

@@ -658,7 +658,7 @@ public final class Collector {
 	 * @param currentVisual the new current visual
 	 */
 	public void setCurrentVisual(int currentVisual) {
-		if (currentVisual < allVisuals.size()) {
+		if (currentVisual >= 0 && currentVisual < allVisuals.size()) {
 			this.currentVisual = currentVisual;			
 		}
 	}
@@ -676,7 +676,7 @@ public final class Collector {
 	 * @param currentOutput
 	 */
 	public void setCurrentOutput(int currentOutput) {
-		if (currentOutput < ioMapping.size()) {
+		if (currentOutput >= 0 && currentOutput < ioMapping.size()) {
 			this.currentOutput = currentOutput;			
 		}
 	}
