@@ -691,7 +691,7 @@ public class GeneratorGui extends PApplet {
      * update only minimal parts of the gui
      */
     public Collector callbackRefreshMini() {
-        LOG.log(Level.INFO, "Refresh Partitial GUI");
+        //LOG.log(Level.INFO, "Refresh Partitial GUI");
         Collector col = Collector.getInstance();
 
         //get visual status			
@@ -719,7 +719,7 @@ public class GeneratorGui extends PApplet {
      * refresh whole gui
      */
     public void callbackRefreshWholeGui() {
-        LOG.log(Level.INFO, "Refresh Whole GUI");
+        //LOG.log(Level.INFO, "Refresh Whole GUI");
         Collector col = this.callbackRefreshMini();		
 
         PixelControllerEffect pce = col.getPixelControllerEffect();
