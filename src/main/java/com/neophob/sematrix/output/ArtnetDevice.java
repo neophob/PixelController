@@ -143,6 +143,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		ArtDmxPacket dmx = new ArtDmxPacket();
 		
 		//parameter: int subnetID, int universeID
+		//TODO: make subnet Id configurable?
 		dmx.setUniverse(0, this.firstUniverseId+universeOffset);
 		dmx.setSequenceID(sequenceID % 255);
 		
