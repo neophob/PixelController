@@ -734,7 +734,8 @@ public class GeneratorGui extends PApplet {
         imageList.setLabel(pcg.getFileImageSimple());
         
         // update current visual
-        selectedVisualList.activate(col.getCurrentVisual());
+        //TODO somethings fishy here...
+        //selectedVisualList.activate(col.getCurrentVisual());
     }
 
 

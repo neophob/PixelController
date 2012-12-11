@@ -99,8 +99,9 @@ public class OscServer implements OscEventListener {
 			}
 			MessageProcessor.processMsg(msg, true);
 			
-			//refresh gui
-			Collector.getInstance().setTriggerGuiRefresh(true);
+	        //refresh gui
+			Collector.getInstance().setTriggerGuiRefresh(true);			    
+			
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to parse OSC Message", e);
 			return;
