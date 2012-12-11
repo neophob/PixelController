@@ -90,7 +90,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 			
 		} catch (BindException e) {
 			LOG.log(Level.WARNING, "\nFailed to initialize ArtNet device:", e);
-			LOG.log(Level.WARNING, "Make sure no ArtNet Tools like DMX-Workshop is running!");
+			LOG.log(Level.WARNING, "Make sure no ArtNet Tools like DMX-Workshop are running!\n\n");
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to initialize ArtNet device:", e);
 		}
@@ -145,6 +145,8 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		//parameter: int subnetID, int universeID
 		dmx.setUniverse(0, this.firstUniverseId+universeOffset);
 		dmx.setSequenceID(sequenceID % 255);
+		
+		//byte[] dmxData, int numChannels
 		dmx.setDMX(buffer, buffer.length);
 		this.artnet.unicastPacket(dmx, this.targetAdress);
 		this.sequenceID++;
