@@ -427,9 +427,18 @@ public class PropertiesHelperTest {
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         
         int fudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "1") );
-        System.out.println(fudiPort);
         assertEquals(4444, fudiPort);
     }
 
+
+    @Test
+    public void testNegativeSettings() {
+        Properties config = new Properties();        
+        config.put(ConfigConstant.ADDITIONAL_VISUAL_SCREENS, "-20");        
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        
+        assertEquals(0, ph.getNrOfAdditionalVisuals());
+    }
 
 }
