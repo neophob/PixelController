@@ -809,7 +809,7 @@ public final class Collector {
 	 * @return
 	 */
 	public ColorSet getActiveColorSet() {
-		if (currentColorSet<this.colorSets.size()) {
+		if (currentColorSet>=0 && currentColorSet<this.colorSets.size()) {
 			return this.colorSets.get(currentColorSet);			
 		}
 		return this.colorSets.get(0);
