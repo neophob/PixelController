@@ -705,7 +705,7 @@ public class GeneratorGui extends PApplet {
         }
 
         //get output status
-        OutputMapping om = col.getOutputMappings(col.getCurrentOutput()); 
+        OutputMapping om = col.getOutputMappings(col.getCurrentOutput());
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
 

@@ -127,7 +127,12 @@ public class ColorScroll extends Generator {
      */
     @Override
     public void update() {
-
+        
+        //do not remove, sanity check
+        if (scrollMode==null) {
+            scrollMode = ScrollMode.EXPLODE_CIRCLE;            
+        }
+        
         // scroll colors on x axis
         switch (scrollMode) {
             case LEFT_TO_RIGHT:
@@ -183,7 +188,11 @@ public class ColorScroll extends Generator {
      * @param scrollMode the new scroll mode
      */
     void setScrollMode(int scrollMode) {
-        this.scrollMode = ScrollMode.getScrollMode(scrollMode);
+        ScrollMode sm = ScrollMode.getScrollMode(scrollMode);        
+        //sanity check
+        if (sm==null) {
+            this.scrollMode = sm;
+        }                 
     }
 
     /**

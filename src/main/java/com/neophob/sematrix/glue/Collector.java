@@ -311,7 +311,7 @@ public final class Collector {
 		l = System.currentTimeMillis();
 		for (OutputMapping om: ioMapping) {
 			Fader fader = om.getFader();
-			if (fader.isDone()) {
+			if (fader!=null && fader.isDone()) {
 				//fading is finished, cleanup
 				fader.cleanUp();
 			}

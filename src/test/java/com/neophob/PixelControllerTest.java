@@ -22,7 +22,7 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  */
 public class PixelControllerTest {
 
-	class TestProcessingclass extends PApplet {
+	/*class TestProcessingclass extends PApplet {
 		public void setup() {
 		    Properties config = new Properties();
 	        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
@@ -31,7 +31,7 @@ public class PixelControllerTest {
 			Collector.getInstance().init(this, ph);
 			LOG.log(Level.INFO, "TestProcessingclass initialized");
 		}
-	}
+	}*/
 	
     private static final Logger LOG = Logger.getLogger(PixelControllerTest.class.getName());
 

@@ -23,9 +23,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.RotoZoom;
+import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
@@ -142,8 +145,9 @@ public final class MessageProcessor {
 					int nr = col.getCurrentOutput();				
 					int newFx = Integer.parseInt(msg[1]);
 					int oldFx = col.getFxInputForScreen(nr);
+					int nrOfVisual = col.getAllVisuals().size();
 					LOG.log(Level.INFO,	"old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-					if (oldFx!=newFx) {
+					if (oldFx!=newFx && newFx>=0 && newFx<nrOfVisual) {
 						LOG.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
 						if (startFader) {
 							//start fader to change screen
@@ -160,21 +164,24 @@ public final class MessageProcessor {
 
 			case CHANGE_ALL_OUTPUT_VISUAL:
 				try {
-					int size = col.getAllOutputMappings().size();
-
-					for (int i=0; i<size; i++) {
-						int newFx = Integer.parseInt(msg[1]);
-						int oldFx = col.getFxInputForScreen(i);
-						if (oldFx!=newFx) {
-							LOG.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-							if (startFader) {
-								//start fader to change screen
-								col.getOutputMappings(i).getFader().startFade(newFx, i);								
-							} else {
-								//do not fade if we load setting from present
-								col.mapInputToScreen(i, newFx);
-							}
-						}						
+				    int newFx = Integer.parseInt(msg[1]);
+					int size = col.getAllOutputMappings().size();					
+					int nrOfVisual = col.getAllVisuals().size();
+					
+					if (newFx>=0 && newFx<nrOfVisual) {
+	                    for (int i=0; i<size; i++) {                        
+	                        int oldFx = col.getFxInputForScreen(i);                     
+	                        if (oldFx!=newFx) {
+	                            LOG.log(Level.INFO, "Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
+	                            if (startFader) {
+	                                //start fader to change screen
+	                                col.getOutputMappings(i).getFader().startFade(newFx, i);                                
+	                            } else {
+	                                //do not fade if we load setting from present
+	                                col.mapInputToScreen(i, newFx);
+	                            }
+	                        }                       
+	                    }					    
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -187,7 +194,10 @@ public final class MessageProcessor {
 					tmp=Integer.parseInt(msg[1]);
 					//do not start a new fader while the old one is still running
 					if (!col.getOutputMappings(nr).getFader().isStarted()) {
-						col.getOutputMappings(nr).setFader(PixelControllerFader.getFader(tmp));							
+					    Fader f = PixelControllerFader.getFader(tmp);
+					    if (f!=null) {
+					        col.getOutputMappings(nr).setFader(f);   
+					    }
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -200,7 +210,10 @@ public final class MessageProcessor {
 					for (OutputMapping om: col.getAllOutputMappings()) {
 						//do not start a new fader while the old one is still running
 						if (!om.getFader().isStarted()) {
-							om.setFader(PixelControllerFader.getFader(tmp));							
+						    Fader f = PixelControllerFader.getFader(tmp);
+						    if (f!=null) {
+						        om.setFader(f);						        
+						    }
 						}						
 					}
 				} catch (Exception e) {
@@ -297,7 +310,9 @@ public final class MessageProcessor {
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
-					col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);
+					if (StringUtils.isNotBlank(fileToLoad)) {
+					    col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);   
+					}					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
