@@ -3,8 +3,6 @@ package com.neophob.sematrix.listener;
 import java.util.Random;
 import java.util.UUID;
 
-import org.junit.Test;
-
 import processing.core.PApplet;
 
 import com.neophob.sematrix.properties.ValidCommands;
