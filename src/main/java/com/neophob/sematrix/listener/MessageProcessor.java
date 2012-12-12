@@ -277,7 +277,9 @@ public final class MessageProcessor {
 			case CHANGE_PRESENT:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					col.setSelectedPresent(a);
+					if (a<Collector.NR_OF_PRESENT_SLOTS) {
+					    col.setSelectedPresent(a);					    
+					}					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}

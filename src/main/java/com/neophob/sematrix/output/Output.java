@@ -121,7 +121,7 @@ public abstract class Output {
 	/**
 	 * fill the the preparedBufferMap instance with int[] buffers for all screens.
 	 */
-	public void prepareOutputBuffer() {
+	public synchronized void prepareOutputBuffer() {
 		int[] buffer;
 		Visual v;
 		

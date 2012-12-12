@@ -596,6 +596,9 @@ public class ColorScroll extends Generator {
      * @return the scrollMode
      */
     public ScrollMode getScrollMode() {
+        if (scrollMode==null) {
+            return ScrollMode.EXPLODE_CIRCLE;
+        }
         return scrollMode;
     }
 
