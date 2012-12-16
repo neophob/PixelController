@@ -109,7 +109,7 @@ public class P5EventListener implements ControlListener {
                 handleRandomMode(value);
                 break;
 
-            case BUTTON_RANDOM_PRESENT:
+            case BUTTON_RANDOM_PRESET:
                 LOG.log(Level.INFO, selection+" Value: "+value);
                 createMessage(ValidCommands.PRESET_RANDOM, value);
                 break;

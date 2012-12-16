@@ -462,11 +462,11 @@ public class GeneratorGui extends PApplet {
         randomSelection.moveTo(randomTab);
         cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),"cross your fingers, randomize everything");
 
-        randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESENT.toString(), 0,
+        randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESET.toString(), 0,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 100, 15);
-        randomPresets.setCaptionLabel("RANDOM PRESENT");
+        randomPresets.setCaptionLabel("RANDOM PRESET");
         randomPresets.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESENT.toString(),"Load a random preset");
+        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.toString(),"Load a random preset");
 
         toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+80, 100, 15);
