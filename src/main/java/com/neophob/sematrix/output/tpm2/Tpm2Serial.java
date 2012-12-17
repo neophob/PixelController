@@ -64,10 +64,23 @@ public class Tpm2Serial {
 	 * Create a new instance to communicate with the tpm2 device.
 	 *
 	 * @param app the app
+	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Tpm2Serial(PApplet app, int baud) throws NoSerialPortFoundException {
-		this(app, null, baud);
+	public Tpm2Serial(PApplet app, int targetBuffersize, int baud) throws NoSerialPortFoundException {
+		this(app, null, targetBuffersize, baud);
+	}
+
+	/**
+	 * Create a new instance to communicate with the rainbowduino.
+	 *
+	 * @param app the _app
+	 * @param targetBuffersize the target buffersize
+	 * @param portName the port name
+	 * @throws NoSerialPortFoundException the no serial port found exception
+	 */
+	public Tpm2Serial(PApplet app, int targetBuffersize, String portName, int baud) throws NoSerialPortFoundException {
+		this(app, portName, targetBuffersize, baud);
 	}
 
 
@@ -76,9 +89,10 @@ public class Tpm2Serial {
 	 *
 	 * @param app the app
 	 * @param portName the port name
+	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Tpm2Serial(PApplet app, String portName, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
+	public Tpm2Serial(PApplet app, String portName, int targetBuffersize, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize Tpm2Serial lib v{0}", VERSION);
 		
