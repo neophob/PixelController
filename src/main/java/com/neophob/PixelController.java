@@ -188,8 +188,7 @@ public class PixelController extends PApplet {
 		
 		//load palette
 		List<ColorSet> colorSets = getColorPalettes();
-		this.collector.setColorSets(colorSets);
-		this.collector.setCurrentColorSet(0);
+		this.collector.setColorSets(colorSets);		
 		
 		this.collector.init(this, applicationConfig);
 		

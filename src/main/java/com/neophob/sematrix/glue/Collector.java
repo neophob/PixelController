@@ -140,9 +140,7 @@ public final class Collector {
 	
 	private PixelControllerStatus pixConStat;
 
-	private List<ColorSet> colorSets;
-	
-	private int currentColorSet;
+	private List<ColorSet> colorSets;		
 	
 	/** The random mode. */
 	private boolean inPauseMode = false;
@@ -475,7 +473,8 @@ public final class Collector {
 			ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
 			ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
 			ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
-			ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());			
+			ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
+			ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSetIndex());
 		}
 
 		//get output status
@@ -505,7 +504,8 @@ public final class Collector {
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
 		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);						
-		ret.add(ValidCommands.CURRENT_COLORSET +EMPTY_CHAR+currentColorSet);
+		
+		//TODO ret.add(ValidCommands.CURRENT_COLORSET +EMPTY_CHAR+currentColorSet);
 		return ret;
 	}
 
@@ -789,39 +789,25 @@ public final class Collector {
 	}
 
 	
-	public List<ColorSet> getColorSets() {
-		return colorSets;
-	}
-
-	public void setColorSets(List<ColorSet> colorSets) {
-		this.colorSets = colorSets;
-	}
-
-	/**
-	 * @return the currentColorSet
-	 */
-	public int getCurrentColorSet() {
-		return currentColorSet;
-	}
-
 	/**
 	 * 
 	 * @return
 	 */
-	public ColorSet getActiveColorSet() {
-		if (currentColorSet>=0 && currentColorSet<this.colorSets.size()) {
-			return this.colorSets.get(currentColorSet);			
-		}
-		return this.colorSets.get(0);
+	public List<ColorSet> getColorSets() {
+		return colorSets;
 	}
 
+	
+	
 	/**
-	 * @param currentColorSet the currentColorSet to set
+	 * 
+	 * @param colorSets
 	 */
-	public void setCurrentColorSet(int currentColorSet) {
-		this.currentColorSet = currentColorSet;
+	public void setColorSets(List<ColorSet> colorSets) {
+		this.colorSets = colorSets;
 	}
 
+	
     public void togglePauseMode() {
     	if (inPauseMode) {
     		inPauseMode=false;

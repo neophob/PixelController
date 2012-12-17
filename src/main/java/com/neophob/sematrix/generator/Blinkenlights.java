@@ -108,7 +108,7 @@ public class Blinkenlights extends Generator implements PConstants {
 			blinken.loadFile(PREFIX+file, this.internalBufferXSize);
 			LOG.log(Level.INFO, "DONE");
 			blinkenSettings();
-			LOG.log(Level.INFO, "Load blinkenlights done, needed time in ms: "+(System.currentTimeMillis()-start));			
+			LOG.log(Level.INFO, "Load blinkenlights done, needed time in "+(System.currentTimeMillis()-start)+"ms");			
 		}
 	}
 	
