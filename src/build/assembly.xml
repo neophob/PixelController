@@ -90,13 +90,6 @@
 			<filtered>false</filtered>
 		</file>
 
-		<!-- copy the pure data gui -->
- 		<file>
-			<source>${basedir}/data/integration/PureData/ledgui5.pd</source>
-			<outputDirectory>/</outputDirectory>
-			<filtered>false</filtered>
-			<destName>PixelController.pd</destName>
-		</file>
 		
  		<file>
 			<source>${basedir}/data/integration/PureData/Midi2OSC.pd</source>
