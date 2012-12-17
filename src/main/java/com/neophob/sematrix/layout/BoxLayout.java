@@ -36,8 +36,8 @@ public class BoxLayout extends Layout {
 
 	private static final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
 	
-	private final int YSIZE = 2;
-	private final int MAXVAL = 1000;
+	private static final int YSIZE = 2;
+	private static final int MAXVAL = 1000;
 	
 	/** The io mapping size. */
 	private int ioMappingSize;
