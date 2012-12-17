@@ -2,6 +2,7 @@ package com.neophob.sematrix.output;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,9 +26,8 @@ public class MD5SpeedTest {
      * @param input
      * @return
      */
-    private static String getMD5(byte[] input) {
+    private static String getMD5(MessageDigest md, byte[] input) {
             try {
-                    MessageDigest md = MessageDigest.getInstance("MD5");
                     byte[] messageDigest = md.digest(input);
                     BigInteger number = new BigInteger(1, messageDigest);
                     String hashtext = number.toString(16);
@@ -44,13 +44,14 @@ public class MD5SpeedTest {
     }
     
     @Test
-    public void speedTestOld() {
+    public void speedTestOld() throws NoSuchAlgorithmException {
         byte[] b = new byte[192];
 
         long pre = System.currentTimeMillis();
+        MessageDigest md = MessageDigest.getInstance("MD5");
 
         for (int i=0; i<ROUNDS; i++) {
-            MD5SpeedTest.getMD5(b);   
+            MD5SpeedTest.getMD5(md, b);   
         }               
         long post = System.currentTimeMillis();
 
