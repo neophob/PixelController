@@ -56,8 +56,9 @@ public final class Shuffler {
 		
 		LOG.log(Level.INFO, "Present Shuffler");
 		
+		int sanityCheck = 1000;
 		boolean done=false;
-		while (!done) {
+		while (!done || sanityCheck--<1) {
 			int idx = rand.nextInt(col.getPresent().size());
 			List<String> present = col.getPresent().get(idx).getPresent();
 			if (present!=null && present.size()>0) { 
