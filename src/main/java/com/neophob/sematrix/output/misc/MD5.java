@@ -99,25 +99,25 @@ public class MD5 {
     /**
      * MD5 state
      **/
-    MD5State state;
+    private MD5State state;
     
     /**
      * If Final() has been called, finals is set to the current finals
      * state. Any Update() causes this to be set to null.
      **/
-    MD5State finals;
+    private MD5State finals;
     
     /** 
      * Padding for Final()
      **/
-    static byte padding[] = {
+    private static byte padding[] = {
         (byte) 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     };
     
-    private static boolean native_lib_loaded = false;
-    private static boolean native_lib_init_pending = true;
+    private static boolean nativeLibLoaded = false;
+    private static boolean nativeLibInitPending = true;
     
     /**
      * Initialize MD5 internal state (object can be reused just by
@@ -132,7 +132,9 @@ public class MD5 {
      * Class constructor
      **/
     public MD5 () {
-        if (native_lib_init_pending) _initNativeLibrary();
+        if (nativeLibInitPending) {
+        	_initNativeLibrary();
+        }
         this.init();
     }
     
@@ -144,10 +146,10 @@ public class MD5 {
      **/
     public MD5 (Object ob) {
         this();
-        Update(ob.toString());
+        update(ob.toString());
     }
     
-    private void Decode (byte buffer[], int shift, int[] out) {
+    private void decode (byte buffer[], int shift, int[] out) {
         /*len += shift;
         for (int i = 0; shift < len; i++, shift += 4) {
             out[i] = ((int) (buffer[shift] & 0xff)) |
@@ -226,7 +228,7 @@ public class MD5 {
     
     private native void Transform_native (int[] state, byte buffer[], int shift, int length);
     
-    private void Transform (MD5State state, byte buffer[], int shift, int[] decodeBuf) {
+    private void transform (MD5State state, byte buffer[], int shift, int[] decodeBuf) {
         int
             a = state.state[0],
             b = state.state[1],
@@ -234,7 +236,7 @@ public class MD5 {
             d = state.state[3],
             x[] = decodeBuf;
         
-        Decode(buffer, shift, decodeBuf);
+        decode(buffer, shift, decodeBuf);
         
         /* Round 1 */
         a += ((b & c) | (~b & d)) + x[ 0] + 0xd76aa478; /* 1 */
@@ -393,7 +395,7 @@ public class MD5 {
         state.state[3] += d;
     }
     
-    static final int MAX_LENGTH = 65536; // prevent stack overflow in JNI
+    private static final int MAX_LENGTH = 65536; // prevent stack overflow in JNI
     
     /**
      * Updates hash with the bytebuffer given (using at maximum length bytes from
@@ -405,7 +407,7 @@ public class MD5 {
      * @param length Use at maximum `length' bytes (absolute
      *               maximum is buffer.length)
      */
-    public void Update (MD5State stat, byte buffer[], int offset, int length) {
+    public void update (MD5State stat, byte buffer[], int offset, int length) {
         int index, partlen, i, start;
         finals = null;
         
@@ -424,7 +426,7 @@ public class MD5 {
             
             // update state (using native method) to reflect input
             
-            if (native_lib_loaded) {
+            if (nativeLibLoaded) {
                 if (partlen == 64) {
                     partlen = 0;
                 } else {
@@ -460,10 +462,10 @@ public class MD5 {
                 } else {
                     for (i = 0; i < partlen; i++)
                         stat.buffer[i + index] = buffer[i + offset];
-                    Transform(stat, stat.buffer, 0, decode_buf);
+                    transform(stat, stat.buffer, 0, decode_buf);
                 }
                 for (i = partlen; (i + 63) < length; i+= 64) {
-                    Transform(stat, buffer, i + offset, decode_buf);
+                    transform(stat, buffer, i + offset, decode_buf);
                 }
             }
             index = 0;
@@ -488,12 +490,12 @@ public class MD5 {
     /**
      * Plain update, updates this object
      **/
-    public void Update (byte buffer[], int offset, int length) {
-        Update(this.state, buffer, offset, length);
+    public void update (byte buffer[], int offset, int length) {
+        update(this.state, buffer, offset, length);
     }
     
-    public void Update (byte buffer[], int length) {
-        Update(this.state, buffer, 0, length);
+    public void update (byte buffer[], int length) {
+        update(this.state, buffer, 0, length);
     }
     
     /**
@@ -501,8 +503,8 @@ public class MD5 {
      *
      * @param buffer Array of bytes to use for updating the hash
      **/
-    public void Update (byte buffer[]) {
-        Update(buffer, 0, buffer.length);
+    public void update (byte buffer[]) {
+        update(buffer, 0, buffer.length);
     }
     
     /**
@@ -510,11 +512,11 @@ public class MD5 {
      *
      * @param b Single byte to update the hash
      **/
-    public void Update (byte b) {
+    public void update (byte b) {
         byte buffer[] = new byte[1];
         buffer[0] = b;
         
-        Update(buffer, 1);
+        update(buffer, 1);
     }
     
     /**
@@ -531,9 +533,9 @@ public class MD5 {
      *
      * @param s String to be update to hash (is used as s.getBytes())
      **/
-    public void Update (String s) {
+    public void update (String s) {
         byte chars[] = s.getBytes();
-        Update(chars, chars.length);
+        update(chars, chars.length);
     }
     
     /**
@@ -548,10 +550,10 @@ public class MD5 {
      * @exception          java.io.UnsupportedEncodingException If the named
      *                     charset is not supported.
      **/
-    public void Update (String s, String charset_name) throws java.io.UnsupportedEncodingException {
+    public void update (String s, String charset_name) throws java.io.UnsupportedEncodingException {
         if (charset_name == null) charset_name = "ISO8859_1";
         byte chars[] = s.getBytes(charset_name);
-        Update(chars, chars.length);
+        update(chars, chars.length);
     }
     
     /**
@@ -560,11 +562,11 @@ public class MD5 {
      *
      * @param i Integer value, which is then converted to byte as i & 0xff
      **/
-    public void Update (int i) {
-        Update((byte) (i & 0xff));
+    public void update (int i) {
+        update((byte) (i & 0xff));
     }
     
-    private byte[] Encode (int input[], int len) {
+    private byte[] encode (int input[], int len) {
         int i, j;
         byte out[];
         
@@ -597,19 +599,19 @@ public class MD5 {
             fin = new MD5State(state);
             
             int[] count_ints = {(int) (fin.count << 3), (int) (fin.count >> 29)};
-            bits = Encode(count_ints, 8);
+            bits = encode(count_ints, 8);
             
             index = (int) (fin.count & 0x3f);
             padlen = (index < 56) ? (56 - index) : (120 - index);
             
-            Update(fin, padding, 0, padlen);
-            Update(fin, bits, 0, 8);
+            update(fin, padding, 0, padlen);
+            update(fin, bits, 0, 8);
             
             /* Update() sets finals to null */
             finals = fin;
         } 
         
-        return Encode(finals.state, 16);
+        return encode(finals.state, 16);
     }
     
     private static final char[] HEX_CHARS = {'0', '1', '2', '3',
@@ -660,17 +662,17 @@ public class MD5 {
      **/
     public static synchronized final boolean initNativeLibrary (boolean disallow_lib_loading) {
         if (disallow_lib_loading) {
-            native_lib_init_pending = false;
+            nativeLibInitPending = false;
         } else {
             _initNativeLibrary();
         }
-        return native_lib_loaded;
+        return nativeLibLoaded;
     }
     
     private static synchronized void  _initNativeLibrary () {
-        if (!native_lib_init_pending) return;
-        native_lib_loaded = _loadNativeLibrary();
-        native_lib_init_pending = false;
+        if (!nativeLibInitPending) return;
+        nativeLibLoaded = _loadNativeLibrary();
+        nativeLibInitPending = false;
     }
     
     private static synchronized boolean _loadNativeLibrary () {
