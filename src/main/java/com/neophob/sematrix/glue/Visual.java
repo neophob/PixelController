@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.glue;
 
+import java.util.List;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -52,6 +54,9 @@ public class Visual {
 	
 	/** The mixer. */
 	private Mixer mixer;
+	
+	private ColorSet colorSet;
+	private int colorSetIndex;
 
 	/**
 	 * initialize default.
@@ -67,6 +72,7 @@ public class Visual {
 		this.effect2 = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
 		this.mixer = col.getPixelControllerMixer().getMixer(MixerName.PASSTHRU);
 
+		this.colorSet = col.getColorSets().get(0);
 		col.addVisual(this);
 	}
 
@@ -289,7 +295,7 @@ public class Visual {
 	    //get gryscale buffer
 		int buffer[] = mixer.getBuffer(this);
 
-		return ColorSet.convertToColorSetImage(buffer, Collector.getInstance().getActiveColorSet());
+		return ColorSet.convertToColorSetImage(buffer, colorSet);
 	}
 
 	/**
@@ -319,8 +325,31 @@ public class Visual {
 		this.mixer = Collector.getInstance().getPixelControllerMixer().getMixer(index);
 	}
 	
+	/**
+	 * 
+	 * @param index
+	 */
+	public void setColorSet(int index) {
+	    List<ColorSet> allColorSets = Collector.getInstance().getColorSets();
+	    if (index > allColorSets.size()) {
+	        index = 0;
+	    }
+	    this.colorSet = allColorSets.get(index);
+	    this.colorSetIndex = index;
+	}
+	
+	public int getColorSetIndex() {
+	    return colorSetIndex;
+	}
 	
 	/**
+     * @return the colorSet
+     */
+    public ColorSet getColorSet() {
+        return colorSet;
+    }
+
+    /**
 	 * 
 	 * @param buffer
 	 * @return
@@ -342,9 +371,9 @@ public class Visual {
 	 */
 	public PImage getGeneratorAsImage(int ofs) {
 		if (ofs==0) {
-			return getBufferAsImage(ColorSet.convertToColorSetImage(generator1.internalBuffer, Collector.getInstance().getActiveColorSet()));			
+			return getBufferAsImage(ColorSet.convertToColorSetImage(generator1.internalBuffer, colorSet));			
 		}
-		return getBufferAsImage(ColorSet.convertToColorSetImage(generator2.internalBuffer, Collector.getInstance().getActiveColorSet()));
+		return getBufferAsImage(ColorSet.convertToColorSetImage(generator2.internalBuffer, colorSet));
 	}
 
 	/**
@@ -355,11 +384,11 @@ public class Visual {
 	public PImage getEffectAsImage(int ofs) {
 		if (ofs==0) {
 			return getBufferAsImage(
-					ColorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer), Collector.getInstance().getActiveColorSet())
+					ColorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer), colorSet)
 			);			
 		}
 		return getBufferAsImage(
-				ColorSet.convertToColorSetImage(effect2.getBuffer(generator2.internalBuffer), Collector.getInstance().getActiveColorSet())
+				ColorSet.convertToColorSetImage(effect2.getBuffer(generator2.internalBuffer), colorSet)
 		);			
 	}
 	

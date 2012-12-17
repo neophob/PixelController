@@ -98,7 +98,6 @@ public class Image extends Generator {
 	                img.width, img.height, internalBufferXSize, internalBufferYSize);
 	        img.updatePixels();	        
 	       
-	        //this.internalBuffer = ColorSet.convertToColorSetImage(internalBuffer, cs);
 	        short r,g,b;
 	        int rgbColor;
 

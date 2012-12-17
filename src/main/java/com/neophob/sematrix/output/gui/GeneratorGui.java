@@ -701,17 +701,14 @@ public class GeneratorGui extends PApplet {
             generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
             effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
             effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
-            mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());			
+            mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
+            colorSetList.setLabel(v.getColorSet().getName());
         }
 
         //get output status
         OutputMapping om = col.getOutputMappings(col.getCurrentOutput());
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
-
-        // update current color set
-        ColorSet cs = col.getActiveColorSet();
-        colorSetList.setLabel(cs.getName());
 
         return col;
     }
@@ -812,14 +809,18 @@ public class GeneratorGui extends PApplet {
     	switch (key) {
     	
     	//change current Colorset
-    	case 'C':			
-    		int currentColorSet = col.getCurrentColorSet();
-			int colorSetsNrs = col.getColorSets().size();
-			
-			if (currentColorSet++>=colorSetsNrs-1) {
-				currentColorSet=0;
-			}
-			col.setCurrentColorSet(currentColorSet);			
+    	case 'C':
+            Visual v = col.getVisual(col.getCurrentVisual());
+            if (v!=null) {
+                int currentColorSet = v.getColorSetIndex();
+                int colorSetsNrs = col.getColorSets().size();
+                
+                if (currentColorSet++>=colorSetsNrs-1) {
+                    currentColorSet=0;
+                }
+                v.setColorSet(currentColorSet);            
+                
+            }
 			break;
 
 		default:

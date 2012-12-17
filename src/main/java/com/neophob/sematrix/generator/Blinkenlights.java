@@ -19,8 +19,6 @@
 
 package com.neophob.sematrix.generator;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,19 +99,7 @@ public class Blinkenlights extends Generator implements PConstants {
 			LOG.log(Level.INFO, "Empty filename provided, call ignored!");
 			return;
 		}
-		
-		// there is a bug in the Blinkenlights library, this is a workarround!
-		InputStream is = Collector.getInstance().getPapplet().createInput(PREFIX+file);
-		if (is == null) {
-		    LOG.log(Level.INFO, "Invalid filename provided, call ignored! Name: "+file);
-		    return;
-		}
-		
-		try {
-            is.close();
-        } catch (IOException e) {
-        }
-		
+				
 		//only load if needed
 		if (!StringUtils.equals(file, this.filename)) {
 			long start = System.currentTimeMillis();			
@@ -122,7 +108,7 @@ public class Blinkenlights extends Generator implements PConstants {
 			blinken.loadFile(PREFIX+file, this.internalBufferXSize);
 			LOG.log(Level.INFO, "DONE");
 			blinkenSettings();
-			LOG.log(Level.INFO, "Load blinkenlights done, needed time in ms: "+(System.currentTimeMillis()-start));			
+			LOG.log(Level.INFO, "Load blinkenlights done, needed time in "+(System.currentTimeMillis()-start)+"ms");			
 		}
 	}
 	

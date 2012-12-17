@@ -141,8 +141,11 @@ public final class Shuffler {
 		}
 		
 		if (col.getShufflerSelect(ShufflerOffset.COLORSET)) {
-			int colorSets = col.getColorSets().size();
-			col.setCurrentColorSet(rand.nextInt(colorSets));			
+            Visual v = col.getVisual(col.getCurrentVisual());
+            if (v!=null) {
+                int colorSets = col.getColorSets().size();
+                v.setColorSet(rand.nextInt(colorSets));
+            }
 		}
 
 	}

@@ -405,7 +405,7 @@ public final class MessageProcessor {
 				//some of the gui elements 
 				try {
 					int a = Integer.parseInt(msg[1]);
-					Collector.getInstance().setCurrentVisual(a);
+					col.setCurrentVisual(a);
 					return ValidCommands.STATUS_MINI;
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -417,7 +417,7 @@ public final class MessageProcessor {
 				//some of the gui elements 
 				try {
 					int a = Integer.parseInt(msg[1]);
-					Collector.getInstance().setCurrentOutput(a);
+					col.setCurrentOutput(a);
 					return ValidCommands.STATUS_MINI;
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -432,7 +432,7 @@ public final class MessageProcessor {
 						break;
 					} else {
 						float f = a/100f;
-						Collector.getInstance().getPixelControllerGenerator().setBrightness(f);
+						col.getPixelControllerGenerator().setBrightness(f);
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -441,14 +441,15 @@ public final class MessageProcessor {
 				
 			//create a screenshot of all current buffers
 			case SCREENSHOT:
-				Collector.getInstance().saveScreenshot();
+				col.saveScreenshot();
 				LOG.log(Level.INFO, "Saved some screenshots");
 				break;
 				
 			//change current colorset
 			case CURRENT_COLORSET:
-				int a = Integer.parseInt(msg[1]);
-				Collector.getInstance().setCurrentColorSet(a);
+				int newColorSetIndex = Integer.parseInt(msg[1]);				
+                int nr = col.getCurrentVisual();
+                col.getVisual(nr).setColorSet(newColorSetIndex);				
 				return ValidCommands.STATUS_MINI;
 				
 			//pause output, needed to create screenshots or take an image of the output
