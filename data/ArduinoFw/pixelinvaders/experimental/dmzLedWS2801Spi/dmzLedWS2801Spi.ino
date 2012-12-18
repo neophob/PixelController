@@ -127,13 +127,13 @@ int j=0,k=0;
 // blink LED when in demos and debug endabled
 int ledPin = 11;
 int ledon = 0;
-elapsedMillis LEDTime;
+long LEDTime;
 
 // timers for the next demo, since last message, demo output delay and since last serial communication
-elapsedMillis nextdemo;
-elapsedMillis messagetimer;
-elapsedMillis delaytimer;
-elapsedMillis lastComm;
+long nextdemo;
+long messagetimer;
+long delaytimer;
+long lastComm;
 
 // initial demo - set to display picture
 int whichdemo = 10;
@@ -483,8 +483,10 @@ static void sendAck() {
   serialResonse[3] = g_errorCounter;
   Serial.write(serialResonse, SERIALBUFFERSIZE);
 
-  //comment out next line on arduino!
+#if defined (CORE_TEENSY_SERIAL)
+  //Teensy supports send now
   Serial.send_now();
+#endif
 }
 
 // --------------------------------------------
