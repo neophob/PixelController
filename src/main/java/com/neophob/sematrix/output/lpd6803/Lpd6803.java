@@ -604,8 +604,7 @@ public class Lpd6803 {
 		for (byte b: msg) {
 			s+=(char)b;
 		}
-		LOG.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", 
-				new String[] {s, ""+(System.currentTimeMillis()-start)});
+		//LOG.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", new String[] {s, ""+(System.currentTimeMillis()-start)});
 		ackErrors++;
 		return false;		
 	}
