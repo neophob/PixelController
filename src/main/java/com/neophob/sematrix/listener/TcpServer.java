@@ -99,7 +99,11 @@ public final class TcpServer implements Runnable {
 	 * @param sendPort the send port
 	 * @throws BindException the bind exception
 	 */
-	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {		
+	public TcpServer(PApplet app, int listeningPort, String sendHost, int sendPort) throws BindException {
+	    if (listeningPort<1) {
+	        LOG.log(Level.INFO, "Configured Port {0}, TCP Server disabled", new Object[] { listeningPort });
+	        return;
+	    }
 		this.app = app; 
 		app.registerDispose(this);
 

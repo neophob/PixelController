@@ -52,6 +52,11 @@ public class OscServer implements OscEventListener {
 	 * @param listeningPort
 	 */
 	public OscServer(PApplet papplet, int listeningPort) {
+	    if (listeningPort<1) {
+	        LOG.log(Level.INFO, "Configured Port {0}, OSC Server disabled", new Object[] { listeningPort });
+	        return;
+	    }
+
 		this.listeningPort = listeningPort;
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });
 		this.oscP5 = new OscP5(papplet, this.listeningPort);
