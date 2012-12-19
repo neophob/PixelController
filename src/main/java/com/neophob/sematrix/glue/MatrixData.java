@@ -45,208 +45,222 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class MatrixData {
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
-	/** the internal buffer is 8 times larger than the output buffer. */
-	private static final int INTERNAL_BUFFER_SIZE = 8;
-	
-	/** The device x size. */
-	private int deviceXSize;
-	
-	/** The device y size. */
-	private int deviceYSize;
-	
-	/** The device size. */
-	private int deviceSize;
-	
-	/** This map is used to store temporary images */
-	private Map<Output, PImage> pImagesMap;
-	
-	/**
-	 * init matrix data.
-	 *
-	 * @param deviceXSize the device x size
-	 * @param deviceYSize the device y size
-	 */
-	public MatrixData(int deviceXSize, int deviceYSize) {
-		if (deviceXSize < 0 || deviceYSize < 0) {
-			throw new InvalidParameterException("screenXSize and screenYsize must be > 0!");
-		}
-		this.deviceXSize = deviceXSize;
-		this.deviceYSize = deviceYSize;
-		this.deviceSize = deviceXSize*deviceYSize;
-		
-		this.pImagesMap = new HashMap<Output, PImage>();
+    /** The device x size. */
+    private int deviceXSize;
 
-		LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), "
-				, new Object[] { deviceSize, deviceXSize, deviceYSize });
-		
-		Collector.getInstance().setMatrix(this);
-	}
-	
-	/**
-	 * fade the buffer.
-	 *
-	 * @param buffer the buffer
-	 * @param map the map
-	 * @return the int[]
-	 */
-	private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
-		Fader fader = map.getFader();
-		if (fader.isStarted()) {
-			buffer=fader.getBuffer(buffer);
-			//do not cleanup fader here, the box layout gets messed up!
-			//the fader is cleaned up in the update system method
-/*			if (fader.isDone()) {
+    /** The device y size. */
+    private int deviceYSize;
+
+    /** The device size. */
+    private int deviceSize;
+
+    /** This map is used to store temporary images */
+    private Map<Output, PImage> pImagesMap;
+
+    /** internal buffer size */
+    int bufferWidth;
+    int bufferHeight;
+
+    /**
+     * init matrix data.
+     *
+     * @param deviceXSize the device x size
+     * @param deviceYSize the device y size
+     */
+    public MatrixData(int deviceXSize, int deviceYSize) {
+        if (deviceXSize < 0 || deviceYSize < 0) {
+            throw new InvalidParameterException("screenXSize and screenYsize must be > 0!");
+        }
+        this.deviceXSize = deviceXSize;
+        this.deviceYSize = deviceYSize;
+        this.deviceSize = deviceXSize*deviceYSize;
+
+        //select buffer size depending on the output device
+        if (deviceXSize < 16) {
+            bufferWidth = 64;
+        } else {
+            bufferWidth = 128;
+        }
+
+        if (deviceYSize < 16) {
+            bufferHeight = 64;
+        } else {
+            bufferHeight = 128;
+        }
+
+        this.pImagesMap = new HashMap<Output, PImage>();
+
+        LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), "
+                , new Object[] { deviceSize, deviceXSize, deviceYSize });
+
+        Collector.getInstance().setMatrix(this);
+    }
+
+    /**
+     * fade the buffer.
+     *
+     * @param buffer the buffer
+     * @param map the map
+     * @return the int[]
+     */
+    private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
+        Fader fader = map.getFader();
+        if (fader.isStarted()) {
+            buffer=fader.getBuffer(buffer);
+            //do not cleanup fader here, the box layout gets messed up!
+            //the fader is cleaned up in the update system method
+            /*			if (fader.isDone()) {
 				//fading is finished
 				fader.cleanUp();
 			}*/
-		}
-		return buffer;
-	}
-	
-	/**
-	 * input: 64*64*nrOfScreens buffer
-	 * output: 8*8 buffer (resized from 64*64)
-	 * 
-	 * ImageUtils.java, Copyright (c) JForum Team
-	 *
-	 * @param visual the visual
-	 * @param map the map
-	 * @return the screen buffer for device
-	 */
-	public int[] getScreenBufferForDevice(Visual visual, OutputMapping map) {
-		int[] buffer = visual.getBuffer();
-		//apply output specific effect
-		//buffer = map.getBuffer();
-		//buffer = map.getFader().getBuffer(buffer);
-		
-		//apply the fader (if needed)
-		buffer = doTheFaderBaby(buffer, map);
-		
-		//resize to the ouput buffer return image
-		return resizeBufferForDevice(buffer, visual.getResizeOption(), deviceXSize, deviceYSize);
-	}
-	
+        }
+        return buffer;
+    }
 
-	/**
-	 * strech the image for multiple outputs.
-	 *
-	 * @param visual the visual
-	 * @param lm the lm
-	 * @param map the map
-	 * @param output the output
-	 * @return the screen buffer for device
-	 */
-	public int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map, Output output) {
-		int[] buffer = visual.getBuffer();
-		
-		//apply output specific effect
-		//buffer = map.getBuffer();
-		//buffer = map.getFader().getBuffer(buffer);
-		
-		//apply the fader (if needed)
-		buffer = doTheFaderBaby(buffer, map);
+    /**
+     * input: 64*64*nrOfScreens buffer
+     * output: 8*8 buffer (resized from 64*64)
+     * 
+     * ImageUtils.java, Copyright (c) JForum Team
+     *
+     * @param visual the visual
+     * @param map the map
+     * @return the screen buffer for device
+     */
+    public int[] getScreenBufferForDevice(Visual visual, OutputMapping map) {
+        int[] buffer = visual.getBuffer();
+        //apply output specific effect
+        //buffer = map.getBuffer();
+        //buffer = map.getFader().getBuffer(buffer);
 
-		int xStart=lm.getxStart(getBufferXSize());
-		int xWidth=lm.getxWidth(getBufferXSize());
-		int yStart=lm.getyStart(getBufferYSize());
-		int yWidth=lm.getyWidth(getBufferYSize());
-		
-		// initialize PImage instance in a lazy way and store a dedicated
-		// instance per output in an internal map to avoid constructing an
-		// PImage instance with every method call.
-		PImage tmpImage = this.pImagesMap.get(output);
-		if (tmpImage==null || tmpImage.width != getBufferXSize()) {
-			tmpImage = Collector.getInstance().getPapplet().createImage(getBufferXSize(), getBufferYSize(), PApplet.RGB);
-			this.pImagesMap.put(output, tmpImage);
-		} 
-		
-		tmpImage.loadPixels();
-		System.arraycopy(buffer, 0, tmpImage.pixels, 0, getBufferXSize()*getBufferYSize());
+        //apply the fader (if needed)
+        buffer = doTheFaderBaby(buffer, map);
 
-		//TODO very UGLY and SLOW method to copy the image - im lazy!
-		//copy(x, y, width, height, dx, dy, dwidth, dheight)
-		tmpImage.blend(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize(), PImage.REPLACE);
-		
-		int[] bfr2 = tmpImage.pixels;
-		tmpImage.updatePixels();
-
-		return resizeBufferForDevice(bfr2, visual.getResizeOption(), deviceXSize, deviceYSize);
-	}
-
-	/**
-	 * resize internal buffer to output size.
-	 *
-	 * @param buffer the buffer
-	 * @param resizeName the resize name
-	 * @param deviceXSize the device x size
-	 * @param deviceYSize the device y size
-	 * @return RESIZED image
-	 */
-	public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize) {		
-		//processing RESIZE is buggy!
-		//return ResizeImageHelper.processingResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
-		
-		//Area Average Filter - nice output but slow!
-		//return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
-		//return new int[deviceXSize* deviceYSize];	
-
-		Resize r = Collector.getInstance().getPixelControllerResize().getResize(resizeName);
-		return r.getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
-	}
+        //resize to the ouput buffer return image
+        return resizeBufferForDevice(buffer, visual.getResizeOption(), deviceXSize, deviceYSize);
+    }
 
 
-	/**
-	 * ========[ getter/setter ]======================================================================.
-	 *
-	 * @return the device x size
-	 */
-	
-	/**
-	 * return effective device pixel size
-	 * @return
-	 */
-	public int getDeviceXSize() {
-		return deviceXSize;
-	}
+    /**
+     * strech the image for multiple outputs.
+     *
+     * @param visual the visual
+     * @param lm the lm
+     * @param map the map
+     * @param output the output
+     * @return the screen buffer for device
+     */
+    public int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map, Output output) {
+        int[] buffer = visual.getBuffer();
 
-	/**
-	 * return effective device pixel size.
-	 *
-	 * @return the device y size
-	 */
-	public int getDeviceYSize() {
-		return deviceYSize;
-	}
+        //apply output specific effect
+        //buffer = map.getBuffer();
+        //buffer = map.getFader().getBuffer(buffer);
 
-	/**
-	 * return effective BUFFER size.
-	 *
-	 * @return the buffer x size
-	 */
-	public int getBufferXSize() {
-		return deviceXSize*INTERNAL_BUFFER_SIZE;
-	}
+        //apply the fader (if needed)
+        buffer = doTheFaderBaby(buffer, map);
 
-	/**
-	 * return effective BUFFER size.
-	 *
-	 * @return the buffer y size
-	 */
-	public int getBufferYSize() {
-		return deviceYSize*INTERNAL_BUFFER_SIZE;
-	}
+        int xStart=lm.getxStart(getBufferXSize());
+        int xWidth=lm.getxWidth(getBufferXSize());
+        int yStart=lm.getyStart(getBufferYSize());
+        int yWidth=lm.getyWidth(getBufferYSize());
 
-	/**
-	 * Gets the device size.
-	 *
-	 * @return the device size
-	 */
-	public int getDeviceSize() {
-		return deviceSize;
-	}
+        // initialize PImage instance in a lazy way and store a dedicated
+        // instance per output in an internal map to avoid constructing an
+        // PImage instance with every method call.
+        PImage tmpImage = this.pImagesMap.get(output);
+        if (tmpImage==null || tmpImage.width != getBufferXSize()) {
+            tmpImage = Collector.getInstance().getPapplet().createImage(getBufferXSize(), getBufferYSize(), PApplet.RGB);
+            this.pImagesMap.put(output, tmpImage);
+        } 
+
+        tmpImage.loadPixels();
+        System.arraycopy(buffer, 0, tmpImage.pixels, 0, getBufferXSize()*getBufferYSize());
+
+        //TODO very UGLY and SLOW method to copy the image - im lazy!
+        //copy(x, y, width, height, dx, dy, dwidth, dheight)
+        tmpImage.blend(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize(), PImage.REPLACE);
+
+        int[] bfr2 = tmpImage.pixels;
+        tmpImage.updatePixels();
+
+        return resizeBufferForDevice(bfr2, visual.getResizeOption(), deviceXSize, deviceYSize);
+    }
+
+    /**
+     * resize internal buffer to output size.
+     *
+     * @param buffer the buffer
+     * @param resizeName the resize name
+     * @param deviceXSize the device x size
+     * @param deviceYSize the device y size
+     * @return RESIZED image
+     */
+    public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize) {		
+        //processing RESIZE is buggy!
+        //return ResizeImageHelper.processingResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
+
+        //Area Average Filter - nice output but slow!
+        //return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
+        //return new int[deviceXSize* deviceYSize];	
+
+        Resize r = Collector.getInstance().getPixelControllerResize().getResize(resizeName);
+        return r.getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
+    }
+
+
+    /**
+     * ========[ getter/setter ]======================================================================.
+     *
+     * @return the device x size
+     */
+
+    /**
+     * return effective device pixel size
+     * @return
+     */
+    public int getDeviceXSize() {
+        return deviceXSize;
+    }
+
+    /**
+     * return effective device pixel size.
+     *
+     * @return the device y size
+     */
+    public int getDeviceYSize() {
+        return deviceYSize;
+    }
+
+    /**
+     * return effective BUFFER size.
+     *
+     * @return the buffer x size
+     */
+    public int getBufferXSize() {
+        return bufferWidth;
+    }
+
+    /**
+     * return effective BUFFER size.
+     *
+     * @return the buffer y size
+     */
+    public int getBufferYSize() {
+        return bufferHeight;
+    }
+
+    /**
+     * Gets the device size.
+     *
+     * @return the device size
+     */
+    public int getDeviceSize() {
+        return deviceSize;
+    }
 
 
 }

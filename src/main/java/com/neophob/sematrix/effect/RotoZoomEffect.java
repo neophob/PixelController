@@ -51,35 +51,31 @@ public abstract class RotoZoomEffect extends Effect {
 	 * @return the int[]
 	 */
 	protected int[] rotoZoom(float scaleP, float angleP, int bufferSrc[]) {
-		int[] tmp = new int[internalBufferYSize*internalBufferXSize];
+		int[] tmp = new int[bufferSrc.length];
 		int offs=0,soffs;
 		float tx,ty;
 
-        float ca=1;//(float)(scaleP*Math.cos(angleP));
-        float sa=1;//(float)(scaleP*Math.sin(angleP));
+        float ca=(float)(scaleP*Math.cos(angleP));
+        float sa=(float)(scaleP*Math.sin(angleP));
 		
-		float txx=-15f;//.0f-(internalBufferXSize/2.0f)*sa;
-		float tyy=15f;//.0f+(internalBufferYSize/2.0f)*ca;
+		float txx=0-(internalBufferXSize/2.0f)*sa;
+		float tyy=0+(internalBufferYSize/2.0f)*ca;
 
 		for (int y=0; y<internalBufferYSize; y++) {
 		    
 	        txx-=sa;
 			tyy+=ca;
-			System.out.println("txx: "+txx+", tyy="+tyy);
 			
 			ty=tyy;
 			tx=txx;
-			System.out.print(" tx: "+tx+", ty="+ty);
 			for (int x=0; x<internalBufferXSize; x++) {
 				tx+=ca;
 				ty+=sa;				
 				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
-			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)]&255;    
+			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];    
 			}
-			System.out.println("EOL");
 		}
 
-		System.out.println("internalBufferXSize: "+internalBufferXSize+", internalBufferYSize: "+internalBufferYSize+", tmp.length: "+tmp.length+" offs:"+offs);
 		return tmp;
 	}
 
