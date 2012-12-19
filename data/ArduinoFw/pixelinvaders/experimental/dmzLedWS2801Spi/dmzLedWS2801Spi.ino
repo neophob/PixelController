@@ -45,7 +45,6 @@
  * 2012/10/27 - dmz - expanded serInStr by 1 to prevent data reading buffer overflow
  */
 
-#include <TimerOne.h>
 #include <SPI.h>
 #include <WS2801.h>
 
@@ -60,12 +59,6 @@ int debug = 0;
 int spectrumReset=5;
 int spectrumStrobe=4;
 int spectrumAnalog=0;  //0 for left channel, 1 for right.
-
-//This holds the 15 bit RGB values for each LED.
-//You'll need one for each LED, we're using 25 LEDs here.
-#define WIDTH 8                  //Width of our grid.
-#define HEIGHT 8                //Height of our grid.
-#define NUM_LEDS WIDTH * HEIGHT  // Set the number of LEDs in use here
 
 // Spectrum analyzer read values will be kept here.
 int Spectrum[8];  
@@ -140,13 +133,14 @@ int whichdemo = 10;
 
 // one color for when demo is one color, no need to refresh every loop
 int onecolor = 0;
-  
-#define NUMPICTURES 5
-
+ 
 // default picture - pixelmonster
 int whichpicture = 2;
 
-// pictures
+#define WIDTH 8                  //Width of our grid.
+#define HEIGHT 8                //Height of our grid.
+#define NUMPICTURES 5
+
 // System generates 7 unique colors and is mapped to each of the -1, -2, etc
 int pictures[NUMPICTURES][WIDTH][HEIGHT] = 
    { { {-1,-1,-1,-1,-1,-1,-1,-1},  // blank imge
@@ -206,7 +200,8 @@ struct anim {
   
 };
 
-anim stars[NUM_LEDS];
+anim stars[PIXELS_PER_PANEL*NR_OF_PANELS];
+
 static uint8_t DELAY = 34;
 uint8_t currentR, currentG, currentB;
 uint8_t endR, endG, endB;
@@ -240,7 +235,7 @@ void setup() {
   digitalWrite(ledPin, LOW);  
 
   //star animations
-  for (int i=0; i < strip.numPixels(); i++) {
+  for (unsigned int i=0; i < strip.numPixels(); i++) {
     if (random(RND)==2) {
       initStar(i);
     } else {
@@ -1029,8 +1024,7 @@ void readSpectrum()
 
 void normalizeSpectrum()
 {
- 
-  static unsigned int  Divisor = 20, ChangeTimer=0, scaledLevel;
+  static unsigned int Divisor = 20, ChangeTimer=0, scaledLevel;
   int totalBarSize=0; //, ReminderDivisor,
   byte Band, BarSize, MaxLevel;
   
@@ -1073,8 +1067,6 @@ void showSpectrum()
   //Not I don;t use any floating point numbers - all integers to keep it zippy. 
    normalizeSpectrum();
    byte Band, BarSize;
-   static unsigned int  Divisor = 20, ChangeTimer=0; //, ReminderDivisor,
-   unsigned int works, Remainder;  
         
   for(Band=0;Band < WIDTH;Band++)  {
     for(BarSize=0;BarSize < HEIGHT; BarSize++) { 
