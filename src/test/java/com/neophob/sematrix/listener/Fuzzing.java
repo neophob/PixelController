@@ -3,8 +3,6 @@ package com.neophob.sematrix.listener;
 import java.util.Random;
 import java.util.UUID;
 
-import org.junit.Test;
-
 import processing.core.PApplet;
 
 import com.neophob.sematrix.properties.ValidCommands;
@@ -17,7 +15,7 @@ import com.neophob.sematrix.properties.ValidCommands;
  */
 public class Fuzzing {
     
-    @Test
+    //@Test
     public void processMessages() {
                 
         PApplet.main(new String[] { "com.neophob.PixelController" });
