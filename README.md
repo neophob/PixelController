@@ -18,6 +18,8 @@ Run `PixelController.cmd` on Windows, `PixelController.command` on OSX and `Pixe
 Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
 the data/config.properties file.
 
+You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
+
 ## DEMO
 Check out http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
 on two PixelInvaders panels. 
