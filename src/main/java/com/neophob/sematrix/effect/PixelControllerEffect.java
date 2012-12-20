@@ -54,8 +54,8 @@ public class PixelControllerEffect implements PixelControllerElement {
 	@Override
 	public void update() {
 		for (Effect e: allEffects) {
-			e.update();
-		}
+            e.update();                
+		}		
 	}
 	
 	/**
