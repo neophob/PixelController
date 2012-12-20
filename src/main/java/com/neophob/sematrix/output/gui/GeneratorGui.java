@@ -285,13 +285,11 @@ public class GeneratorGui extends PApplet {
         //-------------
         
         cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", GENERIC_X_OFS+3, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
-        String path = Collector.getInstance().getPapplet().sketchPath+"/data";		
-
         blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
         		GENERIC_X_OFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
         i=0;
-        for (String s: FileUtils.findBlinkenFiles(path)) {
+        for (String s: FileUtils.findBlinkenFiles()) {
             blinkenLightsList.addItem(s, i);
             i++;
         }
@@ -306,7 +304,7 @@ public class GeneratorGui extends PApplet {
         		GENERIC_X_OFS+Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
         i=0;
-        for (String s: FileUtils.findImagesFiles(path)) {
+        for (String s: FileUtils.findImagesFiles()) {
             imageList.addItem(s, i);
             i++;
         }

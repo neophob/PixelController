@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.generator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +33,7 @@ import processing.lib.blinken.BlinkenLibrary;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
+import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -45,10 +48,8 @@ public class Blinkenlights extends Generator implements PConstants {
 	/** The Constant PREFIX. */
 	private static final String PREFIX = "blinken/";
 	
-	//TODO should be dynamic someday
-	private static final String MOVIE_FILES[] = new String[] {
-		"torus.bml", "bnf_auge.bml", "bb-frogskin2.bml", "bb-rauten2.bml", "bb-spiral2fast.bml",
-		"flatter_flatter.bml", "badtv.bml", "kreise-versetzt.bml", "blender.bml"};
+	//list to store movie files used by shuffler
+	private List<String> movieFiles;
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Blinkenlights.class.getName());
@@ -82,6 +83,13 @@ public class Blinkenlights extends Generator implements PConstants {
 		this.filename = filename;
 		PApplet parent = Collector.getInstance().getPapplet();
 		random=false;
+		
+		//find movie files		
+		movieFiles = new ArrayList<String>();
+		for (String s: FileUtils.findBlinkenFiles()) {
+		    movieFiles.add(s);
+		}
+		LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");
 		
 		blinken = new BlinkenLibrary(parent);
 		blinken.loadFile(PREFIX+filename, this.internalBufferXSize);
@@ -215,8 +223,8 @@ public class Blinkenlights extends Generator implements PConstants {
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
-			int nr = rand.nextInt(MOVIE_FILES.length);
-			loadFile(MOVIE_FILES[nr]);
+			int nr = rand.nextInt(movieFiles.size());
+			loadFile(movieFiles.get(nr));
 		}
 	}
 
