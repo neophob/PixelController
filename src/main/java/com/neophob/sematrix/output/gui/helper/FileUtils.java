@@ -21,6 +21,8 @@ package com.neophob.sematrix.output.gui.helper;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import com.neophob.sematrix.glue.Collector;
+
 /**
  * Helper Class to find some files
  * @author michu
@@ -53,7 +55,8 @@ public class FileUtils {
 	 * @param path
 	 * @return
 	 */
-	public static String[] findBlinkenFiles(String path) {
+	public static String[] findBlinkenFiles() {
+	    String path = Collector.getInstance().getPapplet().sketchPath+"/data";
 		FilenameFilter ff = new BlinkenlightsFilter();
 		return findFiles(path+"/blinken", ff);
 	}
@@ -63,7 +66,8 @@ public class FileUtils {
 	 * @param path
 	 * @return
 	 */
-	public static String[] findImagesFiles(String path) {
+	public static String[] findImagesFiles() {
+	    String path = Collector.getInstance().getPapplet().sketchPath+"/data";
 		FilenameFilter ff = new ImageFilter();
 		return findFiles(path+"/pics", ff);
 	}

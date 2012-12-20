@@ -504,8 +504,6 @@ public final class Collector {
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
 		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);						
-		
-		//TODO ret.add(ValidCommands.CURRENT_COLORSET +EMPTY_CHAR+currentColorSet);
 		return ret;
 	}
 

@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.generator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +31,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
+import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -45,12 +48,9 @@ public class Image extends Generator {
 	/** The Constant PREFIX. */
     public static final String PREFIX = "pics/";
 	
-	//TODO should be dynamic someday, maybe move settings to the properties file
-	/** The Constant files. */
-	private static final String IMAGE_FILES[] = new String[] {
-		"circle.jpg", "half.jpg", "gradient.jpg", "check.jpg", "logo.gif",
-		"hsv.jpg", "hls.jpg", "right.jpg", "ff-logo-small.jpg"};
-
+	//list to store movie files used by shuffler
+    private List<String> imageFiles;
+    
 	/** The Constant RESIZE_TYP. */
 	private static final ResizeName RESIZE_TYP = ResizeName.PIXEL_RESIZE;	
 	
@@ -69,6 +69,14 @@ public class Image extends Generator {
 	public Image(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.IMAGE, RESIZE_TYP);
 		this.loadFile(filename);
+		
+	    //find image files      
+		imageFiles = new ArrayList<String>();
+        for (String s: FileUtils.findImagesFiles()) {
+            imageFiles.add(s);
+        }
+        LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");
+        
 	}
 	
 	/**
@@ -132,8 +140,8 @@ public class Image extends Generator {
 	@Override
 	public void shuffle() {
 		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
-			int nr = new Random().nextInt(IMAGE_FILES.length);
-			loadFile(IMAGE_FILES[nr]);		
+			int nr = new Random().nextInt(imageFiles.size());
+			loadFile(imageFiles.get(nr));		
 		}
 	}
 	

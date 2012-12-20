@@ -101,10 +101,6 @@ public class TextureDeformation extends Effect {
             // put texture pixel on buffer screen
             ret[pixelCount] = currentPixel;
         }
-        cnt++;
-        if (cnt%2==1) {
-            timeDisplacement++;    
-        }        
 
         return ret;
     }
@@ -129,6 +125,14 @@ public class TextureDeformation extends Effect {
         return selectedLut;
     }
 
+    @Override
+    public void update() {
+        cnt++;
+        if (cnt%2==1) {
+            timeDisplacement++;    
+        }        
+    }
+    
     /* (non-Javadoc)
      * @see com.neophob.sematrix.effect.Effect#shuffle()
      */

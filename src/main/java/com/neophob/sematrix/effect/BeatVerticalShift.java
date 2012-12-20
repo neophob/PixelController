@@ -43,12 +43,17 @@ public class BeatVerticalShift extends Effect {
 	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {
-		if (Sound.getInstance().isPang()) {
-			ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferYSize);
-		}
 		return doVerticalShift(buffer, ammount);
 	}
 	
+	
+    @Override
+    public void update() {
+        if (Sound.getInstance().isPang()) {
+            ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferYSize);
+        }
+    }
+    
 	/**
 	 * shift a image buffer vertical.
 	 *

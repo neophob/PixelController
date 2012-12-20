@@ -27,6 +27,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Voluminize extends Effect {
 
+    private float volume = 0;
+    
 	/**
 	 * Instantiates a new voluminize.
 	 *
@@ -42,13 +44,15 @@ public class Voluminize extends Effect {
 	public int[] getBuffer(int[] buffer) {
 		int[] ret = new int[buffer.length];
 		
-		float volume = Sound.getInstance().getVolumeNormalized();
-
 		for (int i=0; i<buffer.length; i++){
     		ret[i]= (int)(buffer[i]*volume);
 		}
 		return ret;
 	}
 	
+    @Override
+    public void update() {
+        volume = Sound.getInstance().getVolumeNormalized();
+    }
 
 }
