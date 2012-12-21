@@ -188,9 +188,9 @@ public class ColorScroll extends Generator {
      * @param scrollMode the new scroll mode
      */
     void setScrollMode(int scrollMode) {
-        ScrollMode sm = ScrollMode.getScrollMode(scrollMode);        
+        ScrollMode sm = ScrollMode.getScrollMode(scrollMode);          
         //sanity check
-        if (sm==null) {
+        if (sm!=null) {
             this.scrollMode = sm;
         }                 
     }
