@@ -228,6 +228,16 @@ void loop() {
   sendAck();
 }
 
+
+//convert a 15bit color value into a 24bit color value
+uint32_t convert15bitTo24bit(uint16_t col15bit) {
+  uint8_t r=col15bit & 0x1f;
+  uint8_t g=(col15bit>>5) & 0x1f;
+  uint8_t b=(col15bit>>10) & 0x1f;
+    
+  return Color(r<<3, g<<3, b<<3);
+}
+
 // --------------------------------------------
 //    update 32 bytes of the led matrix
 //    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
@@ -236,8 +246,7 @@ void updatePixels(byte ofs, byte* buffer) {
   uint16_t currentLed = ofs*PIXELS_PER_PANEL;
   byte x=0;
   for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-    //tocheck, convert 5bit back to 8bit?
-    strip.setPixelColor(currentLed, buffer[x]<<8 | buffer[x+1]);
+    strip.setPixelColor(currentLed, convert15bitTo24bit(buffer[x]<<8 | buffer[x+1]) );
     x+=2;
     currentLed++;
   }  
