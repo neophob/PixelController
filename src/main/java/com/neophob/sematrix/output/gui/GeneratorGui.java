@@ -253,14 +253,16 @@ public class GeneratorGui extends PApplet {
         Tab generatorTab = cp5.getTab("default");
         generatorTab.setLabel("GENERATOR/EFFECT");		
         Tab outputTab = cp5.addTab("SINGLE OUTPUT MAPPING");
-        Tab randomTab = cp5.addTab("RANDOM SELECTION");		
-        Tab presetTab = cp5.addTab("PRESETS");
         Tab allOutputTab = null;
         
+        //add all output mapping only if multiple output panels exist
         if (nrOfVisuals>2) {
             allOutputTab = cp5.addTab("ALL OUTPUT MAPPING");		
             allOutputTab.setColorForeground(0xffff0000);        	
         }
+
+        Tab randomTab = cp5.addTab("RANDOM SELECTION");		
+        Tab presetTab = cp5.addTab("PRESETS");
 
         generatorTab.setColorForeground(0xffff0000);
         outputTab.setColorForeground(0xffff0000);
