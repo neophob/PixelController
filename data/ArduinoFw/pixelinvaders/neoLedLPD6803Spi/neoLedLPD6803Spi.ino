@@ -44,6 +44,7 @@
 #define CMD_START_BYTE 0x01
 #define CMD_SENDFRAME 0x03
 #define CMD_PING  0x04
+#define CMD_CONNECTION_CLOSED 0x05
 
 #define START_OF_DATA 0x10 
 #define END_OF_DATA 0x20
@@ -230,6 +231,10 @@ void loop() {
   case CMD_PING:
     //just send the ack!
     serialDataRecv = 1;        
+    break;
+
+  case CMD_CONNECTION_CLOSED:
+    serialDataRecv = 0;        
     break;
 
   default:

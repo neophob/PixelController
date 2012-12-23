@@ -79,7 +79,7 @@ public class Lpd6803 {
 	private static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
 	
 	/** internal lib version. */
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.1";
 
 	/** The Constant START_OF_CMD. */
 	private static final byte START_OF_CMD = 0x01;
@@ -89,6 +89,9 @@ public class Lpd6803 {
 	
 	/** The Constant CMD_PING. */
 	private static final byte CMD_PING = 0x04;
+
+	/** */
+	private static final byte CMD_CONNECTION_CLOSED = 0x05;
 
 	/** The Constant START_OF_DATA. */
 	private static final byte START_OF_DATA = 0x10;
@@ -227,6 +230,7 @@ public class Lpd6803 {
 	 */
 	public void dispose() {
 		if (connected()) {
+			connectionClosed();
 			port.stop();
 		}
 	}
@@ -321,7 +325,36 @@ public class Lpd6803 {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * send end of connection
+	 */
+	public void connectionClosed() {		
+		/*
+		 *  0   <startbyte>
+		 *  1   <i2c_addr>/<offset>
+		 *  2   <num_bytes_to_send>
+		 *  3   command type, was <num_bytes_to_receive>
+		 *  4   data marker
+		 *  5   ... data
+		 *  n   end of data
+		 */
+		
+		byte cmdfull[] = new byte[7];
+		cmdfull[0] = START_OF_CMD;
+		cmdfull[1] = 0; //unused here!
+		cmdfull[2] = 0x01;
+		cmdfull[3] = CMD_CONNECTION_CLOSED;
+		cmdfull[4] = START_OF_DATA;
+		cmdfull[5] = 0x00;
+		cmdfull[6] = END_OF_DATA;
+
+		try {
+			writeSerialData(cmdfull);			
+		} catch (Exception e) {
+			//ignored
+		}
+	}
 	
 	/**
 	 * wrapper class to send a RGB image to the lpd6803 device.
@@ -596,15 +629,16 @@ public class Lpd6803 {
 				}
 				ackErrors++;
 				return false;
-				//TODO inconsisten logging!
+				//TODO inconsistent logging!
 			}			
 		}
 		
-		String s="";
+		/*String s="";
 		for (byte b: msg) {
 			s+=(char)b;
 		}
-		//LOG.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", new String[] {s, ""+(System.currentTimeMillis()-start)});
+		LOG.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", new String[] {s, ""+(System.currentTimeMillis()-start)});
+		*/
 		ackErrors++;
 		return false;		
 	}
