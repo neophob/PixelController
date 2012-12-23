@@ -222,31 +222,5 @@ public class OutputHelper {
         }       
     }
     
-    /**
-     * apply brightness level
-     * @param buffer
-     * @param brightness
-     * @return
-     */
-    public static int[] applyBrightness(int[] buffer, float brightness) {
-    	int ret[] = new int[buffer.length];
-    	int ofs=0;
-    	int r,g,b;
-    	
-    	for (int n=0; n<buffer.length; n++) {
-    		int tmp = buffer[ofs];	
-            r = (int) ((tmp>>16) & 255);
-            g = (int) ((tmp>>8)  & 255);
-            b = (int) ( tmp      & 255);                       
-
-            r = (int)(r*brightness);
-            g = (int)(g*brightness);
-            b = (int)(b*brightness);
-            
-            ret[ofs++] = (r<<16)|(g<<8)|b;
-    	}
-    	
-    	return ret;
-    }
 
 }

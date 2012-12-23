@@ -30,6 +30,8 @@ import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.layout.LayoutModel;
+import com.neophob.sematrix.output.gamma.GammaType;
+import com.neophob.sematrix.output.gamma.Gammatab;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
@@ -113,8 +115,10 @@ public abstract class Output {
 	 */
 	public int[] getBufferForScreen(int screenNr) {
 		int[] buffer = this.bufferMap.get(switchBuffer+screenNr);
-		float brightness = this.collector.getPixelControllerGenerator().getBrightness();		
-		return OutputHelper.applyBrightness(buffer, brightness);
+		float brightness = this.collector.getPixelControllerGenerator().getBrightness();
+		
+		//gamma correct buffer
+		return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);
 	}
 	
 

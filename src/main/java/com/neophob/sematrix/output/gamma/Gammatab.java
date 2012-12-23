@@ -28,37 +28,90 @@ package com.neophob.sematrix.output.gamma;
  */
 public abstract class Gammatab {
 
-	//create gammatab for lpd6803 based led strips
-	public static int[] lpd8806GammaTab() {
-		int[] ret = new int[256];
-		
-		for (int i=0; i<256; i++) {
-			ret[i] = 0x80|(int)(Math.pow ((float)(i)/255.0f, 2.5f)*127.0f+0.5f);
-		}
-		
-		return ret;
-	}
+	private static int[] lpd6803GammaTab = generateLpd6803GammaTab();
+	private static int[] ws2801GammaTab = generateWs2801GammaTab();
+	
 
-	//create gammatab for lpd6803 based led strips
-	public static int[] lpd6803GammaTab() {
+	/**
+	 * create gammatab for lpd6803 based led strips
+	 * 
+	 * @return
+	 */
+	private static int[] generateLpd6803GammaTab() {
 		int[] ret = new int[256];
-		
+
 		for (int i=0; i<256; i++) {
 			ret[i] = (int)(Math.pow ((float)(i)/255.0f, 2.0f)*255.0f+0.5f);
 		}
-		
+
 		return ret;
 	}
 
-	//create gammatab for ws2801 based led strips
-	public static int[] ws2801GammaTab() {
+	/**
+	 * create gammatab for ws2801 based led strips
+	 * 
+	 * @return
+	 */
+	private static int[] generateWs2801GammaTab() {
 		int[] ret = new int[256];
-		
+
 		for (int i=0; i<256; i++) {
 			ret[i] = (int)(Math.pow ((float)(i)/255.0f, 2.5f)*255.0f+0.5f);
 		}
-		
+
 		return ret;
 	}
+	
+	
+    /**
+     * apply brightness level
+     * @param buffer
+     * @param brightness
+     * @return
+     */
+    public static int[] applyBrightnessAndGammaTab(int[] buffer, GammaType type, float brightness) {
+    	int ret[] = new int[buffer.length];
+    	int ofs=0;
+    	int r,g,b;
+    	
+    	for (int n=0; n<buffer.length; n++) {
+    		int tmp = buffer[ofs];	
+            r = (int) ((tmp>>16) & 255);
+            g = (int) ((tmp>>8)  & 255);
+            b = (int) ( tmp      & 255);                       
+
+            //apply brightness
+            r = (int)(r*brightness);
+            g = (int)(g*brightness);
+            b = (int)(b*brightness);
+            
+            //apply gamma
+    		switch (type) {
+    		case LPD_6803:
+    			r = lpd6803GammaTab[r];
+    			g = lpd6803GammaTab[g];
+    			b = lpd6803GammaTab[b];
+    			break;
+
+    		case WS_2801:
+    			r = ws2801GammaTab[r];
+    			g = ws2801GammaTab[g];
+    			b = ws2801GammaTab[b];
+
+    		case NONE:
+    			break;
+
+    		default:
+    			break;
+    		}
+
+    		
+            ret[ofs++] = (r<<16)|(g<<8)|b;
+    	}
+    	
+    	return ret;
+    }
+
+
 
 }
