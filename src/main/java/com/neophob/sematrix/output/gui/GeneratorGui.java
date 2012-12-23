@@ -253,13 +253,17 @@ public class GeneratorGui extends PApplet {
         Tab generatorTab = cp5.getTab("default");
         generatorTab.setLabel("GENERATOR/EFFECT");		
         Tab outputTab = cp5.addTab("SINGLE OUTPUT MAPPING");
-        Tab allOutputTab = cp5.addTab("ALL OUTPUT MAPPING");		
         Tab randomTab = cp5.addTab("RANDOM SELECTION");		
         Tab presetTab = cp5.addTab("PRESETS");
+        Tab allOutputTab = null;
+        
+        if (nrOfVisuals>2) {
+            allOutputTab = cp5.addTab("ALL OUTPUT MAPPING");		
+            allOutputTab.setColorForeground(0xffff0000);        	
+        }
 
         generatorTab.setColorForeground(0xffff0000);
         outputTab.setColorForeground(0xffff0000);
-        allOutputTab.setColorForeground(0xffff0000);
         randomTab.setColorForeground(0xffff0000);
         presetTab.setColorForeground(0xffff0000);
 
@@ -396,18 +400,21 @@ public class GeneratorGui extends PApplet {
         //--------------
         //All Output tab
         //--------------				
+        
+        if (allOutputTab!=null) {
+            cp5.addTextlabel("allOutputTabLabel", "CHANGE ALL OUTPUT MAPPINGS", 20, yPosStartDrowdown)
+            .moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
 
-        cp5.addTextlabel("allOutputTabLabel", "CHANGE ALL OUTPUT MAPPINGS", 20, yPosStartDrowdown)
-        .moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
+            allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
+                    GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
+            allOutputTabVis.moveTo(allOutputTab);
 
-        allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
-                GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
-        allOutputTabVis.moveTo(allOutputTab);
+            //Fader         
+            allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
+                    GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
+            allOutputTabFader.moveTo(allOutputTab);        	        	
+        }
 
-        //Fader         
-        allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
-                GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
-        allOutputTabFader.moveTo(allOutputTab);
 
         //palette dropdown list	
         cp5.addTextlabel("colSet", "SELECT COLORSET", GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
@@ -787,10 +794,11 @@ public class GeneratorGui extends PApplet {
             colorScrollList.setOpen(false);
         }
 
-        if (!clickedOn.contains(GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN)) {
+        if (allOutputTabVis!=null && !clickedOn.contains(GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN)) {
             allOutputTabVis.setOpen(false);
         }
-        if (!clickedOn.contains(GuiElement.OUTPUT_ALL_FADER_DROPDOWN)) {
+        
+        if (allOutputTabFader!=null && !clickedOn.contains(GuiElement.OUTPUT_ALL_FADER_DROPDOWN)) {
             allOutputTabFader.setOpen(false);
         }
 
