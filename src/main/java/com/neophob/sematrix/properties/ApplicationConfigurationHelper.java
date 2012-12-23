@@ -36,6 +36,7 @@ import com.neophob.sematrix.layout.BoxLayout;
 import com.neophob.sematrix.layout.HorizontalLayout;
 import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.output.OutputDeviceEnum;
+import com.neophob.sematrix.output.gamma.GammaType;
 
 /**
  * load and save properties files.
@@ -1112,7 +1113,13 @@ public class ApplicationConfigurationHelper {
         return config.getProperty(ConfigConstant.TPM2NET_IP);
     }
     
-    
+    /**
+     * TODO implement
+     * @return
+     */
+    public GammaType getGammaType() {
+    	return GammaType.NONE;
+    }
     
 
 }

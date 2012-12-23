@@ -69,6 +69,8 @@ public abstract class Output {
 	 * one to work with 
 	 */
 	private Map<Integer, int[]> bufferMap;
+	
+	private GammaType gammaType;
 
 	/**
 	 * Instantiates a new output.
@@ -85,7 +87,8 @@ public abstract class Output {
 		this.matrixData = this.collector.getMatrix();
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
-		
+		this.gammaType = ph.getGammaType();
+				
 		this.bufferMap = new HashMap<Integer, int[]>();		
 		this.totalNrOfOutputBuffers = this.collector.getNrOfScreens();
 		this.switchBuffer=0;
@@ -93,8 +96,8 @@ public abstract class Output {
 		//add to list
 		controller.addOutput(this);
 
-		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}"
-				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp });	
+		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}, Gamma Correction: {3}"
+				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp, this.gammaType });	
 	}
 	
 	/**
