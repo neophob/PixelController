@@ -24,6 +24,5 @@ cd "$CURRENT"
 
 export JAVA_OPT="-Djava.util.logging.config.file=./data/logging.properties -Djava.library.path=./lib -Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote -Djava.security.policy=./data/client.policy" 
 source ./classpath-unix.properties
-echo classpath: $classpath
 java $JAVA_OPT -classpath $classpath -XX:ErrorFile=./data/hs_err_pid%p.log -jar ./lib/PixelController.jar
 
