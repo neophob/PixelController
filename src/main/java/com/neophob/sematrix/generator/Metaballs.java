@@ -19,6 +19,7 @@
 
 package com.neophob.sematrix.generator;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -48,6 +49,8 @@ public class Metaballs extends Generator {
 
 	/** The a. */
 	private int a=1;
+	
+	private int resolutionAwareMul;
 
 	/**
 	 * Instantiates a new metaballs.
@@ -58,6 +61,13 @@ public class Metaballs extends Generator {
 		super(controller, GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
 		vy = new int[NUM_BLOBS][getInternalBufferYSize()];
 		vx = new int[NUM_BLOBS][getInternalBufferXSize()];
+		
+		int deviceXSize = Collector.getInstance().getMatrix().getDeviceXSize();
+		if (deviceXSize<10) {
+			resolutionAwareMul = 60000;
+		} else {
+			resolutionAwareMul = 160000;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +126,7 @@ public class Metaballs extends Generator {
 				int m = 1;
 				for (int i = 1; i < NUM_BLOBS; i++) {
 					// Increase this number to make your blobs bigger
-					m += 60000/(vy[i][y] + vx[i][x]+1);
+					m += resolutionAwareMul/(vy[i][y] + vx[i][x]+1);
 				}
 				
 				int b = (x+m+y)/3;
