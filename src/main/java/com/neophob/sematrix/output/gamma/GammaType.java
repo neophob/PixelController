@@ -27,6 +27,7 @@ package com.neophob.sematrix.output.gamma;
  */
 public enum GammaType {
 	NONE,
-	LPD_6803,
-	WS_2801
+	GAMMA_20,
+	GAMMA_25,
+	SPECIAL1,
 }

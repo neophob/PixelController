@@ -121,7 +121,7 @@ public abstract class Output {
 		float brightness = this.collector.getPixelControllerGenerator().getBrightness();
 		
 		//gamma correct buffer
-		return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);
+		return Gammatab.applyBrightnessAndGammaTab(buffer, this.gammaType, brightness);
 	}
 	
 

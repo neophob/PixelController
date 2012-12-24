@@ -42,6 +42,8 @@ public final class ConfigConstant {
 	
 	/** The Constant CFG_PANEL_COLOR_ORDER. */
 	public static final String CFG_PANEL_COLOR_ORDER = "panel.color.order";
+	
+	public static final String CFG_PANEL_GAMMA_TAB = "panel.gamma.tab";	
 
 	/** The Constant NULLOUTPUT_ROW1. */
 	public static final String NULLOUTPUT_ROW1 = "nulloutput.devices.row1";

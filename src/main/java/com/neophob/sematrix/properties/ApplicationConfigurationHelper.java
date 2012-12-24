@@ -108,6 +108,8 @@ public class ApplicationConfigurationHelper {
     /** The output device y resolution. */
     private int deviceYResolution;
     
+    /** user selected gamma correction */
+    private GammaType gammaType;
 
     /**
      * Instantiates a new properties helper.
@@ -250,6 +252,8 @@ public class ApplicationConfigurationHelper {
                 this.panelOrder.add(i);
             }        	
         }
+        
+        gammaType = parseGammaCorrection();
     }
 
 	/**
@@ -545,7 +549,7 @@ public class ApplicationConfigurationHelper {
                     }
                     panelOrder.add(order);					
                 } catch (Exception e) {
-                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    LOG.log(Level.WARNING, FAILED_TO_PARSE, ConfigConstant.PIXELINVADERS_PANEL_ORDER);
                 }
             }			    		
     	}
@@ -553,6 +557,26 @@ public class ApplicationConfigurationHelper {
     	return panelOrder.size();
     }
 
+    /**
+     * 
+     * @return
+     */
+    private GammaType parseGammaCorrection() {
+        GammaType ret = GammaType.NONE;
+        
+        String rawConfig = config.getProperty(ConfigConstant.CFG_PANEL_GAMMA_TAB);        
+        if (StringUtils.isBlank(rawConfig)) {
+            return ret;
+        }
+        
+        try {
+            ret = GammaType.valueOf(rawConfig);            
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, FAILED_TO_PARSE, ConfigConstant.CFG_PANEL_GAMMA_TAB);
+        }
+        return ret;
+    }
+    
     /**
      * Parses the i2c address.
      *
@@ -1114,11 +1138,12 @@ public class ApplicationConfigurationHelper {
     }
     
     /**
-     * TODO implement
+     * return user selected gamma correction
+     * 
      * @return
      */
     public GammaType getGammaType() {
-    	return GammaType.NONE;
+    	return gammaType;
     }
     
 
