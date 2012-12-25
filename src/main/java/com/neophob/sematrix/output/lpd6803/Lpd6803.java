@@ -231,6 +231,7 @@ public class Lpd6803 {
 	public void dispose() {
 		if (connected()) {
 			connectionClosed();
+			LOG.log(Level.INFO,	"Just sent the connection closed command");
 			port.stop();
 		}
 	}

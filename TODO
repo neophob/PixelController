@@ -23,25 +23,26 @@ Changelog v1.2 to v1.3
 ------------------------
 -add integrated GUI!
 -add Color-Sets, predefined color definition for all generators, effects and mixers
--support more output formats (not only RGB and RBG), thanks to noxx6
--added PixelInvaders SPI firmware (lpd6803 and ws2801ä), much faster than the bit banging version
--configuration fixes
--update AdaVision driver
--support UDP output device
--support TPM2 serial output devices
--support TPM2 net output devices
--support rainbowduino v3 output devices
+-add support for UDP output device
+-add support for TPM2 serial output devices
+-add support for TPM2 net output devices
+-add support for rainbowduino v3 output devices
 -add start scripts for OSX
 -add flipX and flipY effects
+-implement gamma correction
+-support more output formats (not only RGB and RBG), thanks to noxx6
+-updated PixelInvaders SPI firmware (lpd6803 and ws2801), much faster than the bit banging version
+-update AdaVision driver
 -Texturedeform is not a generator anymore but an effect
--removed emboss effect, as the result was ugly
--removed Xor and MinusHalf mixer, as the result was ugly
--removed image zoomer generator, as it looks ugly and was a duplicate.
 -Integrate OSC Server
 -Reduce CPU load
 -fixed Blinkenlight video player race condition
--improved rxtx lib, fix some 64bit issus
+-improved rxtx lib, fix some 64bit issues
+-configuration fixes
 -alot of bugfixes
+-removed emboss effect, as the result was ugly
+-removed Xor and MinusHalf mixer, as the result was ugly
+-removed image zoomer generator, as it looks ugly and was a duplicate.
 
 Changelog v1.1 to v1.2
 ------------------------
