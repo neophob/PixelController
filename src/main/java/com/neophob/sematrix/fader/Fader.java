@@ -124,6 +124,11 @@ public abstract class Fader {
 		//example: duration=200,  FPS=50 -> 10000frames 1000/50=20ms / frame
 		int fps = Collector.getInstance().getFps();
 		int timePerFrame = (int)(1000.0f / (float)fps);
+		
+		//just if a crazy guy defines more than 1000 fps...
+		if (timePerFrame<1) {
+			timePerFrame = 1;
+		}
 		if (fadeTime < timePerFrame) {			
 			LOG.log(Level.WARNING, "Invalid fadeTime {0} fixed to {1}", new Object[] { fadeTime, timePerFrame });
 			this.fadeTime = timePerFrame;
