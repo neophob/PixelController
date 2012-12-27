@@ -19,10 +19,6 @@
 
 package com.neophob.sematrix.effect;
 
-import java.util.Random;
-
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
