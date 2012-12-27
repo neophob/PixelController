@@ -90,7 +90,7 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         LOG.log(Level.INFO, "\tSnakeCabeling: "+snakeCabeling);
         LOG.log(Level.INFO, "\tRotate: "+displayOption);
         LOG.log(Level.INFO, "\tColorFormat: "+colorFormat);
-        LOG.log(Level.INFO, "\tOutput Mapping entries: "+this.mapping.length);
+        LOG.log(Level.INFO, "\tOutput Mapping entry size: "+this.mapping.length);
 	}
 	
 	/**
