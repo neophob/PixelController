@@ -1,3 +1,4 @@
+@echo off
 @REM
 @REM Copyright (C) 2011 Michael Vogt <michu@neophob.com>
 @REM
