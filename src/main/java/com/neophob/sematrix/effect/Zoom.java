@@ -51,9 +51,4 @@ public class Zoom extends RotoZoomEffect {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.effect.Effect#update()
-	 */
-	public void update() {}
-
 }

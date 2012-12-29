@@ -22,13 +22,14 @@ package com.neophob.sematrix.effect;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * The Class Threshold.
+ * create a strobo effect.
  *
  * @author michu
  */
 public class Strobo extends Effect {
 
 	private int stro;
+	private int count;
 	
 	/**
 	 * Instantiates a new threshold.
@@ -38,6 +39,7 @@ public class Strobo extends Effect {
 	public Strobo(PixelControllerEffect controller) {
 		super(controller, EffectName.STROBO, ResizeName.QUALITY_RESIZE);
 		this.stro = 0;
+		this.count = 0;
 	}
 
 	/* (non-Javadoc)
@@ -51,7 +53,15 @@ public class Strobo extends Effect {
 		return buffer;
 	}
 		
+	/* (non-Javadoc)
+     * @see com.neophob.sematrix.effect.Effect#update()
+     */
+    @Override
 	public void update() {
+	    if (count++<2) {
+	        return;
+	    }
+	    count = 0;
 		stro^=128;
 	}
 }

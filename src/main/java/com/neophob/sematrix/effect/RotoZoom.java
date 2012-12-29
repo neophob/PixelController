@@ -160,6 +160,7 @@ public class RotoZoom extends RotoZoomEffect {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.effect.Effect#update()
 	 */
+	@Override
 	public void update() {
 		angle+=this.angleDiff;
 		scale-=dscalee;
