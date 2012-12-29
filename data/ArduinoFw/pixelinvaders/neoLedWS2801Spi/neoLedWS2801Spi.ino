@@ -31,17 +31,17 @@
  * 	
  */
 
-#include <SPI.h>
-#include <WS2801.h>
+#include <FastSPI_LED.h>
 
 // ======= START OF USER CONFIGURATION =======
- 
+
 //define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 4
+#define NR_OF_PANELS 2
 
 // ======= END OF USER CONFIGURATION ======= 
 
 #define PIXELS_PER_PANEL 32
+#define NUM_LEDS (NR_OF_PANELS*PIXELS_PER_PANEL)
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
@@ -51,7 +51,6 @@
 #define CMD_START_BYTE 0x01
 #define CMD_SENDFRAME 0x03
 #define CMD_PING  0x04
-#define CMD_CONNECTION_CLOSED 0x05
 
 #define START_OF_DATA 0x10 
 #define END_OF_DATA 0x20
@@ -70,20 +69,22 @@
 //array that will hold the serial input string
 byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
 
-//initialize pixels
-// using default SPI pins
-WS2801 strip = WS2801(PIXELS_PER_PANEL*NR_OF_PANELS);
-
-//if you need software spi (bitbanging) you can define
-//WS2801 strip = WS2801(PIXELS_PER_PANEL*NR_OF_PANELS, dataPin, clockPin);
-
 #define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
 
 byte g_errorCounter;
 
-int j=0,k=0;
+int jj=0,k=0;
 byte serialDataRecv;
+
+// Sometimes chipsets wire in a backwards sort of way
+struct CRGB { 
+  unsigned char b; 
+  unsigned char r; 
+  unsigned char g; 
+};
+// struct CRGB { unsigned char r; unsigned char g; unsigned char b; };
+struct CRGB *leds;
 
 
 // --------------------------------------------
@@ -104,8 +105,7 @@ static void sendAck() {
 
 
 // Create a 24 bit color value from R,G,B
-uint32_t Color(byte r, byte g, byte b)
-{
+uint32_t Color(byte r, byte g, byte b) {
   uint32_t c;
   c = r;
   c <<= 8;
@@ -117,16 +117,17 @@ uint32_t Color(byte r, byte g, byte b)
 
 //Input a value 0 to 255 to get a color value.
 //The colours are a transition r - g -b - back to r
-uint32_t Wheel(byte WheelPos)
-{
+uint32_t Wheel(byte WheelPos) {
   if (WheelPos < 85) {
-   return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
-  } else if (WheelPos < 170) {
-   WheelPos -= 85;
-   return Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  } else {
-   WheelPos -= 170; 
-   return Color(0, WheelPos * 3, 255 - WheelPos * 3);
+    return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } 
+  else if (WheelPos < 170) {
+    WheelPos -= 85;
+    return Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } 
+  else {
+    WheelPos -= 170; 
+    return Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
 }
 
@@ -139,29 +140,25 @@ void rainbow() {
   k++;
   if (k>50) {
     k=0;
-    j++;
-    if (j>255) {  // 5 cycles of all 255 colors in the wheel
-      j=0; 
+    jj++;
+    if (jj>255) {
+      jj=0; 
     }
 
-    for (int i=0; i < strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel( (i + j) % 255));
+    for (int j = 0; j < 3; j++) { 
+      for (int i = 0 ; i < NUM_LEDS; i++ ) {
+
+        uint32_t color = Wheel( (i + jj) % 255);
+        leds[i].r = (color>>16)&255;
+        leds[i].g = (color>>8)&255; 
+        leds[i].b = color&255; 
+
+      }
     }
-    strip.show();    
+    FastSPI_LED.show();
   }
 }
 
-
-// --------------------------------------------
-//     create initial image
-// --------------------------------------------
-void showInitImage() {
-  for (int i=0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, Wheel( i % 96));
-  }    
-  // Update the strip, to start they are all 'off'
-  strip.show();
-}
 
 
 // --------------------------------------------
@@ -174,8 +171,16 @@ void setup() {
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
 
-  strip.begin();        // Start up the LED Strip
-  showInitImage();      // display some colors
+  FastSPI_LED.setLeds(NUM_LEDS);
+  FastSPI_LED.setChipset(CFastSPI_LED::SPI_WS2801);
+
+  //select spi speed, 7 is very slow, 0 is blazing fast
+  FastSPI_LED.setDataRate(1);
+  FastSPI_LED.init();
+  FastSPI_LED.start();
+  leds = (struct CRGB*)FastSPI_LED.getRGBData(); 
+
+  rainbow();      // display some colors
 
   serialDataRecv = 0;   //no serial data received yet  
 }
@@ -186,13 +191,9 @@ void setup() {
 void loop() {
   g_errorCounter=0;
 
-  // see if we got a proper command string yet
+  // see if we got a proper command string yet, 0 means no data read
   if (readCommand(serInStr) == 0) {
     //nope, nothing arrived yet...
-    if (g_errorCounter!=0 && g_errorCounter!=102) {
-      sendAck();
-    }
-
     if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
       rainbow();    	
     }
@@ -224,10 +225,10 @@ void loop() {
     serialDataRecv = 1;        
     break;
 
-  case CMD_CONNECTION_CLOSED:
-    serialDataRecv = 0;        
-    break;
-  
+    // case CMD_CONNECTION_CLOSED:
+    //   serialDataRecv = 0;        
+    //   break;
+
   default:
     //invalid command
     g_errorCounter=130; 
@@ -244,7 +245,7 @@ uint32_t convert15bitTo24bit(uint16_t col15bit) {
   uint8_t r=col15bit & 0x1f;
   uint8_t g=(col15bit>>5) & 0x1f;
   uint8_t b=(col15bit>>10) & 0x1f;
-    
+
   return Color(r<<3, g<<3, b<<3);
 }
 
@@ -253,14 +254,19 @@ uint32_t convert15bitTo24bit(uint16_t col15bit) {
 //    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
 // --------------------------------------------
 void updatePixels(byte ofs, byte* buffer) {
-  uint16_t currentLed = ofs*PIXELS_PER_PANEL;
+  int currentLed = ofs*PIXELS_PER_PANEL;
   byte x=0;
   for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-    strip.setPixelColor(currentLed, convert15bitTo24bit(buffer[x]<<8 | buffer[x+1]) );
+    uint32_t color = convert15bitTo24bit(buffer[x]<<8 | buffer[x+1]);
+
+    leds[currentLed].r = (color>>16)&255;
+    leds[currentLed].g = (color>>8)&255; 
+    leds[currentLed].b = color&255; 
+
     x+=2;
     currentLed++;
-  }  
-  strip.show();   // write all the pixels out
+  }
+  FastSPI_LED.show();
 }
 
 /* 
@@ -298,8 +304,8 @@ byte readCommand(byte *str) {
     g_errorCounter = 102;
     return 0;    
   }
-  
-  
+
+
 
   //read header  
   i=1;
@@ -353,5 +359,9 @@ byte readCommand(byte *str) {
   //return data size (without meta data)
   return sendlen;
 }
+
+
+
+
 
 

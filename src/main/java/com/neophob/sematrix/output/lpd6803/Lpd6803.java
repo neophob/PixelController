@@ -218,7 +218,7 @@ public class Lpd6803 {
 		}
 				
 		if (port==null) {
-			throw new NoSerialPortFoundException("Error: no serial port found!");
+			throw new NoSerialPortFoundException("\nError: no serial port found!\n");
 		}
 		
 		LOG.log(Level.INFO,	"found serial port: "+serialPortName);
@@ -233,6 +233,7 @@ public class Lpd6803 {
 			connectionClosed();
 			LOG.log(Level.INFO,	"Just sent the connection closed command");
 			port.stop();
+			port = null;
 		}
 	}
 
