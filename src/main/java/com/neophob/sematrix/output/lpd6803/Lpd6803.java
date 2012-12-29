@@ -90,9 +90,6 @@ public class Lpd6803 {
 	/** The Constant CMD_PING. */
 	private static final byte CMD_PING = 0x04;
 
-	/** */
-	private static final byte CMD_CONNECTION_CLOSED = 0x05;
-
 	/** The Constant START_OF_DATA. */
 	private static final byte START_OF_DATA = 0x10;
 	
@@ -230,8 +227,7 @@ public class Lpd6803 {
 	 */
 	public void dispose() {
 		if (connected()) {
-			connectionClosed();
-			LOG.log(Level.INFO,	"Just sent the connection closed command");
+			LOG.log(Level.INFO,	"Serial connection closed");
 			port.stop();
 			port = null;
 		}
@@ -328,35 +324,6 @@ public class Lpd6803 {
 		}
 	}
 
-	/**
-	 * send end of connection
-	 */
-	public void connectionClosed() {		
-		/*
-		 *  0   <startbyte>
-		 *  1   <i2c_addr>/<offset>
-		 *  2   <num_bytes_to_send>
-		 *  3   command type, was <num_bytes_to_receive>
-		 *  4   data marker
-		 *  5   ... data
-		 *  n   end of data
-		 */
-		
-		byte cmdfull[] = new byte[7];
-		cmdfull[0] = START_OF_CMD;
-		cmdfull[1] = 0; //unused here!
-		cmdfull[2] = 0x01;
-		cmdfull[3] = CMD_CONNECTION_CLOSED;
-		cmdfull[4] = START_OF_DATA;
-		cmdfull[5] = 0x00;
-		cmdfull[6] = END_OF_DATA;
-
-		try {
-			writeSerialData(cmdfull);			
-		} catch (Exception e) {
-			//ignored
-		}
-	}
 	
 	/**
 	 * wrapper class to send a RGB image to the lpd6803 device.
