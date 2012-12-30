@@ -528,6 +528,10 @@ public class GeneratorGui extends PApplet {
         tSnd.moveTo(ALWAYS_VISIBLE_TAB);
         tSnd.setColor(0x6e6e6e);
 
+        Textlabel tVol = cp5.addTextlabel("sndVol", " Input Sound Volume", GENERIC_X_OFS+2*singleVisualXSize-5, singleVisualYSize+SELECTED_MARKER+21);
+        tVol.moveTo(ALWAYS_VISIBLE_TAB);
+        tVol.setColor(0x6e6e6e);
+
         Textlabel tFrameProg = cp5.addTextlabel("frameDesc", "Frame Progress", GENERIC_X_OFS-3, singleVisualYSize+SELECTED_MARKER+21);
         tFrameProg.moveTo(ALWAYS_VISIBLE_TAB);        
         tFrameProg.setColor(0x6e6e6e);
@@ -666,8 +670,8 @@ public class GeneratorGui extends PApplet {
     private void displaySoundStats(int localY) {
         Sound snd = Sound.getInstance();
 
-        int xofs = GENERIC_X_OFS+singleVisualXSize+2;
-        int xx = singleVisualXSize/3-2;
+        int xofs = GENERIC_X_OFS+singleVisualXSize;
+        int xx = singleVisualXSize/3;
 
         colorSelect(snd.isKick());
         rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
@@ -678,7 +682,17 @@ public class GeneratorGui extends PApplet {
 
         xofs+=xx+2;
         colorSelect(snd.isHat());
-        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);		
+        
+        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
+        
+        
+        //Draw input volume
+        int col = 55+(int)(145*snd.getVolumeNormalized());
+        fill(col);
+        xofs = GENERIC_X_OFS+2*singleVisualXSize;
+        xx = (int)(singleVisualXSize*snd.getVolumeNormalized());
+        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
+        
     }
 
 
