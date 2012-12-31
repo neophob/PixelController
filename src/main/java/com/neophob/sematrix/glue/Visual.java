@@ -295,7 +295,7 @@ public class Visual {
 	    //get gryscale buffer
 		int buffer[] = mixer.getBuffer(this);
 
-		return ColorSet.convertToColorSetImage(buffer, colorSet);
+		return colorSet.convertToColorSetImage(buffer);
 	}
 
 	/**
@@ -371,9 +371,9 @@ public class Visual {
 	 */
 	public PImage getGeneratorAsImage(int ofs) {
 		if (ofs==0) {
-			return getBufferAsImage(ColorSet.convertToColorSetImage(generator1.internalBuffer, colorSet));			
+			return getBufferAsImage(colorSet.convertToColorSetImage(generator1.internalBuffer));			
 		}
-		return getBufferAsImage(ColorSet.convertToColorSetImage(generator2.internalBuffer, colorSet));
+		return getBufferAsImage(colorSet.convertToColorSetImage(generator2.internalBuffer));
 	}
 
 	/**
@@ -384,11 +384,11 @@ public class Visual {
 	public PImage getEffectAsImage(int ofs) {
 		if (ofs==0) {
 			return getBufferAsImage(
-					ColorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer), colorSet)
+					colorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer))
 			);			
 		}
 		return getBufferAsImage(
-				ColorSet.convertToColorSetImage(effect2.getBuffer(generator2.internalBuffer), colorSet)
+				colorSet.convertToColorSetImage(effect2.getBuffer(generator2.internalBuffer))
 		);			
 	}
 	

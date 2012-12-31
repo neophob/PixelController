@@ -604,22 +604,22 @@ public class GeneratorGui extends PApplet {
         for (Visual v: col.getAllVisuals()) {
 
             //use always the pixel resize option to reduce cpu load
-        	buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), /*v.getResizeOption()*/ ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
+        	buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
         	
         	pImage.loadPixels();
         	System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
         	pImage.updatePixels();
 
-        	//draw current output
+        	//display the image
+        	image(pImage, localX, localY);      		
+
+        	//highlight current output
         	if (outputId.contains(ofs)) {
         		fill(66,200,66);
         	} else {
         		fill(55,55,55);
         	}	
         	rect(localX, localY+singleVisualYSize+2, singleVisualXSize, SELECTED_MARKER);				
-
-        	//display the image
-        	image(pImage, localX, localY);        		
 
             localX += pImage.width;
             ofs++;
