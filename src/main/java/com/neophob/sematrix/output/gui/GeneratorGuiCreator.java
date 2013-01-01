@@ -44,7 +44,7 @@ public class GeneratorGuiCreator extends Frame {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
 
-    private static final int MINIMAL_WINDOW_X_SIZE = 800;
+    private static final int MINIMAL_WINDOW_X_SIZE = 820;
 
 	/**
 	 * Instantiates a new internal debug window.
@@ -62,14 +62,11 @@ public class GeneratorGuiCreator extends Frame {
         singleVisualXSize=maximalXSize/nrOfScreens;
         singleVisualYSize=(int)(maximalXSize/nrOfScreens/aspect);
 
-        int windowXSize=singleVisualXSize;
-        int windowYSize=singleVisualYSize;
+        int windowXSize=singleVisualXSize*nrOfScreens;
+        int windowYSize=singleVisualYSize + 350;
 
-       	windowXSize*=nrOfScreens;
-       
         //ugly boarder stuff
         windowXSize+=20;
-        windowYSize+=300;
 
         if (windowXSize<MINIMAL_WINDOW_X_SIZE) {
         	windowXSize = MINIMAL_WINDOW_X_SIZE;

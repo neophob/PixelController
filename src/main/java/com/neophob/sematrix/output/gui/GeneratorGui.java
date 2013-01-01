@@ -71,8 +71,12 @@ public class GeneratorGui extends PApplet {
 
     private static final int SELECTED_MARKER = 10;
     
-    private static final int GENERIC_X_OFS = 10;
+    private static final int GENERIC_X_OFS = 5;
+    private static final int GENERIC_Y_OFS = 8;
 
+    private static final int WIDGET_BOARDER = 10;
+    private static final int WIDGET_BAR_SIZE = 6;
+    
     private static final String ALWAYS_VISIBLE_TAB = "global";
 
     /** The log. */
@@ -139,7 +143,7 @@ public class GeneratorGui extends PApplet {
         this.windowHeight = windowHeigth;
         this.singleVisualXSize = singleVisualXSize;
         this.singleVisualYSize = singleVisualYSize;
-        this.p5GuiYOffset = this.singleVisualYSize + 100;        
+        this.p5GuiYOffset = this.singleVisualYSize + 120;        
     }
 
     /* (non-Javadoc)
@@ -174,7 +178,7 @@ public class GeneratorGui extends PApplet {
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
-        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 560, this.getHeight()-40);
+        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 550, this.getHeight()-40);
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
 
@@ -523,19 +527,13 @@ public class GeneratorGui extends PApplet {
         //----------
         // MISC
         //----------    
+
+        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/3;
         
-        Textlabel tSnd = cp5.addTextlabel("sndDesc", " Kick/Snare/Hat Detection", GENERIC_X_OFS+singleVisualXSize-5, singleVisualYSize+SELECTED_MARKER+21);
-        tSnd.moveTo(ALWAYS_VISIBLE_TAB);
-        tSnd.setColor(0x6e6e6e);
-
-        Textlabel tVol = cp5.addTextlabel("sndVol", " Input Sound Volume", GENERIC_X_OFS+2*singleVisualXSize-5, singleVisualYSize+SELECTED_MARKER+21);
-        tVol.moveTo(ALWAYS_VISIBLE_TAB);
-        tVol.setColor(0x6e6e6e);
-
-        Textlabel tFrameProg = cp5.addTextlabel("frameDesc", "Frame Progress", GENERIC_X_OFS-3, singleVisualYSize+SELECTED_MARKER+21);
-        tFrameProg.moveTo(ALWAYS_VISIBLE_TAB);        
-        tFrameProg.setColor(0x6e6e6e);
-
+        cp5.addTextlabel("frameDesc", "FRAME PROGRESS", GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("sndDesc", "KICK/SNARE/HAT DETECTION", GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("sndVol", "INPUT SOUND VOLUME", GENERIC_X_OFS+xSizeForEachWidget*2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        
         //register event listener
         cp5.addListener(listener);
 
@@ -581,10 +579,11 @@ public class GeneratorGui extends PApplet {
      */
     public void draw() {
         long l = System.currentTimeMillis();
+        int localX = GENERIC_X_OFS;
+        int localY=40;
 
         background(0);
-
-        int localX = GENERIC_X_OFS, localY=10;
+        
         Collector col = Collector.getInstance();
         
         //set used to find out if visual is on screen
@@ -599,6 +598,9 @@ public class GeneratorGui extends PApplet {
             pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
         }
 
+        //center visual
+        localX += (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
+        
         //draw output buffer and marker
         int ofs=0;
         for (Visual v: col.getAllVisuals()) {
@@ -625,15 +627,8 @@ public class GeneratorGui extends PApplet {
             ofs++;
         }
         
-        //display frame progress
-        int frames = col.getFrames() % singleVisualXSize;
-        fill(200,200,200);
-        rect(GENERIC_X_OFS, localY+singleVisualYSize+SELECTED_MARKER+4, frames, 5);
-        fill(55,55,55);
-        rect(GENERIC_X_OFS+frames, localY+singleVisualYSize+SELECTED_MARKER+4, singleVisualXSize-frames, 5);
-
         //beat detection
-        displaySoundStats(localY);
+        displaySystemStats(GENERIC_Y_OFS);
 
         //refresh gui from time to time
         if (col.isTriggerGuiRefresh() || frameCount++%50==2) {
@@ -648,50 +643,46 @@ public class GeneratorGui extends PApplet {
         col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
     }
 
-
-    
-    /**
-     * draw nice gradient at the end of the screen
-     */
-/*    private void drawGradientBackground() {
-        int ypos = this.getHeight()-255;
-        for (int yy=0; yy<255; yy++, ypos++) {            
-            stroke(color(yy/2));
-            line(0, ypos, this.getWidth(), ypos);
-        }
-        stroke(0);
-    }*/
-
-
     /**
      * 
      * @param localY
      */
-    private void displaySoundStats(int localY) {
+    private void displaySystemStats(int localY) {
+        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/3;
+        
+        //display frame progress
+        int frames = Collector.getInstance().getFrames() % (xSizeForEachWidget-WIDGET_BOARDER);        
+        fill(0, 180, 234);
+        rect(GENERIC_X_OFS, localY+SELECTED_MARKER+4, frames, WIDGET_BAR_SIZE);
+        fill(2, 52, 77);
+        rect(GENERIC_X_OFS+frames, localY+SELECTED_MARKER+4, xSizeForEachWidget-frames-WIDGET_BOARDER, WIDGET_BAR_SIZE);
+
+        //draw sound stats
         Sound snd = Sound.getInstance();
 
-        int xofs = GENERIC_X_OFS+singleVisualXSize;
-        int xx = singleVisualXSize/3;
+        int xofs = GENERIC_X_OFS+xSizeForEachWidget;
+        int xx = (xSizeForEachWidget-WIDGET_BOARDER*2)/3;
 
         colorSelect(snd.isKick());
-        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
+        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
 
-        xofs+=xx+2;
+        xofs+=xx+WIDGET_BOARDER/2;
         colorSelect(snd.isSnare());
-        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
+        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
 
-        xofs+=xx+2;
+        xofs+=xx+WIDGET_BOARDER/2;
         colorSelect(snd.isHat());
         
-        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
+        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
         
         
         //Draw input volume
-        int col = 55+(int)(145*snd.getVolumeNormalized());
-        fill(col);
-        xofs = GENERIC_X_OFS+2*singleVisualXSize;
-        xx = (int)(singleVisualXSize*snd.getVolumeNormalized());
-        rect(xofs, localY+singleVisualYSize+SELECTED_MARKER+4, xx, 5);
+        int g = 52+(int)(128*snd.getVolumeNormalized());
+        int b = 77+(int)(157*snd.getVolumeNormalized());
+        fill(2, g, b);
+        xofs = GENERIC_X_OFS+2*xSizeForEachWidget;
+        xx = (int)((xSizeForEachWidget-WIDGET_BOARDER)*snd.getVolumeNormalized());
+        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
         
     }
 
@@ -702,9 +693,9 @@ public class GeneratorGui extends PApplet {
      */
     private void colorSelect(boolean b) {
         if (b) {
-            fill(200,200,200);	
+            fill(0, 180, 234);	
         } else {
-            fill(55,55,55);	
+            fill(2, 52, 77);	
         }		
     }
 
