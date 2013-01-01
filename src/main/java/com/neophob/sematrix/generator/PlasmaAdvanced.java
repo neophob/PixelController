@@ -170,20 +170,5 @@ public class PlasmaAdvanced extends Generator {
 		return swingCurve[i % SWINGLEN];
 	}
 
-	/**
-	 * Color.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param z the z
-	 * @return the int
-	 */
-	public final int color(int x, int y, int z) {
-		if (x > 255) {x = 255;} else if (x < 0) {x = 0;}
-		if (y > 255) {y = 255;} else if (y < 0) {y = 0;}
-		if (z > 255) {z = 255;} else if (z < 0) {z = 0;}
-
-		return 0xff000000 | (x << 16) | (y << 8) | z;
-	}
 
 }
