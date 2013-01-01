@@ -27,13 +27,14 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.lib.blinken.BlinkenLibrary;
+import processing.core.PImage;
 
+import com.neophob.sematrix.generator.blinken.BlinkenLibrary;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
+import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -62,16 +63,14 @@ public class Blinkenlights extends Generator implements PConstants {
 	
 	/** The rand. */
 	private Random rand = new Random();
-	
-	/** The frames. */
-	private int frames;
-	
-	/** The movie frames. */
-	private int movieFrames;
-	
+		
 	/** The filename. */
 	private String filename="";
 
+	private PImage img;
+	
+	private int currentFrame;
+	
 	/**
 	 * Instantiates a new blinkenlights.
 	 *
@@ -80,9 +79,8 @@ public class Blinkenlights extends Generator implements PConstants {
 	 */
 	public Blinkenlights(PixelControllerGenerator controller, String filename) {
 		super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
-		this.filename = filename;
-		PApplet parent = Collector.getInstance().getPapplet();
-		random=false;
+		this.filename = filename;		
+		this.random=false;
 		
 		//find movie files		
 		movieFiles = new ArrayList<String>();
@@ -91,10 +89,9 @@ public class Blinkenlights extends Generator implements PConstants {
 		}
 		LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");
 		
-		blinken = new BlinkenLibrary(parent);
-		blinken.loadFile(PREFIX+filename, this.internalBufferXSize);
+		blinken = new BlinkenLibrary(Collector.getInstance().getPapplet());
+		blinken.loadFile(PREFIX+filename);
 		
-		blinkenSettings();
 	}
 
 	/**
@@ -110,46 +107,39 @@ public class Blinkenlights extends Generator implements PConstants {
 				
 		//only load if needed
 		if (!StringUtils.equals(file, this.filename)) {
-			long start = System.currentTimeMillis();			
 			this.filename = file;
 			LOG.log(Level.INFO, "Load blinkenlights file {0}.", file);
-			blinken.loadFile(PREFIX+file, this.internalBufferXSize);
+			blinken.loadFile(PREFIX+file);
 			LOG.log(Level.INFO, "DONE");
-			blinkenSettings();
-			LOG.log(Level.INFO, "Load blinkenlights done, needed time in "+(System.currentTimeMillis()-start)+"ms");			
+			currentFrame=0;
 		}
 	}
 	
-	/**
-	 * Blinken settings.
-	 */
-	private void blinkenSettings() {
-		blinken.setIgnoreFileDelay(true);
-		blinken.noLoop();
-		blinken.stop();
-		movieFrames = blinken.getNrOfFrames();
-	}
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.generator.Generator#update()
 	 */
 	@Override
-	public void update() {		
+	public void update() {
 		if (random) {
-			blinken.jump(
-					rand.nextInt(blinken.getNrOfFrames())
-			);
+			img = blinken.getFrame(rand.nextInt(blinken.getFrameCount()));
 		} else {
-			try {
-				blinken.jump(frames%movieFrames);
-				frames++;				
-			} catch (Exception e) {
-				//a npe exception might happen if a new file is loaded!
+			img = blinken.getFrame(currentFrame++);
+			
+			if (currentFrame>blinken.getFrameCount()) {
+				currentFrame=0;
 			}
 		}
 
+        PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
+        img.loadPixels();
+        this.internalBuffer = res.resizeImage(ResizeName.PIXEL_RESIZE, img.pixels, 
+                img.width, img.height, internalBufferXSize, internalBufferYSize);
+        img.updatePixels();	        
+
+        
 		//resize image to 128x128
-		int ofs, dst=0, xofs, yofs=0;		
+/*		int ofs, dst=0, xofs, yofs=0;		
 		float xSrc,ySrc=0;
 		float xDiff = internalBufferXSize/(float)blinken.width;
 		float yDiff = internalBufferYSize/(float)blinken.height;
@@ -179,7 +169,7 @@ public class Blinkenlights extends Generator implements PConstants {
 			}		
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOG.log(Level.SEVERE, "Failed to update internal buffer", e);
-		}
+		}*/
 	}
 	
 	/**
@@ -198,12 +188,12 @@ public class Blinkenlights extends Generator implements PConstants {
 	 */
 	public void setRandom(boolean random) {
 		this.random = random;
-		if (random) {
+/*		if (random) {
 			blinken.noLoop();
 			blinken.stop();
 		} else {
 			blinken.loop();
-		}
+		}*/
 	}
 	
 	
@@ -228,11 +218,4 @@ public class Blinkenlights extends Generator implements PConstants {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#close()
-	 */
-	@Override
-	public void close() {
-		blinken.dispose();
-	}
 }
