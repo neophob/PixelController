@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,15 +81,6 @@ public class ColorSet implements Comparable<ColorSet> {
 	}
 
 	/**
-	 * returns a random color of this set
-	 * @return
-	 */
-	public int getRandomColor() {
-		Random r = new Random();
-		return this.colors[r.nextInt(colors.length)];
-	}
-
-	/**
 	 * return a color defined in this color set 
 	 * 
 	 * @param pos
@@ -98,23 +88,6 @@ public class ColorSet implements Comparable<ColorSet> {
 	 */
 	public int getSmoothColor(int pos) {
 		return precalc[pos];
-	}
-
-	/**
-	 * 
-	 * @param color
-	 * @return
-	 */
-	public int getInvertedColor(int color) {
-
-		int b= color&255;
-		int g=(color>>8)&255;
-		int r=(color>>16)&255;        
-
-		//convert it to greyscale, not really correct
-		int val = (int)(r*0.3f+g*0.59f+b*0.11f);
-
-		return getSmoothColor(val+128);
 	}
 
 
