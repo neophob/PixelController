@@ -42,7 +42,11 @@ public class P5EventListener implements ControlListener {
 
     /** The log. */
     private static final Logger LOG = Logger.getLogger(P5EventListener.class.getName());
+    
+    private static final int CALLBACK_TIMEOUT = 100;
 
+    private long lastCallbackEvent;
+    
     private GeneratorGui callback;
 
     /**
@@ -241,6 +245,11 @@ public class P5EventListener implements ControlListener {
      */
     private void singleSendMessageOut(String msg[]) {
 
+    	if (System.currentTimeMillis()-lastCallbackEvent<CALLBACK_TIMEOUT) {
+    		//do not flood the gui
+    		return;
+    	}
+    	
         ValidCommands ret = MessageProcessor.processMsg(msg, true);
         if (ret != null) {
             switch (ret) {
@@ -255,11 +264,10 @@ public class P5EventListener implements ControlListener {
                 default:
                     break;
             }
-            try {
-                Thread.sleep(100);				
-            } catch (Exception e) {}
-        }
 
+            lastCallbackEvent = System.currentTimeMillis();
+            
+        }
     }
 
 
@@ -287,6 +295,10 @@ public class P5EventListener implements ControlListener {
         singleSendMessageOut(msg);
     }
 
+    /**
+     * 
+     * @param param
+     */
     private void createShufflerMessage(String param) {
         String msg[] = new String[param.length()+1];		
         msg[0] = ""+ValidCommands.CHANGE_SHUFFLER_SELECT;
