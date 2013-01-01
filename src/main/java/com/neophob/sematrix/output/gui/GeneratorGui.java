@@ -143,7 +143,7 @@ public class GeneratorGui extends PApplet {
         this.windowHeight = windowHeigth;
         this.singleVisualXSize = singleVisualXSize;
         this.singleVisualYSize = singleVisualYSize;
-        this.p5GuiYOffset = this.singleVisualYSize + 120;        
+        this.p5GuiYOffset = this.singleVisualYSize + 110;        
     }
 
     /* (non-Javadoc)
@@ -613,11 +613,11 @@ public class GeneratorGui extends PApplet {
 
         	//highlight current output
         	if (outputId.contains(ofs)) {
-        		fill(66,200,66);
+        		fill(20, 235, 20);
         	} else {
-        		fill(55,55,55);
+        		fill(235, 20, 20);
         	}	
-        	rect(localX, localY+singleVisualYSize+2, singleVisualXSize, SELECTED_MARKER);				
+        	rect(localX+5, localY+5, 10, 10);				
 
             localX += pImage.width;
             ofs++;
