@@ -30,6 +30,9 @@ import java.awt.image.WritableRaster;
  */
 public abstract class Resize {
 
+	private BufferedImage bi;
+	private int biX, biY;
+	
 	/**
 	 * The Enum ResizeName.
 	 *
@@ -76,7 +79,7 @@ public abstract class Resize {
 	 */
 	public Resize(PixelControllerResize controller, ResizeName resizeName) {
 		this.resizeName = resizeName;
-		controller.addResize(this);
+		controller.addResize(this);		
 	}
 	
 	/**
@@ -124,8 +127,13 @@ public abstract class Resize {
 	 * @param currentYSize the current y size
 	 * @return the buffered image
 	 */
-	public static BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize) {
-		BufferedImage bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
+	public BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize) {
+		if (bi==null || biX!=currentXSize || biY!=currentYSize) {
+			bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
+			biX =  currentXSize;
+			biY =  currentYSize;
+		}
+//		BufferedImage bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
 		//bi.setRGB(0, 0, currentXSize, currentYSize, buffer, 0, currentXSize);
 		WritableRaster newRaster = bi.getRaster();
 		newRaster.setDataElements(0, 0, currentXSize, currentYSize, buffer);
