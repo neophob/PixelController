@@ -579,12 +579,11 @@ public class GeneratorGui extends PApplet {
      */
     public void draw() {
         long l = System.currentTimeMillis();
-        int localX = GENERIC_X_OFS;
+        Collector col = Collector.getInstance();
+        int localX = (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
         int localY=40;
 
-        background(0);
-        
-        Collector col = Collector.getInstance();
+        background(0);        
         
         //set used to find out if visual is on screen
         Set<Integer> outputId = new HashSet<Integer>();
@@ -597,9 +596,6 @@ public class GeneratorGui extends PApplet {
             //create an image out of the buffer
             pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
         }
-
-        //center visual
-        localX += (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
         
         //draw output buffer and marker
         int ofs=0;
@@ -659,7 +655,6 @@ public class GeneratorGui extends PApplet {
 
         //draw sound stats
         Sound snd = Sound.getInstance();
-
         int xofs = GENERIC_X_OFS+xSizeForEachWidget;
         int xx = (xSizeForEachWidget-WIDGET_BOARDER*2)/3;
 
@@ -671,19 +666,15 @@ public class GeneratorGui extends PApplet {
         rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
 
         xofs+=xx+WIDGET_BOARDER/2;
-        colorSelect(snd.isHat());
-        
-        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
-        
+        colorSelect(snd.isHat());        
+        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);        
         
         //Draw input volume
-        int g = 52+(int)(128*snd.getVolumeNormalized());
-        int b = 77+(int)(157*snd.getVolumeNormalized());
-        fill(2, g, b);
-        xofs = GENERIC_X_OFS+2*xSizeForEachWidget;
-        xx = (int)((xSizeForEachWidget-WIDGET_BOARDER)*snd.getVolumeNormalized());
-        rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);
-        
+        int vol = (int)(xSizeForEachWidget*snd.getVolumeNormalized());        
+        fill(0, 180, 234);
+        rect(GENERIC_X_OFS+2*xSizeForEachWidget, localY+SELECTED_MARKER+4, vol, WIDGET_BAR_SIZE);
+        fill(2, 52, 77);
+        rect(GENERIC_X_OFS+2*xSizeForEachWidget+vol, localY+SELECTED_MARKER+4, xSizeForEachWidget-vol-WIDGET_BOARDER, WIDGET_BAR_SIZE);
     }
 
 
