@@ -85,6 +85,11 @@ public class Image extends Generator {
 	 * @param filename the filename
 	 */
 	public void loadFile(String filename) {
+		if (StringUtils.isBlank(filename)) {
+			LOG.log(Level.INFO, "Empty filename provided, call ignored!");
+			return;
+		}
+
 		//only load if needed
 		if (StringUtils.equals(filename, this.filename)) {
 			LOG.log(Level.INFO, "new filename does not differ from old: "+Image.PREFIX+filename);
