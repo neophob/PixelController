@@ -38,7 +38,9 @@ import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * The Class Blinkenlights.
+ * The Blinkenlights Class
+ * 
+ * TODO: respect frame delay
  *
  * @author mvogt
  */
