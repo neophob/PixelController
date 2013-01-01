@@ -294,7 +294,7 @@ public class GeneratorGui extends PApplet {
         //Generator tab
         //-------------
         
-        cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", GENERIC_X_OFS+3, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genBlinken", "LOAD BLINKENLIGHT FILE", GENERIC_X_OFS+3, yPosStartLabel+5).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
         blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
         		GENERIC_X_OFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
@@ -308,7 +308,7 @@ public class GeneratorGui extends PApplet {
         blinkenLightsList.setHeight(100);
 
         //images
-        cp5.addTextlabel("genImg", "LOAD IMAGE FILE", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genImg", "LOAD IMAGE FILE", GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
         imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
         		GENERIC_X_OFS+Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
@@ -322,7 +322,7 @@ public class GeneratorGui extends PApplet {
         imageList.setGroup(generatorTab);		
         imageList.setHeight(100);
 
-        cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genTextdefOpt", "TEXTUREDEFORM OPTION", GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
 
         //texturedeform options		
         textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.toString(), 
@@ -346,7 +346,7 @@ public class GeneratorGui extends PApplet {
         textureDeformOptions.setHeight(80);
 
         //colorscroll options
-        cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, yPosStartLabel+3).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("genColorScroll", "COLORSCROLL OPTIONS", GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel().setFont(ControlP5.standard58);
         
         colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.toString(), 
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
@@ -360,7 +360,7 @@ public class GeneratorGui extends PApplet {
         colorScrollList.setHeight(100);
 
         //add textfield
-        cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-16+2, Theme.DROPBOXLIST_LENGTH, 16);
+        cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16);
 
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
 				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 15);
@@ -670,11 +670,11 @@ public class GeneratorGui extends PApplet {
         rect(xofs, localY+SELECTED_MARKER+4, xx, WIDGET_BAR_SIZE);        
         
         //Draw input volume
-        int vol = (int)(xSizeForEachWidget*snd.getVolumeNormalized());        
+        int vol = (int)((xSizeForEachWidget-WIDGET_BOARDER)*snd.getVolumeNormalized());        
         fill(0, 180, 234);
         rect(GENERIC_X_OFS+2*xSizeForEachWidget, localY+SELECTED_MARKER+4, vol, WIDGET_BAR_SIZE);
         fill(2, 52, 77);
-        rect(GENERIC_X_OFS+2*xSizeForEachWidget+vol, localY+SELECTED_MARKER+4, xSizeForEachWidget-vol-WIDGET_BOARDER, WIDGET_BAR_SIZE);
+        rect(GENERIC_X_OFS+2*xSizeForEachWidget+vol, localY+SELECTED_MARKER+4, xSizeForEachWidget-WIDGET_BOARDER-vol, WIDGET_BAR_SIZE);
     }
 
 
