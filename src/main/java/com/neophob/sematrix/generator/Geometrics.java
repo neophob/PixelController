@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -32,14 +30,14 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 /**
  * create some drops
  * 
- * some code is ripped from macetech.
- *
+ * todo add more geometrics forms (ellipse, rectangle...)
+ * 
  * @author michu
  */
 public class Geometrics extends Generator {
 
 	/** The Constant LOG. */
-	private static final Logger LOG = Logger.getLogger(Geometrics.class.getName());
+	//private static final Logger LOG = Logger.getLogger(Geometrics.class.getName());
 
 	/** The Constant THICKNESS. */
 	private static final int THICKNESS = 10;
@@ -91,7 +89,7 @@ public class Geometrics extends Generator {
 	@Override
 	public void update() {
 		Arrays.fill(this.internalBuffer, 0);
-		//maximal 4 actice drops
+		//maximal 4 active drops
 		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {
 			
 			drops.add(
@@ -105,11 +103,11 @@ public class Geometrics extends Generator {
 		for (Drop d: drops) {
 			d.update();
 			if (d.done()) {
-				//drops.remove(d);
 				tmp.add(d);
 			}
 		}
 
+		//remove drops that are updated
 		if (tmp.size()>0) {
 			drops.removeAll(tmp);			
 		}
@@ -149,7 +147,7 @@ public class Geometrics extends Generator {
 		 */
 		private void update() {
 			if (!finished) {
-				drawCircle(xpos,ypos, dropSize, dropcolor);
+				drawCircle();
 				if (dropSize < internalBufferXSize*2) {
 					dropSize ++;
 				} else {
@@ -168,70 +166,36 @@ public class Geometrics extends Generator {
 		}
 
 		/**
-		 * Sets the pixel.
-		 *
-		 * @param thick the thick
-		 * @param px the px
-		 * @param py the py
-		 * @param col the col
+		 * draw only inside the boundaries
+		 * 
+		 * @param x
+		 * @param y
+		 * @param col
 		 */
-		private void setPixel(int thick, int px, int py, int col) {			
-			int ofs=px+py*internalBufferXSize;
-
-			for (int x=0; x<thick; x++) {
-				//check boundaries
-				if (x+px < internalBufferXSize && x+px>0) {
-
-					for (int y=0; y<thick; y++) {
-						//check boundaries
-						if (y+py < internalBufferYSize && y+py>0) {
-							
-							int pos = ofs+x+y*internalBufferXSize;
-							if (pos>0 && pos < internalBuffer.length) {
-								try {
-									internalBuffer[pos]=col;						
-								} catch (Exception e) {
-									LOG.log(Level.WARNING, "Very bad! {1}", new Object[] { e });
-								}															
-							}
-						}
-					}
-				}
-			}
-
-		}
+	    private void setPixel(int x, int y, int col) {
+	        if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
+	            internalBuffer[y * internalBufferXSize + x] = col;
+	        }
+	    }
 
 		/**
-		 * Bresenham Circle
-		 * ripped from http://actionsnippet.com/?p=492
-		 *
-		 * @param xp the xp
-		 * @param yp the yp
-		 * @param radius the radius
-		 * @param col the col
+		 * draw circle
 		 */
-		private void drawCircle(int xp, int yp, int radius, int col) {
-			int balance;
-			int xoff=0;
-			int yoff=radius;
-			balance=- radius;
+		private void drawCircle() {
+	        int dropsizeThickness = dropSize-THICKNESS;
+	        
+	        for (int i = 0; i < internalBufferXSize; i++) {
+	            for (int j = 0; j < internalBufferYSize; j++) {
+	                //calculate distance to center:
+	                int x = xpos - i;
+	                int y = ypos - j;
+	                double r = Math.sqrt((x * x) + (y * y));
 
-			while (xoff <= yoff) {
-				setPixel(THICKNESS, xp+xoff, yp+yoff, col);
-				setPixel(THICKNESS, xp-xoff, yp+yoff, col);
-				setPixel(THICKNESS, xp-xoff, yp-yoff, col);
-				setPixel(THICKNESS, xp+xoff, yp-yoff, col);
-				setPixel(THICKNESS, xp+yoff, yp+xoff, col);
-				setPixel(THICKNESS, xp-yoff, yp+xoff, col);
-				setPixel(THICKNESS, xp-yoff, yp-xoff, col);
-				setPixel(THICKNESS, xp+yoff, yp-xoff, col);
-
-				balance += xoff++;
-				if (balance+xoff >= 0) {
-					balance-=--yoff+yoff;
-				}
-			}
-
+	                if (r<dropSize && r>dropsizeThickness) {
+	                	setPixel(i, j, dropcolor);
+	                }
+	            }
+	        }			
 		}
 	}
 
