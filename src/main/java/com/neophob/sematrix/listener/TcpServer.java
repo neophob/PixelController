@@ -115,6 +115,7 @@ public final class TcpServer implements Runnable {
 			LOG.log(Level.INFO,	"Server started at port {0}", new Object[] { listeningPort });
 			this.runner = new Thread(this);
 			this.runner.setName("ZZ TCP Server");
+			this.runner.setDaemon(true);
 			this.runner.start();
 
 			connectToClient();
@@ -184,7 +185,7 @@ public final class TcpServer implements Runnable {
 							//missing end of message... save it
 							lastMsg=msg;							
 						} else {
-							//more than one message receieved, split it
+							//more than one message received, split it
 							//TODO: reuse partial messages
 							lastMsg="";
 							String[] msgs = msg.split(FUDI_MSG_END_MARKER);

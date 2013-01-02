@@ -115,8 +115,7 @@ public class OscServer implements OscEventListener {
 
 	@Override
 	public void oscStatus(OscStatus arg0) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 	
 	
