@@ -30,7 +30,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 /**
  * create some drops
  * 
- * todo add more geometrics forms (ellipse, rectangle...)
+ * TODO add more geometrics forms (ellipse, rectangle...)
+ *      replace Math.sqrt with something faster
  * 
  * @author michu
  */
@@ -48,9 +49,6 @@ public class Geometrics extends Generator {
 	/** The tmp. */
 	private List<Drop> tmp;
 
-	/** The drop hue. */
-	//private int dropHue = 0;
-
 	/** The sound. */
 	private Sound sound;
 
@@ -64,7 +62,6 @@ public class Geometrics extends Generator {
 	 */
 	public Geometrics(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.DROPS, ResizeName.QUALITY_RESIZE);
-		//drops = new CopyOnWriteArrayList<Drop>();
 		drops = new ArrayList<Drop>();
 		tmp = new ArrayList<Drop>();
 		sound = Sound.getInstance();
@@ -88,10 +85,11 @@ public class Geometrics extends Generator {
 	 */
 	@Override
 	public void update() {
+		//clear background
 		Arrays.fill(this.internalBuffer, 0);
+		
 		//maximal 4 active drops
-		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {
-			
+		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {			
 			drops.add(
 					new Drop(
 							random(THICKNESS, internalBufferXSize), 
