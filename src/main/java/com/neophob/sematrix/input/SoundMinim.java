@@ -99,6 +99,7 @@ public final class SoundMinim implements SeSound, Runnable {
 		}
 		this.runner = new Thread(this);
 		this.runner.setName("ZZ Sound stuff");
+		this.runner.setDaemon(true);
 		this.runner.start();
 	}
 
