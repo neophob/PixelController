@@ -38,6 +38,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
+import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
@@ -827,9 +828,19 @@ public class GeneratorGui extends PApplet {
             }
 			break;
 
+		//randomize
+    	case 'R':
+    		Shuffler.manualShuffleStuff();
+    		break;
+    		
+    	//change open tabs
+    	case 'T':
+    		//TODO
+    		break;    		
+    		
 		default:
 			break;
-		}    	
+		} 	
 
     	
         if(key>='1' && key<'9') {
