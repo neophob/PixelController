@@ -20,5 +20,10 @@ public interface GuiCallbackAction {
      * @param n
      */
     void activeVisual(int n);
-    
+
+    /**
+     * update gui
+     */
+    void refreshGui();
+
 }

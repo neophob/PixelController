@@ -55,8 +55,8 @@ public abstract class KeyboardHandler {
                 if (currentColorSet++>=colorSetsNrs-1) {
                     currentColorSet=0;
                 }
-                v.setColorSet(currentColorSet);            
-                
+                v.setColorSet(currentColorSet);
+                registerGuiClass.refreshGui();
             }
             break;
 

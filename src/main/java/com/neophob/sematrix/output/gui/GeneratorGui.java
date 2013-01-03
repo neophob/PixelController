@@ -909,6 +909,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //infoTab.setActive(true);        
     }
 
+	@Override
+	public void refreshGui() {
+		Collector.getInstance().setTriggerGuiRefresh(true);		
+	}
+
 
 
 
