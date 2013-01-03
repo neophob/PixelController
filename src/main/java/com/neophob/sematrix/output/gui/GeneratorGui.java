@@ -38,11 +38,11 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
-import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
@@ -65,7 +65,7 @@ import controlP5.Toggle;
  * 
  * @author michu
  */
-public class GeneratorGui extends PApplet {
+public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 2344499301021L;
@@ -810,44 +810,15 @@ public class GeneratorGui extends PApplet {
      * select visual by keypress
      */
     public void keyPressed() {
-    	Collector col = Collector.getInstance();
-    	switch (key) {
-    	
-    	//change current Colorset
-    	case 'C':
-            Visual v = col.getVisual(col.getCurrentVisual());
-            if (v!=null) {
-                int currentColorSet = v.getColorSetIndex();
-                int colorSetsNrs = col.getColorSets().size();
-                
-                if (currentColorSet++>=colorSetsNrs-1) {
-                    currentColorSet=0;
-                }
-                v.setColorSet(currentColorSet);            
-                
-            }
-			break;
+        KeyboardHandler.keyboardHandler(key);
+    }
 
-		//randomize
-    	case 'R':
-    		Shuffler.manualShuffleStuff();
-    		break;
-    		
-    	//change open tabs
-    	case 'T':
-    		//TODO
-    		break;    		
-    		
-		default:
-			break;
-		} 	
-
-    	
-        if(key>='1' && key<'9') {
-            // convert a key-number (48-52) to an int between 0 and 4
-            int n = (int)key-49;
-            selectedVisualList.activate(n);
-        }   
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.output.gui.GuiCallbackAction#activeVisual(int)
+     */
+    @Override
+    public void activeVisual(int n) {
+        selectedVisualList.activate(n);        
     }
 
 

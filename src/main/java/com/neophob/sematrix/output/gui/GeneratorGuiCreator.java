@@ -46,6 +46,8 @@ public class GeneratorGuiCreator extends Frame {
 
     private static final int MINIMAL_WINDOW_X_SIZE = 820;
 
+    private PApplet gui;
+    
 	/**
 	 * Instantiates a new internal debug window.
 	 *
@@ -77,12 +79,12 @@ public class GeneratorGuiCreator extends Frame {
         this.setIconImage(GeneratorGuiCreator.createIcon());
         
         //connect the new PApplet to our frame
-        PApplet embed = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
-        embed.init();        
-        add(embed);
+        gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
+        gui.init();        
+        add(gui);
         
         setBounds(0, 0, windowXSize, windowYSize+30);
-        embed.setBounds(0, 0, windowXSize, windowYSize+30);
+        gui.setBounds(0, 0, windowXSize, windowYSize+30);
 
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
@@ -102,5 +104,14 @@ public class GeneratorGuiCreator extends Frame {
 	    img = new PImage(8,8);
 	    return img.getImage();
 	}
+
+    /**
+     * @return the gui
+     */
+    public GuiCallbackAction getGuiCallbackAction() {
+        return (GuiCallbackAction)gui;
+    }
+	
+	
 
 }

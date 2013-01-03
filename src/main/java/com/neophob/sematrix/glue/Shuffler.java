@@ -73,12 +73,16 @@ public final class Shuffler {
 	/**
 	 * heavy shuffler! shuffle the current selected visual
 	 * used by manual RANDOMIZE.
+	 * 
+	 * TODO: do not load data files from "in use" generators and effects
 	 */
 	public static void manualShuffleStuff() {		
 		Collector col = Collector.getInstance(); 
 
 		Random rand = new Random();
 		int currentVisual = col.getCurrentVisual();
+		Visual visual = col.getVisual(currentVisual);
+		
 		int totalNrGenerator = col.getPixelControllerGenerator().getSize();
 		int totalNrEffect = col.getPixelControllerEffect().getSize();
 		int totalNrMixer = col.getPixelControllerMixer().getSize();
@@ -86,38 +90,28 @@ public final class Shuffler {
 		LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
-			for (Visual v: col.getAllVisuals()) {
-				//why -1 +1? the first effect is passthrough - so no effect
-				v.setGenerator1(rand.nextInt(totalNrGenerator-1)+1);
-			}
+			//why -1 +1? the first effect is passthrough - so no effect
+		    visual.setGenerator1(rand.nextInt(totalNrGenerator-1)+1);
 		}
 
-		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {
-			for (Visual v: col.getAllVisuals()) {
-				v.setGenerator2(rand.nextInt(totalNrGenerator-1)+1);
-			}
+		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {			
+		    visual.setGenerator2(rand.nextInt(totalNrGenerator-1)+1);			
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
-			for (Visual v: col.getAllVisuals()) {
-				v.setEffect1(rand.nextInt(totalNrEffect));
-			}
+		    visual.setEffect1(rand.nextInt(totalNrEffect));
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.EFFECT_B)) {
-			for (Visual v: col.getAllVisuals()) {
-				v.setEffect2(rand.nextInt(totalNrEffect));
-			}
+		    visual.setEffect2(rand.nextInt(totalNrEffect));
 		}
 		
-		if (col.getShufflerSelect(ShufflerOffset.MIXER)) {
-			for (Visual v: col.getAllVisuals()) {
-				if (v.getGenerator2Idx()==0) {
-					//no 2nd generator - use passthru mixer
-					v.setMixer(0);						
-				} else {
-					v.setMixer(rand.nextInt(totalNrMixer));						
-				}
+		if (col.getShufflerSelect(ShufflerOffset.MIXER)) {			
+			if (visual.getGenerator2Idx()==0) {
+				//no 2nd generator - use passthru mixer
+			    visual.setMixer(0);						
+			} else {
+			    visual.setMixer(rand.nextInt(totalNrMixer));						
 			}
 		}
 
@@ -128,7 +122,7 @@ public final class Shuffler {
 			r.shuffle();
 		}
 		
-		if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
+		/*if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
 			int nrOfVisuals = col.getAllVisuals().size();
 			int screenNr = 0;
 			for (OutputMapping om: col.getAllOutputMappings()) {
@@ -139,13 +133,11 @@ public final class Shuffler {
 				}
 				screenNr++;
 			}
-		}
+		}*/
 		
 		if (col.getShufflerSelect(ShufflerOffset.COLORSET)) {
 			int colorSets = col.getColorSets().size();
-			for (Visual v: col.getAllVisuals()) {
-				v.setColorSet(rand.nextInt(colorSets));
-			}			
+			visual.setColorSet(rand.nextInt(colorSets));	
 		}
 
 	}

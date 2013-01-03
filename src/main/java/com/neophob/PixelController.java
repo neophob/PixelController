@@ -30,6 +30,7 @@ import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.output.AdaVision;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.ArtnetDevice;
@@ -200,9 +201,12 @@ public class PixelController extends PApplet {
 		getOutputDevice(applicationConfig);
 				
 		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
-		
+				
 		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
-			new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());	
+		    //create GUI Window
+		    GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());
+		    //register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
+		    KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
 		}
 		
 		//start in random mode?
@@ -249,7 +253,13 @@ public class PixelController extends PApplet {
 		}
 	}
 	
-	
+	/**
+	 * register single keyboard handler
+	 */
+    public void keyPressed() {
+        KeyboardHandler.keyboardHandler(key);
+    }
+    
 	/**
 	 * The main method.
 	 *
