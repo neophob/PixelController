@@ -105,9 +105,9 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoErrorCounter()
 	 */
-	public int getArduinoErrorCounter() {
+	public long getArduinoErrorCounter() {
 		if (initialized) {
-			return lpd6803.getArduinoErrorCounter();			
+			return lpd6803.getAckErrors();			
 		}
 		return -1;
 	}

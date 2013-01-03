@@ -28,7 +28,7 @@ import com.neophob.sematrix.output.tpm2.Tpm2Serial;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
- * Send data to a Tpm2 Device. this protocol is a successor of miniDMX aand
+ * Send data to a Tpm2 Device. this protocol is a successor of miniDMX and
  * created by people at the ledstyles.de forum.
  * 
  * There is only ONE Matrix supported per output.

@@ -87,9 +87,9 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoErrorCounter()
 	 */
-	public int getArduinoErrorCounter() {
+	public long getArduinoErrorCounter() {
 		if (initialized) {
-			return rainbowduino.getArduinoErrorCounter();			
+			return rainbowduino.getAckErrors();			
 		}
 		return -1;
 	}

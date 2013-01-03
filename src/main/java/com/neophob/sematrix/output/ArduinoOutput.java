@@ -60,7 +60,7 @@ public abstract class ArduinoOutput extends Output {
 	 *
 	 * @return the arduino error counter
 	 */
-	public abstract int getArduinoErrorCounter();
+	public abstract long getArduinoErrorCounter();
 
 	/**
 	 * Gets the arduino buffer size.
@@ -83,7 +83,7 @@ public abstract class ArduinoOutput extends Output {
 	@SuppressWarnings("deprecation")
 	public void logStatistics() {
 		if (this.getArduinoErrorCounter() > 0) {
-			int error = this.getArduinoErrorCounter();
+			long error = this.getArduinoErrorCounter();
 			LOG.log(Level.SEVERE,"error at: {0}, errorcnt: {1}, buffersize: {2}",
 					new Object[] {
 						new Date(this.getLatestHeartbeat()).toGMTString(),
@@ -100,7 +100,7 @@ public abstract class ArduinoOutput extends Output {
 	
 
     @Override
-    public int getErrorCounter() {
+    public long getErrorCounter() {
         return getArduinoErrorCounter();
     }
     

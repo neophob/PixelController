@@ -101,9 +101,9 @@ public class StealthDevice extends ArduinoOutput {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoErrorCounter()
 	 */
-	public int getArduinoErrorCounter() {
+	public long getArduinoErrorCounter() {
 		if (initialized) {
-			return stealth.getArduinoErrorCounter();			
+			return stealth.getAckErrors();			
 		}
 		return -1;
 	}

@@ -191,7 +191,7 @@ public abstract class Output {
 		//nothing to do per default
 	}
 	
-	public int getErrorCounter() {
+	public long getErrorCounter() {
 	    //overwriteme
 	    return 0;
 	}

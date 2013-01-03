@@ -38,7 +38,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Geometrics extends Generator {
 
 	/** The Constant THICKNESS. */
-	private static final int THICKNESS = 14;
+	private static final int THICKNESS = 12;
 
 	/** The drops. */
 	private List<Drop> drops;

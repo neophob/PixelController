@@ -88,7 +88,7 @@ public class OutputGui {
 		}
 		
 		x+=RAHMEN_SIZE;
-		y+=RAHMEN_SIZE;
+		y+=20+RAHMEN_SIZE;
 		this.parent = this.collector.getPapplet();		
 		this.parent.size(x, y);
 		this.parent.frame.setSize(x,y);
