@@ -38,7 +38,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Geometrics extends Generator {
 
 	/** The Constant THICKNESS. */
-	private static final int THICKNESS = 12;
+	private static final int THICKNESS = 10;
 
 	/** The drops. */
 	private List<Drop> drops;
@@ -86,8 +86,8 @@ public class Geometrics extends Generator {
 	 */
 	@Override
 	public void update() {
-		//maximal 4 active drops
-		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {			
+		//maximal 3 active drops
+		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<4) {			
 			drops.add(
 					new Drop(
 							random(THICKNESS, internalBufferXSize), 
