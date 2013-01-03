@@ -28,8 +28,9 @@ set JAVA_OPT=-Djava.util.logging.config.file=data\logging.properties -Djava.libr
 for /f "tokens=*" %%i in ('type classpath-win.properties') do echo set %%i > cp.cmd
 call cp.cmd
 
-java %JAVA_OPT% -classpath %classpath% -XX:ErrorFile=data\hs_err_pid%p.log -jar lib\PixelController.jar
+@REM START WITHOUT CONSOLE WINDOW
+start /b javaw %JAVA_OPT% -classpath %classpath% -XX:ErrorFile=data\hs_err_pid%p.log -jar lib\PixelController.jar
 
-endlocal
-pause
+@REM START WITH CONSOLE WINDOW
+@REM java %JAVA_OPT% -classpath %classpath% -XX:ErrorFile=data\hs_err_pid%p.log -jar lib\PixelController.jar
 

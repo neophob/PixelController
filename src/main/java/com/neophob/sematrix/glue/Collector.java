@@ -224,30 +224,37 @@ public final class Collector {
 			ioMapping.add(new OutputMapping(n));			
 		}
 		
-		try {		    
-			//Start TCP server (FUDI Interface)
-			int listeningFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
-			int sendFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
-			String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
-			pdSrv = new TcpServer(papplet, listeningFudiPort, listeningIp, sendFudiPort);
-		} catch (BindException e) {
-		    LOG.log(Level.SEVERE, "failed to start TCP Server", e);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "failed to start TCP Server", e);
-        }
-		
-		//Start OSC Server (OSC Interface)
-		try {		    
-			int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
-			oscServer = new OscServer(papplet, listeningOscPort);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "failed to start OSC Server", e);
-        }
-				
-
 		pixConStat = new PixelControllerStatus(fps);
 		
 		initialized=true;
+	}
+	
+	/**
+	 * start tcp and osc server
+	 * 
+	 * @param papplet
+	 * @param ph
+	 */
+	public synchronized void initDaemons(ApplicationConfigurationHelper ph) {
+        try {           
+            //Start TCP server (FUDI Interface)
+            int listeningFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
+            int sendFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
+            String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
+            pdSrv = new TcpServer(papplet, listeningFudiPort, listeningIp, sendFudiPort);
+        } catch (BindException e) {
+            LOG.log(Level.SEVERE, "failed to start TCP Server", e);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "failed to start TCP Server", e);
+        }
+        
+        //Start OSC Server (OSC Interface)
+        try {           
+            int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
+            oscServer = new OscServer(papplet, listeningOscPort);
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "failed to start OSC Server", e);
+        }          	   
 	}
 
 	/**

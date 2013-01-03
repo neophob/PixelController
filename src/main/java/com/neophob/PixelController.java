@@ -20,7 +20,6 @@
 package com.neophob;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,24 +30,13 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
-import com.neophob.sematrix.output.AdaVision;
 import com.neophob.sematrix.output.ArduinoOutput;
-import com.neophob.sematrix.output.ArtnetDevice;
-import com.neophob.sematrix.output.MiniDmxDevice;
-import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.output.OutputDeviceEnum;
-import com.neophob.sematrix.output.PixelInvadersDevice;
-import com.neophob.sematrix.output.RainbowduinoV2Device;
-import com.neophob.sematrix.output.RainbowduinoV3Device;
-import com.neophob.sematrix.output.StealthDevice;
-import com.neophob.sematrix.output.Tpm2;
-import com.neophob.sematrix.output.Tpm2Net;
-import com.neophob.sematrix.output.UdpDevice;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.output.gui.OutputGui;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
+import com.neophob.sematrix.setup.InitApplication;
 
 /**
  * The Class PixelController.
@@ -60,10 +48,6 @@ public class PixelController extends PApplet {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
 
-	/** The Constant APPLICATION_CONFIG_FILENAME. */
-	private static final String APPLICATION_CONFIG_FILENAME = "data/config.properties";
-	private static final String PALETTE_CONFIG_FILENAME = "data/palette.properties";
-
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
 	
@@ -73,169 +57,225 @@ public class PixelController extends PApplet {
 	/** The Constant FPS. */
 	public static final String VERSION = "v1.3-SNAPSHOT";
 
-	private Collector collector;
+	/** setup gui constants */
+    private static final int TEXT_Y_OFFSET = 140;
+    private static final int TEXT_Y_HEIGHT = 15;
+    
+    private static final int SETUP_FONT_BIG = 24;
+    private static final int SETUP_FONT_SMALL = 12;
+    
+    private Collector collector;
 
-	/** The output. */
-	private Output output;
-	
-	private OutputGui matrixEmulator;
+    /** The output. */
+    private Output output;
+    
+    private OutputGui matrixEmulator;
+
+    /** more setup stuff */
+	private boolean initialized = false;
+	private boolean initializationFailed = false;
+		
+	private int setupStep=0;
+	private float steps = 1f/8f;
+    private ApplicationConfigurationHelper applicationConfig;
+
+
 	
 	/**
 	 * 
-	 * @return
-	 * @throws IllegalArgumentException
+	 * @param text
+	 * @param textYOffset
 	 */
-	protected List<ColorSet> getColorPalettes() throws IllegalArgumentException {
-		//load palette
-		Properties palette = new Properties();
-		try {
-			palette.load(createInput(PALETTE_CONFIG_FILENAME));
-			List<ColorSet> colorSets = ColorSet.loadAllEntries(palette);
-
-			LOG.log(Level.INFO, "ColorSets loaded, {0} entries", colorSets.size());
-			return colorSets;
-		} catch (Exception e) {
-			
-			LOG.log(Level.SEVERE, "Failed to load Config", e);
-			throw new IllegalArgumentException("Configuration error!", e);
-		}				
-	}
-	
-	/**
-	 * 
-	 * @return
-	 * @throws IllegalArgumentException
-	 */
-	protected ApplicationConfigurationHelper getApplicationConfiguration() throws IllegalArgumentException {
-		Properties config = new Properties();
-		try {
-			config.load(createInput(APPLICATION_CONFIG_FILENAME));
-			LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to load Config", e);
-			throw new IllegalArgumentException("Configuration error!", e);
-		}
-		return new ApplicationConfigurationHelper(config);		
+	public void drawSetupText(String text, int textYOffset) {
+	    fill(240);
+	    textSize(SETUP_FONT_SMALL);
+	    text(text, 40, textYOffset);
 	}
 
 	/**
 	 * 
-	 * @param applicationConfig
-	 * @throws IllegalArgumentException
+	 * @param text
+	 * @param textYOffset
 	 */
-	protected void getOutputDevice(ApplicationConfigurationHelper applicationConfig) throws IllegalArgumentException {
-		OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
-		try {
-			switch (outputDeviceEnum) {
-			case PIXELINVADERS:
-				this.output = new PixelInvadersDevice(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case STEALTH:
-				this.output = new StealthDevice(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case RAINBOWDUINO_V2:
-				this.output = new RainbowduinoV2Device(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case RAINBOWDUINO_V3:
-				this.output = new RainbowduinoV3Device(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case ARTNET:
-				this.output = new ArtnetDevice(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case MINIDMX:
-				this.output = new MiniDmxDevice(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case NULL:
-				this.output = new NullDevice(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case ADAVISION:
-				this.output = new AdaVision(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-            case UDP:
-                this.output = new UdpDevice(applicationConfig, this.collector.getPixelControllerOutput());
-                break;
-			case TPM2:
-				this.output = new Tpm2(applicationConfig, this.collector.getPixelControllerOutput());
-				break;
-			case TPM2NET:
-				this.output = new Tpm2Net(applicationConfig, this.collector.getPixelControllerOutput());				
-				break;
-			default:
-				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
-			}
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE,"\n\nERROR: Unable to initialize output device: " + outputDeviceEnum, e);
-		}
+	public void drawErrorSetupText(String text, int textYOffset) {
+	    fill(240, 0, 0);
+	    textSize(SETUP_FONT_SMALL);
+	    text(text, 10, textYOffset);
 	}
-	
+
 	/**
-	 * prepare.
+	 * 
+	 * @param val
+	 */
+	public void drawProgressBar(float val) {
+	    fill(128);
+	    rect(10, 40, 580, 50);
+
+	    if (val>1.0) {
+	        val = 1.0f;
+	    }
+
+	    fill(200);
+	    rect(10, 40, 580*val, 50);                
+	}
+
+	/**
+	 * 
 	 */
 	public void setup() {
-	    LOG.log(Level.INFO, "\n\nPixelController "+VERSION+" - http://www.pixelinvaders.ch\n\n");
-	    LOG.log(Level.INFO, "");
-	    LOG.log(Level.INFO, "-----------------------------------");
-		LOG.log(Level.INFO, "--- PixelController Setup START ---");
+        LOG.log(Level.INFO, "\n\nPixelController "+VERSION+" - http://www.pixelinvaders.ch\n\n");
+        LOG.log(Level.INFO, "");
 
-		ApplicationConfigurationHelper applicationConfig = null;
-		try {
-			applicationConfig = getApplicationConfiguration();	
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Configuration Error: ", e);
-			System.exit(10);
-		}
-				
-		this.collector = Collector.getInstance();
-		
-		//load palette
-		List<ColorSet> colorSets = getColorPalettes();
-		this.collector.setColorSets(colorSets);		
-		
-		this.collector.init(this, applicationConfig);
-		
-		//set processing related settings
-		frameRate(applicationConfig.parseFps());
-		noSmooth();
-				
-		//load output device
-		getOutputDevice(applicationConfig);
-				
-		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
-				
-		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
-		    //create GUI Window
-		    GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());
-		    //register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
-		    KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
-		}
-		
-		//start in random mode?
-		if (applicationConfig.startRandommode()) {
-			LOG.log(Level.INFO, "Random Mode enabled");
-			Shuffler.manualShuffleStuff();
-			this.collector.setRandomMode(true);
-		}
-		
-		//load saves presets
-		int presetNr = applicationConfig.loadPresetOnStart();
-		if (presetNr != -1) {
-		    LOG.log(Level.INFO,"Load preset "+presetNr);
-	        List<String> present = this.collector.getPresent().get(presetNr).getPresent();
-	        if (present!=null) { 
-	            this.collector.setCurrentStatus(present);
-	        }		    
-		}
-		
-		LOG.log(Level.INFO, "--- PixelController Setup END ---");
-		LOG.log(Level.INFO, "---------------------------------");
-		LOG.log(Level.INFO, "");
+	    size(600,500);
+	    background(0);
+	    noStroke();
+	    
+	    //try to display the pixelcontroller logo
+	    try {
+	        image(loadImage("pics/logo.gif"), 10, 10, 20, 20);
+	    } catch (Exception e) {
+	        LOG.log(Level.INFO, "Failed to load splash logo (pics/logo.gif)", e);
+	    }
+
+	    //write pixelcontroller text
+	    textSize(SETUP_FONT_BIG);
+	    fill(240);
+	    text("PixelController "+VERSION, 40, 29);
+	    
+	    text("Loading...", 10, 120);
+	    drawProgressBar(0.0f);
+	    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
 	}
+	
+	    
+    /**
+     * asnychronous initialize PixelController and display progress in gui
+     */
+    public void asyncInitApplication() {
+        try {
+            if (setupStep==0) {            
+                applicationConfig = InitApplication.loadConfiguration(this);
+                setupStep++;
+                drawProgressBar(steps);
+                drawSetupText("Create Collector", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+            
+            if (setupStep==1) {            
+                this.collector = Collector.getInstance();
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                drawSetupText("Load Palettes", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+
+            if (setupStep==2) {            
+                List<ColorSet> colorSets = InitApplication.getColorPalettes(this);
+                this.collector.setColorSets(colorSets);
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                drawSetupText("Initialize System", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+
+            if (setupStep==3) {            
+                this.collector.init(this, applicationConfig);     
+                frameRate(applicationConfig.parseFps());
+                noSmooth();
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                drawSetupText("Initialize TCP/OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+
+            if (setupStep==4) {            
+                this.collector.initDaemons(applicationConfig);     
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                drawSetupText("Initialize Output device", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+
+            if (setupStep==5) {            
+                this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+            
+            if (setupStep==6) {            
+                this.matrixEmulator = new OutputGui(applicationConfig, this.output);
+                
+                if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
+                    //create GUI Window
+                    GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());
+                    //register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
+                    KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
+                }  
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                drawSetupText("Apply Settings", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+                return;
+            }
+
+            if (setupStep==7) {                        
+                //start in random mode?
+                if (applicationConfig.startRandommode()) {
+                    LOG.log(Level.INFO, "Random Mode enabled");
+                    Shuffler.manualShuffleStuff();
+                    this.collector.setRandomMode(true);
+                }
+                
+                //load saves presets
+                int presetNr = applicationConfig.loadPresetOnStart();
+                if (presetNr != -1) {
+                    LOG.log(Level.INFO,"Load preset "+presetNr);
+                    List<String> present = this.collector.getPresent().get(presetNr).getPresent();
+                    if (present!=null) { 
+                        this.collector.setCurrentStatus(present);
+                    }           
+                }  
+                setupStep++;
+                drawProgressBar(steps*setupStep);
+                return;
+            }
+            
+            initialized = true;
+            LOG.log(Level.INFO, "--- PixelController Setup END ---");
+            LOG.log(Level.INFO, "---------------------------------");
+            LOG.log(Level.INFO, "");
+
+            background(0);
+            
+        } catch (Exception e) {
+            textSize(SETUP_FONT_BIG);
+            fill(240, 0 ,0);
+            text("PixelController Error", 10, 300);
+            
+            drawErrorSetupText("Failed to initialize PixelController!", 320);
+            drawErrorSetupText("See log/pixelcontroller.log for more detail!s", 340);
+            drawErrorSetupText("Error message:", 360);
+            drawErrorSetupText("     "+e.getMessage(), 380);
+            initializationFailed = true;            
+        }
+    }
+
 
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
 	public void draw() {
-		
+	    
+	    if (initializationFailed) {
+	        throw new IllegalArgumentException("PixelController failed to start...");
+	    }
+
+	    if (!initialized) {
+	        asyncInitApplication();
+	        return;
+	    }
+	    		
 		if (Collector.getInstance().isInPauseMode()) {
 			//no update here, we're in pause mode
 			return;

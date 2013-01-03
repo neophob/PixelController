@@ -42,8 +42,8 @@ public class PropertiesHelperTest {
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
-        assertEquals(0, ph.getDeviceXResolution());
-        assertEquals(0, ph.getDeviceYResolution());
+        assertEquals(8, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
 
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());

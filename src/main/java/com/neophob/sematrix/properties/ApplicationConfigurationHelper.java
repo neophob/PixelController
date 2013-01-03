@@ -222,10 +222,13 @@ public class ApplicationConfigurationHelper {
             throw new IllegalArgumentException(ERROR_INVALID_OUTPUT_MAPPING+s);        	
         }
 
+        //nothing was configured, use 8x8 null device as default
         if (enabledOutputs==0 || totalDevices==0) {
             enabledOutputs=1;
             totalDevices = 1;
             devicesInRow1 = 1;
+            this.deviceXResolution = 8;
+            this.deviceYResolution = 8;             
             LOG.log(Level.WARNING, "no output device defined, use NULL output");
             this.outputDeviceEnum = OutputDeviceEnum.NULL;
         }
