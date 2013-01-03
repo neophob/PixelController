@@ -42,8 +42,6 @@ public abstract class KeyboardHandler {
      * @param key
      */
     public static void keyboardHandler(char key) {
-        System.out.println("Hello from KeyboardHandler, pressed: "+key);
-        
         Collector col = Collector.getInstance();
         switch (key) {
         
