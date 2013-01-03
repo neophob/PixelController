@@ -71,6 +71,11 @@ public abstract class Output {
 	private Map<Integer, int[]> bufferMap;
 	
 	private GammaType gammaType;
+	
+	/**
+	 * does this output device know if its connected to the matrix
+	 */
+	protected boolean supportConnectionState = false;
 
 	/**
 	 * Instantiates a new output.
@@ -163,6 +168,15 @@ public abstract class Output {
 		}
 	}
 	
+	/**
+	 * return the connection state if supported
+	 * @return
+	 */
+	public boolean isConnected() {
+	    //overwrite me if supported!
+	    return false;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -194,4 +208,14 @@ public abstract class Output {
 	public OutputDeviceEnum getType() {
 		return this.outputDeviceEnum;
 	}
+
+    /**
+     * @return the supportConnectionState
+     */
+    public boolean isSupportConnectionState() {
+        return supportConnectionState;
+    }
+	
+	
+	
 }

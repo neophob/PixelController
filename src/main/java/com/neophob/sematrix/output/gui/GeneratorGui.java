@@ -75,6 +75,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private static final int GENERIC_X_OFS = 5;
     private static final int GENERIC_Y_OFS = 8;
 
+    private static final int NR_OF_WIDGETS = 4;
     private static final int WIDGET_BOARDER = 10;
     private static final int WIDGET_BAR_SIZE = 6;
     
@@ -529,11 +530,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // MISC
         //----------    
 
-        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/3;
+        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/NR_OF_WIDGETS;
+        
         
         cp5.addTextlabel("frameDesc", "FRAME PROGRESS", GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         cp5.addTextlabel("sndDesc", "KICK/SNARE/HAT DETECTION", GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         cp5.addTextlabel("sndVol", "INPUT SOUND VOLUME", GENERIC_X_OFS+xSizeForEachWidget*2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("outputDevice", "OUTPUT DEVICE", GENERIC_X_OFS+xSizeForEachWidget*3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("outputDeviceName", Collector.getInstance().getOutputDeviceName(), 15+GENERIC_X_OFS+xSizeForEachWidget*3, 2+GENERIC_Y_OFS+10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         
         //register event listener
         cp5.addListener(listener);
@@ -625,7 +629,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         
         //beat detection
-        displaySystemStats(GENERIC_Y_OFS);
+        displayWidgets(GENERIC_Y_OFS);
 
         //refresh gui from time to time
         if (col.isTriggerGuiRefresh() || frameCount++%50==2) {
@@ -640,12 +644,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
     }
 
+        
     /**
      * 
      * @param localY
      */
-    private void displaySystemStats(int localY) {
-        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/3;
+    private void displayWidgets(int localY) {
+        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/NR_OF_WIDGETS;
         
         //display frame progress
         int frames = Collector.getInstance().getFrames() % (xSizeForEachWidget-WIDGET_BOARDER);        
@@ -676,6 +681,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         rect(GENERIC_X_OFS+2*xSizeForEachWidget, localY+SELECTED_MARKER+4, vol, WIDGET_BAR_SIZE);
         fill(2, 52, 77);
         rect(GENERIC_X_OFS+2*xSizeForEachWidget+vol, localY+SELECTED_MARKER+4, xSizeForEachWidget-WIDGET_BOARDER-vol, WIDGET_BAR_SIZE);
+        
+        //draw output device
+        Boolean isConnected = Collector.getInstance().isOutputDeviceConnected();
+        if (isConnected!=null) {
+            //highlight current output
+            if (isConnected) {
+                fill(20, 235, 20);
+            } else {
+                fill(235, 20, 20);
+            }   
+            rect(3+GENERIC_X_OFS+3*xSizeForEachWidget, localY+SELECTED_MARKER, 10, 10);               
+
+        }
     }
 
 

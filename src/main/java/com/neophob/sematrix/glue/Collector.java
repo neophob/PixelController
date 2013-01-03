@@ -44,6 +44,7 @@ import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.OscServer;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
+import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
@@ -147,6 +148,8 @@ public final class Collector {
 
 	/** flag to trigger a gui refresh (update current settings from the app to the gui)*/
 	private boolean triggerGuiRefresh = false;
+	
+	private Output output;
 	
 	/**
 	 * Instantiates a new collector.
@@ -837,8 +840,27 @@ public final class Collector {
      */
     public void setTriggerGuiRefresh(boolean triggerGuiRefresh) {
         this.triggerGuiRefresh = triggerGuiRefresh;
-    }    
-    
-	
+    }
 
+    /**
+     * @param output the output to set
+     */
+    public void setOutput(Output output) {
+        this.output = output;
+    }    
+    	
+    public String getOutputDeviceName() {
+        if (this.output==null) {
+            return "";
+        }
+        return output.getType().toString();
+    }
+    
+    public Boolean isOutputDeviceConnected() {
+        if (this.output==null) {
+            return null;
+        }
+        
+        return this.output.isSupportConnectionState() && this.output.isConnected();
+    }
 }

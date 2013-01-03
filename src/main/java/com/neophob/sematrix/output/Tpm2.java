@@ -59,6 +59,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 		//HINT: on windows you need to (for example) use COM1, com1 will not work! (case sensitive)
 		String serialPort = ph.getTpm2Device().toUpperCase();
 		this.initialized = false;
+		this.supportConnectionState = true;
 		try {
 			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, serialPort, baud);
 			this.initialized = true;			
@@ -88,5 +89,10 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 			tpm2.dispose();
 		}
 	}
+	
+    @Override
+    public boolean isConnected() {
+        return this.initialized;
+    }	
 
 }

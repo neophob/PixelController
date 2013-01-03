@@ -65,7 +65,8 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
-		this.initialized = false;		
+		this.initialized = false;	
+		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist() );			
 			this.initialized = lpd6803.ping();

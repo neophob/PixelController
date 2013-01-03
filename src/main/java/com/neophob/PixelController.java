@@ -198,6 +198,7 @@ public class PixelController extends PApplet {
 
             if (setupStep==5) {            
                 this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
+                this.collector.setOutput(output);
                 setupStep++;
                 drawProgressBar(steps*setupStep);
                 drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);

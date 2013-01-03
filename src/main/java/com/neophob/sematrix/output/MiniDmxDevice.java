@@ -54,11 +54,11 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 		    //set default
 		    baud = 115200;
 		}
-
+		this.supportConnectionState = true;
 		this.initialized = false;
 		try {
 			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);			
-			this.initialized = miniDmx.ping();
+			this.initialized = miniDmx.ping();			
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
 			LOG.log(Level.WARNING, "failed to initialize serial port!");
@@ -85,6 +85,11 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 		if (initialized) {
 			miniDmx.dispose();			
 		}
+	}
+	
+	@Override
+	public boolean isConnected() {
+	    return this.initialized;
 	}
 
 }

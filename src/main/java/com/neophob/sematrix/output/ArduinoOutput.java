@@ -52,6 +52,7 @@ public abstract class ArduinoOutput extends Output {
 	 */
 	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		super(outputDeviceEnum, ph, controller, bpp);
+		this.supportConnectionState = true;
 	}
 	
 	/**
@@ -91,5 +92,11 @@ public abstract class ArduinoOutput extends Output {
 			);
 		}		
 	}
+	
+    @Override
+    public boolean isConnected() {
+        return this.initialized;
+    }
+	
 
 }
