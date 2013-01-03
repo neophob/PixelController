@@ -190,6 +190,11 @@ public abstract class Output {
 	public void logStatistics() {
 		//nothing to do per default
 	}
+	
+	public int getErrorCounter() {
+	    //overwriteme
+	    return 0;
+	}
 
 	/**
 	 * Gets the bpp.
@@ -214,6 +219,13 @@ public abstract class Output {
      */
     public boolean isSupportConnectionState() {
         return supportConnectionState;
+    }
+
+    /**
+     * @return the gammaType
+     */
+    public GammaType getGammaType() {
+        return gammaType;
     }
 	
 	

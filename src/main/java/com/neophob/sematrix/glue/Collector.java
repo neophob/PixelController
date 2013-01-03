@@ -863,4 +863,8 @@ public final class Collector {
         
         return this.output.isSupportConnectionState() && this.output.isConnected();
     }
+    
+    public Output getOutputDevice() {
+        return this.output;
+    }
 }

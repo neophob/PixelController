@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -46,6 +48,7 @@ import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
+import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 import controlP5.Button;
@@ -53,6 +56,7 @@ import controlP5.CheckBox;
 import controlP5.ControlP5;
 import controlP5.ControllerInterface;
 import controlP5.DropdownList;
+import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
@@ -124,6 +128,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     private CheckBox randomCheckbox;
     
+    //info tab
+    Tab infoTab;
+    private Label currentFps;
+    private Label runtime;
+    private Label sentFrames;
+    private Label outputErrorCounter;
+    
     /** The target y size. */
     private int singleVisualXSize, singleVisualYSize;
     private int p5GuiYOffset;
@@ -180,7 +191,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
-        Textlabel tl = cp5.addTextlabel("logo", "PixelController", 550, this.getHeight()-40);
+        Textlabel tl = cp5.addTextlabel("logo", "PixelController", this.getWidth()-250, this.getHeight()-40);
         tl.moveTo(ALWAYS_VISIBLE_TAB);
         tl.setFont(ControlP5.synt24);
 
@@ -269,7 +280,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         Tab randomTab = cp5.addTab("RANDOM SELECTION");		
         Tab presetTab = cp5.addTab("PRESETS");
-
+        infoTab = cp5.addTab("INFO");
+        
         generatorTab.setColorForeground(0xffff0000);
         outputTab.setColorForeground(0xffff0000);
         randomTab.setColorForeground(0xffff0000);
@@ -525,6 +537,48 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.toString(),"Save a preset");
 
+        //-------------
+        //Info tab
+        //-------------
+        Collector col = Collector.getInstance();
+        
+        int yposAdd = 20;
+        int xposAdd = 160;
+
+        //center it, we have 3 row which are 160 pixels wide
+        int xOfs = (this.getWidth()-3*xposAdd)/2;
+        int nfoYPos = yPosStartDrowdown+20;
+        int nfoXPos = xOfs;
+
+        cp5.addTextlabel("nfoFpsConf", "CONFIGURED FPS; "+col.getFps(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        currentFps = cp5.addTextlabel("nfoFpsCurrent", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        runtime = cp5.addTextlabel("nfoRuntime", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        cp5.addTextlabel("nfoSrvVersion", "SERVER VERSION: "+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        
+        nfoXPos += xposAdd;
+        nfoYPos = yPosStartDrowdown+20;
+        cp5.addTextlabel("nfoGamma", "OUTPUT CORRECTION: "+col.getOutputDevice().getGammaType().toString(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        cp5.addTextlabel("nfoBps", "OUTPUT BPP: "+col.getOutputDevice().getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        sentFrames = cp5.addTextlabel("nfoSentFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;        
+        outputErrorCounter = cp5.addTextlabel("nfoErrorFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;                    
+        
+        nfoXPos += xposAdd;
+        nfoYPos = yPosStartDrowdown+20;
+        String oscPort = ""+Integer.parseInt(col.getPh().getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, ""));
+        cp5.addTextlabel("nfoOscPort", "OSC PORT: "+oscPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        String tcpPort = ""+Integer.parseInt(col.getPh().getProperty(ConfigConstant.NET_LISTENING_PORT, ""));
+        cp5.addTextlabel("nfoTcpPort", "TCP PORT: "+tcpPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;
+        
         
         //----------
         // MISC
@@ -537,7 +591,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("sndDesc", "KICK/SNARE/HAT DETECTION", GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         cp5.addTextlabel("sndVol", "INPUT SOUND VOLUME", GENERIC_X_OFS+xSizeForEachWidget*2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         cp5.addTextlabel("outputDevice", "OUTPUT DEVICE", GENERIC_X_OFS+xSizeForEachWidget*3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
-        cp5.addTextlabel("outputDeviceName", Collector.getInstance().getOutputDeviceName(), 15+GENERIC_X_OFS+xSizeForEachWidget*3, 2+GENERIC_Y_OFS+10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        cp5.addTextlabel("outputDeviceName", col.getOutputDeviceName(), 15+GENERIC_X_OFS+xSizeForEachWidget*3, 2+GENERIC_Y_OFS+10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         
         //register event listener
         cp5.addListener(listener);
@@ -694,6 +748,18 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             rect(3+GENERIC_X_OFS+3*xSizeForEachWidget, localY+SELECTED_MARKER, 10, 10);               
 
         }
+        
+        //TODO fence
+        if (frames%5==1) {
+            Collector col = Collector.getInstance();
+            int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
+            currentFps.setText("CURRENT FPS: "+fps10/10f);
+            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");            
+            runtime.setText("RUNNING SICE: "+runningSince);         
+            sentFrames.setText("SENT FRAMES: "+col.getPixConStat().getFrameCount());
+            
+            outputErrorCounter.setText("IO ERRORS: "+col.getOutputDevice().getErrorCounter());
+        }
     }
 
 
@@ -836,7 +902,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      */
     @Override
     public void activeVisual(int n) {
-        selectedVisualList.activate(n);        
+        selectedVisualList.activate(n);
+        
+        //example how to activate a tab
+        //cp5.getTab("default").setActive(false);
+        //infoTab.setActive(true);        
     }
 
 

@@ -44,6 +44,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 	
 	private String targetHost;
 	private int targetPort;
+	private int errorCounter=0;
 
 	/**
 	 * 
@@ -82,6 +83,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 			try {
 				dsocket.send(packet);
 			} catch (IOException e) {
+			    errorCounter++;
 				LOG.log(Level.WARNING, "failed to send UDP data.", e);				
 			}
 		}
@@ -94,5 +96,12 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 			dsocket.close();   
 		}	    
 	}
+	
+
+	@Override
+	public int getErrorCounter() {
+	    return errorCounter;
+	}
+
 }
 

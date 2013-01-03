@@ -99,4 +99,9 @@ public abstract class ArduinoOutput extends Output {
     }
 	
 
+    @Override
+    public int getErrorCounter() {
+        return getArduinoErrorCounter();
+    }
+    
 }
