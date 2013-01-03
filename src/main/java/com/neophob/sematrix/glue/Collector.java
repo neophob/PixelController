@@ -857,7 +857,7 @@ public final class Collector {
     }
     
     public Boolean isOutputDeviceConnected() {
-        if (this.output==null) {
+        if (this.output==null || !this.output.isSupportConnectionState()) {
             return null;
         }
         

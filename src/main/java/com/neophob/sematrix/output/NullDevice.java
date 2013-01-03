@@ -35,6 +35,7 @@ public class NullDevice extends Output {
 	 */
 	public NullDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.NULL, ph, controller, 8);
+		this.supportConnectionState = true;
 	}
 	
 	/* (non-Javadoc)
@@ -51,4 +52,9 @@ public class NullDevice extends Output {
 	public void close() {
 		//nothing todo
 	}
+	
+	@Override
+    public boolean isConnected() {
+        return true;
+    }
 }

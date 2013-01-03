@@ -199,6 +199,9 @@ public class PixelController extends PApplet {
             if (setupStep==5) {            
                 this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
                 this.collector.setOutput(output);
+                System.out.println(output.getType());
+                System.out.println(output.isSupportConnectionState());
+                System.out.println(output.isConnected());
                 setupStep++;
                 drawProgressBar(steps*setupStep);
                 drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
