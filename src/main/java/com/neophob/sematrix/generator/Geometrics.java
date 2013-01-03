@@ -37,11 +37,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Geometrics extends Generator {
 
-	/** The Constant LOG. */
-	//private static final Logger LOG = Logger.getLogger(Geometrics.class.getName());
-
 	/** The Constant THICKNESS. */
-	private static final int THICKNESS = 10;
+	private static final int THICKNESS = 14;
 
 	/** The drops. */
 	private List<Drop> drops;
@@ -52,6 +49,8 @@ public class Geometrics extends Generator {
 	/** The sound. */
 	private Sound sound;
 
+	public int[] internalBufferTmp;
+	
 	/** The rnd gen. */
 	private Random rndGen=new Random();
 
@@ -65,6 +64,8 @@ public class Geometrics extends Generator {
 		drops = new ArrayList<Drop>();
 		tmp = new ArrayList<Drop>();
 		sound = Sound.getInstance();
+		
+		internalBufferTmp = new int[internalBuffer.length];
 	}
 
 	/**
@@ -85,9 +86,6 @@ public class Geometrics extends Generator {
 	 */
 	@Override
 	public void update() {
-		//clear background
-		Arrays.fill(this.internalBuffer, 0);
-		
 		//maximal 4 active drops
 		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<5) {			
 			drops.add(
@@ -98,12 +96,19 @@ public class Geometrics extends Generator {
 		}
 
 		tmp.clear();
+
+        //clear background
+        Arrays.fill(this.internalBufferTmp, 0);
+
 		for (Drop d: drops) {
 			d.update();
 			if (d.done()) {
 				tmp.add(d);
 			}
 		}
+		
+		//copy temp buffer to internal buffer, fixes flickering
+		System.arraycopy(internalBufferTmp, 0, internalBuffer, 0, internalBuffer.length);
 
 		//remove drops that are updated
 		if (tmp.size()>0) {
@@ -144,6 +149,7 @@ public class Geometrics extends Generator {
 		 * Update.
 		 */
 		private void update() {
+		    
 			if (!finished) {
 				drawCircle();
 				if (dropSize < internalBufferXSize*2) {
@@ -164,37 +170,33 @@ public class Geometrics extends Generator {
 		}
 
 		/**
-		 * draw only inside the boundaries
-		 * 
-		 * @param x
-		 * @param y
-		 * @param col
-		 */
-	    private void setPixel(int x, int y, int col) {
-	        if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
-	            internalBuffer[y * internalBufferXSize + x] = col;
-	        }
-	    }
-
-		/**
 		 * draw circle
 		 */
-		private void drawCircle() {
-	        int dropsizeThickness = dropSize-THICKNESS;
-	        
-	        for (int i = 0; i < internalBufferXSize; i++) {
-	            for (int j = 0; j < internalBufferYSize; j++) {
-	                //calculate distance to center:
-	                int x = xpos - i;
-	                int y = ypos - j;
-	                double r = Math.sqrt((x * x) + (y * y));
+        private void drawCircle() {
+            int dropsizeThickness = dropSize-THICKNESS;
+            
+            boolean drawOnscreen = false;
+            for (int i = 0; i < internalBufferXSize; i++) {
+                for (int j = 0; j < internalBufferYSize; j++) {
+                    //calculate distance to center:
+                    int x = xpos - i;
+                    int y = ypos - j;
+                    double r = Math.sqrt((x * x) + (y * y));
 
-	                if (r<dropSize && r>dropsizeThickness) {
-	                	setPixel(i, j, dropcolor);
-	                }
-	            }
-	        }			
-		}
+                    if (r<dropSize && r>dropsizeThickness) {
+                        if (j >= 0 && j < internalBufferYSize && i >= 0 && i < internalBufferXSize) {
+                            internalBufferTmp[j * internalBufferXSize + i] = dropcolor;
+                            drawOnscreen = true;
+                        }                       
+                    }
+                }
+            }
+            
+            //detect if the circle is finished
+            if (dropSize>THICKNESS && !drawOnscreen) {
+                finished = true;
+            }
+        }
 	}
 
 }
