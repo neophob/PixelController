@@ -99,7 +99,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 	
 
 	@Override
-	public int getErrorCounter() {
+	public long getErrorCounter() {
 	    return errorCounter;
 	}
 
