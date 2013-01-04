@@ -34,7 +34,7 @@ public class PassThruGen extends Generator {
 	 * @param controller the controller
 	 */
 	public PassThruGen(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.PASSTHRU, ResizeName.QUALITY_RESIZE);
+		super(controller, GeneratorName.PASSTHRU, ResizeName.PIXEL_RESIZE);
 	}
 	
 	/* (non-Javadoc)
