@@ -51,7 +51,7 @@ public class Mix extends Mixer {
         int[] dst = new int [gen1.internalBuffer.length];
 
         for (int i=0; i<gen1.internalBuffer.length; i++){			
-            dst[i]=(src1[i]+src2[i]/2);
+            dst[i]=(src1[i]+src2[i])/2;
         }
 
         return dst;
