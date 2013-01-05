@@ -298,7 +298,11 @@ public class PixelController extends PApplet {
 	 * register single keyboard handler
 	 */
     public void keyPressed() {
-        KeyboardHandler.keyboardHandler(key);
+    	if (keyCode==ESC) {		//ignored
+    		key=0;
+    	} else {
+            KeyboardHandler.keyboardHandler(key);    		
+    	}
     }
     
 	/**

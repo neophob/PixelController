@@ -898,7 +898,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * select visual by keypress
      */
     public void keyPressed() {
-        KeyboardHandler.keyboardHandler(key);
+    	if (keyCode==ESC) {		//ignored
+    		key=0;
+    	} else {
+            KeyboardHandler.keyboardHandler(key);    		
+    	}
     }
 
     /* (non-Javadoc)
