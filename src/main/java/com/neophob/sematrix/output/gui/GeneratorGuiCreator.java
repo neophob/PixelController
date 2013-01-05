@@ -105,6 +105,15 @@ public class GeneratorGuiCreator extends Frame {
 	    return img.getImage();
 	}
 
+	public static Image createLargeIcon() {
+	    PImage img = Collector.getInstance().getPapplet().loadImage("pics/logoBig.jpg");
+	    if (img!=null) {
+	        return img.getImage();	        
+	    }
+	    img = new PImage(400,400);
+	    return img.getImage();
+	}
+
     /**
      * @return the gui
      */
