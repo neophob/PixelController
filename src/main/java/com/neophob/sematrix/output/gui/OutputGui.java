@@ -88,12 +88,15 @@ public class OutputGui {
 		}
 		
 		x+=RAHMEN_SIZE;
-		y+=20+RAHMEN_SIZE;
+		y+=20+2*RAHMEN_SIZE;
 		this.parent = this.collector.getPapplet();		
 		this.parent.size(x, y);
 		this.parent.frame.setSize(x,y);
 		this.parent.frame.setTitle("PixelController Output Window");
-		this.parent.frame.setIconImage(GeneratorGuiCreator.createIcon());		
+		this.parent.frame.setIconImage(GeneratorGuiCreator.createIcon());
+		if (this.parent.frame.isAlwaysOnTopSupported()) {
+			this.parent.frame.setAlwaysOnTop(true);			
+		}
 		this.parent.background(33,33,33);
 	}
 
@@ -120,6 +123,13 @@ public class OutputGui {
 	 */
 	public void update() {
 		frame++;
+		
+		//a little hack to place this window on top of the gui window
+		if (frame==20) {
+			if (this.parent.frame.isAlwaysOnTopSupported()) {
+				this.parent.frame.setAlwaysOnTop(false);			
+			}			
+		}
 		
 		//show only each 2nd frame to reduce cpu load
 		if (frame%2==1) {
