@@ -66,6 +66,7 @@ public class OutputGui {
 	 *
 	 * @param controller the controller
 	 */
+	@SuppressWarnings("restriction")
 	public OutputGui(ApplicationConfigurationHelper ph, Output output) {
 		this.output = output;
 		this.ledSize = ph.getLedPixelSize();
@@ -96,6 +97,16 @@ public class OutputGui {
 		this.parent.frame.setIconImage(GeneratorGuiCreator.createIcon());
 		if (this.parent.frame.isAlwaysOnTopSupported()) {
 			this.parent.frame.setAlwaysOnTop(true);			
+		}
+		
+		//try to set large osx icon here...
+		try {
+			String osName = System.getProperties().getProperty("os.name");
+			if (osName != null && osName.startsWith("Mac OS X")) {
+				com.apple.eawt.Application.getApplication().setDockIconImage(GeneratorGuiCreator.createLargeIcon());				
+			}
+		} catch (Throwable e) {
+			//nothing left todo...
 		}
 		this.parent.background(33,33,33);
 	}

@@ -111,10 +111,10 @@
 				</configuration>
 			</plugin>
 			<!-- Build classpath strings to insert into scripts -->
-			<plugin>
+<!-- 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>2.3</version><!--$NO-MVN-MAN-VER$-->
+				<version>2.3</version>
 				<executions>
 					<execution>
 						<id>build-classpath-win</id>
@@ -147,7 +147,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<!-- The Surefire Plugin is used during the test phase of the build lifecycle to 
 				execute the unit tests of an application. It generates reports in 2 different file 

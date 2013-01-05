@@ -60,7 +60,7 @@
 	</fileSets>
 	
 	<files>
- 		<file>
+<!--  		<file>
 			<source>${basedir}/src/build/PixelController.sh</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
@@ -76,6 +76,17 @@
 			<source>${basedir}/src/build/PixelController.cmd</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
+		</file> -->
+ 		<file>
+			<source>${basedir}/src/build/appstart.properties</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>			
+		</file>
+ 		<file>
+			<source>${basedir}/src/build/PixelController.jar</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<fileMode>0755</fileMode>
 		</file>
 
  		<file>
@@ -99,12 +110,12 @@
 		
 
 		<!-- silly hack for the startscript -->
-		<file>
+<!-- 		<file>
 			<source>${basedir}/target/${project.artifactId}-${project.version}.jar</source>
 			<outputDirectory>/lib</outputDirectory>
 			<filtered>false</filtered>
 			<destName>${project.artifactId}.jar</destName>
-		</file>
+		</file>-->
 		
  		<file>
 			<source>${basedir}/lib/serial/librxtxSerial.jnilib</source>
