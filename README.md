@@ -1,7 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController)
 
 # PixelController
-**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2012. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
+**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2013. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
 **Primary Website**: http://www.pixelinvaders.ch
 
@@ -14,7 +14,7 @@
 Prerequisite:
 * Java Runtime, v1.6+
 
-Run `PixelController.cmd` on Windows, `PixelController.command` on OSX and `PixelController.sh` on Linux to start the application.
+Run `PixelController.jar` to start the application.
 Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
 the data/config.properties file.
 
