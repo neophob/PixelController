@@ -415,7 +415,7 @@ public class ApplicationConfigurationHelper {
             this.deviceYResolution = 8;
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(s);
+                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
                     lpdDevice.add(cfg);
                     devicesInRow1++;
                 } catch (Exception e) {
@@ -428,7 +428,7 @@ public class ApplicationConfigurationHelper {
         if (StringUtils.isNotBlank(value)) {
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(s);
+                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
                     lpdDevice.add(cfg);
                     devicesInRow2++;				
                 } catch (Exception e) {
@@ -442,7 +442,7 @@ public class ApplicationConfigurationHelper {
         if (blacklist != null) {
             pixelInvadersBlacklist = new ArrayList<String>();
             for (String s: blacklist.split(",")) {
-                pixelInvadersBlacklist.add(s);
+                pixelInvadersBlacklist.add(StringUtils.strip(s));
             }
         }
         
@@ -463,7 +463,7 @@ public class ApplicationConfigurationHelper {
             this.deviceYResolution = 16;
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(s);
+                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
                     stealthDevice.add(cfg);
                     devicesInRow1++;
                 } catch (Exception e) {
@@ -476,7 +476,7 @@ public class ApplicationConfigurationHelper {
         if (StringUtils.isNotBlank(value)) {
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(s);
+                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
                     stealthDevice.add(cfg);
                     devicesInRow2++;				
                 } catch (Exception e) {
@@ -519,7 +519,7 @@ public class ApplicationConfigurationHelper {
         if (StringUtils.isNotBlank(rawConfig)) {
             for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 try {
-                    ColorFormat cf = ColorFormat.valueOf(s);
+                    ColorFormat cf = ColorFormat.valueOf(StringUtils.strip(s));
                     colorFormat.add(cf);					
                 } catch (Exception e) {
                     LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
@@ -541,7 +541,7 @@ public class ApplicationConfigurationHelper {
     	if (StringUtils.isNotBlank(rawConfig)) {
             for (String s: rawConfig.split(ConfigConstant.DELIM)) {
                 try {
-                    Integer order = Integer.parseInt(s);
+                    Integer order = Integer.parseInt(StringUtils.strip(s));
                     
                     //sanity check
                     if (order >= totalDevices) {
@@ -594,14 +594,14 @@ public class ApplicationConfigurationHelper {
             this.deviceYResolution = 8;
 
             for (String s: rawConfig.split(ConfigConstant.DELIM)) {
-                i2cAddr.add( Integer.decode(s));
+                i2cAddr.add( Integer.decode(StringUtils.strip(s)));
                 devicesInRow1++;
             }
         }
         rawConfig = config.getProperty(ConfigConstant.RAINBOWDUINO_V2_ROW2);
         if (StringUtils.isNotBlank(rawConfig)) {
             for (String s: rawConfig.split(ConfigConstant.DELIM)) {
-                i2cAddr.add( Integer.decode(s));
+                i2cAddr.add( Integer.decode(StringUtils.strip(s)));
                 devicesInRow2++;
             }
         }
@@ -620,14 +620,14 @@ public class ApplicationConfigurationHelper {
 			this.deviceXResolution = 8;
 			this.deviceYResolution = 8;
 			for (String string : row1String.split(ConfigConstant.DELIM)) {
-				this.rainbowduinoV3SerialDevices.add(string);
+				this.rainbowduinoV3SerialDevices.add(StringUtils.strip(string));
 				this.devicesInRow1++;
 			}
 		}
 		String row2String = this.config.getProperty(ConfigConstant.RAINBOWDUINO_V3_ROW2);
 		if (StringUtils.isNotBlank(row2String)) {
 			for (String string : row2String.split(ConfigConstant.DELIM)) {
-				this.rainbowduinoV3SerialDevices.add(string);
+				this.rainbowduinoV3SerialDevices.add(StringUtils.strip(string));
 				this.devicesInRow2++;
 			}
 		}
@@ -820,7 +820,7 @@ public class ApplicationConfigurationHelper {
             if (StringUtils.isNotBlank(value)) {
                 for (String s: value.split(ConfigConstant.DELIM)) {
                     try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(s);
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
                         tpm2netDevice.add(cfg);
                         devicesInRow1++;
                     } catch (Exception e) {
@@ -833,7 +833,7 @@ public class ApplicationConfigurationHelper {
             if (StringUtils.isNotBlank(value)) {
                 for (String s: value.split(ConfigConstant.DELIM)) {
                     try {
-                        DeviceConfig cfg = DeviceConfig.valueOf(s);
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
                         tpm2netDevice.add(cfg);
                         devicesInRow2++;				
                     } catch (Exception e) {

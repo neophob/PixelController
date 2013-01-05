@@ -20,6 +20,7 @@
 package com.neophob.sematrix.properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Properties;
@@ -74,9 +75,9 @@ public class PropertiesHelperTest {
     @Test
     public void testPixelInvadersConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
-        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90,NO_ROTATE");
-        config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0,3,1,2");
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180, NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90, NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0,3, 1,2");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
@@ -153,7 +154,7 @@ public class PropertiesHelperTest {
     @Test
     public void testRainbowduinosConfig() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "5,6");
+        config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "5, 6");
         config.put(ConfigConstant.RAINBOWDUINO_V2_ROW2, "0x7,8");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
@@ -164,6 +165,25 @@ public class PropertiesHelperTest {
         assertEquals(4, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.RAINBOWDUINO_V2, ph.getOutputDevice());
+    }
+
+    @Test
+    public void testRainbowduinosV3Config() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.RAINBOWDUINO_V3_ROW1, "/dev/aaa,/dev/bbb");
+        config.put(ConfigConstant.RAINBOWDUINO_V3_ROW2, "/dev/ccc, /dev/ddd");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+
+        assertEquals(4, ph.getNrOfScreens());
+        assertEquals(8, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        
+        assertEquals(4, ph.getRainbowduinoV3SerialDevices().size());
+        assertEquals(0, ph.getLpdDevice().size());
+        assertEquals(OutputDeviceEnum.RAINBOWDUINO_V3, ph.getOutputDevice());
+        
+        assertTrue(ph.getRainbowduinoV3SerialDevices().contains("/dev/aaa"));
+        assertTrue(ph.getRainbowduinoV3SerialDevices().contains("/dev/ddd"));
     }
 
     @Test
@@ -245,7 +265,7 @@ public class PropertiesHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidCabling() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,4,2,1,8");
+        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5, 4,2,1,8");
         config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
         new ApplicationConfigurationHelper(config).getLayout();        
     }    
@@ -368,6 +388,17 @@ public class PropertiesHelperTest {
         assertEquals(ColorFormat.RGB, ph.getColorFormat().get(1));        
     }
     
+    @Test
+    public void testRgbValue() {
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.CFG_PANEL_COLOR_ORDER, "RBG, BRG");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+
+        assertEquals(2, ph.getNrOfScreens());
+        assertEquals(ColorFormat.RBG, ph.getColorFormat().get(0));        
+        assertEquals(ColorFormat.BRG, ph.getColorFormat().get(1));        
+    }
     
     @Test
     public void testPixelInvadersBlacklist() {     
@@ -412,7 +443,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();        
         config.put(ConfigConstant.TPM2NET_IP, "1.2.3.4");
         config.put(ConfigConstant.TPM2NET_ROW1, "ROTATE_180,NO_ROTATE");
-        config.put(ConfigConstant.TPM2NET_ROW2, "NO_ROTATE,NO_ROTATE");
+        config.put(ConfigConstant.TPM2NET_ROW2, "NO_ROTATE, NO_ROTATE");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(OutputDeviceEnum.TPM2NET, ph.getOutputDevice());
         assertEquals(4, ph.getTpm2NetDevice().size());
