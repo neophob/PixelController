@@ -79,7 +79,7 @@ public class GeneratorGuiCreator extends Frame {
         this.setIconImage(GeneratorGuiCreator.createIcon());
         
         //connect the new PApplet to our frame
-        gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);        
+        gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
         gui.init();        
         add(gui);
         

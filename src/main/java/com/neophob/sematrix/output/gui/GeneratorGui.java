@@ -140,6 +140,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private int p5GuiYOffset;
 
     private int frameCount;
+    private int[] buffer = null;
     
     /**
      * Instantiates a new internal buffer.
@@ -177,8 +178,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         P5EventListener listener = new P5EventListener(this);
 
         //selected visual
-        int nrOfVisuals = Collector.getInstance().getAllVisuals().size();
-        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), GENERIC_X_OFS, p5GuiYOffset-58);
+        Collector col = Collector.getInstance();
+        int nrOfVisuals = col.getAllVisuals().size();
+      
+        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), getVisualCenter(col), p5GuiYOffset-58);
         selectedVisualList.setItemsPerRow(nrOfVisuals);
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
@@ -540,7 +543,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         //Info tab
         //-------------
-        Collector col = Collector.getInstance();
         
         int yposAdd = 20;
         int xposAdd = 160;
@@ -628,9 +630,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     public void CURRENT_VISUAL(int val) {
         //unused
     }
-
-
-    int[] buffer = null;
+    
+    
+    private int getVisualCenter(Collector col) {
+    	return (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
+    }
     
     /**
      * draw the whole internal buffer on screen.
@@ -639,7 +643,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     public void draw() {
         long l = System.currentTimeMillis();
         Collector col = Collector.getInstance();
-        int localX = (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
+        int localX = getVisualCenter(col);
         int localY=40;
 
         background(0);        
