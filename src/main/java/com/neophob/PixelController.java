@@ -19,6 +19,7 @@
 
 package com.neophob;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,6 +65,9 @@ public class PixelController extends PApplet {
     private static final int SETUP_FONT_BIG = 24;
     private static final int SETUP_FONT_SMALL = 12;
     
+	private static final int SETUP_WINDOW_WIDTH = 600;
+	private static final int SETUP_WINDOW_HEIGHT = 500;
+
     private Collector collector;
 
     /** The output. */
@@ -126,21 +130,22 @@ public class PixelController extends PApplet {
         LOG.log(Level.INFO, "\n\nPixelController "+VERSION+" - http://www.pixelinvaders.ch\n\n");
         LOG.log(Level.INFO, "");
 
-	    size(600,500);
+	    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
 	    background(0);
 	    noStroke();
 	    
 	    //try to display the pixelcontroller logo
+	    String splashimg = "setup"+File.separatorChar+"splash.jpg";
 	    try {
-	        image(loadImage("pics/logo.gif"), 10, 10, 20, 20);
+	        image(loadImage(splashimg), 0, 111);
 	    } catch (Exception e) {
-	        LOG.log(Level.INFO, "Failed to load splash logo (pics/logo.gif)", e);
+	        LOG.log(Level.INFO, "Failed to load splash logo ("+splashimg+")", e);
 	    }
 
 	    //write pixelcontroller text
 	    textSize(SETUP_FONT_BIG);
 	    fill(240);
-	    text("PixelController "+VERSION, 40, 29);
+	    text("PixelController "+VERSION, 10, 29);
 	    
 	    text("Loading...", 10, 120);
 	    drawProgressBar(0.0f);
