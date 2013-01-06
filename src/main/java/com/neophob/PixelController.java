@@ -108,7 +108,7 @@ public class PixelController extends PApplet {
 	        val = 1.0f;
 	    }
 
-	    fill(200);
+	    fill(227, 122, 182);
 	    rect(10, 40, 580*val, 50);                
 	}
 
@@ -143,105 +143,106 @@ public class PixelController extends PApplet {
 	
 	    
     /**
-     * asnychronous initialize PixelController and display progress in gui
+     * Asynchronous initialize PixelController and display progress in GUI
      */
     public void asyncInitApplication() {
         try {
-            if (setupStep==0) {            
-                applicationConfig = InitApplication.loadConfiguration(this);
-                setupStep++;
-                drawProgressBar(steps);
-                drawSetupText("Create Collector", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
-            
-            if (setupStep==1) {            
-                this.collector = Collector.getInstance();
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                drawSetupText("Load Palettes", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
+        	
+        	switch (setupStep) {
+        	case 0:
+        		applicationConfig = InitApplication.loadConfiguration(this);
+        		setupStep++;
+        		drawProgressBar(steps);
+        		drawSetupText("Create Collector", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
 
-            if (setupStep==2) {            
-                List<ColorSet> colorSets = InitApplication.getColorPalettes(this);
-                this.collector.setColorSets(colorSets);
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                drawSetupText("Initialize System", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
+        	case 1:
+        		this.collector = Collector.getInstance();
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Load Palettes", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
 
-            if (setupStep==3) {            
-                this.collector.init(this, applicationConfig);     
-                frameRate(applicationConfig.parseFps());
-                noSmooth();
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                drawSetupText("Initialize TCP/OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
+        	case 2:
+        		List<ColorSet> colorSets = InitApplication.getColorPalettes(this);
+        		this.collector.setColorSets(colorSets);
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Initialize System", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
 
-            if (setupStep==4) {            
-                this.collector.initDaemons(applicationConfig);     
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                drawSetupText("Initialize Output device", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
+        	case 3:
+        		this.collector.init(this, applicationConfig);     
+        		frameRate(applicationConfig.parseFps());
+        		noSmooth();
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Initialize TCP/OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
 
-            if (setupStep==5) {            
-                this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
-                this.collector.setOutput(output);
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
-            
-            if (setupStep==6) {            
-                this.matrixEmulator = new OutputGui(applicationConfig, this.output);
-                
-                if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
-                    //create GUI Window
-                    GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());
-                    //register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
-                    KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
-                }  
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                drawSetupText("Apply Settings", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-                return;
-            }
+        	case 4:
+        		this.collector.initDaemons(applicationConfig);     
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Initialize Output device", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
 
-            if (setupStep==7) {                 	
-                //start in random mode?
-                if (applicationConfig.startRandommode()) {
-                    LOG.log(Level.INFO, "Random Mode enabled");
-                    Shuffler.manualShuffleStuff();
-                    this.collector.setRandomMode(true);
-                }
-                
-                //load saves presets
-                int presetNr = applicationConfig.loadPresetOnStart();
-                if (presetNr != -1) {
-                    LOG.log(Level.INFO,"Load preset "+presetNr);
-                    List<String> present = this.collector.getPresent().get(presetNr).getPresent();
-                    if (present!=null) { 
-                        this.collector.setCurrentStatus(present);
-                    }           
-                }  
-                setupStep++;
-                drawProgressBar(steps*setupStep);
-                return;
-            }
+        	case 5:
+        		this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
+        		this.collector.setOutput(output);
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Apply Settings", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
 
-            initialized = true;
+        	case 6:
+        		//start in random mode?
+        		if (applicationConfig.startRandommode()) {
+        			LOG.log(Level.INFO, "Random Mode enabled");
+        			Shuffler.manualShuffleStuff();
+        			this.collector.setRandomMode(true);
+        		}
+
+        		//load saves presets
+        		int presetNr = applicationConfig.loadPresetOnStart();
+        		if (presetNr != -1) {
+        			LOG.log(Level.INFO,"Load preset "+presetNr);
+        			List<String> present = this.collector.getPresent().get(presetNr).getPresent();
+        			if (present!=null) { 
+        				this.collector.setCurrentStatus(present);
+        			}           
+        		}  
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
+
+        	case 7:
+        		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
+
+        		//create gui window
+        		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
+        			//create GUI Window
+        			GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());
+        			//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
+        			KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
+        		}  
+        		setupStep++;
+        		drawProgressBar(steps*setupStep);
+        		drawSetupText("Finished", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		return;
+
+        	default:
+        		break;
+        	}
+        	
+
             LOG.log(Level.INFO, "--- PixelController Setup END ---");
             LOG.log(Level.INFO, "---------------------------------");
             LOG.log(Level.INFO, "");
 
             background(0);
+            initialized = true;
             
         } catch (Exception e) {
             textSize(SETUP_FONT_BIG);
