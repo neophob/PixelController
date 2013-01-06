@@ -19,6 +19,8 @@
 
 package com.neophob.sematrix.output.gui;
 
+import java.lang.reflect.Method;
+
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
@@ -66,7 +68,6 @@ public class OutputGui {
 	 *
 	 * @param controller the controller
 	 */
-	@SuppressWarnings("restriction")
 	public OutputGui(ApplicationConfigurationHelper ph, Output output) {
 		this.output = output;
 		this.ledSize = ph.getLedPixelSize();
@@ -103,7 +104,13 @@ public class OutputGui {
 		try {
 			String osName = System.getProperties().getProperty("os.name");
 			if (osName != null && osName.startsWith("Mac OS X")) {
-				com.apple.eawt.Application.getApplication().setDockIconImage(GeneratorGuiCreator.createLargeIcon());				
+				//error: package com.apple.eawt does not exist
+				//com.apple.eawt.Application.getApplication().setDockIconImage(GeneratorGuiCreator.createLargeIcon());
+                Class<?> appClass = Class.forName("com.apple.eawt.Application");
+                Method getAppMethod = appClass.getMethod("getApplication");
+                Object appInstance = getAppMethod.invoke(null);
+                Method dockMethod = appInstance.getClass().getMethod("setDockIconImage", java.awt.Image.class);
+                dockMethod.invoke(appInstance, GeneratorGuiCreator.createLargeIcon());				
 			}
 		} catch (Throwable e) {
 			//nothing left todo...
