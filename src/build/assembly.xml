@@ -45,6 +45,13 @@
 			<outputDirectory>/data</outputDirectory>
 			<filtered>false</filtered>
 		</fileSet>
+
+		<!-- Copy all files, including binary (without conversion) -->
+		<fileSet>
+			<directory>${basedir}/integration</directory>
+			<outputDirectory>/integration</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
 		
 		<!-- Small hack to create a log folder:
 		Copy a existing folder without subfolders, 
@@ -102,11 +109,11 @@
 		</file>
 
 		
- 		<file>
-			<source>${basedir}/data/integration/PureData/Midi2OSC.pd</source>
+<!--  		<file>
+			<source>${basedir}/integration/PureData/Midi2OSC.pd</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
-		</file>
+		</file> -->
 		
  		<file>
 			<source>${basedir}/README.md</source>
