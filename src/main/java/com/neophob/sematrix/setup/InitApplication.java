@@ -5,6 +5,7 @@
  */
 package com.neophob.sematrix.setup;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -50,12 +51,23 @@ public class InitApplication {
      */
     public static ApplicationConfigurationHelper loadConfiguration(PApplet papplet) throws IllegalArgumentException {
         Properties config = new Properties();
+        InputStream is = null;
         try {
-            config.load(papplet.createInput(APPLICATION_CONFIG_FILENAME));
+        	is = papplet.createInput(APPLICATION_CONFIG_FILENAME);        	
+            config.load(is);            
             LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
         } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Failed to load Config", e);
-            throw new IllegalArgumentException(e);
+        	String error = "Failed to open the configfile "+APPLICATION_CONFIG_FILENAME;
+            LOG.log(Level.SEVERE, error, e);
+            throw new IllegalArgumentException(error);
+        } finally {
+        	try {
+        		if (is!=null) {
+        			is.close();        	
+        		}
+        	} catch (Exception e) {
+        		//ignored
+        	}
         }
         
         try {
@@ -75,17 +87,29 @@ public class InitApplication {
     public static List<ColorSet> getColorPalettes(PApplet papplet) throws IllegalArgumentException {
         //load palette
         Properties palette = new Properties();
+        
+        InputStream is = null;
         try {
-            palette.load(papplet.createInput(PALETTE_CONFIG_FILENAME));
+        	is = papplet.createInput(PALETTE_CONFIG_FILENAME);
+            palette.load(is);
             List<ColorSet> colorSets = ColorSet.loadAllEntries(palette);
 
             LOG.log(Level.INFO, "ColorSets loaded, {0} entries", colorSets.size());
             return colorSets;
         } catch (Exception e) {
-            
-            LOG.log(Level.SEVERE, "Failed to load Config", e);
-            throw new IllegalArgumentException("Configuration error!", e);
-        }               
+            String error = "Failed to load the palette config file "+PALETTE_CONFIG_FILENAME;
+            LOG.log(Level.SEVERE, error, e);
+            throw new IllegalArgumentException(error, e);
+        } finally {
+        	try {
+        		if (is!=null) {
+        			is.close();        	
+        		}
+        	} catch (Exception e) {
+        		//ignored
+        	}
+        }
+
     }
     
     
