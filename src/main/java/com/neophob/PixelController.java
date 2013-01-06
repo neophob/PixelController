@@ -62,7 +62,7 @@ public class PixelController extends PApplet {
     private static final int TEXT_Y_OFFSET = 140;
     private static final int TEXT_Y_HEIGHT = 15;
     
-    private static final int SETUP_FONT_BIG = 24;
+    private static final int SETUP_FONT_BIG = 20;
     private static final int SETUP_FONT_SMALL = 12;
     
 	private static final int SETUP_WINDOW_WIDTH = 600;
@@ -98,21 +98,10 @@ public class PixelController extends PApplet {
 
 	/**
 	 * 
-	 * @param text
-	 * @param textYOffset
-	 */
-	public void drawErrorSetupText(String text, int textYOffset) {
-	    fill(240, 0, 0);
-	    textSize(SETUP_FONT_SMALL);
-	    text(text, 10, textYOffset);
-	}
-
-	/**
-	 * 
 	 * @param val
 	 */
 	public void drawProgressBar(float val) {
-	    fill(128);
+	    fill(64);
 	    rect(10, 40, 580, 50);
 
 	    if (val>1.0) {
@@ -144,7 +133,7 @@ public class PixelController extends PApplet {
 
 	    //write pixelcontroller text
 	    textSize(SETUP_FONT_BIG);
-	    fill(240);
+	    fill(227, 122, 182);
 	    text("PixelController "+VERSION, 10, 29);
 	    
 	    text("Loading...", 10, 120);
@@ -225,7 +214,7 @@ public class PixelController extends PApplet {
                 return;
             }
 
-            if (setupStep==7) {                        
+            if (setupStep==7) {                 	
                 //start in random mode?
                 if (applicationConfig.startRandommode()) {
                     LOG.log(Level.INFO, "Random Mode enabled");
@@ -246,7 +235,7 @@ public class PixelController extends PApplet {
                 drawProgressBar(steps*setupStep);
                 return;
             }
-            
+
             initialized = true;
             LOG.log(Level.INFO, "--- PixelController Setup END ---");
             LOG.log(Level.INFO, "---------------------------------");
@@ -256,13 +245,14 @@ public class PixelController extends PApplet {
             
         } catch (Exception e) {
             textSize(SETUP_FONT_BIG);
-            fill(240, 0 ,0);
-            text("PixelController Error", 10, 300);
+            fill(227, 122, 182);
             
-            drawErrorSetupText("Failed to initialize PixelController!", 320);
-            drawErrorSetupText("See log/pixelcontroller.log for more detail!s", 340);
-            drawErrorSetupText("Error message:", 360);
-            drawErrorSetupText("     "+e.getMessage(), 380);
+            int errorYPos = 370;
+            text("PixelController Error", 10, errorYPos);
+            
+            drawSetupText("Failed to initialize PixelController! See log/pixelcontroller.log for more detail!s", errorYPos+20);
+            drawSetupText("Error message:", errorYPos+40);
+            drawSetupText("     "+e.getMessage(), errorYPos+60);
             initializationFailed = true;            
         }
     }

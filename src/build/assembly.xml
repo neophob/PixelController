@@ -108,6 +108,11 @@
 			<filtered>false</filtered>
 		</file>
 		
+ 		<file>
+			<source>${basedir}/README.md</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</file>
 
 		<!-- silly hack for the startscript -->
 <!-- 		<file>
