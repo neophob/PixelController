@@ -1,4 +1,4 @@
-Copyright (C) ${year} Michael Vogt <${email}>
+Copyright (C) 2011-${year} Michael Vogt <${email}>
 
 This file is part of PixelController.
 
