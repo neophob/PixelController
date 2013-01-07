@@ -30,6 +30,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
+import com.neophob.sematrix.listener.MouseHandler;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
@@ -139,6 +140,9 @@ public class PixelController extends PApplet {
 	    text("Loading...", 10, 120);
 	    drawProgressBar(0.0f);
 	    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+
+	    //add out window listener
+	    frame.addWindowListener( new MouseHandler() );
 	}
 	
 	    
@@ -309,4 +313,5 @@ public class PixelController extends PApplet {
 	public static void main(String args[]) {
 		PApplet.main(new String[] { PixelController.class.getName().toString() });
 	}
+	
 }
