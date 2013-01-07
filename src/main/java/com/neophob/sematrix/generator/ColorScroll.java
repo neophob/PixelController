@@ -232,7 +232,7 @@ public class ColorScroll extends Generator {
      * @return the color
      */
     private int getColor(int val) {
-    	return val+frameCount;
+    	return (val+frameCount)&0xff;
     }
     
 
