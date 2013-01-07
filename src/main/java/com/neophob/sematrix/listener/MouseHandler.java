@@ -38,6 +38,10 @@ public class MouseHandler extends WindowAdapter {
      * @return
      */
     public static boolean quitApplicationYesOrNo() {
+    	//bring the papplet to front, the dialog will be displayed on top of this window
+    	Collector.getInstance().getPapplet().frame.toFront();
+    	
+    	//display dialog
         int result = JOptionPane.showConfirmDialog(
             Collector.getInstance().getPapplet(),
             "Are you sure you want to exit the application?",
