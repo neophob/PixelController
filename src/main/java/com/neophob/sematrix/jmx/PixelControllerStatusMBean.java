@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *

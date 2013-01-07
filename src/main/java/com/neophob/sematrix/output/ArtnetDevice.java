@@ -1,6 +1,5 @@
 /**
- * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
- * Copyright (C) 2011 Rainer Ostendorf <mail@linlab.de>
+ * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -17,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.neophob.sematrix.output;
 
 import java.net.BindException;

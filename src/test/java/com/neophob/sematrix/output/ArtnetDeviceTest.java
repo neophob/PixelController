@@ -18,31 +18,45 @@
  */
 package com.neophob.sematrix.output;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 /**
- * verify the scanline flip code
+ * verify universe fliping
  * @author michu
  *
  */
-public class MiniDmxDeviceTest {
+public class ArtnetDeviceTest {
 	
     @Test
-    public void speedTestOld() {
-		int[] buffer = new int[] {
-				1,2,3,0,0,0,0,0,
-				8,8,8,8,0,0,0,0,
-				0,0,0,0,0,0,0,0,
-				0,0,0,0,0,0,0,4
-			};
-		buffer = OutputHelper.flipSecondScanline(buffer, 8, 4);
-    	//RotateBufferTest.dumpBuffer(buffer);
-		assertEquals(1, buffer[0]);
-		assertEquals(2, buffer[1]);
-		assertEquals(8, buffer[12]);
-		assertEquals(4, buffer[24]);
+    public void testArtnetUniverse() {
+    	
+    	int pixelsPerUniverse = 8;//170;
+    	int bfrsze = 8*2;
+    	int nrOfUniverse=1;
+    	
+	    int bufferSize=bfrsze;
+	    if (bufferSize > pixelsPerUniverse) {
+	    	while (bufferSize > pixelsPerUniverse) {
+	    		nrOfUniverse++;
+	    		bufferSize -= pixelsPerUniverse;
+	    	}
+	    }
+	    System.out.println("nrOfUniverse: "+nrOfUniverse);
+	    
+		int remainingInt = bfrsze;
+		
+		
+		int ofs=0;
+		for (int i=0; i<nrOfUniverse; i++) { //nr of universe
+			int tmp=pixelsPerUniverse;
+			if (remainingInt<pixelsPerUniverse) {
+				tmp = remainingInt;
+			}
+			remainingInt-=tmp;
+			ofs+=tmp;
+			System.out.println(i+": ofs:"+ofs+", remainingInt:"+remainingInt);
+		}
+
     }
     
 }
