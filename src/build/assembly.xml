@@ -122,7 +122,7 @@
 		</file>
 
  		<file>
-			<source>${basedir}/Todo</source>
+			<source>${basedir}/TODO</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 			<destName>Changelog.txt</destName>
