@@ -27,6 +27,7 @@ on two PixelInvaders panels.
 
 ## SUPPORTED HARDWARE
 PixelController supports different (LED) matrix hardware devices:
+
 * PixelInvaders 3d Panels (see Readme.PixelInvaders, http://www.pixelinvaders.ch)
 * Seeedstudios Rainbowduino V2 (see Readme.rainbowduinoV2)
 * Seeedstudios Rainbowduino V3
@@ -42,6 +43,7 @@ Check out the `data/ArduinoFW` directory, all Arduino based firmware files are s
 
 ## FRONTENDS
 There are different frontends for PixelController:
+
 * Native Java: the default frontend is started when PixelController starts.
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
 * PureData: PureData frontend (http://puredata.info/ download the extended Version), very flexible, extensible (OSC, MIDI). The PureData file is called `PixelController.pd`.
@@ -96,6 +98,7 @@ There are different frontends for PixelController:
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
 
 Here are some common errors:
+
 * Did you forgot to **edit the configuration file** `config.properties`. Take a look at the config.examples subdirectory!
 * Did you flash the **correct firmware** to you Arduino/Teensy? 
 * **PixelInvaders panels**: Make sure that the Panel shows an **animated rainbow pattern** when the panels are powered on (make sure 
@@ -108,6 +111,7 @@ Here are some common errors:
 
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
+
 * Maven v2.x (if you use Maven 3, make sure to read http://neophob.com/2011/11/maven-3-is-evil/ first!)
 * JDK 1.6+
 
@@ -162,7 +166,7 @@ Example how to use PixConCli:
     Close the connection to the server
 
 
-## CREDITS
+## CREDITS
 * **Michael Vogt**:       Project Lead, Main Developer    	
 * **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements, Rainbowduino V3 support
 * **McGyver666**:         Contributor
@@ -172,4 +176,3 @@ Example how to use PixConCli:
 * **Noxx6**:              Bugfixes
 * **Psykon**:             Example Visuals
 * **okyeron**:            Stealth output device
-
