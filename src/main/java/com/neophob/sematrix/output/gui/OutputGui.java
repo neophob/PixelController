@@ -95,7 +95,7 @@ public class OutputGui {
 		this.parent.size(x, y);
 		this.parent.frame.setSize(x,y);
 		this.parent.frame.setTitle("PixelController Output Window");
-		this.parent.frame.setIconImage(GeneratorGuiCreator.createIcon());
+		this.parent.frame.setIconImage(GeneratorGuiCreator.createLargeIcon());
 		if (this.parent.frame.isAlwaysOnTopSupported()) {
 			this.parent.frame.setAlwaysOnTop(true);			
 		}

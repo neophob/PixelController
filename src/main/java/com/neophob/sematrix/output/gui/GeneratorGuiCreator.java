@@ -76,7 +76,7 @@ public class GeneratorGuiCreator extends Frame {
         
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
         this.setResizable(false);
-        this.setIconImage(GeneratorGuiCreator.createIcon());
+        this.setIconImage(GeneratorGuiCreator.createLargeIcon());
         
         //connect the new PApplet to our frame
         gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
@@ -90,21 +90,12 @@ public class GeneratorGuiCreator extends Frame {
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
         setVisible(true);        
-	}
-	
+	}	
+
 	/**
-	 * helper function to load the pixelinvaders logo
+	 * helper function to load the large pixelinvaders logo
 	 * @return
 	 */
-	public static Image createIcon() {
-	    PImage img = Collector.getInstance().getPapplet().loadImage("pics/logo.gif");
-	    if (img!=null) {
-	        return img.getImage();	        
-	    }
-	    img = new PImage(8,8);
-	    return img.getImage();
-	}
-
 	public static Image createLargeIcon() {
 	    PImage img = Collector.getInstance().getPapplet().loadImage("pics/logoBig.jpg");
 	    if (img!=null) {
