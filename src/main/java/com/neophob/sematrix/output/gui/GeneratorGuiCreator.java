@@ -19,10 +19,11 @@
 
 package com.neophob.sematrix.output.gui;
 
-import java.awt.Frame;
 import java.awt.Image;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFrame;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -30,16 +31,14 @@ import processing.core.PImage;
 import com.neophob.PixelController;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.listener.MouseHandler;
 
 /**
  * Helper class to create a new window
  *
  * @author michu
  */
-public class GeneratorGuiCreator extends Frame {
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 2946906663946781980L;
+public class GeneratorGuiCreator {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
@@ -55,7 +54,6 @@ public class GeneratorGuiCreator extends Frame {
 	 * @param the maximal x size of the window
 	 */
 	public GeneratorGuiCreator(int maximalXSize) {
-        super("PixelController Generator Window "+PixelController.VERSION);        
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         
@@ -74,22 +72,29 @@ public class GeneratorGuiCreator extends Frame {
         	windowXSize = MINIMAL_WINDOW_X_SIZE;
         }
         
-        LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
-        this.setResizable(false);
-        this.setIconImage(GeneratorGuiCreator.createLargeIcon());
-        
         //connect the new PApplet to our frame
         gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
         gui.init();        
-        add(gui);
+
+        //create new window for child
+        LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
+        JFrame childFrame = new JFrame("PixelController Generator Window "+PixelController.VERSION);        
+        childFrame.setResizable(false);
+        childFrame.setIconImage(GeneratorGuiCreator.createLargeIcon());
         
-        setBounds(0, 0, windowXSize, windowYSize+30);
+        childFrame.add(gui);
+        
+        childFrame.setBounds(0, 0, windowXSize, windowYSize+30);
         gui.setBounds(0, 0, windowXSize, windowYSize+30);
 
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
-        setVisible(true);        
+        childFrame.setVisible(true);
+        
+        //childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        childFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);                
+        childFrame.addWindowListener( new MouseHandler() );
 	}	
 
 	/**
