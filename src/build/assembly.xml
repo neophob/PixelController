@@ -121,6 +121,13 @@
 			<filtered>false</filtered>
 		</file>
 
+ 		<file>
+			<source>${basedir}/Todo</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>Changelog.txt</destName>
+		</file>
+
 		<!-- silly hack for the startscript -->
 <!-- 		<file>
 			<source>${basedir}/target/${project.artifactId}-${project.version}.jar</source>
