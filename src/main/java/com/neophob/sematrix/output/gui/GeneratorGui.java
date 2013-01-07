@@ -174,6 +174,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         cp5 = new ControlP5(this);
         cp5.setAutoDraw(false);
+        
+        //press alt and you can move gui elements arround. disable this *should* work but does not...
+        //cp5.setMoveable(false);
+
+        //alt-h hide all controls - I don't want that!
+        cp5.disableShortcuts();
+        
         cp5.getTooltip().setDelay(200);
         P5EventListener listener = new P5EventListener(this);
 
@@ -900,6 +907,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     public void keyPressed() {
     	if (keyCode==ESC) {		//ignored
     		key=0;
+/*            if (MouseHandler.quitApplicationYesOrNo()) {
+                MouseHandler.exit();
+            }*/
     	} else {
             KeyboardHandler.keyboardHandler(key);    		
     	}
@@ -922,7 +932,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		Collector.getInstance().setTriggerGuiRefresh(true);		
 	}
 
-
-
+	
 
 }
