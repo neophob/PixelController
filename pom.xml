@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.0</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -67,7 +67,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.1</version><!--$NO-MVN-MAN-VER$-->
+				<version>2.4</version>
 				<executions>
 					<execution>
 						<id>assembly</id>
@@ -87,21 +87,28 @@
 				</executions>
 			</plugin>
 			<!-- -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.2</version><!--$NO-MVN-MAN-VER$-->
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>com.neophob.PixelController</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        
-      </plugin>
 			
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <version>2.4</version><!--$NO-MVN-MAN-VER$-->
+	        <configuration>
+	          <archive>
+	            <manifest>
+	              <addClasspath>true</addClasspath>
+	              <mainClass>com.neophob.PixelController</mainClass>
+	            </manifest>
+	          </archive>
+	        </configuration>	        
+	      </plugin>
+			
+			<!-- 
+				CHECK: 
+					mvn license:check -Dyear=2013 -Demail=michu@neophob.com
+				
+				ADD:
+					mvn license:format -Dyear=2013 -Demail=michu@neophob.com
+			-->
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
