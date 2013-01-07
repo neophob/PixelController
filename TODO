@@ -16,6 +16,7 @@ TODO PixelController
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Support Kinect for Xbox 360 
 -Support Renard Protocol
+-Update controlp5 lib
 -Manual for v1.3 - WIP
 
 
@@ -43,6 +44,7 @@ Changelog v1.2 to v1.3
 -removed emboss effect, as the result was ugly
 -removed Xor and MinusHalf mixer, as the result was ugly
 -removed image zoomer generator, as it looks ugly and was a duplicate.
+
 
 Changelog v1.1 to v1.2
 ------------------------
