@@ -18,14 +18,18 @@
  */
 package com.neophob.sematrix.glue;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.PixelControllerFader;
+import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
 
@@ -114,11 +118,34 @@ public final class Shuffler {
 			}
 		}
 
-		for (RandomizeState r: col.getPixelControllerGenerator().getAllGenerators()) {
-			r.shuffle();
+        //set used to find out if visual is on screen
+        Set<Integer> activeGeneratorIds = new HashSet<Integer>();
+        Set<Integer> activeEffectIds = new HashSet<Integer>();
+        for (OutputMapping om: col.getAllOutputMappings()) {
+            Visual v = col.getVisual(om.getVisualId());
+            
+            if (v.equals(visual)) {
+            	continue;
+            }
+            
+            activeEffectIds.add(v.getEffect1Idx());
+            activeEffectIds.add(v.getEffect2Idx());
+            
+            activeGeneratorIds.add(v.getGenerator1Idx());
+            activeGeneratorIds.add(v.getGenerator2Idx());
+        }
+
+        //shuffle only items which are NOT visible
+        for (Generator g: col.getPixelControllerGenerator().getAllGenerators()) {
+			if (!activeGeneratorIds.contains(g.getId())) {
+				g.shuffle();
+			}
 		}
-		for (RandomizeState r: col.getPixelControllerEffect().getAllEffects()) {
-			r.shuffle();
+        
+		for (Effect e: col.getPixelControllerEffect().getAllEffects()) {
+			if (!activeEffectIds.contains(e.getId())) {
+				e.shuffle();
+			}
 		}
 		
 		/*if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
