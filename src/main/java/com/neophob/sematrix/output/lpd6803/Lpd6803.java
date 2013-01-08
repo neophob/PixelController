@@ -126,7 +126,9 @@ public class Lpd6803 {
 	//connection errors to arduino, TODO: use it!
 	/** The connection error counter. */
 	private int connectionErrorCounter;
-		
+	
+	private String serialPortName;
+	
 	/** map to store checksum of image. */
 	private Map<Byte, String> lastDataMap;
 	
@@ -181,7 +183,7 @@ public class Lpd6803 {
 		
 		lastDataMap = new HashMap<Byte, String>();
 		
-		String serialPortName="";
+		serialPortName="";
 		if(baud > 0) {
 			this.baud = baud;
 		}
@@ -208,12 +210,13 @@ public class Lpd6803 {
 					openPort(ports[i]);
 				//catch all, there are multiple exception to catch (NoSerialPortFoundException, PortInUseException...)
 				} catch (Exception e) {
+				    serialPortName="";
 					// search next port...
 				}
 			}
 		}
 				
-		if (port==null) {
+		if (port==null) {		    
 			throw new NoSerialPortFoundException("\nError: no serial port found!\n");
 		}
 		
@@ -612,9 +615,14 @@ public class Lpd6803 {
 	}
 
 
-
-
 	/**
+     * @return the serialPortName
+     */
+    public String getSerialPortName() {
+        return serialPortName;
+    }
+
+    /**
 	 * Sleep wrapper.
 	 *
 	 * @param ms the ms

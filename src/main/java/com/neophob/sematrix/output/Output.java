@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ * Copyright (C) 2011 Michael Vogt <michu@neophob.com>
  *
  * This file is part of PixelController.
  *
@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.neophob.sematrix.output;
 
 import java.util.HashMap;
@@ -190,9 +191,23 @@ public abstract class Output {
 		//nothing to do per default
 	}
 	
+	/**
+	 * if device supports an error counter, overwrite me.
+	 * 
+	 * @return nr of failed frames
+	 */
 	public long getErrorCounter() {
 	    //overwriteme
 	    return 0;
+	}
+	
+	/**
+	 * if device supports a connection status, overwrite me.
+	 * examples: connected to /dev/aaa or IP Adress: 1.2.3.4
+	 * @return
+	 */
+	public String getConnectionStatus() {
+	    return "";
 	}
 
 	/**

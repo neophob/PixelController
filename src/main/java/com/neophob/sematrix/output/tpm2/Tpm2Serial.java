@@ -150,6 +150,18 @@ public class Tpm2Serial {
 	public String version() {
 		return VERSION;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getConnectedPort() {
+	    if (!connected()) {
+	        return null;
+	    }
+	    
+	    return port.port.getName();
+	}
 
 	/**
 	 * return connection state of lib.
@@ -171,7 +183,7 @@ public class Tpm2Serial {
 	 */
 	private void openPort(String portName) throws NoSerialPortFoundException {
 		try {
-			port = new Serial(app, portName, this.baud);
+			port = new Serial(app, portName, this.baud);			
 			port.output.write("PXL".getBytes());
 		} catch (Exception e) {	
 			LOG.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});

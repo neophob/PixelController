@@ -94,4 +94,10 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
         return this.initialized;
     }	
 
+    public String getConnectionStatus(){        
+        if (initialized) {
+            return "Connected on port "+tpm2.getConnectedPort();            
+        }
+        return "Not connected!";
+    }
 }

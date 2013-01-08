@@ -157,5 +157,14 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	        this.artnet.stop();   
 	    }	    
 	}
+
+	@Override
+    public String getConnectionStatus(){
+        if (initialized) {
+            return "Target IP: "+targetAdress+", Nr. of universe: "+nrOfUniverse;            
+        }
+        return "Not connected!";
+    }
+
 }
 

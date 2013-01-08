@@ -85,6 +85,8 @@ public class Tpm2Net extends Output {
 
 	private DatagramPacket tpm2UdpPacket;
 	
+	private String targetAddrStr;
+	
 	/**
 	 * 
 	 * @param ph
@@ -97,7 +99,7 @@ public class Tpm2Net extends Output {
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
 		
-		String targetAddrStr = ph.getTpm2NetIpAddress();
+		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 
 		try {
@@ -148,6 +150,9 @@ public class Tpm2Net extends Output {
 	}
 
 	@Override
+	/**
+	 * update panels
+	 */
 	public void update() {
 
 		if (initialized) {			
@@ -167,6 +172,15 @@ public class Tpm2Net extends Output {
 		}
 	}
 
+    @Override
+    public String getConnectionStatus(){
+        if (initialized) {
+            return "Target IP "+targetAddrStr+":"+TPM2_NET_PORT;            
+        }
+        return "Not connected!";
+    }
+	
+    
 	@Override
 	public void close() {		
 		if (this.initialized) {
@@ -178,7 +192,7 @@ public class Tpm2Net extends Output {
 			}
 		} else {
 			LOG.log(Level.INFO, "Network socket not initialized, nothing to do.");
-		}
-			
+		}		
 	}
+	
 }

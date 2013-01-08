@@ -88,7 +88,14 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 		}
 	}
 
-
+    @Override
+    public String getConnectionStatus(){
+        if (initialized) {
+            return "Target IP "+targetHost+":"+targetPort;            
+        }
+        return "Not connected!";
+    }
+    
 	@Override
 	public void close()	{
 		if (initialized) {

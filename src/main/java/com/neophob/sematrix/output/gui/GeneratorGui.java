@@ -133,6 +133,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Label runtime;
     private Label sentFrames;
     private Label outputErrorCounter;
+    private Label outputState;
     
     /** The target y size. */
     private int singleVisualXSize, singleVisualYSize;
@@ -576,7 +577,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         sentFrames = cp5.addTextlabel("nfoSentFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
         nfoYPos+=yposAdd;        
         outputErrorCounter = cp5.addTextlabel("nfoErrorFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
-        nfoYPos+=yposAdd;                    
+        nfoYPos+=yposAdd;                            
+        outputState = cp5.addTextlabel("nfoOutputState", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel().setFont(ControlP5.standard58);
+        nfoYPos+=yposAdd;                  
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
@@ -767,7 +770,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");            
             runtime.setText("RUNNING SICE: "+runningSince);         
             sentFrames.setText("SENT FRAMES: "+col.getPixConStat().getFrameCount());
-            
+            outputState.setText(col.getOutputDevice().getConnectionStatus().toUpperCase());
             outputErrorCounter.setText("IO ERRORS: "+col.getOutputDevice().getErrorCounter());
         }
     }

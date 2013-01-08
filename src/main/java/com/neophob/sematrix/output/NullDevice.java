@@ -27,33 +27,39 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  */
 public class NullDevice extends Output {
 
-	/**
-	 * init the null devices.
-	 *
-	 * @param controller the controller
-	 */
-	public NullDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.NULL, ph, controller, 8);
-		this.supportConnectionState = true;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.Output#update()
-	 */
-	public void update() {
-		//nothing todo
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.Output#close()
-	 */
-	@Override
-	public void close() {
-		//nothing todo
-	}
-	
-	@Override
+    /**
+     * init the null devices.
+     *
+     * @param controller the controller
+     */
+    public NullDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
+        super(OutputDeviceEnum.NULL, ph, controller, 8);
+        this.supportConnectionState = true;
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.output.Output#update()
+     */
+    public void update() {
+        //nothing todo
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.output.Output#close()
+     */
+    @Override
+    public void close() {
+        //nothing todo
+    }
+
+    @Override
     public boolean isConnected() {
         return true;
     }
+
+    @Override
+    public String getConnectionStatus(){
+        return "Connected on port NULL";            
+    }
+
 }

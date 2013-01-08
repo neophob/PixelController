@@ -145,7 +145,13 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		}
 	}
 
-
+	@Override
+	public String getConnectionStatus(){
+	    if (initialized) {
+	        return "Connected on port "+lpd6803.getSerialPortName();	        
+	    }
+	    return "Not connected!";
+	}
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.Output#close()
