@@ -552,7 +552,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         
         int yposAdd = 20;
-        int xposAdd = 160;
+        int xposAdd = 200;
 
         //center it, we have 3 row which are 160 pixels wide
         int xOfs = (this.getWidth()-3*xposAdd)/2;

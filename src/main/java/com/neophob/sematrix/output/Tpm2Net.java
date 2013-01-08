@@ -87,6 +87,8 @@ public class Tpm2Net extends Output {
 	
 	private String targetAddrStr;
 	
+	private long errorCounter = 0;
+	
 	/**
 	 * 
 	 * @param ph
@@ -145,6 +147,7 @@ public class Tpm2Net extends Output {
 		try {
 			this.outputSocket.send(tpm2UdpPacket);
 		} catch (Exception e) {
+		    errorCounter++;
 			LOG.log(Level.SEVERE, "Failed to send network data: {0}", e);
 		}
 	}
@@ -180,6 +183,10 @@ public class Tpm2Net extends Output {
         return "Not connected!";
     }
 	
+    @Override
+    public long getErrorCounter() {        
+        return errorCounter;
+    }
     
 	@Override
 	public void close() {		
