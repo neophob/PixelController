@@ -30,7 +30,7 @@ import processing.core.PImage;
 import com.neophob.PixelController;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.listener.MouseHandler;
+import com.neophob.sematrix.listener.WindowHandler;
 
 /**
  * Helper class to create a new window
@@ -93,7 +93,7 @@ public class GeneratorGuiCreator {
         
         //childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         childFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);                
-        childFrame.addWindowListener( new MouseHandler() );
+        childFrame.addWindowListener( new WindowHandler() );
 	}	
 
 	/**

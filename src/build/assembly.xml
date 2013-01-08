@@ -116,7 +116,7 @@
 		</file> -->
 		
  		<file>
-			<source>${basedir}/README.md</source>
+			<source>${basedir}/docs/readme.pdf</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 		</file>

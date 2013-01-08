@@ -30,7 +30,7 @@ import com.neophob.sematrix.glue.Collector;
  * @author mvogt
  *
  */
-public class MouseHandler extends WindowAdapter {
+public class WindowHandler extends WindowAdapter {
 
     /**
      * 
@@ -46,27 +46,29 @@ public class MouseHandler extends WindowAdapter {
             "Are you sure you want to exit the application?",
             "Exit Application",
             JOptionPane.YES_NO_OPTION);
-        
+                
         if (result == JOptionPane.YES_OPTION) {
             return true;
         }
-        
         return false;
     }
     
-/*    public static void exit() {
-        Collector.getInstance().getPapplet().stop();
-        Collector.getInstance().getPapplet().dispose();
-        Collector.getInstance().getPapplet().exit();
-    }*/
     
     /**
      * 
      */
+    @Override
     public void windowClosing(WindowEvent e) {
-        if (MouseHandler.quitApplicationYesOrNo()) {
-            JFrame frame = (JFrame)e.getSource();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        if (WindowHandler.quitApplicationYesOrNo()) {
+        	try {
+                JFrame frame = (JFrame)e.getSource();
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        		
+        	} catch (Exception exception) {
+        		
+        		System.exit(0);
+        	}
         }
+
     }
+ 
 }

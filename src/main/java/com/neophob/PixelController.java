@@ -18,6 +18,7 @@
  */
 package com.neophob;
 
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,7 +31,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
-import com.neophob.sematrix.listener.MouseHandler;
+import com.neophob.sematrix.listener.WindowHandler;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
@@ -141,8 +142,6 @@ public class PixelController extends PApplet {
 	    drawProgressBar(0.0f);
 	    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
 
-	    //add out window listener
-	    frame.addWindowListener( new MouseHandler() );
 	}
 	
 	    
@@ -234,6 +233,19 @@ public class PixelController extends PApplet {
         		setupStep++;
         		drawProgressBar(steps*setupStep);
         		drawSetupText("Finished", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		
+        		try {
+            		//now start a little hack, remove all window listeners, so we can control
+        			//the closing behavior ourselves.
+            		for (WindowListener wl: frame.getWindowListeners()) {            			
+            			frame.removeWindowListener(wl);
+            		}
+            		
+            	    //add our own window listener
+            	    frame.addWindowListener( new WindowHandler() );        			
+        		} catch (Exception e) {
+        			LOG.log(Level.INFO, "failed to remove/add window listeners", e);
+				}
         		return;
 
         	default:
@@ -313,5 +325,6 @@ public class PixelController extends PApplet {
 	public static void main(String args[]) {
 		PApplet.main(new String[] { PixelController.class.getName().toString() });
 	}
-	
+
+
 }
