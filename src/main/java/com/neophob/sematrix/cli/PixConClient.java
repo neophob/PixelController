@@ -26,6 +26,8 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import processing.core.PApplet;
 import processing.net.Client;
 
@@ -40,7 +42,7 @@ import com.neophob.sematrix.properties.ValidCommands;
  */
 public class PixConClient {
 
-	private static final float VERSION = 0.3f; 
+	private static final float VERSION = 0.4f; 
 	
     /** The Constant DEFAULT_PORT. */
     private static final int DEFAULT_PORT = 3448;
@@ -58,6 +60,23 @@ public class PixConClient {
     }
     
     /**
+     * 
+     * @param s
+     * @param length
+     * @return
+     */
+    private static String pretifyString(String s, int length) {
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append(s);
+        while (sb.length()<length) {
+            sb.append(' ');
+        }
+        
+        return sb.toString();
+    }
+    
+    /**
      * Usage.
      *
      * @param options the options
@@ -68,7 +87,10 @@ public class PixConClient {
  
         for (CommandGroup cg: CommandGroup.values()) {
             for (ValidCommands vc: ValidCommands.getCommandsByGroup(cg)) {
-            	System.out.println("\t"+vc.toString()+"\t# of parameter: "+vc.getNrOfParams()+"\t"+vc.getDesc());
+            	System.out.println("\t"
+            	            +pretifyString(vc.toString(),28)
+            	            +pretifyString("# of parameters: "+vc.getNrOfParams(), 23)
+            	            +vc.getDesc());
             }
             System.out.println();
         }
@@ -83,6 +105,12 @@ public class PixConClient {
      */
     protected static ParsedArgument parseArgument(String[] args) {
 
+        if (args.length==0) {
+            System.out.println("No arguments specified!");
+            usage();
+            throw new IllegalArgumentException("no ValidCommand specified!");
+        }
+        
         CmdLineParser parser = new CmdLineParser();
         CmdLineParser.Option host = parser.addStringOption('h', PARAM_HOST);
         CmdLineParser.Option port = parser.addIntegerOption('p', PARAM_PORT);
@@ -93,7 +121,9 @@ public class PixConClient {
             String pHost = (String)parser.getOptionValue(host, DEFAULT_HOST);
             int pPort = (Integer)parser.getOptionValue(port, DEFAULT_PORT);
             String pCmd = (String)parser.getOptionValue(command);            
-            if (pCmd==null) {            	
+            if (pCmd==null) {
+                System.out.println("Unknown Command: "+ArrayUtils.toString(args));
+                System.out.println("Exit now");
                 throw new IllegalArgumentException("no ValidCommand specified!");
             }
             
@@ -102,7 +132,6 @@ public class PixConClient {
             String[] otherArgs = parser.getRemainingArgs();
             String param = "";
             for (String s: otherArgs) {
-                //System.out.println("PARAM2: "+s);
                 param += s+" ";
             }
 
@@ -150,16 +179,14 @@ public class PixConClient {
      * @throws ParseException the parse exception
      */
     public static void main(String[] args) throws Exception {
-        System.out.println("PixelController Client v"+VERSION);
+        System.out.println("PixelController Client v"+VERSION+"\n");
 
-        ParsedArgument cmd=null;
-        
+        ParsedArgument cmd=null;        
         try {
             cmd = parseArgument(args);
         } catch (Exception e) {            
-            usage();
             System.out.println();
-            System.exit(1);
+            System.exit(1);            
         }
         
         System.out.println("\t"+cmd);
