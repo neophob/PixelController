@@ -22,4 +22,12 @@
 CURRENT=$(dirname "$0")
 cd "$CURRENT"
 
-java -classpath $CURRENT/lib/* com.neophob.sematrix.cli.PixConClient $@
+java -classpath $CURRENT/lib/PixelController* com.neophob.sematrix.cli.PixConClient $@
+
+if [ $# -eq 0 ]
+then
+ echo --------------------------------------------------------------------------
+ echo Hint: This batch file can be used to control PixelController
+ echo If you want to run PixelController, just doubleclick PixelController.jar!
+ echo --------------------------------------------------------------------------
+fi
