@@ -18,6 +18,7 @@ TODO PixelController
 -Support Renard Protocol
 -Update controlp5 lib
 -Manual for v1.3 - WIP
+-Add optional name to preset, display it in gui when selected
 
 
 Changelog v1.2 to v1.3
