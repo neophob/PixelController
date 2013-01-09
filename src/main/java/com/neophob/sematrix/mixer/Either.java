@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.mixer;
 
-import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -46,12 +45,11 @@ public class Either extends Mixer {
 			return visual.getEffect1Buffer();
 		}
 		
-		Generator gen1 = visual.getGenerator1();		
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
-		int[] dst = new int [gen1.internalBuffer.length];
+		int[] dst = new int [src1.length];
 
-		for (int i=0; i<gen1.internalBuffer.length; i++){
+		for (int i=0; i<src1.length; i++){
     		if (src1[i]>128) {
     		    dst[i] = src1[i];
     		} else {
