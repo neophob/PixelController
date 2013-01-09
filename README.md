@@ -54,44 +54,45 @@ There are different frontends for PixelController:
 
 **Valid commands**:
 
-    CHANGE_GENERATOR_A	# of parameter: 1	<INT> change first generator for current visual
-    CHANGE_GENERATOR_B	# of parameter: 1	<INT> change first generator for current visual
-    CHANGE_EFFECT_A	# of parameter: 1	<INT> change first effect for current visual
-    CHANGE_EFFECT_B	# of parameter: 1	<INT> change second effect for current visual
-    CHANGE_MIXER	# of parameter: 1	<INT> change mixer for current visual
-    CURRENT_VISUAL	# of parameter: 1	<INT> select actual visual
-    CURRENT_COLORSET	# of parameter: 1	<INT> select actual ColorSet
+  CHANGE_GENERATOR_A          # of parameters: 1     <INT> change first generator for current visual
+  CHANGE_GENERATOR_B          # of parameters: 1     <INT> change first generator for current visual
+  CHANGE_EFFECT_A             # of parameters: 1     <INT> change first effect for current visual
+  CHANGE_EFFECT_B             # of parameters: 1     <INT> change second effect for current visual
+  CHANGE_MIXER                # of parameters: 1     <INT> change mixer for current visual
+  CURRENT_VISUAL              # of parameters: 1     <INT> select actual visual
+  CURRENT_COLORSET            # of parameters: 1     <INT> select actual ColorSet
 
-	CHANGE_OUTPUT_VISUAL	# of parameter: 1	<INT> change visual for current output
-	CHANGE_OUTPUT_FADER	# of parameter: 1	<INT> change fader for current output
-	CHANGE_ALL_OUTPUT_VISUAL	# of parameter: 1	<INT> change visual for all outputs
-	CHANGE_ALL_OUTPUT_FADER	# of parameter: 1	<INT> change fader for all outputs
-	CURRENT_OUTPUT	# of parameter: 1	<INT> select current output
+  CHANGE_OUTPUT_VISUAL        # of parameters: 1     <INT> change visual for current output
+  CHANGE_OUTPUT_FADER         # of parameters: 1     <INT> change fader for current output
+  CHANGE_ALL_OUTPUT_VISUAL    # of parameters: 1     <INT> change visual for all outputs
+  CHANGE_ALL_OUTPUT_FADER     # of parameters: 1     <INT> change fader for all outputs
+  CURRENT_OUTPUT              # of parameters: 1     <INT> select current output
 
-	BLINKEN	# of parameter: 1	<STRING> file to load for the blinkenlights generator
-	IMAGE	# of parameter: 1	<STRING> image to load for the simple image generator
-	TEXTDEF	# of parameter: 1	<INT> select texture deformation option, 1-11
-	COLOR_SCROLL_OPT	# of parameter: 1	<INT> select color scroll fading direction, 1-14
-	COLOR_FADE_LENGTH	# of parameter: 1	<INT> fading length for the color fade generator
-	COLOR_SCROLL_LENGTH	# of parameter: 1	<INT> fading distance for the color scroll generator
-	TEXTWR	# of parameter: 1	<STRING> update text for textwriter generator
-	CHANGE_BRIGHTNESS	# of parameter: 1	<int> output brightness 0 .. 100
+  BLINKEN                     # of parameters: 1     <STRING> file to load for the blinkenlights generator
+  IMAGE                       # of parameters: 1     <STRING> image to load for the simple image generator
+  TEXTDEF                     # of parameters: 1     <INT> select texture deformation option, 1-11
+  COLOR_SCROLL_OPT            # of parameters: 1     <INT> select color scroll fading direction, 1-14
+  COLOR_FADE_LENGTH           # of parameters: 1     <INT> fading length for the color fade generator
+  COLOR_SCROLL_LENGTH         # of parameters: 1     <INT> fading distance for the color scroll generator
+  TEXTWR                      # of parameters: 1     <STRING> update text for textwriter generator
+  CHANGE_BRIGHTNESS           # of parameters: 1     <int> output brightness 0 .. 100
 
-	CHANGE_THRESHOLD_VALUE	# of parameter: 1	<INT> select current threshold for the threshold effect, 0-255
-	CHANGE_ROTOZOOM	# of parameter: 1	<INT> select angle for the rotozoom effect, -127-127
+  CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
+  CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
 
-	STATUS	# of parameter: 0	refresh whole gui
-	STATUS_MINI	# of parameter: 0	just refresh parts of the gui
-	CHANGE_PRESENT	# of parameter: 1	<INT> select current present id
-	CHANGE_SHUFFLER_SELECT	# of parameter: 14	14 times <INT>, 14 parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON
-	SAVE_PRESENT	# of parameter: 0	save current present settings
-	LOAD_PRESENT	# of parameter: 0	load current present settings
-	RANDOM	# of parameter: 1	<ON|OFF> enable/disable random mode
-	RANDOMIZE	# of parameter: 0	one shot randomizer
-	PRESET_RANDOM	# of parameter: 0	one shot randomizer, use a pre-stored present
-	JMX_STAT	# of parameter: 0	show JMX runtime statistic, default port: 1337 (use the -p switch)
-	SCREENSHOT	# of parameter: 0	save screenhot
-	FREEZE	# of parameter: 0	toggle pause mode
+  STATUS                      # of parameters: 0     refresh whole gui
+  STATUS_MINI                 # of parameters: 0     just refresh parts of the gui
+  CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
+  CHANGE_SHUFFLER_SELECT      # of parameters: 14    14 times <INT>, 14 parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON
+  SAVE_PRESENT                # of parameters: 0     save current present settings
+  LOAD_PRESENT                # of parameters: 0     load current present settings
+  RANDOM                      # of parameters: 1     <ON|OFF> enable/disable random mode
+  RANDOMIZE                   # of parameters: 0     one shot randomizer
+  PRESET_RANDOM               # of parameters: 0     one shot randomizer, use a pre-stored present
+  JMX_STAT                    # of parameters: 0     show JMX runtime statistic, default port: 1337 (use the -p switch)
+  SCREENSHOT                  # of parameters: 0     save screenhot
+  FREEZE                      # of parameters: 0     toggle pause mode
+
 
 
 ## IT DOES NOT WORK!
@@ -107,7 +108,8 @@ Here are some common errors:
 * **PixelInvaders panels**: A User reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
    for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
    deal, as the timeout value cold be adjusted in the firmware.
-* Make sure you're using an up-to date Java Runtime (JRE), this usually helps when JVM crashes.
+* Make sure you're using an up-to date Java Runtime (JRE), this usually helps if the JVM crashes.
+* If you use an extra long USB Cable (more than 5 meter) you might discover strange issues, try to use a short cable especially if you're uploading a firmware.
 
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
