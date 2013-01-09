@@ -42,11 +42,12 @@ public abstract class KeyboardHandler {
      */
     public static void keyboardHandler(char key) {
         Collector col = Collector.getInstance();
+        Visual v = col.getVisual(col.getCurrentVisual());
+        
         switch (key) {
         
         //change current Colorset
-        case 'C':
-            Visual v = col.getVisual(col.getCurrentVisual());
+        case 'C':            
             if (v!=null) {
                 int currentColorSet = v.getColorSetIndex();
                 int colorSetsNrs = col.getColorSets().size();
@@ -59,6 +60,61 @@ public abstract class KeyboardHandler {
             }
             break;
 
+        //change current generator 1
+        case 'F':
+            if (v!=null) {
+                int currentGenerator = v.getGenerator1Idx();
+                int nrOfGenerators = col.getPixelControllerGenerator().getSize();
+                currentGenerator++;
+                v.setGenerator1(currentGenerator%nrOfGenerators);
+                registerGuiClass.refreshGui();
+            }
+            break;
+
+        //change current generator 2
+        case 'G':
+            if (v!=null) {
+                int currentGenerator = v.getGenerator2Idx();
+                int nrOfGenerators = col.getPixelControllerGenerator().getSize();
+                currentGenerator++;
+                v.setGenerator2(currentGenerator%nrOfGenerators);
+                registerGuiClass.refreshGui();
+            }
+            break;
+
+        //change current effect 1
+        case 'W':
+            if (v!=null) {
+                int currentEffect = v.getEffect1Idx();
+                int nrOfEffects = col.getPixelControllerEffect().getSize();
+                currentEffect++;
+                v.setEffect1(currentEffect%nrOfEffects);
+                registerGuiClass.refreshGui();
+            }
+            break;
+
+        //change current effect 2
+        case 'E':
+            if (v!=null) {
+                int currentEffect = v.getEffect2Idx();
+                int nrOfEffects = col.getPixelControllerEffect().getSize();
+                currentEffect++;
+                v.setEffect2(currentEffect%nrOfEffects);
+                registerGuiClass.refreshGui();
+            }
+            break;
+
+        //change current mixer
+        case 'M':
+            if (v!=null) {
+                int currentMixer = v.getMixerIdx();
+                int nrOfMixerss = col.getPixelControllerMixer().getSize();
+                currentMixer++;
+                v.setMixer(currentMixer%nrOfMixerss);
+                registerGuiClass.refreshGui();
+            }
+            break;
+            
         //randomize
         case 'R':
             Shuffler.manualShuffleStuff();
