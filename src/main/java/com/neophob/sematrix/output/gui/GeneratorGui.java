@@ -532,7 +532,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
             presetButtons.addItem(label, i);
         }
-        presetButtons.activate(0);
+        presetButtons.activate(col.getSelectedPresent());
         presetButtons.moveTo(presetTab);
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.toString(), 0,

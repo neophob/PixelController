@@ -211,6 +211,7 @@ public class PixelController extends PApplet {
         		if (presetNr != -1) {
         			LOG.log(Level.INFO,"Load preset "+presetNr);
         			List<String> present = this.collector.getPresent().get(presetNr).getPresent();
+        			this.collector.setSelectedPresent(presetNr);
         			if (present!=null) { 
         				this.collector.setCurrentStatus(present);
         			}           

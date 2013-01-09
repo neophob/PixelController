@@ -155,18 +155,6 @@ void rainbow() {
 
 
 // --------------------------------------------
-//     create initial image
-// --------------------------------------------
-void showInitImage() {
-  for (int i=0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, Wheel( i % 96));
-  }    
-  // Update the strip, to start they are all 'off'
-  strip.show();
-}
-
-
-// --------------------------------------------
 //      setup
 // --------------------------------------------
 void setup() {
@@ -182,17 +170,17 @@ void setup() {
   // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV32 -> 50fps
   // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV16 -> 70fps
   
-  strip.setCPUmax(30);  // start with 50% CPU usage. up this if the strand flickers or is slow
+  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or is slow
   
   //HINT: SPI_CLOCK_DIV16 shift out the data very fast, this means the uP has more time to recieve
-  //      serial data -> faster FPS. However SPI_CLOCK_DIV16 is very fragil an may have some issues
-  //      depending on your installation (cable length...). So experiment.
+  //      serial data -> faster FPS. If you have some issues (flicker) play with the SPI Speed
   //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
   //strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
-  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
-  //strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
-  showInitImage();      // display some colors
+  //strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+  strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
+  //strip.begin(SPI_CLOCK_DIV8);        // Start up the LED counterm 2.0MHz - 0.5uS
 
+  rainbow();      // display some colors
   serialDataRecv = 0;   //no serial data received yet  
 }
 
