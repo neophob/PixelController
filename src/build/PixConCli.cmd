@@ -25,4 +25,15 @@ cd /D "%BINDIR%"
 
 java -classpath "%BINDIR%\lib\*" com.neophob.sematrix.cli.PixConClient %*
 
+IF "%1"=="" GOTO SHOWHINT
+
 endlocal
+goto:eof
+
+
+:SHOWHINT
+echo --------------------------------------------------------------------------
+echo Hint: This batch file can be used to control PixelController
+echo If you want to run PixelController, just doubleclick PixelController.jar!
+echo --------------------------------------------------------------------------
+pause

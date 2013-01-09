@@ -44,6 +44,7 @@ public class PixConClient {
 	
     /** The Constant DEFAULT_PORT. */
     private static final int DEFAULT_PORT = 3448;
+    private static final int DEFAULT_JMX_PORT = 1337;
 
     /** The Constant DEFAULT_HOST. */
     private static final String DEFAULT_HOST = "127.0.0.1";
@@ -92,8 +93,7 @@ public class PixConClient {
             String pHost = (String)parser.getOptionValue(host, DEFAULT_HOST);
             int pPort = (Integer)parser.getOptionValue(port, DEFAULT_PORT);
             String pCmd = (String)parser.getOptionValue(command);            
-            if (pCmd==null) {
-            	usage();
+            if (pCmd==null) {            	
                 throw new IllegalArgumentException("no ValidCommand specified!");
             }
             
@@ -152,12 +152,25 @@ public class PixConClient {
     public static void main(String[] args) throws Exception {
         System.out.println("PixelController Client v"+VERSION);
 
-        ParsedArgument cmd = parseArgument(args);
+        ParsedArgument cmd=null;
+        
+        try {
+            cmd = parseArgument(args);
+        } catch (Exception e) {            
+            usage();
+            System.out.println();
+            System.exit(1);
+        }
+        
         System.out.println("\t"+cmd);
         
         if (cmd.getCommand() == ValidCommands.JMX_STAT) {
-            System.out.println("Connect to JMX, make sure you use the JMX port (WARNING! Make sure you select the JMX Port, per default 1337): "+cmd.getPort());
-        	PixConClientJmx.queryJmxServer(cmd.getHostname(), cmd.getPort());
+            int port = cmd.getPort();
+            if (port==DEFAULT_PORT) {
+                System.out.println("No Port specified, using default JMX port "+DEFAULT_JMX_PORT);   
+                port = DEFAULT_JMX_PORT;
+            }            
+        	PixConClientJmx.queryJmxServer(cmd.getHostname(), port);
         } else {
             Client c = connectToServer(cmd);       
             c.write(cmd.getPayload(TcpServer.FUDI_MSG_END_MARKER));
