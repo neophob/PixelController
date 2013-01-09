@@ -263,9 +263,8 @@ void updatePixels(byte ofs, byte* buffer) {
   uint16_t currentLed = ofs*PIXELS_PER_PANEL;
   byte x=0;
   for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-    strip.setPixelColor(currentLed, buffer[x]<<8 | buffer[x+1]);
+    strip.setPixelColor(currentLed++, buffer[x]<<8 | buffer[x+1]);
     x+=2;
-    currentLed++;
   }  
   strip.show();   // write all the pixels out
 }
