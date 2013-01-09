@@ -70,7 +70,7 @@ public class Plasma2 extends Generator {
 				float s2 = aaa + aaa * (float)Math.sin(PApplet.radians(yc) * calculation2 );
 				float s3 = aaa + aaa * (float)Math.sin(PApplet.radians((xc + yc + timeDisplacement * 5) / 2));  
 				float s  = (s1+ s2 + s3) / (6f*255f);
-				this.internalBuffer[y*internalBufferXSize+x] = (int)(s*255);
+				this.internalBuffer[y*internalBufferXSize+x] = (int)(s*255f);
 			}
 		}   
 	}
