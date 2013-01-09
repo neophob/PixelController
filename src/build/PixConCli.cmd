@@ -23,11 +23,6 @@ setlocal
 set BINDIR=%~dp0
 cd /D "%BINDIR%"
 
-set JAVA_OPT=-Djava.library.path=lib -Djava.security.policy=data\client.policy
-
-for /f "tokens=*" %%i in ('type classpath-win.properties') do echo set %%i > cp.cmd
-call cp.cmd
-
-java %JAVA_OPT% -classpath lib\PixelController.jar;%classpath% com.neophob.sematrix.cli.PixConClient %*
+java -classpath "%BINDIR%\lib\*" com.neophob.sematrix.cli.PixConClient %*
 
 endlocal

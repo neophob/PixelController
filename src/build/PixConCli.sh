@@ -22,7 +22,4 @@
 CURRENT=$(dirname "$0")
 cd "$CURRENT"
 
-export JAVA_OPT="-Djava.library.path=lib -Djava.security.policy=data/client.policy"
-source ./classpath-unix.properties
-echo classpath: $classpath
-java $JAVA_OPT -classpath $classpath:./lib/PixelController.jar com.neophob.sematrix.cli.PixConClient $@
+java -classpath $CURRENT/lib/* com.neophob.sematrix.cli.PixConClient $@
