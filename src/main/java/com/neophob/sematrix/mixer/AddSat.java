@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.mixer;
 
-import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -44,11 +43,10 @@ public class AddSat extends Mixer {
 		if (visual.getEffect2() == null) {
 			return visual.getEffect1Buffer();
 		}
-
-		Generator gen1 = visual.getGenerator1();
+		
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
-		int[] dst = new int [gen1.internalBuffer.length];
+		int[] dst = new int [src1.length];
 		
 		int col;
 		
