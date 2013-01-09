@@ -536,9 +536,8 @@ void CFastSPI_LED::show() {
     register unsigned char PIN = digitalPinToBitMask(FastSPI_LED.m_pPins[iPins]); 
     register volatile uint8_t *pPort = m_pPorts[iPins];
 
-//removed due some fancy errors
-//        if(pPort == NOT_A_PIN) { /* do nothing */ } 
-//    else { UCS1903_ALL(*pPort, pData, pEnd); }
+        if(pPort == (volatile uint8_t *)NOT_A_PIN) { /* do nothing */ } 
+    else { UCS1903_ALL(*pPort, pData, pEnd); }
   }
   sei();
 }
@@ -552,9 +551,8 @@ else if(FastSPI_LED.m_eChip == CFastSPI_LED::SPI_TM1809)
     register unsigned char PIN = digitalPinToBitMask(FastSPI_LED.m_pPins[iPins]); 
     register volatile uint8_t *pPort = m_pPorts[iPins];
 
-//removed due some fancy errors
- //       if(pPort == NOT_A_PIN) { /* do nothing */ } 
- //   else { TM1809_ALL(*pPort, pData, pEnd); }
+        if(pPort == (volatile uint8_t *)NOT_A_PIN) { /* do nothing */ } 
+    else { TM1809_ALL(*pPort, pData, pEnd); }
   }
   sei();
 }
