@@ -421,12 +421,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
                 GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
+        cp5.addTextlabel("singleOutputVisual", "OUTPUT VISUAL", 35, yPosStartDrowdown+68).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
         //Fader         
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                 GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
         dropdownOutputFader.moveTo(outputTab);
-
+        cp5.addTextlabel("singleOutputTransition", "TRANSITION", 35+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
+        
         //--------------
         //All Output tab
         //--------------				
