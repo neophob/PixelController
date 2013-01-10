@@ -355,7 +355,7 @@
 							<file>lib/controlP5.jar</file>
 							<groupId>controlP5</groupId>
 							<artifactId>controlP5</artifactId>
-							<version>0.7.1</version>
+							<version>1.5.2</version>
 							<packaging>jar</packaging>
 						</configuration>
 						<phase>initialize</phase>
@@ -576,7 +576,7 @@
 		<dependency>
 			<groupId>controlP5</groupId>
 			<artifactId>controlP5</artifactId>
-			<version>0.7.1</version>
+			<version>1.5.2</version>
 		</dependency>
 		<!-- src: https://code.google.com/p/rainbowduino-v3-streaming-firmware/ -->
 		<dependency>

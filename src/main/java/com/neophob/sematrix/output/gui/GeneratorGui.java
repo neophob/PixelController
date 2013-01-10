@@ -103,6 +103,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private RadioButton selectedOutputs;
     private Button randomSelection, randomPresets;
     private Toggle toggleRandom;
+    private Textfield textGenerator;
 
     private Slider brightnessControll;
     
@@ -388,7 +389,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setHeight(100);
 
         //add textfield
-        cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16);
+        textGenerator = cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16);
          
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
 				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 15);
@@ -981,5 +982,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         return presetName.getText();
     }
 
+    public boolean isTextfieldInEditMode() {
+    	return textGenerator.isFocus() || presetName.isFocus();
+    }
 
 }

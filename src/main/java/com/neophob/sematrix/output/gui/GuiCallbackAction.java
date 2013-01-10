@@ -39,4 +39,9 @@ public interface GuiCallbackAction {
      */
     void refreshGui();
 
+    /**
+     * 
+     * @return
+     */
+    boolean isTextfieldInEditMode();
 }

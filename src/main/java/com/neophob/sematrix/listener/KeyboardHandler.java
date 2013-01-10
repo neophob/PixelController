@@ -41,6 +41,12 @@ public abstract class KeyboardHandler {
      * @param key
      */
     public static void keyboardHandler(char key) {
+    	
+    	//if we edit a textfield, ignore keyboard shortcuts
+    	if (registerGuiClass.isTextfieldInEditMode()) {
+    		return;
+    	}
+    	
         Collector col = Collector.getInstance();
         Visual v = col.getVisual(col.getCurrentVisual());
         
