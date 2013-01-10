@@ -92,7 +92,7 @@ public class GeneratorGuiHelper {
             dropdownOutputVisual.addItem("Visual #"+(1+i), i);
         }
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(0).getName());
-        dropdownOutputVisual.setHeight(70);
+       // dropdownOutputVisual.setHeight(70);
 
         return dropdownOutputVisual;
 	}

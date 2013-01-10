@@ -418,16 +418,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedOutputs.moveTo(outputTab);
 
         //visual
+        cp5.addTextlabel("singleOutputVisual", "OUTPUT VISUAL", 38, yPosStartDrowdown+68).moveTo(outputTab).getValueLabel().setFont(ControlP5.standard58);
         dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
                 GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
-        cp5.addTextlabel("singleOutputVisual", "OUTPUT VISUAL", 35, yPosStartDrowdown+68).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
 
         //Fader         
+        cp5.addTextlabel("singleOutputTransition", "TRANSITION", 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(outputTab).getValueLabel().setFont(ControlP5.standard58);
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                 GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
         dropdownOutputFader.moveTo(outputTab);
-        cp5.addTextlabel("singleOutputTransition", "TRANSITION", 35+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel().setFont(ControlP5.standard58);
         
         //--------------
         //All Output tab
@@ -437,11 +437,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             cp5.addTextlabel("allOutputTabLabel", "CHANGE ALL OUTPUT MAPPINGS", 20, yPosStartDrowdown)
             .moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
 
+            cp5.addTextlabel("allOutputVisual", "OUTPUT VISUAL", 38, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
             allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
                     GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
             allOutputTabVis.moveTo(allOutputTab);
 
             //Fader         
+            cp5.addTextlabel("allOutputTransition", "TRANSITION", 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel().setFont(ControlP5.standard58);
             allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                     GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
             allOutputTabFader.moveTo(allOutputTab);        	        	
