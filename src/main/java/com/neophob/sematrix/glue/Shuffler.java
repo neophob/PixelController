@@ -79,18 +79,19 @@ public final class Shuffler {
 	 * 
 	 * TODO: do not load data files from "in use" generators and effects
 	 */
-	public static void manualShuffleStuff() {		
-		Collector col = Collector.getInstance(); 
-
-		Random rand = new Random();
+	public static void manualShuffleStuff() {	
+	    long start = System.currentTimeMillis();
+	    
+		Collector col = Collector.getInstance(); 		
 		int currentVisual = col.getCurrentVisual();
 		Visual visual = col.getVisual(currentVisual);
+		Random rand = new Random();
+		
+		LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 		
 		int totalNrGenerator = col.getPixelControllerGenerator().getSize();
 		int totalNrEffect = col.getPixelControllerEffect().getSize();
 		int totalNrMixer = col.getPixelControllerMixer().getSize();
-
-		LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
 			//why -1 +1? the first effect is passthrough - so no effect
@@ -148,6 +149,7 @@ public final class Shuffler {
 			}
 		}
 		
+		//do not shuffle output
 		/*if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
 			int nrOfVisuals = col.getAllVisuals().size();
 			int screenNr = 0;
@@ -166,6 +168,7 @@ public final class Shuffler {
 			visual.setColorSet(rand.nextInt(colorSets));	
 		}
 
+		LOG.log(Level.INFO, "Shuffle finished in {0}ms", (System.currentTimeMillis()-start));
 	}
 
 	/**
