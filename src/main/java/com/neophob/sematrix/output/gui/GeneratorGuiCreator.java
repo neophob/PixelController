@@ -27,7 +27,6 @@ import javax.swing.JFrame;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.PixelController;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.listener.WindowHandler;
@@ -52,7 +51,7 @@ public class GeneratorGuiCreator {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGuiCreator(int maximalXSize) {
+	public GeneratorGuiCreator(int maximalXSize, String version) {
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         
@@ -77,7 +76,7 @@ public class GeneratorGuiCreator {
 
         //create new window for child
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
-        JFrame childFrame = new JFrame("PixelController Generator Window "+PixelController.VERSION);        
+        JFrame childFrame = new JFrame("PixelController Generator Window "+version);        
         childFrame.setResizable(false);
         childFrame.setIconImage(GeneratorGuiCreator.createLargeIcon());
         

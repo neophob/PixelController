@@ -10,6 +10,7 @@
 	<prerequisites>
 		<maven>2.2.1</maven>
 	</prerequisites>
+	<url>http://Www.PixelInvaders.ch</url>
 	
 	<properties>
 		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
@@ -97,7 +98,12 @@
 	            <manifest>
 	              <addClasspath>true</addClasspath>
 	              <mainClass>com.neophob.PixelController</mainClass>
+	              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+	              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
 	            </manifest>
+                <manifestEntries>
+                 <url>${project.url}</url>
+                </manifestEntries>
 	          </archive>
 	        </configuration>	        
 	      </plugin>

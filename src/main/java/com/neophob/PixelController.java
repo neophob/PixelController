@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import processing.core.PApplet;
 
 import com.neophob.sematrix.color.ColorSet;
@@ -56,9 +58,6 @@ public class PixelController extends PApplet {
 	
 	/** The Constant FPS. */
 	public static final int FPS = 25;
-
-	/** The Constant FPS. */
-	public static final String VERSION = "v1.3-SNAPSHOT";
 
 	/** setup gui constants */
     private static final int TEXT_Y_OFFSET = 140;
@@ -118,7 +117,7 @@ public class PixelController extends PApplet {
 	 * 
 	 */
 	public void setup() {
-        LOG.log(Level.INFO, "\n\nPixelController "+VERSION+" - http://www.pixelinvaders.ch\n\n");
+        LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");
         LOG.log(Level.INFO, "");
 
 	    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
@@ -136,7 +135,7 @@ public class PixelController extends PApplet {
 	    //write pixelcontroller text
 	    textSize(SETUP_FONT_BIG);
 	    fill(227, 122, 182);
-	    text("PixelController "+VERSION, 10, 29);
+	    text("PixelController "+getVersion(), 10, 29);
 	    
 	    text("Loading...", 10, 120);
 	    drawProgressBar(0.0f);
@@ -230,7 +229,7 @@ public class PixelController extends PApplet {
         		//create gui window
         		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
         			//create GUI Window
-        			GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize());
+        			GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize(), getVersion());
         			//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
         			KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
         		}  
@@ -319,6 +318,18 @@ public class PixelController extends PApplet {
     	} else {
             KeyboardHandler.keyboardHandler(key);    		
     	}
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String getVersion() {
+        String version = this.getClass().getPackage().getImplementationVersion();
+        if (StringUtils.isNotBlank(version)) {
+            return "v"+version;
+        }
+        return "Test Release (unknown Version)"; 
     }
     
 	/**
