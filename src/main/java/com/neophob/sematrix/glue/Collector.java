@@ -61,7 +61,7 @@ public final class Collector {
 	private static final String EMPTY_CHAR = " ";
 	
 	/** The Constant NR_OF_PRESENT_SLOTS. */
-	public static final int NR_OF_PRESENT_SLOTS = 128;
+	public static final int NR_OF_PRESET_SLOTS = 128;
 	
 	/** The singleton instance. */
 	private static Collector instance = new Collector();
@@ -101,10 +101,10 @@ public final class Collector {
 	private int currentOutput;
 
 	/** present settings. */
-	private int selectedPresent;
+	private int selectedPreset;
 	
 	/** The present. */
-	private List<PresentSettings> present;
+	private List<PresentSettings> presets;
 	
 	/** The pixel controller generator. */
 	private PixelControllerGenerator pixelControllerGenerator;
@@ -160,10 +160,10 @@ public final class Collector {
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
 		initialized=false;
 
-		selectedPresent=0;
-		present = new CopyOnWriteArrayList<PresentSettings>();
-		for (int n=0; n<NR_OF_PRESENT_SLOTS; n++) {
-			present.add(new PresentSettings());
+		selectedPreset=0;
+		presets = new CopyOnWriteArrayList<PresentSettings>();
+		for (int n=0; n<NR_OF_PRESET_SLOTS; n++) {
+			presets.add(new PresentSettings());
 		}
 
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
@@ -512,7 +512,7 @@ public final class Collector {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
-		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPresent);						
+		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPreset);						
 		return ret;
 	}
 
@@ -594,7 +594,7 @@ public final class Collector {
 	 * @return the selected present
 	 */
 	public int getSelectedPresent() {
-		return selectedPresent;
+		return selectedPreset;
 	}
 
 	/**
@@ -603,7 +603,7 @@ public final class Collector {
 	 * @param selectedPresent the new selected present
 	 */
 	public void setSelectedPresent(int selectedPresent) {
-		this.selectedPresent = selectedPresent;
+		this.selectedPreset = selectedPresent;
 	}
 
 	/**
@@ -611,8 +611,8 @@ public final class Collector {
 	 *
 	 * @return the present
 	 */
-	public List<PresentSettings> getPresent() {
-		return present;
+	public List<PresentSettings> getPresents() {
+		return presets;
 	}
 
 	/**
@@ -620,8 +620,8 @@ public final class Collector {
 	 *
 	 * @param present the new present
 	 */
-	public void setPresent(List<PresentSettings> present) {
-		this.present = present;
+	public void setPresents(List<PresentSettings> present) {
+		this.presets = present;
 	}
 	
 	

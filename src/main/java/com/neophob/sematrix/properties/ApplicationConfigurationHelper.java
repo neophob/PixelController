@@ -340,10 +340,10 @@ public class ApplicationConfigurationHelper {
         try {
             input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
             props.load(input);
-            List<PresentSettings> presents = Collector.getInstance().getPresent();            
+            List<PresentSettings> presents = Collector.getInstance().getPresents();            
             String s;
             int count=0;
-            for (int i=0; i<Collector.NR_OF_PRESENT_SLOTS; i++) {
+            for (int i=0; i<Collector.NR_OF_PRESET_SLOTS; i++) {
                 s=props.getProperty(""+i);
                 if (StringUtils.isNotBlank(s)) {
                     presents.get(i).setPresent(s.split(";"));
@@ -369,7 +369,7 @@ public class ApplicationConfigurationHelper {
      */
     public void savePresents() {
         Properties props = new Properties();
-        List<PresentSettings> presents = Collector.getInstance().getPresent();
+        List<PresentSettings> presents = Collector.getInstance().getPresents();
         int idx=0;
         for (PresentSettings p: presents) {
             props.setProperty( ""+idx, p.getSettingsAsString() );
@@ -948,7 +948,7 @@ public class ApplicationConfigurationHelper {
      */
     public int loadPresetOnStart() {
         int val = parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
-        if (val < Collector.NR_OF_PRESENT_SLOTS) {
+        if (val < Collector.NR_OF_PRESET_SLOTS) {
             return val;
         }
         return -1;
