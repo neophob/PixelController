@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.PresentSettings;
+import com.neophob.sematrix.glue.PresetSettings;
 import com.neophob.sematrix.layout.BoxLayout;
 import com.neophob.sematrix.layout.HorizontalLayout;
 import com.neophob.sematrix.layout.Layout;
@@ -340,7 +340,7 @@ public class ApplicationConfigurationHelper {
         try {
             input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
             props.load(input);
-            List<PresentSettings> presents = Collector.getInstance().getPresents();            
+            List<PresetSettings> presents = Collector.getInstance().getPresets();            
             String s;
             int count=0;
             for (int i=0; i<Collector.NR_OF_PRESET_SLOTS; i++) {
@@ -369,9 +369,9 @@ public class ApplicationConfigurationHelper {
      */
     public void savePresents() {
         Properties props = new Properties();
-        List<PresentSettings> presents = Collector.getInstance().getPresents();
+        List<PresetSettings> presents = Collector.getInstance().getPresets();
         int idx=0;
-        for (PresentSettings p: presents) {
+        for (PresetSettings p: presents) {
             props.setProperty( ""+idx, p.getSettingsAsString() );
             idx++;
         }

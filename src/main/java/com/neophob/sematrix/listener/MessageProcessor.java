@@ -251,9 +251,9 @@ public final class MessageProcessor {
 
 			case SAVE_PRESENT:
 				try {
-					int idxs = col.getSelectedPresent();
+					int idxs = col.getSelectedPreset();
 					List<String> present = col.getCurrentStatus();
-					col.getPresents().get(idxs).setPresent(present);
+					col.getPresets().get(idxs).setPresent(present);
 					col.getPh().savePresents();					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -262,8 +262,8 @@ public final class MessageProcessor {
 
 			case LOAD_PRESENT:
 				try {
-					int idxl = col.getSelectedPresent();
-					List<String> present = col.getPresents().get(idxl).getPresent();
+					int idxl = col.getSelectedPreset();
+					List<String> present = col.getPresets().get(idxl).getPresent();
 					if (present!=null) { 
 						col.setCurrentStatus(present);
 					}
@@ -277,7 +277,7 @@ public final class MessageProcessor {
 				try {
 					int a = Integer.parseInt(msg[1]);
 					if (a<Collector.NR_OF_PRESET_SLOTS) {
-					    col.setSelectedPresent(a);					    
+					    col.setSelectedPreset(a);					    
 					}					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);

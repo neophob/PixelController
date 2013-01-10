@@ -65,7 +65,7 @@ public class PixelControllerTest {
 	
 	@Test
 	public void testCollector() {
-		assertTrue(Collector.getInstance().getPresents().size() > 0);
+		assertTrue(Collector.getInstance().getPresets().size() > 0);
 		assertTrue(PixelControllerFader.getFaderCount()>3);
 	}
 	

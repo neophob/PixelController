@@ -104,7 +104,7 @@ public final class Collector {
 	private int selectedPreset;
 	
 	/** The present. */
-	private List<PresentSettings> presets;
+	private List<PresetSettings> presets;
 	
 	/** The pixel controller generator. */
 	private PixelControllerGenerator pixelControllerGenerator;
@@ -161,9 +161,9 @@ public final class Collector {
 		initialized=false;
 
 		selectedPreset=0;
-		presets = new CopyOnWriteArrayList<PresentSettings>();
+		presets = new CopyOnWriteArrayList<PresetSettings>();
 		for (int n=0; n<NR_OF_PRESET_SLOTS; n++) {
-			presets.add(new PresentSettings());
+			presets.add(new PresetSettings());
 		}
 
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
@@ -593,7 +593,7 @@ public final class Collector {
 	 *
 	 * @return the selected present
 	 */
-	public int getSelectedPresent() {
+	public int getSelectedPreset() {
 		return selectedPreset;
 	}
 
@@ -602,8 +602,8 @@ public final class Collector {
 	 *
 	 * @param selectedPresent the new selected present
 	 */
-	public void setSelectedPresent(int selectedPresent) {
-		this.selectedPreset = selectedPresent;
+	public void setSelectedPreset(int selectedPreset) {
+		this.selectedPreset = selectedPreset;
 	}
 
 	/**
@@ -611,7 +611,7 @@ public final class Collector {
 	 *
 	 * @return the present
 	 */
-	public List<PresentSettings> getPresents() {
+	public List<PresetSettings> getPresets() {
 		return presets;
 	}
 
@@ -620,8 +620,8 @@ public final class Collector {
 	 *
 	 * @param present the new present
 	 */
-	public void setPresents(List<PresentSettings> present) {
-		this.presets = present;
+	public void setPresets(List<PresetSettings> preset) {
+		this.presets = preset;
 	}
 	
 	

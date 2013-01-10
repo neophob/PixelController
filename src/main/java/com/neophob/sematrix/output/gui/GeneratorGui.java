@@ -39,6 +39,7 @@ import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
+import com.neophob.sematrix.glue.PresetSettings;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.Sound;
@@ -59,6 +60,7 @@ import controlP5.Label;
 import controlP5.RadioButton;
 import controlP5.Slider;
 import controlP5.Tab;
+import controlP5.Textfield;
 import controlP5.Textlabel;
 import controlP5.Toggle;
 
@@ -124,6 +126,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     //preset tab
     private RadioButton presetButtons;
     private Button loadPreset, savePreset;
+    private Label presetInfo;
+    private Textfield presetName;
     
     private CheckBox randomCheckbox;
     
@@ -385,7 +389,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         //add textfield
         cp5.addTextfield("textfield", "TEXTFIELD", "TEXTFIELD", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16);
-
+         
 		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
 				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 15);
 		freezeUpdate.setCaptionLabel("Toggle Freeze");
@@ -536,8 +540,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
             presetButtons.addItem(label, i);
         }
-        presetButtons.activate(col.getSelectedPresent());
-        presetButtons.moveTo(presetTab);
+        presetButtons.activate(col.getSelectedPreset());
+        presetButtons.moveTo(presetTab);                
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.toString(), 0,
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
@@ -551,6 +555,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.toString(),"Save a preset");
 
+        presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+106, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab);
+        presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+126).moveTo(presetTab).getValueLabel().setFont(ControlP5.standard58);        
+        
+        updateCurrentPresetState();
+        
         //-------------
         //Info tab
         //-------------
@@ -633,7 +642,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * @param val
      */
     public void PRESET_BUTTONS(int val) {
-        //unused
+        LOG.log(Level.INFO, "choose new preset "+val);
+        updateCurrentPresetState();
     }
 
     /**
@@ -701,7 +711,20 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         //beat detection
         displayWidgets(GENERIC_Y_OFS);
+        
+        //update more details, mostly info tab
+        if (Collector.getInstance().getFrames()%5==1) {
 
+            //INFO TAB
+            int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
+            currentFps.setText("CURRENT FPS: "+fps10/10f);
+            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");            
+            runtime.setText("RUNNING SICE: "+runningSince);         
+            sentFrames.setText("SENT FRAMES: "+col.getPixConStat().getFrameCount());
+            outputState.setText(col.getOutputDevice().getConnectionStatus().toUpperCase());
+            outputErrorCounter.setText("IO ERRORS: "+col.getOutputDevice().getErrorCounter());            
+        }
+        
         //refresh gui from time to time
         if (col.isTriggerGuiRefresh() || frameCount++%50==2) {
             callbackRefreshWholeGui();
@@ -715,7 +738,31 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
     }
 
+    
+    /**
+     * update preset stuff
+     */
+    public void updateCurrentPresetState() {
+        Collector col = Collector.getInstance();
+        PresetSettings preset = col.getPresets().get(col.getSelectedPreset());
+        if (preset!=null) {
+            String presetState;
+            if (preset.isSlotUsed()) {
+                presetState = "TRUE";
+            } else {
+                presetState = "FALSE";
+            }
+
+            presetInfo.setText("VALID ENTRY: "+presetState);
+            presetName.setText(preset.getName());                
+        } else {
+            presetInfo.setText("VALID ENTRY: FALSE");
+            presetName.setText("");                            
+        }
         
+        col.setTriggerGuiRefresh(true);
+    }
+    
     /**
      * 
      * @param localY
@@ -763,20 +810,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 fill(235, 20, 20);
             }   
             rect(3+GENERIC_X_OFS+3*xSizeForEachWidget, localY+SELECTED_MARKER, 10, 10);               
-
         }
         
-        //TODO fence
-        if (frames%5==1) {
-            Collector col = Collector.getInstance();
-            int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
-            currentFps.setText("CURRENT FPS: "+fps10/10f);
-            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");            
-            runtime.setText("RUNNING SICE: "+runningSince);         
-            sentFrames.setText("SENT FRAMES: "+col.getPixConStat().getFrameCount());
-            outputState.setText(col.getOutputDevice().getConnectionStatus().toUpperCase());
-            outputErrorCounter.setText("IO ERRORS: "+col.getOutputDevice().getErrorCounter());
-        }
     }
 
 
@@ -938,6 +973,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		Collector.getInstance().setTriggerGuiRefresh(true);		
 	}
 
-	
+	/**
+	 * 
+	 * @return the user specific preset name
+	 */
+    public String getCurrentPresetName() {
+        return presetName.getText();
+    }
+
 
 }

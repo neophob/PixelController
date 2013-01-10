@@ -21,15 +21,20 @@ package com.neophob.sematrix.glue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * simple class to store present set's.
  *
  * @author michu
  */
-public class PresentSettings {
+public class PresetSettings {
 	
+    private static final String NAME_MARKER = "presetname=";
+    
 	/** The present. */
 	private List<String> present;
+	private String name = "";
 
 	/**
 	 * Gets the present.
@@ -57,7 +62,15 @@ public class PresentSettings {
 	public void setPresent(String[] present) {
 		List<String> list=new ArrayList<String>();
 		for (String s: present) {
-			list.add(s);
+		    if (StringUtils.startsWith(s, NAME_MARKER)) {		        
+		        String rawName = StringUtils.substring(s, NAME_MARKER.length());
+		        System.out.println("RAWNAME: "+rawName);
+		        if (StringUtils.isNotBlank(rawName)){
+		            this.name = rawName;
+		        }
+		    } else {
+		        list.add(s);   
+		    }			
 		}
 		this.present=list;
 	}
@@ -78,7 +91,38 @@ public class PresentSettings {
 			ret.append(s);
 			ret.append(';');
 		}
+		
+		//add name
+		if (StringUtils.isNotBlank(name)) {		    
+		    ret.append(NAME_MARKER);
+		    ret.append(name);
+		    ret.append(';');
+		}
+		
 		return ret.toString();
 	}
+	
+	
+	
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isSlotUsed() {
+        if (present==null || present.size()==0) {
+            return false;
+        }
+        return true;
+    }	
 	
 }

@@ -62,11 +62,11 @@ public final class Shuffler {
 		int sanityCheck = 1000;
 		boolean done=false;
 		while (!done || sanityCheck--<1) {
-			int idx = rand.nextInt(col.getPresents().size());
-			List<String> present = col.getPresents().get(idx).getPresent();
+			int idx = rand.nextInt(col.getPresets().size());
+			List<String> present = col.getPresets().get(idx).getPresent();
 			if (present!=null && present.size()>0) { 
 				col.setCurrentStatus(present);
-				col.setSelectedPresent(idx);
+				col.setSelectedPreset(idx);
 				done = true;
 			}
 			
