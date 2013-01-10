@@ -336,7 +336,7 @@ public class ApplicationConfigurationHelper {
      */
     public void loadPresents() {
         Properties props = new Properties();
-        InputStream input == null;
+        InputStream input = null;
         try {
             input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
             props.load(input);
