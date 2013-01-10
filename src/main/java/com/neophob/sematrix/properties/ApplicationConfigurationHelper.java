@@ -336,10 +336,11 @@ public class ApplicationConfigurationHelper {
      */
     public void loadPresents() {
         Properties props = new Properties();
+        InputStream input == null;
         try {
-            InputStream input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
-            List<PresentSettings> presents = Collector.getInstance().getPresent();
+            input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
             props.load(input);
+            List<PresentSettings> presents = Collector.getInstance().getPresent();            
             String s;
             int count=0;
             for (int i=0; i<Collector.NR_OF_PRESENT_SLOTS; i++) {
@@ -349,13 +350,17 @@ public class ApplicationConfigurationHelper {
                     count++;
                 }
             }
-            LOG.log(Level.INFO,
-                    "Loaded {0} presents from file {1}"
-                    , new Object[] { count, PRESENTS_FILENAME });
+            LOG.log(Level.INFO, "Loaded {0} presents from file {1}", new Object[] { count, PRESENTS_FILENAME });
         } catch (Exception e) {
-            LOG.log(Level.WARNING,
-                    "Failed to load {0}, Error: {1}"
-                    , new Object[] { PRESENTS_FILENAME, e });
+            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
+        } finally {
+            try {
+                if (input!=null) {
+                    input.close();
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "Failed to close input stream", e);
+            }        
         }
     }
 
@@ -371,13 +376,21 @@ public class ApplicationConfigurationHelper {
             idx++;
         }
 
+        OutputStream output = null;
         try {
-            OutputStream output = Collector.getInstance().getPapplet().createOutput(PRESENTS_FILENAME);
+            output = Collector.getInstance().getPapplet().createOutput(PRESENTS_FILENAME);
             props.store(output, "Visual Daemon presents file");
             LOG.log(Level.INFO, "Presents saved as {0}", PRESENTS_FILENAME );
         } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}"
-                    , new Object[] { PRESENTS_FILENAME, e });
+            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
+        } finally {
+            try {
+                if (output!=null) {
+                    output.close();
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "Failed to close output stream", e);
+            }        
         }
     }
     
