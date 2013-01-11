@@ -103,7 +103,7 @@ static void sendAck() {
 
 unsigned int Color(byte r, byte g, byte b) {
   //Take the lowest 5 bits of each value and append them end to end
-  return( ((unsigned int)g & 0x1F )<<10 | ((unsigned int)b & 0x1F)<<5 | (unsigned int)r & 0x1F);
+  return( (((unsigned int)g & 0x1F )<<10) | (((unsigned int)b & 0x1F)<<5) | ((unsigned int)r & 0x1F));
 }
 
 // --------------------------------------------
@@ -122,8 +122,9 @@ unsigned int Wheel(byte WheelPos) {
     g=31- WheelPos % 32;  //green down
     b=WheelPos % 32;      //blue up
     r=0;                  //red off
-    break; 
+    break;   
   case 2:
+  default:
     b=31- WheelPos % 32;  //blue down 
     r=WheelPos % 32;      //red up
     g=0;                  //green off
@@ -146,7 +147,7 @@ void rainbow() {
       j=0; 
     }
 
-    for (int i=0; i < strip.numPixels(); i++) {
+    for (unsigned int i=0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, Wheel((i + j) % 96));
     }
     strip.show();    
