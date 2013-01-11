@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import processing.core.PApplet;
@@ -195,7 +197,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Collector col = Collector.getInstance();
         int nrOfVisuals = col.getAllVisuals().size();
       
-        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.toString(), getVisualCenter(col), p5GuiYOffset-58);
+        selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.guiText(), getVisualCenter(col), p5GuiYOffset-58);
         selectedVisualList.setItemsPerRow(nrOfVisuals);
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
@@ -220,16 +222,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.getTooltip().register("mix2", Messages.getString("GeneratorGui.GUI_TOOLTIP_MIXER")); //$NON-NLS-1$ //$NON-NLS-2$
 
         //Generator 
-        generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.toString(), 
+        generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.guiText(), 
         		GENERIC_X_OFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
-        generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.toString(), 
+        generatorListTwo = cp5.addDropdownList(GuiElement.GENERATOR_TWO_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(generatorListOne);
         Theme.themeDropdownList(generatorListTwo);
         i=0;
         for (GeneratorName gn: GeneratorName.values()) {
-            generatorListOne.addItem(gn.name(), i);
-            generatorListTwo.addItem(gn.name(), i);
+            generatorListOne.addItem(gn.guiText(), i);
+            generatorListTwo.addItem(gn.guiText(), i);
             i++;
         }
         generatorListOne.setLabel(generatorListOne.getItem(1).getName());
@@ -238,16 +240,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
 
         //Effect 
-        effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.toString(), 
+        effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+1*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
-        effectListTwo = cp5.addDropdownList(GuiElement.EFFECT_TWO_DROPDOWN.toString(), 
+        effectListTwo = cp5.addDropdownList(GuiElement.EFFECT_TWO_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(effectListOne);
         Theme.themeDropdownList(effectListTwo);
         i=0;
         for (EffectName gn: EffectName.values()) {
-            effectListOne.addItem(gn.name(), i);
-            effectListTwo.addItem(gn.name(), i);
+            effectListOne.addItem(gn.guiText(), i);
+            effectListTwo.addItem(gn.guiText(), i);
             i++;
         }
         effectListOne.setLabel(effectListOne.getItem(0).getName());
@@ -256,13 +258,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         effectListTwo.moveTo(ALWAYS_VISIBLE_TAB);
 
         //Mixer 
-        mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.toString(), 
+        mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(mixerList);
 
         i=0;
         for (MixerName gn: MixerName.values()) {
-            mixerList.addItem(gn.name(), i);
+            mixerList.addItem(gn.guiText(), i);
             i++;
         }
         mixerList.setLabel(mixerList.getItem(0).getName());
@@ -302,13 +304,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         //EFFECT tab
         //-------------
-        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.toString(), 
+        thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.guiText(), 
         		0, 255, 255, GENERIC_X_OFS+0*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         thresholdSlider.setSliderMode(Slider.FIX);
         thresholdSlider.setGroup(generatorTab);	
         thresholdSlider.setDecimalPrecision(0);		
 
-        fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.toString(), 
+        fxRotoSlider = cp5.addSlider(GuiElement.FX_ROTOZOOMER.guiText(), 
                 -127, 127, 0, GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         fxRotoSlider.setSliderMode(Slider.FIX);
         fxRotoSlider.setGroup(generatorTab);
@@ -321,7 +323,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         
         cp5.addTextlabel("genBlinken", Messages.getString("GeneratorGui.BLINKENLIGHT_LOAD"), GENERIC_X_OFS+3, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.toString(), 
+        blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.guiText(), 
         		GENERIC_X_OFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
         i=0;
@@ -336,7 +338,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //images
         cp5.addTextlabel("genImg", Messages.getString("GeneratorGui.IMAGE_LOAD"), GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
-        imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.toString(), 
+        imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
         i=0;
@@ -351,7 +353,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("genTextdefOpt", Messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
         //texturedeform options		
-        textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.toString(), 
+        textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.guiText(), 
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(textureDeformOptions);		
 
@@ -374,7 +376,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //colorscroll options
         cp5.addTextlabel("genColorScroll", Messages.getString("GeneratorGui.COLORSCROLL_OPTIONS"), GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
-        colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.toString(), 
+        colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.guiText(), 
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+16, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorScrollList);		
 
@@ -388,14 +390,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //add textfield
         textGenerator = cp5.addTextfield("textfield", "Textfield", "Textfield", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
          
-		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.toString(), 0,
+		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 0,
 				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 15);
 		freezeUpdate.setCaptionLabel(Messages.getString("GeneratorGui.GUI_TOGGLE_FREEZE")); //$NON-NLS-1$
 		freezeUpdate.setGroup(generatorTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.toString(),Messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
 
                 
-        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.toString(), 
+        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 
         		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         brightnessControll.setSliderMode(Slider.FIX);
         brightnessControll.setGroup(generatorTab);	
@@ -407,7 +409,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //Single Output tab
         //-----------------				
         int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
-        selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.toString(), GENERIC_X_OFS, yPosStartDrowdown);
+        selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.guiText(), GENERIC_X_OFS, yPosStartDrowdown);
         selectedOutputs.setItemsPerRow(nrOfOutputs);
         selectedOutputs.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfOutputs; i++) {
@@ -422,13 +424,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //visual
         cp5.addTextlabel("singleOutputVisual", Messages.getString("GeneratorGui.OUTPUT_VISUAL"), 38, yPosStartDrowdown+68).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
-                GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
+                GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.guiText(), yPosStartDrowdown+20, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
 
         //Fader         
         cp5.addTextlabel("singleOutputTransition", Messages.getString("GeneratorGui.OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
-                GuiElement.OUTPUT_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
+                GuiElement.OUTPUT_FADER_DROPDOWN.guiText(), yPosStartDrowdown+20); 
         dropdownOutputFader.moveTo(outputTab);
         
         //--------------
@@ -441,13 +443,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
             cp5.addTextlabel("allOutputVisual", Messages.getString("GeneratorGui.ALL_OUTPUT_VISUAL"), 38, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
             allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
-                    GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.toString(), yPosStartDrowdown+20, nrOfVisuals); 
+                    GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.guiText(), yPosStartDrowdown+20, nrOfVisuals); 
             allOutputTabVis.moveTo(allOutputTab);
 
             //Fader         
             cp5.addTextlabel("allOutputTransition", Messages.getString("GeneratorGui.ALL_OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
             allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
-                    GuiElement.OUTPUT_ALL_FADER_DROPDOWN.toString(), yPosStartDrowdown+20); 
+                    GuiElement.OUTPUT_ALL_FADER_DROPDOWN.guiText(), yPosStartDrowdown+20); 
             allOutputTabFader.moveTo(allOutputTab);        	        	
         }
 
@@ -455,7 +457,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //palette dropdown list	
         cp5.addTextlabel("colSet", Messages.getString("GeneratorGui.SELECT_COLORSET"), GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
-        colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.toString(), 
+        colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorSetList);		
         i=0;
@@ -479,7 +481,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         t2.moveTo(randomTab).getValueLabel();
         
         
-        randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.toString())
+        randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.guiText())
                 .setPosition(35, 20+yPosStartDrowdown)
                 .setSize(40, 20)
                 .setColorForeground(color(120))
@@ -490,38 +492,38 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		;
 		
         for (ShufflerOffset so: ShufflerOffset.values()) {
-            randomCheckbox.addItem(so.name(), i);
+            randomCheckbox.addItem(so.guiText(), i);
         }
         randomCheckbox.activateAll();
         randomCheckbox.moveTo(randomTab);
 
 
         //Button
-        randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(), 0,
+        randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), 0,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
         randomSelection.setCaptionLabel(Messages.getString("GeneratorGui.RANDOMIZE")); //$NON-NLS-1$
         randomSelection.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.toString(),Messages.getString("GeneratorGui.TOOLTIP_RANDOMIZE")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), Messages.getString("GeneratorGui.TOOLTIP_RANDOMIZE")); //$NON-NLS-1$
 
-        randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESET.toString(), 0,
+        randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESET.guiText(), 0,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 100, 15);
         randomPresets.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_PRESET")); //$NON-NLS-1$
         randomPresets.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.toString(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET")); //$NON-NLS-1$
 
-        toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(), true,
+        toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(), true,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+80, 100, 15);
         toggleRandom.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_MODE")); //$NON-NLS-1$
         toggleRandom.setState(false);
         toggleRandom.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.toString(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_MODE"));		 //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_MODE"));		 //$NON-NLS-1$
 
 
         //----------
         //PRESET Tab
         //----------
 
-        presetButtons = cp5.addRadioButton(GuiElement.PRESET_BUTTONS.toString())
+        presetButtons = cp5.addRadioButton(GuiElement.PRESET_BUTTONS.guiText())
                 .setPosition(20, yPosStartDrowdown)
                 .setSize(14, 14)
                 .setColorForeground(color(120))
@@ -541,17 +543,17 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         presetButtons.activate(col.getSelectedPreset());
         presetButtons.moveTo(presetTab);                
         
-        loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.toString(), 0,
+        loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.guiText(), 0,
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
-        loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.toString());
+        loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.guiText());
         loadPreset.moveTo(presetTab);
-        cp5.getTooltip().register(GuiElement.LOAD_PRESET.toString(),Messages.getString("GeneratorGui.TOOLTIP_LOAD_PRESET")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.LOAD_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_LOAD_PRESET")); //$NON-NLS-1$
 
-        savePreset = cp5.addButton(GuiElement.SAVE_PRESET.toString(), 0,
+        savePreset = cp5.addButton(GuiElement.SAVE_PRESET.guiText(), 0,
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
-        savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.toString());
+        savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.guiText());
         savePreset.moveTo(presetTab);
-        cp5.getTooltip().register(GuiElement.SAVE_PRESET.toString(),Messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.SAVE_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
 
         presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+106, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab); //$NON-NLS-1$
         presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+126).moveTo(presetTab).getValueLabel();         //$NON-NLS-1$ //$NON-NLS-2$
@@ -581,7 +583,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
-        cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+col.getOutputDevice().getGammaType().toString(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        String gammaText = WordUtils.capitalizeFully(StringUtils.replace(col.getOutputDevice().getGammaType().toString(), "_", " "));
+        cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoBps", Messages.getString("GeneratorGui.OUTPUT_BPP")+col.getOutputDevice().getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
@@ -729,7 +732,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+col.getPixConStat().getFrameCount()); //$NON-NLS-1$
-            outputState.setText(col.getOutputDevice().getConnectionStatus().toUpperCase());
+            String outputStateStr = WordUtils.capitalizeFully(col.getOutputDevice().getConnectionStatus());
+            outputState.setText(outputStateStr);
             outputErrorCounter.setText(Messages.getString("GeneratorGui.IO_ERRORS")+col.getOutputDevice().getErrorCounter());             //$NON-NLS-1$
         }
         

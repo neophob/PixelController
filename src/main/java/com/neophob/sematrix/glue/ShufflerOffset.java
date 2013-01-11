@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.glue;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 /**
  * The Enum ShufflerOffset.
  *
@@ -90,5 +93,13 @@ public enum ShufflerOffset {
 	 */
 	int getOffset() {
 		return ofs;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String guiText() {
+		return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
 	}
 }

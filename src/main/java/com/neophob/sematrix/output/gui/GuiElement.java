@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.output.gui;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 public enum GuiElement {
 
 	CURRENT_VISUAL,
@@ -68,9 +71,22 @@ public enum GuiElement {
 	
 	;
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public String guiText() {
+		return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
+	}
+	
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 */
 	public static GuiElement getGuiElement(String s) {
 		for (GuiElement gw: GuiElement.values()) {
-			if (s.equalsIgnoreCase(gw.toString())) {
+			if (s.equalsIgnoreCase(gw.toString()) || s.equalsIgnoreCase(gw.guiText())) {
 				return gw;
 			}
 		}

@@ -21,6 +21,9 @@ package com.neophob.sematrix.generator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -110,6 +113,14 @@ public abstract class Generator implements RandomizeState {
 		 */
 		public int getId() {
 			return id;
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public String guiText() {
+			return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
 		}
 	}
 	

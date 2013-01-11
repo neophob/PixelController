@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.mixer;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -81,6 +84,14 @@ public abstract class Mixer {
 		 */
 		public int getId() {
 			return id;
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public String guiText() {
+			return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
 		}
 	}
 	

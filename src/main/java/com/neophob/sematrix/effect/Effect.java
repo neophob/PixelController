@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.effect;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.RandomizeState;
@@ -87,6 +90,14 @@ public abstract class Effect implements RandomizeState {
 		 */
 		public int getId() {
 			return id;
+		}
+		
+		/**
+		 * 
+		 * @return
+		 */
+		public String guiText() {
+			return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
 		}
 	}
 	
@@ -159,4 +170,5 @@ public abstract class Effect implements RandomizeState {
 		//default shuffle method - do nothing	
 	}
 	
+
 }

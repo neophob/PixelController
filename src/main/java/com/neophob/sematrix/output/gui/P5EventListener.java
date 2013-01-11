@@ -85,7 +85,14 @@ public class P5EventListener implements ControlListener {
         }
         intVal = (int)value;
 
-        GuiElement selection = GuiElement.valueOf(theEvent.getName());
+        GuiElement selection = null;
+        
+        try {
+        	selection = GuiElement.getGuiElement(theEvent.getName());
+        } catch (Exception e) {
+        	LOG.log(Level.INFO, "Failed to parse "+theEvent.getName(), e);
+        	return;
+        }
 
         switch (selection) {
             case EFFECT_ONE_DROPDOWN:
