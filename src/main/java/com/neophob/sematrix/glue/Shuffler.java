@@ -77,7 +77,6 @@ public final class Shuffler {
 	 * heavy shuffler! shuffle the current selected visual
 	 * used by manual RANDOMIZE.
 	 * 
-	 * TODO: do not load data files from "in use" generators and effects
 	 */
 	public static void manualShuffleStuff() {	
 	    long start = System.currentTimeMillis();
@@ -89,6 +88,12 @@ public final class Shuffler {
 		
 		LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 		
+		boolean isBlinkenLightsVisible = false;
+        if (visual.getGenerator1Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId() 
+                || visual.getGenerator2Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
+            isBlinkenLightsVisible = true;                
+        }
+
 		int totalNrGenerator = col.getPixelControllerGenerator().getSize();
 		int totalNrEffect = col.getPixelControllerEffect().getSize();
 		int totalNrMixer = col.getPixelControllerMixer().getSize();
@@ -118,7 +123,7 @@ public final class Shuffler {
 			    visual.setMixer(rand.nextInt(totalNrMixer));						
 			}
 		}
-
+		
         //set used to find out if visual is on screen
         Set<Integer> activeGeneratorIds = new HashSet<Integer>();
         Set<Integer> activeEffectIds = new HashSet<Integer>();
@@ -139,7 +144,17 @@ public final class Shuffler {
         //shuffle only items which are NOT visible
         for (Generator g: col.getPixelControllerGenerator().getAllGenerators()) {
 			if (!activeGeneratorIds.contains(g.getId())) {
-				g.shuffle();
+			    
+			    //optimize, loading a blinkenlights movie file is quite expensive (takes a long time)
+			    //so load only a new movie file if the generator is active!
+			    if (g.getId() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
+			        System.out.println("BLINK FOUND: "+isBlinkenLightsVisible);
+			        if (isBlinkenLightsVisible) {
+			            g.shuffle();
+			        }
+			    } else {
+			        g.shuffle();   
+			    }				
 			}
 		}
         

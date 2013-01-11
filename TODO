@@ -16,7 +16,6 @@ TODO PixelController
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Support Kinect for Xbox 360 
 -Support Renard Protocol
--Update controlp5 lib
 -Manual for v1.3 - WIP
 
 
