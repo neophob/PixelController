@@ -64,7 +64,6 @@ public class PresetSettings {
 		for (String s: present) {
 		    if (StringUtils.startsWith(s, NAME_MARKER)) {		        
 		        String rawName = StringUtils.substring(s, NAME_MARKER.length());
-		        System.out.println("RAWNAME: "+rawName);
 		        if (StringUtils.isNotBlank(rawName)){
 		            this.name = rawName;
 		        }
