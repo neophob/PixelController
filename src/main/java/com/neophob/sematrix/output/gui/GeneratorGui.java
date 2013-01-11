@@ -19,6 +19,7 @@
 package com.neophob.sematrix.output.gui;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -94,6 +95,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     /** The p image. */
     private PImage pImage=null;
+    private PImage logo;
 
     private ControlP5 cp5;
     private DropdownList generatorListOne, effectListOne;
@@ -181,7 +183,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.setAutoDraw(false);
         
         //press alt and you can move gui elements arround. disable this *should* work but does not...
-        //cp5.setMoveable(false);
+        cp5.setMoveable(false);
 
         //alt-h hide all controls - I don't want that!
         cp5.disableShortcuts();
@@ -204,11 +206,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             cp5.getTooltip().register(s, Messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_PREFIX")+(1+i)+Messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
         }
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
-
-        //todo add image here
-        Textlabel tl = cp5.addTextlabel("logo", "PixelController", this.getWidth()-250, this.getHeight()-40); //$NON-NLS-1$ //$NON-NLS-2$
-        tl.moveTo(ALWAYS_VISIBLE_TAB);
-//        tl.setFont(ControlP5.synt24);
 
         cp5.addTextlabel("gen1", Messages.getString("GeneratorGui.GUI_GENERATOR_LAYER_1"), GENERIC_X_OFS+3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("gen2", Messages.getString("GeneratorGui.GUI_GENERATOR_LAYER_2"), GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -604,13 +601,23 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("nfoTcpPort", Messages.getString("GeneratorGui.TCP_PORT")+tcpPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         
+        //----------
+        // LOGO
+        //----------    
+
+        try {
+            logo = loadImage("gui"+File.separatorChar+"guilogo.jpg");   
+            LOG.log(Level.INFO, "GUI logo loaded");
+        } catch (Exception e) {
+            LOG.log(Level.INFO, "Failed to load gui logo!",e);
+        }
         
+
         //----------
         // MISC
         //----------    
 
-        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/NR_OF_WIDGETS;
-        
+        int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/NR_OF_WIDGETS;        
         
         cp5.addTextlabel("frameDesc", Messages.getString("GeneratorGui.FRAME_PROGRESS"), GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("sndDesc", Messages.getString("GeneratorGui.SOUND_DESC"), GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -732,6 +739,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             col.setTriggerGuiRefresh(false);
         }
 
+        if (logo!=null) {
+            image(logo, 505, 340);
+        }
+        
         //update gui
         cp5.draw(); 
 
