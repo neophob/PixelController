@@ -117,30 +117,33 @@ public class PixelController extends PApplet {
 	 * 
 	 */
 	public void setup() {
-        LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");
-        LOG.log(Level.INFO, "");
+		try {
+	        LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");
+	        LOG.log(Level.INFO, "");
 
-	    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
-	    background(0);
-	    noStroke();
-	    
-	    //try to display the pixelcontroller logo
-	    String splashimg = "setup"+File.separatorChar+"splash.jpg";
-	    try {
-	        image(loadImage(splashimg), 0, 111);
-	    } catch (Exception e) {
-	        LOG.log(Level.INFO, "Failed to load splash logo ("+splashimg+")", e);
-	    }
+		    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
+		    background(0);
+		    noStroke();
+		    
+		    //try to display the pixelcontroller logo
+		    String splashimg = "setup"+File.separatorChar+"splash.jpg";
+		    try {
+		        image(loadImage(splashimg), 0, 111);
+		    } catch (Exception e) {
+		        LOG.log(Level.INFO, "Failed to load splash logo ("+splashimg+")", e);
+		    }
 
-	    //write pixelcontroller text
-	    textSize(SETUP_FONT_BIG);
-	    fill(227, 122, 182);
-	    text("PixelController "+getVersion(), 10, 29);
-	    
-	    text("Loading...", 10, 120);
-	    drawProgressBar(0.0f);
-	    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-
+		    //write pixelcontroller text
+		    textSize(SETUP_FONT_BIG);
+		    fill(227, 122, 182);
+		    text("PixelController "+getVersion(), 10, 29);
+		    
+		    text("Loading...", 10, 120);
+		    drawProgressBar(0.0f);
+		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);			
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Setup() call failed!", e);
+		}
 	}
 	
 	    
