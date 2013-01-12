@@ -22,7 +22,7 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * The Class Multiply.
+ * HalfHalf split screen horizontal
  */
 public class HalfHalf extends Mixer {
 

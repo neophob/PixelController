@@ -22,18 +22,17 @@ import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
- * 50% 50% Mixer
- * 
+ * HalfHalf split screen vertical
  */
-public class Mix extends Mixer {
+public class HalfHalfVertical extends Mixer {
 
     /**
-     * Instantiates a new mix.
+     * Instantiates a new multiply.
      *
      * @param controller the controller
      */
-    public Mix(PixelControllerMixer controller) {
-        super(controller, MixerName.MIX, ResizeName.QUALITY_RESIZE);
+    public HalfHalfVertical(PixelControllerMixer controller) {
+        super(controller, MixerName.HALFHALFVERTICAL, ResizeName.PIXEL_RESIZE);
     }
 
     /* (non-Javadoc)
@@ -43,13 +42,22 @@ public class Mix extends Mixer {
         if (visual.getEffect2() == null) {
             return visual.getEffect1Buffer();
         }
-		
+
+        int width = visual.getGenerator1().getInternalBufferXSize();
+        int halfWidth=width/2;
+        int height = visual.getGenerator1().getInternalBufferYSize();
         int[] src1 = visual.getEffect1Buffer();
         int[] src2 = visual.getEffect2Buffer();
         int[] dst = new int [src1.length];
 
-        for (int i=0; i<src1.length; i++){			
-            dst[i]=(src1[i]+src2[i])/2;
+        int ofs=0;
+        for (int i=0; i<height; i++){
+        	for (int j=0; j<halfWidth; j++){
+                dst[ofs]=src1[ofs]&255;
+                dst[ofs+halfWidth]=src2[ofs+halfWidth]&255;
+                ofs++;
+        	}
+        	ofs+=halfWidth;
         }
 
         return dst;

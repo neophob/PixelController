@@ -63,6 +63,8 @@ public abstract class Mixer {
 		SUBSAT(8),
 
 		HALFHALF(9),
+		
+		HALFHALFVERTICAL(10),
 		;
 		
 		/** The id. */
