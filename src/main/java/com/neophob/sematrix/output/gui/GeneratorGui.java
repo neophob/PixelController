@@ -744,7 +744,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
 
         if (logo!=null) {
-            image(logo, 505, 340);
+            image(logo, width-logo.width, height-logo.height);
         }
         
         //update gui
