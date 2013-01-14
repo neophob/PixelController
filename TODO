@@ -16,6 +16,8 @@ TODO PixelController
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Support Kinect for Xbox 360 
 -Support Renard Protocol
+-Option to invert GUI colors
+-More GUI improvments (scaling, bigger fonts)
 -Manual for v1.3 - WIP
 
 
