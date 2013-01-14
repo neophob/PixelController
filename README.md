@@ -178,3 +178,4 @@ Example how to use PixConCli:
 * **Noxx6**:              Bugfixes
 * **Psykon**:             Example Visuals
 * **okyeron**:            Stealth output device
+* **Dr. Stahl**:          Documentation, Tester
