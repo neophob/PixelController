@@ -19,7 +19,7 @@ TODO PixelController
 -Option to invert GUI colors
 -More GUI improvments (scaling, bigger fonts, save window position, option to bring both windows to front)
 -Manual for v1.3 - WIP
--implementcolorlib procesing lib 
+-implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 
 
 Changelog v1.2 to v1.3
