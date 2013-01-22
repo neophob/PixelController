@@ -12,7 +12,8 @@
 
 ## HOWTO USE PIXELCONTROLLER
 Prerequisite:
-* Java Runtime, v1.6+
+
+ * Java Runtime, v1.6+
 
 Run `PixelController.jar` to start the application.
 Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 

@@ -1,5 +1,5 @@
-TODO PixelController
---------------------
+Roadmap PixelController
+-----------------------
 -Do not freeze application if output fails (disconnect controller)
 -Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 -More layouts (Half/Half, 3/1...). Current layouts are hardware dependant. New layout shouldn't be. 
@@ -20,6 +20,8 @@ TODO PixelController
 -More GUI improvments (scaling, bigger fonts, save window position, option to bring both windows to front)
 -Manual for v1.3 - WIP
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
+-Add Perlin Noise generator
+-Add generic input generator, add processing example how to use it. protocol: OSC? add option to query buffersize
 
 
 Changelog v1.2 to v1.3
