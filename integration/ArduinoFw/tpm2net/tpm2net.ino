@@ -38,10 +38,6 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>  
 
-//the lpd6803 library needs the timer1 library
-//#include <TimerOne.h>
-//#include <Neophob_LPD6803.h>
-
 //get the lib here: https://github.com/neophob/WS2801-Library
 #include <WS2801.h>
 
@@ -58,8 +54,12 @@
 #define TPM2NET_CMD_ANSWER 0xaa
 #define TPM2NET_FOOTER_IDENT 0x36
 
-#define NR_OF_PANELS 4
+#define NR_OF_PANELS 1
 #define PIXELS_PER_PANEL 64
+
+//use softspi as the spi line is used by the ethernet lib
+#define DATA_PIN 3
+#define CLOCK_PIN 2
 
 //as the arduino ethernet has only 2kb ram
 //we must limit the maximal udp packet size
@@ -71,7 +71,7 @@ uint8_t packetBuffer[UDP_PACKET_SIZE]; //buffer to hold incoming packet,
 
 //initialize pixels
 //Neophob_LPD6803 strip = Neophob_LPD6803(PIXELS_PER_PANEL*NR_OF_PANELS);
-WS2801 strip = WS2801(PIXELS_PER_PANEL*NR_OF_PANELS);
+WS2801 strip = WS2801(PIXELS_PER_PANEL*NR_OF_PANELS, DATA_PIN, CLOCK_PIN);
 
 //network stuff, TODO: add dhcp/bonjour support
 byte mac[] = { 0xBE, 0x00, 0xBE, 0x00, 0xBE, 0x01 };
@@ -126,7 +126,7 @@ void loop() {
       return;
     }
     
-    uint16_t frameSize = ((packetBuffer[3] << 0) & 0xFF) + ((packetBuffer[2] << 8) & 0xFF00);
+    uint16_t frameSize = (packetBuffer[3] & 0xFF) + ((packetBuffer[2] << 8) & 0xFF00);
     Serial.print("Framesize ");
     Serial.println(frameSize, HEX);
 
@@ -135,6 +135,7 @@ void loop() {
     Serial.print("packetNumber ");
     Serial.println(packetNumber, HEX);
 
+    //calculate offset
     uint16_t currentLed = packetNumber*PIXELS_PER_PANEL;
     int x=TPM2NET_HEADER_SIZE;
     for (byte i=0; i < frameSize; i++) {
