@@ -1,18 +1,7 @@
 /*
- * PixelInvaders tpm2.net implementation, Copyright (C) 2012 michael vogt <michu@neophob.com>
+ * PixelInvaders tpm2.net implementation, Copyright (C) 2013 michael vogt <michu@neophob.com>
  * 
  * If you like this, make sure you check out http://www.pixelinvaders.ch
- *
- * ------------------------------------------------------------------------
- *
- * This is the SPI version, unlike software SPI which is configurable, hardware 
- * SPI works only on very specific pins. 
- *
- * On the Arduino Uno, Duemilanove, etc., clock = pin 13 and data = pin 11. 
- * For the Arduino Mega, clock = pin 52, data = pin 51. 
- * For the ATmega32u4 Breakout Board and Teensy, clock = pin B1, data = B2. 
- *
- * ------------------------------------------------------------------------
  *
  * This file is part of PixelController.
  *
