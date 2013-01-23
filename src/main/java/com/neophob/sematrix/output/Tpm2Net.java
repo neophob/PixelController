@@ -140,6 +140,8 @@ public class Tpm2Net extends Output {
 		
 		//write footer
 		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = (byte)0x36;		
+		
+		//copy payload
 		System.arraycopy(data, 0, outputBuffer, TPM2_NET_HEADER_SIZE, frameSize);		
 		
 		tpm2UdpPacket.setData(outputBuffer);
@@ -169,8 +171,11 @@ public class Tpm2Net extends Output {
 				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 				
-				//TODO optimize packt sender
+				//send small UDP packages, this is not optimal but the client needs less memory
+				//TODO maybe add option to send one or mutiple packets
 				sendTpm2NetPacketOut(ofs, rgbBuffer);
+				
+				System.out.println("OFS: "+ofs);
 			}
 		}
 	}
