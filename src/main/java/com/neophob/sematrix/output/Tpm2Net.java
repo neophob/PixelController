@@ -174,8 +174,6 @@ public class Tpm2Net extends Output {
 				//send small UDP packages, this is not optimal but the client needs less memory
 				//TODO maybe add option to send one or mutiple packets
 				sendTpm2NetPacketOut(ofs, rgbBuffer);
-				
-				System.out.println("OFS: "+ofs);
 			}
 		}
 	}
