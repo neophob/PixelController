@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController)
+[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neophob/PixelController/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2013. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
@@ -12,7 +12,8 @@
 
 ## HOWTO USE PIXELCONTROLLER
 Prerequisite:
-* Java Runtime, v1.6+
+
+ * Java Runtime, v1.6+
 
 Run `PixelController.jar` to start the application.
 Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
