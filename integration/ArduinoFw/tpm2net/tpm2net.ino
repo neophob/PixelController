@@ -30,10 +30,6 @@
 //get the lib here: https://github.com/neophob/WS2801-Library
 #include <WS2801.h>
 
-//#if UDP_TX_PACKET_MAX_SIZE < 64
-//#error UDP packet size to small - modify UDP_TX_PACKET_MAX_SIZE in the file EthernetUdp.h and set buffers to 64 bytes 
-//#endif
-
 //define some tpm constants
 #define TPM2NET_LISTENING_PORT 65506
 #define TPM2NET_HEADER_SIZE 5
@@ -46,6 +42,12 @@
 #define NR_OF_PANELS 1
 #define PIXELS_PER_PANEL 64
 
+//3 byte per pixel or 24bit (RGB)
+#define BPP 3
+
+//package size we expect. the footer byte is not included here!
+#define EXPECTED_PACKED_SIZE (PIXELS_PER_PANEL*BPP+TPM2NET_HEADER_SIZE)
+
 //use softspi as the spi line is used by the ethernet lib
 #define DATA_PIN 3
 #define CLOCK_PIN 2
@@ -54,6 +56,17 @@
 //we must limit the maximal udp packet size
 //a 64 pixel matrix needs 192 bytes data
 #define UDP_PACKET_SIZE 512
+
+
+//some santiy checks here
+#if EXPECTED_PACKED_SIZE > UDP_PACKET_SIZE
+#error EXPECTED PACKED SIZE is bigger than UDP BUFFER! increase the buffer
+#endif
+
+//#if UDP_TX_PACKET_MAX_SIZE < EXPECTED_PACKED_SIZE
+//#error UDP packet size to small - modify UDP_TX_PACKET_MAX_SIZE in the file EthernetUdp.h and set buffers to 64 bytes 
+//#endif
+
 
 // buffers for receiving and sending data
 uint8_t packetBuffer[UDP_PACKET_SIZE]; //buffer to hold incoming packet,
@@ -90,9 +103,7 @@ void loop() {
   int packetSize = Udp.parsePacket();
   
   //tpm2 header size is 5 bytes
-  if (packetSize>TPM2NET_HEADER_SIZE) {
-    //TODO get packet nummer, use only if currentNr>oldNr
-    
+  if (packetSize>EXPECTED_PACKED_SIZE) {
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
     
@@ -115,14 +126,22 @@ void loop() {
       return;
     }
     
-    uint16_t frameSize = (packetBuffer[3] & 0xFF) + ((packetBuffer[2] << 8) & 0xFF00);
+    uint16_t frameSize = packetBuffer[2];
+    frameSize = (frameSize << 8) + packetBuffer[3];
     Serial.print("Framesize ");
     Serial.println(frameSize, HEX);
 
-    //I guess packetNumber is violate the spec..
+    //use packetNumber to calculate offset
     uint8_t packetNumber = packetBuffer[4];
     Serial.print("packetNumber ");
     Serial.println(packetNumber, HEX);
+
+    //check footer
+    if (packetBuffer[frameSize+TPM2NET_HEADER_SIZE]!=TPM2NET_FOOTER_IDENT) {
+      Serial.print("Invalid footer ident ");
+      Serial.println(packetBuffer[frameSize+TPM2NET_HEADER_SIZE], HEX);
+      return;
+    }
 
     //calculate offset
     uint16_t currentLed = packetNumber*PIXELS_PER_PANEL;
@@ -131,15 +150,10 @@ void loop() {
       strip.setPixelColor(currentLed++, packetBuffer[x], packetBuffer[x+1], packetBuffer[x+2]);
       x+=3;
     }
+    
+    //TODO maybe update leds only if we got all pixeldata?
     strip.show();   // write all the pixels out
 
-    //check footer
-    frameSize += TPM2NET_HEADER_SIZE;
-    if (packetBuffer[frameSize]!=TPM2NET_FOOTER_IDENT) {
-      Serial.print("Invalid footer ident ");
-      Serial.println(packetBuffer[frameSize], HEX);
-      return;
-    }
   }
 }
 

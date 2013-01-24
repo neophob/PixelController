@@ -24,9 +24,11 @@ Roadmap PixelController
 -Add Perlin Noise generator
 -Add generic input generator, add processing example how to use it. protocol: OSC? add option to query buffersize
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
+-Option to modify colorsets of all visuals
 
-Changelog v1.2 to v1.3
-------------------------
+
+Changelog v1.2.x to v1.3.0
+--------------------------
 -add integrated GUI!
 -add Color-Sets, predefined color definition for all generators, effects and mixers
 -add support for UDP output device
