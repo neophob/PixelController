@@ -101,11 +101,11 @@ void setup() {
 void loop() {
   // if there's data available, read a packet
   int packetSize = Udp.parsePacket();
+  Serial.print("Received packet of size ");
+  Serial.println(packetSize);
   
   //tpm2 header size is 5 bytes
   if (packetSize>EXPECTED_PACKED_SIZE) {
-    Serial.print("Received packet of size ");
-    Serial.println(packetSize);
     
     // read the packet into packetBufffer
     Udp.read(packetBuffer, UDP_PACKET_SIZE);
@@ -153,7 +153,6 @@ void loop() {
     
     //TODO maybe update leds only if we got all pixeldata?
     strip.show();   // write all the pixels out
-
   }
 }
 
