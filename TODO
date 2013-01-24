@@ -22,7 +22,7 @@ Roadmap PixelController
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Add generic input generator, add processing example how to use it. protocol: OSC? add option to query buffersize
-
+-Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
 
 Changelog v1.2 to v1.3
 ------------------------
