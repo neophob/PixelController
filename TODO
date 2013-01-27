@@ -25,6 +25,7 @@ Roadmap PixelController
 -Add generic input generator, add processing example how to use it. protocol: OSC? add option to query buffersize
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
 -Option to modify colorsets of all visuals
+-Add Raspberry PI support, so the PixelInvader Panels can controlled via LAN. (ser2net on RPI and new output device)
 
 
 Changelog v1.2.x to v1.3.0
