@@ -22,7 +22,7 @@ Roadmap PixelController
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Add generic input generator, add processing example how to use it. protocol: OSC? add option to query buffersize
-
+-Add Raspberry PI support, so the PixelInvader Panels can controlled via LAN (ser2net)
 
 Changelog v1.2 to v1.3
 ------------------------
