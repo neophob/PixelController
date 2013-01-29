@@ -18,14 +18,18 @@ Roadmap PixelController
 -Support Renard Protocol
 -Option to invert GUI colors
 -More GUI improvments (scaling, bigger fonts, save window position, option to bring both windows to front)
+-Option to modify colorsets of all visuals
 -Manual for v1.3 - WIP
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Add generic input generator, add processing example how to use it. protocol: OSC? add option to query buffersize
--Add Raspberry PI support, so the PixelInvader Panels can controlled via LAN (ser2net)
+-Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
+-Option to modify colorsets of all visuals
+-Add Raspberry PI support, so the PixelInvader Panels can controlled via LAN. (ser2net on RPI and new output device)
 
-Changelog v1.2 to v1.3
-------------------------
+
+Changelog v1.2.x to v1.3.0
+--------------------------
 -add integrated GUI!
 -add Color-Sets, predefined color definition for all generators, effects and mixers
 -add support for UDP output device
