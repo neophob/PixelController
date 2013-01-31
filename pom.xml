@@ -5,12 +5,12 @@
 	<artifactId>PixelController</artifactId>
 	<name>PixelController</name>
 	<packaging>jar</packaging>	
-	<version>1.3-SNAPSHOT</version>
+	<version>1.3.0</version>
 	<description>PixelController Driver</description>
 	<prerequisites>
 		<maven>2.2.1</maven>
 	</prerequisites>
-	<url>http://Www.PixelInvaders.ch</url>
+	<url>http://www.PixelInvaders.ch</url>
 	
 	<properties>
 		<sonar.dynamicAnalysis>false</sonar.dynamicAnalysis>
