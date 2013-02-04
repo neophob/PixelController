@@ -31,7 +31,7 @@ PixelController supports different (LED) matrix hardware devices:
 
 * PixelInvaders 3d Panels (see Readme.PixelInvaders, http://www.pixelinvaders.ch)
 * Seeedstudios Rainbowduino V2 (see Readme.rainbowduinoV2)
-* Seeedstudios Rainbowduino V3
+* Seeedstudios Rainbowduino V3 (Using this firmware: https://code.google.com/p/rainbowduino-v3-streaming-firmware)
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 * MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
 * Adavision (http://www.adafruit.com/products/611)
