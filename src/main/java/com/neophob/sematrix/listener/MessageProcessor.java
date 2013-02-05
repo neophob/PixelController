@@ -457,9 +457,13 @@ public final class MessageProcessor {
 				break;
 			
 			case OSC_GENERATOR1:
-				col.getInstance().getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
+				col.getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
 				break;
 				
+			case OSC_GENERATOR2:
+				col.getPixelControllerGenerator().getOscListener2().updateBuffer(blob);
+				break;
+
 			//unkown message
 			default:
 				StringBuffer sb = new StringBuffer();
