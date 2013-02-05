@@ -461,7 +461,7 @@ public final class Collector {
 		for (String s: preset) {		
 			s = StringUtils.trim(s);
 			s = StringUtils.removeEnd(s, ";");
-			MessageProcessor.processMsg(StringUtils.split(s, ' '), false);
+			MessageProcessor.processMsg(StringUtils.split(s, ' '), false, null);
 		}
 		setLoadingPresent(false);
 	}
