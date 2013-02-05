@@ -20,7 +20,10 @@ package com.neophob.sematrix.generator;
 
 
 /**
- * display an image.
+ * display an image received from another application.
+ * 
+ * OSC address: /OSC_GENERATOR1
+
  *
  * @author mvogt
  */
