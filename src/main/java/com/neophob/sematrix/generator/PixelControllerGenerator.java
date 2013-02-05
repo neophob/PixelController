@@ -64,6 +64,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The Color fader- */
     private ColorFade colorFade;
     
+    private OscListener oscListener1;
+    
     /** The textwriter. */
     private Textwriter textwriter;
     
@@ -114,6 +116,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         }
         colorScroll = new ColorScroll(this);
         colorFade = new ColorFade(this);
+        
+        this.oscListener1 = new OscListener(this);
     }
 
     /* (non-Javadoc)
@@ -323,6 +327,11 @@ public class PixelControllerGenerator implements PixelControllerElement {
 			return;
 		}
 		this.brightness = brightness;
+	}
+
+
+	public OscListener getOscListener1() {
+		return oscListener1;
 	}
 
 

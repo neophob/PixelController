@@ -266,7 +266,7 @@ public class P5EventListener implements ControlListener {
     		return;
     	}
     	
-        ValidCommands ret = MessageProcessor.processMsg(msg, true);
+        ValidCommands ret = MessageProcessor.processMsg(msg, true, null);
         if (ret != null) {
             switch (ret) {
                 case STATUS:                    

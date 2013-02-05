@@ -62,7 +62,7 @@ public final class MessageProcessor {
 	 * @param startFader the start fader
 	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
 	 */
-	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader) {
+	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader, byte[] blob) {
 		if (msg==null || msg.length<1) {
 			return null;
 		}
@@ -454,6 +454,10 @@ public final class MessageProcessor {
 			//pause output, needed to create screenshots or take an image of the output
 			case FREEZE:
 				Collector.getInstance().togglePauseMode();
+				break;
+			
+			case OSC_GENERATOR1:
+				col.getInstance().getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
 				break;
 				
 			//unkown message

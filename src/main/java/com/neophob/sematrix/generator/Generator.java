@@ -90,7 +90,10 @@ public abstract class Generator implements RandomizeState {
 		FFT(13),
 		
 		/** The SCREEN_CAPTURE. */
-		SCREEN_CAPTURE(14), 
+		SCREEN_CAPTURE(14),
+		
+		/** external OSC Generator */
+		OSC_GEN1(15), 
         
 		;
 		

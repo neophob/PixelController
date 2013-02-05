@@ -63,7 +63,7 @@ public class OscServer implements OscEventListener {
 		
         OscProperties prop = new OscProperties();
         //8kb buffer, maximal packet size
-        prop.setDatagramSize(1024*8);
+        prop.setDatagramSize(1024*32);
         prop.setNetworkProtocol(OscProperties.UDP);
         prop.setListeningPort(this.listeningPort);
 		this.oscP5 = new OscP5(papplet, prop);
@@ -86,15 +86,14 @@ public class OscServer implements OscEventListener {
 			return;
 		}
 		
-		LOG.log(Level.INFO,	"Received an osc message. with address pattern {0} typetag {1}.", 
-				new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });		
-
 		//address pattern -> internal message mapping
 		String pattern = theOscMessage.addrPattern().trim().toUpperCase();
 		try {
 			ValidCommands command = ValidCommands.valueOf(pattern);
 			String[] msg = new String[1+command.getNrOfParams()];
 			msg[0] = pattern;
+			byte[] blobData = null;
+
 			for (int i=0; i<command.getNrOfParams(); i++) {
 
 				//parse osc message
@@ -103,13 +102,24 @@ public class OscServer implements OscEventListener {
 					LOG.log(Level.INFO,	"PARAM {0}", msg[i+1]); 
 				} else
 					if (theOscMessage.checkTypetag("i")) {
-						msg[i+1] = ""+theOscMessage.get(i).intValue();	
+						msg[i+1] = ""+theOscMessage.get(i).intValue();
+						LOG.log(Level.INFO,	"Received an osc message. with address pattern {0} typetag {1}.", 
+								new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });		
 					} else
 						if (theOscMessage.checkTypetag("f")) {
 							msg[i+1] = ""+theOscMessage.get(i).floatValue();	
-						}				
+							LOG.log(Level.INFO,	"Received an osc message. with address pattern {0} typetag {1}.", 
+									new Object[] { theOscMessage.addrPattern(), theOscMessage.typetag() });									
+						} else {
+							if (theOscMessage.checkTypetag("b")) {
+								//binary blob
+								blobData = theOscMessage.get(i).blobValue();	
+							} else {
+								LOG.log(Level.INFO, "Unknown typetag: "+theOscMessage.getTypetagAsBytes()[0]);
+							}
+						}
 			}
-			MessageProcessor.processMsg(msg, true);
+			MessageProcessor.processMsg(msg, true, blobData);
 			
 	        //refresh gui
 			Collector.getInstance().setTriggerGuiRefresh(true);			    
