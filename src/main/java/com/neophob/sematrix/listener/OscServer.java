@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import oscP5.OscEventListener;
 import oscP5.OscMessage;
 import oscP5.OscP5;
+import oscP5.OscProperties;
 import oscP5.OscStatus;
 import processing.core.PApplet;
 
@@ -58,8 +59,14 @@ public class OscServer implements OscEventListener {
 	    }
 
 		this.listeningPort = listeningPort;
-		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });
-		this.oscP5 = new OscP5(papplet, this.listeningPort);
+		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { this.listeningPort });
+		
+        OscProperties prop = new OscProperties();
+        //8kb buffer, maximal packet size
+        prop.setDatagramSize(1024*8);
+        prop.setNetworkProtocol(OscProperties.UDP);
+        prop.setListeningPort(this.listeningPort);
+		this.oscP5 = new OscP5(papplet, prop);
 		this.oscP5.addListener(this);
 		
 		//log only error and warnings
