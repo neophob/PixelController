@@ -38,6 +38,8 @@ void draw()
   popMatrix();
   i += geschwindigkeit;
   translate(-width/2, -height/2);
+  
+  filter(GRAY);
   sendOsc();
 }
  

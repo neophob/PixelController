@@ -81,7 +81,8 @@ void draw() {
   if(soft>0) smooth(); else noSmooth();
   image(img, 0, 0, res*w, res*h);
   if(soft==2) filter(BLUR);
-   
+  
+  filter(GRAY); 
   sendOsc();
   
   println(frameRate);

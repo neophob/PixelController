@@ -59,15 +59,15 @@ public abstract class AbstractOscListener extends Generator {
 			return;
 		}
 
-		if (buffer.length == this.internalBuffer.length*3) {
+		if (buffer.length == this.internalBuffer.length) {
 			this.buffer = buffer;			
 			int ofs=0;
 			for (int i=0; i<internalBuffer.length; i++) {
-				this.internalBuffer[i] = (this.buffer[ofs++]<<16) | (this.buffer[ofs++]<<8) | this.buffer[ofs++]; 
+				this.internalBuffer[i] = this.buffer[ofs++]; 
 			}
 		} else {
-			LOG.log(Level.WARNING, "Invalid buffer size, expected: {0}, effective {1}.", 
-					new Object[] {this.internalBuffer.length*3, buffer.length} );
+			LOG.log(Level.WARNING, "Invalid buffer size, expected size: {0}, effective size: {1}.", 
+					new Object[] {this.internalBuffer.length, buffer.length} );
 		}
 	}
 	
