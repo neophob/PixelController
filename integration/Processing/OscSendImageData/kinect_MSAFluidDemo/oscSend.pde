@@ -7,12 +7,24 @@ NetAddress myRemoteLocation = new NetAddress("127.0.0.1", 9876);
 OscMessage myMessage = new OscMessage("OSC_GENERATOR1");
 byte[] bfr = new byte[4096];
 
+boolean sendData = true;
 void sendOsc() {
+  
+  if (!sendData) {
+    return;
+  }
   
   myMessage.clearArguments();
 
   loadPixels();
 
+  //invalid buffer size, return
+  if (pixels.length!=4096) {
+    sendData = false;
+    updatePixels();
+    return;
+  }
+  
   int ofs=0;
   for (int pxl: pixels) {
     bfr[ofs++] = (byte)(pxl & 0xff);

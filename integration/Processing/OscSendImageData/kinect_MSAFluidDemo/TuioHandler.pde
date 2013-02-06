@@ -33,11 +33,13 @@ Map<Integer, PVector> handPositions;
 Map<Integer, PVector> previousHandPositions;
 
 String gesture = "RaiseHand";
-
+boolean handsTrackFlag = false;
 PVector currentHand;
 
 void initTUIO() {
   kinect = new SimpleOpenNI(this, SimpleOpenNI.RUN_MODE_MULTI_THREADED);
+  
+  //flip x, this makes gestures much more intuitive
   kinect.setMirror(true);
 
   kinect.enableDepth();
@@ -56,8 +58,12 @@ float maxX=0, maxY=0;
 void updateTUIO() {
   kinect.update();
 
-  s.image(kinect.depthImage(), 0, 0);
+ // s.image(kinect.depthImage(), 0, 0);
 
+  //nothing todo!
+  if (!handsTrackFlag) {
+    return;
+  }
   //old and ugly iterate style
   Set<Integer> set = handPositions.keySet();
   for (Integer handId: set) {
@@ -128,18 +134,22 @@ println(mouseNormX+" "+ invWidth+" "+currentHandPos.x);
 
 void onCreateHands(int handId, PVector position, float time) {
   println("onCreateHands: "+handId+", time: "+time);
+  handsTrackFlag = true;
   //kinect.convertRealWorldToProjective(position,position);
   //handPositions.add(position);
 }
 
 void onUpdateHands(int handId, PVector position, float time) {
   //println("onUpdateHands: "+handId+", time: "+time+" pos:"+position);
+  //TODO: make hand gestures only available in a specific range, for example between 2-4m away from the sensor
+  
   kinect.convertRealWorldToProjective(position, position);
   handPositions.put(handId, position);
 }
 
 void onDestroyHands(int handId, float time) {
   println("onDestroyHands: "+handId+", time: "+time);
+  handsTrackFlag = false;
   handPositions.remove(handId);
   previousHandPositions.remove(handId);
   kinect.addGesture(gesture);

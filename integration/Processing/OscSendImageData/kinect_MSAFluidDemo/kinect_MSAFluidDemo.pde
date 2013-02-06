@@ -60,7 +60,7 @@ secondApplet s;
 
 void setup() {
   frameRate(30);
-  size(64, 64);    // use OPENGL rendering for bilinear filtering on texture    
+  size(640, 640);    // use OPENGL rendering for bilinear filtering on texture    
 
   invWidth = 1.0f/width;
   invHeight = 1.0f/height;
@@ -82,7 +82,8 @@ void setup() {
   initTUIO();
   
   PFrame f = new PFrame();  
-colorMode(RGB, 2);  
+//WAS RGB, 2
+colorMode(RGB, 1);  
 }
 
 
@@ -109,7 +110,7 @@ void draw() {
   image(imgFluid, 0, 0, width, height);
   
   particleSystem.updateAndDraw();
-  filter(BLUR, 1);
+  //filter(BLUR, 1);
   
   sendOsc();
 }
@@ -131,7 +132,8 @@ void addForce(float x, float y, float dx, float dy) {
 
     int index = fluidSolver.getIndexForNormalizedPosition(x, y);
 
-    fluidSolver.rOld[index]  += 1.4f;
+//WAS 1.4f
+    fluidSolver.rOld[index]  += 4.4f;
 //    fluidSolver.gOld[index]  += 1.2f;
 //    fluidSolver.bOld[index]  += 3.3f;
 
