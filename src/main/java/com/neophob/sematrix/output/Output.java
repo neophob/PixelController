@@ -121,14 +121,25 @@ public abstract class Output {
 	 * @param screenNr the screen nr
 	 * @return the buffer for screen
 	 */
-	public int[] getBufferForScreen(int screenNr) {
+	public int[] getBufferForScreen(int screenNr, boolean applyGamma) {
 		int[] buffer = this.bufferMap.get(switchBuffer+screenNr);
 		float brightness = this.collector.getPixelControllerGenerator().getBrightness();
 		
+		if (!applyGamma) {
+			return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);
+		}
 		//gamma correct buffer
 		return Gammatab.applyBrightnessAndGammaTab(buffer, this.gammaType, brightness);
 	}
-	
+
+	/**
+	 * 
+	 * @param screenNr
+	 * @return
+	 */
+	public int[] getBufferForScreen(int screenNr) {
+		return getBufferForScreen(screenNr, true);
+	}
 
 	/**
 	 * fill the the preparedBufferMap instance with int[] buffers for all screens.

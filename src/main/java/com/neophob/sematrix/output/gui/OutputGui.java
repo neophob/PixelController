@@ -159,18 +159,18 @@ public class OutputGui {
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<this.collector.getNrOfScreens(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen), currentOutput);
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, false), currentOutput);
 			}
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen), currentOutput);
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, false), currentOutput);
 				ofs++;
 			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen), currentOutput);
+				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen, false), currentOutput);
 			}
 			break;
 		}
