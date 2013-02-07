@@ -73,7 +73,7 @@ void setup() {
 //  fluidSolver = new MSAFluidSolver2D((int)(FLUID_WIDTH), (int)(FLUID_WIDTH * height/width));
   fluidSolver = new MSAFluidSolver2D(FLUID_WIDTH, FLUID_WIDTH);
 //  fluidSolver.enableRGB(false).setFadeSpeed(0.003).setDeltaT(0.8).setVisc(0.000001);
-  fluidSolver.enableRGB(false).setFadeSpeed(0.03).setDeltaT(0.7).setVisc(0.0000000000000001);
+  fluidSolver.enableRGB(false).setFadeSpeed(0.001).setDeltaT(0.7).setVisc(0.0000000000000001);
   //    fluidSolver.enableRGB(true).setFadeSpeed(0.003).setDeltaT(0.5).setVisc(0.0001);    
 
   // create image to hold fluid picture
