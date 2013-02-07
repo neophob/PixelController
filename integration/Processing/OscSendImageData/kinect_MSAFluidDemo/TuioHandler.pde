@@ -41,12 +41,6 @@ float minXSize = 1000;
 float maxYSize = 0;
 float minYSize = 1000;
 
-float maxXSpeed = 0;
-float minXSpeed = 1000;
-float maxYSpeed = 0;
-float minYSpeed = 1000;
-
-
 void initTUIO() {
   kinect = new SimpleOpenNI(this, SimpleOpenNI.RUN_MODE_MULTI_THREADED);
   
@@ -107,20 +101,6 @@ void updateTUIO() {
     }
     if (minYSize > currentHandPos.y && currentHandPos.y>0.0f) {
       minYSize = currentHandPos.y;
-    }    
-
-    //dynamic adjust the moving speed
-    if (oldPos.x > maxXSpeed) {
-      maxXSpeed = oldPos.x;
-    }
-    if (minXSpeed > oldPos.x) {
-      minXSpeed = oldPos.x;
-    }
-    if (oldPos.y > maxYSpeed) {
-      maxYSpeed = oldPos.y;
-    }
-    if (minYSpeed > oldPos.y) {
-      minYSpeed = oldPos.y;
     }    
 
     float mouseNormX = norm(currentHandPos.x, minXSize, maxXSize);

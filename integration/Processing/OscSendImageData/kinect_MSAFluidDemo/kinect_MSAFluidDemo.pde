@@ -60,7 +60,7 @@ secondApplet s;
 
 void setup() {
   frameRate(30);
-  size(640, 640);    // use OPENGL rendering for bilinear filtering on texture    
+  size(64, 64);    // use OPENGL rendering for bilinear filtering on texture    
 
   invWidth = 1.0f/width;
   invHeight = 1.0f/height;
@@ -69,7 +69,7 @@ void setup() {
 
   // create fluid and set options
   fluidSolver = new MSAFluidSolver2D((int)(FLUID_WIDTH), (int)(FLUID_WIDTH * height/width));
-  fluidSolver.enableRGB(false).setFadeSpeed(0.005).setDeltaT(0.8).setVisc(0.00001);
+  fluidSolver.enableRGB(false).setFadeSpeed(0.003).setDeltaT(0.8).setVisc(0.000001);
   //    fluidSolver.enableRGB(true).setFadeSpeed(0.003).setDeltaT(0.5).setVisc(0.0001);    
 
   // create image to hold fluid picture
@@ -83,7 +83,7 @@ void setup() {
   
   PFrame f = new PFrame();  
 //WAS RGB, 2
-colorMode(RGB, 1); 
+colorMode(RGB, 0.5); 
 
   initOsc();
 }
@@ -139,7 +139,7 @@ void addForce(float x, float y, float dx, float dy) {
     int index = fluidSolver.getIndexForNormalizedPosition(x, y);
 
 //WAS 1.4f
-    fluidSolver.rOld[index]  += 4.4f;
+    fluidSolver.rOld[index]  += 9.4f;
 //    fluidSolver.gOld[index]  += 1.2f;
 //    fluidSolver.bOld[index]  += 3.3f;
 
