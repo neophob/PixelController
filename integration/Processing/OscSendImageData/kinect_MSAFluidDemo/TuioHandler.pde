@@ -77,14 +77,12 @@ void updateTUIO() {
   }
   
   //old and ugly iterate style
-  Set<Integer> set = handPositions.keySet();
-  for (Integer handId: set) {
+  Set<Integer> setHandPosKeys = handPositions.keySet();
+  for (Integer handId: setHandPosKeys) {
     //fill(255,0,0);
     PVector currentHandPos = handPositions.get(handId);
-    if (currentHandPos.x == 0.0f) {
-      continue;
-    }
-    if (currentHandPos.y == 0.0f) {
+    if (currentHandPos.x < 0.000000001f || currentHandPos.y < 000000001f) {
+      //println("ignore call, return");
       continue;
     }
 
@@ -96,7 +94,9 @@ void updateTUIO() {
     PVector oldPos = new PVector(0f, 0f);
     if (previousHandPositions.containsKey(handId)) {
       oldPos = previousHandPositions.get(handId);
-      oldPos.sub(currentHandPos);
+      if (oldPos.x > 0.0f && oldPos.y > 0.0f) {
+        oldPos.sub(currentHandPos);        
+      }
     }
 
     //dynamic adjust the viewing window
@@ -130,9 +130,6 @@ void updateTUIO() {
       mouseVelY = oldPos.y*caly*-1f;
     }
     
-    //println("oldpos.y: "+oldPos.y+", mouseVelY: "+mouseVelY);
-    //println("mouseVel\t"+mouseVelX+" "+mouseVelY+"\t"+oldPos.x+" "+oldPos.y);
-    
     //filter out possible errors
     boolean addForce = true;
     float maxThreshold = 0.13f;    
@@ -147,11 +144,15 @@ void updateTUIO() {
     
     //add new force to create animation
     if (addForce) {
-      addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+      addForce(mouseNormX, mouseNormY, 1.2*mouseVelX, 1.2*mouseVelY);
     }
 
     //Store previous position to calculate velocity
-    previousHandPositions.put(handId, currentHandPos);
+    if (currentHandPos.x == 0.0f || currentHandPos.y == 0.0f) {
+      //println("current: "+currentHandPos);
+    } else {
+      previousHandPositions.put(handId, currentHandPos);
+    }
   }
 }
 
