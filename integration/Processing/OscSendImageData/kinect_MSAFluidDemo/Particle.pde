@@ -46,7 +46,8 @@ class Particle {
         vy = 0;
         radius = 5;
         alpha  = random(0.3, 1);
-        mass = random(0.1, 1);
+        mass = random(0.1, 0.5);
+//        mass = random(0.1, 1);
     }
 
 
@@ -83,10 +84,10 @@ class Particle {
         }
 
         // hackish way to make particles glitter when the slow down a lot
-        if(vx * vx + vy * vy < 1) {
-            vx = random(-1, 1);
-            vy = random(-1, 1);
-        }
+   //     if(vx * vx + vy * vy < 1) {
+   //         vx = random(-1, 1);
+   //         vy = random(-1, 1);
+   //     }
 
         // fade out a bit (and kill if alpha == 0);
         alpha *= 0.999;

@@ -41,31 +41,41 @@ float minXSize = 1000;
 float maxYSize = 0;
 float minYSize = 1000;
 
-void initTUIO() {
+boolean initTUIO() {
   kinect = new SimpleOpenNI(this, SimpleOpenNI.RUN_MODE_MULTI_THREADED);
   
   //flip x, this makes gestures much more intuitive
   kinect.setMirror(true);
 
-  kinect.enableDepth();
+  if (!kinect.enableDepth()) {
+    println("failed to init Kinect");
+    return false;
+  }
+  
   kinect.enableGesture();
   kinect.enableHands();
 
   kinect.addGesture(gesture);
   handPositions = new ConcurrentHashMap();
   previousHandPositions = new ConcurrentHashMap();
+  
+  return true;
 }
 
+float mouseVelX, mouseVelY;
 
 void updateTUIO() {
   kinect.update();
 
-//s.image(kinect.depthImage(), 0, 0);
-
+  if (showDepthMap) {
+    s.image(kinect.depthImage(), 0, 0);
+  }
+  
   //nothing todo!
   if (!handsTrackFlag) {
     return;
   }
+  
   //old and ugly iterate style
   Set<Integer> set = handPositions.keySet();
   for (Integer handId: set) {
@@ -106,31 +116,39 @@ void updateTUIO() {
     float mouseNormX = norm(currentHandPos.x, minXSize, maxXSize);
     float mouseNormY = norm(currentHandPos.y, minYSize, maxYSize);
     
-    float calx = mouseNormX/currentHandPos.x;
-    float mouseVelX = oldPos.x*calx*-1f;
-
-    float caly = mouseNormY/currentHandPos.y;
-    float mouseVelY = oldPos.y*caly*-1f;
-
+    if (currentHandPos.x==0) {
+      mouseVelX = 0;
+    } else {
+      float calx = mouseNormX/currentHandPos.x;
+      mouseVelX = oldPos.x*calx*-1f;
+    }    
+    
+    if (currentHandPos.y==0) {
+      mouseVelY = 0;
+    } else {
+      float caly = mouseNormY/currentHandPos.y;
+      mouseVelY = oldPos.y*caly*-1f;
+    }
+    
+    //println("oldpos.y: "+oldPos.y+", mouseVelY: "+mouseVelY);
     //println("mouseVel\t"+mouseVelX+" "+mouseVelY+"\t"+oldPos.x+" "+oldPos.y);
     
     //filter out possible errors
+    boolean addForce = true;
     float maxThreshold = 0.13f;    
     if (Math.abs(mouseVelX)>maxThreshold) {
-      //println("huge x value filtered out! "+mouseVelX);
-      while (Math.abs (mouseVelX)>maxThreshold) {
-        mouseVelX/=2f;
-      }
+      println("huge x value filtered out! "+mouseVelX+", oldpos.x: "+oldPos.x);
+      addForce = false;
     }
     if (Math.abs(mouseVelY)>maxThreshold) {
-      //println("huge y value filtered out! "+mouseVelY);
-      while (Math.abs (mouseVelY)>maxThreshold) {
-        mouseVelY/=2f;
-      }
-    }
+      println("huge y value filtered out! "+mouseVelY+", oldpos.y: "+oldPos.y);
+      addForce = false;
+    } 
     
     //add new force to create animation
-    addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+    if (addForce) {
+      addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+    }
 
     //Store previous position to calculate velocity
     previousHandPositions.put(handId, currentHandPos);

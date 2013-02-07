@@ -29,12 +29,7 @@
  *
  * ***********************************************************************/
 
-import java.nio.FloatBuffer;
-import com.sun.opengl.util.BufferUtil;
-
 class ParticleSystem {
-  FloatBuffer posArray;
-  FloatBuffer colArray;
 
   final static int maxParticles = 5000;
   int curIndex;
@@ -45,11 +40,7 @@ class ParticleSystem {
     particles = new Particle[maxParticles];
     for (int i=0; i<maxParticles; i++) particles[i] = new Particle();
     curIndex = 0;
-
-    posArray = BufferUtil.newFloatBuffer(maxParticles * 2 * 2);// 2 coordinates per point, 2 points per particle (current and previous)
-    colArray = BufferUtil.newFloatBuffer(maxParticles * 3 * 2);
   }
-
 
   void update() {
     for (int i=0; i<maxParticles; i++) {
@@ -59,11 +50,10 @@ class ParticleSystem {
     }
   }
 
-
+  int range = 15;
   void addParticles(float x, float y, int count ) {
-    for (int i=0; i<count; i++) addParticle(x + random(-15, 15), y + random(-15, 15));
+    for (int i=0; i<count; i++) addParticle(x + random(-range, range), y + random(-range, range));
   }
-
 
   void addParticle(float x, float y) {
     particles[curIndex].init(x, y);

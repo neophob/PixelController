@@ -43,7 +43,7 @@ import SimpleOpenNI.*;
 import java.util.concurrent.*;
 
 SimpleOpenNI kinect;
-final float FLUID_WIDTH = 64;
+final int FLUID_WIDTH = 16;
 
 float invWidth, invHeight;    // inverse of screen dimensions
 float aspectRatio, aspectRatio2;
@@ -57,6 +57,8 @@ PImage imgFluid;
 PFrame f;
 secondApplet s;
 
+boolean showDepthMap = false;
+boolean kinectConnected= false;
 
 void setup() {
   frameRate(30);
@@ -68,22 +70,27 @@ void setup() {
   aspectRatio2 = aspectRatio * aspectRatio;
 
   // create fluid and set options
-  fluidSolver = new MSAFluidSolver2D((int)(FLUID_WIDTH), (int)(FLUID_WIDTH * height/width));
-  fluidSolver.enableRGB(false).setFadeSpeed(0.003).setDeltaT(0.8).setVisc(0.000001);
+//  fluidSolver = new MSAFluidSolver2D((int)(FLUID_WIDTH), (int)(FLUID_WIDTH * height/width));
+  fluidSolver = new MSAFluidSolver2D(FLUID_WIDTH, FLUID_WIDTH);
+//  fluidSolver.enableRGB(false).setFadeSpeed(0.003).setDeltaT(0.8).setVisc(0.000001);
+  fluidSolver.enableRGB(false).setFadeSpeed(0.03).setDeltaT(0.7).setVisc(0.0000000000000001);
   //    fluidSolver.enableRGB(true).setFadeSpeed(0.003).setDeltaT(0.5).setVisc(0.0001);    
 
   // create image to hold fluid picture
-  imgFluid = createImage(fluidSolver.getWidth(), fluidSolver.getHeight(), RGB);
-
+//  imgFluid = createImage(fluidSolver.getWidth(), fluidSolver.getHeight(), RGB);
+  imgFluid = createImage(FLUID_WIDTH, FLUID_WIDTH, RGB);
+  println("created image x:"+fluidSolver.getWidth()+", y:"+fluidSolver.getHeight());
+  
   // create particle system
   particleSystem = new ParticleSystem();
 
   // init TUIO
-  initTUIO();
+  kinectConnected = initTUIO();
   
   PFrame f = new PFrame();  
 //WAS RGB, 2
-colorMode(RGB, 0.5); 
+  colorMode(RGB, 1); 
+//  colorMode(RGB, 0.5); 
 
   initOsc();
 }
@@ -100,23 +107,29 @@ void mouseMoved() {
 }
 
 void draw() {
-  updateTUIO();
+  if (kinectConnected) {
+    updateTUIO();
+  }
 
   fluidSolver.update();
 
+  int i=0;
   imgFluid.loadPixels();
-  for (int i=0; i<fluidSolver.getNumCells(); i++) {
-    int d = 1;
-    //we only use the red channel, as we don't need rgb data
-    imgFluid.pixels[i] = color(fluidSolver.r[i] * d);
+  
+  //do not copy boarder - its duplicate
+  for (int y=1; y<fluidSolver.getHeight()-1; y++) {
+    for (int x=1; x<fluidSolver.getWidth()-1; x++) {
+      int ofs = fluidSolver.getWidth()*y+x;
+      //we only use the red channel, as we don't need rgb data
+      imgFluid.pixels[i++] = color(fluidSolver.r[ofs]);      
+    }
   }  
+
   imgFluid.updatePixels();//  fastblur(imgFluid, 2);
   image(imgFluid, 0, 0, width, height);
+  //copy(imgFluid, 2, 2, imgFluid.width-4, imgFluid.height-4, 0, 0, width, height);
   
   particleSystem.update();
-  
-  //do not blur here, use way too much cpu!
-  //filter(BLUR, 1);
   
   sendOsc();
 }
@@ -133,19 +146,22 @@ void addForce(float x, float y, float dx, float dy) {
     if (y<0) y = 0; 
     else if (y>1) y = 1;
 
-    float colorMult = 5;
     float velocityMult = 30.0f;
 
     int index = fluidSolver.getIndexForNormalizedPosition(x, y);
 
-//WAS 1.4f
     fluidSolver.rOld[index]  += 9.4f;
-//    fluidSolver.gOld[index]  += 1.2f;
-//    fluidSolver.bOld[index]  += 3.3f;
 
     particleSystem.addParticles(x * width, y * height, 10);
     fluidSolver.uOld[index] += dx * velocityMult;
     fluidSolver.vOld[index] += dy * velocityMult;
+  }
+}
+
+void keyPressed() {
+  if (key == 's') {
+    if (showDepthMap) showDepthMap=false; 
+    else showDepthMap=true;
   }
 }
 
