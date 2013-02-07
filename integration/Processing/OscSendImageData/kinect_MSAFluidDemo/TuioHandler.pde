@@ -36,6 +36,17 @@ String gesture = "RaiseHand";
 boolean handsTrackFlag = false;
 PVector currentHand;
 
+float maxXSize = 0;
+float minXSize = 1000;
+float maxYSize = 0;
+float minYSize = 1000;
+
+float maxXSpeed = 0;
+float minXSpeed = 1000;
+float maxYSpeed = 0;
+float minYSpeed = 1000;
+
+
 void initTUIO() {
   kinect = new SimpleOpenNI(this, SimpleOpenNI.RUN_MODE_MULTI_THREADED);
   
@@ -52,13 +63,10 @@ void initTUIO() {
 }
 
 
-
-
-float maxX=0, maxY=0;
 void updateTUIO() {
   kinect.update();
 
- // s.image(kinect.depthImage(), 0, 0);
+//s.image(kinect.depthImage(), 0, 0);
 
   //nothing todo!
   if (!handsTrackFlag) {
@@ -69,64 +77,82 @@ void updateTUIO() {
   for (Integer handId: set) {
     //fill(255,0,0);
     PVector currentHandPos = handPositions.get(handId);
-    if (currentHandPos.x < 0.0001f) {
-      //println("X is small "+currentHandPos.x);
+    if (currentHandPos.x == 0.0f) {
       continue;
     }
-    if (currentHandPos.y < 0.0001f) {
-      //println("Y is small "+currentHandPos.y);
+    if (currentHandPos.y == 0.0f) {
       continue;
     }
-    //draw current pos
-    //ellipse(currentHandPos.x, currentHandPos.y, 15, 15);
 
+    //draw dot
+    s.fill(128, 255, 64);
+    s.ellipse(currentHandPos.x, currentHandPos.y, 15, 15);
+
+    //calculate velocity
     PVector oldPos = new PVector(0f, 0f);
     if (previousHandPositions.containsKey(handId)) {
       oldPos = previousHandPositions.get(handId);
       oldPos.sub(currentHandPos);
-
-      boolean printMax=false;      
-      if (oldPos.x > maxX) {
-        maxX = oldPos.x;
-        printMax = true;
-      }
-      if (oldPos.y > maxY) {
-        maxY = oldPos.y;
-        printMax = true;
-      }
-
-      if (printMax) {
-        println(handId+" max x: "+maxX+" max y: "+maxY);
-      }
     }
 
-    s.fill(128, 255, 64);
-    s.ellipse(currentHandPos.x, currentHandPos.y, 15, 15);
+    //dynamic adjust the viewing window
+    if (currentHandPos.x > maxXSize) {
+      maxXSize = currentHandPos.x;
+    }
+    if (minXSize > currentHandPos.x && currentHandPos.x>0.0f) {
+      minXSize = currentHandPos.x;
+    }
+    if (currentHandPos.y > maxYSize) {
+      maxYSize = currentHandPos.y;
+    }
+    if (minYSize > currentHandPos.y && currentHandPos.y>0.0f) {
+      minYSize = currentHandPos.y;
+    }    
 
-    float mouseNormX = currentHandPos.x * invWidth;
-    float mouseNormY = currentHandPos.y * invHeight;
-    float mouseVelX = (oldPos.x) * -invWidth;
-    float mouseVelY = (oldPos.y) * -invHeight;
+    //dynamic adjust the moving speed
+    if (oldPos.x > maxXSpeed) {
+      maxXSpeed = oldPos.x;
+    }
+    if (minXSpeed > oldPos.x) {
+      minXSpeed = oldPos.x;
+    }
+    if (oldPos.y > maxYSpeed) {
+      maxYSpeed = oldPos.y;
+    }
+    if (minYSpeed > oldPos.y) {
+      minYSpeed = oldPos.y;
+    }    
 
-println(mouseNormX+" "+ invWidth+" "+currentHandPos.x);
+    float mouseNormX = norm(currentHandPos.x, minXSize, maxXSize);
+    float mouseNormY = norm(currentHandPos.y, minYSize, maxYSize);
+    
+    float calx = mouseNormX/currentHandPos.x;
+    float mouseVelX = oldPos.x*calx*-1f;
 
+    float caly = mouseNormY/currentHandPos.y;
+    float mouseVelY = oldPos.y*caly*-1f;
 
-    float maxThreshold = 0.13f;
-    //println(mouseVelX+"\t"+mouseVelY);
+    //println("mouseVel\t"+mouseVelX+" "+mouseVelY+"\t"+oldPos.x+" "+oldPos.y);
+    
+    //filter out possible errors
+    float maxThreshold = 0.13f;    
     if (Math.abs(mouseVelX)>maxThreshold) {
-      println("huge x value filtered out! "+mouseVelX);
+      //println("huge x value filtered out! "+mouseVelX);
       while (Math.abs (mouseVelX)>maxThreshold) {
-        mouseVelX/=2;
+        mouseVelX/=2f;
       }
     }
     if (Math.abs(mouseVelY)>maxThreshold) {
-      println("huge y value filtered out! "+mouseVelY);
+      //println("huge y value filtered out! "+mouseVelY);
       while (Math.abs (mouseVelY)>maxThreshold) {
-        mouseVelY/=2;
+        mouseVelY/=2f;
       }
     }
+    
+    //add new force to create animation
     addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
 
+    //Store previous position to calculate velocity
     previousHandPositions.put(handId, currentHandPos);
   }
 }
@@ -144,7 +170,12 @@ void onUpdateHands(int handId, PVector position, float time) {
   //TODO: make hand gestures only available in a specific range, for example between 2-4m away from the sensor
   
   kinect.convertRealWorldToProjective(position, position);
-  handPositions.put(handId, position);
+  if (position.x>0.0f && position.y>0.0f) {    
+    handPositions.put(handId, position);
+  } else {
+    println("ignore wrong detected hand!");
+  }
+  
 }
 
 void onDestroyHands(int handId, float time) {

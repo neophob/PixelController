@@ -51,7 +51,7 @@ class ParticleSystem {
   }
 
 
-  void updateAndDraw() {
+  void update() {
     for (int i=0; i<maxParticles; i++) {
       if (particles[i].alpha > 0) {
         particles[i].update();

@@ -83,7 +83,9 @@ void setup() {
   
   PFrame f = new PFrame();  
 //WAS RGB, 2
-colorMode(RGB, 1);  
+colorMode(RGB, 1); 
+
+  initOsc();
 }
 
 
@@ -92,7 +94,8 @@ void mouseMoved() {
   float mouseNormY = mouseY * invHeight;
   float mouseVelX = (mouseX - pmouseX) * invWidth;
   float mouseVelY = (mouseY - pmouseY) * invHeight;
-  //println(mouseVelY);
+  
+  //println(mouseVelX+"\t"+mouseVelY);
   addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
 }
 
@@ -104,12 +107,15 @@ void draw() {
   imgFluid.loadPixels();
   for (int i=0; i<fluidSolver.getNumCells(); i++) {
     int d = 1;
-    imgFluid.pixels[i] = color(fluidSolver.r[i] * d);//, fluidSolver.g[i] * d, fluidSolver.b[i] * d);
+    //we only use the red channel, as we don't need rgb data
+    imgFluid.pixels[i] = color(fluidSolver.r[i] * d);
   }  
   imgFluid.updatePixels();//  fastblur(imgFluid, 2);
   image(imgFluid, 0, 0, width, height);
   
-  particleSystem.updateAndDraw();
+  particleSystem.update();
+  
+  //do not blur here, use way too much cpu!
   //filter(BLUR, 1);
   
   sendOsc();
