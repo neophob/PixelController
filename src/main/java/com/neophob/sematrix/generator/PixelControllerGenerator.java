@@ -119,7 +119,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         colorFade = new ColorFade(this);
         
         this.oscListener1 = new OscListener(this, GeneratorName.OSC_GEN1);
-        this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN1);
+        this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN2);
     }
 
     /* (non-Javadoc)
