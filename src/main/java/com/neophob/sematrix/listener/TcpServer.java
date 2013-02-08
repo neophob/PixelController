@@ -214,7 +214,7 @@ public final class TcpServer implements Runnable {
 	 * @param msg the msg
 	 */
 	private void processMessage(String[] msg) {
-		ValidCommands response = MessageProcessor.processMsg(msg, true);
+		ValidCommands response = MessageProcessor.processMsg(msg, true, null);
 
 		if (response != null) {
 			switch (response) {
