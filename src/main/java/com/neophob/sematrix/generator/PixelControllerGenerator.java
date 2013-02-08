@@ -64,8 +64,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The Color fader- */
     private ColorFade colorFade;
     
-    private AbstractOscListener oscListener1;
-    private AbstractOscListener oscListener2;
+    private OscListener oscListener1;
+    private OscListener oscListener2;
     
     /** The textwriter. */
     private Textwriter textwriter;
@@ -118,8 +118,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         colorScroll = new ColorScroll(this);
         colorFade = new ColorFade(this);
         
-        this.oscListener1 = new OscListener1(this);
-        this.oscListener2 = new OscListener2(this);
+        this.oscListener1 = new OscListener(this, GeneratorName.OSC_GEN1);
+        this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN1);
     }
 
     /* (non-Javadoc)
@@ -335,7 +335,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	 * 
 	 * @return
 	 */
-	public AbstractOscListener getOscListener1() {
+	public OscListener getOscListener1() {
 		return oscListener1;
 	}
 
@@ -343,7 +343,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	 * 
 	 * @return
 	 */
-	public AbstractOscListener getOscListener2() {
+	public OscListener getOscListener2() {
 		return oscListener2;
 	}
 

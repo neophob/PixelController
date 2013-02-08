@@ -28,13 +28,13 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  *
  * @author mvogt
  */
-public abstract class AbstractOscListener extends Generator {
+public class OscListener extends Generator {
 
 	/** The Constant RESIZE_TYP. */
 	private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;	
 	
 	/** The Constant LOG. */
-	private static final Logger LOG = Logger.getLogger(AbstractOscListener.class.getName());
+	private static final Logger LOG = Logger.getLogger(OscListener.class.getName());
 			
 	private byte[] buffer;
 	
@@ -44,7 +44,7 @@ public abstract class AbstractOscListener extends Generator {
 	 * @param controller the controller
 	 * @param filename the filename
 	 */
-	public AbstractOscListener(PixelControllerGenerator controller, GeneratorName generatorName) {
+	public OscListener(PixelControllerGenerator controller, GeneratorName generatorName) {
 		super(controller, generatorName, RESIZE_TYP);
 	}
 	
