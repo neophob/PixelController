@@ -18,6 +18,10 @@
  */
 package com.neophob.sematrix.listener;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.glue.Visual;
@@ -32,9 +36,9 @@ import com.neophob.sematrix.output.gui.GuiCallbackAction;
  */
 public abstract class KeyboardHandler {
 
+	private static final Logger LOG = Logger.getLogger(KeyboardHandler.class.getName());
+
     public static GuiCallbackAction registerGuiClass;
-    
-    
     
     /**
      * 
@@ -73,24 +77,48 @@ public abstract class KeyboardHandler {
 
         //change current generator 1
         case 'F':
-            if (v!=null) {
-                int currentGenerator = v.getGenerator1Idx();
-                int nrOfGenerators = col.getPixelControllerGenerator().getSize();
-                currentGenerator++;
-                v.setGenerator1(currentGenerator%nrOfGenerators);
-                registerGuiClass.refreshGui();
-            }
-            break;
+        	if (v!=null) {            	
+        		int currentGenerator = v.getGenerator1Idx();
+        		int nrOfGenerators = 1+col.getPixelControllerGenerator().getSize();
+
+        		int count=nrOfGenerators;
+        		Generator g=null;
+        		while (count>=0 && g==null) {
+        			currentGenerator++;
+        			g = col.getPixelControllerGenerator().getGenerator(currentGenerator%nrOfGenerators);
+        		}
+
+        		if (g!=null && g.getName() != null) {
+        			System.out.println(g.getName());
+        			v.setGenerator1(currentGenerator%nrOfGenerators);
+        			registerGuiClass.refreshGui();            			
+        		} else {
+        			LOG.log(Level.INFO, "Could not find new Generator!");
+        		}
+        	}
+        	break;
 
         //change current generator 2
         case 'G':
-            if (v!=null) {
-                int currentGenerator = v.getGenerator2Idx();
-                int nrOfGenerators = col.getPixelControllerGenerator().getSize();
-                currentGenerator++;
-                v.setGenerator2(currentGenerator%nrOfGenerators);
-                registerGuiClass.refreshGui();
-            }
+        	if (v!=null) {				
+        		int currentGenerator = v.getGenerator2Idx();
+        		int nrOfGenerators = 1+col.getPixelControllerGenerator().getSize();
+
+        		int count=nrOfGenerators;
+        		Generator g=null;
+        		while (count>=0 && g==null) {
+        			currentGenerator++;
+        			g = col.getPixelControllerGenerator().getGenerator(currentGenerator%nrOfGenerators);
+        		}
+
+        		if (g!=null && g.getName() != null) {
+        			System.out.println(g.getName());
+        			v.setGenerator2(currentGenerator%nrOfGenerators);
+        			registerGuiClass.refreshGui();            			
+        		} else {
+        			LOG.log(Level.INFO, "Could not find new Generator!");
+        		}
+        	}
             break;
 
         //change current effect 1

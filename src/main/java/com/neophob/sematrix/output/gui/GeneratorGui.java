@@ -151,6 +151,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private int frameCount;
     private int[] buffer = null;
     
+    private boolean initialized = false;
+    
     /**
      * Instantiates a new internal buffer.
      *
@@ -634,6 +636,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //select first visual
         selectedVisualList.activate(0);
         selectedOutputs.activate(0);
+        
+        initialized = true;
     }
 
     public void RANDOM_ELEMENT(int val) {
@@ -897,6 +901,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * 
      */
     public void mousePressed() {
+    	
+    	if (!initialized) {
+    		return;
+    	}
+    	
         // print the current mouseoverlist on mouse pressed
         List <GuiElement> clickedOn = new ArrayList<GuiElement>();
         List<ControllerInterface<?>> lci = cp5.getWindow().getMouseOverList();
@@ -998,6 +1007,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
     public boolean isTextfieldInEditMode() {
+    	if (!initialized) {
+    		return false;
+    	}
+
     	return textGenerator.isFocus() || presetName.isFocus();
     }
 
