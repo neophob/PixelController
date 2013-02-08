@@ -42,6 +42,11 @@ public abstract class KeyboardHandler {
      */
     public static void keyboardHandler(char key) {
     	
+    	//if a user press a key during the setup - ignore it!
+    	if (registerGuiClass==null) {    		
+    		return;
+    	}
+    	
     	//if we edit a textfield, ignore keyboard shortcuts
     	if (registerGuiClass.isTextfieldInEditMode()) {
     		return;
