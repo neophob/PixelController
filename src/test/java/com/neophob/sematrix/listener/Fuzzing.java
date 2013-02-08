@@ -54,7 +54,7 @@ public class Fuzzing {
                 param[1] = UUID.randomUUID().toString();
             }
             
-            MessageProcessor.processMsg(param, false);
+            MessageProcessor.processMsg(param, false, null);
         }
     }
 
