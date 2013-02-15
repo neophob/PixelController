@@ -31,6 +31,7 @@ import oscP5.OscStatus;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.jmx.PacketAndBytesStatictics;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -39,7 +40,7 @@ import com.neophob.sematrix.properties.ValidCommands;
  * @author michu
  *
  */
-public class OscServer implements OscEventListener {
+public class OscServer implements OscEventListener, PacketAndBytesStatictics {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(OscServer.class.getName());
@@ -47,6 +48,9 @@ public class OscServer implements OscEventListener {
 	private int listeningPort;
 
 	private OscP5 oscP5;
+	
+	private int oscPacketCounter;
+	private long oscBytesRecieved;
 
 	/**
 	 * 
@@ -85,6 +89,9 @@ public class OscServer implements OscEventListener {
 			LOG.log(Level.INFO,	"Ignore empty OSC message...");
 			return;
 		}
+		
+		oscPacketCounter++;
+		oscBytesRecieved += theOscMessage.getBytes().length;
 		
 		//address pattern -> internal message mapping
 		String pattern = theOscMessage.addrPattern().trim().toUpperCase();
@@ -134,6 +141,23 @@ public class OscServer implements OscEventListener {
 	public void oscStatus(OscStatus arg0) {
 		// TODO Auto-generated method stub	
 	}
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.jmx.PacketAndBytesStatictics#getPacketCounter()
+     */
+    @Override
+    public int getPacketCounter() {
+        return oscPacketCounter;
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.jmx.PacketAndBytesStatictics#getBytesRecieved()
+     */
+    @Override
+    public long getBytesRecieved() {
+        return oscBytesRecieved;
+    }
+	
 	
 	
 }

@@ -108,6 +108,11 @@ public final class PixConClientJmx {
 				"running since",
 				DurationFormatUtils.formatDurationHMS(System.currentTimeMillis() - mbeanProxy.getStartTime())
 		);
+        System.out.printf("%-25s: %s/%s\n",
+                "OSC Packets/Bytes Recieved",
+                mbeanProxy.getRecievedOscPakets(),
+                mbeanProxy.getRecievedOscBytes()
+        );
 		
 		// print average timing information
 		System.out.println("\nThe following average times have been collected during the last " 

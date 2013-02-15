@@ -254,6 +254,8 @@ public final class Collector {
         try {           
             int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
             oscServer = new OscServer(papplet, listeningOscPort);
+            //register osc server in the statistic class
+            this.pixConStat.setOscServerStatistics(oscServer);
         } catch (Exception e) {
             LOG.log(Level.SEVERE, "failed to start OSC Server", e);
         }          	   

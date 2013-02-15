@@ -143,6 +143,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Label sentFrames;
     private Label outputErrorCounter;
     private Label outputState;
+    private Label oscStatistic;
     
     /** The target y size. */
     private int singleVisualXSize, singleVisualYSize;
@@ -605,6 +606,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         String tcpPort = ""+Integer.parseInt(col.getPh().getProperty(ConfigConstant.NET_LISTENING_PORT, "")); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("nfoTcpPort", Messages.getString("GeneratorGui.TCP_PORT")+tcpPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
+        oscStatistic = cp5.addTextlabel("nfoOscStatistic", Messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
+        nfoYPos+=yposAdd;
         
         //----------
         // LOGO
@@ -739,6 +742,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String outputStateStr = WordUtils.capitalizeFully(col.getOutputDevice().getConnectionStatus());
             outputState.setText(outputStateStr);
             outputErrorCounter.setText(Messages.getString("GeneratorGui.IO_ERRORS")+col.getOutputDevice().getErrorCounter());             //$NON-NLS-1$
+            long recievedMB = col.getPixConStat().getRecievedOscBytes()/1024/1024;
+            String oscStat  = Messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
+            oscStatistic.setText(oscStat);
         }
         
         //refresh gui from time to time

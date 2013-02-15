@@ -82,6 +82,8 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	/** The output list. */
 	private List<Output> outputList;
 	
+	private PacketAndBytesStatictics oscServerStatistics;
+	
 	/**
 	 * Register the JMX Bean.
 	 *
@@ -291,4 +293,42 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	public OutputDeviceEnum getOutputType(int output) {
 		return this.outputList.get(output).getType();
 	}
+
+    /**
+     * @return the oscServerStatistics
+     */
+    public PacketAndBytesStatictics getOscServerStatistics() {
+        return oscServerStatistics;
+    }
+
+    /**
+     * @param oscServerStatistics the oscServerStatistics to set
+     */
+    public void setOscServerStatistics(PacketAndBytesStatictics oscServerStatistics) {
+        this.oscServerStatistics = oscServerStatistics;
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getRecievedOscPakets()
+     */
+    @Override
+    public int getRecievedOscPakets() {
+        if (this.oscServerStatistics==null) {
+            return 0;            
+        }
+        return this.oscServerStatistics.getPacketCounter();
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.jmx.PixelControllerStatusMBean#getRecievedOscBytes()
+     */
+    @Override
+    public long getRecievedOscBytes() {
+        if (this.oscServerStatistics==null) {
+            return 0;            
+        }
+        return this.oscServerStatistics.getBytesRecieved();
+    }
+	
+	
 }

@@ -78,6 +78,16 @@ public interface PixelControllerStatusMBean {
 	 * @return returns the number of registered output instances
 	 */
 	int getNumberOfOutputs();
+	
+	/**
+	 * @return return the number of osc pakets recieved
+	 */
+	int getRecievedOscPakets();
+	
+    /**
+     * @return return the number of osc pakets bytes recieved
+     */
+	long getRecievedOscBytes();
 
 	/**
 	 * @return returns the type of the given output instance position

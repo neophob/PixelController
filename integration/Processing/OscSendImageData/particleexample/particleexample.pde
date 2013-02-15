@@ -2,7 +2,7 @@
 
 ParticleSystem ps;
 
-final int MAX_PARTICLE = 50;
+final int MAX_PARTICLE = 20;
 final int PARTICLE_SIZE_Y = 4*2;
 final int PARTICLE_SIZE_X = 2*2;
 
@@ -57,7 +57,6 @@ class ParticleSystem {
 
 
 // A simple Particle class
-int colr=0;
 class Particle {
   PVector location;
   PVector velocity;
@@ -65,14 +64,15 @@ class Particle {
   float lifespan;
   int col;
 
-  Particle(PVector l) {
+  Particle(PVector l) {    
     velocity = new PVector(random(-1,1),random(-1,1));
+    while (Math.abs(velocity.x) < 0.1f && Math.abs(velocity.y) < 0.1f) {
+      velocity = new PVector(random(-1,1),random(-1,1));
+    }
     acceleration = new PVector(velocity.x/100f, velocity.y/100f);
     location = l.get();
     lifespan = 255.0;
-    //col = int(random(255));
-    col = colr%255;
-    colr+=2;
+    col=192;
   }
 
   void run() {
@@ -91,7 +91,8 @@ class Particle {
   void display() {
 //    stroke(255,lifespan);
     noStroke();
-    fill(col,lifespan);
+    fill(Math.abs((col--)%255), 255);
+//    fill(col,lifespan);    
     rect(location.x,location.y,PARTICLE_SIZE_X,PARTICLE_SIZE_Y);
   }
   
