@@ -2,7 +2,7 @@
 
 ParticleSystem ps;
 
-final int MAX_PARTICLE = 20;
+final int MAX_PARTICLE = 10;
 final int PARTICLE_SIZE_Y = 4*2;
 final int PARTICLE_SIZE_X = 2*2;
 
