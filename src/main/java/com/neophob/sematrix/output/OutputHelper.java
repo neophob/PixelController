@@ -82,29 +82,7 @@ public class OutputHelper {
 		return bufferTwo;
 	}
 
-
-
-	/**
-	 * 
-	 * @param frameBuf
-	 * @return
-	 */
-/*	public static byte[] convertIntToByteBuffer(int[] frameBuf) {
-		byte[] buffer = new byte[frameBuf.length*3];
-		int ofs;
-		for (int i = 0; i < frameBuf.length; i++) {
-			ofs = i*3;
-			buffer[ofs++] = (byte) ((frameBuf[i]>>16) & 0xff);
-			buffer[ofs++] = (byte) ((frameBuf[i]>>8)  & 0xff);
-			buffer[ofs  ] = (byte) ( frameBuf[i]      & 0xff);
-		}
-
-		return buffer;
-	}*/
-
-
-
-
+	
 	/**
 	 * Convert buffer to15bit.
 	 *
