@@ -109,7 +109,7 @@ public class Tpm2Net extends Output {
 			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, TPM2_NET_PORT);
 
 			this.initialized = true;
-			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution x/y {1}/{2}",  
+			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution: {1}/{2}",  
 					new Object[] { this.targetAddr.toString(), this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
 			);
 
