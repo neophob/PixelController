@@ -36,6 +36,7 @@ Changelog v1.3.0 to v1.3.1
 -Fix NPE during application launch
 -Fix NPE if using keyboard shortcuts to select a generator
 -Artnet Output: respect color order (panel.color.order setting)
+-TPM2 Output: fix layout (for example ROTATE_180) exceptions
  
 
 Changelog v1.2.x to v1.3.0

@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.lpd6803.Lpd6803;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
@@ -110,11 +109,13 @@ public class Tpm2Net extends Output {
 			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, TPM2_NET_PORT);
 
 			this.initialized = true;
+			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution x/y {1}/{2}",  
+					new Object[] { this.targetAddr.toString(), this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
+			);
+
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to resolve target address: {0}", e);
 		}
-
-
 	}
 
 	
@@ -167,7 +168,7 @@ public class Tpm2Net extends Output {
 
 				int[] transformedBuffer = 
 						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
-								Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
+								this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
 				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 				
