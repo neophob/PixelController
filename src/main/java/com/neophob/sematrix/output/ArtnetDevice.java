@@ -102,7 +102,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 	public void update() {
 		if (this.initialized) {
 			if (this.nrOfUniverse == 1) {
-				sendBufferToArtnetReceiver(0, OutputHelper.convertIntToByteBuffer(getTransformedBuffer()) );
+				sendBufferToArtnetReceiver(0, OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat) );
 			} else {
 				int[] fullBuffer = getTransformedBuffer();				
 				int remainingInt = fullBuffer.length;
@@ -116,7 +116,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 					System.arraycopy(fullBuffer, ofs, buffer, 0, tmp);
 					remainingInt-=tmp;
 					ofs+=tmp;
-					sendBufferToArtnetReceiver(i, OutputHelper.convertIntToByteBuffer(buffer));
+					sendBufferToArtnetReceiver(i, OutputHelper.convertBufferTo24bit(buffer, colorFormat) );					
 				}
 			}
 			

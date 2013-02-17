@@ -89,7 +89,7 @@ public class OutputHelper {
 	 * @param frameBuf
 	 * @return
 	 */
-	public static byte[] convertIntToByteBuffer(int[] frameBuf) {
+/*	public static byte[] convertIntToByteBuffer(int[] frameBuf) {
 		byte[] buffer = new byte[frameBuf.length*3];
 		int ofs;
 		for (int i = 0; i < frameBuf.length; i++) {
@@ -100,7 +100,7 @@ public class OutputHelper {
 		}
 
 		return buffer;
-	}
+	}*/
 
 
 
