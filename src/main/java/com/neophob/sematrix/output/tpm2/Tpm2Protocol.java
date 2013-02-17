@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.output.tpm2;
 
-import com.neophob.sematrix.properties.ColorFormat;
 
 /**
  * TPM serial protocol converter
@@ -40,7 +39,7 @@ public abstract class Tpm2Protocol {
      * @param frame
      * @return
      */
-    public static byte[] doProtocol(int[] frame, ColorFormat colorFormat) {
+    public static byte[] doProtocol(int[] frame) {
         //3 colors per pixel
         int index = 0;
         int frameSize = frame.length*3;

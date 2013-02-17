@@ -73,7 +73,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	 */
 	public void update() {		
 		if (initialized) {					
-			tpm2.sendFrame(Tpm2Protocol.doProtocol(getTransformedBuffer(), colorFormat));
+			tpm2.sendFrame(Tpm2Protocol.doProtocol(getTransformedBuffer()));
 		}
 	}
 
