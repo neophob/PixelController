@@ -26,6 +26,7 @@ Roadmap PixelController
 -Add Raspberry PI support, so the PixelInvader Panels can controlled via LAN. (ser2net on RPI and new output device)
 -add option to query buffersize via OSC
 -update manual (generic osc generator)
+-add more fader (pixel fader for example)
 
 
 Changelog v1.3.0 to v1.3.1
@@ -33,8 +34,8 @@ Changelog v1.3.0 to v1.3.1
 -Add generic (OSC) input generator, see Processing examples (integration/Processing/OscSendImageData) how to use it
 -Update OSC Server buffer size (32k) to accept image data
 -Add OSC Statistics in GUI/JMX
--Fix NPE during application launch
--Fix NPE if using keyboard shortcuts to select a generator
+-Fix NPE during application launch and a key is pressed
+-Fix NPE if using keyboard shortcuts to select a non existent generator (for example capture generator)
 -Artnet Output: respect color order (panel.color.order setting)
 -TPM2 Output: fix layout (for example ROTATE_180) exceptions
 -Serial Outputs (AdaVision, Rainbowduino v3, TPM2): fix serial port name issue, case sensitive (Issue #30)
