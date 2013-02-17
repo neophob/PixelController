@@ -31,7 +31,7 @@ Roadmap PixelController
 Changelog v1.3.0 to v1.3.1
 --------------------------
 -Add generic (OSC) input generator, see Processing examples (integration/Processing/OscSendImageData) how to use it
--Update OSC Server buffer size (8k) to accept image data
+-Update OSC Server buffer size (32k) to accept image data
 -Add OSC Statistics in GUI/JMX
 -Fix NPE during application launch
 -Fix NPE if using keyboard shortcuts to select a generator
