@@ -23,10 +23,9 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.properties.ColorFormat;
 
-
-
 /**
- * Output Helper
+ * Output Helper Class
+ * Contains some common help methods to convert image buffers
  *
  * @author michu
  */
