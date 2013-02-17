@@ -41,7 +41,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 	private static final int BPS = 115200;
 	private static final int HEADERSIZE = 6;
 
-	private static final String VERSION = "0.3";
+	private static final String VERSION = "0.4";
 
 	private int panelsize;
 	
@@ -59,7 +59,7 @@ public class AdaVision extends OnePanelResolutionAwareOutput {
 		LOG.log(Level.INFO,	"Initialize AdaVision lib v{0}", VERSION);
 
 		//TODO should use autodetection someday
-		String serialPort = ph.getAdavisionSerialPort().toUpperCase();
+		String serialPort = OutputHelper.getSerialPortName(ph.getAdavisionSerialPort());
 		if (serialPort==null) {
 			serialPort = Serial.list()[0];
 		}

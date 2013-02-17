@@ -39,6 +39,8 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2.class.getName());
 			
+	private static final String VERSION = "1.0";
+
 	private Tpm2Serial tpm2;
 	
 	/**
@@ -56,12 +58,17 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 		}
 		
 		//HINT: on windows you need to (for example) use COM1, com1 will not work! (case sensitive)
-		String serialPort = ph.getTpm2Device().toUpperCase();
+		String serialPort = OutputHelper.getSerialPortName(ph.getTpm2Device().toUpperCase());
 		this.initialized = false;
 		this.supportConnectionState = true;
 		try {
 			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, serialPort, baud);
-			this.initialized = true;			
+			this.initialized = true;
+			
+			LOG.log(Level.INFO, "Initialized TPM2 serial device v{0}, target port: {1}, Resolution: {2}/{3}",  
+					new Object[] { VERSION, serialPort, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
+			);
+			
 		} catch (NoSerialPortFoundException e) {
 			LOG.log(Level.WARNING, "failed to initialize serial port!", e);
 		}

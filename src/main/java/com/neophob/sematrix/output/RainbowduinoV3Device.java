@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.output;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -39,7 +40,13 @@ public class RainbowduinoV3Device extends Output {
 		super(OutputDeviceEnum.RAINBOWDUINO_V3, ph, controller, 8);
 		
 		// initialize internal variables
-		List<String> devices = ph.getRainbowduinoV3SerialDevices();
+		List<String> tmp = ph.getRainbowduinoV3SerialDevices();
+		List<String> devices = new ArrayList<String>();
+		for (String s: tmp) {
+			//convert os dependent serial port names
+			devices.add(OutputHelper.getSerialPortName(s));
+		}
+		
 		this.rainbowduinoV3Devices = new RainbowduinoV3[devices.size()];
 		GammaTable gammaTable = new GammaTable();
 		// construct RainbowduinoV3 instances

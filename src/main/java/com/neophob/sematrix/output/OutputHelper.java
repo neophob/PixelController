@@ -21,11 +21,15 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
+import processing.serial.Serial;
+
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
  * Output Helper Class
- * Contains some common help methods to convert image buffers
+ * Contains some common helper methods used by the output devices 
  *
  * @author michu
  */
@@ -198,5 +202,23 @@ public class OutputHelper {
         }       
     }
     
+    /**
+     * serial port names are CASE SENSITIVE. this sounds logically on unix platform
+     * however com1 will not work on windows, there all names need to be in uppercase (COM1)
+     * 
+     * see https://github.com/neophob/PixelController/issues/30 for more details
+     * @param configuredName
+     * @return
+     */
+    public static String getSerialPortName(String configuredName) {
+    	for (String portName: Serial.list()) {
+    		if (StringUtils.equalsIgnoreCase(portName, configuredName)) {
+    			return portName;
+    		}
+    	}
+    	
+    	//we didn't found the port, hope that the provided name will work...
+    	return configuredName;
+    }
 
 }
