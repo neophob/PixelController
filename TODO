@@ -32,6 +32,7 @@ Changelog v1.3.0 to v1.3.1
 --------------------------
 -Add generic (OSC) input generator, see processing example how to use it.
 -Fix some minor Errors (NPE) during application launch.
+-Artnet Output: respect color order (panel.color.order setting)
  
 
 Changelog v1.2.x to v1.3.0
