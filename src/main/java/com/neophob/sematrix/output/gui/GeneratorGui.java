@@ -49,6 +49,7 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
+import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
 import com.neophob.sematrix.properties.ConfigConstant;
@@ -586,11 +587,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
-        String gammaText = WordUtils.capitalizeFully(StringUtils.replace(col.getOutputDevice().getGammaType().toString(), "_", " "));
-        cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        nfoYPos+=yposAdd;
-        cp5.addTextlabel("nfoBps", Messages.getString("GeneratorGui.OUTPUT_BPP")+col.getOutputDevice().getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        nfoYPos+=yposAdd;
+        Output output = col.getOutputDevice();
+        if (output!=null) {
+            String gammaText = WordUtils.capitalizeFully(StringUtils.replace(output.getGammaType().toString(), "_", " "));
+            cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
+            nfoYPos+=yposAdd;
+            cp5.addTextlabel("nfoBps", Messages.getString("GeneratorGui.OUTPUT_BPP")+output.getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+            nfoYPos+=yposAdd;
+        }
         sentFrames = cp5.addTextlabel("nfoSentFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;        
         outputErrorCounter = cp5.addTextlabel("nfoErrorFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -739,9 +743,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+col.getPixConStat().getFrameCount()); //$NON-NLS-1$
-            String outputStateStr = WordUtils.capitalizeFully(col.getOutputDevice().getConnectionStatus());
-            outputState.setText(outputStateStr);
-            outputErrorCounter.setText(Messages.getString("GeneratorGui.IO_ERRORS")+col.getOutputDevice().getErrorCounter());             //$NON-NLS-1$
+            
+            Output output = col.getOutputDevice();
+            if (output!=null) {
+                String outputStateStr = WordUtils.capitalizeFully(output.getConnectionStatus());
+                outputState.setText(outputStateStr);
+                outputErrorCounter.setText(Messages.getString("GeneratorGui.IO_ERRORS")+output.getErrorCounter());             //$NON-NLS-1$            	
+            }
             long recievedMB = col.getPixConStat().getRecievedOscBytes()/1024/1024;
             String oscStat  = Messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
             oscStatistic.setText(oscStat);

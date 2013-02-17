@@ -149,7 +149,7 @@ public class OutputGui {
 		}
 		
 		//show only each 2nd frame to reduce cpu load
-		if (frame%2==1) {
+		if (frame%2==1 || this.output==null) {
 			return;
 		}
 		
