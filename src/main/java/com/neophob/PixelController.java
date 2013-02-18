@@ -194,6 +194,9 @@ public class PixelController extends PApplet {
 
         	case 5:
         		this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
+        		if (this.output==null) {
+        			throw new IllegalArgumentException("No output device found!");
+        		}
         		this.collector.setOutput(output);
         		setupStep++;
         		drawProgressBar(steps*setupStep);
