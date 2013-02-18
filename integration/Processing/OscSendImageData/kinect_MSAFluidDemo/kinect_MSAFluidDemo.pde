@@ -41,6 +41,7 @@ import msafluid.*;
 import javax.swing.JFrame;
 import SimpleOpenNI.*;
 import java.util.concurrent.*;
+//import java.util.*;
 
 SimpleOpenNI kinect;
 final int FLUID_WIDTH = 16;
@@ -49,48 +50,55 @@ float invWidth, invHeight;    // inverse of screen dimensions
 float aspectRatio, aspectRatio2;
 
 MSAFluidSolver2D fluidSolver;
-
-ParticleSystem particleSystem;
-
+ParticleSystemOne particleSystemOne;
 PImage imgFluid;
 
 PFrame f;
 secondApplet s;
+
+//particle two
+ParticleSystemTwo particleSystemTwo;
+
+final int MAX_PARTICLE = 10;
+final int PARTICLE_SIZE_Y = 4*2;
+final int PARTICLE_SIZE_X = 2*2;
+
+//kinect
 
 boolean showDepthMap = false;
 boolean kinectConnected= false;
 
 void setup() {
   frameRate(30);
-  size(64, 64);    // use OPENGL rendering for bilinear filtering on texture    
+  size(64, 64);
+  noSmooth();
 
   invWidth = 1.0f/width;
   invHeight = 1.0f/height;
   aspectRatio = width * invHeight;
   aspectRatio2 = aspectRatio * aspectRatio;
 
+  background(0);
+
   // create fluid and set options
-//  fluidSolver = new MSAFluidSolver2D((int)(FLUID_WIDTH), (int)(FLUID_WIDTH * height/width));
   fluidSolver = new MSAFluidSolver2D(FLUID_WIDTH, FLUID_WIDTH);
-//  fluidSolver.enableRGB(false).setFadeSpeed(0.003).setDeltaT(0.8).setVisc(0.000001);
   fluidSolver.enableRGB(false).setFadeSpeed(0.001).setDeltaT(0.7).setVisc(0.0000000000000001);
-  //    fluidSolver.enableRGB(true).setFadeSpeed(0.003).setDeltaT(0.5).setVisc(0.0001);    
 
   // create image to hold fluid picture
-//  imgFluid = createImage(fluidSolver.getWidth(), fluidSolver.getHeight(), RGB);
   imgFluid = createImage(FLUID_WIDTH, FLUID_WIDTH, RGB);
   println("created image x:"+fluidSolver.getWidth()+", y:"+fluidSolver.getHeight());
-  
-  // create particle system
-  particleSystem = new ParticleSystem();
+
+  // create particle system one
+  particleSystemOne = new ParticleSystemOne();
+
+  // create particle system two
+  particleSystemTwo = new ParticleSystemTwo();
 
   // init TUIO
   kinectConnected = initTUIO();
-  
+
   PFrame f = new PFrame();  
-//WAS RGB, 2
   colorMode(RGB, 1); 
-//  colorMode(RGB, 0.5); 
 
   initOsc();
 }
@@ -101,89 +109,84 @@ void mouseMoved() {
   float mouseNormY = mouseY * invHeight;
   float mouseVelX = (mouseX - pmouseX) * invWidth;
   float mouseVelY = (mouseY - pmouseY) * invHeight;
-  
+
   //println(mouseVelX+"\t"+mouseVelY);
-  addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+  //addForce(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+  if (selectedParticle==1) {
+    particleSystemOne.feedback(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+  } else {
+    particleSystemTwo.feedback(mouseNormX, mouseNormY, mouseVelX, mouseVelY);
+  }
 }
+
+int selectedParticle=1;
 
 void draw() {
   if (kinectConnected) {
     updateTUIO();
   }
 
-  fluidSolver.update();
+  if (selectedParticle==1) {
+    fluidSolver.update();
 
-  int i=0;
-  imgFluid.loadPixels();
-  
-  //do not copy boarder - its duplicate
-  for (int y=1; y<fluidSolver.getHeight()-1; y++) {
-    for (int x=1; x<fluidSolver.getWidth()-1; x++) {
-      int ofs = fluidSolver.getWidth()*y+x;
-      //we only use the red channel, as we don't need rgb data
-      imgFluid.pixels[i++] = color(fluidSolver.r[ofs]);      
-    }
-  }  
+    int i=0;
+    imgFluid.loadPixels();
 
-  imgFluid.updatePixels();//  fastblur(imgFluid, 2);
-  image(imgFluid, 0, 0, width, height);
-  //copy(imgFluid, 2, 2, imgFluid.width-4, imgFluid.height-4, 0, 0, width, height);
-  
-  particleSystem.update();
-  
+    //do not copy boarder - its duplicate
+    for (int y=1; y<fluidSolver.getHeight()-1; y++) {
+      for (int x=1; x<fluidSolver.getWidth()-1; x++) {
+        int ofs = fluidSolver.getWidth()*y+x;
+        //we only use the red channel, as we don't need rgb data
+        imgFluid.pixels[i++] = color(fluidSolver.r[ofs]);
+      }
+    }  
+
+    imgFluid.updatePixels();
+    image(imgFluid, 0, 0, width, height);
+    particleSystemOne.update();
+  } 
+  else {
+    filter(BLUR, 1);
+    particleSystemTwo.addParticle();
+    particleSystemTwo.run();
+  }
+
   sendOsc();
 }
 
-
-
-// add force and dye to fluid, and create particles
-void addForce(float x, float y, float dx, float dy) {
-  float speed = dx * dx  + dy * dy * aspectRatio2;    // balance the x and y components of speed with the screen aspect ratio
-
-  if (speed > 0) {
-    if (x<0) x = 0; 
-    else if (x>1) x = 1;
-    if (y<0) y = 0; 
-    else if (y>1) y = 1;
-
-    float velocityMult = 30.0f;
-
-    int index = fluidSolver.getIndexForNormalizedPosition(x, y);
-
-    fluidSolver.rOld[index]  += 9.4f;
-
-    particleSystem.addParticles(x * width, y * height, 10);
-    fluidSolver.uOld[index] += dx * velocityMult;
-    fluidSolver.vOld[index] += dy * velocityMult;
-  }
-}
 
 void keyPressed() {
   if (key == 's') {
     if (showDepthMap) showDepthMap=false; 
     else showDepthMap=true;
+  } else if (key == 'm') {
+    selectedParticle++;
+    if (selectedParticle>2) {
+      selectedParticle = 1;
+    }
+    println("selectedParticle: "+selectedParticle);
   }
 }
 
 
 
 public class PFrame extends JFrame {
-    public PFrame() {
-        setBounds(0,0,640,480);
-        s = new secondApplet();
-        add(s);
-        s.init();
-        show();
-    }
+  public PFrame() {
+    setBounds(0, 0, 640, 480);
+    s = new secondApplet();
+    add(s);
+    s.init();
+    show();
+  }
 }
 
 
 public class secondApplet extends PApplet {
-    public void setup() {
-       // size(400, 300);
-       // noLoop();
-    }
-    public void draw() {
-    }
+  public void setup() {
+    // size(400, 300);
+    // noLoop();
+  }
+  public void draw() {
+  }
 }
 

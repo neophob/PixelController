@@ -32,6 +32,8 @@
 Map<Integer, PVector> handPositions;
 Map<Integer, PVector> previousHandPositions;
 
+List<KinectFeedback> kinectHandler = new ArrayList<KinectFeedback>();
+
 String gesture = "RaiseHand";
 boolean handsTrackFlag = false;
 PVector currentHand;
@@ -60,6 +62,10 @@ boolean initTUIO() {
   previousHandPositions = new ConcurrentHashMap();
   
   return true;
+}
+
+void addHandler(KinectFeedback handler) {
+  kinectHandler.add(handler);
 }
 
 float mouseVelX, mouseVelY;
@@ -144,7 +150,10 @@ void updateTUIO() {
     
     //add new force to create animation
     if (addForce) {
-      addForce(mouseNormX, mouseNormY, 1.2*mouseVelX, 1.2*mouseVelY);
+      //addForce(mouseNormX, mouseNormY, 1.2*mouseVelX, 1.2*mouseVelY);
+      for (KinectFeedback feedback: kinectHandler) {
+        feedback.feedback(mouseNormX, mouseNormY, 1.2*mouseVelX, 1.2*mouseVelY);
+      }
     }
 
     //Store previous position to calculate velocity

@@ -1,50 +1,24 @@
 //example based on processing examples
-import java.util.*;
-
-ParticleSystemTwo ps;
-
-final int MAX_PARTICLE = 10;
-final int PARTICLE_SIZE_Y = 4*2;
-final int PARTICLE_SIZE_X = 2*2;
-
-void setup() {
-  size(64,64);
-  noSmooth();
-  ps = new ParticleSystemTwo();
-  initOsc();
-}
-
-void draw() {
-  filter(BLUR, 1);
- // background(0);
-  ps.addParticle();
-  ps.run();
-  sendOsc();
-}
-
-
-
-
 
 // A class to describe a group of Particles
 // An ArrayList is used to manage the list of Particles 
 
-class ParticleSystemTwo {
-  ArrayList<ParticleTwo> particles;
+class ParticleSystemTwo implements KinectFeedback {
+  ArrayList<ParticleTwo> particlesTwo;
 
   ParticleSystemTwo() {
     //origin = location.get();
-    particles = new ArrayList<ParticleTwo>();
+    particlesTwo = new ArrayList<ParticleTwo>();
   }
 
   void addParticle() {
-    if (particles.size() < MAX_PARTICLE) {
-      particles.add(new ParticleTwo(new PVector(mouseX, mouseY)));
+    if (particlesTwo.size() < MAX_PARTICLE) {
+      particlesTwo.add(new ParticleTwo(new PVector(mouseX, mouseY)));
     }
   }
 
   void run() {
-    Iterator<ParticleTwo> it = particles.iterator();
+    Iterator<ParticleTwo> it = particlesTwo.iterator();
     while (it.hasNext()) {
       ParticleTwo p = it.next();
       p.run();
@@ -53,6 +27,13 @@ class ParticleSystemTwo {
       }
     }
   }
+  
+  void feedback(float x, float y, float speedx, float speedy) {
+    if (particlesTwo.size() < MAX_PARTICLE) {
+      particlesTwo.add(new ParticleTwo(new PVector(x*width, y*height), new PVector(speedx*width, speedy*height) ));
+    }    
+  }
+  
 }
 
 
@@ -65,8 +46,8 @@ class ParticleTwo {
   float lifespan;
   int col;
 
-  ParticleTwo(PVector l) {    
-    velocity = new PVector(random(-1,1),random(-1,1));
+  ParticleTwo(PVector l, PVector speed) {    
+    velocity = speed.get();
     while (Math.abs(velocity.x) < 0.1f && Math.abs(velocity.y) < 0.1f) {
       velocity = new PVector(random(-1,1),random(-1,1));
     }
@@ -74,6 +55,10 @@ class ParticleTwo {
     location = l.get();
     lifespan = 255.0;
     col=192;
+  }
+
+  ParticleTwo(PVector l) {
+    this(l, new PVector(random(-1,1),random(-1,1)));
   }
 
   void run() {
@@ -90,10 +75,9 @@ class ParticleTwo {
 
   // Method to display
   void display() {
-//    stroke(255,lifespan);
     noStroke();
-    fill(Math.abs((col--)%255), 255);
-//    fill(col,lifespan);    
+    float colr = 255f / float(Math.abs((col--)%255));
+    fill(colr, 255);
     rect(location.x,location.y,PARTICLE_SIZE_X,PARTICLE_SIZE_Y);
   }
   
