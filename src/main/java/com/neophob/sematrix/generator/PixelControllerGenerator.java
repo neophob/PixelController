@@ -183,6 +183,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
                 return gen;
             }
         }
+        
+        LOG.log(Level.WARNING, "Invalid Generator name selected: {0}", name);
         return null;
     }
 
@@ -197,6 +199,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /**
      * Gets the generator.
+     * 
+     * return null if index is out of scope
      *
      * @param index the index
      * @return the generator
