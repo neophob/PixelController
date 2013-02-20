@@ -34,14 +34,16 @@ import com.neophob.sematrix.properties.ValidCommands;
 public class Fuzzing {
     
     //@Test
-    public void processMessages() {
-                
-        PApplet.main(new String[] { "com.neophob.PixelController" });
+    public void processMessages() throws Exception {
+    	PApplet.main(new String[] { "com.neophob.PixelController" });
+    	
+    	//wait until PixelController is initialized
+        Thread.sleep(4000);
         
         ValidCommands[] allCommands = ValidCommands.values();
         Random r = new Random();
         
-        for (int i=0; i<10000; i++) {
+        for (int i=0; i<100000; i++) {
             ValidCommands cmd = allCommands[r.nextInt(allCommands.length)];
             String[] param = new String[2];
             param[0] = cmd.toString();
@@ -56,6 +58,8 @@ public class Fuzzing {
             
             MessageProcessor.processMsg(param, false, null);
         }
+        
+        System.out.println("Fuzzing finished!");
     }
 
 
