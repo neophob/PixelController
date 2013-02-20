@@ -89,7 +89,6 @@ public abstract class KeyboardHandler {
         		}
 
         		if (g!=null && g.getName() != null) {
-        			System.out.println(g.getName());
         			v.setGenerator1(currentGenerator%nrOfGenerators);
         			registerGuiClass.refreshGui();            			
         		} else {
@@ -112,7 +111,6 @@ public abstract class KeyboardHandler {
         		}
 
         		if (g!=null && g.getName() != null) {
-        			System.out.println(g.getName());
         			v.setGenerator2(currentGenerator%nrOfGenerators);
         			registerGuiClass.refreshGui();            			
         		} else {
