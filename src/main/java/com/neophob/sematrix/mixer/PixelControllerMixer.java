@@ -21,6 +21,8 @@ package com.neophob.sematrix.mixer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
@@ -29,6 +31,8 @@ import com.neophob.sematrix.mixer.Mixer.MixerName;
  * The Class PixelControllerMixer.
  */
 public class PixelControllerMixer implements PixelControllerElement {
+
+    private static final Logger LOG = Logger.getLogger(PixelControllerMixer.class.getName());
 
 	/** The all mixer. */
 	private List<Mixer> allMixer;
@@ -101,6 +105,8 @@ public class PixelControllerMixer implements PixelControllerElement {
 				return mix;
 			}
 		}
+		
+        LOG.log(Level.WARNING, "Invalid Mixer name selected: {0}", name);
 		return null;
 	}
 
@@ -125,6 +131,8 @@ public class PixelControllerMixer implements PixelControllerElement {
 				return mix;
 			}
 		}
+		
+        LOG.log(Level.WARNING, "Invalid Mixer index selected: {0}", index);
 		return null;
 	}
 
