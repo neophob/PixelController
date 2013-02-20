@@ -148,7 +148,6 @@ public final class Shuffler {
 			    //optimize, loading a blinkenlights movie file is quite expensive (takes a long time)
 			    //so load only a new movie file if the generator is active!
 			    if (g.getId() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
-			        System.out.println("BLINK FOUND: "+isBlinkenLightsVisible);
 			        if (isBlinkenLightsVisible) {
 			            g.shuffle();
 			        }
