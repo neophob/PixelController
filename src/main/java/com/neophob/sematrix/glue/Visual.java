@@ -147,7 +147,10 @@ public class Visual {
 	 * @param index the new generator1
 	 */
 	public void setGenerator1(int index) {
-		this.generator1 = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
+		Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
+		if (g!=null) {
+			this.generator1 = g;			
+		}
 	}
 
 	/**
@@ -183,7 +186,10 @@ public class Visual {
 	 * @param index the new generator2
 	 */
 	public void setGenerator2(int index) {
-		this.generator2 = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
+		Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(index);
+		if (g!=null) {
+			this.generator2 = g;
+		}
 	}
 
 	/**
@@ -228,7 +234,10 @@ public class Visual {
 	 * @param index the new effect1
 	 */
 	public void setEffect1(int index) {
-		this.effect1 = Collector.getInstance().getPixelControllerEffect().getEffect(index);
+		Effect e = Collector.getInstance().getPixelControllerEffect().getEffect(index);
+		if (e!=null) {
+			this.effect1 = e;			
+		}
 	}
 
 	/**
@@ -273,7 +282,10 @@ public class Visual {
 	 * @param index the new effect2
 	 */
 	public void setEffect2(int index) {
-		this.effect2 = Collector.getInstance().getPixelControllerEffect().getEffect(index);
+		Effect e = Collector.getInstance().getPixelControllerEffect().getEffect(index);
+		if (e!=null) {
+			this.effect2 = e;			
+		}
 	}
 
 	/**
@@ -321,7 +333,10 @@ public class Visual {
 	 * @param index the new mixer
 	 */
 	public void setMixer(int index) {
-		this.mixer = Collector.getInstance().getPixelControllerMixer().getMixer(index);
+		Mixer m = Collector.getInstance().getPixelControllerMixer().getMixer(index);
+		if (m!=null) {
+			this.mixer = m;			
+		}
 	}
 	
 	/**
