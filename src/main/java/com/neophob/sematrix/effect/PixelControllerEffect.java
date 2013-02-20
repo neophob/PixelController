@@ -21,6 +21,8 @@ package com.neophob.sematrix.effect;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.glue.PixelControllerElement;
@@ -30,6 +32,8 @@ import com.neophob.sematrix.properties.ValidCommands;
  * The Class PixelControllerEffect.
  */
 public class PixelControllerEffect implements PixelControllerElement {
+
+    private static final Logger LOG = Logger.getLogger(PixelControllerEffect.class.getName());
 
 	/** The all effects. */
 	private List<Effect> allEffects;
@@ -118,6 +122,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 				return fx;
 			}
 		}
+        LOG.log(Level.WARNING, "Invalid Effect name selected: {0}", name);
 		return null;
 	}
 
@@ -143,6 +148,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 				return fx;
 			}
 		}
+        LOG.log(Level.WARNING, "Invalid Effect index selected: {0}", index);		
 		return null;
 	}
 
