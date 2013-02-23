@@ -49,7 +49,6 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 import processing.net.Client;
-import processing.net.Server;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
@@ -97,22 +96,12 @@ public class Lpd6803Net {
 	/** The Constant END_OF_DATA. */
 	private static final byte END_OF_DATA = 0x20;
 
-	//how many attemps are made to get the data
-	private static final int TIMEOUT_LOOP = 80;
-	
-	//wait TIMEOUT_SLEEP ms, until next loop
-	private static final int TIMEOUT_SLEEP = 4;
-
 	/** The connection error counter. */
 	private int connectionErrorCounter;
 	
 	/** map to store checksum of image. */
 	private Map<Byte, String> lastDataMap;
 	
-	//Output sockets
-	
-	//Listening sockets
-	Server listeningSrv;
 	Client clientConnection;
 	
 	private String destIp;	
@@ -139,18 +128,14 @@ public class Lpd6803Net {
 		this.destPort = destPort;
 		
 		this.lastDataMap = new HashMap<Byte, String>();
-
-		//output connection
-		LOG.log(Level.INFO, "Connect to tartget "+destIp+":"+destPort);
-		this.clientConnection = new Client(pa, destIp, destPort); 
 		
-		//input connection
-		LOG.log(Level.INFO, "Start listening server on port "+destPort);
-		this.listeningSrv = new Server(pa, destPort);
+		//output connection
+		LOG.log(Level.INFO, "Connect to target "+destIp+":"+destPort);
+		this.clientConnection = new Client(pa, destIp, destPort); 
 		
 		this.initialized = this.ping();
 		
-		LOG.log(Level.INFO,	"connected!");
+		LOG.log(Level.INFO,	"initialized: "+this.initialized);
 	}
 
 
@@ -160,13 +145,7 @@ public class Lpd6803Net {
 	public void dispose() {
 		if (connected()) {
 			LOG.log(Level.INFO,	"Close network connection");
-			
-			try {
-				listeningSrv.stop();
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Failed to close output stream", e);
-			}
-			
+						
 			try {
 				clientConnection.stop();
 			} catch (Exception e) {
@@ -422,63 +401,42 @@ public class Lpd6803Net {
 	 * @return true if ack received, false if not
 	 */
 	private synchronized boolean waitForAck() {
-/*long start = System.currentTimeMillis();
-		Socket connectionSocket;
-		try {
-			connectionSocket = listeningSocket.accept();
-	        BufferedReader inFromClient =
-	                new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-	        char[] reply = new char[4];
-	        inFromClient.read(reply);
-	        
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-long duration = System.currentTimeMillis()-start;
-System.out.println("duration: "+duration);
-	
-		//TODO some more tuning is needed here.
-/*		long start = System.currentTimeMillis();
-		int timeout=TIMEOUT_LOOP; //wait up to 50ms
-		//log.log(Level.INFO, "wait for ack");
-		while (timeout > 0 && port.available() < 2) {
-			sleep(TIMEOUT_SLEEP); //in ms
-			timeout--;
-		}
-
-		if (timeout == 0 && port.available() < 2) {
-			LOG.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);
-			ackErrors++;
-			return false;
-		}
-		//TODO: next method is not very speed/memory efficient!
-		byte[] msg = port.readBytes();
-		for (int i=0; i<msg.length-1; i++) {
-			if (msg[i]== 'A' && msg[i+1]== 'K') {
-				try {
-					this.arduinoBufferSize = msg[i+2];
-					this.arduinoLastError = msg[i+3];
-					if (this.arduinoLastError!=0) {
-						LOG.log(Level.INFO, "Last Errorcode: {0}", this.arduinoLastError);
-					}
-				} catch (Exception e) {
-					// we failed to update statistics...
-				}
-				this.arduinoHeartbeat = System.currentTimeMillis();
-				if (this.arduinoLastError==0) {
-					return true;					
-				}
+		//Client client = listeningSrv.available();
+		Client client = clientConnection;
+//		System.out.println("wait for ack, "+client);
+		if (client !=null) {
+			sleep(8);
+			byte[] msg = client.readBytes();
+			
+			if (msg==null) {
 				ackErrors++;
+//				System.out.println("no reply");
 				return false;
-				//TODO inconsistent logging!
+			}
+//			System.out.println("got "+msg.length+" bytes");
+			for (int i=0; i<msg.length-1; i++) {
+				if (msg[i]== 'A' && msg[i+1]== 'K') {
+					try {
+						//System.out.println("GOOD");
+						int lastError = msg[i+3];
+						if (lastError!=0) {
+							LOG.log(Level.INFO, "Last Errorcode: {0}", lastError);
+							ackErrors++;
+							return false;
+						}
+						return true;
+					} catch (Exception e) {
+						// we failed to update statistics...
+					}
+
+					ackErrors++;
+					return false;					
+				}
 			}			
 		}
 		
 		ackErrors++;
-		return false;		*/
-		
-		return true;
+		return false;		
 	}
 
 
