@@ -52,6 +52,8 @@ public enum OutputDeviceEnum {
 
 	/** The UDP. */
 	UDP(UdpDevice.class, true),
+	
+	PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
 
 	/** The NULL Output. */
 	NULL(NullDevice.class, true);

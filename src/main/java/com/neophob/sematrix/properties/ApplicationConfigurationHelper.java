@@ -110,6 +110,9 @@ public class ApplicationConfigurationHelper {
     /** user selected gamma correction */
     private GammaType gammaType;
 
+    private String pixelinvadersNetIp;
+    private int pixelinvadersNetPort;
+    
     /**
      * Instantiates a new properties helper.
      *
@@ -120,7 +123,8 @@ public class ApplicationConfigurationHelper {
         
         int rainbowduinoV2Devices = parseI2cAddress();
         int rainbowduinoV3Devices = parseRainbowduinoV3Config();
-        int pixelInvadersDevices = parsePixelInvaderConfig();        
+        int pixelInvadersDevices = parsePixelInvaderConfig();
+        int pixelInvadersNetDevices = parsePixelInvaderNetConfig();
         int stealthDevices = parseStealthConfig();        
         int artnetDevices = parseArtNetDevices();
         int miniDmxDevices = parseMiniDmxDevices();
@@ -158,6 +162,12 @@ public class ApplicationConfigurationHelper {
             totalDevices = pixelInvadersDevices;
             LOG.log(Level.INFO, "found PixelInvaders device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS;
+        }
+        if (pixelInvadersNetDevices > 0) {
+            enabledOutputs++;
+            totalDevices = pixelInvadersNetDevices;
+            LOG.log(Level.INFO, "found PixelInvaders Net device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.PIXELINVADERS_NET;
         }
         if (artnetDevices > 0) {
             enabledOutputs++;
@@ -449,6 +459,16 @@ public class ApplicationConfigurationHelper {
             }
         }
 
+        String tmp = config.getProperty(ConfigConstant.PIXELINVADERS_NET_IP);
+        this.pixelinvadersNetIp = StringUtils.strip(tmp);
+        this.pixelinvadersNetPort = parseInt(ConfigConstant.PIXELINVADERS_NET_PORT);
+        
+        //check if PixelController Net Device is enabled
+        if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
+        	LOG.log(Level.INFO, "Found PixelInvaders Net Config "+pixelinvadersNetIp+":"+pixelinvadersNetPort);
+        	return 0;
+        }
+        
         //get blacklist devices
         String blacklist = config.getProperty(ConfigConstant.PIXELINVADERS_BLACKLIST);
         if (blacklist != null) {
@@ -459,6 +479,18 @@ public class ApplicationConfigurationHelper {
         }
         
         return lpdDevice.size();
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    private int parsePixelInvaderNetConfig() {
+    	if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
+        	return lpdDevice.size();    		
+    	}
+    	
+    	return 0;
     }
 
     /**
@@ -1152,7 +1184,17 @@ public class ApplicationConfigurationHelper {
         return config.getProperty(ConfigConstant.TPM2NET_IP);
     }
     
-    /**
+    
+    
+    public String getPixelinvadersNetIp() {
+		return pixelinvadersNetIp;
+	}
+
+	public int getPixelinvadersNetPort() {
+		return pixelinvadersNetPort;
+	}
+
+	/**
      * return user selected gamma correction
      * 
      * @return

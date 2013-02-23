@@ -86,7 +86,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /**
      * initialize all generators.
      */
-    public void initAll() {	    		
+    public void initAll() {
+    	LOG.log(Level.INFO, "Start init");
         String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
         blinkenlights = new Blinkenlights(this, fileBlinken);
 
@@ -120,6 +121,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         
         this.oscListener1 = new OscListener(this, GeneratorName.OSC_GEN1);
         this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN2);
+    	LOG.log(Level.INFO, "Init finished");
     }
 
     /* (non-Javadoc)

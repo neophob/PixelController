@@ -338,6 +338,15 @@ public class PixelController extends PApplet {
         return "Test Release (unknown Version)"; 
     }
     
+    /**
+     * Is PixelController finished initializing?
+     * 
+     * @return
+     */
+	public boolean isInitialized() {
+		return initialized;
+	}
+
 	/**
 	 * The main method.
 	 *

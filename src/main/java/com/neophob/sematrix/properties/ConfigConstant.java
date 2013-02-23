@@ -100,6 +100,10 @@ public final class ConfigConstant {
 	
 	public static final String PIXELINVADERS_PANEL_ORDER = "pixelinvaders.panel.order";
 
+	public static final String PIXELINVADERS_NET_IP = "pixelinvaders.panel.ip";
+	
+	public static final String PIXELINVADERS_NET_PORT = "pixelinvaders.panel.port";			
+
 	/** The Constant STEALTH_ROW1. */
 	public static final String STEALTH_ROW1 = "stealth.layout.row1";
 	
