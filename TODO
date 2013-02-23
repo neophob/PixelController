@@ -27,6 +27,7 @@ Roadmap PixelController
 -add option to query buffersize via OSC
 -update manual (generic osc generator)
 -add more fader (pixel fader for example)
+-disable beat detection if sound volume is too low
 
 
 Changelog v1.3.0 to v1.3.1
