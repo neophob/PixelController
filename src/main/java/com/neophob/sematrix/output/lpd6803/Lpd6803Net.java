@@ -158,15 +158,18 @@ public class Lpd6803Net extends Lpd6803Common{
 			}
 			clientConnection.output.write(cmdfull);
 			clientConnection.output.flush();   // hmm, not sure if a good idea
+			initialized = true;
 		} catch (SocketException se) {
-			//try to reconnect
+			//try to reconnect			
 			this.clientConnection = new Client(pa, destIp, destPort);
 			//LOG.log(Level.INFO, "Error sending network data!", se);
 			connectionErrorCounter++;
+			initialized = false;
 			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+se);			
 		} catch (Exception e) {
 			//LOG.log(Level.INFO, "Error sending network data!", e);
 			connectionErrorCounter++;
+			initialized = false;
 			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+e);			
 		}		
 	}

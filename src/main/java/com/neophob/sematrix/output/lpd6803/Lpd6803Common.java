@@ -13,7 +13,6 @@ public abstract class Lpd6803Common {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Lpd6803Common.class.getName());
 
-
 	/** number of leds horizontal<br> TODO: should be dynamic, someday. */
 	public static final int NR_OF_LED_HORIZONTAL = 8;
 

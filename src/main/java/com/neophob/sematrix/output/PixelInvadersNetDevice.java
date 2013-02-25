@@ -122,10 +122,20 @@ public class PixelInvadersNetDevice extends Output {
 	}
 
 	@Override
+    public boolean isSupportConnectionState() {
+        return true;
+    }
+	
+	@Override
+	public boolean isConnected() {
+		return lpd6803.connected();
+	}
+
+
+	@Override
 	public long getErrorCounter() {
-		System.out.println("ERRCNT: "+lpd6803.getConnectionErrorCounter());
-		if (initialized) {	
-			lpd6803.getConnectionErrorCounter();
+		if (initialized) {			
+			return lpd6803.getConnectionErrorCounter();
 		}
 	    return 0;
 	}
