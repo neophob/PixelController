@@ -163,5 +163,22 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		}
 	}
 
+	@Override
+    public boolean isSupportConnectionState() {
+        return true;
+    }
+	
+	@Override
+	public boolean isConnected() {
+		return lpd6803.connected();
+	}
+
+	@Override
+	public long getErrorCounter() {
+		if (initialized) {			
+			return lpd6803.getConnectionErrorCounter();
+		}
+	    return 0;
+	}
 
 }
