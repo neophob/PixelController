@@ -170,7 +170,10 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	
 	@Override
 	public boolean isConnected() {
-		return lpd6803.connected();
+		if (initialized) {
+			return lpd6803.connected();
+		}
+		return false;
 	}
 
 	@Override

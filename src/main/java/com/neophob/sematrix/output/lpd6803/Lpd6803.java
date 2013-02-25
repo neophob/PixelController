@@ -159,6 +159,7 @@ public class Lpd6803 extends Lpd6803Common {
 			LOG.log(Level.INFO,	"open port: {0}", portName);
 			serialPortName = portName;
 			openPort(portName);
+			initialized = true;
 		} else {
 			//try to find the port
 			String[] ports = Serial.list();
@@ -174,6 +175,7 @@ public class Lpd6803 extends Lpd6803Common {
 				try {
 					serialPortName = ports[i];
 					openPort(ports[i]);
+					initialized = true;
 				//catch all, there are multiple exception to catch (NoSerialPortFoundException, PortInUseException...)
 				} catch (Exception e) {
 				    serialPortName="";
