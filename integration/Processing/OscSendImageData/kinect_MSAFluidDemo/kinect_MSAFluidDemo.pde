@@ -96,6 +96,9 @@ void setup() {
 
   // init TUIO
   kinectConnected = initTUIO();
+  
+  addHandler(particleSystemOne);
+  addHandler(particleSystemTwo);
 
   PFrame f = new PFrame();  
   colorMode(RGB, 1); 
