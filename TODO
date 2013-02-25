@@ -40,6 +40,7 @@ Changelog v1.3.0 to v1.3.1
 -Artnet Output: respect color order (panel.color.order setting)
 -TPM2 Output: fix layout (for example ROTATE_180) exceptions
 -Serial Outputs (AdaVision, Rainbowduino v3, TPM2): fix serial port name issue, case sensitive (Issue #30)
+-Add PixelInvaders Network device support using ser2net
 -Fix possible Freeze during Random Mode
 
 
