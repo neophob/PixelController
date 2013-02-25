@@ -42,6 +42,7 @@ Boston, MA  02111-1307  USA
 package com.neophob.sematrix.output.lpd6803;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,6 +74,7 @@ public class Lpd6803Net extends Lpd6803Common{
 	private String destIp;	
 	private int destPort;
 	
+	private PApplet pa;
 
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
@@ -87,6 +89,7 @@ public class Lpd6803Net extends Lpd6803Common{
 		
 		this.destIp = destIp;
 		this.destPort = destPort;
+		this.pa = pa;
 		
 		this.lastDataMap = new HashMap<Byte, String>();
 		
@@ -150,11 +153,21 @@ public class Lpd6803Net extends Lpd6803Common{
 	 */
 	protected synchronized void writeData(byte[] cmdfull) throws WriteDataException {
 		try {
-			clientConnection.write(cmdfull);
-		} catch (Exception e) {
-			LOG.log(Level.INFO, "Error sending network data!", e);
+			if (clientConnection.output == null) {
+				throw new SocketException("Output not connected");
+			}
+			clientConnection.output.write(cmdfull);
+			clientConnection.output.flush();   // hmm, not sure if a good idea
+		} catch (SocketException se) {
+			//try to reconnect
+			this.clientConnection = new Client(pa, destIp, destPort);
+			//LOG.log(Level.INFO, "Error sending network data!", se);
 			connectionErrorCounter++;
-			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+e);
+			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+se);			
+		} catch (Exception e) {
+			//LOG.log(Level.INFO, "Error sending network data!", e);
+			connectionErrorCounter++;
+			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+e);			
 		}		
 	}
 	

@@ -121,5 +121,12 @@ public class PixelInvadersNetDevice extends Output {
 		}
 	}
 
-
+	@Override
+	public long getErrorCounter() {
+		System.out.println("ERRCNT: "+lpd6803.getConnectionErrorCounter());
+		if (initialized) {	
+			lpd6803.getConnectionErrorCounter();
+		}
+	    return 0;
+	}
 }

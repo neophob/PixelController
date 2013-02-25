@@ -201,6 +201,10 @@ public abstract class Lpd6803Common {
 		return false;
 	}
 
+	public int getConnectionErrorCounter() {
+		return connectionErrorCounter;
+	}
+
 	/**
 	 * 
 	 * @param cmdfull
