@@ -109,7 +109,6 @@ public final class Shuffler {
 		      //why -1 +1? the first effect is passthrough - so no effect
 		        visual.setGenerator1(rand.nextInt(totalNrGenerator-1)+1);
 		        isGeneratorInUse = visual.getGenerator1().isInUse();
-		        System.out.println(">> is gen1 in use: "+isGeneratorInUse+" "+visual.getGenerator1().getName());
 		    }		    
 		}
 
@@ -120,7 +119,6 @@ public final class Shuffler {
               //why -1 +1? the first effect is passthrough - so no effect
                 visual.setGenerator2(rand.nextInt(totalNrGenerator-1)+1);
                 isGeneratorInUse = visual.getGenerator2().isInUse();
-                System.out.println(">> is gen2 in use: "+isGeneratorInUse+" "+visual.getGenerator2().getName());
             }           
 		}
 
