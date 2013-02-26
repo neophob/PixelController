@@ -147,7 +147,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 		
 		//byte[] dmxData, int numChannels
 		dmx.setDMX(buffer, buffer.length);
-		this.artnet.unicastPacket(dmx, this.targetAdress);
+		this.artnet.unicastPacket(dmx, this.targetAdress);		
 		this.sequenceID++;
 	}
 
@@ -164,6 +164,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
             return "Target IP: "+targetAdress+", Nr. of universe: "+nrOfUniverse;            
         }
         return "Not connected!";
+    }
+	
+	@Override
+    public boolean isSupportConnectionState() {
+        return true;
     }
 
 }

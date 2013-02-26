@@ -180,6 +180,11 @@ public class Tpm2Net extends Output {
 	}
 
     @Override
+    public boolean isSupportConnectionState() {
+        return true;
+    }
+
+    @Override
     public String getConnectionStatus(){
         if (initialized) {
             return "Target IP "+targetAddrStr+":"+TPM2_NET_PORT;            
