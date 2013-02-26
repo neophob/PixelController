@@ -32,6 +32,14 @@ import com.neophob.sematrix.output.SerialPortException;
 
 /**
  * http://blog.mafr.de/2010/03/14/tcp-for-low-latency-applications/
+ *  -use apache mina (http://mina.apache.org/) as tcp connection pool
+ *  -disable Nagle’s Algorithm (Socket.setNoDelay(true))
+ *   Here's a little hack to disable the nagle algo.
+ *  		Field f = clientConnection.getClass().getDeclaredField("socket");
+ *			f.setAccessible(true);
+ *			Socket s = (Socket)f.get(clientConnection);
+ *			s.setTcpNoDelay(true);
+ * -> I didn't see any improvements in my setup, (wlan, 9.3ms avg of 15'000 connections) 
  * 
  * PIXELCONTROLLER--TCP--RPI(SER2NET)--USB--TEENSY--SPI--PIXELMODULE
  * communicate with a arduino via tcp port/ser2net<b
@@ -57,6 +65,9 @@ public class Lpd6803Net extends Lpd6803Common{
 	private int destPort;
 	
 	private PApplet pa;
+	
+	private long delayTotal;
+	private int delayCount;
 
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
@@ -79,7 +90,7 @@ public class Lpd6803Net extends Lpd6803Common{
 		LOG.log(Level.INFO, "Connect to target "+destIp+":"+destPort);
 		this.clientConnection = new Client(pa, destIp, destPort); 
 		this.initialized = this.ping();		
-		LOG.log(Level.INFO,	"initialized: "+this.initialized);
+		LOG.log(Level.INFO,	"initialized: "+this.initialized);			
 	}
 
 
@@ -169,7 +180,15 @@ public class Lpd6803Net extends Lpd6803Common{
 				currentDelay+=WAIT_PER_LOOP;
 				msg = client.readBytes();
 			}
+			
+			delayTotal+=currentDelay;
+			delayCount++;
 
+			if (delayCount%1000==999) {
+				float avg = delayTotal/(float)delayCount;
+				LOG.log(Level.INFO, "Avg network latency: "+avg+"ms");
+			}
+			
 			if (msg==null) {
 				ackErrors++;
 				return false;
