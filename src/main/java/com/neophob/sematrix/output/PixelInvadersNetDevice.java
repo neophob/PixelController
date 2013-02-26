@@ -72,7 +72,7 @@ public class PixelInvadersNetDevice extends Output {
 		int port = ph.getPixelinvadersNetPort();
 		try {
 			lpd6803 = new Lpd6803Net( Collector.getInstance().getPapplet(), ip, port );
-			this.initialized = true;
+			this.initialized = lpd6803.connected();
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "failed to conect to pixelcontroller network device!", e);

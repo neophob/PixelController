@@ -41,7 +41,6 @@ Boston, MA  02111-1307  USA
 
 package com.neophob.sematrix.output.lpd6803;
 
-import java.io.IOException;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -84,7 +83,7 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803Net(PApplet pa, String destIp, int destPort) throws IOException {
+	public Lpd6803Net(PApplet pa, String destIp, int destPort) throws Exception {
 		LOG.log(Level.INFO,	"Initialize LPD6803 net lib v{0}", VERSION);
 		
 		this.destIp = destIp;
@@ -96,9 +95,7 @@ public class Lpd6803Net extends Lpd6803Common{
 		//output connection
 		LOG.log(Level.INFO, "Connect to target "+destIp+":"+destPort);
 		this.clientConnection = new Client(pa, destIp, destPort); 
-		
-		this.initialized = this.ping();
-		
+		this.initialized = this.ping();		
 		LOG.log(Level.INFO,	"initialized: "+this.initialized);
 	}
 
@@ -129,12 +126,6 @@ public class Lpd6803Net extends Lpd6803Common{
 		return VERSION;
 	}
 
-
-
-
-	
-
-	
 	
 	/**
 	 * how may times the serial response was missing / invalid.
@@ -160,8 +151,10 @@ public class Lpd6803Net extends Lpd6803Common{
 			clientConnection.output.flush();   // hmm, not sure if a good idea
 			initialized = true;
 		} catch (SocketException se) {
-			//try to reconnect			
-			this.clientConnection = new Client(pa, destIp, destPort);
+		    if (connectionErrorCounter%10==9) {
+		        //try to reconnect
+		        this.clientConnection = new Client(pa, destIp, destPort);   
+		    }			
 			//LOG.log(Level.INFO, "Error sending network data!", se);
 			connectionErrorCounter++;
 			initialized = false;
@@ -210,7 +203,6 @@ public class Lpd6803Net extends Lpd6803Common{
 				}
 			}			
 		}
-		
 		ackErrors++;
 		return false;		
 	}

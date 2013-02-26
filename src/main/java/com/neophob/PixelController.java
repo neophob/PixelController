@@ -140,7 +140,7 @@ public class PixelController extends PApplet {
 		    
 		    text("Loading...", 10, 120);
 		    drawProgressBar(0.0f);
-		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);			
+		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Setup() call failed!", e);
 		}
