@@ -68,7 +68,8 @@ public class Lpd6803Net extends Lpd6803Common{
 	/** internal lib version. */
 	public static final String VERSION = "1.0";
 	
-	public static final int MAX_ACK_WAIT = 20;
+	//maximal network latency
+	public static final int MAX_ACK_WAIT = 40;
 	public static final int WAIT_PER_LOOP = 2;
 	
 	private Client clientConnection;
