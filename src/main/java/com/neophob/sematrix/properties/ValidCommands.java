@@ -124,8 +124,8 @@ public enum ValidCommands {
 	
 	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
 	
-	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes of image data (64x64x1bpp)"),
-	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes of image data (64x64x1bpp)"),
+	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes of image data (64x64x8bpp)"),
+	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes of image data (64x64x8bpp)"),
 	;
 	
 	/** The nr of params. */

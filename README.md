@@ -78,8 +78,8 @@ There are different frontends for PixelController:
 	COLOR_SCROLL_LENGTH         # of parameters: 1     <INT> fading distance for the color scroll generator
 	TEXTWR                      # of parameters: 1     <STRING> update text for textwriter generator
 	CHANGE_BRIGHTNESS           # of parameters: 1     <INT> output brightness 0 .. 100
-	OSC_GENERATOR1              # of parameters: 1     <BLOB> contains 4096 bytes of image data (64x64x1bpp)
-	OSC_GENERATOR2              # of parameters: 1     <BLOB> contains 4096 bytes of image data (64x64x1bpp)
+	OSC_GENERATOR1              # of parameters: 1     <BLOB> contains 4096 bytes of image data (64x64x8bpp)
+	OSC_GENERATOR2              # of parameters: 1     <BLOB> contains 4096 bytes of image data (64x64x8bpp)
 
 	CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
 	CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
