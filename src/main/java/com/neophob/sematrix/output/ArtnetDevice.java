@@ -170,6 +170,11 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
     public boolean isSupportConnectionState() {
         return true;
     }
+	
+    @Override
+    public boolean isConnected() {
+        return initialized;
+    }
 
 }
 

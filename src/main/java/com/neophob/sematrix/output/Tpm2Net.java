@@ -185,13 +185,18 @@ public class Tpm2Net extends Output {
     }
 
     @Override
+    public boolean isConnected() {
+        return initialized;
+    }
+    
+    @Override
     public String getConnectionStatus(){
         if (initialized) {
             return "Target IP "+targetAddrStr+":"+TPM2_NET_PORT;            
         }
         return "Not connected!";
     }
-	
+	    
     @Override
     public long getErrorCounter() {        
         return errorCounter;
