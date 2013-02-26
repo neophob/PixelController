@@ -20,6 +20,8 @@ package com.neophob.sematrix.output;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
@@ -34,32 +36,45 @@ import de.programmerspain.rv3sf.api.RainbowduinoV3;
  *
  */
 public class RainbowduinoV3Device extends Output {
+    
+    private static final Logger LOG = Logger.getLogger(RainbowduinoV3Device.class.getName());
+    
 	private RainbowduinoV3[] rainbowduinoV3Devices;
+	private boolean initialized =  false;
 
 	public RainbowduinoV3Device(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.RAINBOWDUINO_V3, ph, controller, 8);
 		
 		// initialize internal variables
-		List<String> tmp = ph.getRainbowduinoV3SerialDevices();
-		List<String> devices = new ArrayList<String>();
-		for (String s: tmp) {
-			//convert os dependent serial port names
-			devices.add(OutputHelper.getSerialPortName(s));
-		}
-		
-		this.rainbowduinoV3Devices = new RainbowduinoV3[devices.size()];
-		GammaTable gammaTable = new GammaTable();
-		// construct RainbowduinoV3 instances
-		for (int i = 0; i < devices.size(); i++) {
-			this.rainbowduinoV3Devices[i] = new RainbowduinoV3(
-					devices.get(i),
-					gammaTable
-			);
+		try {
+	        List<String> tmp = ph.getRainbowduinoV3SerialDevices();
+	        List<String> devices = new ArrayList<String>();
+	        for (String s: tmp) {
+	            //convert os dependent serial port names
+	            devices.add(OutputHelper.getSerialPortName(s));
+	        }
+	        
+	        this.rainbowduinoV3Devices = new RainbowduinoV3[devices.size()];
+	        GammaTable gammaTable = new GammaTable();
+	        // construct RainbowduinoV3 instances
+	        for (int i = 0; i < devices.size(); i++) {
+	            this.rainbowduinoV3Devices[i] = new RainbowduinoV3(
+	                    devices.get(i),
+	                    gammaTable
+	            );
+	        }		
+	        initialized = true;
+		} catch (Throwable t) {
+		    LOG.log(Level.SEVERE, "\n\n\n\nSERIOUS ERROR, check your RXTX installation!", t);
 		}
 	}
 
 	@Override
 	public void update() {
+	    if (!initialized) {
+	        return;
+	    }
+	    
 		for (int i = 0; i < this.rainbowduinoV3Devices.length; i++) {
 			this.rainbowduinoV3Devices[i].sendFrame(super.getBufferForScreen(i));
 		}
@@ -67,8 +82,45 @@ public class RainbowduinoV3Device extends Output {
 
 	@Override
 	public void close() {
+        if (!initialized) {
+            return;
+        }
+        
 		for (RainbowduinoV3 rainbowduinoV3 : this.rainbowduinoV3Devices) {
 			rainbowduinoV3.close();
 		}
 	}
+	
+    @Override
+    public boolean isSupportConnectionState() {
+        return true;
+    }
+    
+    @Override
+    public boolean isConnected() {
+        if (initialized) {
+            for (int i = 0; i < this.rainbowduinoV3Devices.length; i++) {
+                //of at least one device is not initialized, report it
+                if (!this.rainbowduinoV3Devices[i].isInitialized()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public long getErrorCounter() {
+        if (initialized) {          
+            long cnt = 0;
+            for (int i = 0; i < this.rainbowduinoV3Devices.length; i++) {
+                cnt += this.rainbowduinoV3Devices[i].getErrorCounter();
+            }
+            return cnt;
+        }
+        return 0;
+    }
+
+	
 }
