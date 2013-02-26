@@ -88,6 +88,7 @@ public final class Shuffler {
 		
 		LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 		
+		//optimize, update blinkenlighst movie file only when visible
 		boolean isBlinkenLightsVisible = false;
         if (visual.getGenerator1Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId() 
                 || visual.getGenerator2Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
@@ -95,16 +96,32 @@ public final class Shuffler {
         }
 
 		int totalNrGenerator = col.getPixelControllerGenerator().getSize();
+		if (!col.getPixelControllerGenerator().isCaptureGeneratorActive()) {
+		    totalNrGenerator++;
+		}
 		int totalNrEffect = col.getPixelControllerEffect().getSize();
 		int totalNrMixer = col.getPixelControllerMixer().getSize();
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
-			//why -1 +1? the first effect is passthrough - so no effect
-		    visual.setGenerator1(rand.nextInt(totalNrGenerator-1)+1);
+		    //make sure we only select inuse generators
+		    boolean isGeneratorInUse = false;
+		    while (!isGeneratorInUse) {
+		      //why -1 +1? the first effect is passthrough - so no effect
+		        visual.setGenerator1(rand.nextInt(totalNrGenerator-1)+1);
+		        isGeneratorInUse = visual.getGenerator1().isInUse();
+		        System.out.println(">> is gen1 in use: "+isGeneratorInUse+" "+visual.getGenerator1().getName());
+		    }		    
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {			
-		    visual.setGenerator2(rand.nextInt(totalNrGenerator-1)+1);			
+            //make sure we only select inuse generators
+            boolean isGeneratorInUse = false;
+            while (!isGeneratorInUse) {
+              //why -1 +1? the first effect is passthrough - so no effect
+                visual.setGenerator2(rand.nextInt(totalNrGenerator-1)+1);
+                isGeneratorInUse = visual.getGenerator2().isInUse();
+                System.out.println(">> is gen2 in use: "+isGeneratorInUse+" "+visual.getGenerator2().getName());
+            }           
 		}
 
 		if (col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {

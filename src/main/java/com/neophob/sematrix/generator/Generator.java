@@ -294,6 +294,14 @@ public abstract class Generator implements RandomizeState {
 		return active;
 	}
 
+   /**
+     * is generator in use?
+     * @return
+     */
+    public boolean isInUse() {
+        return true;
+    }
+
 	/**
 	 * update state
 	 * @param active

@@ -128,7 +128,6 @@ public final class Collector {
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
 	
-	@SuppressWarnings("unused")
 	private OscServer oscServer;
 	
 	private ApplicationConfigurationHelper ph;

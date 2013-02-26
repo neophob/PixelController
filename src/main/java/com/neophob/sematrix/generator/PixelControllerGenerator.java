@@ -74,6 +74,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     
     private ApplicationConfigurationHelper ph;
 
+    private boolean isCaptureGeneratorActive = false;
+    
     /**
      * Instantiates a new pixel controller generator.
      */
@@ -114,7 +116,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
         if (screenCapureXSize>0) {
-            new ScreenCapture(this, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY());            
+            new ScreenCapture(this, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY());
+            isCaptureGeneratorActive = true;
         }
         colorScroll = new ColorScroll(this);
         colorFade = new ColorFade(this);
@@ -353,4 +356,13 @@ public class PixelControllerGenerator implements PixelControllerElement {
 		return oscListener2;
 	}
 
+
+    /**
+     * @return the isCaptureGeneratorActive
+     */
+    public boolean isCaptureGeneratorActive() {
+        return isCaptureGeneratorActive;
+    }
+
+	
 }

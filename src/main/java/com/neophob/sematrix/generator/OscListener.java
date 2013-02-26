@@ -30,62 +30,68 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class OscListener extends Generator {
 
-	/** The Constant RESIZE_TYP. */
-	private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;	
-	
-	/** The Constant LOG. */
-	private static final Logger LOG = Logger.getLogger(OscListener.class.getName());
-			
-	private byte[] buffer;
-	
-	/**
-	 * Instantiates a new image.
-	 *
-	 * @param controller the controller
-	 * @param filename the filename
-	 */
-	public OscListener(PixelControllerGenerator controller, GeneratorName generatorName) {
-		super(controller, generatorName, RESIZE_TYP);
-	}
-	
-	/**
-	 * TODO, resize image, synchronize update
-	 * 
-	 * @param buffer
-	 */
-	public void updateBuffer(byte[] buffer) {
-		if (buffer==null) {
-			LOG.log(Level.WARNING, "buffer is null!");
-			return;
-		}
+    /** The Constant RESIZE_TYP. */
+    private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;	
 
-		if (buffer.length == this.internalBuffer.length) {
-			this.buffer = buffer;			
-			int ofs=0;
-			for (int i=0; i<internalBuffer.length; i++) {
-				this.internalBuffer[i] = this.buffer[ofs++]; 
-			}
-		} else {
-			LOG.log(Level.WARNING, "Invalid buffer size, expected size: {0}, effective size: {1}.", 
-					new Object[] {this.internalBuffer.length, buffer.length} );
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
+    /** The Constant LOG. */
+    private static final Logger LOG = Logger.getLogger(OscListener.class.getName());
 
-	}
+    private long lastUpdateTs;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#shuffle()
-	 */
-	@Override
-	public void shuffle() {
-		//not implemented
-	}
-	
+    /**
+     * Instantiates a new image.
+     *
+     * @param controller the controller
+     * @param filename the filename
+     */
+    public OscListener(PixelControllerGenerator controller, GeneratorName generatorName) {
+        super(controller, generatorName, RESIZE_TYP);
+    }
+
+    /**
+     * TODO, resize image, synchronize update
+     * 
+     * @param buffer
+     */
+    public void updateBuffer(byte[] buffer) {
+        if (buffer==null) {
+            LOG.log(Level.WARNING, "buffer is null!");
+            return;
+        }
+
+        if (buffer.length == this.internalBuffer.length) {
+            //please note: I cant use System.arraycopy as we convert a byte into a int 
+            for (int i=0; i<internalBuffer.length; i++) {
+                this.internalBuffer[i] = buffer[i];
+            }
+            lastUpdateTs = System.currentTimeMillis();
+        } else {
+            LOG.log(Level.WARNING, "Invalid buffer size, expected size: {0}, effective size: {1}.", 
+                    new Object[] {this.internalBuffer.length, buffer.length} );
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.generator.Generator#update()
+     */
+    @Override
+    public void update() {
+
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.generator.Generator#shuffle()
+     */
+    @Override
+    public void shuffle() {
+        //not implemented
+    }
+
+    @Override
+    public boolean isInUse() {
+        //if we recieved a osc packet, assume this generator is active
+        return (System.currentTimeMillis()-lastUpdateTs)<2000;
+    }
+
 
 }
