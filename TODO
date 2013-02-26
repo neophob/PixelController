@@ -32,7 +32,8 @@ Roadmap PixelController
 
 Changelog v1.3.0 to v1.3.1
 --------------------------
--Add generic (OSC) input generator, see Processing examples (integration/Processing/OscSendImageData) how to use it
+-Add two generic (OSC) input generators, see Processing examples (integration/Processing/OscSendImageData) how to use it.
+ They get selected in random mode only if they are active (receiving data)
 -Update OSC Server buffer size (32k) to accept image data
 -Add OSC Statistics in GUI/JMX
 -Fix NPE during application launch and a key is pressed
@@ -41,7 +42,7 @@ Changelog v1.3.0 to v1.3.1
 -TPM2 Output: fix layout (for example ROTATE_180) exceptions
 -Serial Outputs (AdaVision, Rainbowduino v3, TPM2): fix serial port name issue, case sensitive (Issue #30)
 -Add PixelInvaders Network device support using ser2net
--Add Output connection for PixelInvaders panels
+-Add output connection status for PixelInvaders panels
 -Fix possible Freeze during Random Mode
 
 
