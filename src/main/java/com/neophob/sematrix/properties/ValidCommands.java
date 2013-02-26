@@ -122,10 +122,10 @@ public enum ValidCommands {
 	
 	FREEZE(CommandGroup.MISC, 0, "toggle pause mode"),
 	
-	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<int> output brightness 0 .. 100"),
+	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
 	
-	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<blob> contains 4096 bytes of image data (64x64x1bpp)"),
-	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<blob> contains 4096 bytes of image data (64x64x1bpp)"),
+	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes of image data (64x64x1bpp)"),
+	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes of image data (64x64x1bpp)"),
 	;
 	
 	/** The nr of params. */
