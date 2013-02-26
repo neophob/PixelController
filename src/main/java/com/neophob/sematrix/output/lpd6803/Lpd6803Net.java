@@ -68,7 +68,10 @@ public class Lpd6803Net extends Lpd6803Common{
 	/** internal lib version. */
 	public static final String VERSION = "1.0";
 	
-	Client clientConnection;
+	public static final int MAX_ACK_WAIT = 20;
+	public static final int WAIT_PER_LOOP = 2;
+	
+	private Client clientConnection;
 	
 	private String destIp;	
 	private int destPort;
@@ -167,7 +170,7 @@ public class Lpd6803Net extends Lpd6803Common{
 		}		
 	}
 	
-	
+
 	/**
 	 * read data from network, wait for ACK.
 	 *
@@ -175,15 +178,23 @@ public class Lpd6803Net extends Lpd6803Common{
 	 */
 	protected synchronized boolean waitForAck() {
 		Client client = clientConnection;
+		
+		int currentDelay=0;
 		if (client !=null) {
-			//TODO maybe finetune here
-			sleep(8);
-			byte[] msg = client.readBytes();
+			byte[] msg=null;
 			
+			//wait maximal MAX_ACK_WAIT ms until we get a reply
+			while (currentDelay<MAX_ACK_WAIT && (msg==null || msg.length<3)) {
+				sleep(WAIT_PER_LOOP);
+				currentDelay+=WAIT_PER_LOOP;
+				msg = client.readBytes();
+			}
+
 			if (msg==null) {
 				ackErrors++;
 				return false;
 			}
+
 			for (int i=0; i<msg.length-1; i++) {
 				if (msg[i]== 'A' && msg[i+1]== 'K') {
 					try {
