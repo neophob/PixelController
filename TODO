@@ -1,6 +1,6 @@
 Roadmap PixelController
 -----------------------
--Do not freeze application if output fails (disconnect controller)
+-Do not freeze application if output fails (disconnect serial controller)
 -Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 -More layouts (Half/Half, 3/1...). Current layouts are hardware dependant. New layout shouldn't be. 
    +---+---+---+
@@ -14,7 +14,6 @@ Roadmap PixelController
 -Artnet output: support multiple output devices / multiple universe
 -UDP output: support multiple output devices / multiple universe
 -Unit Testing is suboptimal, the file config.properties is not used 
--Support Kinect for Xbox 360 
 -Support Renard Protocol
 -Option to invert GUI colors
 -More GUI improvments (scaling, bigger fonts, save window position, option to bring both windows to front)
@@ -22,10 +21,8 @@ Roadmap PixelController
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
--Option to modify colorsets of all visuals
--Add Raspberry PI support, so the PixelInvader Panels can controlled via LAN. (ser2net on RPI and new output device)
 -add option to query buffersize via OSC
--update manual (generic osc generator)
+-update manual (generic osc generator, howto use, random mode)
 -add more fader (pixel fader for example)
 -disable beat detection if sound volume is too low
 
@@ -33,17 +30,18 @@ Roadmap PixelController
 Changelog v1.3.0 to v1.3.1
 --------------------------
 -Add two generic (OSC) input generators, see Processing examples (integration/Processing/OscSendImageData) how to use it.
- They get selected in random mode only if they are active (receiving data)
+ Hint: They get selected in random mode only if they are active (receiving data)
 -Update OSC Server buffer size (32k) to accept image data
 -Add OSC Statistics in GUI/JMX
--Fix NPE during application launch and a key is pressed
--Fix NPE if using keyboard shortcuts to select a non existent generator (for example capture generator)
 -Artnet Output: respect color order (panel.color.order setting)
 -Artnet Output: Add option to configure the Artnet broadcast address (was default 2.255.255.255)
--TPM2 Output: fix layout (for example ROTATE_180) exceptions
+-TPM2 Output: fix layout settings, for example ROTATE_180 caused an exception
 -Serial Outputs (AdaVision, Rainbowduino v3, TPM2): fix serial port name issue, case sensitive (Issue #30)
--Add PixelInvaders Network device support using ser2net
+-Add PixelInvaders Network device support using ser2net (for example using a Raspberry PI)
 -Add output connection status for PixelInvaders panels
+-Support Kinect for Xbox 360 via external Processing Sketch and OSC Generator
+-Fix NPE during application launch and a key is pressed
+-Fix NPE if using keyboard shortcuts to select a non existent generator (for example capture generator)
 -Fix possible Freeze during Random Mode
 
 
