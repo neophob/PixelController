@@ -20,11 +20,16 @@ package com.neophob.sematrix.output;
 
 import java.net.BindException;
 import java.net.InetAddress;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import artnet4j.ArtNet;
+import artnet4j.ArtNetNode;
 import artnet4j.ArtNetServer;
+import artnet4j.events.ArtNetDiscoveryListener;
 import artnet4j.packets.ArtDmxPacket;
 
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -36,9 +41,9 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  * @author Rainer Ostendorf <mail@linlab.de>
  * 
  * TODO:
- *  -Device/node discovery & automatic updating of node configurations ?
+ *  -automatic updating of node configurations ?
  */
-public class ArtnetDevice extends OnePanelResolutionAwareOutput {
+public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNetDiscoveryListener {
 
 	private static final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
@@ -63,13 +68,20 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
 			this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
 		    this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
 		    this.firstUniverseId = ph.getArtNetStartUniverseId();
-
+		    String broadcastAddr = ph.getArtNetBroadcastAddr();
+		    if (StringUtils.isBlank(broadcastAddr)) {
+		        broadcastAddr = ArtNetServer.DEFAULT_BROADCAST_IP;
+		    }
+		    
 			LOG.log(Level.INFO, "Initialize ArtNet device IP: {0}, broadcast IP: {1}, Port: {2}",  
-					new Object[] { this.targetAdress.toString(), ArtNetServer.DEFAULT_BROADCAST_IP, ArtNetServer.DEFAULT_PORT}
+					new Object[] { this.targetAdress.toString(), broadcastAddr, ArtNetServer.DEFAULT_PORT}
 			);
 
 		    this.artnet.init();
+		    this.artnet.setBroadCastAddress(broadcastAddr);
 		    this.artnet.start();
+		    this.artnet.getNodeDiscovery().addListener(this);
+		    this.artnet.startNodeDiscovery();
 		    
 		    //check how many universe we need
 		    this.nrOfUniverse = 1;
@@ -174,6 +186,46 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput {
     @Override
     public boolean isConnected() {
         return initialized;
+    }
+
+
+    /* (non-Javadoc)
+     * @see artnet4j.events.ArtNetDiscoveryListener#discoveredNewNode(artnet4j.ArtNetNode)
+     */
+    @Override
+    public void discoveredNewNode(ArtNetNode arg0) {
+        LOG.log(Level.INFO, "ArtNet discovery: new node found: "+arg0);        
+    }
+
+
+    /* (non-Javadoc)
+     * @see artnet4j.events.ArtNetDiscoveryListener#discoveredNodeDisconnected(artnet4j.ArtNetNode)
+     */
+    @Override
+    public void discoveredNodeDisconnected(ArtNetNode arg0) {
+        LOG.log(Level.INFO, "ArtNet discovery: discovered node disconnected: "+arg0);
+    }
+
+
+    /* (non-Javadoc)
+     * @see artnet4j.events.ArtNetDiscoveryListener#discoveryCompleted(java.util.List)
+     */
+    @Override
+    public void discoveryCompleted(List<ArtNetNode> arg0) {
+        int nr=0;
+        if (arg0!=null) {
+            nr = arg0.size();
+        }
+        LOG.log(Level.INFO, "ArtNet discovery complete, found "+nr+" devices");
+    }
+
+
+    /* (non-Javadoc)
+     * @see artnet4j.events.ArtNetDiscoveryListener#discoveryFailed(java.lang.Throwable)
+     */
+    @Override
+    public void discoveryFailed(Throwable arg0) {
+        LOG.log(Level.INFO, "ArtNet discovery failed!", arg0);
     }
 
 }

@@ -39,6 +39,7 @@ Changelog v1.3.0 to v1.3.1
 -Fix NPE during application launch and a key is pressed
 -Fix NPE if using keyboard shortcuts to select a non existent generator (for example capture generator)
 -Artnet Output: respect color order (panel.color.order setting)
+-Artnet Output: Add option to configure the Artnet broadcast address (was default 2.255.255.255)
 -TPM2 Output: fix layout (for example ROTATE_180) exceptions
 -Serial Outputs (AdaVision, Rainbowduino v3, TPM2): fix serial port name issue, case sensitive (Issue #30)
 -Add PixelInvaders Network device support using ser2net

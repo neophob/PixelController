@@ -782,6 +782,13 @@ public class ApplicationConfigurationHelper {
         return parseInt(ConfigConstant.ARTNET_FIRST_UNIVERSE_ID, 0);
     }
 
+    /**
+     * 
+     * @return
+     */
+    public String getArtNetBroadcastAddr() {
+        return config.getProperty(ConfigConstant.ARTNET_BROADCAST_ADDR);
+    }
     
 
     /**
