@@ -57,7 +57,8 @@ public final class ConfigConstant {
 	public static final String ARTNET_IP = "artnet.ip";
 
 	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";	
-	public static final String ARTNET_FIRST_UNIVERSE_ID = "artnet.first.universe.id";	
+	public static final String ARTNET_FIRST_UNIVERSE_ID = "artnet.first.universe.id";
+	public static final String ARTNET_BROADCAST_ADDR = "artnet.broadcast.address";
 
 	public static final String UDP_IP = "udp.ip";
 	public static final String UDP_PORT = "udp.port";
