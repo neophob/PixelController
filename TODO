@@ -11,8 +11,8 @@ Roadmap PixelController
  Example: 3/1 Layout defines 2 virtual panels, panel 1 using physical panel a,b,d,e panel 2 using physical panel c and f.
  Example: Fancy Layout defines 3 virtual panels, panel 1 using physical panel a,b,d,e, panel 2 using physical panel c
           panel 3 using physical panel f
--Artnet output: support multiple output devices / multiple universe
--UDP output: support multiple output devices / multiple universe
+-Artnet output: support multiple output devices
+-UDP output: support multiple output devices 
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Support Renard Protocol
 -Option to invert GUI colors
