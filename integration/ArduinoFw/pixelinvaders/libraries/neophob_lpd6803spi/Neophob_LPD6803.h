@@ -22,16 +22,10 @@ class Neophob_LPD6803 {
     numPixels(void);
 
  private:
-
   uint16_t
     numLEDs;  
   uint8_t
-    cpumax,
-    clkpin    , datapin,     // Clock & data pin numbers
-    clkpinmask, datapinmask; // Clock & data PORT bitmasks
-  volatile uint8_t
-    *clkport  , *dataport;   // Clock & data PORT registers
+    cpumax;
   void    
-    startSPI(uint8_t divider),
-    LedOut();
+    startSPI(uint8_t divider);
 };
