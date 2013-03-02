@@ -35,11 +35,12 @@
 #include <TimerOne.h>
 #include <SPI.h>
 #include <Neophob_LPD6803.h>
+//#include <LPD6803.h>
 
 // ======= START OF USER CONFIGURATION =======
  
 //define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 4
+#define NR_OF_PANELS 2
 
 // ======= END OF USER CONFIGURATION ======= 
 
@@ -73,7 +74,8 @@
 byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
 
 //initialize pixels
-Neophob_LPD6803 strip = Neophob_LPD6803(PIXELS_PER_PANEL*NR_OF_PANELS);
+Neophob_LPD6803 strip = Neophob_LPD6803(64);
+//LPD6803 strip = LPD6803(64,11,13);
 
 #define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
@@ -154,6 +156,37 @@ void rainbow() {
   }
 }
 
+int col=25;
+void errPatrn() {
+//    unsigned int rdd = Color(col,col,col);  
+    unsigned int rdd = Color(col,0,col);  
+    unsigned int rdd2 = Color(0,col,0);  
+    col++;
+    if (col>26)col=0;
+
+    for (unsigned int i=0; i < 32; i++) {
+      strip.setPixelColor(i, rdd);
+      strip.setPixelColor(i+32, rdd2);
+    }
+        strip.show();    
+
+/*  //235 143 135
+  unsigned int gry = Color(4,4,4);
+//  unsigned int gry = Color(6,26,7);
+
+  for (unsigned int i=0; i < 8; i++) {
+      strip.setPixelColor(i, gry);
+      strip.setPixelColor(i+8, rdd);
+          strip.setPixelColor(i+16, gry);
+      strip.setPixelColor(i+24, rdd);
+      strip.setPixelColor(i+32, gry);
+      strip.setPixelColor(i+40, rdd);
+      strip.setPixelColor(i+48, gry);
+      strip.setPixelColor(i+56, rdd);
+    }*/
+    delay(10);
+}
+
 
 // --------------------------------------------
 //      setup
@@ -164,27 +197,30 @@ void setup() {
   //im your slave and wait for your commands, master!
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
-
+  Serial.setTimeout(10);
+  
   //cpu use and SPI clock MUST be adjusted
   // setting for 6 panels, cpu max:43 SPI_CLOCK_DIV64
   // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV64 -> 18fps
   // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV32 -> 50fps
   // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV16 -> 70fps
   
-  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or is slow
+  strip.setCPUmax(60);  // start with 50% CPU usage. up this if the strand flickers or is slow
   
   //HINT: SPI_CLOCK_DIV16 shift out the data very fast, this means the uP has more time to recieve
   //      serial data -> faster FPS. If you have some issues (flicker) play with the SPI Speed
   //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
-  //strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
   //strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
   //strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
-  strip.begin(SPI_CLOCK_DIV8);        // Start up the LED counterm 2.0MHz - 0.5uS
+  //strip.begin(SPI_CLOCK_DIV8);        // Start up the LED counterm 2.0MHz - 0.5uS
   //strip.begin(SPI_CLOCK_DIV4);        // Start up the LED counterm 4.0MHz - 0.25uS
   //strip.begin(SPI_CLOCK_DIV2);        // Start up the LED counterm 8.0MHz - 0.125uS
+
   
-  rainbow();      // display some colors
+//  rainbow();      // display some colors
   serialDataRecv = 0;   //no serial data received yet  
+errPatrn();
 }
 
 // --------------------------------------------
@@ -201,7 +237,8 @@ void loop() {
     }
 
     if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
-      rainbow();    	
+      //rainbow();    
+      errPatrn();	
     }
     return;
   }
@@ -252,10 +289,13 @@ void loop() {
 //    update 32 bytes of the led matrix
 //    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
 // --------------------------------------------
-void updatePixels(byte ofs, byte* buffer) {
-  uint16_t currentLed = ofs*PIXELS_PER_PANEL;
+void updatePixels(uint8_t ofs, byte* buffer) {
+  uint16_t currentLed = PIXELS_PER_PANEL;
+  currentLed *= ofs;
   byte x=0;
   for (byte i=0; i < PIXELS_PER_PANEL; i++) {
+//    uint16_t c = buffer[x]<<8 | buffer[x+1];
+//    strip.setPixelColor(currentLed++, c);
     strip.setPixelColor(currentLed++, buffer[x]<<8 | buffer[x+1]);
     x+=2;
   }  
@@ -303,6 +343,14 @@ byte readCommand(byte *str) {
   //read header  
   i=1;
   b=SERIAL_DELAY_LOOP;
+  
+  //TODO
+/*  byte recvNr = Serial.readBytes(str+1, SERIAL_HEADER_SIZE);
+  if (recvNr==0) {
+        g_errorCounter = 103;
+        return 0;        //no data available!    
+  }*/
+  
   while (i<SERIAL_HEADER_SIZE) {
     if (Serial.available()) {
       str[i++] = Serial.read();
@@ -328,6 +376,13 @@ byte readCommand(byte *str) {
   // --- END HEADER CHECK
 
   //read data  
+/*  recvNr = Serial.readBytes(str+SERIAL_HEADER_SIZE, sendlen+1);
+  if (recvNr==0) {
+        g_errorCounter = 105;
+        return 0;        //no data available!    
+  }
+  */
+  
   i=0;
   b=SERIAL_DELAY_LOOP;
   while (i<sendlen+1) {

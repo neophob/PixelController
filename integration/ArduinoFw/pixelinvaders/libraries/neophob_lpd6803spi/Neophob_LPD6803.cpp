@@ -1,7 +1,8 @@
 /*********************************************************************************/
 // Example to control LPD6803-based RGB LED Modules in a strand or strip via SPI
 // by Michael Vogt / http://pixelinvaders.ch
-// This Library is basically a copy and paste work and relies on work 
+// v2.0 - 
+// This Library is bsed on work 
 // of Adafruit-WS2801-Library and FastSPI Library 
 /*********************************************************************************/
 
@@ -18,23 +19,26 @@
 
 
 //some local variables, ised in isr
-volatile static uint8_t *pixelData; //pointer to pixel buffer, we cannot access pixels form isr!
-
-volatile static uint8_t nState=1;
+static uint8_t *pixelData; //pointer to pixel buffer, we cannot access pixels form isr!
+static uint8_t nState=1;
+static uint16_t numLEDs2;
 
 // Constructor for use with hardware SPI (specific clock/data pins):
 Neophob_LPD6803::Neophob_LPD6803(uint16_t n) {
   numLEDs = n;  
-  pixelData = (uint8_t *)malloc(numLEDs*2);
+  numLEDs2 = numLEDs*2;
+  pixelData = (uint8_t *)malloc(numLEDs2);
   cpumax = 70;
 
   //clear buffer
-  for (unsigned int i=0; i < numLEDs*2; i++) {
-    setPixelColor(i,0);
+  for (unsigned int i=0; i < numLEDs; i++) {
+    setPixelColor(i, 0);
   }
 }
 
+//just feed out the clock line to drive the pwm cycle
 static void isr2() {
+  //if (nState==0) return;
   SPI_WAIT_TILL_TRANSMITED;  
   SPI_LOAD_BYTE(0);
 }
@@ -84,6 +88,7 @@ uint16_t Neophob_LPD6803::numPixels(void) {
 
 
 void Neophob_LPD6803::show(void) {
+  //isDirty=1; //flag to trigger redraw
   unsigned int i;
   nState = 0;
 
@@ -95,7 +100,7 @@ void Neophob_LPD6803::show(void) {
   }
 
   //data
-  for (i=0; i<numLEDs*2; ) {
+  for (i=0; i<numLEDs2; ) {
       SPI_WAIT_TILL_TRANSMITED;
       SPI_LOAD_BYTE(pixelData[i++]);
 
@@ -115,7 +120,7 @@ void Neophob_LPD6803::show(void) {
 
 
 void Neophob_LPD6803::setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b) {
-  if (n > numLEDs*2) return;
+  if (n >= numLEDs2) return;
   
     /* As a modest alternative to full double-buffering, the setPixel()
      function blocks until the serial output interrupt has moved past
@@ -132,12 +137,14 @@ void Neophob_LPD6803::setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b)
   data |= r & 0x1F;
   data |= 0x8000; 
 
-//  pixelData[n] = data;
+  uint16_t ofs = n*2;
+  pixelData[ofs++]=data>>8;
+  pixelData[ofs]=data&0xff;
 }
 
 //---
 void Neophob_LPD6803::setPixelColor(uint16_t n, uint16_t c) {
-  if (n > numLEDs*2) return;
+  if (n >= numLEDs2) return;
 
     /* As a modest alternative to full double-buffering, the setPixel()
      function blocks until the serial output interrupt has moved past
@@ -146,11 +153,11 @@ void Neophob_LPD6803::setPixelColor(uint16_t n, uint16_t c) {
      operate together relatively efficiently with only minimal blocking
      and no second pixel buffer required. */
   while(nState==0); 
-  n*=2;
+
+  uint16_t ofs = n*2;
   uint16_t col = 0x8000 | c;
-//  pixelData[n] = 0x8000 | c; //the first bit of the color word must be set
-  pixelData[n++]=col>>8;
-  pixelData[n]=col&0xff;
+  pixelData[ofs++]=col>>8;
+  pixelData[ofs]=col&0xff;
 }
 
 
