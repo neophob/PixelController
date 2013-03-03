@@ -16,16 +16,14 @@ class Neophob_LPD6803 {
     begin(uint8_t divider),
     show(void),
     setPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b),
-    setPixelColor(uint16_t n, uint16_t c),    
-    setCPUmax(uint8_t max);
+    setPixelColor(uint16_t n, uint16_t c),        
+    setCPU(long isrCallInMicroSec);
   uint16_t
     numPixels(void);
 
  private:
   uint16_t
     numLEDs;  
-  uint8_t
-    cpumax;
   void    
     startSPI(uint8_t divider);
 };

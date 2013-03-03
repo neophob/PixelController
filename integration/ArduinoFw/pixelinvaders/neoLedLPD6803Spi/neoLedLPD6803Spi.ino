@@ -40,7 +40,7 @@
 // ======= START OF USER CONFIGURATION =======
  
 //define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 2
+#define NR_OF_PANELS 4
 
 // ======= END OF USER CONFIGURATION ======= 
 
@@ -159,7 +159,7 @@ void rainbow() {
 int col=25;
 void errPatrn() {
 //    unsigned int rdd = Color(col,col,col);  
-    unsigned int rdd = Color(col,0,col);  
+    unsigned int rdd = Color(0,0,col);  
     unsigned int rdd2 = Color(0,col,0);  
     col++;
     if (col>26)col=0;
@@ -184,7 +184,7 @@ void errPatrn() {
       strip.setPixelColor(i+48, gry);
       strip.setPixelColor(i+56, rdd);
     }*/
-    delay(10);
+    delay(64*2);
 }
 
 
@@ -199,19 +199,46 @@ void setup() {
   Serial.flush();
   Serial.setTimeout(10);
   
-  //cpu use and SPI clock MUST be adjusted
-  // setting for 6 panels, cpu max:43 SPI_CLOCK_DIV64
-  // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV64 -> 18fps
-  // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV32 -> 50fps
-  // setting for 2 panels, cpu max:45 SPI_CLOCK_DIV16 -> 70fps
+//  2 panelconfig, pixelcontroller default 35fps
+//  strip.setCPUmax(60);  // start with 50% CPU usage. up this if the strand flickers or artefacts are visible.
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+
+//  2 panelconfig, pixelcontroller default 8fps
+//  strip.setCPUmax(80);  // start with 50% CPU usage. up this if the strand flickers or artefacts are visible.
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+
+//  2 panelconfig, pixelcontroller default 30fps
+//  strip.setCPUmax(50);  // start with 50% CPU usage. up this if the strand flickers or artefacts are visible.
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+
+//  2 panelconfig, pixelcontroller default 35fps
+//  strip.setCPU(40);  
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+
+//  2 panelconfig, pixelcontroller default 10fps
+//  strip.setCPU(20);  
+//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+
+//  2 panelconfig, pixelcontroller default 50fps, leichte artefakte sichtbar
+//  strip.setCPU(20);  //or 18
+//  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+
+//  2 panelconfig, pixelcontroller default 10fps
+//  strip.setCPU(10);  
+//  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+
+//  2 panelconfig, pixelcontroller default 10fps!
+//  strip.setCPU(8);  
+//  strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
   
-  strip.setCPUmax(60);  // start with 50% CPU usage. up this if the strand flickers or is slow
+  strip.setCPU(36);  // start with 50% CPU usage. up this if the strand flickers or artefacts are visible.
+//  strip.setCPUmax(50);  
   
   //HINT: SPI_CLOCK_DIV16 shift out the data very fast, this means the uP has more time to recieve
   //      serial data -> faster FPS. If you have some issues (flicker) play with the SPI Speed
   //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
-  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
-  //strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+  //strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
   //strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
   //strip.begin(SPI_CLOCK_DIV8);        // Start up the LED counterm 2.0MHz - 0.5uS
   //strip.begin(SPI_CLOCK_DIV4);        // Start up the LED counterm 4.0MHz - 0.25uS

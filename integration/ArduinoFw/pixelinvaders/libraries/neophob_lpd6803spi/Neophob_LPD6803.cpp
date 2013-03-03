@@ -28,7 +28,6 @@ Neophob_LPD6803::Neophob_LPD6803(uint16_t n) {
   numLEDs = n;  
   numLEDs2 = numLEDs*2;
   pixelData = (uint8_t *)malloc(numLEDs2);
-  cpumax = 70;
 
   //clear buffer
   for (unsigned int i=0; i < numLEDs; i++) {
@@ -38,7 +37,8 @@ Neophob_LPD6803::Neophob_LPD6803(uint16_t n) {
 
 //just feed out the clock line to drive the pwm cycle
 static void isr2() {
-  //if (nState==0) return;
+  SPI_WAIT_TILL_TRANSMITED;  
+  SPI_LOAD_BYTE(0);
   SPI_WAIT_TILL_TRANSMITED;  
   SPI_LOAD_BYTE(0);
 }
@@ -47,20 +47,13 @@ static void isr2() {
 // Activate hard/soft SPI as appropriate:
 void Neophob_LPD6803::begin(uint8_t divider) {
   startSPI(divider);
-  setCPUmax(cpumax);
   Timer1.attachInterrupt(isr2);
 }
 
-void Neophob_LPD6803::setCPUmax(uint8_t max) {
-  cpumax = max;
-
-  // each clock out takes 20 microseconds max
-  long time = 100;
-  time *= 20;   // 20 microseconds per
-  time /= max;    // how long between timers
-  Timer1.initialize(time);
+//call the clock shift out function each isrCallInMicroSec us
+void Neophob_LPD6803::setCPU(long isrCallInMicroSec) {
+  Timer1.initialize(isrCallInMicroSec);
 }
-
 
 // Enable SPI hardware and set up protocol details:
 void Neophob_LPD6803::startSPI(uint8_t divider) {
@@ -93,11 +86,11 @@ void Neophob_LPD6803::show(void) {
   nState = 0;
 
   Timer1.stop();
-  //header
-  for (i=0; i<4; i++) {
-    SPI_WAIT_TILL_TRANSMITED;
-    SPI_LOAD_BYTE(0);
-  }
+  //header - omitted as the isr routing sends plenty of 0's
+//  for (i=0; i<4; i++) {
+//    SPI_WAIT_TILL_TRANSMITED;
+//    SPI_LOAD_BYTE(0);
+//  }
 
   //data
   for (i=0; i<numLEDs2; ) {
@@ -108,11 +101,11 @@ void Neophob_LPD6803::show(void) {
       SPI_LOAD_BYTE(pixelData[i++]);      
   }
 
-  //tail
-  for (i=0; i<numLEDs; i++) {
-    SPI_WAIT_TILL_TRANSMITED;    
-    SPI_LOAD_BYTE(0);
-  }
+  //tail - omitted as the isr routing sends plenty of 0's
+//  for (i=0; i<numLEDs; i++) {
+//    SPI_WAIT_TILL_TRANSMITED;    
+//    SPI_LOAD_BYTE(0);
+//  }
   
   Timer1.resume();
   nState = 1;
