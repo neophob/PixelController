@@ -25,6 +25,7 @@ Roadmap PixelController
 -update manual (generic osc generator, howto use, random mode)
 -add more fader (pixel fader for example)
 -disable beat detection if sound volume is too low
+-support more than 2 rows
 
 
 Changelog v1.3.0 to v1.3.1
