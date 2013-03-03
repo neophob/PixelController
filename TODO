@@ -29,6 +29,7 @@ Roadmap PixelController
 
 Changelog v1.3.0 to v1.3.1
 --------------------------
+-Updated PixelInvaders firmware, more speed, improved image quality
 -Add two generic (OSC) input generators, see Processing examples (integration/Processing/OscSendImageData) how to use it.
  Hint: They get selected in random mode only if they are active (receiving data)
 -Update OSC Server buffer size (32k) to accept image data
