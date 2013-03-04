@@ -26,6 +26,7 @@ Roadmap PixelController
 -add more fader (pixel fader for example)
 -disable beat detection if sound volume is too low
 -support more than 2 rows
+-support teensy 3 (pixelinvaders firmware)
 
 
 Changelog v1.3.0 to v1.3.1
