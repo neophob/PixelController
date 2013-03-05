@@ -73,7 +73,7 @@
 byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
 
 //initialize pixels
-Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL*);
+Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
 
 #define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
