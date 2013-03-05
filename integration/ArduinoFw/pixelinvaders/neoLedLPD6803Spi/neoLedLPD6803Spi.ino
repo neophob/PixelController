@@ -35,7 +35,6 @@
 #include <TimerOne.h>
 #include <SPI.h>
 #include <Neophob_LPD6803.h>
-//#include <LPD6803.h>
 
 // ======= START OF USER CONFIGURATION =======
  
@@ -74,8 +73,7 @@
 byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
 
 //initialize pixels
-Neophob_LPD6803 strip = Neophob_LPD6803(64);
-//LPD6803 strip = LPD6803(64,11,13);
+Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL*);
 
 #define SERIALBUFFERSIZE 4
 byte serialResonse[SERIALBUFFERSIZE];
