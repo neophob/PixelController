@@ -27,6 +27,7 @@ Roadmap PixelController
 -disable beat detection if sound volume is too low
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware)
+-Support E1.31 (https://code.google.com/p/open-lighting/source/browse/plugins/e131/E131Device.cpp or https://github.com/ptone/Lumos/tree/master/lumos)
 
 
 Changelog v1.3.0 to v1.3.1
