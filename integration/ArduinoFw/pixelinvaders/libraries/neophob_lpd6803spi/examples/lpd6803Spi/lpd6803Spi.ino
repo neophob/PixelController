@@ -21,9 +21,11 @@ thanks phil!
 Neophob_LPD6803 strip = Neophob_LPD6803(LED_MODULES);
 
 void setup() {
-  //just play with those values!
-  strip.setCPUmax(50);
-  strip.begin(SPI_CLOCK_DIV64);
+  //call the isr routine each 36us
+  strip.setCPU(36);  
+  //set spi speed to 0.5MHz
+  strip.begin(SPI_CLOCK_DIV32);
+  
   strip.show();
 }
 
