@@ -22,7 +22,7 @@ the data/config.properties file.
 You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
 
 ## DEMO
-Check out http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
+Check out https://vimeo.com/61141493, http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
 on two PixelInvaders panels. 
 
 
