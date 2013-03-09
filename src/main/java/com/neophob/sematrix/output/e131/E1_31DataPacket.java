@@ -29,16 +29,25 @@ import java.util.UUID;
  * @author mvogt
  *
  */
-public abstract class E131 {
+public class E1_31DataPacket {
 
     private static final UUID PIXELCONTROLLER_UUID = new UUID(0x31337babel, 0x0caffebeefl);
     
+    public static final int E131_PORT = 5568;
+
     private static final int E131_PACKET_LEN = 638;
-    private static final int E131_PORT = 5568;
+    private static final int E131_SEQUENZE_OFS = 111;
+    private static final int E131_UNIVERSE_ID_HI = 113;
+    private static final int E131_UNIVERSE_ID_LOW = 114;
+    private static final int E131_DMX_PAYLOAD_OFS = 126;
+    private static final int E131_DMX_PAYLOAD_SIZE = 512;
     
+    private byte[] data = new byte[E131_PACKET_LEN];
     
-    public static void assembleBasicE131Packet(int universeNr) {
-        byte[] data = new byte[E131_PACKET_LEN];
+    /**
+     * create E1.31 data packet
+     */
+    public E1_31DataPacket() {        
         //ROOT LAYER
         data[0]=0x00;   // Preamble Size (high)
         data[1]=0x10;   // Preamble Size (low)
@@ -102,8 +111,8 @@ public abstract class E131 {
         data[110]=0x00;                         // Reserved, Transmitter Shall Send 0 (low)
         data[111]=0x00;                         // Sequence Number, To detect duplicate or out of order packets. 
         data[112]=0x00;                         // Options Flags, Bit 7 = Preview_Data, Bit 6 = Stream_Terminated
-        data[113]=(byte)(universeNr >> 8);      // Universe Number (high)
-        data[114]=(byte)(universeNr & 255);     // Universe Number (low)
+//        data[113]=(byte)(universeNr >> 8);      // Universe Number (high)
+//        data[114]=(byte)(universeNr & 255);     // Universe Number (low)
 
         //DMP LAYER
         data[115]=0x72;                         // Protocol flags and length, Low 12 bits = PDU length, High 4 bits = 0x7 (high)
@@ -118,14 +127,31 @@ public abstract class E131 {
         data[124]=0x01;                         // Property value count (low)
         data[125]=0x00;                         // DMX512-A START Code
 //512 DMX DATA
+        
     }
+    
+    /**
+     * create a new data package to send to an e1.31 device
+     * @param id
+     * @param imageData
+     * @return
+     */
+    public byte[] assembleNewE131Packet(int sequenzeId, int universeNr, byte[] imageData) {
+    	if (imageData==null) {
+    		return null;
+    	}
+    	
+    	byte[] payload = data.clone();
+    	payload[E131_SEQUENZE_OFS] = (byte)(sequenzeId%255);
+    	payload[E131_UNIVERSE_ID_HI]=(byte)(universeNr >> 8);      // Universe Number (high)
+    	payload[E131_UNIVERSE_ID_LOW]=(byte)(universeNr & 255);     // Universe Number (low)
 
-/*        if (ipaddr.StartsWith(wxT("239.255.")) || ipaddr == wxT("MULTICAST"))
-        {
-            // multicast - universe number must be in lower 2 bytes
-            wxString ipaddrWithUniv = wxString::Format(wxT("%d.%d.%d.%d"),239,255,(int)UnivHi,(int)UnivLo);
-            remoteAddr.Hostname (ipaddrWithUniv);
-        }
-    }*/
+    	int dataSize = E131_DMX_PAYLOAD_SIZE;
+    	if (imageData.length < E131_DMX_PAYLOAD_SIZE) {
+    		dataSize = imageData.length;
+    	}
+    	System.arraycopy(imageData, 0, payload, E131_DMX_PAYLOAD_OFS, dataSize);
+    	return payload;
+    }
 
 }

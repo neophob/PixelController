@@ -37,7 +37,10 @@ public enum OutputDeviceEnum {
 
 	/** The ARTNET. */
 	ARTNET(ArtnetDevice.class, true),
-	
+
+	/** The E1.31 output. */
+	E1_31(E1_31Device.class, true),
+
 	/** The MINIDMX. */
 	MINIDMX(MiniDmxDevice.class, true),
 

@@ -19,7 +19,6 @@
 package com.neophob.sematrix.output;
 
 import java.net.BindException;
-import java.net.InetAddress;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,18 +42,12 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  * TODO:
  *  -automatic updating of node configurations ?
  */
-public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNetDiscoveryListener {
+public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryListener {
 
 	private static final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
-	private int sequenceID;
-	private int pixelsPerUniverse;
-	private int nrOfUniverse;
-	private int firstUniverseId;
 	private ArtNet artnet;
 	
-	private InetAddress targetAdress;
-
 	/**
 	 * 
 	 * @param controller
@@ -65,9 +58,6 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNe
 		this.initialized = false;
 		this.artnet = new ArtNet();				
 		try {
-			this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
-		    this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
-		    this.firstUniverseId = ph.getArtNetStartUniverseId();
 		    String broadcastAddr = ph.getArtNetBroadcastAddr();
 		    if (StringUtils.isBlank(broadcastAddr)) {
 		        broadcastAddr = ArtNetServer.DEFAULT_BROADCAST_IP;
@@ -82,21 +72,9 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNe
 		    this.artnet.start();
 		    this.artnet.getNodeDiscovery().addListener(this);
 		    this.artnet.startNodeDiscovery();
-		    
-		    //check how many universe we need
-		    this.nrOfUniverse = 1;
-		    int bufferSize=xResolution*yResolution;
-		    if (bufferSize > pixelsPerUniverse) {
-		    	while (bufferSize > pixelsPerUniverse) {
-		    		this.nrOfUniverse++;
-		    		bufferSize -= pixelsPerUniverse;
-		    	}
-		    }
-		    
+		    		    
 		    this.initialized = true;
-			LOG.log(Level.INFO, "ArtNet device initialized using {0} universe with {1} pixels.", 
-					new Object[] { this.nrOfUniverse, this.pixelsPerUniverse }
-			);
+			LOG.log(Level.INFO, "ArtNet device initialized");
 			
 		} catch (BindException e) {
 			LOG.log(Level.WARNING, "\nFailed to initialize ArtNet device:", e);
@@ -105,36 +83,7 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNe
 			LOG.log(Level.WARNING, "Failed to initialize ArtNet device:", e);
 		}
 	}
-	
-	
-    /* (non-Javadoc)
-     * @see com.neophob.sematrix.output.Output#update()
-     */
-	@Override
-	public void update() {
-		if (this.initialized) {
-			if (this.nrOfUniverse == 1) {
-				sendBufferToArtnetReceiver(0, OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat) );
-			} else {
-				int[] fullBuffer = getTransformedBuffer();				
-				int remainingInt = fullBuffer.length;
-				int ofs=0;
-				for (int i=0; i<this.nrOfUniverse; i++) {
-					int tmp=pixelsPerUniverse;
-					if (remainingInt<pixelsPerUniverse) {
-						tmp = remainingInt;
-					}
-					int[] buffer = new int[tmp];
-					System.arraycopy(fullBuffer, ofs, buffer, 0, tmp);
-					remainingInt-=tmp;
-					ofs+=tmp;
-					sendBufferToArtnetReceiver(i, OutputHelper.convertBufferTo24bit(buffer, colorFormat) );					
-				}
-			}
-			
-		}
-	}
-
+		
 
 	/**
 	 * send buffer to a dmx universe
@@ -149,12 +98,12 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNe
 	 * @param artnetReceiver
 	 * @param frameBuf
 	 */
-	private void sendBufferToArtnetReceiver(int universeOffset, byte[] buffer) {
+	protected void sendBufferToReceiver(int universeId, byte[] buffer) {
 		ArtDmxPacket dmx = new ArtDmxPacket();
 		
 		//parameter: int subnetID, int universeID
 		//TODO: make subnet Id configurable?
-		dmx.setUniverse(0, this.firstUniverseId+universeOffset);
+		dmx.setUniverse(0, universeId);
 		dmx.setSequenceID(sequenceID % 255);
 		
 		//byte[] dmxData, int numChannels
@@ -170,23 +119,6 @@ public class ArtnetDevice extends OnePanelResolutionAwareOutput implements ArtNe
 	    }	    
 	}
 
-	@Override
-    public String getConnectionStatus(){
-        if (initialized) {
-            return "Target IP: "+targetAdress+", Nr. of universe: "+nrOfUniverse;            
-        }
-        return "Not connected!";
-    }
-	
-	@Override
-    public boolean isSupportConnectionState() {
-        return true;
-    }
-	
-    @Override
-    public boolean isConnected() {
-        return initialized;
-    }
 
 
     /* (non-Javadoc)
