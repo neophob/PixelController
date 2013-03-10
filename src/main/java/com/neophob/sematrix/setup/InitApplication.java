@@ -31,6 +31,7 @@ import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.AdaVision;
 import com.neophob.sematrix.output.ArtnetDevice;
+import com.neophob.sematrix.output.E1_31Device;
 import com.neophob.sematrix.output.MiniDmxDevice;
 import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
@@ -156,6 +157,9 @@ public class InitApplication {
             case ARTNET:
                 output = new ArtnetDevice(applicationConfig, collector.getPixelControllerOutput());
                 break;
+            case E1_31:
+                output = new E1_31Device(applicationConfig, collector.getPixelControllerOutput());
+                break;            	
             case MINIDMX:
                 output = new MiniDmxDevice(applicationConfig, collector.getPixelControllerOutput());
                 break;
