@@ -55,10 +55,13 @@ public final class ConfigConstant {
 
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";
-
 	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";	
 	public static final String ARTNET_FIRST_UNIVERSE_ID = "artnet.first.universe.id";
 	public static final String ARTNET_BROADCAST_ADDR = "artnet.broadcast.address";
+
+	public static final String E131_IP = "e131.ip";
+	public static final String E131_PIXELS_PER_UNIVERSE = "e131.pixels.per.universe";	
+	public static final String E131_FIRST_UNIVERSE_ID = "e131.first.universe.id";
 
 	public static final String UDP_IP = "udp.ip";
 	public static final String UDP_PORT = "udp.port";

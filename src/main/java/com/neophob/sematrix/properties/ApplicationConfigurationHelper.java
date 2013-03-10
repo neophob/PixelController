@@ -127,6 +127,7 @@ public class ApplicationConfigurationHelper {
         int pixelInvadersNetDevices = parsePixelInvaderNetConfig();
         int stealthDevices = parseStealthConfig();        
         int artnetDevices = parseArtNetDevices();
+        int e131Devices = parseE131Devices();
         int miniDmxDevices = parseMiniDmxDevices();
         int tpm2Devices = parseTpm2Devices();
         int tpm2NetDevices = parseTpm2NetDevices();
@@ -174,6 +175,12 @@ public class ApplicationConfigurationHelper {
             totalDevices = artnetDevices;
             LOG.log(Level.INFO, "found Artnet device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.ARTNET;
+        }
+        if (e131Devices > 0) {
+            enabledOutputs++;
+            totalDevices = e131Devices;
+            LOG.log(Level.INFO, "found E1.31 device: "+totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.E1_31;
         }
         if (miniDmxDevices > 0) {
             enabledOutputs++;
@@ -758,6 +765,31 @@ public class ApplicationConfigurationHelper {
     }
 
     /**
+     * get configured e131 ip.
+     *
+     * @return the e131 controller ip
+     */
+    public String getE131Ip() {
+        return config.getProperty(ConfigConstant.E131_IP);
+    }
+
+    /**
+     * how many pixels (=3 Channels) per DMX universe
+     * @return
+     */
+    public int getE131PixelsPerUniverse() {
+        return parseInt(ConfigConstant.E131_PIXELS_PER_UNIVERSE, 170);
+    }
+
+    /**
+     * get first arnet universe id
+     * @return
+     */
+    public int getE131StartUniverseId() {
+        return parseInt(ConfigConstant.E131_FIRST_UNIVERSE_ID, 0);
+    }
+    
+    /**
      * get configured artnet ip.
      *
      * @return the art net ip
@@ -808,6 +840,24 @@ public class ApplicationConfigurationHelper {
 
         return 0;
     }
+
+    /**
+     * Parses the e131 devices.
+     *
+     * @return the int
+     */
+    private int parseE131Devices() {
+        if (StringUtils.length(getE131Ip())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
+            this.devicesInRow1=1;
+            this.devicesInRow2=0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
+            return 1;
+        }
+
+        return 0;
+    }
+    
     
     /**
      * 

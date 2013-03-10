@@ -21,6 +21,8 @@ package com.neophob.sematrix.output;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,6 +66,17 @@ public class E1_31Device extends AbstractDmxDevice {
 	public E1_31Device(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.E1_31, ph, controller, 8);
 
+        //Get dmx specific config
+		this.pixelsPerUniverse = ph.getE131PixelsPerUniverse();
+	    try {
+			this.targetAdress = InetAddress.getByName(ph.getE131Ip());
+		} catch (UnknownHostException e) {
+			//TODO report
+			LOG.log(Level.SEVERE, "Failed to find target address!", e);
+		}
+	    this.firstUniverseId = ph.getE131StartUniverseId();
+	    calculateNrOfUniverse();
+	    
 		try {
 			packet = new DatagramPacket(new byte[0], 0, targetAdress, E1_31DataPacket.E131_PORT);
 			dsocket = new DatagramSocket();

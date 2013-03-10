@@ -19,6 +19,8 @@
 package com.neophob.sematrix.output;
 
 import java.net.BindException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +57,17 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 	public ArtnetDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.ARTNET, ph, controller, 8);
 
+        //Get dmx specific config
+		this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
+	    try {
+			this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
+		} catch (UnknownHostException e) {
+			//TODO report
+			LOG.log(Level.SEVERE, "Failed to find target address!", e);
+		}
+	    this.firstUniverseId = ph.getArtNetStartUniverseId();
+	    calculateNrOfUniverse();
+	    
 		this.initialized = false;
 		this.artnet = new ArtNet();				
 		try {

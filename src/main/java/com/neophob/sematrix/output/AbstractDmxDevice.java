@@ -19,7 +19,6 @@
 package com.neophob.sematrix.output;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,17 +54,21 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
 	public AbstractDmxDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		super(outputDeviceEnum, ph, controller, bpp);
 
-		this.initialized = false;
-		
-        //Get dmx specific config
-		this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
-	    try {
-			this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
-		} catch (UnknownHostException e) {
-			//TODO
-		}
-	    this.firstUniverseId = ph.getArtNetStartUniverseId();
-        
+		this.initialized = false;	        
+	}
+	
+	/**
+	 * concrete classes need to implement this
+	 * 
+	 * @param universeId
+	 * @param buffer
+	 */
+	protected abstract void sendBufferToReceiver(int universeId, byte[] buffer);
+	
+	/**
+	 * 
+	 */
+	protected void calculateNrOfUniverse() {
 	    //check how many universe we need
 	    this.nrOfUniverse = 1;
 	    int bufferSize=xResolution*yResolution;
@@ -79,10 +82,9 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
         LOG.log(Level.INFO, "\tPixels per universe: "+pixelsPerUniverse);
         LOG.log(Level.INFO, "\tFirst universe ID: "+firstUniverseId);
         LOG.log(Level.INFO, "\t# of universe: "+nrOfUniverse);
-        LOG.log(Level.INFO, "\tTarget address: "+targetAdress);
+        LOG.log(Level.INFO, "\tTarget address: "+targetAdress);		
 	}
 	
-	protected abstract void sendBufferToReceiver(int universeId, byte[] buffer);
 	
     /* (non-Javadoc)
      * @see com.neophob.sematrix.output.Output#update()
