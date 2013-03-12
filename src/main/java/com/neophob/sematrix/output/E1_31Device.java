@@ -22,8 +22,11 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.output.e131.E1_31DataPacket;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -34,29 +37,21 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  * @author michu
  * 
  * TODO:
- *  -implement multicast
  *  -implement multipanel support
  */
 public class E1_31Device extends AbstractDmxDevice {
 
 	private static final Logger LOG = Logger.getLogger(E1_31Device.class.getName());
+	private static final String MULTICAST_START = "239.255.";
 
 	private E1_31DataPacket dataPacket = new E1_31DataPacket();
 	private DatagramPacket packet;
 	private DatagramSocket dsocket;
-
+	
+	//multicast or unicast?
+	private boolean sendMulticast = false;
+	
 	private int errorCounter=0;
-
-
-	/*        if (ipaddr.StartsWith(wxT("239.255.")) || ipaddr == wxT("MULTICAST"))
-    {
-        // multicast - universe number must be in lower 2 bytes
-        wxString ipaddrWithUniv = wxString::Format(wxT("%d.%d.%d.%d"),239,255,(int)UnivHi,(int)UnivLo);
-        remoteAddr.Hostname (ipaddrWithUniv);
-    }
-}*/
-
-
 
 	/**
 	 * 
@@ -68,10 +63,13 @@ public class E1_31Device extends AbstractDmxDevice {
         //Get dmx specific config
 		this.pixelsPerUniverse = ph.getE131PixelsPerUniverse();
 	    try {
-			this.targetAdress = InetAddress.getByName(ph.getE131Ip());
+	    	String ip = ph.getE131Ip();
+	    	if (StringUtils.startsWith(ip, MULTICAST_START)) {
+	    		this.sendMulticast = true;
+	    	}
+			this.targetAdress = InetAddress.getByName(ip);
 			this.firstUniverseId = ph.getE131StartUniverseId();
 			calculateNrOfUniverse();
-	    
 			packet = new DatagramPacket(new byte[0], 0, targetAdress, E1_31DataPacket.E131_PORT);
 			dsocket = new DatagramSocket();
 			
@@ -81,8 +79,6 @@ public class E1_31Device extends AbstractDmxDevice {
 			LOG.log(Level.WARNING, "failed to initialize E1.31 device", e);
 		}
 	}
-	
-	
 
 
 	@Override
@@ -99,6 +95,22 @@ public class E1_31Device extends AbstractDmxDevice {
 			byte[] data = dataPacket.assembleNewE131Packet(this.sequenceID++, universeId, buffer);
 			packet.setData(data);
 			packet.setLength(data.length);
+			
+			if (this.sendMulticast) {
+		        // multicast - universe number must be in lower 2 bytes
+				byte[] addr = new byte[4];
+				addr[0] = (byte)192;
+				addr[1] = (byte)168;
+				addr[2] = (byte)(universeId>>8);
+				addr[3] = (byte)(universeId&255);
+				InetAddress iaddr;
+				try {
+					iaddr = InetAddress.getByAddress(addr);
+					packet.setAddress(iaddr);
+				} catch (UnknownHostException e) {
+					LOG.log(Level.WARNING, "Failed to set target address!", e);
+				}
+			}
 			try {
 				dsocket.send(packet);
 			} catch (IOException e) {
