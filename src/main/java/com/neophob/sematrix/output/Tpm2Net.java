@@ -104,17 +104,18 @@ public class Tpm2Net extends Output {
 		this.initialized = false;		
 
 		try {
-			this.targetAddr = InetAddress.getByName(targetAddrStr);			
+			this.targetAddr = InetAddress.getByName(targetAddrStr);
 			this.outputSocket = new DatagramSocket();
 			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, TPM2_NET_PORT);
 
 			this.initialized = true;
 			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution: {1}/{2}",  
-					new Object[] { this.targetAddr.toString(), this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
+					new Object[] { this.targetAddr, 
+					this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
 			);
 
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to resolve target address: {0}", e);
+			LOG.log(Level.SEVERE, "Failed to resolve target address "+targetAddrStr+": {0}", e);
 		}
 	}
 

@@ -19,6 +19,7 @@
 package com.neophob.sematrix.properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -27,7 +28,12 @@ import java.util.Properties;
 import org.junit.Test;
 
 import com.neophob.sematrix.layout.Layout.LayoutName;
+import com.neophob.sematrix.output.ArtnetDevice;
+import com.neophob.sematrix.output.E1_31Device;
+import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.OutputDeviceEnum;
+import com.neophob.sematrix.output.PixelControllerOutput;
+import com.neophob.sematrix.output.UdpDevice;
 
 /**
  * test start
@@ -68,7 +74,7 @@ public class PropertiesHelperTest {
         assertEquals(ColorFormat.RGB, colorFormat.get(0));
         assertEquals(ColorFormat.RGB, colorFormat.get(1));
         assertEquals(ColorFormat.RGB, colorFormat.get(2));
-        assertEquals(ColorFormat.RGB, colorFormat.get(3));
+        assertEquals(ColorFormat.RGB, colorFormat.get(3));        
     }
     
     @Test
@@ -214,6 +220,7 @@ public class PropertiesHelperTest {
     public void testArtnetConfig() {     
         Properties config = new Properties();
         config.put(ConfigConstant.ARTNET_IP, "192.168.1.1");        
+        config.put(ConfigConstant.ARTNET_BROADCAST_ADDR, "255.0.0.0");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
@@ -224,6 +231,11 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.ARTNET, ph.getOutputDevice());
+        
+        PixelControllerOutput controller = new PixelControllerOutput();
+        ArtnetDevice device = new ArtnetDevice(ph, controller);
+        assertTrue(device.isConnected());       
+
     }    
 
     
@@ -242,9 +254,12 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
+        PixelControllerOutput controller = new PixelControllerOutput();
+        E1_31Device device = new E1_31Device(ph, controller);
+        assertFalse(device.isSendMulticast());
         
         config = new Properties();
-        config.put(ConfigConstant.E131_IP, "1.1.1.1");        
+        config.put(ConfigConstant.E131_IP, "239.255.1.1");        
         config.put(ConfigConstant.E131_FIRST_UNIVERSE_ID, 1); 
         config.put(ConfigConstant.E131_PIXELS_PER_UNIVERSE, 333);        
         ph = new ApplicationConfigurationHelper(config);
@@ -258,6 +273,8 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
     
+        device = new E1_31Device(ph, controller);
+        assertTrue(device.isSendMulticast());       
     }    
 
     
@@ -277,7 +294,7 @@ public class PropertiesHelperTest {
         
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
-        assertEquals(OutputDeviceEnum.MINIDMX, ph.getOutputDevice());
+        assertEquals(OutputDeviceEnum.MINIDMX, ph.getOutputDevice());        
     }  
     
     @Test
@@ -294,6 +311,10 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
+        
+        PixelControllerOutput controller = new PixelControllerOutput();
+        NullDevice device = new NullDevice(ph, controller);
+        assertTrue(device.isConnected());       
     }     
 
     @Test(expected = IllegalArgumentException.class)
@@ -433,6 +454,10 @@ public class PropertiesHelperTest {
         assertEquals(OutputDeviceEnum.UDP, ph.getOutputDevice());
         assertEquals("1.2.3.4", ph.getUdpIp());
         assertEquals(15, ph.getUdpPort());
+        
+        PixelControllerOutput controller = new PixelControllerOutput();
+        UdpDevice device = new UdpDevice(ph, controller);
+        assertTrue(device.isConnected());               
     }
 
     @Test
@@ -500,13 +525,13 @@ public class PropertiesHelperTest {
     @Test
     public void testTpm2Net() {
         Properties config = new Properties();        
-        config.put(ConfigConstant.TPM2NET_IP, "1.2.3.4");
+        config.put(ConfigConstant.TPM2NET_IP, "127.0.0.1");
         config.put(ConfigConstant.TPM2NET_ROW1, "ROTATE_180,NO_ROTATE");
         config.put(ConfigConstant.TPM2NET_ROW2, "NO_ROTATE, NO_ROTATE");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
         assertEquals(OutputDeviceEnum.TPM2NET, ph.getOutputDevice());
         assertEquals(4, ph.getTpm2NetDevice().size());
-        assertEquals("1.2.3.4", ph.getTpm2NetIpAddress());
+        assertEquals("127.0.0.1", ph.getTpm2NetIpAddress());        
     }
 
     @Test

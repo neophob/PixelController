@@ -64,8 +64,10 @@ public class E1_31Device extends AbstractDmxDevice {
 		this.pixelsPerUniverse = ph.getE131PixelsPerUniverse();
 	    try {
 	    	String ip = ph.getE131Ip();
+	    	String sendMode = "Unicast";
 	    	if (StringUtils.startsWith(ip, MULTICAST_START)) {
 	    		this.sendMulticast = true;
+	    		sendMode = "Multicast";
 	    	}
 			this.targetAdress = InetAddress.getByName(ip);
 			this.firstUniverseId = ph.getE131StartUniverseId();
@@ -74,7 +76,8 @@ public class E1_31Device extends AbstractDmxDevice {
 			dsocket = new DatagramSocket();
 			
 			this.initialized = true;
-			LOG.log(Level.INFO, "E1.31Device device initialized");
+		
+			LOG.log(Level.INFO, "E1.31Device device initialized, send mode: "+sendMode);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "failed to initialize E1.31 device", e);
 		}
@@ -123,6 +126,14 @@ public class E1_31Device extends AbstractDmxDevice {
 	@Override
 	public long getErrorCounter() {
 	    return errorCounter;
+	}
+
+	/**
+	 * unicast or multicast mode?
+	 * @return
+	 */
+	public boolean isSendMulticast() {
+		return sendMulticast;
 	}
 
 }
