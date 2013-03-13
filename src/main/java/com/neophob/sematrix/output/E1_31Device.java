@@ -32,7 +32,7 @@ import com.neophob.sematrix.output.e131.E1_31DataPacket;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
- * The Class ArtnetDevice.
+ * Basic E1.31 device support. Can be tested with http://sourceforge.net/projects/sacnview/
  *
  * @author michu
  * 
@@ -102,8 +102,8 @@ public class E1_31Device extends AbstractDmxDevice {
 			if (this.sendMulticast) {
 		        // multicast - universe number must be in lower 2 bytes
 				byte[] addr = new byte[4];
-				addr[0] = (byte)192;
-				addr[1] = (byte)168;
+				addr[0] = (byte)239;
+				addr[1] = (byte)255;
 				addr[2] = (byte)(universeId>>8);
 				addr[3] = (byte)(universeId&255);
 				InetAddress iaddr;
