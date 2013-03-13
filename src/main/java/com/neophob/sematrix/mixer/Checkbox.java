@@ -29,9 +29,12 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  */
 public class Checkbox extends Mixer {
+    
+    private static final int CHECK_BOX_SIZE = 8;
 
 	/** The pixels per line. */
-	private int pixelsPerLine;
+	private int flpX = -1;
+	private int flpY = -1;
 	
 	/**
 	 * Instantiates a new checkbox.
@@ -40,7 +43,6 @@ public class Checkbox extends Mixer {
 	 */
 	public Checkbox(PixelControllerMixer controller) {
 		super(controller, MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
-		pixelsPerLine = Collector.getInstance().getMatrix().getDeviceXSize();
 	}
 
 	/* (non-Javadoc)
@@ -53,19 +55,26 @@ public class Checkbox extends Mixer {
 		}
 
 		Generator gen1 = visual.getGenerator1();
+		
+		//lazy init
+		if (flpX == -1) {
+	        this.flpX = gen1.getInternalBufferXSize()/CHECK_BOX_SIZE;	        
+	        float aspectRatio = Collector.getInstance().getMatrix().getDeviceXSize()/Collector.getInstance().getMatrix().getDeviceYSize();	        
+	        this.flpY = (int)(gen1.getInternalBufferXSize()*CHECK_BOX_SIZE*aspectRatio);		    
+		}
+		
 		int[] src1 = visual.getEffect1Buffer();
 		int[] src2 = visual.getEffect2Buffer();
 		int[] dst = new int [gen1.internalBuffer.length];
-		int flp = gen1.getInternalBufferXSize()*pixelsPerLine;
 		
 		boolean flip=true;
 		for (int i=0; i<src1.length; i++) {
-			if (i%pixelsPerLine==0) {
+			if (i%flpX==0) {
 				flip=!flip;
 			}
-			if (i%flp==0) {
-				flip=!flip;
-			}
+            if (i%flpY==0) {
+                flip=!flip;
+            }
 			
 			if (flip) {
 				dst[i] = src2[i];
