@@ -90,7 +90,10 @@ public class FileUtils {
 	 */
 	static class ImageFilter implements FilenameFilter {		
 	    public boolean accept(File dir, String name) {
-	        return (name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".gif") || name.toLowerCase().endsWith(".jpeg"));
+	        return (name.toLowerCase().endsWith(".jpg") 
+	        		|| name.toLowerCase().endsWith(".gif")
+	        		|| name.toLowerCase().endsWith(".png")
+	        		|| name.toLowerCase().endsWith(".jpeg"));
 	    }
 	}
 	
