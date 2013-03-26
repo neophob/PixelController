@@ -35,6 +35,7 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
 -Add more 8x8 icon images
+-Rainbowduino Output: Cleanup init code
 
 
 Changelog v1.3.0 to v1.3.1
