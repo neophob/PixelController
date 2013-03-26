@@ -53,17 +53,30 @@ public class RainbowduinoV3Device extends Output {
 	            //convert os dependent serial port names
 	            devices.add(OutputHelper.getSerialPortName(s));
 	        }
+
+	        //this counter is used to track serial port initialization errors
+	        int errorCounter=0;
 	        
 	        this.rainbowduinoV3Devices = new RainbowduinoV3[devices.size()];
 	        GammaTable gammaTable = new GammaTable();
 	        // construct RainbowduinoV3 instances
 	        for (int i = 0; i < devices.size(); i++) {
-	            this.rainbowduinoV3Devices[i] = new RainbowduinoV3(
-	                    devices.get(i),
-	                    gammaTable
-	            );
-	        }		
-	        initialized = true;
+	        	LOG.log(Level.INFO, "Try to open serial port "+devices.get(i));
+	            this.rainbowduinoV3Devices[i] = new RainbowduinoV3(devices.get(i), gammaTable);
+	            if (!this.rainbowduinoV3Devices[i].isInitialized()) {
+	            	errorCounter++;
+	            }
+	        }
+	        
+	        if (errorCounter==0) {
+		        initialized = true;	        	
+		        LOG.log(Level.INFO, "Rainbowduino output initialized sucessfully");
+	        } else {
+	        	LOG.log(Level.WARNING, "Failed to initialize Rainbowduino output! # of serial ports in error state: "+errorCounter);
+	        }
+		} catch (Exception e) {
+			//for example gnu.io.NoSuchPortException
+			LOG.log(Level.SEVERE, "Failed open serial port, check your config file", e);
 		} catch (Throwable t) {
 		    LOG.log(Level.SEVERE, "\n\n\n\nSERIOUS ERROR, check your RXTX installation!", t);
 		}
