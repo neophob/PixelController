@@ -263,9 +263,11 @@ public final class MessageProcessor {
 			case LOAD_PRESENT:
 				try {
 					int idxl = col.getSelectedPreset();
+					int currentVisual = col.getCurrentVisual();
 					List<String> present = col.getPresets().get(idxl).getPresent();
 					if (present!=null) { 
 						col.setCurrentStatus(present);
+						col.setCurrentVisual(currentVisual);
 					}
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
