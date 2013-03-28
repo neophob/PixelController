@@ -458,13 +458,18 @@ public final class Collector {
 	 * @param preset the new current status
 	 */
 	public void setCurrentStatus(List<String> preset) {
+		LOG.log(Level.FINEST, "--------------");
+		long start=System.currentTimeMillis();
 		setLoadingPresent(true);
 		for (String s: preset) {		
 			s = StringUtils.trim(s);
 			s = StringUtils.removeEnd(s, ";");
+			LOG.log(Level.FINEST, "LOAD PRESET: "+s);
 			MessageProcessor.processMsg(StringUtils.split(s, ' '), false, null);
 		}
 		setLoadingPresent(false);
+		long needed=System.currentTimeMillis()-start;
+		LOG.log(Level.INFO, "Preset loaded in "+needed+"ms");
 	}
 	
 	/**
