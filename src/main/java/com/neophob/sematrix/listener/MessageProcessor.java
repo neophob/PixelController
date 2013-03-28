@@ -264,10 +264,13 @@ public final class MessageProcessor {
 				try {
 					int idxl = col.getSelectedPreset();
 					int currentVisual = col.getCurrentVisual();
+					int currentOutput = col.getCurrentOutput();
 					List<String> present = col.getPresets().get(idxl).getPresent();
 					if (present!=null) { 
 						col.setCurrentStatus(present);
+						//Restore current Selection 
 						col.setCurrentVisual(currentVisual);
+						col.setCurrentOutput(currentOutput);
 					}
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
