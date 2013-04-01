@@ -118,6 +118,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     //Generator Tab
     private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
     private Button freezeUpdate;
+    private Button toggleInternalVisual;
     
     //Output Tab
     private DropdownList dropdownOutputVisual;
@@ -400,6 +401,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		freezeUpdate.setGroup(generatorTab);
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
 
+        
+        toggleInternalVisual= cp5.addButton(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(), 0,
+				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown+30, Theme.DROPBOXLIST_LENGTH, 15);
+        toggleInternalVisual.setCaptionLabel(Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
+        toggleInternalVisual.setGroup(generatorTab);
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),Messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
+                
                 
         brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 
         		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
@@ -705,31 +713,34 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
         }
         
-        //draw output buffer and marker
-        int ofs=0;
-        for (Visual v: col.getAllVisuals()) {
+        //draw internal buffer only if enabled
+        if (col.isInternalVisualsVisible()) {
+            //draw output buffer and marker
+            int ofs=0;
+            for (Visual v: col.getAllVisuals()) {
 
-            //use always the pixel resize option to reduce cpu load
-        	buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
-        	
-        	pImage.loadPixels();
-        	System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
-        	pImage.updatePixels();
+                //use always the pixel resize option to reduce cpu load
+            	buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
+            	
+            	pImage.loadPixels();
+            	System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
+            	pImage.updatePixels();
 
-        	//display the image
-        	image(pImage, localX, localY);      		
+            	//display the image
+            	image(pImage, localX, localY);      		
 
-        	//highlight current output
-        	if (outputId.contains(ofs)) {
-        		fill(20, 235, 20);
-        	} else {
-        		fill(235, 20, 20);
-        	}	
-        	rect(localX+5, localY+5, 10, 10);				
+            	//highlight current output
+            	if (outputId.contains(ofs)) {
+            		fill(20, 235, 20);
+            	} else {
+            		fill(235, 20, 20);
+            	}	
+            	rect(localX+5, localY+5, 10, 10);				
 
-            localX += pImage.width;
-            ofs++;
-        }
+                localX += pImage.width;
+                ofs++;
+            }        	
+        }        
         
         //beat detection
         displayWidgets(GENERIC_Y_OFS);

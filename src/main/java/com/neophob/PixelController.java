@@ -305,6 +305,7 @@ public class PixelController extends PApplet {
 		
 		// update all generators
 		Collector.getInstance().updateSystem();
+		
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();

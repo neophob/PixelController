@@ -461,6 +461,11 @@ public final class MessageProcessor {
 				Collector.getInstance().togglePauseMode();
 				break;
 			
+			//show/hide internal visuals to save cpu power
+			case TOGGLE_INTERNAL_VISUAL:
+				Collector.getInstance().toggleInternalVisual();
+				break;
+				
 			case OSC_GENERATOR1:
 				col.getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
 				break;

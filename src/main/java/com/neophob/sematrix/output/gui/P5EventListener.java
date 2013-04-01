@@ -243,6 +243,10 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.FREEZE, "");
             	break;
             	
+            case BUTTON_TOGGLE_INTERNAL_VISUALS:
+            	createMessage(ValidCommands.TOGGLE_INTERNAL_VISUAL, "");
+            	break;
+            	
             case BRIGHTNESS:
             	float brightness = value;
             	createMessage(ValidCommands.CHANGE_BRIGHTNESS, brightness);

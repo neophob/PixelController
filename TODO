@@ -37,7 +37,8 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
 -Fix: Do not change current visual and output if a preset is loaded
--Rainbowduino Output: Cleanup init code
+-Rainbowduino Output: Cleanup init code. 
+-Add option to hide internal Visuals to save CPU power
 
 
 Changelog v1.3.0 to v1.3.1

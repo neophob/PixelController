@@ -144,6 +144,8 @@ public final class Collector {
 	/** The random mode. */
 	private boolean inPauseMode = false;
 
+	private boolean internalVisualsVisible = true;
+
 	/** flag to trigger a gui refresh (update current settings from the app to the gui)*/
 	private boolean triggerGuiRefresh = false;
 	
@@ -820,7 +822,9 @@ public final class Collector {
 		this.colorSets = colorSets;
 	}
 
-	
+	/**
+	 * 
+	 */
     public void togglePauseMode() {
     	if (inPauseMode) {
     		inPauseMode=false;
@@ -829,6 +833,27 @@ public final class Collector {
     	}
     }
 
+    /**
+     * 
+     */
+    public void toggleInternalVisual() {
+    	if (internalVisualsVisible) {
+    		internalVisualsVisible=false;
+    	} else {
+    		internalVisualsVisible=true;
+    	}
+    }
+    
+    
+    
+    public boolean isInternalVisualsVisible() {
+		return internalVisualsVisible;
+	}
+
+	/**
+     * 
+     * @return
+     */
 	public boolean isInPauseMode() {
 		return inPauseMode;
 	}
