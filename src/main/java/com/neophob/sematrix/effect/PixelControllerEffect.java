@@ -79,6 +79,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		new FlipY(this);
 		new FlipX(this);
 		new Strobo(this);
+		new Rotate90(this);
 		textureDeformation = new TextureDeformation(this);
 	}
 	
