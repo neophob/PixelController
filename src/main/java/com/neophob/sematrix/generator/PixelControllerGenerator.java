@@ -124,6 +124,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
         
         this.oscListener1 = new OscListener(this, GeneratorName.OSC_GEN1);
         this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN2);
+        
+        new VisualZero(this);
+        
     	LOG.log(Level.INFO, "Init finished");
     }
 

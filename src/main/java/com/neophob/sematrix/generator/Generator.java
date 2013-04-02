@@ -97,6 +97,9 @@ public abstract class Generator implements RandomizeState {
 		
 		OSC_GEN2(16), 
         
+		/* use the visual 0 as generator */
+		VISUAL_ZERO(17),
+		
 		;
 		
 		/** The id. */
