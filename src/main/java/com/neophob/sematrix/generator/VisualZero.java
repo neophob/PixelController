@@ -28,11 +28,13 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class VisualZero extends Generator {	
 
+	private Visual visual;
+	
 	/**
 	 * @param controller the controller
 	 */
 	public VisualZero(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);
+		super(controller, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);		
 	}
 
 	/* (non-Javadoc)
@@ -40,8 +42,8 @@ public class VisualZero extends Generator {
 	 */
 	@Override
 	public void update() {
-	    Visual v = Collector.getInstance().getVisual(0);
-	    this.internalBuffer = v.getMixer().getBuffer(v);
+		visual = Collector.getInstance().getVisual(0);
+	    this.internalBuffer = visual.getMixer().getBuffer(visual);
 	}
 
 }
