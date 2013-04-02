@@ -18,21 +18,21 @@
  */
 package com.neophob.sematrix.input;
 
-import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class SoundDummy.
  */
 public class SoundDummy implements SeSound {
-
-	/** The random. */
-	private Random random;
 	
+	private static final Logger LOG = Logger.getLogger(SoundDummy.class.getName());
+
 	/**
 	 * Instantiates a new sound dummy.
 	 */
 	public SoundDummy() {
-		random = new Random();
+		LOG.log(Level.INFO,	"Sound thread started, dummy implementation...");
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class SoundDummy implements SeSound {
 	 * @return the volume
 	 */
 	public float getVolume() {
-		return random.nextFloat();
+		return 0.5f;
 	}
 
 	/* (non-Javadoc)
@@ -55,28 +55,28 @@ public class SoundDummy implements SeSound {
 	 * @see com.neophob.sematrix.input.SeSound#isKick()
 	 */
 	public boolean isKick() {
-		return random.nextBoolean();
+		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.input.SeSound#isSnare()
 	 */
 	public boolean isSnare() {
-		return random.nextBoolean();
+		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.input.SeSound#isHat()
 	 */
 	public boolean isHat() {
-		return random.nextBoolean();
+		return false;
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.input.SeSound#isPang()
 	 */
 	public boolean isPang() {
-		return random.nextBoolean();
+		return false;
 	}
 	
 	/* (non-Javadoc)
