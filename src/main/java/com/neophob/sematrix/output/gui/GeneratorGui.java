@@ -243,6 +243,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorListTwo.setLabel(generatorListTwo.getItem(1).getName());
         generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
         generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
+        generatorListOne.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        generatorListTwo.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //Effect 
         effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.guiText(), 
@@ -261,7 +263,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         effectListTwo.setLabel(effectListTwo.getItem(0).getName());
         effectListOne.moveTo(ALWAYS_VISIBLE_TAB);
         effectListTwo.moveTo(ALWAYS_VISIBLE_TAB);
-
+        effectListOne.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        effectListTwo.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        
         //Mixer 
         mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
@@ -273,6 +277,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             i++;
         }
         mixerList.setLabel(mixerList.getItem(0).getName());
+        mixerList.setHeight(Theme.DROPBOXLIST_HEIGHT);
         mixerList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
@@ -338,7 +343,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());
         blinkenLightsList.setGroup(generatorTab);
-        blinkenLightsList.setHeight(100);
+        blinkenLightsList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //images
         cp5.addTextlabel("genImg", Messages.getString("GeneratorGui.IMAGE_LOAD"), GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -353,7 +358,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         imageList.setLabel(imageList.getItem(1).getName());
         imageList.setGroup(generatorTab);		
-        imageList.setHeight(100);
+        imageList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         cp5.addTextlabel("genTextdefOpt", Messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -376,7 +381,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
         textureDeformOptions.setGroup(generatorTab);		
-        textureDeformOptions.setHeight(80);
+        textureDeformOptions.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //colorscroll options
         cp5.addTextlabel("genColorScroll", Messages.getString("GeneratorGui.COLORSCROLL_OPTIONS"), GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, yPosStartLabel+5).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -390,7 +395,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         colorScrollList.setLabel(colorScrollList.getItem(0).getName());
         colorScrollList.setGroup(generatorTab);		
-        colorScrollList.setHeight(100);
+        colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //add textfield
         textGenerator = cp5.addTextfield("textfield", "Textfield", "Textfield", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -478,7 +483,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             i++;
         }		
         colorSetList.setLabel(colorSetList.getItem(1).getName());
-        colorSetList.setHeight(100);
+        colorSetList.setHeight(Theme.DROPBOXLIST_HEIGHT);
         colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
         cp5.getTooltip().register("colSet", Messages.getString("GeneratorGui.TOOLTIP_COLORSET")); //$NON-NLS-1$ //$NON-NLS-2$
 
