@@ -151,7 +151,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private int singleVisualXSize, singleVisualYSize;
     private int p5GuiYOffset;
 
-    private int frameCount;
     private int[] buffer = null;
     
     private boolean initialized = false;
@@ -690,9 +689,15 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
     
     
+    /**
+     * 
+     * @param col
+     * @return
+     */
     private int getVisualCenter(Collector col) {
     	return (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
     }
+    
     
     /**
      * draw the whole internal buffer on screen.
@@ -704,22 +709,30 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int localX = getVisualCenter(col);
         int localY=40;
 
-        background(0);        
+        long frames = col.getPixConStat().getFrameCount();
         
-        //set used to find out if visual is on screen
-        Set<Integer> outputId = new HashSet<Integer>();
-        for (OutputMapping om: col.getAllOutputMappings()) {
-            outputId.add(om.getVisualId());
+        //clear screen each 2nd frame and put logo on it
+        if (frames%2==1) {
+            background(0);        
+            if (logo!=null) {
+                image(logo, width-logo.width, height-logo.height);
+            }
         }
 
-        //lazy init
-        if (pImage==null) {
-            //create an image out of the buffer
-            pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
-        }
-        
         //draw internal buffer only if enabled
         if (col.isInternalVisualsVisible()) {
+            //lazy init
+            if (pImage==null) {
+                //create an image out of the buffer
+                pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
+            }
+
+            //set used to find out if visual is on screen
+            Set<Integer> outputId = new HashSet<Integer>();
+            for (OutputMapping om: col.getAllOutputMappings()) {
+                outputId.add(om.getVisualId());
+            }
+            
             //draw output buffer and marker
             int ofs=0;
             for (Visual v: col.getAllVisuals()) {
@@ -751,14 +764,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         displayWidgets(GENERIC_Y_OFS);
         
         //update more details, mostly info tab
-        if (Collector.getInstance().getFrames()%5==1) {
-
+        if (frames%12==1) {
             //INFO TAB
             int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
             currentFps.setText(Messages.getString("GeneratorGui.CURRENT_FPS")+fps10/10f); //$NON-NLS-1$
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
-            sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+col.getPixConStat().getFrameCount()); //$NON-NLS-1$
+            sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
             
             Output output = col.getOutputDevice();
             if (output!=null) {
@@ -768,17 +780,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
             long recievedMB = col.getPixConStat().getRecievedOscBytes()/1024/1024;
             String oscStat  = Messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
-            oscStatistic.setText(oscStat);
+            oscStatistic.setText(oscStat);            
         }
         
         //refresh gui from time to time
-        if (col.isTriggerGuiRefresh() || frameCount++%50==2) {
+        if (col.isTriggerGuiRefresh() || frames++%50==2) {
             callbackRefreshWholeGui();
             col.setTriggerGuiRefresh(false);
-        }
-
-        if (logo!=null) {
-            image(logo, width-logo.width, height-logo.height);
         }
         
         //update gui
