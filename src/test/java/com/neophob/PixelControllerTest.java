@@ -20,7 +20,6 @@ package com.neophob;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,8 +29,6 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * test start
