@@ -233,7 +233,7 @@ public class PixelController extends PApplet {
         		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 
         		//create gui window
-        		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW).equalsIgnoreCase("true")) {
+        		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW, "true").equalsIgnoreCase("true")) {
         			//create GUI Window
         			GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize(), getVersion());
         			//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
@@ -270,6 +270,7 @@ public class PixelController extends PApplet {
             initialized = true;
             
         } catch (Exception e) {
+            LOG.log(Level.INFO, "Failed to init PixelController!", e);
             textSize(SETUP_FONT_BIG);
             fill(227, 122, 182);
             

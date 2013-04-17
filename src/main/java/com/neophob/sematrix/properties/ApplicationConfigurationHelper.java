@@ -546,9 +546,9 @@ public class ApplicationConfigurationHelper {
      * @return the size or -1 if nothing was defined
      */
     public int getLedPixelSize() {
-        int ret=-1;
+        int ret=20;
 
-        String tmp = config.getProperty(ConfigConstant.CFG_PIXEL_SIZE);
+        String tmp = config.getProperty(ConfigConstant.CFG_PIXEL_SIZE, "20");
         try {
             ret = Integer.parseInt(tmp);
         } catch (NumberFormatException e) {
