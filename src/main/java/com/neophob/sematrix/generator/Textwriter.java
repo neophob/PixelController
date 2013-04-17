@@ -111,6 +111,7 @@ public class Textwriter extends Generator {
 			LOG.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to load font "+fontName+":", e);
+			throw new IllegalArgumentException("Failed to load font "+fontName+". Check your config.properties file.");
 		}
 		createTextImage(text);			
 	}
