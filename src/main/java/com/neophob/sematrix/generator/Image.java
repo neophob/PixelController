@@ -71,9 +71,16 @@ public class Image extends Generator {
 		
 	    //find image files      
 		imageFiles = new ArrayList<String>();
-        for (String s: FileUtils.findImagesFiles()) {
-            imageFiles.add(s);
-        }
+		
+		try {
+	        for (String s: FileUtils.findImagesFiles()) {
+	            imageFiles.add(s);
+	        }		    
+		} catch (NullPointerException e) {
+		    LOG.log(Level.SEVERE, "Failed to search image files, make sure directory 'data/pics' exist!");
+		    throw new IllegalArgumentException("Failed to search image files, make sure directory 'data/pics' exist!");
+		}
+		
         LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");
         
 	}
