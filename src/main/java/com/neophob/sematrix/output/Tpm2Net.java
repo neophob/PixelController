@@ -21,11 +21,14 @@ package com.neophob.sematrix.output;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
@@ -88,6 +91,9 @@ public class Tpm2Net extends Output {
 	
 	private long errorCounter = 0;
 	
+	/** map to store checksum of image. */
+	protected Map<Integer, String> lastDataMap;
+
 	/**
 	 * 
 	 * @param ph
@@ -102,6 +108,7 @@ public class Tpm2Net extends Output {
 		
 		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
+		this.lastDataMap = new HashMap<Integer, String>();
 
 		try {
 			this.targetAddr = InetAddress.getByName(targetAddrStr);
@@ -117,6 +124,31 @@ public class Tpm2Net extends Output {
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to resolve target address "+targetAddrStr+": {0}", e);
 		}
+	}
+
+	/**
+	 * 
+	 * @param ofs
+	 * @param data
+	 * @return
+	 */
+	private boolean didFrameChange(int ofs, byte data[]) {
+		String s = MD5.asHex(data);
+		
+		if (!lastDataMap.containsKey(ofs)) {
+			//first run
+			lastDataMap.put(ofs, s);
+			return true;
+		}
+		
+		if (lastDataMap.get(ofs).equals(s)) {
+			//last frame was equal current frame, do not send it!
+			//log.log(Level.INFO, "do not send frame to {0}", addr);
+			return false;
+		}
+		//update new hash
+		lastDataMap.put(ofs, s);
+		return true;
 	}
 
 	
@@ -174,8 +206,11 @@ public class Tpm2Net extends Output {
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 				
 				//send small UDP packages, this is not optimal but the client needs less memory
-				//TODO maybe add option to send one or mutiple packets
-				sendTpm2NetPacketOut(ofs, rgbBuffer);
+				//TODO maybe add option to send one or mutiple packets				
+				
+				if (didFrameChange(ofs, rgbBuffer)) {
+					sendTpm2NetPacketOut(ofs, rgbBuffer);
+				}
 			}
 		}
 	}
