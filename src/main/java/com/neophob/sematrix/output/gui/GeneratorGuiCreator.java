@@ -53,6 +53,8 @@ public class GeneratorGuiCreator {
 	 */
 	public GeneratorGuiCreator(int maximalXSize, String version) {
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
+        LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
+        
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
         
         float aspect = (float)g.getInternalBufferXSize()/(float)g.getInternalBufferYSize();
