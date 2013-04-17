@@ -1085,7 +1085,7 @@ public class ApplicationConfigurationHelper {
      * @return
      */
     public int getDebugWindowMaximalXSize() {        
-        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_X_SIZE, 1024);
+        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_X_SIZE, 600);
     }
 
     /**
