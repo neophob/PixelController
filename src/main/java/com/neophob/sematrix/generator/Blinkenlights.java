@@ -46,91 +46,98 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Blinkenlights extends Generator implements PConstants {
 
     public static final String INITIAL_FILENAME = "initial.blinken";
-    
-	/** The Constant PREFIX. */
-	private static final String PREFIX = "blinken/";
-	
-	//list to store movie files used by shuffler
-	private List<String> movieFiles;
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Blinkenlights.class.getName());
+    /** The Constant PREFIX. */
+    private static final String PREFIX = "blinken/";
 
-	/** The blinken. */
-	private BlinkenLibrary blinken;
-	
-	/** The random. */
-	private boolean random;
-	
-	/** The rand. */
-	private Random rand = new Random();
-		
-	/** The filename. */
-	private String filename="";
+    //list to store movie files used by shuffler
+    private List<String> movieFiles;
 
-	private PImage img;
-	
-	private int currentFrame;
-	
-	/**
-	 * Instantiates a new blinkenlights.
-	 *
-	 * @param controller the controller
-	 * @param filename the filename
-	 */
-	public Blinkenlights(PixelControllerGenerator controller, String filename) {
-		super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
-		this.filename = filename;		
-		this.random=false;
-		
-		//find movie files		
-		movieFiles = new ArrayList<String>();
-		for (String s: FileUtils.findBlinkenFiles()) {
-		    movieFiles.add(s);
-		}
-		LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");
-		
-		blinken = new BlinkenLibrary(Collector.getInstance().getPapplet());
-		blinken.loadFile(PREFIX+filename);
-		
-	}
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(Blinkenlights.class.getName());
 
-	/**
-	 * load a new file.
-	 *
-	 * @param file the file
-	 */
-	public void loadFile(String file) {
-		if (StringUtils.isBlank(file)) {
-			LOG.log(Level.INFO, "Empty filename provided, call ignored!");
-			return;
-		}
-				
-		//only load if needed
-		if (!StringUtils.equals(file, this.filename)) {
-			this.filename = file;
-			LOG.log(Level.INFO, "Load blinkenlights file {0}.", file);
-			blinken.loadFile(PREFIX+file);
-			LOG.log(Level.INFO, "DONE");
-			currentFrame=0;
-		}
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
-		if (random) {
-			img = blinken.getFrame(rand.nextInt(blinken.getFrameCount()));
-		} else {
-			img = blinken.getFrame(currentFrame++);
-			
-			if (currentFrame>blinken.getFrameCount()) {
-				currentFrame=0;
-			}
-		}
+    /** The blinken. */
+    private BlinkenLibrary blinken;
+
+    /** The random. */
+    private boolean random;
+
+    /** The rand. */
+    private Random rand = new Random();
+
+    /** The filename. */
+    private String filename="";
+
+    private PImage img;
+
+    private int currentFrame;
+
+    /**
+     * Instantiates a new blinkenlights.
+     *
+     * @param controller the controller
+     * @param filename the filename
+     */
+    public Blinkenlights(PixelControllerGenerator controller, String filename) {
+        super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
+        this.filename = filename;		
+        this.random=false;
+
+        //find movie files		
+        movieFiles = new ArrayList<String>();
+
+        try {
+            for (String s: FileUtils.findBlinkenFiles()) {
+                movieFiles.add(s);
+            }
+        } catch (NullPointerException e) {
+            LOG.log(Level.SEVERE, "Failed to search blinken files, make sure directory 'data/blinken' exist!");
+            throw new IllegalArgumentException("Failed to search blinken files, make sure directory 'data/blinken' exist!");
+        }
+
+        LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");
+
+        blinken = new BlinkenLibrary(Collector.getInstance().getPapplet());
+        blinken.loadFile(PREFIX+filename);
+
+    }
+
+    /**
+     * load a new file.
+     *
+     * @param file the file
+     */
+    public void loadFile(String file) {
+        if (StringUtils.isBlank(file)) {
+            LOG.log(Level.INFO, "Empty filename provided, call ignored!");
+            return;
+        }
+
+        //only load if needed
+        if (!StringUtils.equals(file, this.filename)) {
+            this.filename = file;
+            LOG.log(Level.INFO, "Load blinkenlights file {0}.", file);
+            blinken.loadFile(PREFIX+file);
+            LOG.log(Level.INFO, "DONE");
+            currentFrame=0;
+        }
+    }
+
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.generator.Generator#update()
+     */
+    @Override
+    public void update() {
+        if (random) {
+            img = blinken.getFrame(rand.nextInt(blinken.getFrameCount()));
+        } else {
+            img = blinken.getFrame(currentFrame++);
+
+            if (currentFrame>blinken.getFrameCount()) {
+                currentFrame=0;
+            }
+        }
 
         PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
         img.loadPixels();
@@ -138,13 +145,13 @@ public class Blinkenlights extends Generator implements PConstants {
                 img.width, img.height, internalBufferXSize, internalBufferYSize);
         img.updatePixels();	        
 
-        
-		//resize image to 128x128
-/*		int ofs, dst=0, xofs, yofs=0;		
+
+        //resize image to 128x128
+        /*		int ofs, dst=0, xofs, yofs=0;		
 		float xSrc,ySrc=0;
 		float xDiff = internalBufferXSize/(float)blinken.width;
 		float yDiff = internalBufferYSize/(float)blinken.height;
-		
+
 		try {
 			for (int y=0; y<internalBufferYSize; y++) {
 				if (ySrc>yDiff) {
@@ -171,52 +178,52 @@ public class Blinkenlights extends Generator implements PConstants {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			LOG.log(Level.SEVERE, "Failed to update internal buffer", e);
 		}*/
-	}
-	
-	/**
-	 * Checks if is random.
-	 *
-	 * @return true, if is random
-	 */
-	public boolean isRandom() {
-		return random;
-	}
+    }
 
-	/**
-	 * Sets the random.
-	 *
-	 * @param random the new random
-	 */
-	public void setRandom(boolean random) {
-		this.random = random;
-/*		if (random) {
+    /**
+     * Checks if is random.
+     *
+     * @return true, if is random
+     */
+    public boolean isRandom() {
+        return random;
+    }
+
+    /**
+     * Sets the random.
+     *
+     * @param random the new random
+     */
+    public void setRandom(boolean random) {
+        this.random = random;
+        /*		if (random) {
 			blinken.noLoop();
 			blinken.stop();
 		} else {
 			blinken.loop();
 		}*/
-	}
-	
-	
+    }
 
-	/**
-	 * Gets the filename.
-	 *
-	 * @return the filename
-	 */
-	public String getFilename() {
-		return filename;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.generator.Generator#shuffle()
-	 */
-	@Override
-	public void shuffle() {
-		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
-			int nr = rand.nextInt(movieFiles.size());
-			loadFile(movieFiles.get(nr));
-		}
-	}
+
+
+    /**
+     * Gets the filename.
+     *
+     * @return the filename
+     */
+    public String getFilename() {
+        return filename;
+    }
+
+    /* (non-Javadoc)
+     * @see com.neophob.sematrix.generator.Generator#shuffle()
+     */
+    @Override
+    public void shuffle() {
+        if (Collector.getInstance().getShufflerSelect(ShufflerOffset.BLINKEN)) {
+            int nr = rand.nextInt(movieFiles.size());
+            loadFile(movieFiles.get(nr));
+        }
+    }
 
 }
