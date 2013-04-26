@@ -41,7 +41,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  *
  */
-public abstract class Generator implements RandomizeState {
+public abstract class Generator implements RandomizeState, IGenerator {
 
 	/**
 	 * The Enum GeneratorName.
@@ -99,6 +99,8 @@ public abstract class Generator implements RandomizeState {
         
 		/* use the visual 0 as generator */
 		VISUAL_ZERO(17),
+		
+		JS_GEN1(18),
 		
 		;
 		
@@ -178,10 +180,6 @@ public abstract class Generator implements RandomizeState {
 		this.active = false;
 	}
 
-	/**
-	 * update the generator.
-	 */
-	public abstract void update();
 	
 	/**
 	 * deinit generator.
