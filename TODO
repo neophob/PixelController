@@ -21,7 +21,6 @@ Roadmap PixelController
 -Add Perlin Noise generator
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
 -add option to query buffersize via OSC
--update manual (generic osc generator, howto use, random mode)
 -add more fader (pixel fader for example)
 -disable beat detection if sound volume is too low
 -support more than 2 rows
