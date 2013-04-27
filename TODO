@@ -28,6 +28,8 @@ Roadmap PixelController
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware)
 -Use Mozilla Rhino to create dynamic generators/effects
+ -> using jdk1.6 rhino is just too slow and cpu intensive (it needs about 40% cpu power with on rhino js generator). 
+    v8 (jav8) should a an alternative, however v8 is OS dependent.
 
 
 Changelog v1.3.1 to v1.3.2
