@@ -12,7 +12,6 @@ Roadmap PixelController
  Example: Fancy Layout defines 3 virtual panels, panel 1 using physical panel a,b,d,e, panel 2 using physical panel c
           panel 3 using physical panel f
 -Artnet output: support multiple output devices
--UDP output: support multiple output devices 
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Support Renard Protocol
 -Option to invert GUI colors
@@ -27,8 +26,12 @@ Roadmap PixelController
 -disable beat detection if sound volume is too low
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware)
+
+Rejected roadmap features
+-------------------------
+-UDP output: support multiple output devices (probably not, alternative: use tpm2.net)
 -Use Mozilla Rhino to create dynamic generators/effects
- -> using jdk1.6 rhino is just too slow and cpu intensive (it needs about 40% cpu power with on rhino js generator). 
+ -> using jdk1.6 rhino is just too slow and cpu intensive (it needs about 40% cpu power with one rhino js generator). 
     v8 (jav8) should a an alternative, however v8 is OS dependent.
 
 
@@ -43,6 +46,7 @@ Changelog v1.3.1 to v1.3.2
 -Fix: find .png files in GUI
 -Fix: Do not change current visual and output if a preset is loaded
 -Fix: Handle missing config files
+-Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Rainbowduino Output: Cleanup init code. 
 
 

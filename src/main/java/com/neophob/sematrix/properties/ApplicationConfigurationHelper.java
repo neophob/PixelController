@@ -200,12 +200,6 @@ public class ApplicationConfigurationHelper {
             LOG.log(Level.INFO, "found Tpm2 Net device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.TPM2NET;
         }       
-        if (nullDevices > 0) {
-            enabledOutputs++;
-            totalDevices = nullDevices;
-            LOG.log(Level.INFO, "found Null device: "+totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.NULL;
-        } 
         if (adalightDevices > 0) {
             enabledOutputs++;
             totalDevices = adalightDevices;
@@ -217,6 +211,17 @@ public class ApplicationConfigurationHelper {
             totalDevices = udpDevices;
             LOG.log(Level.INFO, "found UDP device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.UDP;
+        } 
+        if (nullDevices > 0) {
+            //enable null output only if configured AND no other output is enabled.
+        	if (enabledOutputs==0) {
+                enabledOutputs++;
+                totalDevices = nullDevices;
+                LOG.log(Level.INFO, "found Null device: "+totalDevices);
+                this.outputDeviceEnum = OutputDeviceEnum.NULL;        		
+        	} else {
+        		LOG.log(Level.INFO, "Null device is configured - but ignored due another configured output");
+        	}
         } 
 
 
