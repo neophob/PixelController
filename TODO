@@ -25,6 +25,7 @@ Roadmap PixelController
 -disable beat detection if sound volume is too low
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware)
+-Replace MD5 checks with something simpler and quicker, like adler32
 
 Rejected roadmap features
 -------------------------
