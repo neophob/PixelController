@@ -23,6 +23,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import org.junit.Test;
 
@@ -82,16 +83,29 @@ public class MD5SpeedTest {
     public void speedTestNew() {
         byte[] b = new byte[192];
 
-        long pre = System.currentTimeMillis();
+        long pre = System.nanoTime();
 
         for (int i=0; i<ROUNDS; i++) {
             MD5.asHex(b);   
         }               
-        long post = System.currentTimeMillis();
+        long post = System.nanoTime();
 
         long time = post-pre;
         float avg = (float)time / (float)ROUNDS;        
-        LOG.log(Level.INFO,"MD5.asHex needed {0}ms, avg: {1}", new Object[] {time, avg});
+        LOG.log(Level.INFO,"MD5.asHex needed {0}ns, avg: {1}", new Object[] {time, avg});
+        
+        Adler32 ad = new Adler32();
+        
+        
+        pre = System.nanoTime();
+        for (int i=0; i<ROUNDS; i++) {
+        	ad.update(b);   
+        }               
+        post = System.nanoTime();
+
+        time = post-pre;
+        avg = (float)time / (float)ROUNDS;        
+        LOG.log(Level.INFO,"Adler32.asHex needed {0}ns, avg: {1}", new Object[] {time, avg});
     }
 
 
