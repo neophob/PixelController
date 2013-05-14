@@ -303,12 +303,19 @@ public class Visual {
 	 * @return the mixer buffer
 	 */
 	public int[] getMixerBuffer() {
-	    //get gryscale buffer
+		if (generator1.isPassThoughModeActive()) {
+			return generator1.getBuffer();
+		}
+		if (generator2.isPassThoughModeActive()) {
+			return generator2.getBuffer();
+		}
+
+		//get gryscale buffer
 		int buffer[] = mixer.getBuffer(this);
 
 		return colorSet.convertToColorSetImage(buffer);
 	}
-
+	
 	/**
 	 * Gets the mixer idx.
 	 *

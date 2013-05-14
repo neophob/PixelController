@@ -144,15 +144,7 @@ public class ScreenCapture extends Generator {
 			//resize it to internalBufferSize
 			screencapture = ScalrOld.resize(screencapture, ScalrOld.Method.QUALITY, internalBufferXSize, internalBufferYSize);
 
-			int[] rgbImage = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);
-			short r,g,b;
-			for (int i=0; i<rgbImage.length; i++){
-				int rgbColor = rgbImage[i];
-				r = (short) ((rgbColor>>16) & 255);
-				g = (short) ((rgbColor>>8)  & 255);
-				b = (short) ( rgbColor      & 255);
-				this.internalBuffer[i]=(int)(r*0.3f+g*0.59f+b*0.11f);
-			}
+			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);; 
 		}		
 	}
 
@@ -171,5 +163,11 @@ public class ScreenCapture extends Generator {
 		top.setVisible(false);
 		bottom.setVisible(false);		
 	}
+	
+    @Override
+	public boolean isPassThoughModeActive() {
+		return true;
+	}
+
 
 }

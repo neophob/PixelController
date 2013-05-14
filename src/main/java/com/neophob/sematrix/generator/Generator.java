@@ -317,5 +317,16 @@ public abstract class Generator implements RandomizeState {
 		}
 		this.active = active;
 	}
+	
+	/**
+	 * pass through mode means that only one generator
+	 * is used, no mixer, no effect.
+	 * use case: 24bpp input from the osc generator
+	 *           video screenshot
+	 * @return
+	 */
+	public boolean isPassThoughModeActive() {
+		return false;
+	}
 		
 }

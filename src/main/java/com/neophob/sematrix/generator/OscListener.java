@@ -37,6 +37,8 @@ public class OscListener extends Generator {
     private static final Logger LOG = Logger.getLogger(OscListener.class.getName());
 
     private long lastUpdateTs;
+    
+    private boolean passthoughMode = false;
 
     /**
      * Instantiates a new image.
@@ -60,11 +62,24 @@ public class OscListener extends Generator {
         }
 
         if (buffer.length == this.internalBuffer.length) {
+            //osc send 8bpp - regular pixelcontroller function with effects and mixer
             //please note: I cant use System.arraycopy as we convert a byte into a int 
             for (int i=0; i<internalBuffer.length; i++) {
                 this.internalBuffer[i] = buffer[i];
             }
+            passthoughMode = false;
             lastUpdateTs = System.currentTimeMillis();
+        } else if (buffer.length == this.internalBuffer.length*3) {
+            //osc send 24bpp - passthough
+        	int src=0;
+            for (int i=0; i<internalBuffer.length; i++) {
+            	int r = buffer[src++]&255;
+            	int g = buffer[src++]&255;
+            	int b = buffer[src++]&255;
+                this.internalBuffer[i] = (r << 16) | (g << 8) | (b);
+            }        	
+        	passthoughMode = true;
+        	lastUpdateTs = System.currentTimeMillis();
         } else {
             LOG.log(Level.WARNING, "Invalid buffer size, expected size: {0}, effective size: {1}.", 
                     new Object[] {this.internalBuffer.length, buffer.length} );
@@ -93,5 +108,9 @@ public class OscListener extends Generator {
         return (System.currentTimeMillis()-lastUpdateTs)<2000;
     }
 
+    @Override
+	public boolean isPassThoughModeActive() {
+		return passthoughMode;
+	}
 
 }
