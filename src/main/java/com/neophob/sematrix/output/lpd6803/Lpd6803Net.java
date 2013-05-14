@@ -20,7 +20,6 @@
 package com.neophob.sematrix.output.lpd6803;
 
 import java.net.SocketException;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,8 +82,6 @@ public class Lpd6803Net extends Lpd6803Common{
 		this.destIp = destIp;
 		this.destPort = destPort;
 		this.pa = pa;
-		
-		this.lastDataMap = new HashMap<Byte, String>();
 		
 		//output connection
 		LOG.log(Level.INFO, "Connect to target "+destIp+":"+destPort);

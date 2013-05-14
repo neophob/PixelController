@@ -41,7 +41,6 @@ Boston, MA  02111-1307  USA
 
 package com.neophob.sematrix.output.lpd6803;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -145,9 +144,7 @@ public class Lpd6803 extends Lpd6803Common {
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
 		this.app = app;
-		app.registerDispose(this);
-		
-		lastDataMap = new HashMap<Byte, String>();
+		app.registerDispose(this);		
 		
 		serialPortName="";
 		if(baud > 0) {

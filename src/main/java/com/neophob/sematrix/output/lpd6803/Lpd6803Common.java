@@ -1,11 +1,12 @@
 package com.neophob.sematrix.output.lpd6803;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import com.neophob.sematrix.output.OutputHelper;
-import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
 
 public abstract class Lpd6803Common {
@@ -37,11 +38,13 @@ public abstract class Lpd6803Common {
 	/** The Constant END_OF_DATA. */
 	protected static final byte END_OF_DATA = 0x20;
 
+	protected static Adler32 adler = new Adler32();
+	
 	/** The connection error counter. */
 	protected int connectionErrorCounter;
 	
 	/** map to store checksum of image. */
-	protected Map<Byte, String> lastDataMap;
+	protected Map<Byte, Long> lastDataMap = new HashMap<Byte, Long>();
 
 	protected boolean initialized;
 	
@@ -129,7 +132,7 @@ public abstract class Lpd6803Common {
 				returnValue=true;
 			} else {
 				//in case of an error, make sure we send it the next time!
-				lastDataMap.put(ofsOne, "");
+				lastDataMap.put(ofsOne, 0L);
 			}
 		}
 		
@@ -142,7 +145,7 @@ public abstract class Lpd6803Common {
 			if (sendData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsTwo, "");
+				lastDataMap.put(ofsTwo, 0L);
 			}
 		}/**/
 		return returnValue;
@@ -226,21 +229,23 @@ public abstract class Lpd6803Common {
 	 * @return true if send was successful
 	 */
 	protected boolean didFrameChange(byte ofs, byte data[]) {
-		String s = MD5.asHex(data);
+		adler.reset();
+		adler.update(data);
+		long l = adler.getValue();
 		
 		if (!lastDataMap.containsKey(ofs)) {
 			//first run
-			lastDataMap.put(ofs, s);
+			lastDataMap.put(ofs, l);
 			return true;
 		}
 		
-		if (lastDataMap.get(ofs).equals(s)) {
+		if (lastDataMap.get(ofs) == l) {
 			//last frame was equal current frame, do not send it!
 			//log.log(Level.INFO, "do not send frame to {0}", addr);
 			return false;
 		}
 		//update new hash
-		lastDataMap.put(ofs, s);
+		lastDataMap.put(ofs, l);
 		return true;
 	}
 
