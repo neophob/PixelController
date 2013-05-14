@@ -550,9 +550,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 .setNoneSelectedAllowed(false);
 
         for (i=0; i<96; i++) {
-            String label = ""+(i+1); //$NON-NLS-1$
+            String label = ""+i; //$NON-NLS-1$
             if (i<9) {
-                label = "0"+(i+1); //$NON-NLS-1$
+                label = "0"+i; //$NON-NLS-1$
             }
             presetButtons.addItem(label, i);
         }

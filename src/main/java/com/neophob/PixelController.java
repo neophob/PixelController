@@ -213,7 +213,7 @@ public class PixelController extends PApplet {
 
         		//load saves presets
         		int presetNr = applicationConfig.loadPresetOnStart();
-        		if (presetNr > 1) {
+        		if (presetNr >= 0) {
         		    presetNr--;
         			LOG.log(Level.INFO,"Load preset "+presetNr);
         			List<String> present = this.collector.getPresets().get(presetNr).getPresent();
@@ -223,7 +223,7 @@ public class PixelController extends PApplet {
         			} else {
         			    LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
         			}
-        		}  
+        		} 
         		setupStep++;
         		drawProgressBar(steps*setupStep);
         		drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);

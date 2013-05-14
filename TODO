@@ -52,6 +52,7 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Do not change current visual and output if a preset is loaded
 -Fix: Handle missing config files
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
+-Fix: Preset numbering and loading Preset 0
 -Rainbowduino Output: Cleanup init code. 
 
 
