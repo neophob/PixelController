@@ -119,6 +119,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
     private Button freezeUpdate;
     private Button toggleInternalVisual;
+    private Label passThroughMode;
     
     //Output Tab
     private DropdownList dropdownOutputVisual;
@@ -411,7 +412,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         toggleInternalVisual.setCaptionLabel(Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
         toggleInternalVisual.setGroup(generatorTab);
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),Messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
-                
+              
+        passThroughMode = cp5.addTextlabel("passThroughMode", "", GENERIC_X_OFS, yPosStartDrowdown+90).moveTo(generatorTab).getValueLabel();
                 
         brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 
         		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
@@ -780,7 +782,17 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
             long recievedMB = col.getPixConStat().getRecievedOscBytes()/1024/1024;
             String oscStat  = Messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
-            oscStatistic.setText(oscStat);            
+            oscStatistic.setText(oscStat);
+            
+            Visual v = col.getVisual(col.getCurrentVisual());
+            if (v!=null) {		    
+                if (v.getGenerator1().isPassThoughModeActive() || v.getGenerator2().isPassThoughModeActive()) {
+                	passThroughMode.setText(Messages.getString("GeneratorGui.PASSTHROUGH_MODE"));
+                } else {
+                	passThroughMode.setText("");
+                }
+            }
+
         }
         
         //refresh gui from time to time
@@ -901,6 +913,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
             mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
             colorSetList.setLabel(v.getColorSet().getName());
+            
         }
 
         //get output status
