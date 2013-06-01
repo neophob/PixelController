@@ -29,7 +29,9 @@ Roadmap PixelController
  md5 needs about 1ms to generate, adler32 needs about 0.2ms.
  	2 panels, 50fps, save: 80ms/s
  	6 panels, 20fps, save: 96ms/s
--Option to save output to a flat file
+-Option to save output of PixelController (byte stream) to a flat file
+-Option to use system audio as input source, currently its only mic input. 
+
 
 
 Rejected roadmap features
