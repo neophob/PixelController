@@ -25,13 +25,10 @@ Roadmap PixelController
 -disable beat detection if sound volume is too low
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware)
--Replace MD5 checks with something simpler and quicker, like adler32.
- md5 needs about 1ms to generate, adler32 needs about 0.2ms.
- 	2 panels, 50fps, save: 80ms/s
- 	6 panels, 20fps, save: 96ms/s
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
-
+-Optimize Arduino Firmware, use Serial.readBytes instead Serial.read(), commented code already exist
+ (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
 
 
 Rejected roadmap features
@@ -58,6 +55,9 @@ Changelog v1.3.1 to v1.3.2
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Fix: Preset numbering and loading Preset 0
 -PixelInvaders Output: Use Adler32 as caching mechanism instead of MD5 - much faster.
+                       md5 needs about 1ms to generate, adler32 needs about 0.2ms.
+                         2 panels, 50fps, save: 80ms/s
+ 	                      6 panels, 20fps, save: 96ms/s
 -Rainbowduino Output: Cleanup init code. 
 
 
