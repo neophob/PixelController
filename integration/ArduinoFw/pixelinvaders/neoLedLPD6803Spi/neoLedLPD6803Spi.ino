@@ -74,19 +74,18 @@
 
 //this should match RX_BUFFER_SIZE from HardwareSerial.cpp
 //array that will hold the serial input string
-//byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE+1]; 	 				 
-byte serInStr[SERIAL_PACKET_SIZE];
+uint8_t serInStr[SERIAL_PACKET_SIZE];
 
 //initialize pixels
 Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
 
 #define SERIALBUFFERSIZE 4
-byte serialResonse[SERIALBUFFERSIZE];
+uint8_t serialResonse[SERIALBUFFERSIZE];
 
-byte g_errorCounter;
+uint8_t g_errorCounter;
 
 int j=0,k=0;
-byte serialDataRecv;
+uint8_t serialDataRecv;
 
 
 // --------------------------------------------
@@ -169,7 +168,7 @@ void setup() {
   //im your slave and wait for your commands, master!
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
-  Serial.setTimeout(16);
+  Serial.setTimeout(8);
 
   //SETUP SPI SPEED AND ISR ROUTINE
   //-------------------------------
@@ -218,13 +217,13 @@ void loop() {
   }
 
   //led offset
-  byte ofs = serInStr[1];
+  uint8_t ofs = serInStr[1];
   //how many bytes we're sending
-  byte sendlen = serInStr[2];
+  uint8_t sendlen = serInStr[2];
   //what kind of command we send
-  byte type = serInStr[3];
+  uint8_t type = serInStr[3];
   //get the image data
-  byte* cmd = serInStr+5;
+  uint8_t* cmd = serInStr+5;
 
   switch (type) {
   case CMD_SENDFRAME:
@@ -263,12 +262,12 @@ void loop() {
 //    update 32 bytes of the led matrix
 //    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
 // --------------------------------------------
-void updatePixels(uint8_t ofs, byte* buffer) {
+void updatePixels(uint8_t ofs, uint8_t* buffer) {
   uint16_t currentLed = PIXELS_PER_PANEL;
 
   currentLed *= ofs;
-  byte x=0;
-  for (byte i=0; i < PIXELS_PER_PANEL; i++) {
+  uint8_t x=0;
+  for (uint8_t i=0; i < PIXELS_PER_PANEL; i++) {
     strip.setPixelColor(currentLed++, buffer[x]<<8 | buffer[x+1]);
     x+=2;
   }  
