@@ -27,8 +27,6 @@ Roadmap PixelController
 -support teensy 3 (pixelinvaders firmware)
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
--Optimize Arduino Firmware, use Serial.readBytes instead Serial.read(), commented code already exist
- (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
 
 
 Rejected roadmap features
@@ -59,6 +57,9 @@ Changelog v1.3.1 to v1.3.2
                          2 panels, 50fps, save: 80ms/s
  	                      6 panels, 20fps, save: 96ms/s
 -Rainbowduino Output: Cleanup init code. 
+-Optimize PixelInvaders Firmware, use Serial.readBytes instead Serial.read(), commented code already exist
+ (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
+ Firmware is now 20% faster.
 
 
 Changelog v1.3.0 to v1.3.1
