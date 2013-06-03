@@ -1,7 +1,9 @@
 /*
- * PixelInvaders serial-led-gateway, Copyright (C) 2011 michael vogt <michu@neophob.com>
- * Tested on Teensy and Arduino
- * 
+ * PixelInvaders serial-led-gateway, Copyright (C) 2011-2013 michael vogt <michu@neophob.com>
+ * Tested on Teensy and Arduino.
+ *
+ * This is the firmware you should use if you bought a PixelInvaders DIY Kit!
+ *
  * ------------------------------------------------------------------------
  *
  * This is the SPI version, unlike software SPI which is configurable, hardware 
@@ -37,7 +39,7 @@
 #include <Neophob_LPD6803.h>
 
 // ======= START OF USER CONFIGURATION =======
- 
+
 //define nr of Panels*2 here, 4 means 2 panels
 #define NR_OF_PANELS 4
 
@@ -62,6 +64,8 @@
 //32pixels * 2 byte per color (15bit - one bit wasted)
 #define COLOR_5BIT_FRAME_SIZE 64
 #define SERIAL_HEADER_SIZE 5
+#define SERIAL_FOOTER_SIZE 1
+#define SERIAL_PACKET_SIZE (COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE+SERIAL_FOOTER_SIZE)
 //--- protocol data end
 
 //8ms is the minimum! else we dont get any data!
@@ -70,7 +74,8 @@
 
 //this should match RX_BUFFER_SIZE from HardwareSerial.cpp
 //array that will hold the serial input string
-byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
+//byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE+1]; 	 				 
+byte serInStr[SERIAL_PACKET_SIZE];
 
 //initialize pixels
 Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
@@ -164,12 +169,12 @@ void setup() {
   //im your slave and wait for your commands, master!
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
-  Serial.setTimeout(10);
-  
+  Serial.setTimeout(16);
+
   //SETUP SPI SPEED AND ISR ROUTINE
   //-------------------------------
   //The SPI setup is quite important to set up correctly
-  
+
   //SPI SPEED REFERENCE  
   //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
   //strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
@@ -179,16 +184,16 @@ void setup() {
   //strip.begin(SPI_CLOCK_DIV4);        // Start up the LED counterm 4.0MHz - 0.25uS
   //strip.begin(SPI_CLOCK_DIV2);        // Start up the LED counterm 8.0MHz - 0.125uS
 
-  
+
   //SETTING#1 - SPEEDY
   strip.setCPU(36);                    // call the isr routine each 36us to drive the pwm
   strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
 
   //SETTING#2 - CONSERVATIVE
-//  strip.setCPU(68);                    // call the isr routine each 68us to drive the pwm
-//  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+  //  strip.setCPU(68);                    // call the isr routine each 68us to drive the pwm
+  //  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
 
-  
+
   rainbow();      // display some colors
   serialDataRecv = 0;   //no serial data received yet  
 }
@@ -213,13 +218,13 @@ void loop() {
   }
 
   //led offset
-  byte ofs    = serInStr[1];
+  byte ofs = serInStr[1];
   //how many bytes we're sending
   byte sendlen = serInStr[2];
   //what kind of command we send
   byte type = serInStr[3];
   //get the image data
-  byte* cmd    = serInStr+5;
+  byte* cmd = serInStr+5;
 
   switch (type) {
   case CMD_SENDFRAME:
@@ -260,15 +265,18 @@ void loop() {
 // --------------------------------------------
 void updatePixels(uint8_t ofs, byte* buffer) {
   uint16_t currentLed = PIXELS_PER_PANEL;
+
   currentLed *= ofs;
   byte x=0;
   for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-//    uint16_t c = buffer[x]<<8 | buffer[x+1];
-//    strip.setPixelColor(currentLed++, c);
     strip.setPixelColor(currentLed++, buffer[x]<<8 | buffer[x+1]);
     x+=2;
   }  
-  strip.show();   // write all the pixels out
+  
+  //update panel only if the whole panel was updated
+  if (ofs%2==1) {
+    strip.show();   // write all the pixels out
+  }
 }
 
 /* 
@@ -289,91 +297,32 @@ void updatePixels(uint8_t ofs, byte* buffer) {
  		cmdfull[6] = END_OF_DATA (marker);
  */
 
-byte readCommand(byte *str) {
-  byte b,i,sendlen;
-
-  //wait until we get a CMD_START_BYTE or queue is empty
-  i=0;
-  while (Serial.available()>0 && i==0) {
-    b = Serial.read();
-    if (b == CMD_START_BYTE) {
-      i=1;
-    }
-  }
-
-  if (i==0) {
-    //failed to get data ignore it
-    g_errorCounter = 102;
-    return 0;    
-  }
-  
-  
-
-  //read header  
-  i=1;
-  b=SERIAL_DELAY_LOOP;
-  
-  //TODO
-/*  byte recvNr = Serial.readBytes(str+1, SERIAL_HEADER_SIZE);
+uint8_t readCommand(byte *str) {
+  uint8_t recvNr = Serial.readBytes((char*)str, SERIAL_PACKET_SIZE);
   if (recvNr==0) {
-        g_errorCounter = 103;
-        return 0;        //no data available!    
-  }*/
-  
-  while (i<SERIAL_HEADER_SIZE) {
-    if (Serial.available()) {
-      str[i++] = Serial.read();
-    } 
-    else {
-      delay(SERIAL_WAIT_DELAY); 
-      if (b-- == 0) {
-        g_errorCounter = 103;
-        return 0;        //no data available!
-      }      
-    }
+    g_errorCounter = 102;
+    return 0;        //no data available!    
   }
 
-  // --- START HEADER CHECK    
-  //check if data is correct, 0x10 = START_OF_DATA
+  //check header
   if (str[4] != START_OF_DATA) {
     g_errorCounter = 104;
     return 0;
   }
-
-  //check sendlen, its possible that sendlen is 0!
-  sendlen = str[2];  
-  // --- END HEADER CHECK
-
-  //read data  
-/*  recvNr = Serial.readBytes(str+SERIAL_HEADER_SIZE, sendlen+1);
-  if (recvNr==0) {
-        g_errorCounter = 105;
-        return 0;        //no data available!    
-  }
-  */
   
-  i=0;
-  b=SERIAL_DELAY_LOOP;
-  while (i<sendlen+1) {
-    if (Serial.available()) {
-      str[SERIAL_HEADER_SIZE+i++] = Serial.read();
-    } 
-    else {
-      delay(SERIAL_WAIT_DELAY); 
-      if (b-- == 0) {
-        g_errorCounter = 105;
-        return 0;        //no data available!
-      }      
-    }
-  }
-
-  //check if data is correct, 0x20 = END_OF_DATA
+  uint8_t sendlen = str[2];  
+  
+  //check footer
   if (str[SERIAL_HEADER_SIZE+sendlen] != END_OF_DATA) {
     g_errorCounter = 106;
     return 0;
   }
 
-  //return data size (without meta data)
+  if (sendlen>recvNr) {
+    g_errorCounter = 109;
+    return 0;
+  }
+
   return sendlen;
 }
 
