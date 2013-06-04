@@ -54,12 +54,10 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Preset numbering and loading Preset 0
 -PixelInvaders Output: Use Adler32 as caching mechanism instead of MD5 - much faster.
                        md5 needs about 1ms to generate, adler32 needs about 0.2ms.
-                         2 panels, 50fps, save: 80ms/s
- 	                      6 panels, 20fps, save: 96ms/s
+                         2 panels, 50fps, save: 80ms/s, 6 panels, 20fps, save: 96ms/s
 -Rainbowduino Output: Cleanup init code. 
--Optimize PixelInvaders Firmware, use Serial.readBytes instead Serial.read(), commented code already exist
- (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
- Firmware is now 20% faster.
+-Optimize PixelInvaders Firmware, use Serial.readBytes instead Serial.read() (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
+ PixelInvaders Firmware is now 20% faster.
 
 
 Changelog v1.3.0 to v1.3.1
