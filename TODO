@@ -48,7 +48,7 @@ Changelog v1.3.1 to v1.3.2
      24bpp generators, you cannot use effects/mixer/colorsets 
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
--Fix: Do not change current visual and output if a preset is loaded
+-Fix: Do not change selected visual and output if a preset is loaded
 -Fix: Handle missing config files
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Fix: Preset numbering and loading Preset 0
