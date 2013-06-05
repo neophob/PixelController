@@ -27,6 +27,10 @@ Roadmap PixelController
 -support teensy 3 (pixelinvaders firmware)
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
+-Even more speed for the PixelInvaders firmware:
+	-optimize transfer size to be a multiple of 60 bytes
+	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
+	-maybe a streaming only firmware?
 
 
 Rejected roadmap features
