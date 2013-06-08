@@ -20,6 +20,7 @@ Roadmap PixelController
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
+ see https://sites.google.com/site/stamb2012/examples/batch-processing
 -add option to query buffersize via OSC
 -add more fader (pixel fader for example)
 -disable beat detection if sound volume is too low
@@ -28,7 +29,7 @@ Roadmap PixelController
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
 -Even more speed for the PixelInvaders firmware:
-	-optimize transfer size to be a multiple of 60 bytes
+	-optimize transfer size to be a multiple of 60 bytes (Arduino and Teensy hardware serial class has a buffer size of 64 bytes)
 	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
 	-maybe a streaming only firmware?
 
