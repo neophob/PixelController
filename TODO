@@ -57,6 +57,7 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Handle missing config files
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Fix: Preset numbering and loading Preset 0
+-Fix: Load Presets: do not display non-existent files in the GUI  
 -PixelInvaders Output: Use Adler32 as caching mechanism instead of MD5 - much faster.
 -Rainbowduino Output: Cleanup init code. 
 
