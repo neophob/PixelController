@@ -57,6 +57,7 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Handle missing config files
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Fix: Preset numbering and loading Preset 0
+-Fix: Load Presets: do not display non-existent files in the GUI  
 -PixelInvaders Output: Use Adler32 as caching mechanism instead of MD5 - much faster.
                        md5 needs about 1ms to generate, adler32 needs about 0.2ms.
                          2 panels, 50fps, save: 80ms/s, 6 panels, 20fps, save: 96ms/s

@@ -101,15 +101,15 @@ public class Image extends Generator {
 			LOG.log(Level.INFO, "new filename does not differ from old: "+Image.PREFIX+filename);
 			return;
 		}
-		
-		this.filename = filename;		
+						
 		try {
 			PImage img = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
 			if (img==null || img.height<2) {
 				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename);
 				return;
 			}						
-	        
+			this.filename = filename;
+			
 	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
 	        PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
 	        img.loadPixels();

@@ -99,7 +99,7 @@ public class BlinkenLibrary {
 	 * @param filename
 	 * @param maximalSize maximal height or width of an image
 	 */
-	public void loadFile(String filename) {
+	public boolean loadFile(String filename) {
 		long start = System.currentTimeMillis();			
 		InputStream input = null;
 
@@ -109,16 +109,17 @@ public class BlinkenLibrary {
 			if (input == null) {
 				//we failed to find file
 				log.log(Level.WARNING, "Failed to load {0}, File not found", new Object[] { filename });
-				return;
+				return false;
 			}
 			blm = (Blm) unmarshaller.unmarshal(input);
 			this.frames = extractFrames(255);			
 	
 			long timeNeeded = System.currentTimeMillis()-start;
 			log.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename, frames.length,timeNeeded });
-
+			return true;
 		} catch (Exception e) {
 			log.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { filename, e });
+			return false;
 		} finally {
 			try {
 				if (input!=null) {
