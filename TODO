@@ -20,18 +20,18 @@ Roadmap PixelController
 -implement colorlib procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
+ see https://sites.google.com/site/stamb2012/examples/batch-processing
 -add option to query buffersize via OSC
 -add more fader (pixel fader for example)
 -disable beat detection if sound volume is too low
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware)
--Replace MD5 checks with something simpler and quicker, like adler32.
- md5 needs about 1ms to generate, adler32 needs about 0.2ms.
- 	2 panels, 50fps, save: 80ms/s
- 	6 panels, 20fps, save: 96ms/s
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
-
+-Even more speed for the PixelInvaders firmware:
+	-optimize transfer size to be a multiple of 60 bytes (Arduino and Teensy hardware serial class has a buffer size of 64 bytes)
+	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
+	-maybe a streaming only firmware?
 
 
 Rejected roadmap features
@@ -53,13 +53,17 @@ Changelog v1.3.1 to v1.3.2
      24bpp generators, you cannot use effects/mixer/colorsets 
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
--Fix: Do not change current visual and output if a preset is loaded
+-Fix: Do not change selected visual and output if a preset is loaded
 -Fix: Handle missing config files
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Fix: Preset numbering and loading Preset 0
 -Fix: Load Presets: do not display non-existent files in the GUI  
 -PixelInvaders Output: Use Adler32 as caching mechanism instead of MD5 - much faster.
+                       md5 needs about 1ms to generate, adler32 needs about 0.2ms.
+                         2 panels, 50fps, save: 80ms/s, 6 panels, 20fps, save: 96ms/s
 -Rainbowduino Output: Cleanup init code. 
+-Optimize PixelInvaders Firmware, use Serial.readBytes instead Serial.read() (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
+ PixelInvaders Firmware is now 20% faster.
 
 
 Changelog v1.3.0 to v1.3.1

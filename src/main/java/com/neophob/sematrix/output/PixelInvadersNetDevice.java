@@ -53,6 +53,8 @@ public class PixelInvadersNetDevice extends Output {
 
 	private boolean initialized;
 	
+	long sendedFrames = 0;
+	
 	/**
 	 * init the lpd6803 devices.
 	 *
@@ -94,11 +96,8 @@ public class PixelInvadersNetDevice extends Output {
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 							Lpd6803Net.NR_OF_LED_HORIZONTAL, Lpd6803Net.NR_OF_LED_VERTICAL);
 				
-				if (lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr))) {
-				//	needUpdate++;
-				} else {
-				//	noUpdate++;
-				}
+				int sf = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
+				sendedFrames += sf;
 			}			
 		}
 	}

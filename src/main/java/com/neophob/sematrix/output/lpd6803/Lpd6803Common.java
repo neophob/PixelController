@@ -69,9 +69,9 @@ public abstract class Lpd6803Common {
 	 * @param ofs the image ofs
 	 * @param data rgb data (int[64], each int contains one RGB pixel)
 	 * @param colorFormat the color format
-	 * @return true if send was successful
+	 * @return nr of sended update frames
 	 */
-	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
+	public int sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
 		if (data.length!=BUFFERSIZE) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
@@ -86,10 +86,10 @@ public abstract class Lpd6803Common {
 	 *
 	 * @param ofs - the offset get multiplied by 32 on the arduino!
 	 * @param data byte[3*8*4]
-	 * @return true if send was successful
+	 * @return nr of sended frames
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public boolean sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
+	public int sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
 		if (data.length!=128) {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
@@ -103,7 +103,7 @@ public abstract class Lpd6803Common {
 		byte ofsTwo = (byte)(ofsOne+1);
 		byte frameOne[] = new byte[BUFFERSIZE];
 		byte frameTwo[] = new byte[BUFFERSIZE];
-		boolean returnValue = false;
+		int returnValue = 0;
 		
 		System.arraycopy(data, 0, frameOne, 0, BUFFERSIZE);
 		System.arraycopy(data, BUFFERSIZE, frameTwo, 0, BUFFERSIZE);
@@ -129,7 +129,7 @@ public abstract class Lpd6803Common {
 			flipSecondScanline(cmdfull, frameOne);
 			
 			if (sendData(cmdfull)) {
-				returnValue=true;
+				returnValue++;
 			} else {
 				//in case of an error, make sure we send it the next time!
 				lastDataMap.put(ofsOne, 0L);
@@ -143,7 +143,7 @@ public abstract class Lpd6803Common {
 			flipSecondScanline(cmdfull, frameTwo);
 			
 			if (sendData(cmdfull)) {
-				returnValue=true;
+				returnValue++;
 			} else {
 				lastDataMap.put(ofsTwo, 0L);
 			}
