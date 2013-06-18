@@ -542,13 +542,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //----------
 
         presetButtons = cp5.addRadioButton(GuiElement.PRESET_BUTTONS.guiText())
-                .setPosition(20, yPosStartDrowdown)
-                .setSize(14, 14)
+                .setPosition(10, yPosStartDrowdown)
+                .setSize(24, 14)
                 .setColorForeground(color(120))
                 .setColorActive(color(255))
                 .setColorLabel(color(255))
                 .setItemsPerRow(16)
-                .setSpacingColumn(36)
+                .setSpacingColumn(26)
                 .setNoneSelectedAllowed(false);
 
         for (i=0; i<96; i++) {
