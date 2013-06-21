@@ -921,7 +921,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
 
-        presetButtons.activate(col.getSelectedPreset());
+        //do not set the current preset, the result would be an endless event loop, limitation of oscp5
+        //see https://code.google.com/p/controlp5/issues/detail?id=79
+        //presetButtons.activate(col.getSelectedPreset());
         
         return col;
     }
