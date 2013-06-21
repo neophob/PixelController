@@ -51,7 +51,10 @@ public class SubSat extends Mixer {
 		int col;
 		
 		for (int i=0; i<src1.length; i++) {
-			col = src1[i] - src2[i];
+			col = (src1[i]&0xff) - (src2[i]&0xff);
+			if (col<0) {
+			    col+=255;
+			}
 			dst[i] = col;		
 		}
 

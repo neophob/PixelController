@@ -50,10 +50,10 @@ public class Either extends Mixer {
 		int[] dst = new int [src1.length];
 
 		for (int i=0; i<src1.length; i++){
-    		if (src1[i]>128) {
-    		    dst[i] = src1[i];
+    		if ((src1[i]&0xff)>128) {
+    		    dst[i] = src1[i]&0xff;
     		} else {
-    		    dst[i] = src2[i];
+    		    dst[i] = src2[i]&0xff;
     		}
           }
 	
