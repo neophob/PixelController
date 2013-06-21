@@ -921,6 +921,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
         dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
 
+        presetButtons.activate(col.getSelectedPreset());
+        
         return col;
     }
 
