@@ -32,7 +32,6 @@ Roadmap PixelController
 	-optimize transfer size to be a multiple of 60 bytes (Arduino and Teensy hardware serial class has a buffer size of 64 bytes)
 	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
 	-maybe a streaming only firmware?
--Add a lot of new presets and cleanup unused presets   
 
 
 Rejected roadmap features
@@ -58,13 +57,15 @@ Changelog v1.3.1 to v1.3.2
 -Fix: Handle missing config files
 -Fix: if the Null output and another output is configured, ignore null output and start PixelController
 -Fix: Preset numbering and loading Preset 0
--Fix: Load Presets: do not display non-existent files in the GUI  
+-Fix: Load Presets: do not display non-existent files in the GUI
+-Fix: Textwriter generator, use 8bpp as temp buffer to prevent artefacts  
 -PixelInvaders Output: Use Adler32 as caching mechanism instead of MD5 - much faster.
                        md5 needs about 1ms to generate, adler32 needs about 0.2ms.
                          2 panels, 50fps, save: 80ms/s, 6 panels, 20fps, save: 96ms/s
 -Rainbowduino Output: Cleanup init code. 
 -Optimize PixelInvaders Firmware, use Serial.readBytes instead Serial.read() (see http://www.pjrc.com/teensy/benchmark_usb_serial_receive.html)
  PixelInvaders Firmware is now 20% faster.
+-Add a lot of new presets and cleanup unused presets
 
 
 Changelog v1.3.0 to v1.3.1

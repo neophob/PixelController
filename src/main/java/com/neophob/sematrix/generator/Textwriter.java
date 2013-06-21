@@ -21,14 +21,12 @@ package com.neophob.sematrix.generator;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
+import java.awt.image.DataBufferByte;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,9 +65,6 @@ public class Textwriter extends Generator {
 	/** The font. */
 	private Font font;
 	
-	/** The color. */
-	private Color color;
-
 	/** The xofs. */
 	private int xofs;
 	
@@ -82,11 +77,8 @@ public class Textwriter extends Generator {
 	/** The wait. */
 	private int wait;
 
-	/** The text buffer. */
-	private int[] textBuffer;
-	
-	/** The tmp. */
-	private int[] tmp;
+	/** The text stored as bitmap. */
+	private int[] textAsImage;
 	
 	/** The text. */
 	private String text;
@@ -101,12 +93,11 @@ public class Textwriter extends Generator {
 	 */
 	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text) {
 		super(controller, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
-		color = new Color(128);
 		xpos=0;
 		ypos=internalBufferYSize;
 		try {
 			InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
-			tmp = new int[internalBuffer.length];
+			textAsImage = new int[internalBuffer.length];
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			LOG.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
 		} catch (Exception e) {
@@ -141,29 +132,30 @@ public class Textwriter extends Generator {
 		maxXPos=(int)(0.5f+rect.getWidth())+5;
 		ypos=internalBufferYSize-(internalBufferYSize-h)/2;
 
-		img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
+		img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_BYTE_GRAY);
 		g2 = img.createGraphics();
 
-		g2.setColor(color);
+		g2.setColor(new Color(128));
 		g2.setFont(font);		
 		g2.setClip(0, 0, maxXPos, internalBufferYSize);
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
-		g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_SPEED);
-
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g2.drawString(text, xpos, ypos);
-		DataBufferInt dbi = (DataBufferInt)img.getRaster().getDataBuffer();
-		textBuffer=dbi.getData();
+		DataBufferByte dbi = (DataBufferByte)img.getRaster().getDataBuffer();
+		byte[] textBuffer=dbi.getData();
 		g2.dispose();
 
 		wait = 0;
 		xofs = 0;
 		scrollRight = false;
+		
+		textAsImage = new int[maxXPos*internalBufferYSize];
+		for (int i=0; i<textAsImage.length; i++) {
+		    if (textBuffer[i]>10) {
+		        textAsImage[i] = 127;
+		    } else {
+		        textAsImage[i] = 0;
+		    }
+		}
 	}
 
 
@@ -173,6 +165,7 @@ public class Textwriter extends Generator {
 	@Override
 	public void update() {
 		
+		//calculate pingpong scrolling
 		if (wait>0) {
 			wait--;
 		} else {
@@ -208,23 +201,19 @@ public class Textwriter extends Generator {
 				//text image smaller than internal buffer
 				srcOfs=0;
 				dstOfs=xofs;
-				//we need to clear the buffer first!
-				Arrays.fill(tmp, 0);
 
-				for (int y=0; y<internalBufferYSize; y++) {
-					System.arraycopy(textBuffer, srcOfs, tmp, dstOfs, maxXPos);
+				for (int y=0; y<internalBufferYSize; y++) {				    
+				    System.arraycopy(textAsImage, srcOfs, this.internalBuffer, dstOfs, maxXPos);
 					dstOfs+=internalBufferXSize;
 					srcOfs+=maxXPos;
 				}				
 			} else {
 				for (int y=0; y<internalBufferYSize; y++) {
-					System.arraycopy(textBuffer, srcOfs, tmp, dstOfs, internalBufferXSize);
+				    System.arraycopy(textAsImage, srcOfs, this.internalBuffer, dstOfs, internalBufferXSize);
 					dstOfs+=internalBufferXSize;
 					srcOfs+=maxXPos;
 				}				
 			}
-
-			this.internalBuffer = tmp;			
 		} catch (Exception e) {
 			//if the image is resized, this could lead to an arrayoutofboundexception!
 		}
