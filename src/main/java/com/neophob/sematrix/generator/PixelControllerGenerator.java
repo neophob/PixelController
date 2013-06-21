@@ -322,6 +322,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @param text the new text
      */
     public void setText(String text) {
+        if (text==null || text.isEmpty()) {
+            text=" ";
+        }
         textwriter.createTextImage(text);
     }
     

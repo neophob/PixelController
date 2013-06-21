@@ -157,6 +157,9 @@ public class Textwriter extends Generator {
 		        textAsImage[i] = 0;
 		    }
 		}
+		
+		//clear internalbuffer
+		Arrays.fill(this.internalBuffer, 0);
 	}
 
 
@@ -201,8 +204,7 @@ public class Textwriter extends Generator {
 			if (maxXPos < getInternalBufferXSize()) {
 				//text image smaller than internal buffer
 				srcOfs=0;
-				dstOfs=xofs;
-				Arrays.fill(this.internalBuffer, 0);
+				dstOfs=xofs;				
 				for (int y=0; y<internalBufferYSize; y++) {				    
 				    System.arraycopy(textAsImage, srcOfs, this.internalBuffer, dstOfs, maxXPos);
 					dstOfs+=internalBufferXSize;
