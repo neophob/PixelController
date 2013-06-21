@@ -27,6 +27,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -201,7 +202,7 @@ public class Textwriter extends Generator {
 				//text image smaller than internal buffer
 				srcOfs=0;
 				dstOfs=xofs;
-
+				Arrays.fill(this.internalBuffer, 0);
 				for (int y=0; y<internalBufferYSize; y++) {				    
 				    System.arraycopy(textAsImage, srcOfs, this.internalBuffer, dstOfs, maxXPos);
 					dstOfs+=internalBufferXSize;
