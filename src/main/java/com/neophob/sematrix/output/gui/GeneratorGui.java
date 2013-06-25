@@ -107,7 +107,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private RadioButton selectedVisualList;
     private RadioButton selectedOutputs;
     private Button randomSelection, randomPresets;
-    private Toggle toggleRandom;
+    private RadioButton randomButtons;
     private Textfield textGenerator;
 
     private Slider brightnessControll;
@@ -140,7 +140,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private CheckBox randomCheckbox;
     
     //info tab
-    Tab infoTab;
+    private Tab infoTab;
     private Label currentFps;
     private Label runtime;
     private Label sentFrames;
@@ -518,25 +518,45 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         //Button
         randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), 0,
-        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 100, 15);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 110, 15);
         randomSelection.setCaptionLabel(Messages.getString("GeneratorGui.RANDOMIZE")); //$NON-NLS-1$
         randomSelection.moveTo(randomTab);
         cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), Messages.getString("GeneratorGui.TOOLTIP_RANDOMIZE")); //$NON-NLS-1$
 
         randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESET.guiText(), 0,
-        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 100, 15);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 110, 15);
         randomPresets.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_PRESET")); //$NON-NLS-1$
         randomPresets.moveTo(randomTab);
         cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET")); //$NON-NLS-1$
 
+        /*
         toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(), true,
-        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+80, 100, 15);
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+85, 110, 15);
         toggleRandom.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_MODE")); //$NON-NLS-1$
         toggleRandom.setState(false);
         toggleRandom.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_MODE"));		 //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET_MODE"));		 //$NON-NLS-1$
 
-
+        toggleRandomPreset = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_PRESET_MODE.guiText(), true,
+        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+120, 110, 15);
+        toggleRandomPreset.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_MODE_PRESET")); //$NON-NLS-1$
+        toggleRandomPreset.setState(false);
+        toggleRandomPreset.moveTo(randomTab);
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_PRESET_MODE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET_MODE"));		 //$NON-NLS-1$
+*/
+        randomButtons = cp5.addRadioButton(GuiElement.BUTTONS_RANDOM_MODE.guiText())
+                .setPosition(GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+85)
+                .setSize(45, 15)
+                .setColorForeground(color(120))
+                .setColorActive(color(255))
+                .setColorLabel(color(255))
+                .setItemsPerRow(1)
+                .setSpacingColumn(26)
+                .setNoneSelectedAllowed(true)
+                .moveTo(randomTab);
+        randomButtons.addItem(Messages.getString("GeneratorGui.RANDOM_MODE"), 0);
+        randomButtons.addItem(Messages.getString("GeneratorGui.RANDOM_MODE_PRESET"), 1);
+        
         //----------
         //PRESET Tab
         //----------

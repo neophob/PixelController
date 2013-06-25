@@ -373,10 +373,12 @@ public final class MessageProcessor {
 				try {
 					String onOrOff = msg[1];
 					if (onOrOff.equalsIgnoreCase("ON")) {
+						col.setRandomPresetMode(false);
 						col.setRandomMode(true);
 						LOG.log(Level.INFO, "Random Mode enabled");
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
+						col.setRandomPresetMode(false);
 						col.setRandomMode(false);
 						LOG.log(Level.INFO, "Random Mode disabled");
 						return ValidCommands.STATUS;
@@ -386,6 +388,25 @@ public final class MessageProcessor {
 				}
 				break;
 
+			case RANDOM_PRESET_MODE:
+				try {
+					String onOrOff = msg[1];
+					if (onOrOff.equalsIgnoreCase("ON")) {
+						col.setRandomMode(false);
+						col.setRandomPresetMode(true);
+						LOG.log(Level.INFO, "Random Preset Mode enabled");
+					}
+					if (onOrOff.equalsIgnoreCase("OFF")) {
+						col.setRandomMode(false);
+						col.setRandomPresetMode(false);
+						LOG.log(Level.INFO, "Random Preset Mode disabled");
+						return ValidCommands.STATUS;
+					}
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+				}				
+				break;
+				
 			case RANDOMIZE:	//one shot randomizer
 				try {
 					Shuffler.manualShuffleStuff();

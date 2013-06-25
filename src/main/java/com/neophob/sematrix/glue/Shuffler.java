@@ -51,6 +51,23 @@ public final class Shuffler {
 	}
 
 	/**
+	 * used for randomized preset mode, rarely change stuff.
+	 */
+	public static void randomPresentModeShuffler() {
+		boolean kick = Sound.getInstance().isKick();
+
+		if (!kick) {
+			return;
+		}
+
+		Random rand = new Random();
+		if (rand.nextInt(150)==12) {
+			presentShuffler();
+		}
+	}
+	
+	
+	/**
 	 * load a prestored preset, randomly.
 	 */
 	public static void presentShuffler() {

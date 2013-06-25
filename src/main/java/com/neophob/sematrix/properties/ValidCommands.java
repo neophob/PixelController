@@ -101,6 +101,9 @@ public enum ValidCommands {
 	/** The RANDOM. */
 	RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode" ),
 
+	/** The RANDOM preset. */
+	RANDOM_PRESET_MODE(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random preset mode" ),
+
 	/** The RANDOMIZE. */
 	RANDOMIZE(CommandGroup.MISC, 0, "one shot randomizer"),
 	

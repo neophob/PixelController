@@ -117,11 +117,11 @@ public class P5EventListener implements ControlListener {
                 createMessage(ValidCommands.RANDOMIZE, value);
                 break;
 
-            case BUTTON_TOGGLE_RANDOM_MODE:
+            case BUTTONS_RANDOM_MODE:
                 LOG.log(Level.INFO, selection+" Value: "+value);
                 handleRandomMode(value);
                 break;
-
+            	
             case BUTTON_RANDOM_PRESET:
                 LOG.log(Level.INFO, selection+" Value: "+value);
                 createMessage(ValidCommands.PRESET_RANDOM, value);
@@ -332,16 +332,22 @@ public class P5EventListener implements ControlListener {
      * @param newValue
      */
     private void handleRandomMode(float newValue) {
-        String msg[] = new String[2];		
-        msg[0] = ""+ValidCommands.RANDOM;		
-        if (newValue==0) {
-            msg[1] = "OFF";	
-        } else {
-            msg[1] = "ON";
+        String msg[] = new String[2];
+        
+        if (newValue==0.0) {
+            msg[0] = ""+ValidCommands.RANDOM;        	
+        	msg[1] = "ON";
+        } else if (newValue==1.0) {
+            msg[0] = ""+ValidCommands.RANDOM_PRESET_MODE;
+        	msg[1] = "ON";
+        } else if (newValue==-1.0) {
+            msg[0] = ""+ValidCommands.RANDOM;
+        	msg[1] = "OFF";
         }
+
         singleSendMessageOut(msg);		
     }
-
+    
 
     /**
      * 

@@ -69,6 +69,9 @@ public final class Collector {
 	/** The random mode. */
 	private boolean randomMode = false;
 
+	/** The random mode. */
+	private boolean randomPresetMode = false;
+
 	/** The initialized. */
 	private boolean initialized;
 	
@@ -335,6 +338,8 @@ public final class Collector {
 		
 		if (randomMode) {
 			Shuffler.shuffleStuff();
+		} else if (randomPresetMode) {
+			Shuffler.randomPresentModeShuffler();
 		}
 		
 		frames++;
@@ -457,6 +462,14 @@ public final class Collector {
 	 */
 	public void setRandomMode(boolean randomMode) {
 		this.randomMode = randomMode;
+	}	
+
+	public boolean isRandomPresetMode() {
+		return randomPresetMode;
+	}
+
+	public void setRandomPresetMode(boolean randomPresetMode) {
+		this.randomPresetMode = randomPresetMode;
 	}
 
 	/**
