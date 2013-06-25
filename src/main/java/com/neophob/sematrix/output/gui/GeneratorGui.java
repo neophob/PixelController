@@ -551,7 +551,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 .setSpacingColumn(26)
                 .setNoneSelectedAllowed(false);
 
-        for (i=0; i<96; i++) {
+        for (i=0; i<96+16; i++) {
             String label = ""+i; //$NON-NLS-1$
             if (i<10) {
                 label = "0"+i; //$NON-NLS-1$
@@ -562,19 +562,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         presetButtons.moveTo(presetTab);                
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.guiText(), 0,
-        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
+        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+124, 100, 15);
         loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.guiText());
         loadPreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.LOAD_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_LOAD_PRESET")); //$NON-NLS-1$
 
         savePreset = cp5.addButton(GuiElement.SAVE_PRESET.guiText(), 0,
-        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+106, 100, 15);
+        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+124, 100, 15);
         savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.guiText());
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
 
-        presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+106, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab); //$NON-NLS-1$
-        presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+126).moveTo(presetTab).getValueLabel();         //$NON-NLS-1$ //$NON-NLS-2$
+        presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+124, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab); //$NON-NLS-1$
+        presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+142).moveTo(presetTab).getValueLabel();         //$NON-NLS-1$ //$NON-NLS-2$
         
         updateCurrentPresetState();
         
