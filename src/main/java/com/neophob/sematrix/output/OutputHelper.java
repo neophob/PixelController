@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import processing.serial.Serial;
 
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
@@ -115,10 +116,70 @@ public class OutputHelper {
             converted[ofs++] = (byte)(((b2&7)<<5) | b3);
         }
 
-        return converted;
-		
+        return converted;		
 	}
 
+	/**
+	 * Convert buffer to15bit and apply color correction
+	 *
+	 * @param data the data
+	 * @param colorFormat the color format
+	 * @return the byte[]
+	 * @throws IllegalArgumentException the illegal argument exception
+	 */
+	public static byte[] convertBufferTo15bit(int[] data, ColorFormat colorFormat, RGBAdjust correction) throws IllegalArgumentException {
+	    int targetBuffersize = data.length;
+	    
+		int[] r = new int[targetBuffersize];
+		int[] g = new int[targetBuffersize];
+		int[] b = new int[targetBuffersize];
+
+		splitUpBuffers(targetBuffersize, data, colorFormat, r, g, b);
+
+        int ofs=0;
+        int ri,gi,bi;
+        byte[] converted = new byte[targetBuffersize*2];
+        //convert to 24bpp to 15(16)bpp output format: RRRRRGGG GGGBBBBB (64x)
+        for (int i=0; i<targetBuffersize;i++) {
+        	ri = r[i];
+        	gi = g[i];
+        	bi = b[i];
+        	
+        	//color correct
+        	if (correction.getR()>0) {
+        		if (ri>correction.getR()) {
+        			ri -= correction.getR();
+        		} else {
+        			ri = 0;
+        		}
+        	}
+        	if (correction.getG()>0) {
+        		if (gi>correction.getG()) {
+        			gi -= correction.getG();
+        		} else {
+        			gi = 0;
+        		}
+        	}
+        	if (correction.getB()>0) {
+        		if (bi>correction.getB()) {
+        			bi -= correction.getB();
+        		} else {
+        			bi = 0;
+        		}
+        	}
+        	
+            byte b1 = (byte)(ri>>3);
+            byte b2 = (byte)(gi>>3);
+            byte b3 = (byte)(bi>>3);
+
+            converted[ofs++] = (byte)((b1<<2) | (b2>>3));
+            converted[ofs++] = (byte)(((b2&7)<<5) | b3);
+        }
+
+        return converted;		
+	}
+	
+	
 
 	/**
 	 * Convert internal buffer to 24bit byte buffer, using colorformat.

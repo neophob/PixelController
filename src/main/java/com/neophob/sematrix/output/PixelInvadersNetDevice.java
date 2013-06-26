@@ -73,7 +73,7 @@ public class PixelInvadersNetDevice extends Output {
 		String ip = ph.getPixelinvadersNetIp();
 		int port = ph.getPixelinvadersNetPort();
 		try {
-			lpd6803 = new Lpd6803Net( Collector.getInstance().getPapplet(), ip, port );
+			lpd6803 = new Lpd6803Net( Collector.getInstance().getPapplet(), ip, port, ph.getPixelInvadersCorrectionMap() );
 			this.initialized = lpd6803.connected();
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			
 		} catch (Exception e) {

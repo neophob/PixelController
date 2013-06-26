@@ -42,6 +42,7 @@ Boston, MA  02111-1307  USA
 package com.neophob.sematrix.output.lpd6803;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +51,7 @@ import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.SerialPortException;
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
  * library to communicate with an LPD6803 stripes via serial port<br>
@@ -104,8 +106,8 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, List<String> portBlacklist) throws NoSerialPortFoundException {
-		this(app, null, 0, portBlacklist);
+	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
+		this(app, null, 0, portBlacklist, correctionMap);
 	}
 
 	/**
@@ -115,8 +117,8 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, int baud, List<String> portBlacklist) throws NoSerialPortFoundException {
-		this(app, null, baud, portBlacklist);
+	public Lpd6803(PApplet app, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
+		this(app, null, baud, portBlacklist, correctionMap);
 	}
 
 	/**
@@ -126,8 +128,8 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, List<String> portBlacklist) throws NoSerialPortFoundException {
-		this(app, portName, 0, portBlacklist);
+	public Lpd6803(PApplet app, String portName, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
+		this(app, portName, 0, portBlacklist, correctionMap);
 	}
 
 
@@ -139,7 +141,7 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist) throws NoSerialPortFoundException {
+	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
@@ -184,7 +186,8 @@ public class Lpd6803 extends Lpd6803Common {
 		if (port==null) {		    
 			throw new NoSerialPortFoundException("\nError: no serial port found!\n");
 		}
-		
+
+		this.correctionMap = correctionMap;
 		LOG.log(Level.INFO,	"found serial port: "+serialPortName);
 	}
 

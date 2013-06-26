@@ -67,7 +67,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		this.initialized = false;	
 		
 		try {
-			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist() );			
+			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap() );			
 			this.initialized = lpd6803.ping();
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			
 		} catch (NoSerialPortFoundException e) {
@@ -126,7 +126,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 				int[] transformedBuffer = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 							Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
-				
+								
 				int sendedFrames = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
 				if (sendedFrames>0) {
 					needUpdate+=sendedFrames;

@@ -23,6 +23,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.junit.Test;
@@ -34,6 +35,7 @@ import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.output.UdpDevice;
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
  * test start
@@ -83,6 +85,15 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180, NO_ROTATE");
         config.put(ConfigConstant.PIXELINVADERS_ROW2, "ROTATE_90, NO_ROTATE");
         config.put(ConfigConstant.PIXELINVADERS_PANEL_ORDER, "0,3, 1,2");
+        
+        config.put(ConfigConstant.PIXELINVADERS_COLORADJUST_R+"1", "100");
+        config.put(ConfigConstant.PIXELINVADERS_COLORADJUST_G+"1", "130  ");
+        config.put(ConfigConstant.PIXELINVADERS_COLORADJUST_B+"1", "150");
+
+        config.put(ConfigConstant.PIXELINVADERS_COLORADJUST_R+"2", "4");
+        config.put(ConfigConstant.PIXELINVADERS_COLORADJUST_G+"2", "-222");
+        config.put(ConfigConstant.PIXELINVADERS_COLORADJUST_B+"2", "zzz");
+
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(4, ph.getNrOfScreens());
@@ -98,6 +109,23 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(4, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.PIXELINVADERS, ph.getOutputDevice());
+        
+        Map<Integer, RGBAdjust> correction = ph.getPixelInvadersCorrectionMap();
+        assertFalse(correction.containsKey(ConfigConstant.PIXELINVADERS_COLORADJUST_R+"0"));
+        assertFalse(correction.containsKey(ConfigConstant.PIXELINVADERS_COLORADJUST_G+"0"));
+        assertFalse(correction.containsKey(ConfigConstant.PIXELINVADERS_COLORADJUST_B+"0"));
+
+        RGBAdjust corr = correction.get(1);
+        assertTrue(corr!=null);
+        assertEquals(100, corr.getR());
+        assertEquals(130, corr.getG());
+        assertEquals(150, corr.getB());
+        
+        corr = correction.get(2);
+        assertTrue(corr!=null);
+        assertEquals(4, corr.getR());
+        assertEquals(0, corr.getG());
+        assertEquals(0, corr.getB());        
     }
 
     @Test
@@ -123,6 +151,9 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getI2cAddr().size());
         assertEquals(4, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.PIXELINVADERS_NET, ph.getOutputDevice());
+        
+        Map<Integer, RGBAdjust> correction = ph.getPixelInvadersCorrectionMap();
+        assertTrue(correction!=null);
     }
 
     @Test

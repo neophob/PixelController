@@ -20,6 +20,7 @@
 package com.neophob.sematrix.output.lpd6803;
 
 import java.net.SocketException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +29,7 @@ import processing.net.Client;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.SerialPortException;
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
  * http://blog.mafr.de/2010/03/14/tcp-for-low-latency-applications/
@@ -76,12 +78,13 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803Net(PApplet pa, String destIp, int destPort) throws Exception {
+	public Lpd6803Net(PApplet pa, String destIp, int destPort, Map<Integer, RGBAdjust> correctionMap) throws Exception {
 		LOG.log(Level.INFO,	"Initialize LPD6803 net lib v{0}", VERSION);
 		
 		this.destIp = destIp;
 		this.destPort = destPort;
 		this.pa = pa;
+		this.correctionMap = correctionMap;
 		
 		//output connection
 		LOG.log(Level.INFO, "Connect to target "+destIp+":"+destPort);

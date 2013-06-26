@@ -21,8 +21,10 @@ package com.neophob.sematrix.properties;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +38,7 @@ import com.neophob.sematrix.layout.HorizontalLayout;
 import com.neophob.sematrix.layout.Layout;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 import com.neophob.sematrix.output.gamma.GammaType;
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
  * load and save properties files.
@@ -93,6 +96,8 @@ public class ApplicationConfigurationHelper {
     private List<Integer> panelOrder=null;
 
     private List<String> pixelInvadersBlacklist;
+    
+    private Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
     
     //how many output screens are used? needed to define layouts
     /** The devices in row1. */
@@ -308,7 +313,7 @@ public class ApplicationConfigurationHelper {
         String rawConfig = config.getProperty(property);
         if (StringUtils.isNotBlank(rawConfig)) {
             try {
-                int val = Integer.parseInt(rawConfig);
+                int val = Integer.parseInt(StringUtils.strip(rawConfig));
                 if (val >= 0) {
                     return val;
                 } else {
@@ -490,6 +495,23 @@ public class ApplicationConfigurationHelper {
             }
         }
         
+        //colorcorrection, maximal 16 panels
+        for (int i=0; i<16; i++) {
+            String pixColAdjustR = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_R+i);
+            String pixColAdjustG = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_G+i);
+            String pixColAdjustB = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_B+i);
+
+            if (pixColAdjustR!=null && pixColAdjustG!=null && pixColAdjustB!=null) {
+            	RGBAdjust adj = new RGBAdjust(
+            			parseInt(ConfigConstant.PIXELINVADERS_COLORADJUST_R+i),
+            			parseInt(ConfigConstant.PIXELINVADERS_COLORADJUST_G+i),
+            			parseInt(ConfigConstant.PIXELINVADERS_COLORADJUST_B+i)
+            			);
+            	LOG.log(Level.INFO, "Found PixelInvaders color correction for output "+i+": "+adj);
+            	pixelInvadersCorrectionMap.put(i, adj);
+            }        	
+        }
+                
         return lpdDevice.size();
     }
     
@@ -1236,8 +1258,15 @@ public class ApplicationConfigurationHelper {
         return pixelInvadersBlacklist;
     }
     
-    
     /**
+     * get color adjust for one or multiple panels    
+     * @return
+     */
+    public Map<Integer, RGBAdjust> getPixelInvadersCorrectionMap() {
+		return pixelInvadersCorrectionMap;
+	}
+
+	/**
      * get configured tpm2net ip.
      *
      * @return the tpm2net ip

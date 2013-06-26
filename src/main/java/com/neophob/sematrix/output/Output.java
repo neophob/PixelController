@@ -70,8 +70,8 @@ public abstract class Output {
 	 */
 	private Map<Integer, int[]> bufferMap;
 	
-	private GammaType gammaType;
-	
+	private GammaType gammaType;	
+
 	/**
 	 * does this output device know if its connected to the matrix
 	 */
@@ -123,7 +123,7 @@ public abstract class Output {
 	 */
 	public int[] getBufferForScreen(int screenNr, boolean applyGamma) {
 		int[] buffer = this.bufferMap.get(switchBuffer+screenNr);
-		float brightness = this.collector.getPixelControllerGenerator().getBrightness();
+		float brightness = this.collector.getPixelControllerGenerator().getBrightness();		
 		
 		if (!applyGamma) {
 			return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);

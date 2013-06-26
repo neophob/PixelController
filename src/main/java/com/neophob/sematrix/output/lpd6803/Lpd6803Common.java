@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
 import com.neophob.sematrix.output.OutputHelper;
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 import com.neophob.sematrix.properties.ColorFormat;
 
 public abstract class Lpd6803Common {
@@ -46,6 +47,9 @@ public abstract class Lpd6803Common {
 	/** map to store checksum of image. */
 	protected Map<Byte, Long> lastDataMap = new HashMap<Byte, Long>();
 
+	/** correction map to store adjustment data, contains offset and correction data */
+	protected Map<Integer, RGBAdjust> correctionMap = new HashMap<Integer, RGBAdjust>();
+
 	protected boolean initialized;
 	
 	/** The ack errors. */
@@ -75,6 +79,12 @@ public abstract class Lpd6803Common {
 		if (data.length!=BUFFERSIZE) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
+		
+		if (correctionMap.containsKey((byte)ofs)) {
+			RGBAdjust correction = correctionMap.get((byte)ofs);
+			return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat, correction));			
+		}
+
 		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
 	}
 	

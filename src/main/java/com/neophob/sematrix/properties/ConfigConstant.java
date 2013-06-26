@@ -144,4 +144,8 @@ public final class ConfigConstant {
 	public static final String TPM2NET_IP ="tpm2net.ip";
 	public static final String TPM2NET_ROW1 = "tpm2net.layout.row1";
 	public static final String TPM2NET_ROW2 = "tpm2net.layout.row2";
+	
+	public static final String PIXELINVADERS_COLORADJUST_R = "pixelinvaders.coloradjust.r.";
+	public static final String PIXELINVADERS_COLORADJUST_G = "pixelinvaders.coloradjust.g.";
+	public static final String PIXELINVADERS_COLORADJUST_B = "pixelinvaders.coloradjust.b.";
 }
