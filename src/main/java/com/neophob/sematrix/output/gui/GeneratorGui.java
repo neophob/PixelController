@@ -529,21 +529,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         randomPresets.moveTo(randomTab);
         cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET")); //$NON-NLS-1$
 
-        /*
-        toggleRandom = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(), true,
-        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+85, 110, 15);
-        toggleRandom.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_MODE")); //$NON-NLS-1$
-        toggleRandom.setState(false);
-        toggleRandom.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_MODE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET_MODE"));		 //$NON-NLS-1$
-
-        toggleRandomPreset = cp5.addToggle(GuiElement.BUTTON_TOGGLE_RANDOM_PRESET_MODE.guiText(), true,
-        		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+120, 110, 15);
-        toggleRandomPreset.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_MODE_PRESET")); //$NON-NLS-1$
-        toggleRandomPreset.setState(false);
-        toggleRandomPreset.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_RANDOM_PRESET_MODE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET_MODE"));		 //$NON-NLS-1$
-*/
         randomButtons = cp5.addRadioButton(GuiElement.BUTTONS_RANDOM_MODE.guiText())
                 .setPosition(GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+85)
                 .setSize(45, 15)
