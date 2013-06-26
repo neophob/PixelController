@@ -42,7 +42,7 @@ Rejected roadmap features
     v8 (jav8) should a an alternative, however v8 is OS dependent.
 
 
-Changelog v1.3.1 to v1.3.2
+Changelog v1.3.1 to v1.4.0
 --------------------------
 -Add support for E1.31 devices
 -Add more 8x8 icon images
@@ -51,7 +51,8 @@ Changelog v1.3.1 to v1.3.2
 -Add new generator: VisualZero. use the first visual as generator, you can chain you effects.
 -Add new random preset mode
 -Add Pass through mode: ScreenCaputure (always) and OSC Generator (depending on input) are now 
-     24bpp generators, you cannot use effects/mixer/colorsets 
+     24bpp generators, you cannot use effects/mixer/colorsets
+-Add option to adjust the color for each PixelInvaders panel 
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
 -Fix: Do not change selected visual and output if a preset is loaded
