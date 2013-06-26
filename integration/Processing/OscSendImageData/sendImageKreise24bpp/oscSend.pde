@@ -21,7 +21,7 @@ void sendOsc() {
   }
   updatePixels();
 
-  //send the 8bit buffer to PixelController
+  //send the 24bit buffer to PixelController
   myMessage.add(bfr); // add an int array to the osc message 
 
   // send the message 

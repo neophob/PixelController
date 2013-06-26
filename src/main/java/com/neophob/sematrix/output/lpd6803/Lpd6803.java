@@ -147,7 +147,8 @@ public class Lpd6803 extends Lpd6803Common {
 		
 		this.app = app;
 		app.registerDispose(this);		
-		
+		this.correctionMap = correctionMap;
+
 		serialPortName="";
 		if(baud > 0) {
 			this.baud = baud;
@@ -187,7 +188,6 @@ public class Lpd6803 extends Lpd6803Common {
 			throw new NoSerialPortFoundException("\nError: no serial port found!\n");
 		}
 
-		this.correctionMap = correctionMap;
 		LOG.log(Level.INFO,	"found serial port: "+serialPortName);
 	}
 

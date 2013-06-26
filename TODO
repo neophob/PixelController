@@ -52,7 +52,8 @@ Changelog v1.3.1 to v1.4.0
 -Add new random preset mode
 -Add Pass through mode: ScreenCaputure (always) and OSC Generator (depending on input) are now 
      24bpp generators, you cannot use effects/mixer/colorsets
--Add option to adjust the color for each PixelInvaders panel 
+-Add option to adjust the color for each PixelInvaders panel
+-Add new gamme option, GAMMA 2.2 
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
 -Fix: Do not change selected visual and output if a preset is loaded

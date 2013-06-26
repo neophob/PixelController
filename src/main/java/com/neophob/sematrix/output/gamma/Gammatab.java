@@ -31,6 +31,8 @@ public abstract class Gammatab {
     //use it for lpd6803 based led devices
 	private static int[] gamma20 = generateGammaTab(2.0f);
 	
+	private static int[] gamma22 = generateGammaTab(2.2f);
+	
 	//use it for ws2801 based led devices
 	private static int[] gamma25 = generateGammaTab(2.5f);
 	
@@ -117,6 +119,12 @@ public abstract class Gammatab {
     			b = gamma20[b];
     			break;
 
+    		case GAMMA_22:
+    			r = gamma22[r];
+    			g = gamma22[g];
+    			b = gamma22[b];
+    			break;
+    			
     		case GAMMA_25:
     			r = gamma25[r];
     			g = gamma25[g];

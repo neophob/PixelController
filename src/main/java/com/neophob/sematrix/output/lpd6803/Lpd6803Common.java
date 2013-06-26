@@ -80,8 +80,9 @@ public abstract class Lpd6803Common {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
 		
-		if (correctionMap.containsKey((byte)ofs)) {
-			RGBAdjust correction = correctionMap.get((byte)ofs);
+		int ofsAsInt = ofs;
+		if (correctionMap.containsKey(ofsAsInt)) {
+			RGBAdjust correction = correctionMap.get(ofsAsInt);
 			return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat, correction));			
 		}
 

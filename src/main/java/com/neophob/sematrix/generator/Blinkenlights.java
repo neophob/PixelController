@@ -33,7 +33,6 @@ import com.neophob.sematrix.generator.blinken.BlinkenLibrary;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.output.gui.helper.FileUtils;
-import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -71,6 +70,8 @@ public class Blinkenlights extends Generator implements PConstants {
     private PImage img;
 
     private int currentFrame;
+    
+    private int frameNr;
 
     /**
      * Instantiates a new blinkenlights.
@@ -135,52 +136,22 @@ public class Blinkenlights extends Generator implements PConstants {
         if (random) {
             img = blinken.getFrame(rand.nextInt(blinken.getFrameCount()));
         } else {
-            img = blinken.getFrame(currentFrame++);
+        	if (frameNr%2==0) {
+        		currentFrame++;
+        	}
+            img = blinken.getFrame(currentFrame);
 
             if (currentFrame>blinken.getFrameCount()) {
                 currentFrame=0;
             }
         }
 
-        PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
         img.loadPixels();
-        this.internalBuffer = res.resizeImage(ResizeName.PIXEL_RESIZE, img.pixels, 
+        this.internalBuffer = Collector.getInstance().getPixelControllerResize().resizeImage(ResizeName.PIXEL_RESIZE, img.pixels, 
                 img.width, img.height, internalBufferXSize, internalBufferYSize);
-        img.updatePixels();	        
-
-
-        //resize image to 128x128
-        /*		int ofs, dst=0, xofs, yofs=0;		
-		float xSrc,ySrc=0;
-		float xDiff = internalBufferXSize/(float)blinken.width;
-		float yDiff = internalBufferYSize/(float)blinken.height;
-
-		try {
-			for (int y=0; y<internalBufferYSize; y++) {
-				if (ySrc>yDiff) {
-					if (yofs<blinken.height) {
-						yofs++;				
-					}
-					ySrc-=yDiff;
-				}
-				xofs=0;
-				xSrc=0;
-				for (int x=0; x<internalBufferXSize; x++) {
-					if (xSrc>xDiff) {
-						if (xofs<blinken.width) {
-							xofs++;
-						}
-						xSrc-=xDiff;
-					}				
-					ofs=xofs+yofs*blinken.width;
-					this.internalBuffer[dst++]=blinken.pixels[ofs]&255;
-					xSrc++;
-				}
-				ySrc++;
-			}		
-		} catch (ArrayIndexOutOfBoundsException e) {
-			LOG.log(Level.SEVERE, "Failed to update internal buffer", e);
-		}*/
+        img.updatePixels();	
+        
+        frameNr++;
     }
 
     /**
