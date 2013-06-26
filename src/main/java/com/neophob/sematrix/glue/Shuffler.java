@@ -55,13 +55,16 @@ public final class Shuffler {
 	 */
 	public static void randomPresentModeShuffler() {
 		boolean kick = Sound.getInstance().isKick();
-
-		if (!kick) {
+    boolean hat = Sound.getInstance().isHat();
+    
+		if (!kick && !hat) {
 			return;
 		}
 
+    int fps = Collector.getInstance().getFps();
+
 		Random rand = new Random();
-		if (rand.nextInt(150)==12) {
+		if (rand.nextInt(fps*3)==1) {
 			presentShuffler();
 		}
 	}
