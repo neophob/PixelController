@@ -18,8 +18,11 @@
  */
 package com.neophob.sematrix.output;
 
+import java.util.HashMap;
+
 import processing.core.PApplet;
 
+import com.neophob.sematrix.output.gamma.RGBAdjust;
 import com.neophob.sematrix.output.lpd6803.Lpd6803;
 
 /**
@@ -49,7 +52,7 @@ public class TestRoundtrip extends PApplet {
 		frameRate(500);
 		
 		try {
-			r = new Lpd6803(this, 9600, null);
+			r = new Lpd6803(this, 9600, null, new HashMap<Integer, RGBAdjust>());
 			long l1 = System.currentTimeMillis();
 			r.ping();
 			long l2= System.currentTimeMillis()-l1;
