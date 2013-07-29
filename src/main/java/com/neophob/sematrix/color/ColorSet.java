@@ -52,7 +52,7 @@ public class ColorSet implements Comparable<ColorSet> {
 	public ColorSet(String name, int[] colors) {
 		this.name = name;
 		this.colors = colors.clone();
-		this.boarderCount = 255 / colors.length;
+		this.boarderCount = int((255f / colors.length)+0.5);
 
 		//precalc colorset to save to cpu cycles
 		precalc = new int[256];
