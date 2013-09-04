@@ -54,8 +54,7 @@
 #define SERIAL_FOOTER_SIZE 1
 
 // buffers for receiving and sending data
-//uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
-char packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
+uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
 uint16_t psize;
 uint8_t currentPacket;
 uint8_t totalPacket;
@@ -123,9 +122,17 @@ void updatePixels() {
   uint16_t ofs=0;
   uint16_t ledOffset = PIXEL_OFFSET[currentPacket];
   for (uint16_t i=0; i<nrOfPixels; i++) {
-    leds[i] = CRGB(packetBuffer[ofs++], packetBuffer[ofs++], packetBuffer[ofs++]);
+    leds[i] = CRGB(packetBuffer[ofs++], packetBuffer[ofs++], packetBuffer[ofs++]);    
   }
-  LEDS.show();
+  
+  //update only if all data packets recieved
+  if (currentPacket==totalPacket-1) {
+#ifdef DEBUG      
+    Serial.println("UPDATE");
+    Serial.send_now();
+#endif    
+    LEDS.show();
+  }
 }
 
 //********************************
@@ -156,7 +163,7 @@ int16_t readCommand() {
   }
   
   //get remaining bytes
-  uint16_t recvNr = Serial.readBytes(packetBuffer, psize);
+  uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
   if (recvNr!=psize) {
     return -5;
   }  

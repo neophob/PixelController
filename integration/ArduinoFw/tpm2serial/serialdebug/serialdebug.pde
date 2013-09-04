@@ -17,12 +17,7 @@ int inByte = -1;    // Incoming serial data
 
 void setup() {
   size(400, 300);
-  // create a font with the third font available to the system:
 
-  // I know that the first port in the serial list on my mac
-  // is always my  FTDI adaptor, so I open Serial.list()[0].
-  // In Windows, this usually opens COM1.
-  // Open whatever port is the one you're using.
   String portName = "COM5";
   serial = new Serial(this, portName, 115200);
   
@@ -32,13 +27,13 @@ void setup() {
 int cnt =0;
 void draw() {
   println("send data");
+  int current=0;
   for (int i=0; i<2; i++) {
-    serial.write(doProtocol(new int[170], i, 4));
-    serial.write(doProtocol(new int[85], i+1, 4));
+    serial.write(doProtocol(new int[170], current++, 4));
+    serial.write(doProtocol(new int[85],  current++, 4));
   }
   println(cnt+" done, "+frameRate);
   cnt++;
-  //serial.flushAll();
 
   while (serial.available() > 0) {
     println(serial.readString());
