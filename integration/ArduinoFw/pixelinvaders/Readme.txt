@@ -1,7 +1,6 @@
 PixelInvaders Firmware for Arduino (like Teensy 2.0) compatible boards.
 
 Details:
-  neoLedLPD6803: The old bitbanging PixelInvaders firmware
   neoLedLPD6803Spi: The SPI PixelInvaders firmware. If you bought a PixelInvaders DIY, this is the firmware you need.
   neoLedWS2801Spi: The SPI PixelInvaders firmware to use with WS2801 LED pixels.
 

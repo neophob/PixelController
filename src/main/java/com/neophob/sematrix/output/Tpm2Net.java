@@ -53,6 +53,8 @@ import com.neophob.sematrix.properties.DeviceConfig;
  * 
  * Paketnummer:            0-255
  * 
+ * Anzahl Pakete:          1-255
+ *
  * Nutzdaten:              1 - 65.535 Bytes Daten oder Befehle mit Parametern
  * 
  * Blockende-Byte:         0x36
@@ -67,7 +69,7 @@ public class Tpm2Net extends Output {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
 
-	private static final int TPM2_NET_HEADER_SIZE = 5;
+	private static final int TPM2_NET_HEADER_SIZE = 6;
 	private static final int TPM2_NET_PORT = 65506;
 	
 	private DatagramSocket outputSocket;
@@ -161,7 +163,7 @@ public class Tpm2Net extends Output {
 	 * @param frameSize
 	 * @param data
 	 */
-	private void sendTpm2NetPacketOut(int packetNumber, byte[] data) {
+	private void sendTpm2NetPacketOut(int packetNumber, int totalPackets, byte[] data) {
 		int frameSize = data.length;
         byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
         
@@ -171,6 +173,7 @@ public class Tpm2Net extends Output {
 		outputBuffer[2] = ((byte)(frameSize >> 8 & 0xFF));
 		outputBuffer[3] = ((byte)(frameSize & 0xFF));
 		outputBuffer[4] = ((byte)packetNumber);
+		outputBuffer[5] = ((byte)totalPackets);
 		
 		//write footer
 		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = (byte)0x36;		
@@ -195,7 +198,8 @@ public class Tpm2Net extends Output {
 	public void update() {
 
 		if (initialized) {			
-			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
+      int nrOfScreens = Collector.getInstance().getNrOfScreens();
+			for (int ofs=0; ofs<nrOfScreens; ofs++) {
 				//get the effective panel buffer
 				int panelNr = this.panelOrder.get(ofs);
 
@@ -209,7 +213,7 @@ public class Tpm2Net extends Output {
 				//TODO maybe add option to send one or mutiple packets				
 				
 				if (didFrameChange(ofs, rgbBuffer)) {
-					sendTpm2NetPacketOut(ofs, rgbBuffer);
+					sendTpm2NetPacketOut(ofs, nrOfScreens, rgbBuffer);
 				}
 			}
 		}
