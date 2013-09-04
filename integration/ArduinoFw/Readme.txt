@@ -6,4 +6,4 @@ Details:
   rainbowduinoV3: Rainbowduino v3 firmware (from Seeedstudio).
   stealthSpi: Stealth panels firmware (from Element Labs). EOL.
   tpm2net: firmware for the tpm2.net protocol
-  
+  tpm2serial: firmware for the tpm2.serial protocol
