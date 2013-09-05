@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import processing.core.PApplet;
 import processing.serial.Serial;
@@ -81,7 +82,7 @@ public class Stealth {
 	private static final int DATABUFFERSIZE = 96;
 	
 	/** internal lib version. */
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.1";
 
 	/** The Constant START_OF_CMD. */
 	private static final byte START_OF_CMD = 0x01;
@@ -124,9 +125,10 @@ public class Stealth {
 	/** The connection error counter. */
 	private int connectionErrorCounter;
 		
-	/** map to store checksum of image. */
-	private Map<Byte, String> lastDataMap;
+	/** map to store checksum of image. */	
+	private Map<Byte, Long> lastDataMap;
 	
+	private static Adler32 adler = new Adler32();
 	
 	/**
 	 * Create a new instance to communicate with the Stealth device.
@@ -176,7 +178,7 @@ public class Stealth {
 		this.app = app;
 		app.registerDispose(this);
 		
-		lastDataMap = new HashMap<Byte, String>();
+		lastDataMap = new HashMap<Byte, Long>();
 		
 		String serialPortName="";
 		if(baud > 0) {
@@ -341,21 +343,23 @@ public class Stealth {
 	 * @return true if send was successful
 	 */
 	private boolean didFrameChange(byte ofs, byte data[]) {
-		String s = MD5.asHex(data);
+		adler.reset();
+		adler.update(data);
+		long l = adler.getValue();
 		
 		if (!lastDataMap.containsKey(ofs)) {
 			//first run
-			lastDataMap.put(ofs, s);
+			lastDataMap.put(ofs, l);
 			return true;
 		}
 		
-		if (lastDataMap.get(ofs).equals(s)) {
+		if (lastDataMap.get(ofs) == l) {
 			//last frame was equal current frame, do not send it!
 			//log.log(Level.INFO, "do not send frame to {0}", addr);
 			return false;
 		}
 		//update new hash
-		lastDataMap.put(ofs, s);
+		lastDataMap.put(ofs, l);
 		return true;
 	}
 	
@@ -430,7 +434,7 @@ public class Stealth {
 				returnValue=true;
 			} else {
 				//in case of an error, make sure we send it the next time!
-				lastDataMap.put(ofsOne, "");
+				lastDataMap.put(ofsOne, 0L);
 			}
 		}		
 		//send frame two
@@ -440,7 +444,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsTwo, "");
+				lastDataMap.put(ofsTwo, 0L);
 			}
 		}
 		//send frame three
@@ -450,7 +454,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsThree, "");
+				lastDataMap.put(ofsThree, 0L);
 			}
 		}
 		//send frame four
@@ -460,7 +464,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsFour, "");
+				lastDataMap.put(ofsFour, 0L);
 			}
 		}
 		//send frame Five
@@ -470,7 +474,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsFive, "");
+				lastDataMap.put(ofsFive, 0L);
 			}
 		}
 
@@ -481,7 +485,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsSix, "");
+				lastDataMap.put(ofsSix, 0L);
 			}
 		}
 
@@ -492,7 +496,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsSeven, "");
+				lastDataMap.put(ofsSeven, 0L);
 			}
 		}
 
@@ -503,7 +507,7 @@ public class Stealth {
 			if (sendSerialData(cmdfull)) {
 				returnValue=true;
 			} else {
-				lastDataMap.put(ofsEight, "");
+				lastDataMap.put(ofsEight, 0L);
 			}
 		}
 
