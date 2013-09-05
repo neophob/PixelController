@@ -44,6 +44,7 @@ package com.neophob.sematrix.output.minidmx;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import processing.core.PApplet;
 import processing.serial.Serial;
@@ -51,7 +52,6 @@ import processing.serial.Serial;
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.SerialPortException;
-import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
@@ -68,6 +68,8 @@ public class MiniDmxSerial {
     private static final Logger LOG = Logger.getLogger(MiniDmxSerial.class.getName());
 
     private static final String PADDING_BYTES = "paddingBytes {0}";
+    
+    private static Adler32 adler = new Adler32();
     
     public enum MiniDmxPayloadEnum {
         SEND_96_BYTES(96, (byte)0xa0),              //32 pixel, for example 8x4 pixel
@@ -166,7 +168,7 @@ public class MiniDmxSerial {
     }
     	
 	/** internal lib version. */
-	public static final String VERSION = "1.1";
+	public static final String VERSION = "1.2";
 
 	/** The Constant START_OF_BLOCK. */
 	private static final byte START_OF_BLOCK = (byte)0x5a;
@@ -199,7 +201,7 @@ public class MiniDmxSerial {
 	private Serial port;
 
 	/** map to store checksum of image. */
-	private String lastDataMap;
+	private long lastDataMap;
 		
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
@@ -241,7 +243,7 @@ public class MiniDmxSerial {
 		this.app.registerDispose(this);
 		this.baud = baud;
 		
-		lastDataMap = "";
+		lastDataMap = 0L;
 		
 		String serialPortName="";	
 		this.miniDmxPayload = MiniDmxPayloadEnum.getDmxPayload(targetBuffersize);
@@ -387,20 +389,16 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 */
 	private boolean didFrameChange(byte data[]) {
-		String s = MD5.asHex(data);
-		
-		if (lastDataMap.isEmpty()) {
-			//first run
-			lastDataMap=s;
-			return true;
-		}
-		
-		if (lastDataMap.equals(s)) {
+		adler.reset();
+		adler.update(data);
+		long l = adler.getValue();
+				
+		if (lastDataMap == l) {
 			//last frame was equal current frame, do not send it!
 			return false;
 		}
 		//update new hash
-		lastDataMap=s;
+		lastDataMap=l;
 		return true;
 	}
 	
@@ -443,7 +441,7 @@ public class MiniDmxSerial {
 				return true;
 			} else {
 				//in case of an error, make sure we send it the next time!
-				lastDataMap="";
+				lastDataMap=0L;
 			}
 		}
 
