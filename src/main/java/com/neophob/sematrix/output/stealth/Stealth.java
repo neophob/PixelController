@@ -53,7 +53,6 @@ import processing.serial.Serial;
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.SerialPortException;
-import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**

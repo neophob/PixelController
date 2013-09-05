@@ -20,6 +20,7 @@ package com.neophob.sematrix.output.tpm2;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,7 +29,6 @@ import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
-import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
@@ -45,7 +45,9 @@ public class Tpm2Serial {
     private static final Logger LOG = Logger.getLogger(Tpm2Serial.class.getName());
 
     /** internal lib version. */
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.1";
+
+	private static Adler32 adler = new Adler32();
 	
 	/** The app. */
 	private PApplet app;
@@ -57,7 +59,7 @@ public class Tpm2Serial {
 	private Serial port;
 
 	/** map to store checksum of image. */
-	private String lastDataMap;
+	private long lastDataMap;
 		
 	/**
 	 * Create a new instance to communicate with the tpm2 device.
@@ -99,7 +101,7 @@ public class Tpm2Serial {
 		this.app.registerDispose(this);
 		this.baud = baud;
 		
-		lastDataMap = "";
+		lastDataMap = 0L;
 		
 		String serialPortName="";	
 		
@@ -218,20 +220,16 @@ public class Tpm2Serial {
 	 * @return true if send was successful
 	 */
 	private boolean didFrameChange(byte data[]) {
-		String s = MD5.asHex(data);
+		adler.reset();
+		adler.update(data);
+		long l = adler.getValue();
 		
-		if (lastDataMap.isEmpty()) {
-			//first run
-			lastDataMap=s;
-			return true;
-		}
-		
-		if (lastDataMap.equals(s)) {
+		if (lastDataMap==l) {
 			//last frame was equal current frame, do not send it!
 			return false;
 		}
 		//update new hash
-		lastDataMap=s;
+		lastDataMap=l;
 		return true;
 	}
 	
