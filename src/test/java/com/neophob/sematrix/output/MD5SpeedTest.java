@@ -27,8 +27,6 @@ import java.util.zip.Adler32;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.output.misc.MD5;
-
 /**
  * verify the rotate buffer code
  * @author michu
@@ -63,48 +61,37 @@ public class MD5SpeedTest {
     }
     
     @Test
-    public void speedTestOld() throws NoSuchAlgorithmException {
-        byte[] b = new byte[192];
+    public void speedTestMd5() throws NoSuchAlgorithmException {
+    	byte[] b = new byte[512];        
+        for (int i=0; i<b.length; i++) b[i] = (byte)(Math.random()*255);  
 
-        long pre = System.currentTimeMillis();
+        long pre = System.nanoTime();
         MessageDigest md = MessageDigest.getInstance("MD5");
-
         for (int i=0; i<ROUNDS; i++) {
             MD5SpeedTest.getMD5(md, b);   
         }               
-        long post = System.currentTimeMillis();
+        long post = System.nanoTime();
 
         long time = post-pre;
         float avg = (float)time / (float)ROUNDS;
-        LOG.log(Level.INFO,"rainbowduino needed {0}ms, avg: {1}", new Object[] {time, avg});
+        LOG.log(Level.INFO,"rainbowduino needed {0}ns, avg: {1}", new Object[] {time, avg});
     }
     
     @Test
-    public void speedTestNew() {
-        byte[] b = new byte[192];
-
+    public void speedTestAdler() {
+        byte[] b = new byte[512];
+        for (int i=0; i<b.length; i++) b[i] = (byte)(Math.random()*255);
+        
+        Adler32 ad = new Adler32();
+        
         long pre = System.nanoTime();
-
         for (int i=0; i<ROUNDS; i++) {
-            MD5.asHex(b);   
+        	ad.update(b);   
         }               
         long post = System.nanoTime();
 
         long time = post-pre;
         float avg = (float)time / (float)ROUNDS;        
-        LOG.log(Level.INFO,"MD5.asHex needed {0}ns, avg: {1}", new Object[] {time, avg});
-        
-        Adler32 ad = new Adler32();
-        
-        
-        pre = System.nanoTime();
-        for (int i=0; i<ROUNDS; i++) {
-        	ad.update(b);   
-        }               
-        post = System.nanoTime();
-
-        time = post-pre;
-        avg = (float)time / (float)ROUNDS;        
         LOG.log(Level.INFO,"Adler32.asHex needed {0}ns, avg: {1}", new Object[] {time, avg});
     }
 
