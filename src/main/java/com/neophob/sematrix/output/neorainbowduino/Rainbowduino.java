@@ -30,13 +30,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import processing.core.PApplet;
 import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.SerialPortException;
-import com.neophob.sematrix.output.misc.MD5;
 
 /**
  * library to communicate with an arduino via serial port<br>
@@ -68,7 +68,7 @@ public class Rainbowduino {
 	/** 
 	 * internal lib version
 	 */
-	public static final String VERSION = "1.7";
+	public static final String VERSION = "1.8";
 
 	private static final byte START_OF_CMD = 0x01;
 	private static final byte CMD_SENDFRAME = 0x03;
@@ -79,6 +79,8 @@ public class Rainbowduino {
 	private static final byte START_OF_DATA = 0x10;
 	private static final byte END_OF_DATA = 0x20;
 
+	private static Adler32 adler = new Adler32();
+	
 	private PApplet app;
 
 	private int baud = 115200;
@@ -102,7 +104,7 @@ public class Rainbowduino {
 	/**
 	 * map to store checksum of image
 	 */
-	private Map<Byte, String> lastDataMap;
+	private Map<Byte, Long> lastDataMap;
 	
 	
 	/**
@@ -162,7 +164,7 @@ public class Rainbowduino {
 		app.registerDispose(this);
 		
 		scannedI2cDevices = new ArrayList<Integer>();
-		lastDataMap = new HashMap<Byte, String>();
+		lastDataMap = new HashMap<Byte, Long>();
 		
 		String serialPortName="";
 		if(baud > 0) {
@@ -347,25 +349,25 @@ public class Rainbowduino {
 	 * @param data
 	 * @return true if send was successful
 	 */
-	private boolean didFrameChange(byte addr, byte data[]) {
-		String s = MD5.asHex(data);
+	private boolean didFrameChange(byte ofs, byte data[]) {
+		adler.reset();
+		adler.update(data);
+		long l = adler.getValue();
 		
-		if (!lastDataMap.containsKey(addr)) {
+		if (!lastDataMap.containsKey(ofs)) {
 			//first run
-			lastDataMap.put(addr, s);
+			lastDataMap.put(ofs, l);
 			return true;
 		}
 		
-		//log.log(Level.INFO, "{0} // {1}",new Object [] {s, lastDataMap.get(addr)});
-		
-		if (lastDataMap.get(addr).equals(s)) {
+		if (lastDataMap.get(ofs) == l) {
 			//last frame was equal current frame, do not send it!
 			//log.log(Level.INFO, "do not send frame to {0}", addr);
 			return false;
 		}
 		//update new hash
-		lastDataMap.put(addr, s);
-		return true;
+		lastDataMap.put(ofs, l);
+		return true;		
 	}
 	
 	/**
@@ -410,7 +412,7 @@ public class Rainbowduino {
 		}
 		
 		//an error occoured sending the frame, make sure we resend next time
-		lastDataMap.put(addr, "");
+		lastDataMap.put(addr, 0L);
 		return false;
 	}
 
