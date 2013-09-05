@@ -160,8 +160,6 @@ public class Tpm2Net extends Output {
 	 * send out a tpm2net paket
 	 *  
 	 * @param packetNumber: a tpm2net frame can consists out of multiple udp packets
-	 *                      HINT: this violate the tpm2net protocol!
-	 *                      TODO 
 	 * @param frameSize
 	 * @param data
 	 */
