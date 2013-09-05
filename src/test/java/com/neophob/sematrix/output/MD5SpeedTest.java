@@ -28,7 +28,13 @@ import java.util.zip.Adler32;
 import org.junit.Test;
 
 /**
- * verify the rotate buffer code
+ * speed test, results on my test machine:
+ * 
+ *   05.09.2013 09:02:45 com.neophob.sematrix.output.MD5SpeedTest speedTestMd5
+ *   INFO: rainbowduino needed 704'219'613ns, avg: 7'042.196
+ *   05.09.2013 09:02:45 com.neophob.sematrix.output.MD5SpeedTest speedTestAdler
+ *   INFO: Adler32.asHex needed 38'249'882ns, avg: 382.499
+ *
  * @author michu
  *
  */
