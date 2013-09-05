@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.misc.MD5;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
@@ -94,7 +94,9 @@ public class Tpm2Net extends Output {
 	private long errorCounter = 0;
 	
 	/** map to store checksum of image. */
-	protected Map<Integer, String> lastDataMap;
+	protected Map<Integer, Long> lastDataMap;
+	
+	protected static Adler32 adler = new Adler32();
 
 	/**
 	 * 
@@ -110,7 +112,7 @@ public class Tpm2Net extends Output {
 		
 		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
-		this.lastDataMap = new HashMap<Integer, String>();
+		this.lastDataMap = new HashMap<Integer, Long>();
 
 		try {
 			this.targetAddr = InetAddress.getByName(targetAddrStr);
@@ -135,21 +137,23 @@ public class Tpm2Net extends Output {
 	 * @return
 	 */
 	private boolean didFrameChange(int ofs, byte data[]) {
-		String s = MD5.asHex(data);
+		adler.reset();
+		adler.update(data);
+		long l = adler.getValue();
 		
 		if (!lastDataMap.containsKey(ofs)) {
 			//first run
-			lastDataMap.put(ofs, s);
+			lastDataMap.put(ofs, l);
 			return true;
 		}
 		
-		if (lastDataMap.get(ofs).equals(s)) {
+		if (lastDataMap.get(ofs) == l) {
 			//last frame was equal current frame, do not send it!
 			//log.log(Level.INFO, "do not send frame to {0}", addr);
 			return false;
 		}
 		//update new hash
-		lastDataMap.put(ofs, s);
+		lastDataMap.put(ofs, l);
 		return true;
 	}
 
