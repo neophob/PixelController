@@ -66,33 +66,33 @@ import com.neophob.sematrix.properties.DeviceConfig;
  *
  */
 public class Tpm2Net extends Output {
-	
+
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
-	
+
 	private static Adler32 adler = new Adler32();
-	
+
 	private DatagramSocket outputSocket;
 	private InetAddress targetAddr;
-	
+
 	/** The initialized. */
 	protected boolean initialized;
 
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	private List<DeviceConfig> displayOptions;
-	
+
 	/** The output color format. */
 	private List<ColorFormat> colorFormat;
-	
+
 	/** define how the panels are arranged */
 	private List<Integer> panelOrder;
 
 	private DatagramPacket tpm2UdpPacket;
-	
+
 	private String targetAddrStr;
-	
+
 	private long errorCounter = 0;
-	
+
 	/** map to store checksum of image. */
 	private Map<Integer, Long> lastDataMap;
 
@@ -103,11 +103,11 @@ public class Tpm2Net extends Output {
 	 */
 	public Tpm2Net(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.TPM2NET, ph, controller, 8);
-		
+
 		this.displayOptions = ph.getTpm2NetDevice();		
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
-		
+
 		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 		this.lastDataMap = new HashMap<Integer, Long>();
@@ -121,7 +121,7 @@ public class Tpm2Net extends Output {
 			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution: {1}/{2}",  
 					new Object[] { this.targetAddr, 
 					this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
-			);
+					);
 
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to resolve target address "+targetAddrStr+": {0}", e);
@@ -138,13 +138,13 @@ public class Tpm2Net extends Output {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();
-		
+
 		if (!lastDataMap.containsKey(ofs)) {
 			//first run
 			lastDataMap.put(ofs, l);
 			return true;
 		}
-		
+
 		if (lastDataMap.get(ofs) == l) {
 			//last frame was equal current frame, do not send it!
 			//log.log(Level.INFO, "do not send frame to {0}", addr);
@@ -155,7 +155,7 @@ public class Tpm2Net extends Output {
 		return true;
 	}
 
-	
+
 	/**
 	 * send out a tpm2net paket
 	 *  
@@ -169,7 +169,7 @@ public class Tpm2Net extends Output {
 		try {
 			this.outputSocket.send(tpm2UdpPacket);
 		} catch (Exception e) {
-		    errorCounter++;
+			errorCounter++;
 			LOG.log(Level.SEVERE, "Failed to send network data: {0}", e);
 		}
 	}
@@ -181,7 +181,7 @@ public class Tpm2Net extends Output {
 	public void update() {
 
 		if (initialized) {			
-      int nrOfScreens = Collector.getInstance().getNrOfScreens();
+			int nrOfScreens = Collector.getInstance().getNrOfScreens();
 			for (int ofs=0; ofs<nrOfScreens; ofs++) {
 				//get the effective panel buffer
 				int panelNr = this.panelOrder.get(ofs);
@@ -189,12 +189,12 @@ public class Tpm2Net extends Output {
 				int[] transformedBuffer = 
 						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 								this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
-				
+
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
-				
+
 				//send small UDP packages, this is not optimal but the client needs less memory
-				//TODO maybe add option to send one or mutiple packets				
-				
+				//TODO maybe add option to send one or multiple packets				
+
 				if (didFrameChange(ofs, rgbBuffer)) {
 					sendTpm2NetPacketOut(ofs, nrOfScreens, rgbBuffer);
 				}
@@ -202,29 +202,29 @@ public class Tpm2Net extends Output {
 		}
 	}
 
-    @Override
-    public boolean isSupportConnectionState() {
-        return true;
-    }
+	@Override
+	public boolean isSupportConnectionState() {
+		return true;
+	}
 
-    @Override
-    public boolean isConnected() {
-        return initialized;
-    }
-    
-    @Override
-    public String getConnectionStatus(){
-        if (initialized) {
-            return "Target IP "+targetAddrStr+":"+Tpm2NetProtocol.TPM2_NET_PORT;            
-        }
-        return "Not connected!";
-    }
-	    
-    @Override
-    public long getErrorCounter() {        
-        return errorCounter;
-    }
-    
+	@Override
+	public boolean isConnected() {
+		return initialized;
+	}
+
+	@Override
+	public String getConnectionStatus(){
+		if (initialized) {
+			return "Target IP "+targetAddrStr+":"+Tpm2NetProtocol.TPM2_NET_PORT;            
+		}
+		return "Not connected!";
+	}
+
+	@Override
+	public long getErrorCounter() {        
+		return errorCounter;
+	}
+
 	@Override
 	public void close() {		
 		if (this.initialized) {
@@ -238,5 +238,5 @@ public class Tpm2Net extends Output {
 			LOG.log(Level.INFO, "Network socket not initialized, nothing to do.");
 		}		
 	}
-	
+
 }
