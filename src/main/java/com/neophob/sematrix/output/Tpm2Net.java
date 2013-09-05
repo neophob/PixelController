@@ -72,6 +72,8 @@ public class Tpm2Net extends Output {
 	private static final int TPM2_NET_HEADER_SIZE = 6;
 	private static final int TPM2_NET_PORT = 65506;
 	
+	private static Adler32 adler = new Adler32();
+	
 	private DatagramSocket outputSocket;
 	private InetAddress targetAddr;
 	
@@ -94,9 +96,7 @@ public class Tpm2Net extends Output {
 	private long errorCounter = 0;
 	
 	/** map to store checksum of image. */
-	protected Map<Integer, Long> lastDataMap;
-	
-	protected static Adler32 adler = new Adler32();
+	private Map<Integer, Long> lastDataMap;
 
 	/**
 	 * 
