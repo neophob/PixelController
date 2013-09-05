@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
@@ -68,9 +69,6 @@ public class Tpm2Net extends Output {
 	
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
-
-	private static final int TPM2_NET_HEADER_SIZE = 6;
-	private static final int TPM2_NET_PORT = 65506;
 	
 	private static Adler32 adler = new Adler32();
 	
@@ -117,7 +115,7 @@ public class Tpm2Net extends Output {
 		try {
 			this.targetAddr = InetAddress.getByName(targetAddrStr);
 			this.outputSocket = new DatagramSocket();
-			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, TPM2_NET_PORT);
+			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, Tpm2NetProtocol.TPM2_NET_PORT);
 
 			this.initialized = true;
 			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution: {1}/{2}",  
@@ -167,25 +165,8 @@ public class Tpm2Net extends Output {
 	 * @param frameSize
 	 * @param data
 	 */
-	private void sendTpm2NetPacketOut(int packetNumber, int totalPackets, byte[] data) {
-		int frameSize = data.length;
-        byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
-        
-        //write header of udp packet
-		outputBuffer[0] = (byte)0x9c;
-		outputBuffer[1] = (byte)0xda;
-		outputBuffer[2] = ((byte)(frameSize >> 8 & 0xFF));
-		outputBuffer[3] = ((byte)(frameSize & 0xFF));
-		outputBuffer[4] = ((byte)packetNumber);
-		outputBuffer[5] = ((byte)totalPackets);
-		
-		//write footer
-		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = (byte)0x36;		
-		
-		//copy payload
-		System.arraycopy(data, 0, outputBuffer, TPM2_NET_HEADER_SIZE, frameSize);		
-		
-		tpm2UdpPacket.setData(outputBuffer);
+	private void sendTpm2NetPacketOut(int packetNumber, int totalPackets, byte[] data) {		
+		tpm2UdpPacket.setData(Tpm2NetProtocol.doProtocol(packetNumber, totalPackets, data));
 
 		try {
 			this.outputSocket.send(tpm2UdpPacket);
@@ -236,7 +217,7 @@ public class Tpm2Net extends Output {
     @Override
     public String getConnectionStatus(){
         if (initialized) {
-            return "Target IP "+targetAddrStr+":"+TPM2_NET_PORT;            
+            return "Target IP "+targetAddrStr+":"+Tpm2NetProtocol.TPM2_NET_PORT;            
         }
         return "Not connected!";
     }
