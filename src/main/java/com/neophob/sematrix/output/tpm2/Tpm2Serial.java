@@ -32,9 +32,8 @@ import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
- * library to communicate with an TPM2 serial device<br>
+ * library to communicate with an TPM2 serial device using the tpm2net protocol
  * created for ledstyles.de 
- * <br><br>
  * 
  * @author Michael Vogt / neophob.com
  *
@@ -246,6 +245,10 @@ public class Tpm2Serial {
 		return false;
 	}
 	
+
+	public Serial getPort() {
+		return port;
+	}
 
 	/**
 	 * send the data to the serial port.

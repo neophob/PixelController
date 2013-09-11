@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.tpm2.Tpm2Protocol;
+import com.neophob.sematrix.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.output.tpm2.Tpm2Serial;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
@@ -39,7 +39,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Tpm2.class.getName());
 			
-	private static final String VERSION = "1.0";
+	private static final String VERSION = "1.1";
 
 	private Tpm2Serial tpm2;
 	
@@ -80,7 +80,34 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	 */
 	public void update() {		
 		if (initialized) {					
-			tpm2.sendFrame(Tpm2Protocol.doProtocol(getTransformedBuffer()));
+			//tpm2.sendFrame(Tpm2Protocol.doProtocol(getTransformedBuffer()));
+			
+			byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
+			if (rgbBuffer.length < 511) {
+				//small frame, fit in one packed
+				tpm2.sendFrame(Tpm2NetProtocol.doProtocol(0,1,rgbBuffer));				
+			} else {
+				//need to splitup buffers				
+				int bytesToSend = rgbBuffer.length;
+				int currentUniverse = 0;
+				int totalUniverse = (int)((bytesToSend/510f))+1;
+				while (currentUniverse < totalUniverse) { 
+					int l = bytesToSend - 510*currentUniverse;
+					if (l>510) l=510;
+					byte[] tmp = new byte[l];
+					System.out.println(l+" bytes, "+currentUniverse+"/"+totalUniverse );
+					
+					System.arraycopy(rgbBuffer, 510*currentUniverse, tmp, 0, l);
+					tpm2.sendFrame(Tpm2NetProtocol.doProtocol(currentUniverse, totalUniverse, tmp));
+					
+					//debug out
+					while (tpm2.getPort().available() > 0) {			
+						System.out.println("<<< "+tpm2.getPort().readString());
+					} 			
+					
+					currentUniverse++;
+				}
+			}
 		}
 	}
 

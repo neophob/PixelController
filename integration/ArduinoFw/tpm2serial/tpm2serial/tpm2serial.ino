@@ -30,7 +30,7 @@
 #define DEBUG 1
 
 //how many led pixels are connected
-#define NUM_LEDS 512
+#define NUM_LEDS 256
 
 //define some tpm constants
 #define TPM2NET_HEADER_SIZE 4
@@ -46,10 +46,7 @@
 //package size we expect. 
 #define MAX_PACKED_SIZE 520
 
-#define PIXELS_PER_PACKET 170
-
-//How many "universe" are connected, used to calculate offset
-#define TOTAL_PACKET_SIZE 4
+const uint16_t PIXELS_PER_PACKET=170;
 
 //the header of a package, 
 
@@ -147,7 +144,7 @@ void updatePixels() {
 #endif    
     LEDS.show();
   } else {
-#ifdef DEBUG      
+#ifdef DEBUG     
     Serial.print("NOTUPDATE: ");
     Serial.println(currentPacket, DEC);
     Serial.send_now();
@@ -178,9 +175,6 @@ int16_t readCommand() {
 
   currentPacket = Serial.read();  
   totalPacket = Serial.read();    
-  if (totalPacket>TOTAL_PACKET_SIZE || currentPacket>TOTAL_PACKET_SIZE) {
-    return -4;
-  }
   
   //get remaining bytes
   uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
