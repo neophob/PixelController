@@ -1,5 +1,5 @@
 /*
- * PixelInvaders tpm2.serial implementation, Copyright (C) 2013 michael vogt <michu@neophob.com>
+ * PixelInvaders tpm2.net implementation, Copyright (C) 2013 michael vogt <michu@neophob.com>
  * 
  * If you like this, make sure you check out http://www.pixelinvaders.ch
  *
@@ -46,6 +46,8 @@
 //package size we expect. 
 #define MAX_PACKED_SIZE 520
 
+#define PIXELS_PER_PACKET 170
+
 //How many "universe" are connected, used to calculate offset
 #define TOTAL_PACKET_SIZE 4
 
@@ -60,15 +62,6 @@ uint8_t currentPacket;
 uint8_t totalPacket;
 
 CRGB leds[NUM_LEDS];
-
-/*
-Example:
-Universe1: 170 Pixel
-Universe2: 85 Pixel
-Universe3: 170 Pixel
-Universe4: 85 Pixel
- */
-uint16_t PIXEL_OFFSET[TOTAL_PACKET_SIZE] = {0, 170, 256, 426};
 
 // Teensy 3.0 has the LED on pin 13
 const int ledPin = 13;
@@ -90,8 +83,17 @@ void setup() {
   memset(packetBuffer, 0, MAX_PACKED_SIZE);
 
   //LEDS.addLeds<WS2801>(leds, NUM_LEDS);
-  LEDS.addLeds<WS2811, 11>(leds, NUM_LEDS);
+  LEDS.addLeds<WS2811, 11, GRB>(leds, NUM_LEDS);  //connect on pin 11
+  
+  //Flickering issues?
+  //...it turned out that as my PSU got hotter, the voltage was dropping towards the end of the LED strip.
+  //Tried feeding power to both ends of the strip, only delayed the issue slightly.  Changed to a bigger PSU and fault went away 
+  //(dual ends feeding power).
 
+  // For safety (to prevent too high of a power draw), the test case defaults to
+  // setting brightness to 50% brightness  
+  LEDS.setBrightness(64);
+  
   showInitImage();      // display some colors
 }
 
@@ -103,13 +105,25 @@ void loop() {
   if (res > 0) {
 #ifdef DEBUG      
     Serial.print("FINE: ");
-    Serial.println(psize, DEC);    
+    Serial.print(psize, DEC);    
+    Serial.print("/");
+    Serial.print(currentPacket, DEC);    
+    
     Serial.send_now();
 #endif
     digitalWrite(ledPin, HIGH);
     updatePixels();
     digitalWrite(ledPin, LOW);    
-  }   
+  }
+#ifdef DEBUG      
+  else {
+    if (res!=-1) {
+      Serial.print("ERR: ");
+      Serial.println(res, DEC);    
+      Serial.send_now();
+    }
+  }
+#endif  
 }
 
 //********************************
@@ -118,20 +132,26 @@ void loop() {
 void updatePixels() {
   uint8_t nrOfPixels = psize/3;
   
-  //TODO use currentPacket to calculate offset
   uint16_t ofs=0;
-  uint16_t ledOffset = PIXEL_OFFSET[currentPacket];
+  uint16_t ledOffset = PIXELS_PER_PACKET*currentPacket;
+  
   for (uint16_t i=0; i<nrOfPixels; i++) {
-    leds[i] = CRGB(packetBuffer[ofs++], packetBuffer[ofs++], packetBuffer[ofs++]);    
+    leds[i+ledOffset] = CRGB(packetBuffer[ofs++], packetBuffer[ofs++], packetBuffer[ofs++]);    
   }
   
   //update only if all data packets recieved
   if (currentPacket==totalPacket-1) {
 #ifdef DEBUG      
-    Serial.println("UPDATE");
+    Serial.println("DRAW!");
     Serial.send_now();
 #endif    
     LEDS.show();
+  } else {
+#ifdef DEBUG      
+    Serial.print("NOTUPDATE: ");
+    Serial.println(currentPacket, DEC);
+    Serial.send_now();
+#endif        
   }
 }
 
