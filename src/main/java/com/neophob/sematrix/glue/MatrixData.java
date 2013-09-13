@@ -65,12 +65,14 @@ public class MatrixData {
 
     /**
      * init matrix data.
+     * Use Case 1: 2 PixelInvader panels, each panel have a 8x8 resolution
+     * Use Case 2: 1 TPM2Net panel, size 24*16
      *
      * @param deviceXSize the device x size
      * @param deviceYSize the device y size
      */
     public MatrixData(int deviceXSize, int deviceYSize) {
-        if (deviceXSize < 0 || deviceYSize < 0) {
+        if (deviceXSize < 1 || deviceYSize < 1) {
             throw new InvalidParameterException("screenXSize and screenYsize must be > 0!");
         }
         this.deviceXSize = deviceXSize;
@@ -78,7 +80,7 @@ public class MatrixData {
         this.deviceSize = deviceXSize*deviceYSize;
 
         //select buffer size depending on the output device
-        if (deviceXSize < 16) {
+/*        if (deviceXSize < 16) {
             bufferWidth = 64;
         } else {
             bufferWidth = 128;
@@ -88,16 +90,29 @@ public class MatrixData {
             bufferHeight = 64;
         } else {
             bufferHeight = 128;
+        }*/
+        int internalBufferSizeMultiplier = 8;
+        bufferWidth = deviceXSize*internalBufferSizeMultiplier;
+        bufferHeight = deviceYSize*internalBufferSizeMultiplier;
+        
+        while (getRgbBufferSize()>60*1024 && internalBufferSizeMultiplier>1) {
+        	internalBufferSizeMultiplier/=2;
+            bufferWidth = deviceXSize*internalBufferSizeMultiplier;
+            bufferHeight = deviceYSize*internalBufferSizeMultiplier;
         }
 
         this.pImagesMap = new HashMap<Output, PImage>();
 
-        LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), "
-                , new Object[] { deviceSize, deviceXSize, deviceYSize });
+        LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), multiplication factor: {3} ({4} * {5})", 
+        		new Object[] { deviceSize, deviceXSize, deviceYSize, internalBufferSizeMultiplier, bufferWidth, bufferHeight});
 
         Collector.getInstance().setMatrix(this);
     }
 
+    private int getRgbBufferSize() {
+    	return getBufferXSize()*getBufferYSize()*3;
+    }
+    
     /**
      * fade the buffer.
      *

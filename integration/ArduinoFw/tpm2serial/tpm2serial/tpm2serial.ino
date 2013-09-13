@@ -25,12 +25,22 @@
 
 #include <FastSPI_LED2.h>
 
-#define BAUD_RATE 115200
+//---- START USER CONFIG ----
 
 #define DEBUG 1
 
 //how many led pixels are connected
 #define NUM_LEDS 256
+
+//How many "universe" are connected, used to calculate offset
+#define TOTAL_PACKET_SIZE 4
+
+// Teensy 3.0 has the LED on pin 13
+const int ledPin = 13;
+
+//---- END USER CONFIG ----
+
+#define BAUD_RATE 115200
 
 //define some tpm constants
 #define TPM2NET_HEADER_SIZE 4
@@ -39,6 +49,7 @@
 #define TPM2NET_CMD_COMMAND 0xc0
 #define TPM2NET_CMD_ANSWER 0xaa
 #define TPM2NET_FOOTER_IDENT 0x36
+#define SERIAL_FOOTER_SIZE 1
 
 //3 byte per pixel or 24bit (RGB)
 #define BPP 3
@@ -46,11 +57,15 @@
 //package size we expect. 
 #define MAX_PACKED_SIZE 520
 
+<<<<<<< HEAD
 const uint16_t PIXELS_PER_PACKET=170;
 
 //the header of a package, 
 
 #define SERIAL_FOOTER_SIZE 1
+=======
+#define PIXELS_PER_PACKET 170
+>>>>>>> c324488089f1f6ee86af5bb9c601819777f60edc
 
 // buffers for receiving and sending data
 uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
@@ -59,9 +74,6 @@ uint8_t currentPacket;
 uint8_t totalPacket;
 
 CRGB leds[NUM_LEDS];
-
-// Teensy 3.0 has the LED on pin 13
-const int ledPin = 13;
 
 //********************************
 // SETUP

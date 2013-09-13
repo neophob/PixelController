@@ -66,8 +66,8 @@ public class OscServer implements OscEventListener, PacketAndBytesStatictics {
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { this.listeningPort });
 		
         OscProperties prop = new OscProperties();
-        //32kb buffer, maximal packet size
-        prop.setDatagramSize(1024*32);
+        //49152 bytes UDP buffer, 16 is the maximal internal buffer size (128*128*3)
+        prop.setDatagramSize(50000);
         prop.setNetworkProtocol(OscProperties.UDP);
         prop.setListeningPort(this.listeningPort);
 		this.oscP5 = new OscP5(papplet, prop);

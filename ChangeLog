@@ -3,7 +3,9 @@ Changelog v1.4.0 to v1.4.1
 --------------------------
 -Fix update TPM2.net implementation (add total packet bytes)
 -Fix cleanup unused files
+-Fix OSC listener, increased buffer size to 50kb to large image content can be sent via OSC
 -Remove all references to the MD5 class, use Adler as caching mechanism (20x faster)
+-Keep aspect ratio if internal buffer size is calculated
 
 
 Changelog v1.3.1 to v1.4.0
