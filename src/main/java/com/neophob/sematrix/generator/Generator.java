@@ -170,8 +170,8 @@ public abstract class Generator implements RandomizeState {
 		this.internalBuffer = new int[internalBufferXSize*internalBufferYSize];
 
 		LOG.log(Level.INFO,
-				"Generator: internalBufferSize: {0} name: {1} "
-				, new Object[] { internalBuffer.length, name });
+				"Generator: internalBufferSize: {0} ({1}/{2}), name: {3}, resize option: {4} "
+				, new Object[] { internalBuffer.length, internalBufferXSize, internalBufferYSize, name, resizeOption.toString() });
 		
 		//add to list
 		controller.addInput(this);
