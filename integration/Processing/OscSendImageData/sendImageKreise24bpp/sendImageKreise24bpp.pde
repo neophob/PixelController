@@ -2,7 +2,7 @@
 
 float i;
 
-int PIXELS_X = 24;
+int PIXELS_X = 16;
 int PIXELS_Y = 16;
 int DATA_SIZE = PIXELS_X*8 * PIXELS_Y*8;
 
