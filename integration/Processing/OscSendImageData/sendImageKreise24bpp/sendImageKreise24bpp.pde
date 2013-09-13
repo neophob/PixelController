@@ -1,7 +1,14 @@
 //source http://www.openprocessing.org/sketch/7475
 
 float i;
- 
+
+int PIXELS_X = 24;
+int PIXELS_Y = 16;
+int DATA_SIZE = PIXELS_X*8 * PIXELS_Y*8;
+
+//the maximal UDP packet size
+int MAXIMAL_UDP_PACKET_SIZE = 65507;
+
 int kreise = 23;
  
 float ersterdurchmesser = 300;
@@ -15,8 +22,13 @@ float geschwindigkeit = 0.002;
 void setup()
 {
   frameRate(30);
-  //must be 64 x 64!
-  size(64, 64);
+  //use pixel ammount of your panel *8
+  size(PIXELS_X*8, PIXELS_Y*8);
+  println("\nOSC Packet size: "+DATA_SIZE*BPP);
+  if (DATA_SIZE*BPP > MAXIMAL_UDP_PACKET_SIZE) {
+    println("ERROR, you use OSC to send that much data (UDP Packet size limit is 64k). Lower your resolution.");
+    System.exit(1);
+  }
   smooth();
   noStroke();
 }
