@@ -2,6 +2,7 @@
 
 float i;
 
+//define the size of your matrix here. the maximal size is 16x16!
 int PIXELS_X = 16;
 int PIXELS_Y = 16;
 int DATA_SIZE = PIXELS_X*8 * PIXELS_Y*8;
