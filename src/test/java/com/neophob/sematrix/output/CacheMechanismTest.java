@@ -89,6 +89,7 @@ public class CacheMechanismTest {
 
     	long x = out.getCache(ofs);
     	assertTrue(initContent!=x);
+    	assertTrue(0!=x);
     }
     
 }
