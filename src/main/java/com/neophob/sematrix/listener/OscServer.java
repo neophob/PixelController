@@ -96,6 +96,10 @@ public class OscServer implements OscEventListener, PacketAndBytesStatictics {
 		//address pattern -> internal message mapping
 		String pattern = theOscMessage.addrPattern().trim().toUpperCase();
 		try {
+			//remove beginning "/"
+			if (pattern.startsWith("/")) {
+				pattern = pattern.substring(1, pattern.length());
+			}
 			ValidCommands command = ValidCommands.valueOf(pattern);
 			String[] msg = new String[1+command.getNrOfParams()];
 			msg[0] = pattern;
