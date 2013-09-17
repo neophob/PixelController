@@ -116,20 +116,22 @@ public final class SoundMinim implements SeSound, Runnable {
 	 * @see com.neophob.sematrix.input.SeSound#getVolumeNormalized()
 	 */
 	public float getVolumeNormalized() {
-		float f = in.mix.level();
-		float max = getSndVolumeMax();
+		float max = getSndVolumeMax();		
+
+		//volume is too low, normalization would create wrong results.
+		//XXX Make option configurable
+		if (max<0.06f) {
+			return 0;
+		}
+		
+		float f = in.mix.level();		
 		float norm=(1.0f/max)*f;	
-		//System.out.println("max: "+(int)(max*10000)+", val: "+(int)(f*10000)+"->"+norm);
 
 		//im a bad coder! limit it!
 		if (norm>1f) {
 			norm=1f;		
 		}
 
-		//if the sound volume is very low, limit the normalized volume
-		if (max<0.004f) {
-			norm/=2;
-		}
 		return norm;
 	}
 

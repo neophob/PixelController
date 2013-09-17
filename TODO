@@ -23,7 +23,7 @@ Roadmap PixelController
  see https://sites.google.com/site/stamb2012/examples/batch-processing
 -add option to query buffersize via OSC
 -add more fader (pixel fader for example)
--disable beat detection if sound volume is too low
+-disable beat detection if sound volume is too low (wip)
 -support more than 2 rows
 -support teensy 3 (pixelinvaders firmware, partly done)
 -Textwriter generator, add scrolling option (no ping pong scrolling, single chars)
