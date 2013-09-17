@@ -125,6 +125,13 @@
 			<source>${basedir}/TODO</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
+			<destName>TODO.txt</destName>
+		</file>
+
+ 		<file>
+			<source>${basedir}/ChangeLog</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
 			<destName>Changelog.txt</destName>
 		</file>
 
