@@ -20,7 +20,7 @@ Changelog v1.3.1 to v1.4.0
 -Add Pass through mode: ScreenCaputure (always) and OSC Generator (depending on input) are now 
      24bpp generators, you cannot use effects/mixer/colorsets
 -Add option to adjust the color for each PixelInvaders panel
--Add new gamme option, GAMMA 2.2 
+-Add new gamma option, GAMMA 2.2 
 -Fix: Checkbox mixer for larger resolutions
 -Fix: find .png files in GUI
 -Fix: Do not change selected visual and output if a preset is loaded
@@ -65,7 +65,7 @@ Changelog v1.2.x to v1.3.0
 -add support for UDP output device
 -add support for TPM2 serial output devices
 -add support for TPM2 net output devices
--add support for rainbowduino v3 output devices
+-add support for Rainbowduino v3 output devices
 -add start scripts for OSX
 -add flipX and flipY effects
 -implement gamma correction
@@ -76,11 +76,11 @@ Changelog v1.2.x to v1.3.0
 -Integrate OSC Server
 -Reduce CPU load
 -fixed Blinkenlight video player race condition
--improved rxtx lib, fix some 64bit issues
+-improved RXTX lib, fix some 64bit issues
 -configuration fixes
--alot of bugfixes
+-a lot of bugfixes
 -removed emboss effect, as the result was ugly
--removed Xor and MinusHalf mixer, as the result was ugly
+-removed xor and MinusHalf mixer, as the result was ugly
 -removed image zoomer generator, as it looks ugly and was a duplicate.
 -Manual
 
@@ -95,16 +95,16 @@ Changelog v1.0.3 to v1.1
 ------------------------
 -add notification if random mode is selected or not
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. 
- if they would run in seperate thread, that would be faster...
+ if they would run in separate thread, that would be faster...
 -decoupling visual generation from output update, should increase performance
 -New Generators: ColorScroll, ColorFade and ScreenCapture. Removed Simple Colors
 -PixelInvaders firmware: update initial image in firmware
 -PixelInvaders firmware: add autonomous firmware mode, run simple animation if no computer is connected
 -ScreenCapture: make capturing area visible to user
--create osc tabled gui for Control (OSC + MIDI) (http://charlie-roberts.com/Control)
+-create GUI for tablet, Application Control (OSC + MIDI) (http://charlie-roberts.com/Control)
 -manual mapping to support fancy led mapping (OnePanelResolutionAwareOutput class). define a configuration property like 
  output.mapping=1,2,5,6,3,4,7,8 ...
 -Log output to a file instead the command line
--artnet output: make first universe id configurable
--possible to start pixelcontroller with a preset
+-Artnet output: make first universe id configurable
+-possible to start PixelController with a preset
 

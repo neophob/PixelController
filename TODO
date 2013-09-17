@@ -2,7 +2,7 @@ Roadmap PixelController
 -----------------------
 -Do not freeze application if output fails (disconnect serial controller)
 -Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
--More layouts (Half/Half, 3/1...). Current layouts are hardware dependant. New layout shouldn't be. 
+-More layouts (Half/Half, 3/1...). Current layouts are hardware dependent. New layout shouldn't be. 
    +---+---+---+
    | a | b | c |
    +---+---+---+   
@@ -15,17 +15,16 @@ Roadmap PixelController
 -Unit Testing is suboptimal, the file config.properties is not used 
 -Support Renard Protocol
 -Option to invert GUI colors
--More GUI improvments (scaling, bigger fonts, save window position, option to bring both windows to front)
+-More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
 -Option to modify colorsets of all visuals
--implement colorlib procesing lib (http://code.google.com/p/colorlib/)
+-implement colorlib Procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
  see https://sites.google.com/site/stamb2012/examples/batch-processing
 -add option to query buffersize via OSC
 -add more fader (pixel fader for example)
--disable beat detection if sound volume is too low (wip)
 -support more than 2 rows
--support teensy 3 (pixelinvaders firmware, partly done)
+-support Teensy 3 (PixelInvaders firmware, partly done)
 -Textwriter generator, add scrolling option (no ping pong scrolling, single chars)
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
@@ -35,12 +34,12 @@ Roadmap PixelController
 	-optimize transfer size to be a multiple of 60 bytes (Arduino and Teensy hardware serial class has a buffer size of 64 bytes)
 	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
 	-maybe a streaming only firmware?
-
+-disable beat detection if sound volume is too low (WIP)
 
 Rejected roadmap features
 -------------------------
 -UDP output: support multiple output devices (probably not, alternative: use tpm2.net)
 -Use Mozilla Rhino to create dynamic generators/effects
- -> using jdk1.6 rhino is just too slow and cpu intensive (it needs about 40% cpu power with one rhino js generator). 
-    v8 (jav8) should a an alternative, however v8 is OS dependent.
+ -> using JDK1.6 Rhino is just too slow and cpu intensive (it needs about 40% cpu power with one Rhino js generator). 
+    v8 (java8) should a an alternative, however v8 is OS dependent.
 
