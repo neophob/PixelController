@@ -148,4 +148,6 @@ public final class ConfigConstant {
 	public static final String PIXELINVADERS_COLORADJUST_R = "pixelinvaders.coloradjust.r.";
 	public static final String PIXELINVADERS_COLORADJUST_G = "pixelinvaders.coloradjust.g.";
 	public static final String PIXELINVADERS_COLORADJUST_B = "pixelinvaders.coloradjust.b.";
+	
+	public static final String SOUND_SILENCE_THRESHOLD = "sound.silence.threshold";
 }

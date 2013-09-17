@@ -1294,5 +1294,22 @@ public class ApplicationConfigurationHelper {
     	return gammaType;
     }
     
+    /**
+     * 
+     * @return
+     */
+    public float getSoundSilenceThreshold() {
+    	float f = 0.05f;
+    	String s = StringUtils.trim(config.getProperty(ConfigConstant.SOUND_SILENCE_THRESHOLD));
+    	if (StringUtils.isNotBlank(s)) {
+    		try {
+    			f = Float.parseFloat(s);
+    		} catch (Exception e) {
+    			LOG.log(Level.WARNING, FAILED_TO_PARSE, f);
+    		}
+    	}
+    	return f;
+    }
+    
 
 }
