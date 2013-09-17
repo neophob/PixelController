@@ -64,6 +64,7 @@ public final class SoundMinim implements SeSound, Runnable {
 	private float sndVolumeMax=0;
 
 	private float silenceThreshold;
+	private long dropedVolumeRequests;
 	
 	/**
 	 * Instantiates a new sound minim.
@@ -122,9 +123,13 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public float getVolumeNormalized() {
 		float max = getSndVolumeMax();		
-
 		//volume is too low, normalization would create wrong results.
 		if (max<silenceThreshold) {
+			dropedVolumeRequests++;
+			if (dropedVolumeRequests%1000==0) {
+				LOG.log(Level.INFO, "Ignored volume request, as volume is too low ("+ max +
+						"), this happend "+ dropedVolumeRequests+" times.");
+			}
 			return 0;
 		}
 		
@@ -244,6 +249,12 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public synchronized float getSndVolumeMax() {
 		return sndVolumeMax;
+	}
+
+
+	@Override
+	public String getImplementationName() {		
+		return "Minim Sound";
 	}
 
 }

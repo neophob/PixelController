@@ -121,4 +121,9 @@ public final class Sound implements SeSound {
 		return implementation.getFftAvg(i);
 	}
 
+	@Override
+	public String getImplementationName() {
+		return implementation.getImplementationName();
+	}
+
 }

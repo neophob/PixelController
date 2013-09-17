@@ -142,6 +142,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     //info tab
     private Tab infoTab;
     private Label currentFps;
+    private Label currentVolume;
     private Label runtime;
     private Label sentFrames;
     private Label outputErrorCounter;
@@ -603,6 +604,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoSrvVersion", Messages.getString("GeneratorGui.SERVER_VERSION")+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
+        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+Sound.getInstance().getVolumeNormalized(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        nfoYPos+=yposAdd;
+        
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
@@ -778,6 +782,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
+            int snd1000 = (int)(1000f*Sound.getInstance().getVolumeNormalized());
+            currentVolume.setText(Messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
             Output output = col.getOutputDevice();
             if (output!=null) {

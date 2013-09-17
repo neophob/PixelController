@@ -337,7 +337,7 @@ public class PixelController extends PApplet {
         if (StringUtils.isNotBlank(version)) {
             return "v"+version;
         }
-        return "Test Release (unknown Version)"; 
+        return "Developer Snapshot"; 
     }
     
     /**

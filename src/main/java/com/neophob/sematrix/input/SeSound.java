@@ -25,6 +25,9 @@ package com.neophob.sematrix.input;
  */
 public interface SeSound {
 
+	
+	String getImplementationName();
+	
 	/**
 	 * Gets the volume.
 	 *

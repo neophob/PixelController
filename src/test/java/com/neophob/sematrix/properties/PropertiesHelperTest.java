@@ -602,16 +602,25 @@ public class PropertiesHelperTest {
         config = new Properties();     
         config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "");
         ph = new ApplicationConfigurationHelper(config);
-        assertEquals(0.05f, ph.getSoundSilenceThreshold(), 0.001);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
 
         config = new Properties();     
         config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "0.pillepalle");
         ph = new ApplicationConfigurationHelper(config);
-        assertEquals(0.05f, ph.getSoundSilenceThreshold(), 0.001);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
 
         config = new Properties();     
         ph = new ApplicationConfigurationHelper(config);
-        assertEquals(0.05f, ph.getSoundSilenceThreshold(), 0.001);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
 
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "-0.5");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "1.5f");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
     }
 }
