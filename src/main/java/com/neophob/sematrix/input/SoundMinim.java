@@ -63,10 +63,13 @@ public final class SoundMinim implements SeSound, Runnable {
 	/** The snd volume max. */
 	private float sndVolumeMax=0;
 
+	private float silenceThreshold;
+	private long dropedVolumeRequests;
+	
 	/**
 	 * Instantiates a new sound minim.
 	 */
-	public SoundMinim() {
+	public SoundMinim(float silenceThreshold) {
 		minim = new Minim(Collector.getInstance().getPapplet());
 		//in = minim.getLineIn( Minim.STEREO, 512 );
 		in = minim.getLineIn( Minim.MONO, 1024 );
@@ -96,6 +99,9 @@ public final class SoundMinim implements SeSound, Runnable {
 		} else {
 		    Collector.getInstance().getPapplet().registerDispose(this);
 		}
+		
+		this.silenceThreshold = silenceThreshold;
+		
 		this.runner = new Thread(this);
 		this.runner.setName("ZZ Sound stuff");
 		this.runner.setDaemon(true);
@@ -117,10 +123,13 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public float getVolumeNormalized() {
 		float max = getSndVolumeMax();		
-
 		//volume is too low, normalization would create wrong results.
-		//XXX Make option configurable
-		if (max<0.06f) {
+		if (max<silenceThreshold) {
+			dropedVolumeRequests++;
+			if (dropedVolumeRequests%1000==0) {
+				LOG.log(Level.INFO, "Ignored volume request, as volume is too low ("+ max +
+						"), this happend "+ dropedVolumeRequests+" times.");
+			}
 			return 0;
 		}
 		
@@ -240,6 +249,12 @@ public final class SoundMinim implements SeSound, Runnable {
 	 */
 	public synchronized float getSndVolumeMax() {
 		return sndVolumeMax;
+	}
+
+
+	@Override
+	public String getImplementationName() {		
+		return "Minim Sound";
 	}
 
 }

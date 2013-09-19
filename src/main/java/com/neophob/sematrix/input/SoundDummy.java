@@ -98,5 +98,10 @@ public class SoundDummy implements SeSound {
 	 */
 	public void shutdown() {
 	}
+
+	@Override
+	public String getImplementationName() {		
+		return "Dummy Sound";
+	}
 	
 }

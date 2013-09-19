@@ -192,7 +192,7 @@ public final class Collector {
 		
 		//choose sound implementation
 		try {
-			Sound.getInstance().setImplementation(new SoundMinim());			
+			Sound.getInstance().setImplementation(new SoundMinim(ph.getSoundSilenceThreshold()));			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE, Exception: {0}.", e);
 			Sound.getInstance().setImplementation(new SoundDummy());

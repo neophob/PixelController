@@ -34,7 +34,8 @@ Roadmap PixelController
 	-optimize transfer size to be a multiple of 60 bytes (Arduino and Teensy hardware serial class has a buffer size of 64 bytes)
 	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
 	-maybe a streaming only firmware?
--disable beat detection if sound volume is too low (WIP)
+-PixelInvaders Firmware: its possible that only the first half of the screen is updated - in such a case
+ the screen gets not refreshed, thus the changes are not visible.
 
 Rejected roadmap features
 -------------------------

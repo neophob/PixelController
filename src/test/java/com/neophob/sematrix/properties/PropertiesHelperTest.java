@@ -587,4 +587,40 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getNrOfAdditionalVisuals());
     }
 
+    @Test
+    public void testSoundSilence() {	    
+        Properties config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "0.06f");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.06f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "  0.06   ");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.06f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "0.pillepalle");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "-0.5");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
+
+        config = new Properties();     
+        config.put(ConfigConstant.SOUND_SILENCE_THRESHOLD, "1.5f");
+        ph = new ApplicationConfigurationHelper(config);
+        assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
+    }
 }

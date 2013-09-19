@@ -57,15 +57,7 @@ const int ledPin = 13;
 //package size we expect. 
 #define MAX_PACKED_SIZE 520
 
-<<<<<<< HEAD
-const uint16_t PIXELS_PER_PACKET=170;
-
-//the header of a package, 
-
-#define SERIAL_FOOTER_SIZE 1
-=======
 #define PIXELS_PER_PACKET 170
->>>>>>> c324488089f1f6ee86af5bb9c601819777f60edc
 
 // buffers for receiving and sending data
 uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet

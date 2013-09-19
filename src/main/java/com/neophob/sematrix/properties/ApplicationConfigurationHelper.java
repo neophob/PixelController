@@ -51,6 +51,7 @@ public class ApplicationConfigurationHelper {
     private static final Logger LOG = Logger.getLogger(ApplicationConfigurationHelper.class.getName());
 
     private static final int DEFAULT_RESOLUTION = 8;
+    private static final float DEFAULT_SOUND_THRESHOLD = 0.0005f;
     
     /** The Constant PRESENTS_FILENAME. */
     private static final String PRESENTS_FILENAME = "data/presents.led";
@@ -1292,6 +1293,25 @@ public class ApplicationConfigurationHelper {
      */
     public GammaType getGammaType() {
     	return gammaType;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public float getSoundSilenceThreshold() {
+    	String s = StringUtils.trim(config.getProperty(ConfigConstant.SOUND_SILENCE_THRESHOLD));
+    	if (StringUtils.isNotBlank(s)) {
+    		try {
+    			float f = Float.parseFloat(s);
+    			if (f>=0.0f && f<=1.0f) {
+    				return f;
+    			}
+    		} catch (Exception e) {
+    			LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+    		}
+    	}
+    	return DEFAULT_SOUND_THRESHOLD;
     }
     
 
