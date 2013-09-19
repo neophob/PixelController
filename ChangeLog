@@ -5,6 +5,7 @@ Changelog v1.4.0 to v1.4.1
 -Fix cleanup unused files
 -Fix OSC listener, increased buffer size to 50kb to large image content can be sent via OSC
 -Fix OSC address, expected: "/NAME" was: "NAME"
+-Fix shuffle Colorset in Random mode, fix Issue#37
 -Remove all references to the MD5 class, use Adler as caching mechanism (20x faster)
 -Keep aspect ratio if internal buffer size is calculated
 

@@ -267,6 +267,13 @@ public final class Shuffler {
 				}
 			}
 
+			if (blah == 11 && col.getShufflerSelect(ShufflerOffset.COLORSET)) {
+				int colorSets = col.getColorSets().size();
+				for (Visual v: col.getAllVisuals()) {
+					v.setGenerator1(rand.nextInt(colorSets));
+				}				
+			}
+			
 			if (blah == 14) {
 				col.getPixelControllerEffect().getEffect(EffectName.THRESHOLD).shuffle();
 			}
@@ -335,6 +342,7 @@ public final class Shuffler {
 			if (blah == 16) {
 				col.getPixelControllerGenerator().getGenerator(GeneratorName.COLOR_SCROLL).shuffle();
 			}
+						
 
 		}
 
