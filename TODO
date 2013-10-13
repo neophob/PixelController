@@ -25,7 +25,7 @@ Roadmap PixelController
 -add more fader (pixel fader for example)
 -support more than 2 rows
 -support Teensy 3 (PixelInvaders firmware, partly done)
--Textwriter generator, add scrolling option (no ping pong scrolling, single chars)
+-Textwriter generator, add scrolling option (ping pong scrolling, left scrolling, show single character)
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
 -Syphon support https://code.google.com/p/syphon-implementations/
@@ -36,6 +36,7 @@ Roadmap PixelController
 	-maybe a streaming only firmware?
 -PixelInvaders Firmware: its possible that only the first half of the screen is updated - in such a case
  the screen gets not refreshed, thus the changes are not visible.
+-Support ambient color for the output panel(s)
 
 Rejected roadmap features
 -------------------------
