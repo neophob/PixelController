@@ -323,7 +323,7 @@ public final class MessageProcessor {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
-
+			
 			case COLOR_SCROLL_OPT:
 				try {
 					int dir = Integer.parseInt(msg[1]);
@@ -378,6 +378,15 @@ public final class MessageProcessor {
 				}
 				break;
 
+			case TEXTWR_OPTION:
+				try {
+					int scollerNr = Integer.parseInt(msg[1]);
+					col.getPixelControllerGenerator().setTextOption(scollerNr);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				break;
+				
 			case RANDOM:	//enable or disable random mode
 				try {
 					String onOrOff = msg[1];

@@ -55,6 +55,7 @@ public enum GuiElement {
 	COLORSCROLL_OPTIONS,
 	
 	TEXTFIELD,
+	TEXTWR_OPTION,
 
 	//single output settings
 	OUTPUT_SELECTED_VISUAL_DROPDOWN,

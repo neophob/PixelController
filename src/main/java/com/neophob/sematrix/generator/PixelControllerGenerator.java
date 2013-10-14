@@ -139,6 +139,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
         ret.add(ValidCommands.IMAGE+" "+image.getFilename());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
+        ret.add(ValidCommands.TEXTWR_OPTION+" "+textwriter.getTextscroller());
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());        
         ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());
@@ -327,6 +328,19 @@ public class PixelControllerGenerator implements PixelControllerElement {
         }
         textwriter.createTextImage(text);
     }
+
+    /**
+     * 
+     * @param scollerNr
+     */
+    public void setTextOption(int scollerNr) {
+    	textwriter.setTextscroller(scollerNr);
+    }
+    
+    public int getTextOption() {
+    	return textwriter.getTextscroller();
+    }
+
     
 	/**
 	 * @return the brightness

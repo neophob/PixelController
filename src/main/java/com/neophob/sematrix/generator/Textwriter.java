@@ -50,7 +50,7 @@ public class Textwriter extends Generator {
 	public enum TextwriterMode {
 		PINGPONG,
 		LEFT,
-		SINGLE_CHARACTERS
+		//SINGLE_CHARACTERS
 	}
 	
 	/** The Constant TEXT_BUFFER_X_SIZE. */
@@ -81,6 +81,7 @@ public class Textwriter extends Generator {
 	private String text;
 
 	private AbstractScroller scroller;
+	private int scrollerNr = 0;
 	
 	/**
 	 * Instantiates a new textwriter.
@@ -102,7 +103,6 @@ public class Textwriter extends Generator {
 			throw new IllegalArgumentException("Failed to load font "+fontName+". Check your config.properties file.");
 		}
 		createTextImage(text);
-		//scroller = new LeftScroller();
 		scroller = new PingPongScroller();
 	}
 
@@ -178,6 +178,27 @@ public class Textwriter extends Generator {
 		return text;
 	}
 
+	/**
+	 * 
+	 * @param nr
+	 */
+	public void setTextscroller(int nr) {	
+		if (nr==0) {
+			scroller = new PingPongScroller();
+			scrollerNr = 0;
+		} else {
+			scroller = new LeftScroller();
+			scrollerNr = 1;
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getTextscroller() {		
+		return scrollerNr;
+	}
 	
 	/**
 	 * this interface is used by all text scrollers

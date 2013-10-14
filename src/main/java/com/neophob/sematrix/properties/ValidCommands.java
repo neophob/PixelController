@@ -99,6 +99,8 @@ public enum ValidCommands {
 	
 	/** The TEXTWRITER. */
 	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
+	
+	TEXTWR_OPTION(CommandGroup.GENERATOR, 1, "<STRING> set option for textwriter"),
 
 	/** The RANDOM. */
 	RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode" ),

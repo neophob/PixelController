@@ -209,6 +209,11 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.TEXTWR, name);            	
             	break;
             
+            case TEXTWR_OPTION:            	
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.TEXTWR_OPTION, value);            	
+            	break;
+            	
             case RANDOM_ELEMENT:            	
             	String param = "";            	
             	for (float ff: theEvent.getGroup().getArrayValue()) {

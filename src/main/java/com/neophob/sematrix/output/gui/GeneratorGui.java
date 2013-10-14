@@ -114,9 +114,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     //Effect Tab    
     private Slider thresholdSlider, fxRotoSlider;	
+    private DropdownList textureDeformOptions, zoomOptions;
     
     //Generator Tab
-    private DropdownList blinkenLightsList, imageList, textureDeformOptions, zoomOptions;	
+    private DropdownList blinkenLightsList, imageList, textwriterOption;	
     private Label passThroughMode;
     
     //Output Tab
@@ -428,7 +429,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         //colorscroll options
         cp5.addTextlabel("genColorScroll", Messages.getString("GeneratorGui.COLORSCROLL_OPTIONS"), genFxXOfs+3+2*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
-        colorScrollList= cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.guiText(), 
+        colorScrollList = cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.guiText(), 
         		genFxXOfs+2*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorScrollList);		
 
@@ -439,12 +440,21 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setGroup(generatorTab);		
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
+        //add textfield options
+        cp5.addTextlabel("genTextwriterOpt", Messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
+        textwriterOption = cp5.addDropdownList(GuiElement.TEXTWR_OPTION.guiText(), 
+        		genFxXOfs+3*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
+        Theme.themeDropdownList(textwriterOption);
+        textwriterOption.addItem(Messages.getString("GeneratorGui.TEXTWRITER_PINGPONG"), 0); //$NON-NLS-1$
+        textwriterOption.addItem(Messages.getString("GeneratorGui.TEXTWRITER_LEFT"), 1); //$NON-NLS-1$
+        textwriterOption.setLabel(textwriterOption.getItem(0).getName());
+        textwriterOption.setGroup(generatorTab);
+        textwriterOption.setHeight(Theme.DROPBOXLIST_HEIGHT);
+
         //add textfield
-        textGenerator = cp5.addTextfield(GuiElement.TEXTFIELD, GuiElement.TEXTFIELD.guiText(), GuiElement.TEXTFIELD.guiText(), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs-6, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        textGenerator = cp5.addTextfield(GuiElement.TEXTFIELD, GuiElement.TEXTFIELD.guiText(), GuiElement.TEXTFIELD.guiText(), genFxXOfs+3+4*Theme.DROPBOX_XOFS, genElYOfs-6, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                       
         passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+90).moveTo(generatorTab).getValueLabel();
-
-
         
         //-----------------
         //Single Output tab
@@ -1000,8 +1010,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
             effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
             mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
-            colorSetList.setLabel(v.getColorSet().getName());
-            
+            colorSetList.setLabel(v.getColorSet().getName());            
         }
 
         //get output status
@@ -1027,11 +1036,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         thresholdSlider.changeValue(pce.getThresholdValue());
         brightnessControll.changeValue(col.getPixelControllerGenerator().getBrightness()*100);
         fxRotoSlider.changeValue(pce.getRotoZoomAngle());
-        zoomOptions.setLabel(zoomOptions.getItem(pce.getZoomOption()).getName());        
-
+        zoomOptions.setLabel(zoomOptions.getItem(pce.getZoomOption()).getName());                
+        
         PixelControllerGenerator pcg = col.getPixelControllerGenerator();
         blinkenLightsList.setLabel(pcg.getFileBlinken()); 
         imageList.setLabel(pcg.getFileImageSimple());
+        textwriterOption.setLabel(textwriterOption.getItem(pcg.getTextOption()).getName());
         
         // update current visual
         //TODO somethings fishy here...
@@ -1092,6 +1102,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         if (!clickedOn.contains(GuiElement.TEXTUREDEFORM_OPTIONS)) {
             textureDeformOptions.setOpen(false);
+        }
+        if (!clickedOn.contains(GuiElement.TEXTWR_OPTION)) {
+            textwriterOption.setOpen(false);
         }
         if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
             colorScrollList.setOpen(false);
