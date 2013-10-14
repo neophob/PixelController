@@ -87,13 +87,20 @@ public abstract class RotoZoomEffect extends Effect {
 	protected int[] zoom(float scaleX, float scaleY, int bufferSrc[]) {
 		int[] tmp = new int[bufferSrc.length];
 		int offs=0,soffs;
-		float tx=0,ty=0;
+		float tx=0,ty;
 		
 		float dx = ((float)internalBufferXSize/scaleX)/internalBufferXSize;
+		float txStart = internalBufferXSize*dx/2;
+//		if (dx>1.0f) txStart=0;
+//System.out.println("dx:"+dx+", txStart:"+txStart);
+		
 		float dy = ((float)internalBufferYSize/scaleY)/internalBufferYSize;
+		ty = internalBufferYSize*dy/2;
+//		if (dy>1.0f) ty=0;
+		ty=0;txStart=0;
 		
 		for (int y=0; y<internalBufferYSize; y++) {
-			tx=0;
+			tx=txStart;
 			for (int x=0; x<internalBufferXSize; x++) {												
 				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
 			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];

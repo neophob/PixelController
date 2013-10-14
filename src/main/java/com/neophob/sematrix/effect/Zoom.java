@@ -43,8 +43,8 @@ public class Zoom extends RotoZoomEffect {
 	public enum ZoomMode {
 		ZOOM_IN,
 		ZOOM_OUT,
-/*		HORIZONTAL,
-		VERTICAL,*/
+		HORIZONTAL,
+		VERTICAL,
 	}
 
 	private ZoomMode zoomMode = ZoomMode.ZOOM_IN; 
@@ -67,19 +67,19 @@ public class Zoom extends RotoZoomEffect {
 	public int[] getBuffer(int[] buffer) {		
 		switch (zoomMode) {
 			case ZOOM_IN:
-				return rotoZoom(0.5f, 0, buffer);
+				return zoom(2f, 2f, buffer);
 				
 			case ZOOM_OUT:
-				return rotoZoom(2f, 0, buffer);
+				return zoom(0.5f, 0.5f, buffer);
 				
-/*			case HORIZONTAL:
-				return zoom(2f, 0f, buffer);
+			case HORIZONTAL:
+				return zoom(1f, 2f, buffer);
 				
 			case VERTICAL:
-				return zoom(0f, 2f, buffer);*/
+				return zoom(2f, 1f, buffer);
 				
 			default:
-				return rotoZoom(0.5f, 0, buffer);	
+				return buffer;	
 		}					
 	}
 

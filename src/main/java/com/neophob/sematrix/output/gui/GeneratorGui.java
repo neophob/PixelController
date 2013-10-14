@@ -386,8 +386,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Theme.themeDropdownList(zoomOptions);		        
         zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_IN"), 1); //$NON-NLS-1$
         zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_OUT"), 2); //$NON-NLS-1$
-        //zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 3); //$NON-NLS-1$
-        //zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_VERTICAL"), 4); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 3); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_VERTICAL"), 4); //$NON-NLS-1$
         zoomOptions.setLabel(zoomOptions.getItem(0).getName());
         zoomOptions.setGroup(generatorTab);		
 
