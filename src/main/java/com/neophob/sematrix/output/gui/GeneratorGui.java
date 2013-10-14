@@ -429,7 +429,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //add textfield
-        textGenerator = cp5.addTextfield("textfield", "Textfield", "Textfield", genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs-5, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        textGenerator = cp5.addTextfield(GuiElement.TEXTFIELD, GuiElement.TEXTFIELD.guiText(), GuiElement.TEXTFIELD.guiText(), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs-6, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                       
         passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+90).moveTo(generatorTab).getValueLabel();
 
