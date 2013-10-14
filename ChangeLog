@@ -1,7 +1,9 @@
 Changelog v1.4.1 to v1.x.y
 --------------------------
 -Add new Help Tab, display a short help how to use PixelController
+-Add Zoom Effect, add Zoom options
 -Fix: use colorset name (instead of index) if a preset is saved
+-Cleanup GUI, make grouping of controls more strict
 
 
 Changelog v1.4.0 to v1.4.1
