@@ -1096,6 +1096,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         if (!clickedOn.contains(GuiElement.COLORSCROLL_OPTIONS)) {
             colorScrollList.setOpen(false);
         }
+        if (!clickedOn.contains(GuiElement.ZOOM_OPTIONS)) {
+            zoomOptions.setOpen(false);
+        }
 
         if (allOutputTabVis!=null && !clickedOn.contains(GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN)) {
             allOutputTabVis.setOpen(false);
