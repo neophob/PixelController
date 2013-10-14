@@ -93,6 +93,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+threshold.getThreshold());
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
+        ret.add(ValidCommands.ZOOMOPT+" "+zoom.getZoomMode());
 
 		return ret;
 	}

@@ -87,7 +87,6 @@ public class Zoom extends RotoZoomEffect {
 	public void setZoomMode(int mode) {
 		try {
 			this.zoomMode = ZoomMode.values()[mode-1];	
-			System.out.println("NEEW: "+mode);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to set zoom level, use default.", e);
 		}
