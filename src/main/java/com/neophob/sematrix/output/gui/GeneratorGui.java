@@ -454,8 +454,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //add textfield
         textGenerator = cp5.addTextfield(GuiElement.TEXTFIELD, GuiElement.TEXTFIELD.guiText(), GuiElement.TEXTFIELD.guiText(), genFxXOfs+3+4*Theme.DROPBOX_XOFS, genElYOfs-6, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                       
-        passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+90).moveTo(generatorTab).getValueLabel();
-        
+        passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+55).moveTo(generatorTab).getValueLabel();
+        passThroughMode.setColor(0xffff0000);
+  
         //-----------------
         //Single Output tab
         //-----------------				
