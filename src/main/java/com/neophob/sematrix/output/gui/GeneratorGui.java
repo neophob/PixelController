@@ -645,17 +645,17 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int hlpYOfs = yPosStartDrowdown;
         int hlpXOfs1 = 20;
         int hlpXOfs2 = 240;
-        int hlpYposAdd = 16;
+        int hlpYposAdd = 15;
         
         cp5.addTextlabel("hlpHeader1", Messages.getString("GeneratorGui.HLP_HEADER1"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd/2;
         cp5.addTextlabel("hlpHeader2", Messages.getString("GeneratorGui.HLP_HEADER2"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        hlpYOfs += hlpYposAdd/2;
+        hlpYOfs += hlpYposAdd;
         cp5.addTextlabel("hlpHeader3", Messages.getString("GeneratorGui.HLP_HEADER3"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd;
         cp5.addTextlabel("hlpHeader4", Messages.getString("GeneratorGui.HLP_HEADER4"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd;
-        hlpYOfs += hlpYposAdd;
+        hlpYOfs += hlpYposAdd/2;
         cp5.addTextlabel("hlpKeyHeader", Messages.getString("GeneratorGui.HLP_KEYBINDING_HEADER"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         hlpXOfs1 *=2 ;
