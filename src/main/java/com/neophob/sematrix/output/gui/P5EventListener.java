@@ -193,6 +193,11 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.TEXTDEF, value);            	
             	break;
             	
+            case ZOOM_OPTIONS:
+            	LOG.log(Level.INFO, selection+" "+value);
+            	createMessage(ValidCommands.ZOOMOPT, value);
+            	break;
+            	
             case COLORSCROLL_OPTIONS:
             	LOG.log(Level.INFO, selection+" "+value);
             	createMessage(ValidCommands.COLOR_SCROLL_OPT, value);            	

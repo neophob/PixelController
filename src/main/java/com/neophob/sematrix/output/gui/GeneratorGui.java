@@ -116,7 +116,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Slider thresholdSlider, fxRotoSlider;	
     
     //Generator Tab
-    private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
+    private DropdownList blinkenLightsList, imageList, textureDeformOptions, zoomOptions;	
     private Label passThroughMode;
     
     //Output Tab
@@ -364,8 +364,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("genTextdefOpt", Messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), genFxXOfs+3+0*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.guiText(), 
         		genFxXOfs+0*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 80);
-        Theme.themeDropdownList(textureDeformOptions);		
-        
+        Theme.themeDropdownList(textureDeformOptions);		        
         textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_ANAMORPHOSIS"), 1); //$NON-NLS-1$
         textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 2); //$NON-NLS-1$
         textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_ROTATINGTUNNEL"), 3); //$NON-NLS-1$
@@ -379,7 +378,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 11); //$NON-NLS-1$
         textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
         textureDeformOptions.setGroup(generatorTab);		
+
         
+        cp5.addTextlabel("genZoomOpt", Messages.getString("GeneratorGui.ZOOM_OPTIONS"), genFxXOfs+3+1*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        zoomOptions = cp5.addDropdownList(GuiElement.ZOOM_OPTIONS.guiText(), 
+        		genFxXOfs+1*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 80);
+        Theme.themeDropdownList(zoomOptions);		        
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_IN"), 1); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_OUT"), 2); //$NON-NLS-1$
+        //zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 3); //$NON-NLS-1$
+        //zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_VERTICAL"), 4); //$NON-NLS-1$
+        zoomOptions.setLabel(zoomOptions.getItem(0).getName());
+        zoomOptions.setGroup(generatorTab);		
+
         
         //GENERATOR OPTIONS
         //-----------------

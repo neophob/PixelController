@@ -86,6 +86,8 @@ public enum ValidCommands {
 	/** The TEXTDEF. */
 	TEXTDEF(CommandGroup.GENERATOR, 1, "<INT> select texture deformation option, 1-11"),
 	
+	ZOOMOPT(CommandGroup.GENERATOR, 1, "<INT> select zoom options 1-4"),
+	
 	/** The COLOR_SCROLL_OPT. */
 	COLOR_SCROLL_OPT(CommandGroup.GENERATOR, 1, "<INT> select color scroll fading direction, 1-14"),
 		
@@ -129,8 +131,8 @@ public enum ValidCommands {
 	
 	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
 	
-	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data"),
-	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data"),
+	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)"),
+	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)"),
 	;
 	
 	/** The nr of params. */

@@ -359,7 +359,16 @@ public final class MessageProcessor {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
 				break;
-
+				
+            case ZOOMOPT:
+				try {
+					int zoomMode = Integer.parseInt(msg[1]);
+					col.getPixelControllerEffect().setZoomOption(zoomMode);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
+				}
+				break;
+				
 			case TEXTWR:
 				try {
 					String message = msg[1];

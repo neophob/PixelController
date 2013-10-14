@@ -42,12 +42,11 @@ public abstract class RotoZoomEffect extends Effect {
 	}
 	
 	/**
-	 * do the actual roto zooming.
-	 *
-	 * @param scaleP the scale p
-	 * @param angleP the angle p
-	 * @param bufferP the buffer p
-	 * @return the int[]
+	 * 
+	 * @param scale
+	 * @param angleP
+	 * @param bufferSrc
+	 * @return
 	 */
 	protected int[] rotoZoom(float scaleP, float angleP, int bufferSrc[]) {
 		int[] tmp = new int[bufferSrc.length];
@@ -77,5 +76,7 @@ public abstract class RotoZoomEffect extends Effect {
 
 		return tmp;
 	}
+	
+
 
 }
