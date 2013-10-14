@@ -117,8 +117,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     //Generator Tab
     private DropdownList blinkenLightsList, imageList, textureDeformOptions;	
-    private Button freezeUpdate;
-    private Button toggleInternalVisual;
     private Label passThroughMode;
     
     //Output Tab
@@ -314,6 +312,24 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         presetTab.setColorForeground(0xffff0000);
         helpTab.setColorForeground(0xffff0000);
         
+        
+        //-------------
+        //Generic Options
+        //-------------
+        
+        //freeze update 
+        Toggle t1 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 730, 2, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
+        t1.setLabelVisible(false);
+        cp5.addTextlabel("freezeUpdateTxt", Messages.getString("GeneratorGui.GUI_TOGGLE_FREEZE"), 745, 5).moveTo(ALWAYS_VISIBLE_TAB);
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
+        
+        //toggle internal visuals
+        Toggle t2 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(), 730, 20, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
+        t2.setLabelVisible(false);
+        cp5.addTextlabel("toggleIKnternalVisualsTxt", Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER"), 745, 23).moveTo(ALWAYS_VISIBLE_TAB);; //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),Messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
+
+        
         //-------------
         //EFFECT tab
         //-------------
@@ -402,22 +418,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         //add textfield
         textGenerator = cp5.addTextfield("textfield", "Textfield", "Textfield", GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, yPosStartLabel-14, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-         
-		freezeUpdate = cp5.addButton(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 0,
-				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown, Theme.DROPBOXLIST_LENGTH, 15);
-		freezeUpdate.setCaptionLabel(Messages.getString("GeneratorGui.GUI_TOGGLE_FREEZE")); //$NON-NLS-1$
-		freezeUpdate.setGroup(generatorTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
-
-        
-        toggleInternalVisual= cp5.addButton(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(), 0,
-				GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, yPosStartDrowdown+30, Theme.DROPBOXLIST_LENGTH, 15);
-        toggleInternalVisual.setCaptionLabel(Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
-        toggleInternalVisual.setGroup(generatorTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),Messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
-              
+                      
         passThroughMode = cp5.addTextlabel("passThroughMode", "", GENERIC_X_OFS, yPosStartDrowdown+90).moveTo(generatorTab).getValueLabel();
                 
+        //TODO: move to output tab
         brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 
         		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
         brightnessControll.setSliderMode(Slider.FIX);
@@ -496,10 +500,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //RANDOM Tab
         //----------				
 
-        Textlabel t2 = cp5.addTextlabel("rndDesc",  //$NON-NLS-1$
+        Textlabel tRnd = cp5.addTextlabel("rndDesc",  //$NON-NLS-1$
         		Messages.getString("GeneratorGui.TEXT_RANDOM_MODE_SELECT_ELEMENTS"),  //$NON-NLS-1$
         		20, yPosStartDrowdown);
-        t2.moveTo(randomTab).getValueLabel();
+        tRnd.moveTo(randomTab).getValueLabel();
         
         
         randomCheckbox = cp5.addCheckBox(GuiElement.RANDOM_ELEMENT.guiText())
