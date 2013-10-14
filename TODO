@@ -24,7 +24,6 @@ Roadmap PixelController
 -add option to query buffersize via OSC
 -add more fader (pixel fader for example)
 -support more than 2 rows
--Textwriter generator, add scrolling options (ping pong scrolling, left scrolling, show single character)
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
 -Syphon support https://code.google.com/p/syphon-implementations/
