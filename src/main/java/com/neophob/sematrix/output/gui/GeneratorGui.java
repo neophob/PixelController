@@ -306,12 +306,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Tab randomTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_RANDOMIZE"));		 //$NON-NLS-1$
         Tab presetTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_PRESETS")); //$NON-NLS-1$
         infoTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_INFO")); //$NON-NLS-1$
+        Tab helpTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_HELP")); //$NON-NLS-1$
         
         generatorTab.setColorForeground(0xffff0000);
         outputTab.setColorForeground(0xffff0000);
         randomTab.setColorForeground(0xffff0000);
         presetTab.setColorForeground(0xffff0000);
-
+        helpTab.setColorForeground(0xffff0000);
+        
         //-------------
         //EFFECT tab
         //-------------
@@ -635,6 +637,48 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         oscStatistic = cp5.addTextlabel("nfoOscStatistic", Messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
         nfoYPos+=yposAdd;
+
+        //-------------
+        //Help tab
+        //-------------
+        
+        int hlpYOfs = yPosStartDrowdown;
+        int hlpXOfs1 = 20;
+        int hlpXOfs2 = 240;
+        int hlpYposAdd = 16;
+        
+        cp5.addTextlabel("hlpHeader1", Messages.getString("GeneratorGui.HLP_HEADER1"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        hlpYOfs += hlpYposAdd/2;
+        cp5.addTextlabel("hlpHeader2", Messages.getString("GeneratorGui.HLP_HEADER2"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        hlpYOfs += hlpYposAdd/2;
+        cp5.addTextlabel("hlpHeader3", Messages.getString("GeneratorGui.HLP_HEADER3"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("hlpHeader4", Messages.getString("GeneratorGui.HLP_HEADER4"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        hlpYOfs += hlpYposAdd;
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("hlpKeyHeader", Messages.getString("GeneratorGui.HLP_KEYBINDING_HEADER"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        hlpXOfs1 *=2 ;
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_19", Messages.getString("GeneratorGui.HLP_KEY_19"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_F", Messages.getString("GeneratorGui.HLP_KEY_F"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_G", Messages.getString("GeneratorGui.HLP_KEY_G"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_W", Messages.getString("GeneratorGui.HLP_KEY_W"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_E", Messages.getString("GeneratorGui.HLP_KEY_E"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_M", Messages.getString("GeneratorGui.HLP_KEY_M"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_C", Messages.getString("GeneratorGui.HLP_KEY_C"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_R", Messages.getString("GeneratorGui.HLP_KEY_R"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        
         
         //----------
         // LOGO
