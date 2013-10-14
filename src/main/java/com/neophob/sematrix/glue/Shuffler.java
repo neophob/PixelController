@@ -235,7 +235,7 @@ public final class Shuffler {
 		Collector col = Collector.getInstance(); 
 
 		Random rand = new Random();
-		int blah = rand.nextInt(17);
+		int blah = rand.nextInt(18);
 		//LOG.log(Level.INFO, "Automatic Shuffler {0}", blah);
 
 		if (snare) {			
@@ -308,6 +308,10 @@ public final class Shuffler {
 
 			if (blah == 15) {
 				col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM).shuffle();
+			}
+
+			if (blah == 17) {
+				col.getPixelControllerEffect().getEffect(EffectName.ZOOM).shuffle();
 			}
 
 		}

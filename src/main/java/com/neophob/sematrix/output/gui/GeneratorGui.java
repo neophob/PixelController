@@ -384,10 +384,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         zoomOptions = cp5.addDropdownList(GuiElement.ZOOM_OPTIONS.guiText(), 
         		genFxXOfs+1*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 80);
         Theme.themeDropdownList(zoomOptions);		        
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_IN"), 1); //$NON-NLS-1$
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_OUT"), 2); //$NON-NLS-1$
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 3); //$NON-NLS-1$
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_VERTICAL"), 4); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_IN"), 0); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_OUT"), 1); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 2); //$NON-NLS-1$
+        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_VERTICAL"), 3); //$NON-NLS-1$
         zoomOptions.setLabel(zoomOptions.getItem(0).getName());
         zoomOptions.setGroup(generatorTab);		
 
@@ -1024,11 +1024,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Collector col = this.callbackRefreshMini();		
 
         PixelControllerEffect pce = col.getPixelControllerEffect();
-
         thresholdSlider.changeValue(pce.getThresholdValue());
         brightnessControll.changeValue(col.getPixelControllerGenerator().getBrightness()*100);
         fxRotoSlider.changeValue(pce.getRotoZoomAngle());
-        
+        zoomOptions.setLabel(zoomOptions.getItem(pce.getZoomOption()).getName());        
+
         PixelControllerGenerator pcg = col.getPixelControllerGenerator();
         blinkenLightsList.setLabel(pcg.getFileBlinken()); 
         imageList.setLabel(pcg.getFileImageSimple());

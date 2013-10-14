@@ -18,9 +18,12 @@
  */
 package com.neophob.sematrix.effect;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -83,16 +86,32 @@ public class Zoom extends RotoZoomEffect {
 		}					
 	}
 
-
+	/**
+	 * 
+	 * @param mode
+	 */
 	public void setZoomMode(int mode) {
 		try {
-			this.zoomMode = ZoomMode.values()[mode-1];	
+			this.zoomMode = ZoomMode.values()[mode];	
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Failed to set zoom level, use default.", e);
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getZoomMode() {
-		return zoomMode.ordinal()+1;
+		return zoomMode.ordinal();
 	}
+	
+	@Override
+	public void shuffle() {
+		if (Collector.getInstance().getShufflerSelect(ShufflerOffset.ZOOM_EFFECT)) {
+			int newMode = new Random().nextInt(ZoomMode.values().length);
+			setZoomMode(newMode);					
+		}
+	}
+
 }

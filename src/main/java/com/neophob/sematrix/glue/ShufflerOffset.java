@@ -70,7 +70,9 @@ public enum ShufflerOffset {
 	/** COLOR_SCROLL */
 	COLOR_SCROLL(13),
 	
-	COLORSET(14)
+	COLORSET(14),
+	
+	ZOOM_EFFECT(15)
 	;
 	
 	
