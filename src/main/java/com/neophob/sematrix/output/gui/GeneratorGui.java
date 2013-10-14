@@ -421,14 +421,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                       
         passThroughMode = cp5.addTextlabel("passThroughMode", "", GENERIC_X_OFS, yPosStartDrowdown+90).moveTo(generatorTab).getValueLabel();
                 
-        //TODO: move to output tab
-        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 
-        		0, 255, 255, GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, yPosStartDrowdown+60, 160, 14);
-        brightnessControll.setSliderMode(Slider.FIX);
-        brightnessControll.setGroup(generatorTab);	
-        brightnessControll.setDecimalPrecision(0);
-        brightnessControll.setNumberOfTickMarks(11);
-        brightnessControll.setRange(0, 100);
         
         //-----------------
         //Single Output tab
@@ -447,16 +439,28 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedOutputs.moveTo(outputTab);
 
         //visual
-        cp5.addTextlabel("singleOutputVisual", Messages.getString("GeneratorGui.OUTPUT_VISUAL"), 38, yPosStartDrowdown+68).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("singleOutputVisual", Messages.getString("GeneratorGui.OUTPUT_VISUAL"), 38, yPosStartDrowdown+60).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
-                GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.guiText(), yPosStartDrowdown+20, nrOfVisuals); 
+                GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.guiText(), yPosStartDrowdown+10, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
 
         //Fader         
-        cp5.addTextlabel("singleOutputTransition", Messages.getString("GeneratorGui.OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("singleOutputTransition", Messages.getString("GeneratorGui.OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+60).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
-                GuiElement.OUTPUT_FADER_DROPDOWN.guiText(), yPosStartDrowdown+20); 
+                GuiElement.OUTPUT_FADER_DROPDOWN.guiText(), yPosStartDrowdown+10); 
         dropdownOutputFader.moveTo(outputTab);
+
+        //brightness control
+        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 0, 255, 255, 38, yPosStartDrowdown+110, 160, 14);
+        brightnessControll.setSliderMode(Slider.FIX);
+        brightnessControll.setGroup(outputTab);	
+        brightnessControll.setDecimalPrecision(0);
+        brightnessControll.setNumberOfTickMarks(11);
+        brightnessControll.setRange(0, 100);
+        brightnessControll.setLabelVisible(false);
+        
+        cp5.addTextlabel("brightnessControllTxt", Messages.getString("GeneratorGui.BRIGHTNESS"), 5, yPosStartDrowdown+95).moveTo(outputTab);
+        
         
         //--------------
         //All Output tab
