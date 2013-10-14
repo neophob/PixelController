@@ -76,6 +76,34 @@ public abstract class RotoZoomEffect extends Effect {
 
 		return tmp;
 	}
+
+	/**
+	 * 
+	 * @param scaleX
+	 * @param scaleY
+	 * @param bufferSrc
+	 * @return
+	 */
+	protected int[] zoom(float scaleX, float scaleY, int bufferSrc[]) {
+		int[] tmp = new int[bufferSrc.length];
+		int offs=0,soffs;
+		float tx=0,ty=0;
+		
+		float dx = ((float)internalBufferXSize/scaleX)/internalBufferXSize;
+		float dy = ((float)internalBufferYSize/scaleY)/internalBufferYSize;
+		
+		for (int y=0; y<internalBufferYSize; y++) {
+			tx=0;
+			for (int x=0; x<internalBufferXSize; x++) {												
+				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
+			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];
+			    tx+=dx;
+			}
+			ty+=dy;
+		}
+
+		return tmp;
+	}
 	
 
 
