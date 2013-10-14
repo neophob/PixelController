@@ -449,6 +449,18 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-----------------
         //Single Output tab
         //-----------------				
+
+        //brightness control
+        cp5.addTextlabel("brightnessControllTxt", Messages.getString("GeneratorGui.BRIGHTNESS"), 5, yPosStartDrowdown+95).moveTo(outputTab);
+
+        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 0, 255, 255, 38, yPosStartDrowdown+110, 160, 14);
+        brightnessControll.setSliderMode(Slider.FIX);
+        brightnessControll.setGroup(outputTab);	
+        brightnessControll.setDecimalPrecision(0);
+        brightnessControll.setNumberOfTickMarks(11);
+        brightnessControll.setRange(0, 100);
+        brightnessControll.setLabelVisible(false);        
+
         int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
         selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.guiText(), GENERIC_X_OFS, yPosStartDrowdown);
         selectedOutputs.setItemsPerRow(nrOfOutputs);
@@ -473,17 +485,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                 GuiElement.OUTPUT_FADER_DROPDOWN.guiText(), yPosStartDrowdown+10); 
         dropdownOutputFader.moveTo(outputTab);
-
-        //brightness control
-        brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 0, 255, 255, 38, yPosStartDrowdown+110, 160, 14);
-        brightnessControll.setSliderMode(Slider.FIX);
-        brightnessControll.setGroup(outputTab);	
-        brightnessControll.setDecimalPrecision(0);
-        brightnessControll.setNumberOfTickMarks(11);
-        brightnessControll.setRange(0, 100);
-        brightnessControll.setLabelVisible(false);
-        
-        cp5.addTextlabel("brightnessControllTxt", Messages.getString("GeneratorGui.BRIGHTNESS"), 5, yPosStartDrowdown+95).moveTo(outputTab);
         
         
         //--------------
