@@ -347,7 +347,7 @@ public class Visual {
 	}
 	
 	/**
-	 * 
+	 * set color set by index
 	 * @param index
 	 */
 	public void setColorSet(int index) {
@@ -358,7 +358,27 @@ public class Visual {
 	    this.colorSet = allColorSets.get(index);
 	    this.colorSetIndex = index;
 	}
-	
+
+	/**
+	 * set color set by name
+	 * @param index
+	 */
+	public void setColorSet(String name) {
+	    List<ColorSet> allColorSets = Collector.getInstance().getColorSets();
+	    int idx=0;
+	    for (ColorSet cs: allColorSets) {
+	    	if (cs.getName().equalsIgnoreCase(name)) {
+	    	    this.colorSet = cs;
+	    	    this.colorSetIndex = idx;	    		
+	    	}
+	    	idx++;
+	    }
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
 	public int getColorSetIndex() {
 	    return colorSetIndex;
 	}

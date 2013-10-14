@@ -472,9 +472,16 @@ public final class MessageProcessor {
 				
 			//change current colorset
 			case CURRENT_COLORSET:
-				int newColorSetIndex = Integer.parseInt(msg[1]);				
-                int nr = col.getCurrentVisual();
-                col.getVisual(nr).setColorSet(newColorSetIndex);				
+				int nr = col.getCurrentVisual();
+				try {
+					//old method, reference colorset by index
+					int newColorSetIndex = Integer.parseInt(msg[1]);				                
+	                col.getVisual(nr).setColorSet(newColorSetIndex);				
+				} catch (Exception e) {
+					//now try to reference colorset by name
+					col.getVisual(nr).setColorSet(msg[1]);
+				}
+
 				return ValidCommands.STATUS_MINI;
 				
 			//pause output, needed to create screenshots or take an image of the output
