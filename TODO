@@ -24,13 +24,12 @@ Roadmap PixelController
 -add option to query buffersize via OSC
 -add more fader (pixel fader for example)
 -support more than 2 rows
--Textwriter generator, add scrolling option (ping pong scrolling, left scrolling, show single character)
+-Textwriter generator, add scrolling options (ping pong scrolling, left scrolling, show single character)
 -Option to save output of PixelController (byte stream) to a flat file
 -Option to use system audio as input source, currently its only mic input. 
 -Syphon support https://code.google.com/p/syphon-implementations/
 -OLA (http://www.opendmx.net/index.php/Open_Lighting_Architecture) input plugin see https://github.com/neophob/ola-to-tpm2net
- the screen gets not refreshed, thus the changes are not visible.
--Reference Colorsets in presets with name and not index number 
+-add Zoom Effect options (center zoom, width zoom, height zoom)
 
 
 Roadmap PixelInvaders Firmware
@@ -41,6 +40,7 @@ Roadmap PixelInvaders Firmware
 	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
 	-maybe a streaming only firmware?
 -PixelInvaders Firmware: its possible that only the first half of the screen is updated - in such a case
+ the screen gets not refreshed, thus the changes are not visible. 
 -Support ambient color for the output panel(s)
 
 

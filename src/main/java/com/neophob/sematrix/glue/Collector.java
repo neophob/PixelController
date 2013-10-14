@@ -509,7 +509,7 @@ public final class Collector {
 			ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
 			ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
 			ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
-			ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSetIndex());
+			ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
 		}
 
 		//get output status

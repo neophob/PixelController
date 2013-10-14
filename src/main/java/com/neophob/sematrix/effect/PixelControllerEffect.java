@@ -41,7 +41,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 	/** The threshold. */
 	private Threshold threshold;
 	private RotoZoom rotoZoom;
-	
+	private Zoom zoom;	
 	private TextureDeformation textureDeformation;
 	
 	/**
@@ -75,7 +75,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		new Voluminize(this);
 		threshold = new Threshold(this);
 		
-		new Zoom(this);
+		zoom = new Zoom(this);
 		new FlipY(this);
 		new FlipX(this);
 		new Strobo(this);
@@ -93,6 +93,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
 		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+threshold.getThreshold());
         ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
+        ret.add(ValidCommands.ZOOMOPT+" "+zoom.getZoomMode());
 
 		return ret;
 	}
@@ -215,5 +216,20 @@ public class PixelControllerEffect implements PixelControllerElement {
         return textureDeformation.getLut();
     }
 
+    /**
+     * 
+     * @param option
+     */
+    public void setZoomOption(int option) {
+    	zoom.setZoomMode(option);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public int getZoomOption() {
+    	return zoom.getZoomMode();
+    }
 
 }

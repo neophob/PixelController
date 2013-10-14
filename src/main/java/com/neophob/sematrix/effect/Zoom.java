@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.effect;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -30,6 +33,22 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Zoom extends RotoZoomEffect {
 
+	private static final Logger LOG = Logger.getLogger(Zoom.class.getName());
+	
+	/**
+	 * 
+	 * @author mvogt
+	 *
+	 */
+	public enum ZoomMode {
+		ZOOM_IN,
+		ZOOM_OUT,
+/*		HORIZONTAL,
+		VERTICAL,*/
+	}
+
+	private ZoomMode zoomMode = ZoomMode.ZOOM_IN; 
+			
 	/**
 	 * Instantiates a new roto zoom.
 	 *
@@ -46,8 +65,34 @@ public class Zoom extends RotoZoomEffect {
 	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {		
-		return rotoZoom(0.5f, 0, buffer);
+		switch (zoomMode) {
+			case ZOOM_IN:
+				return rotoZoom(0.5f, 0, buffer);
+				
+			case ZOOM_OUT:
+				return rotoZoom(2f, 0, buffer);
+				
+/*			case HORIZONTAL:
+				return zoom(2f, 0f, buffer);
+				
+			case VERTICAL:
+				return zoom(0f, 2f, buffer);*/
+				
+			default:
+				return rotoZoom(0.5f, 0, buffer);	
+		}					
 	}
 
 
+	public void setZoomMode(int mode) {
+		try {
+			this.zoomMode = ZoomMode.values()[mode-1];	
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "Failed to set zoom level, use default.", e);
+		}
+	}
+	
+	public int getZoomMode() {
+		return zoomMode.ordinal()+1;
+	}
 }

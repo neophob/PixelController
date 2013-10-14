@@ -29,7 +29,7 @@ public final class Theme {
     public static final int DROPBOXLIST_LENGTH = 110;
     public static final int DROPBOX_XOFS = DROPBOXLIST_LENGTH + 23;
 
-    public static final int DROPBOXLIST_HEIGHT = 180;
+    public static final int DROPBOXLIST_HEIGHT = 150;
 
     /**
      * 
