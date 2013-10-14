@@ -29,7 +29,6 @@ Roadmap PixelController
 -Option to use system audio as input source, currently its only mic input. 
 -Syphon support https://code.google.com/p/syphon-implementations/
 -OLA (http://www.opendmx.net/index.php/Open_Lighting_Architecture) input plugin see https://github.com/neophob/ola-to-tpm2net
--add Zoom Effect options (center zoom, width zoom, height zoom)
 
 
 Roadmap PixelInvaders Firmware
