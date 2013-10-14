@@ -27,10 +27,10 @@ import java.util.List;
 public enum ValidCommands {
 	
 	/** The STATUS. */
-	STATUS(CommandGroup.MISC, 0, "refresh whole gui"),
+	STATUS(CommandGroup.MISC, 0, "<NO PARAM> refresh whole gui"),
 	
 	/** The STATUS mini. */
-	STATUS_MINI(CommandGroup.MISC, 0, "just refresh parts of the gui"),
+	STATUS_MINI(CommandGroup.MISC, 0, "<NO PARAM> just refresh parts of the gui"),
 	
 	/** The CHANGE generator a. */
 	CHANGE_GENERATOR_A(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
@@ -63,7 +63,7 @@ public enum ValidCommands {
 	CHANGE_PRESENT(CommandGroup.MISC, 1, "<INT> select current present id"),
 	
 	/** The CHANGE shuffler select. */
-	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 14, "14 times <INT>, 14 parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON"),
+	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 15, "15 times <INT>, parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON"),
 	
 	/** The CHANGE threshold value. */
 	CHANGE_THRESHOLD_VALUE(CommandGroup.EFFECT, 1, "<INT> select current threshold for the threshold effect, 0-255"),
@@ -72,10 +72,10 @@ public enum ValidCommands {
 	CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
 	
 	/** The SAVE present. */
-	SAVE_PRESENT(CommandGroup.MISC, 0, "save current present settings"),
+	SAVE_PRESENT(CommandGroup.MISC, 0, "<NO PARAM> save current present settings"),
 	
 	/** The LOAD present. */
-	LOAD_PRESENT(CommandGroup.MISC, 0, "load current present settings"),
+	LOAD_PRESENT(CommandGroup.MISC, 0, "<NO PARAM> load current present settings"),
 	
 	/** The BLINKEN. */
 	BLINKEN(CommandGroup.GENERATOR, 1, "<STRING> file to load for the blinkenlights generator"),
@@ -100,7 +100,7 @@ public enum ValidCommands {
 	/** The TEXTWRITER. */
 	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
 	
-	TEXTWR_OPTION(CommandGroup.GENERATOR, 1, "<STRING> set option for textwriter"),
+	TEXTWR_OPTION(CommandGroup.GENERATOR, 1, "<INT> set option for textwriter"),
 
 	/** The RANDOM. */
 	RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode" ),
@@ -109,10 +109,10 @@ public enum ValidCommands {
 	RANDOM_PRESET_MODE(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random preset mode" ),
 
 	/** The RANDOMIZE. */
-	RANDOMIZE(CommandGroup.MISC, 0, "one shot randomizer"),
+	RANDOMIZE(CommandGroup.MISC, 0, "<NO PARAM> one shot randomizer"),
 	
 	/** The PRESET random. */
-	PRESET_RANDOM(CommandGroup.MISC, 0, "one shot randomizer, use a pre-stored present"),
+	PRESET_RANDOM(CommandGroup.MISC, 0, "<NO PARAM> one shot randomizer, use a pre-stored present"),
 	
 	/** The CURRENT visual. */
 	CURRENT_VISUAL(CommandGroup.VISUAL, 1, "<INT> select actual visual"),
@@ -125,11 +125,11 @@ public enum ValidCommands {
 	/** The CURRENT output. */
 	JMX_STAT(CommandGroup.MISC, 0, "show JMX runtime statistic, default port: 1337 (use the -p switch)"),
 
-	SCREENSHOT(CommandGroup.MISC, 0, "save screenhot"),
+	SCREENSHOT(CommandGroup.MISC, 0, "<NO PARAM> save screenhot"),
 	
-	FREEZE(CommandGroup.MISC, 0, "toggle pause mode"),
+	FREEZE(CommandGroup.MISC, 0, "<NO PARAM> toggle pause mode"),
 
-	TOGGLE_INTERNAL_VISUAL(CommandGroup.MISC, 0, "show/hide internal visual to save CPU"),
+	TOGGLE_INTERNAL_VISUAL(CommandGroup.MISC, 0, "<NO PARAM> show/hide internal visual to save CPU"),
 	
 	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
 	
