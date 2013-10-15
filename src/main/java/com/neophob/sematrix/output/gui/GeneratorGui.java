@@ -139,7 +139,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private CheckBox randomCheckbox;
     
     //info tab
-    private Tab infoTab;
+    private List<Tab> allTabs = new ArrayList<Tab>();
     private Label currentFps;
     private Label currentVolume;
     private Label runtime;
@@ -292,20 +292,27 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         //there a default tab which is present all the time. rename this tab
         Tab generatorTab = cp5.getTab("default"); //$NON-NLS-1$
+        allTabs.add(generatorTab);
         generatorTab.setLabel(Messages.getString("GeneratorGui.TAB_GENERATOR_EFFECT"));		 //$NON-NLS-1$
         Tab outputTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_SINGLE_OUTPUT_MAPPING")); //$NON-NLS-1$
+        allTabs.add(outputTab);
         Tab allOutputTab = null;
         
         //add all output mapping only if multiple output panels exist
         if (nrOfVisuals>2) {
             allOutputTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_ALL_OUTPUT_MAPPING"));		 //$NON-NLS-1$
-            allOutputTab.setColorForeground(0xffff0000);        	
+            allOutputTab.setColorForeground(0xffff0000);
+            allTabs.add(allOutputTab);
         }
 
         Tab randomTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_RANDOMIZE"));		 //$NON-NLS-1$
+        allTabs.add(randomTab);
         Tab presetTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_PRESETS")); //$NON-NLS-1$
-        infoTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_INFO")); //$NON-NLS-1$
+        allTabs.add(presetTab);
+        Tab infoTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_INFO")); //$NON-NLS-1$
+        allTabs.add(infoTab);
         Tab helpTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_HELP")); //$NON-NLS-1$
+        allTabs.add(helpTab);
         
         generatorTab.setColorForeground(0xffff0000);
         outputTab.setColorForeground(0xffff0000);
@@ -313,6 +320,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         presetTab.setColorForeground(0xffff0000);
         helpTab.setColorForeground(0xffff0000);
         
+        generatorTab.bringToFront();
         
         //-------------
         //Generic Options
@@ -723,6 +731,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         hlpYOfs += hlpYposAdd;
         cp5.addTextlabel("HLP_KEY_R", Messages.getString("GeneratorGui.HLP_KEY_R"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
+        hlpYOfs += hlpYposAdd;
+        cp5.addTextlabel("HLP_KEY_T", Messages.getString("GeneratorGui.HLP_KEY_T"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         //----------
         // LOGO
@@ -1173,5 +1183,29 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     	return textGenerator.isFocus() || presetName.isFocus();
     }
+
+	@Override
+	public void selectNextTab() {
+		Tab currentTab = cp5.getWindow().getCurrentTab();
+		
+		boolean activateNextTab = false;
+		
+		for (Tab t: allTabs) {
+			if (activateNextTab) {
+				//active next tab and return
+				t.bringToFront();
+				return;
+			}
+			
+			if (t==currentTab) {
+				activateNextTab = true;
+			}
+		}
+		
+		//we need to active the first tab
+		if (activateNextTab) {
+			allTabs.get(0).bringToFront();
+		}
+	}
 
 }

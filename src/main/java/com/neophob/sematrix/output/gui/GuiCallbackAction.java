@@ -36,12 +36,19 @@ public interface GuiCallbackAction {
 
     /**
      * update gui
+     * 
      */
     void refreshGui();
 
     /**
      * 
+     * 
      * @return
      */
     boolean isTextfieldInEditMode();
+    
+    /**
+     * activate next tab
+     */
+    void selectNextTab();
 }

@@ -159,7 +159,7 @@ public abstract class KeyboardHandler {
             
         //change open tabs
         case 'T':
-            //TODO
+        	registerGuiClass.selectNextTab();
             break;          
             
         default:
