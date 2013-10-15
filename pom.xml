@@ -177,7 +177,7 @@
 							<goal>install-file</goal>
 						</goals>
 					</execution>
-					<execution>
+<!--					<execution>
 						<id>pde.jar</id>
 						<configuration>
 							<file>lib/pde.jar</file>
@@ -190,7 +190,7 @@
 						<goals>
 							<goal>install-file</goal>
 						</goals>
-					</execution>
+					</execution> -->
 					<execution>
 						<id>serial.jar</id>
 						<configuration>
@@ -493,11 +493,11 @@
 			<artifactId>net</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>pde</artifactId>
 			<version>1.2.1</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>serial</artifactId>
