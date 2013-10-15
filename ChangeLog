@@ -1,10 +1,11 @@
-Changelog v1.4.1 to v1.x.y
+Changelog v1.4.1 to v1.4.x
 --------------------------
 -Add new Help Tab, display a short help how to use PixelController
 -Add Zoom Effect, add Zoom options (zoom in, zoom out, vertical, horizontal)
 -Add Textwriter option (Pingpong scrolling, left scrolling)
 -Fix: use colorset name (instead of index) if a preset is saved
 -Cleanup GUI, make grouping of controls more strict
+-Reduce filesize of distribution file, remove uneeded files
 
 
 Changelog v1.4.0 to v1.4.1
