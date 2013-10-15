@@ -470,11 +470,11 @@
 			<artifactId>jargs</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.eclipse.jdt.core.compiler</groupId>
 			<artifactId>ecj</artifactId>
 			<version>3.5.1</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
