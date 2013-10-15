@@ -732,8 +732,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("HLP_KEY_R", Messages.getString("GeneratorGui.HLP_KEY_R"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_T", Messages.getString("GeneratorGui.HLP_KEY_T"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        
+        cp5.addTextlabel("HLP_KEY_LEFT", Messages.getString("GeneratorGui.HLP_KEY_LEFT"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_RIGHT", Messages.getString("GeneratorGui.HLP_KEY_RIGHT"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         //----------
         // LOGO
         //----------    
@@ -1147,7 +1147,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 MouseHandler.exit();
             }*/
     	} else {
-            KeyboardHandler.keyboardHandler(key);    		
+            KeyboardHandler.keyboardHandler(key, keyCode);    		
     	}
     }
 
@@ -1185,10 +1185,25 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
 	@Override
-	public void selectNextTab() {
+	public void selectPreviousTab() {
 		Tab currentTab = cp5.getWindow().getCurrentTab();
-		
-		boolean activateNextTab = false;
+		Tab lastTab=null;
+		for (Tab t: allTabs) {
+			if (t==currentTab && lastTab!=null) {
+				lastTab.bringToFront();
+				return;
+			}
+			lastTab = t;
+		}
+		System.out.println(allTabs.size());
+		//activate the last tab
+		allTabs.get(allTabs.size()-1).bringToFront();
+	}
+	
+	@Override
+	public void selectNextTab() {
+		boolean activateNextTab = false;		
+		Tab currentTab = cp5.getWindow().getCurrentTab();		
 		
 		for (Tab t: allTabs) {
 			if (activateNextTab) {
@@ -1202,7 +1217,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 			}
 		}
 		
-		//we need to active the first tab
+		//active the first tab
 		if (activateNextTab) {
 			allTabs.get(0).bringToFront();
 		}

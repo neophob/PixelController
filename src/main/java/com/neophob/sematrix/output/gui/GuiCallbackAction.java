@@ -51,4 +51,5 @@ public interface GuiCallbackAction {
      * activate next tab
      */
     void selectNextTab();
+    void selectPreviousTab();
 }

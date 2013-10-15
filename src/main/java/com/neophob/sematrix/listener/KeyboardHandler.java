@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.listener;
 
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public abstract class KeyboardHandler {
      * 
      * @param key
      */
-    public static void keyboardHandler(char key) {
+    public static void keyboardHandler(char key, int keyCode) {
     	
     	//if a user press a key during the setup - ignore it!
     	if (registerGuiClass==null) {    		
@@ -157,15 +158,19 @@ public abstract class KeyboardHandler {
             Shuffler.manualShuffleStuff();
             break;
             
-        //change open tabs
-        case 'T':
-        	registerGuiClass.selectNextTab();
-            break;          
-            
         default:
             break;
         }   
 
+        //select previous/next tab
+        switch (keyCode) {
+        	case KeyEvent.VK_LEFT:
+        		registerGuiClass.selectPreviousTab();
+        		break;                  
+        	case KeyEvent.VK_RIGHT:
+        		registerGuiClass.selectNextTab();
+        		break;                  
+        }
         
         if(key>='1' && key<'9') {
             if (registerGuiClass!=null) {
