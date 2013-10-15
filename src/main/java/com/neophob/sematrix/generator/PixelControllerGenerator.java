@@ -26,6 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.PixelControllerElement;
@@ -253,6 +254,14 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return blinkenlights.getFilename();
     }
 
+    /**
+     * 
+     * @return
+     */
+    public ScrollMode getScrollMode() {
+    	return colorScroll.getScrollMode();
+    }
+    
     /**
      * Sets the file blinken.
      *

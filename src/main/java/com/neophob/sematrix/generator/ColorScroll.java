@@ -89,6 +89,10 @@ public class ColorScroll extends Generator {
     		return mode;
     	}
     	 
+	    public String getDisplayName() {
+	    	return this.name().replace("_", " ");
+	    }
+	    
     	/**
 	     * Gets the scroll mode.
 	     *
@@ -103,7 +107,7 @@ public class ColorScroll extends Generator {
     		}    		
     		return null;
     	}
-
+	    
     }
     
     /**

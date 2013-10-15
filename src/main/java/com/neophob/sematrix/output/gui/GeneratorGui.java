@@ -434,12 +434,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Theme.themeDropdownList(colorScrollList);		
 
         for (ScrollMode sm: ScrollMode.values()) {
-            colorScrollList.addItem(sm.name().replace("_", " "), sm.getMode()); //$NON-NLS-1$ //$NON-NLS-2$
+            colorScrollList.addItem(sm.getDisplayName(), sm.getMode()); //$NON-NLS-1$ //$NON-NLS-2$
         }
-        colorScrollList.setLabel(colorScrollList.getItem(0).getName());
         colorScrollList.setGroup(generatorTab);		
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
-
+        colorScrollList.setLabel(col.getPixelControllerGenerator().getScrollMode().getDisplayName());
+        
         //add textfield options
         cp5.addTextlabel("genTextwriterOpt", Messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         textwriterOption = cp5.addDropdownList(GuiElement.TEXTWR_OPTION.guiText(), 
