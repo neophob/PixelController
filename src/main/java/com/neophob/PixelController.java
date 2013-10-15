@@ -324,7 +324,7 @@ public class PixelController extends PApplet {
     	if (keyCode==ESC) {		//ignored
     		key=0;
     	} else {
-            KeyboardHandler.keyboardHandler(key);    		
+            KeyboardHandler.keyboardHandler(key, keyCode);    		
     	}
     }
     
