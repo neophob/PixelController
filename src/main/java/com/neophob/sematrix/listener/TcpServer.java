@@ -163,7 +163,7 @@ public final class TcpServer implements Runnable {
 						msg = StringUtils.trim(msg);
 						
 						int msgCount = StringUtils.countMatches(msg, FUDI_MSG_END_MARKER);
-						LOG.log(Level.INFO,	"Got Message: {0} cnt: {1}", new Object[] {msg, msgCount});
+						LOG.log(Level.INFO,	"Got Message: <{0}> cnt: {1}", new Object[] {msg, msgCount});
 						
 						//work around bug - the puredata gui sends back a message as soon we send one
 						long delta = System.currentTimeMillis() - lastMessageSentTimestamp;											
