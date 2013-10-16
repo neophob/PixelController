@@ -54,6 +54,7 @@ public abstract class Tpm2NetProtocol {
 	private static final int TPM2_NET_HEADER_SIZE = 6;		
     private static final byte START_BYTE = (byte) 0x9C;
     private static final byte DATA_FRAME = (byte) 0xDA;
+    private static final byte CMD_FRAME = (byte) 0xc0;
     private static final byte BLOCK_END = (byte) 0x36;
     
     /**
@@ -62,7 +63,7 @@ public abstract class Tpm2NetProtocol {
      * @param frame
      * @return
      */
-    public static byte[] doProtocol(int packetNumber, int totalPackets, byte[] data) {
+    public static byte[] createImagePayload(int packetNumber, int totalPackets, byte[] data) {
     	int frameSize = data.length;
         byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
         
@@ -79,5 +80,30 @@ public abstract class Tpm2NetProtocol {
 		//copy payload
 		System.arraycopy(data, 0, outputBuffer, TPM2_NET_HEADER_SIZE, frameSize);		
 		return outputBuffer;
+    }
+    
+    /**
+     * send a cmd data packet, used as PING command
+     * 
+     * @param data
+     * @return
+     */
+    public static byte[] createCmdPayload(byte[] data) {
+    	int frameSize = data.length;
+        byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
+        
+    	outputBuffer[0] = START_BYTE;
+    	outputBuffer[1] = CMD_FRAME;
+    	outputBuffer[2] = ((byte)(frameSize >> 8 & 0xFF));
+    	outputBuffer[3] = ((byte)(frameSize & 0xFF));
+    	outputBuffer[4] = ((byte)0);
+    	outputBuffer[5] = ((byte)0);
+
+		//write footer
+		outputBuffer[TPM2_NET_HEADER_SIZE + frameSize] = BLOCK_END;		
+
+		//copy payload
+		System.arraycopy(data, 0, outputBuffer, TPM2_NET_HEADER_SIZE, frameSize);
+    	return outputBuffer;
     }
 }

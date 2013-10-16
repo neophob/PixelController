@@ -85,7 +85,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 			byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
 			if (rgbBuffer.length < 511) {
 				//small frame, fit in one packed
-				tpm2.sendFrame(Tpm2NetProtocol.doProtocol(0,1,rgbBuffer));				
+				tpm2.sendFrame(Tpm2NetProtocol.createImagePayload(0,1,rgbBuffer));				
 			} else {
 				//need to splitup buffers				
 				int bytesToSend = rgbBuffer.length;
@@ -98,7 +98,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 					System.out.println(l+" bytes, "+currentUniverse+"/"+totalUniverse );
 					
 					System.arraycopy(rgbBuffer, 510*currentUniverse, tmp, 0, l);
-					tpm2.sendFrame(Tpm2NetProtocol.doProtocol(currentUniverse, totalUniverse, tmp));
+					tpm2.sendFrame(Tpm2NetProtocol.createImagePayload(currentUniverse, totalUniverse, tmp));
 					
 					//debug out
 					while (tpm2.getPort().available() > 0) {			

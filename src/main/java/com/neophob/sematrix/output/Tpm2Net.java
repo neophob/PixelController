@@ -164,7 +164,7 @@ public class Tpm2Net extends Output {
 	 * @param data
 	 */
 	private void sendTpm2NetPacketOut(int packetNumber, int totalPackets, byte[] data) {		
-		tpm2UdpPacket.setData(Tpm2NetProtocol.doProtocol(packetNumber, totalPackets, data));
+		tpm2UdpPacket.setData(Tpm2NetProtocol.createImagePayload(packetNumber, totalPackets, data));
 
 		try {
 			this.outputSocket.send(tpm2UdpPacket);
