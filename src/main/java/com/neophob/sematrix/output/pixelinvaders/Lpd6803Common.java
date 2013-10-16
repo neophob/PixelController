@@ -105,10 +105,7 @@ public abstract class Lpd6803Common {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
 		
-/*		//TODO stop if connection counter > n
- 		if (connectionErrorCounter>) {
-			return false;
-		}*/
+//TODO send tpm2data
 
 		byte ofsOne = (byte)(ofs*2);
 		byte ofsTwo = (byte)(ofsOne+1);
@@ -177,7 +174,7 @@ public abstract class Lpd6803Common {
 		 *  5   ... data
 		 *  n   end of data
 		 */
-		
+//TODO send tpm2net cc		
 		byte cmdfull[] = new byte[7];
 		cmdfull[0] = START_OF_CMD;
 		cmdfull[1] = 0; //unused here!
