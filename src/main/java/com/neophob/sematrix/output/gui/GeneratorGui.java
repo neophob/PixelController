@@ -660,7 +660,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+Sound.getInstance().getVolumeNormalized(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        
+        cp5.addTextlabel("nfoWindowHeight", Messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
@@ -689,7 +689,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         oscStatistic = cp5.addTextlabel("nfoOscStatistic", Messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
         nfoYPos+=yposAdd;
-
+        
+        
+        
         //-------------
         //Help tab
         //-------------
