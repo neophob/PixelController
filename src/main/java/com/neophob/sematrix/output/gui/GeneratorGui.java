@@ -642,7 +642,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //Info tab
         //-------------
         
-        int yposAdd = 20;
+        int yposAdd = 18;
         int xposAdd = 200;
 
         //center it, we have 3 row which are 160 pixels wide
@@ -661,6 +661,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+Sound.getInstance().getVolumeNormalized(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoWindowHeight", Messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        nfoYPos+=yposAdd;
+        int ibsX= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferXSize();
+        int ibsY= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferXSize();
+        cp5.addTextlabel("nfoInternalBuffer", Messages.getString("GeneratorGui.INFO_INTERNAL_BUFFERSIZE")+ibsX+"/"+ibsY, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
