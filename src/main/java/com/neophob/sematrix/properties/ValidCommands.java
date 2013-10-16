@@ -97,7 +97,7 @@ public enum ValidCommands {
 	/** The TEXTWRITER. */
 	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
 	
-	TEXTWR_OPTION(CommandGroup.GENERATOR, 1, "<INT> set option for textwriter"),
+	TEXTWR_OPTION(CommandGroup.GENERATOR, 1, "<INT> set mode textwriter (pingpong scroller, left scroller)"),
 
 	/** The RANDOM. */
 	RANDOM(CommandGroup.MISC, 1, "<ON|OFF> enable/disable random mode" ),
@@ -120,7 +120,7 @@ public enum ValidCommands {
 	CURRENT_OUTPUT(CommandGroup.OUTPUT, 1, "<INT> select current output"),
 
 	/** The CURRENT output. */
-	JMX_STAT(CommandGroup.MISC, 0, "show JMX runtime statistic, default port: 1337 (use the -p switch)"),
+	JMX_STAT(CommandGroup.MISC, 0, "<NO PARAM> show JMX runtime statistic, default port: 1337 (use the -p switch)"),
 
 	SCREENSHOT(CommandGroup.MISC, 0, "<NO PARAM> save screenhot"),
 	

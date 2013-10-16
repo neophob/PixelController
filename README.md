@@ -56,46 +56,49 @@ There are different frontends for PixelController:
 
 **Valid commands**:
 
-	CHANGE_GENERATOR_A          # of parameters: 1     <INT> change first generator for current visual
-	CHANGE_GENERATOR_B          # of parameters: 1     <INT> change first generator for current visual
-	CHANGE_EFFECT_A             # of parameters: 1     <INT> change first effect for current visual
-	CHANGE_EFFECT_B             # of parameters: 1     <INT> change second effect for current visual
-	CHANGE_MIXER                # of parameters: 1     <INT> change mixer for current visual
-	CURRENT_VISUAL              # of parameters: 1     <INT> select actual visual
-	CURRENT_COLORSET            # of parameters: 1     <INT> select actual ColorSet
+        CHANGE_GENERATOR_A          # of parameters: 1     <INT> change first generator for current visual
+        CHANGE_GENERATOR_B          # of parameters: 1     <INT> change first generator for current visual
+        CHANGE_EFFECT_A             # of parameters: 1     <INT> change first effect for current visual
+        CHANGE_EFFECT_B             # of parameters: 1     <INT> change second effect for current visual
+        CHANGE_MIXER                # of parameters: 1     <INT> change mixer for current visual
+        CURRENT_VISUAL              # of parameters: 1     <INT> select actual visual
+        CURRENT_COLORSET            # of parameters: 1     <INT> select actual ColorSet
 
-	CHANGE_OUTPUT_VISUAL        # of parameters: 1     <INT> change visual for current output
-	CHANGE_OUTPUT_FADER         # of parameters: 1     <INT> change fader for current output
-	CHANGE_ALL_OUTPUT_VISUAL    # of parameters: 1     <INT> change visual for all outputs
-	CHANGE_ALL_OUTPUT_FADER     # of parameters: 1     <INT> change fader for all outputs
-	CURRENT_OUTPUT              # of parameters: 1     <INT> select current output
+        CHANGE_OUTPUT_VISUAL        # of parameters: 1     <INT> change visual for current output
+        CHANGE_OUTPUT_FADER         # of parameters: 1     <INT> change fader for current output
+        CHANGE_ALL_OUTPUT_VISUAL    # of parameters: 1     <INT> change visual for all outputs
+        CHANGE_ALL_OUTPUT_FADER     # of parameters: 1     <INT> change fader for all outputs
+        CURRENT_OUTPUT              # of parameters: 1     <INT> select current output
 
-	BLINKEN                     # of parameters: 1     <STRING> file to load for the blinkenlights generator
-	IMAGE                       # of parameters: 1     <STRING> image to load for the simple image generator
-	TEXTDEF                     # of parameters: 1     <INT> select texture deformation option, 1-11
-	COLOR_SCROLL_OPT            # of parameters: 1     <INT> select color scroll fading direction, 1-14
-	COLOR_FADE_LENGTH           # of parameters: 1     <INT> fading length for the color fade generator
-	COLOR_SCROLL_LENGTH         # of parameters: 1     <INT> fading distance for the color scroll generator
-	TEXTWR                      # of parameters: 1     <STRING> update text for textwriter generator
-	CHANGE_BRIGHTNESS           # of parameters: 1     <INT> output brightness 0 .. 100
-	OSC_GENERATOR1              # of parameters: 1     <BLOB> contains 4096 bytes of image data (64x64x8bpp)
-	OSC_GENERATOR2              # of parameters: 1     <BLOB> contains 4096 bytes of image data (64x64x8bpp)
+        BLINKEN                     # of parameters: 1     <STRING> file to load for the blinkenlights generator
+        IMAGE                       # of parameters: 1     <STRING> image to load for the simple image generator
+        TEXTDEF                     # of parameters: 1     <INT> select texture deformation option, 1-11
+        ZOOMOPT                     # of parameters: 1     <INT> select zoom options 1-4
+        COLOR_SCROLL_OPT            # of parameters: 1     <INT> select color scroll fading direction, 1-14
+        COLOR_FADE_LENGTH           # of parameters: 1     <INT> fading length for the color fade generator
+        TEXTWR                      # of parameters: 1     <STRING> update text for textwriter generator
+        TEXTWR_OPTION               # of parameters: 1     <INT> set mode textwriter (pingpong scroller, left scroller)
+        CHANGE_BRIGHTNESS           # of parameters: 1     <INT> output brightness 0 .. 100
+        OSC_GENERATOR1              # of parameters: 1     <BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)
+        OSC_GENERATOR2              # of parameters: 1     <BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)
 
-	CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
-	CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
+        CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
+        CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
 
-	STATUS                      # of parameters: 0     refresh whole gui
-	STATUS_MINI                 # of parameters: 0     just refresh parts of the gui
-	CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
-	CHANGE_SHUFFLER_SELECT      # of parameters: 14    14 times <INT>, 14 parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON
-	SAVE_PRESENT                # of parameters: 0     save current present settings
-	LOAD_PRESENT                # of parameters: 0     load current present settings
-	RANDOM                      # of parameters: 1     <ON|OFF> enable/disable random mode
-	RANDOMIZE                   # of parameters: 0     one shot randomizer
-	PRESET_RANDOM               # of parameters: 0     one shot randomizer, use a pre-stored present
-	JMX_STAT                    # of parameters: 0     show JMX runtime statistic, default port: 1337 (use the -p switch)
-	SCREENSHOT                  # of parameters: 0     save screenhot
-	FREEZE                      # of parameters: 0     toggle pause mode
+        STATUS                      # of parameters: 0     <NO PARAM> refresh whole gui
+        STATUS_MINI                 # of parameters: 0     <NO PARAM> just refresh parts of the gui
+        CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
+        CHANGE_SHUFFLER_SELECT      # of parameters: 15    15 times <INT>, parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON
+        SAVE_PRESENT                # of parameters: 0     <NO PARAM> save current present settings
+        LOAD_PRESENT                # of parameters: 0     <NO PARAM> load current present settings
+        RANDOM                      # of parameters: 1     <ON|OFF> enable/disable random mode
+        RANDOM_PRESET_MODE          # of parameters: 1     <ON|OFF> enable/disable random preset mode
+        RANDOMIZE                   # of parameters: 0     <NO PARAM> one shot randomizer
+        PRESET_RANDOM               # of parameters: 0     <NO PARAM> one shot randomizer, use a pre-stored present
+        JMX_STAT                    # of parameters: 0     <NO PARAM> show JMX runtime statistic, default port: 1337 (use the -p switch)
+        SCREENSHOT                  # of parameters: 0     <NO PARAM> save screenhot
+        FREEZE                      # of parameters: 0     <NO PARAM> toggle pause mode
+        TOGGLE_INTERNAL_VISUAL      # of parameters: 0     <NO PARAM> show/hide internal visual to save CPU
 
 
 ## IT DOES NOT WORK!
