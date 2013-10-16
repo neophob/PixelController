@@ -126,7 +126,9 @@ public class PixelInvadersDevice extends ArduinoOutput {
 				int[] transformedBuffer = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 							Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
-								
+				
+				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
+				
 				int sendedFrames = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
 				if (sendedFrames>0) {
 					needUpdate+=sendedFrames;

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
 import com.neophob.sematrix.output.pixelinvaders.Lpd6803Net;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
@@ -95,6 +96,8 @@ public class PixelInvadersNetDevice extends Output {
 				int[] transformedBuffer = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 							Lpd6803Net.NR_OF_LED_HORIZONTAL, Lpd6803Net.NR_OF_LED_VERTICAL);
+				
+				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
 				int sf = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
 				sendedFrames += sf;
