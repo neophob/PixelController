@@ -40,6 +40,7 @@ public abstract class Lpd6803Common {
 
 	protected boolean initialized;
 	
+
 	/** The ack errors. */
 	protected long ackErrors = 0;
 	
@@ -122,8 +123,8 @@ public abstract class Lpd6803Common {
 
 		try {
 			writeData(pingPayload);
-//			return waitForAck();
-return true;
+			return waitForAck();
+
 		} catch (Exception e) {
 			return false;
 		}
@@ -222,6 +223,16 @@ return true;
 		}
 		catch(InterruptedException e) {
 		}
+	}
+
+	
+	/**
+	 * is the serial port initialized
+	 * 
+	 * @return
+	 */
+	public boolean isInitialized() {
+		return initialized;
 	}
 
 

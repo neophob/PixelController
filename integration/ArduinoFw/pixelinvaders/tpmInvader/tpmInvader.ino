@@ -105,9 +105,6 @@ void setup() {
   Serial.begin(BAUD_RATE); //Setup high speed Serial
   Serial.flush();
   Serial.setTimeout(20);
-#ifdef DEBUG  
-  Serial.println("HI");
-#endif 
 
   digitalWrite(LED_PIN, HIGH);
   delay(250);
@@ -216,7 +213,8 @@ int16_t readCommand() {
   uint8_t s1 = Serial.read();
   uint8_t s2 = Serial.read();  
   psize = (s1<<8) + s2;
-  if (psize < 6 || psize > MAX_PACKED_SIZE) {
+  //ignore payload size if a command packet is send
+  if (dataFrame != TPM2NET_CMD_COMMAND && (psize < 6 || psize > MAX_PACKED_SIZE)) {
     return -3;
   }  
 

@@ -70,7 +70,7 @@ public class Lpd6803 extends Lpd6803Common {
 	public static final String VERSION = "2.0";
 
 	//how many attemps are made to get the data
-	private static final int TIMEOUT_LOOP = 80;
+	private static final int TIMEOUT_LOOP = 50;
 	
 	//wait TIMEOUT_SLEEP ms, until next loop
 	private static final int TIMEOUT_SLEEP = 4;
@@ -133,7 +133,7 @@ public class Lpd6803 extends Lpd6803Common {
 		if(baud > 0) {
 			this.baud = baud;
 		}
-portName = "/dev/tty.usbmodem12341";		
+
 		if (portName!=null && !portName.trim().isEmpty()) {
 			//open specific port
 			LOG.log(Level.INFO,	"open port: {0}", portName);
@@ -211,8 +211,7 @@ portName = "/dev/tty.usbmodem12341";
 		try {
 			port = new Serial(app, portName, this.baud);
 			sleep(1500); //give it time to initialize
-		//	if (ping()) {
-			if (1==1) {
+			if (ping()) {
 				return;
 			}
 			
@@ -289,14 +288,10 @@ portName = "/dev/tty.usbmodem12341";
 			throw new WriteDataException("serial port is not ready!");
 		}
 		
-		//log.log(Level.INFO, "Serial Wire Size: {0}", cmdfull.length);
-
 		try {
-			System.out.println("write "+cmdfull.length+" serial bytes");
+System.out.println("write "+cmdfull.length+" serial bytes");
 			port.output.write(cmdfull);			
 			port.output.flush();
-			//DO NOT flush the buffer... hmm not sure about this, processing flush also
-			//and i discovered strange "hangs"...
 		} catch (Exception e) {
 			LOG.log(Level.INFO, "Error sending serial data!", e);
 			connectionErrorCounter++;
@@ -311,55 +306,27 @@ portName = "/dev/tty.usbmodem12341";
 	 * @return true if ack received, false if not
 	 */
 	protected synchronized boolean waitForAck() {		
-		//TODO some more tuning is needed here.
 		long start = System.currentTimeMillis();
 		int timeout=TIMEOUT_LOOP; //wait up to 50ms
 		//log.log(Level.INFO, "wait for ack");
 		while (timeout > 0 && port.available() < 2) {
 			sleep(TIMEOUT_SLEEP); //in ms
 			timeout--;
+System.out.println("port.available(): "+port.available()+", timeout: "+timeout);			
 		}
-
 		if (timeout == 0 && port.available() < 2) {
 			LOG.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);
 			ackErrors++;
 			return false;
 		}
-		//TODO: next method is not very speed/memory efficient!
-		byte[] msg = port.readBytes();
-/*		log.log(Level.INFO, "got ACK! data length: {0}", msg.length);
-		for (byte b:msg)
-			System.out.print(Integer.toHexString(b)+' ');
-		System.out.println();
-*/		//INFO: MEEE [0, 0, 65, 67, 75, 0, 0]
-		for (int i=0; i<msg.length-1; i++) {
-			if (msg[i]== 'A' && msg[i+1]== 'K') {
-				try {
-					this.arduinoBufferSize = msg[i+2];
-					this.arduinoLastError = msg[i+3];
-					if (this.arduinoLastError!=0) {
-						LOG.log(Level.INFO, "Last Errorcode: {0}", this.arduinoLastError);
-					}
-				} catch (Exception e) {
-					// we failed to update statistics...
-				}
-				this.arduinoHeartbeat = System.currentTimeMillis();
-				if (this.arduinoLastError==0) {
-					return true;					
-				}
-				ackErrors++;
-				return false;
-				//TODO inconsistent logging!
-			}			
-		}
 		
-		/*String s="";
-		for (byte b: msg) {
-			s+=(char)b;
+		byte[] msg = port.readBytes();
+		String reply = Bytes.getAsString(msg);
+		LOG.log(Level.INFO, "got ACK: {0}", reply);
+
+		if (reply.contains("AK")) {
+			return true;
 		}
-		LOG.log(Level.INFO, "Invalid serial data <{0}>, duration: {1}ms", new String[] {s, ""+(System.currentTimeMillis()-start)});
-		*/
-		ackErrors++;
 		return false;		
 	}
 
