@@ -31,9 +31,6 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class ColorScroll extends Generator {
 
-    /** The fade. */
-    private int fade;
-    
     /** The scroll mode. */
     private ScrollMode scrollMode;
     
@@ -119,7 +116,6 @@ public class ColorScroll extends Generator {
     public ColorScroll(PixelControllerGenerator controller) {
         super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
 
-        fade = 30;
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 
         internalBufferXSize2 = internalBufferXSize/2;
@@ -206,14 +202,6 @@ public class ColorScroll extends Generator {
         }                 
     }
 
-    /**
-     * Sets the fade length.
-     *
-     * @param fadeLength the new fade length
-     */
-    void setFadeLength(int fadeLength) {
-        this.fade = fadeLength;
-    }
     
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.generator.Generator#shuffle()
@@ -224,7 +212,6 @@ public class ColorScroll extends Generator {
 			Random rand = new Random();
 			int nr = rand.nextInt(ScrollMode.values().length);
 			this.setScrollMode(nr);
-			this.fade = rand.nextInt(150);
 		}
 	}
     
@@ -545,22 +532,6 @@ public class ColorScroll extends Generator {
         if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
             this.internalBuffer[y * internalBufferXSize + x] = col;
         }
-    }
-
-
-    /**
-     * @return the fade
-     */
-    public int getFade() {
-        return fade;
-    }
-
-
-    /**
-     * @param fade the fade to set
-     */
-    public void setFade(int fade) {
-        this.fade = fade;
     }
 
 

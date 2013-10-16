@@ -141,8 +141,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.IMAGE+" "+image.getFilename());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.TEXTWR_OPTION+" "+textwriter.getTextscroller());
-        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
-        ret.add(ValidCommands.COLOR_SCROLL_LENGTH+" "+colorScroll.getFade());        
+        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());        
         ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());
         int brightnessInt = (int)(this.brightness*100f);
         ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
@@ -297,15 +296,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public void setColorScrollingDirection(int colorScrollDir) {
     	colorScroll.setScrollMode(colorScrollDir);
-    }
-    
-    /**
-     * Sets the color scroll fade length.
-     *
-     * @param colorScrollDir the new color scroll fade length
-     */
-    public void setColorScrollingFadeLength(int colorScrolFadeLength) {
-        colorScroll.setFadeLength(colorScrolFadeLength);
     }
     
     /**

@@ -342,15 +342,6 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case COLOR_SCROLL_LENGTH:
-				try {
-					int length = Integer.parseInt(msg[1]);
-					col.getPixelControllerGenerator().setColorScrollingFadeLength(length);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-
             case TEXTDEF:
 				try {
 					int lut = Integer.parseInt(msg[1]);
@@ -531,7 +522,7 @@ public final class MessageProcessor {
 				break;
 			}
 		} catch (IllegalArgumentException e) {
-			LOG.log(Level.INFO,	"Illegal argument <{0}>: {1}", new Object[] { msg[0], e });			
+			LOG.log(Level.INFO,	"Unknown attribute ignored <{0}>", new Object[] { msg[0] });			
 		}		
 
 		return null;

@@ -94,9 +94,6 @@ public enum ValidCommands {
 	/** The COLOR_SCROLL_OPT. */
 	COLOR_FADE_LENGTH (CommandGroup.GENERATOR, 1, "<INT> fading length for the color fade generator"),
 	
-	/** The COLOR_SCROLL_OPT. */
-	COLOR_SCROLL_LENGTH(CommandGroup.GENERATOR, 1, "<INT> fading distance for the color scroll generator"),
-	
 	/** The TEXTWRITER. */
 	TEXTWR(CommandGroup.GENERATOR, 1, "<STRING> update text for textwriter generator"),
 	
