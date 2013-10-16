@@ -39,7 +39,7 @@ Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 Boston, MA  02111-1307  USA
  */
 
-package com.neophob.sematrix.output.lpd6803;
+package com.neophob.sematrix.output.pixelinvaders;
 
 import java.util.List;
 import java.util.Map;

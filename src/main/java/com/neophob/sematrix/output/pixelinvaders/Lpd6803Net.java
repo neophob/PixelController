@@ -17,7 +17,7 @@
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.neophob.sematrix.output.lpd6803;
+package com.neophob.sematrix.output.pixelinvaders;
 
 import java.net.SocketException;
 import java.util.Map;

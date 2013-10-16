@@ -1,4 +1,4 @@
-package com.neophob.sematrix.output.lpd6803;
+package com.neophob.sematrix.output.pixelinvaders;
 
 import java.util.HashMap;
 import java.util.Map;
