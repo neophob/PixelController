@@ -23,10 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.lpd6803.Lpd6803;
+import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
-import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to the PixelInvaders Device.
