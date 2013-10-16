@@ -1,11 +1,12 @@
 package com.neophob.sematrix.output.pixelinvaders;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
+
+import netP5.Bytes;
 
 import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
@@ -26,21 +27,6 @@ public abstract class Lpd6803Common {
 	/** The Constant BUFFERSIZE. */
 	protected static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
 
-	/** The Constant START_OF_CMD. */
-	protected static final byte START_OF_CMD = 0x01;
-	
-	/** The Constant CMD_SENDFRAME. */
-	protected static final byte CMD_SENDFRAME = 0x03;
-	
-	/** The Constant CMD_PING. */
-	protected static final byte CMD_PING = 0x04;
-
-	/** The Constant START_OF_DATA. */
-	protected static final byte START_OF_DATA = 0x10;
-	
-	/** The Constant END_OF_DATA. */
-	protected static final byte END_OF_DATA = 0x20;
-
 	protected static Adler32 adler = new Adler32();
 	
 	/** The connection error counter. */
@@ -56,6 +42,8 @@ public abstract class Lpd6803Common {
 	
 	/** The ack errors. */
 	protected long ackErrors = 0;
+	
+	protected int totalPanels = 0;
 
 	
 	/**
@@ -107,7 +95,7 @@ public abstract class Lpd6803Common {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
 		
-		byte[] imagePayload = Tpm2NetProtocol.createCmdPayload(data);
+		byte[] imagePayload = Tpm2NetProtocol.createImagePayload(ofs, totalPanels, data);
 
 		int returnValue = 0;
 		//send frame one
@@ -130,11 +118,12 @@ public abstract class Lpd6803Common {
 	 * @return wheter ping was successfull (arduino reachable) or not
 	 */
 	public boolean ping() {
-		byte[] pingPayload = Tpm2NetProtocol.createCmdPayload(new byte[] {CMD_PING});
+		byte[] pingPayload = Tpm2NetProtocol.createCmdPayload(new byte[] {(byte)1});
 
 		try {
 			writeData(pingPayload);
-			return waitForAck();			
+//			return waitForAck();
+return true;
 		} catch (Exception e) {
 			return false;
 		}
@@ -152,8 +141,9 @@ public abstract class Lpd6803Common {
 
 			//just write out debug output from the microcontroller
 			byte[] replyFromController = getReplyFromController();
-			if (replyFromController!=null && replyFromController.length > 0) {                        
-				LOG.log(Level.INFO, "<<< ("+Arrays.toString(replyFromController)+")");
+			if (replyFromController!=null && replyFromController.length > 0) {
+				String reply = Bytes.getAsString(replyFromController);
+				LOG.log(Level.INFO, "<<< ["+reply+"]");
 			}  			
 			return true;
 		} catch (Exception e) {

@@ -38,20 +38,13 @@
 #include <SPI.h>
 #include <Neophob_LPD6803.h>
 
-// ======= START OF USER CONFIGURATION =======
-
-//define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 4
-
-// ======= END OF USER CONFIGURATION ======= 
-
 #define DEBUG 1
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
 #define BAUD_RATE 115200
 
-#define NR_OF_PANELS 1
+#define NR_OF_PANELS 2
 #define PIXELS_PER_PANEL 64
 
 //define some tpm2 constants
@@ -64,6 +57,11 @@
 
 //package size we expect. 
 #define MAX_PACKED_SIZE 256
+
+//Teensy 2.0 has the LED on pin 11.
+//Teensy++ 2.0 has the LED on pin 6
+//Teensy 3.0 has the LED on pin 13
+#define LED_PIN 11
 
 // buffers for receiving and sending data
 uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
@@ -111,6 +109,10 @@ void setup() {
   Serial.println("HI");
 #endif 
 
+  digitalWrite(LED_PIN, HIGH);
+  delay(250);
+  digitalWrite(LED_PIN, LOW);  
+  
   //SETUP SPI SPEED AND ISR ROUTINE
   //-------------------------------
   //The SPI setup is quite important to set up correctly
@@ -136,11 +138,15 @@ void setup() {
   serialDataRecv = 0;   //no serial data received yet  
 }
 
+uint8_t dataFrame;
+
+
 // --------------------------------------------
 //      main loop
 // --------------------------------------------
 void loop() {
   int16_t res = readCommand();  
+  
   if (res > 0) {
     serialDataRecv = 1;
 #ifdef DEBUG      
@@ -152,9 +158,9 @@ void loop() {
     Serial.send_now();
 #endif
 #endif
-    //digitalWrite(ledPin, HIGH);
+    digitalWrite(LED_PIN, HIGH);
     updatePixels();
-    //digitalWrite(ledPin, LOW);    
+    digitalWrite(LED_PIN, LOW);    
   }
 #ifdef DEBUG      
   else {
@@ -169,7 +175,7 @@ void loop() {
 #endif  
 
   if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
-    rainbow();	
+    rainbow();
   }
 }
 
@@ -200,12 +206,13 @@ int16_t readCommand() {
   if (startChar != TPM2NET_HEADER_IDENT) {
     return -1;
   }
-  
-  uint8_t dataFrame = Serial.read();
+
+  //uint8_t 
+  dataFrame = Serial.read();
   if (dataFrame != TPM2NET_CMD_DATAFRAME && dataFrame != TPM2NET_CMD_COMMAND) {
     return -2;  
   }
-  
+
   uint8_t s1 = Serial.read();
   uint8_t s2 = Serial.read();  
   psize = (s1<<8) + s2;
@@ -224,6 +231,7 @@ int16_t readCommand() {
   if (recvNr!=psize) {
     return -5;
   }  
+  
 
   uint8_t endChar = Serial.read();
   if (endChar != TPM2NET_FOOTER_IDENT) {
@@ -233,7 +241,7 @@ int16_t readCommand() {
   //check for a ping request
   if (dataFrame == TPM2NET_CMD_COMMAND) {
     sendAck();
-    return 0;
+    return -50;
   }
   
   return psize;

@@ -67,7 +67,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		this.initialized = false;	
 		
 		try {
-			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap() );			
+			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), panelOrder.size() );			
 			this.initialized = lpd6803.ping();
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			
 		} catch (NoSerialPortFoundException e) {

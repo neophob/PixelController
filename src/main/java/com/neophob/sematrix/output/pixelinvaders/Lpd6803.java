@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import netP5.Bytes;
 import processing.core.PApplet;
 import processing.serial.Serial;
 
@@ -66,7 +67,7 @@ public class Lpd6803 extends Lpd6803Common {
 	private static final Logger LOG = Logger.getLogger(Lpd6803.class.getName());
 	
 	/** internal lib version. */
-	public static final String VERSION = "1.1";
+	public static final String VERSION = "2.0";
 
 	//how many attemps are made to get the data
 	private static final int TIMEOUT_LOOP = 80;
@@ -106,30 +107,8 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
-		this(app, null, 0, portBlacklist, correctionMap);
-	}
-
-	/**
-	 * Create a new instance to communicate with the lpd6803 device.
-	 *
-	 * @param app the app
-	 * @param baud the baud
-	 * @throws NoSerialPortFoundException the no serial port found exception
-	 */
-	public Lpd6803(PApplet app, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
-		this(app, null, baud, portBlacklist, correctionMap);
-	}
-
-	/**
-	 * Create a new instance to communicate with the lpd6803 device.
-	 *
-	 * @param app the app
-	 * @param portName the port name
-	 * @throws NoSerialPortFoundException the no serial port found exception
-	 */
-	public Lpd6803(PApplet app, String portName, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
-		this(app, portName, 0, portBlacklist, correctionMap);
+	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int totalPanels) throws NoSerialPortFoundException {
+		this(app, null, 0, portBlacklist, correctionMap, totalPanels);
 	}
 
 
@@ -141,19 +120,20 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
+	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int totalPanels) throws NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
 		this.app = app;
 		app.registerDispose(this);		
 		this.correctionMap = correctionMap;
-
+		this.totalPanels = totalPanels;
+		
 		serialPortName="";
 		if(baud > 0) {
 			this.baud = baud;
 		}
-		
+portName = "/dev/tty.usbmodem12341";		
 		if (portName!=null && !portName.trim().isEmpty()) {
 			//open specific port
 			LOG.log(Level.INFO,	"open port: {0}", portName);
@@ -231,12 +211,15 @@ public class Lpd6803 extends Lpd6803Common {
 		try {
 			port = new Serial(app, portName, this.baud);
 			sleep(1500); //give it time to initialize
-			if (ping()) {
+		//	if (ping()) {
+			if (1==1) {
 				return;
 			}
+			
 			LOG.log(Level.WARNING, "No response from port {0}", portName);
 			if (port != null) {
-				port.stop();        					
+				port.stop();
+				LOG.log(Level.WARNING, Bytes.getAsString(getReplyFromController()));
 			}
 			port = null;
 			throw new NoSerialPortFoundException("No response from port "+portName);
@@ -309,8 +292,9 @@ public class Lpd6803 extends Lpd6803Common {
 		//log.log(Level.INFO, "Serial Wire Size: {0}", cmdfull.length);
 
 		try {
-			port.output.write(cmdfull);
-			//port.output.flush();
+			System.out.println("write "+cmdfull.length+" serial bytes");
+			port.output.write(cmdfull);			
+			port.output.flush();
 			//DO NOT flush the buffer... hmm not sure about this, processing flush also
 			//and i discovered strange "hangs"...
 		} catch (Exception e) {
