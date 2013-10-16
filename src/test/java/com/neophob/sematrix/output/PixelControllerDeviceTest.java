@@ -53,5 +53,11 @@ public class PixelControllerDeviceTest extends Lpd6803Common {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	protected byte[] getReplyFromController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

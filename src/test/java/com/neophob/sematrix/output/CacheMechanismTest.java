@@ -55,6 +55,12 @@ public class CacheMechanismTest {
 		public boolean didFrameChange(byte ofs, byte data[]) {
 			return super.didFrameChange(ofs, data);
 		}
+
+		@Override
+		protected byte[] getReplyFromController() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 		
 	}
 	
@@ -65,12 +71,12 @@ public class CacheMechanismTest {
     	byte ofs=(byte)0;
     	
     	int sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(0, sentFrames);
+    	assertEquals(1, sentFrames);
     	
     	//simulate successful data send
     	out.ackReturnValue=true;
     	sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(2, sentFrames);
+    	assertEquals(0, sentFrames);
     	
     	long initContent = out.getCache(ofs);
     	    	
@@ -85,7 +91,7 @@ public class CacheMechanismTest {
     	assertTrue(out.didFrameChange(ofs, data));
     	assertFalse(out.didFrameChange(ofs, data));
     	sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(2, sentFrames);
+    	assertEquals(1, sentFrames);
 
     	long x = out.getCache(ofs);
     	assertTrue(initContent!=x);
