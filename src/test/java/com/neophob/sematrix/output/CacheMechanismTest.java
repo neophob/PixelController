@@ -24,8 +24,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.output.lpd6803.Lpd6803Common;
-import com.neophob.sematrix.output.lpd6803.WriteDataException;
+import com.neophob.sematrix.output.pixelinvaders.Lpd6803Common;
+import com.neophob.sematrix.output.pixelinvaders.WriteDataException;
 
 /**
  * verify the cache mechanism

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.output.gamma.RGBAdjust;
-import com.neophob.sematrix.output.lpd6803.Lpd6803;
+import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
 
 /**
  * simply test class, only used to test the lib<br>
