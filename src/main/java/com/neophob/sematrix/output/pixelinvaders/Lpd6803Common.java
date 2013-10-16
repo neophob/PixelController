@@ -1,5 +1,6 @@
 package com.neophob.sematrix.output.pixelinvaders;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -8,6 +9,7 @@ import java.util.zip.Adler32;
 
 import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
+import com.neophob.sematrix.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.properties.ColorFormat;
 
 public abstract class Lpd6803Common {
@@ -105,57 +107,20 @@ public abstract class Lpd6803Common {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
 		
-//TODO send tpm2data
+		byte[] imagePayload = Tpm2NetProtocol.createCmdPayload(data);
 
-		byte ofsOne = (byte)(ofs*2);
-		byte ofsTwo = (byte)(ofsOne+1);
-		byte frameOne[] = new byte[BUFFERSIZE];
-		byte frameTwo[] = new byte[BUFFERSIZE];
 		int returnValue = 0;
-		
-		System.arraycopy(data, 0, frameOne, 0, BUFFERSIZE);
-		System.arraycopy(data, BUFFERSIZE, frameTwo, 0, BUFFERSIZE);
-		
-		byte sendlen = BUFFERSIZE;
-		byte cmdfull[] = new byte[sendlen+7];
-		
-		cmdfull[0] = START_OF_CMD;
-		//cmdfull[1] = ofs;
-		cmdfull[2] = (byte)sendlen;
-		cmdfull[3] = CMD_SENDFRAME;
-		cmdfull[4] = START_OF_DATA;		
-//		for (int i=0; i<sendlen; i++) {
-//			cmdfull[5+i] = data[i];
-//		}
-		cmdfull[sendlen+5] = END_OF_DATA;
-
 		//send frame one
-		if (didFrameChange(ofsOne, frameOne)) {
-			cmdfull[1] = ofsOne;
+		if (didFrameChange(ofs, imagePayload)) {
 			
-			//this is needed due the hardware-wirings 
-			flipSecondScanline(cmdfull, frameOne);
-			
-			if (sendData(cmdfull)) {
+			if (sendData(imagePayload)) {
 				returnValue++;
 			} else {
 				//in case of an error, make sure we send it the next time!
-				lastDataMap.put(ofsOne, 0L);
+				lastDataMap.put(ofs, 0L);
 			}
 		}
 		
-		//send frame two
-		if (didFrameChange(ofsTwo, frameTwo)) {
-			cmdfull[1] = ofsTwo;
-			
-			flipSecondScanline(cmdfull, frameTwo);
-			
-			if (sendData(cmdfull)) {
-				returnValue++;
-			} else {
-				lastDataMap.put(ofsTwo, 0L);
-			}
-		}/**/
 		return returnValue;
 	}
 	
@@ -164,28 +129,11 @@ public abstract class Lpd6803Common {
 	 * 
 	 * @return wheter ping was successfull (arduino reachable) or not
 	 */
-	public boolean ping() {		
-		/*
-		 *  0   <startbyte>
-		 *  1   <i2c_addr>/<offset>
-		 *  2   <num_bytes_to_send>
-		 *  3   command type, was <num_bytes_to_receive>
-		 *  4   data marker
-		 *  5   ... data
-		 *  n   end of data
-		 */
-//TODO send tpm2net cc		
-		byte cmdfull[] = new byte[7];
-		cmdfull[0] = START_OF_CMD;
-		cmdfull[1] = 0; //unused here!
-		cmdfull[2] = 0x01;
-		cmdfull[3] = CMD_PING;
-		cmdfull[4] = START_OF_DATA;
-		cmdfull[5] = 0x02;
-		cmdfull[6] = END_OF_DATA;
+	public boolean ping() {
+		byte[] pingPayload = Tpm2NetProtocol.createCmdPayload(new byte[] {CMD_PING});
 
 		try {
-			writeData(cmdfull);
+			writeData(pingPayload);
 			return waitForAck();			
 		} catch (Exception e) {
 			return false;
@@ -201,16 +149,24 @@ public abstract class Lpd6803Common {
 	protected boolean sendData(byte cmdfull[]) {
 		try {
 			writeData(cmdfull);
-			if (waitForAck()) {
-				//frame was send successful
-				return true;
-			}
+
+			//just write out debug output from the microcontroller
+			byte[] replyFromController = getReplyFromController();
+			if (replyFromController!=null && replyFromController.length > 0) {                        
+				LOG.log(Level.INFO, "<<< ("+Arrays.toString(replyFromController)+")");
+			}  			
+			return true;
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "sending serial data failed: {0}", e);
 		}
 		return false;
 	}
 
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getConnectionErrorCounter() {
 		return connectionErrorCounter;
 	}
@@ -227,7 +183,13 @@ public abstract class Lpd6803Common {
 	 * @return
 	 */
 	protected abstract boolean waitForAck();
-		
+	
+	/**
+	 * get all data which are sent back from the controller
+	 * 
+	 * @return
+	 */
+	protected abstract byte[] getReplyFromController();
 	
 	/**
 	 * get md5 hash out of an image. used to check if the image changed
@@ -258,30 +220,6 @@ public abstract class Lpd6803Common {
 	}
 
 
-	/**
-	 * this function feed the framebufferdata (32 pixels a 2bytes (aka 16bit)
-	 * to the send array. each second scanline gets inverteds
-	 *
-	 * @param cmdfull the cmdfull
-	 * @param frameData the frame data
-	 */
-	protected static void flipSecondScanline(byte cmdfull[], byte frameData[]) {
-		int toggler=14;
-		for (int i=0; i<16; i++) {
-			cmdfull[   5+i] = frameData[i];
-			cmdfull[32+5+i] = frameData[i+32];
-			
-			cmdfull[16+5+i] = frameData[16+toggler];				
-			cmdfull[48+5+i] = frameData[48+toggler];
-			
-			if (i%2==0) {
-				toggler++;
-			} else {
-				toggler-=3;
-			}
-		}
-	}
-	
 	
     /**
 	 * Sleep wrapper.

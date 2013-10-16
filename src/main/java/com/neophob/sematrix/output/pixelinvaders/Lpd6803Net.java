@@ -152,12 +152,11 @@ public class Lpd6803Net extends Lpd6803Common{
 			//LOG.log(Level.INFO, "Error sending network data!", se);
 			connectionErrorCounter++;
 			initialized = false;
-			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+se);			
+			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter , se);			
 		} catch (Exception e) {
-			//LOG.log(Level.INFO, "Error sending network data!", e);
 			connectionErrorCounter++;
 			initialized = false;
-			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter+", Error: "+e);			
+			throw new WriteDataException("cannot send serial data, errorNr: "+connectionErrorCounter , e);			
 		}		
 	}
 	
@@ -168,17 +167,15 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @return true if ack received, false if not
 	 */
 	protected synchronized boolean waitForAck() {
-		Client client = clientConnection;
-		
 		int currentDelay=0;
-		if (client !=null) {
+		if (clientConnection !=null) {
 			byte[] msg=null;
 			
 			//wait maximal MAX_ACK_WAIT ms until we get a reply
 			while (currentDelay<MAX_ACK_WAIT && (msg==null || msg.length<3)) {
 				sleep(WAIT_PER_LOOP);
 				currentDelay+=WAIT_PER_LOOP;
-				msg = client.readBytes();
+				msg = clientConnection.readBytes();
 			}
 			
 			delayTotal+=currentDelay;
@@ -231,6 +228,12 @@ public class Lpd6803Net extends Lpd6803Common{
      */
     public int getDestPort() {
 		return destPort;
+	}
+
+
+	@Override
+	protected byte[] getReplyFromController() {
+		return clientConnection.readBytes();
 	}
 
 

@@ -302,7 +302,6 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @throws SerialPortException the serial port exception
 	 */
 	protected synchronized void writeData(byte[] cmdfull) throws WriteDataException {
-		//TODO handle the 128 byte buffer limit!
 		if (port==null) {
 			throw new WriteDataException("serial port is not ready!");
 		}
@@ -387,5 +386,10 @@ public class Lpd6803 extends Lpd6803Common {
     public String getSerialPortName() {
         return serialPortName;
     }
+
+	@Override
+	protected byte[] getReplyFromController() {
+		return port.readBytes();
+	}
 
 }
