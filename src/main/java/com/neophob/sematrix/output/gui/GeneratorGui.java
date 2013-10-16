@@ -1197,7 +1197,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 			}
 			lastTab = t;
 		}
-		System.out.println(allTabs.size());
 		//activate the last tab
 		allTabs.get(allTabs.size()-1).bringToFront();
 	}
