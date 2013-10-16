@@ -75,7 +75,6 @@ There are different frontends for PixelController:
         TEXTDEF                     # of parameters: 1     <INT> select texture deformation option, 1-11
         ZOOMOPT                     # of parameters: 1     <INT> select zoom options 1-4
         COLOR_SCROLL_OPT            # of parameters: 1     <INT> select color scroll fading direction, 1-14
-        COLOR_FADE_LENGTH           # of parameters: 1     <INT> fading length for the color fade generator
         TEXTWR                      # of parameters: 1     <STRING> update text for textwriter generator
         TEXTWR_OPTION               # of parameters: 1     <INT> set mode textwriter (pingpong scroller, left scroller)
         CHANGE_BRIGHTNESS           # of parameters: 1     <INT> output brightness 0 .. 100

@@ -28,7 +28,6 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class ColorFade extends Generator {
 
-    private int colorFadeTime;
     private int frameCount;
 
     /**
@@ -38,35 +37,12 @@ public class ColorFade extends Generator {
      */
     public ColorFade(PixelControllerGenerator controller) {
         super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
-
-        colorFadeTime = 30;
     }
 
     @Override
     public void update() {
-        //use sinus as cross over function for much smoother transitions DOES NOT WORK YET
-        //float ratio = (float)(Math.cos((s-colornumber) * Math.PI + Math.PI) + 1) / 2;        
-        //int col = super.getColor(colornumber, nextcolornumber, ratio);
-        int col = frameCount;
-        Arrays.fill(this.internalBuffer, col);
-        
+        Arrays.fill(this.internalBuffer, frameCount%255);        
         frameCount++;
     }
-
-
-    /**
-     * @return the colorFadeTime
-     */
-    public int getColorFadeTime() {
-        return colorFadeTime;
-    }
-
-    /**
-     * @param colorFadeTime the colorFadeTime to set
-     */
-    public void setColorFadeTime(int colorFadeTime) {
-        this.colorFadeTime = colorFadeTime;
-    }
-    
     
 }

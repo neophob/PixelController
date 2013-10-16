@@ -333,14 +333,6 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case COLOR_FADE_LENGTH:
-				try {
-					int length = Integer.parseInt(msg[1]);
-					col.getPixelControllerGenerator().setColorFadeTime(length);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
 
             case TEXTDEF:
 				try {

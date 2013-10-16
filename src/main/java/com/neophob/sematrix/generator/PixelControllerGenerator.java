@@ -62,9 +62,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The ColorScroller. */
     private ColorScroll colorScroll;
 
-    /** The Color fader- */
-    private ColorFade colorFade;
-    
     private OscListener oscListener1;
     private OscListener oscListener2;
     
@@ -121,7 +118,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
             isCaptureGeneratorActive = true;
         }
         colorScroll = new ColorScroll(this);
-        colorFade = new ColorFade(this);
+        new ColorFade(this);
         
         this.oscListener1 = new OscListener(this, GeneratorName.OSC_GEN1);
         this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN2);
@@ -141,8 +138,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.IMAGE+" "+image.getFilename());
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.TEXTWR_OPTION+" "+textwriter.getTextscroller());
-        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());        
-        ret.add(ValidCommands.COLOR_FADE_LENGTH+" "+colorFade.getColorFadeTime());
+        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         int brightnessInt = (int)(this.brightness*100f);
         ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
         
@@ -298,15 +294,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     	colorScroll.setScrollMode(colorScrollDir);
     }
     
-    /**
-     * Sets the color scroll fade length.
-     *
-     * @param colorScrollDir the new color scroll fade length
-     */
-    public void setColorFadeTime(int colorFadeTime) {
-        colorFade.setColorFadeTime(colorFadeTime);
-    }
-
     /**
      * Gets the text.
      *
