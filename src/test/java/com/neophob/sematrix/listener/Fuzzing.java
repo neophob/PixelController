@@ -42,6 +42,7 @@ public class Fuzzing {
         
         ValidCommands[] allCommands = ValidCommands.values();
         Random r = new Random();
+        System.out.println("Start fuzzing");
         
         for (int i=0; i<100000; i++) {
             ValidCommands cmd = allCommands[r.nextInt(allCommands.length)];
@@ -60,6 +61,7 @@ public class Fuzzing {
         }
         
         System.out.println("Fuzzing finished!");
+        Thread.sleep(1000L*60*60*16);
     }
 
 
