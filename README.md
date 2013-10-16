@@ -87,7 +87,7 @@ There are different frontends for PixelController:
         STATUS                      # of parameters: 0     <NO PARAM> refresh whole gui
         STATUS_MINI                 # of parameters: 0     <NO PARAM> just refresh parts of the gui
         CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
-        CHANGE_SHUFFLER_SELECT      # of parameters: 15    15 times <INT>, parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON
+        CHANGE_SHUFFLER_SELECT      # of parameters: 15    <INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0
         SAVE_PRESENT                # of parameters: 0     <NO PARAM> save current present settings
         LOAD_PRESENT                # of parameters: 0     <NO PARAM> load current present settings
         RANDOM                      # of parameters: 1     <ON|OFF> enable/disable random mode

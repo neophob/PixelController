@@ -42,7 +42,7 @@ import com.neophob.sematrix.properties.ValidCommands;
  */
 public class PixConClient {
 
-	private static final float VERSION = 0.4f; 
+	private static final float VERSION = 0.5f; 
 	
     /** The Constant DEFAULT_PORT. */
     private static final int DEFAULT_PORT = 3448;
@@ -105,31 +105,39 @@ public class PixConClient {
      */
     protected static ParsedArgument parseArgument(String[] args) {
 
-        if (args.length==0) {
+        if (args.length<2) {
             System.out.println("No arguments specified!");
             usage();
-            throw new IllegalArgumentException("no ValidCommand specified!");
+            System.exit(1);
         }
-        
+
         CmdLineParser parser = new CmdLineParser();
         CmdLineParser.Option host = parser.addStringOption('h', PARAM_HOST);
         CmdLineParser.Option port = parser.addIntegerOption('p', PARAM_PORT);
         CmdLineParser.Option command = parser.addStringOption('c', PARAM_COMMAND);
 
+        String pCmd = "undefined";
         try {
             parser.parse(args);
             String pHost = (String)parser.getOptionValue(host, DEFAULT_HOST);
             int pPort = (Integer)parser.getOptionValue(port, DEFAULT_PORT);
-            String pCmd = (String)parser.getOptionValue(command);            
+            pCmd = (String)parser.getOptionValue(command);        
             if (pCmd==null) {
                 System.out.println("Unknown Command: "+ArrayUtils.toString(args));
                 System.out.println("Exit now");
                 throw new IllegalArgumentException("no ValidCommand specified!");
             }
             
-            ValidCommands parsedCommand = ValidCommands.valueOf(pCmd);
-
+            ValidCommands parsedCommand = ValidCommands.valueOf(pCmd.toUpperCase());
             String[] otherArgs = parser.getRemainingArgs();
+            
+            if (parsedCommand.getNrOfParams() != otherArgs.length) {
+            	System.out.println("Invalid parameter count, expected: "+parsedCommand.getNrOfParams()+", provided: "+otherArgs.length);
+            	System.out.println();
+                usage();
+                System.exit(1);
+            }
+            
             String param = "";
             for (String s: otherArgs) {
                 param += s+" ";
@@ -137,10 +145,15 @@ public class PixConClient {
 
             return new ParsedArgument(pHost, pPort, parsedCommand, param.trim());
         } catch (UnknownOptionException e) {
-            System.err.println(e.getMessage());
+        	System.out.println("Invalid option defined: "+e.getMessage());
+        	System.out.println();
         } catch (IllegalOptionValueException e) {
-            System.err.println(e.getMessage());
-        }
+        	System.out.println("Invalid option value defined: "+e.getMessage());
+        	System.out.println();
+        } catch (IllegalArgumentException e) {
+			System.out.println("Invalid command defined <"+pCmd+">: "+e.getMessage());
+			System.out.println();
+		}
 
         usage();
         System.exit(2);
@@ -184,7 +197,8 @@ public class PixConClient {
         ParsedArgument cmd=null;        
         try {
             cmd = parseArgument(args);
-        } catch (Exception e) {            
+        } catch (Exception e) {  
+        	e.printStackTrace();
             System.out.println();
             System.exit(1);            
         }

@@ -63,7 +63,7 @@ public enum ValidCommands {
 	CHANGE_PRESENT(CommandGroup.MISC, 1, "<INT> select current present id"),
 	
 	/** The CHANGE shuffler select. */
-	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 15, "15 times <INT>, parameter to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON"),
+	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 15, "<INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0"),
 	
 	/** The CHANGE threshold value. */
 	CHANGE_THRESHOLD_VALUE(CommandGroup.EFFECT, 1, "<INT> select current threshold for the threshold effect, 0-255"),

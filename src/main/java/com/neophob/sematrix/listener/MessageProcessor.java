@@ -227,13 +227,17 @@ public final class MessageProcessor {
 						size=msgLength;
 					}
 					boolean b;
+					String str="";
 					for (int i=0; i<size; i++) {
 						b = false;
 						if (msg[i+1].equals("1")) {
 							b = true;
-						}
+							str += '1';
+						} else str += '0';
+						
 						col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
-					}					
+					}
+					LOG.log(Level.INFO, "Shuffler select: "+str);
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -377,6 +381,7 @@ public final class MessageProcessor {
 						col.setRandomPresetMode(false);
 						col.setRandomMode(true);
 						LOG.log(Level.INFO, "Random Mode enabled");
+						//no need to refresh the gui here (yet)
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
 						col.setRandomPresetMode(false);
@@ -396,6 +401,7 @@ public final class MessageProcessor {
 						col.setRandomMode(false);
 						col.setRandomPresetMode(true);
 						LOG.log(Level.INFO, "Random Preset Mode enabled");
+						//no need to refresh the gui here (yet)
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
 						col.setRandomMode(false);
