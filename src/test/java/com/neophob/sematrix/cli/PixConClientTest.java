@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.cli;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -32,14 +32,29 @@ import com.neophob.sematrix.properties.ValidCommands;
 public class PixConClientTest extends PixConClient {
 
 
-    @Test(expected = IllegalArgumentException.class)
-    public void parserTestNoParameter() {
-        ParsedArgument cmd = parseArgument(new String[0]);
-        assertEquals("127.0.0.1", cmd.getHostname());
+    @Test(expected = InvalidParameterException.class)
+    public void parserTestNoParameter() throws Exception {    	    	
+    	parseArgument(new String[0]);
     }
 
     @Test
-    public void parserTestSimple() {
+    public void parserTestRandomize1() throws Exception {
+        String[] param = new String[4];
+        param[0] = "-c";
+        param[1] = "RANDOMIZE";
+        param[2] = "-p";
+        param[3] = "34234";
+
+        ParsedArgument cmd = parseArgument(param);
+
+        assertEquals("127.0.0.1", cmd.getHostname());
+        assertEquals(34234, cmd.getPort());
+        assertEquals(ValidCommands.RANDOMIZE, cmd.getCommand());
+        assertEquals("", cmd.getParameter());
+    }
+
+    @Test
+    public void parserTestRandomize2() throws Exception {
         String[] param = new String[2];
         param[0] = "-c";
         param[1] = "RANDOMIZE";
@@ -52,8 +67,8 @@ public class PixConClientTest extends PixConClient {
         assertEquals("", cmd.getParameter());
     }
 
-    @Test
-    public void parserTestSimple2() {
+    @Test(expected = InvalidParameterException.class)
+    public void parserTestRandomize3() throws Exception {
         String[] param = new String[5];
         param[0] = "-c";
         param[1] = "RANDOMIZE";
@@ -69,23 +84,18 @@ public class PixConClientTest extends PixConClient {
         assertEquals("blah", cmd.getParameter());
     }
 
-    @Test
-    public void parserTestSimple3() {
+    @Test(expected = InvalidParameterException.class)
+    public void parserTestSimple3() throws Exception {
         String[] param = new String[8];
         param[0] = "-c";
         param[1] = "CHANGE_THRESHOLD_VALUE";
-        param[2] = "-p";
+        param[2] = "";
         param[3] = "9";        
         param[4] = "-h";
         param[5] = "1.2.3.4";
         param[6] = "1";
         param[7] = "2";
         
-        ParsedArgument cmd = parseArgument(param);
-
-        assertEquals("1.2.3.4", cmd.getHostname());
-        assertEquals(9, cmd.getPort());
-        assertEquals(ValidCommands.CHANGE_THRESHOLD_VALUE, cmd.getCommand());
-        assertEquals("1 2", cmd.getParameter());
+        parseArgument(param);
     }
 }

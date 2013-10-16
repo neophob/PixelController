@@ -102,13 +102,13 @@ public class PixConClient {
      *
      * @param args the args
      * @return the parsed argument
+     * @throws InvalidParameterException 
      */
-    protected static ParsedArgument parseArgument(String[] args) {
+    protected static ParsedArgument parseArgument(String[] args) throws InvalidParameterException {
 
         if (args.length<2) {
-            System.out.println("No arguments specified!");
-            usage();
-            System.exit(1);
+            System.out.println("No arguments specified!\n");
+            throw new InvalidParameterException("No arguments specified!");
         }
 
         CmdLineParser parser = new CmdLineParser();
@@ -131,11 +131,10 @@ public class PixConClient {
             ValidCommands parsedCommand = ValidCommands.valueOf(pCmd.toUpperCase());
             String[] otherArgs = parser.getRemainingArgs();
             
-            if (parsedCommand.getNrOfParams() != otherArgs.length) {
-            	System.out.println("Invalid parameter count, expected: "+parsedCommand.getNrOfParams()+", provided: "+otherArgs.length);
-            	System.out.println();
-                usage();
-                System.exit(1);
+            if (parsedCommand.getNrOfParams() < otherArgs.length) {
+            	String err = "Invalid parameter count, expected: "+parsedCommand.getNrOfParams()+", provided: "+otherArgs.length;
+            	System.out.println(err);
+            	throw new InvalidParameterException(err);
             }
             
             String param = "";
@@ -155,9 +154,7 @@ public class PixConClient {
 			System.out.println();
 		}
 
-        usage();
-        System.exit(2);
-        return null;
+        throw new InvalidParameterException("Something went wrong..");
     }
 
     /**
@@ -198,8 +195,7 @@ public class PixConClient {
         try {
             cmd = parseArgument(args);
         } catch (Exception e) {  
-        	e.printStackTrace();
-            System.out.println();
+        	usage();
             System.exit(1);            
         }
         
