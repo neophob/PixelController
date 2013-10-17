@@ -243,8 +243,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorListTwo.setLabel(generatorListTwo.getItem(1).getName());
         generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
         generatorListTwo.moveTo(ALWAYS_VISIBLE_TAB);
-        generatorListOne.setHeight(Theme.DROPBOXLIST_HEIGHT);
-        generatorListTwo.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        generatorListOne.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
+        generatorListTwo.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
 
         //Effect 
         effectListOne = cp5.addDropdownList(GuiElement.EFFECT_ONE_DROPDOWN.guiText(), 
@@ -263,8 +263,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         effectListTwo.setLabel(effectListTwo.getItem(0).getName());
         effectListOne.moveTo(ALWAYS_VISIBLE_TAB);
         effectListTwo.moveTo(ALWAYS_VISIBLE_TAB);
-        effectListOne.setHeight(Theme.DROPBOXLIST_HEIGHT);
-        effectListTwo.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        effectListOne.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
+        effectListTwo.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
         
         //Mixer 
         mixerList = cp5.addDropdownList(GuiElement.MIXER_DROPDOWN.guiText(), 
@@ -277,7 +277,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             i++;
         }
         mixerList.setLabel(mixerList.getItem(0).getName());
-        mixerList.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        mixerList.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
         mixerList.moveTo(ALWAYS_VISIBLE_TAB);
 
 
@@ -539,7 +539,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             i++;
         }		
         colorSetList.setLabel(colorSetList.getItem(1).getName());
-        colorSetList.setHeight(Theme.DROPBOXLIST_HEIGHT);
+        colorSetList.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
         colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
         cp5.getTooltip().register("colSet", Messages.getString("GeneratorGui.TOOLTIP_COLORSET")); //$NON-NLS-1$ //$NON-NLS-2$
 
