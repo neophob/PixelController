@@ -34,23 +34,55 @@ public class Rotate90 extends Effect {
 	public Rotate90(PixelControllerEffect controller) {
 		super(controller, EffectName.ROTATE90, ResizeName.QUALITY_RESIZE);
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.effect.Effect#getBuffer(int[])
 	 */
 	public int[] getBuffer(int[] buffer) {
-		int[] ret = new int[buffer.length];
-		
-		int ofs=0;
-
-		for (int x=0; x<internalBufferXSize; x++) {			
-			for (int y=0; y<internalBufferYSize; y++) {
-				//TODO missing y size?
-				ret[internalBufferXSize*y+internalBufferXSize-1-x] = buffer[ofs++];
+		//easy rotating, if x and y has the same size
+		if (internalBufferXSize==internalBufferYSize) {
+			int[] ret = new int[buffer.length];
+			int ofs=0;
+			
+			for (int x=0; x<internalBufferXSize; x++) {			
+				for (int y=0; y<internalBufferYSize; y++) {
+					ret[internalBufferXSize*y+internalBufferXSize-1-x] = buffer[ofs++];
+				}
 			}
+			return ret;			
 		}
-		return ret;
+		
+
+		return this.rotoZoom(1f, buffer);					
 	}
 	
+	/**
+	 * copy paste rotozoom effect
+	 * @param scaleP
+	 * @param bufferSrc
+	 * @return
+	 */
+	private int[] rotoZoom(float scaleP, int bufferSrc[]) {
+		int[] tmp = new int[bufferSrc.length];
+		int offs=0,soffs;
+		float tx,ty;
 
+        float sa=(float)(scaleP*1);		
+		float txx=0-(internalBufferXSize/2.0f)*sa;
+
+		for (int y=0; y<internalBufferYSize; y++) {		    
+	        txx-=sa;
+			
+			ty=0;
+			tx=txx;
+			for (int x=0; x<internalBufferXSize; x++) {
+				ty+=sa;				
+				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
+			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];    
+			}
+		}
+
+		return tmp;
+	}
 }
