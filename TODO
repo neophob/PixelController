@@ -28,17 +28,12 @@ Roadmap PixelController
 -Option to use system audio as input source, currently its only mic input. 
 -Syphon support https://code.google.com/p/syphon-implementations/
 -OLA (http://www.opendmx.net/index.php/Open_Lighting_Architecture) input plugin see https://github.com/neophob/ola-to-tpm2net
+-Use Observer Pattern to update GUI elements
 
 
 Roadmap PixelInvaders Firmware
 ------------------------------
 -support Teensy 3 (PixelInvaders firmware, partly done)
--Even more speed for the PixelInvaders firmware:
-	-optimize transfer size to be a multiple of 60 bytes (Arduino and Teensy hardware serial class has a buffer size of 64 bytes)
-	-send reply (ack) only each 2nd frame? each 25th frame? side effects?
-	-maybe a streaming only firmware?
--PixelInvaders Firmware: its possible that only the first half of the screen is updated - in such a case
- the screen gets not refreshed, thus the changes are not visible. 
 -Support ambient color for the output panel(s)
 
 
