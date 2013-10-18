@@ -56,7 +56,7 @@
 #define TPM2NET_FOOTER_IDENT 0x36
 
 //package size we expect. 
-#define MAX_PACKED_SIZE 256
+#define MAX_PACKED_SIZE 255
 
 //Teensy 2.0 has the LED on pin 11.
 //Teensy++ 2.0 has the LED on pin 6
@@ -73,8 +73,6 @@ uint8_t totalPacket;
 int j=0,k=0;
 uint8_t serialDataRecv;
 
-uint8_t serialResonse[4];
-
 //initialize pixels
 Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
 
@@ -82,12 +80,8 @@ Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
 //     send status back to library
 // --------------------------------------------
 static void sendAck() {
-  serialResonse[0] = 'A';
-  serialResonse[1] = 'K';
-  serialResonse[2] = Serial.available();
-  serialResonse[3] = 0;
-  Serial.write(serialResonse, 4);
-
+  Serial.print("AK PIXELINVADERS, PANELS:");
+  Serial.print(NR_OF_PANELS, DEC);
 #if defined (CORE_TEENSY_SERIAL)
   //Teensy supports send now
   Serial.send_now();
@@ -146,7 +140,7 @@ void loop() {
   
   if (res > 0) {
     serialDataRecv = 1;
-#ifdef DEBUG      
+/*#ifdef DEBUG      
     Serial.print(" OK");
     Serial.print(psize, DEC);    
     Serial.print("/");
@@ -154,7 +148,7 @@ void loop() {
 #if defined (CORE_TEENSY_SERIAL)
     Serial.send_now();
 #endif
-#endif
+#endif*/
     digitalWrite(LED_PIN, HIGH);
     updatePixels();
     digitalWrite(LED_PIN, LOW);    
@@ -189,9 +183,12 @@ void updatePixels() {
     strip.setPixelColor(ledOffset++, packetBuffer[ofs]<<8 | packetBuffer[ofs+1]);
     ofs+=2;
   }  
-  
-  //update only if all data packets recieved
-  strip.show();   // write all the pixels out  
+
+  //update panel content only once, even if we send multiple packets.
+  //this can be done on the PixelController software
+  if (currentPacket==totalPacket-1) {  
+    strip.show();   // write all the pixels out  
+  }
 }
 
 
