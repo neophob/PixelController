@@ -7,6 +7,7 @@ Changelog v1.4.1 to v1.5.0
 -Fix use colorset name (instead of index) if a preset is saved
 -Fix colorscroll GUI element initialization
 -Fix Effect Rotate90 for non square output
+-Fix Mixer Checkbox for exotic resolutions
 -Fix PixConCli JMX Query  
 -Cleanup GUI, make grouping of controls more strict
 -Reduce filesize of distribution file, remove unneeded files

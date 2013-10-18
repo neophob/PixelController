@@ -19,7 +19,6 @@
 package com.neophob.sematrix.mixer;
 
 import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -58,9 +57,8 @@ public class Checkbox extends Mixer {
 		
 		//lazy init
 		if (flpX == -1) {
-	        this.flpX = gen1.getInternalBufferXSize()/CHECK_BOX_SIZE;	        
-	        float aspectRatio = Collector.getInstance().getMatrix().getDeviceXSize()/Collector.getInstance().getMatrix().getDeviceYSize();	        
-	        this.flpY = (int)(gen1.getInternalBufferXSize()*CHECK_BOX_SIZE*aspectRatio);		    
+	        this.flpX= gen1.getInternalBufferXSize()/CHECK_BOX_SIZE;	        
+	        this.flpY = gen1.getInternalBufferXSize()*gen1.getInternalBufferYSize()/CHECK_BOX_SIZE;	
 		}
 		
 		int[] src1 = visual.getEffect1Buffer();
