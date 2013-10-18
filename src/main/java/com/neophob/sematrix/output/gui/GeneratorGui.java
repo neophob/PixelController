@@ -663,7 +663,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("nfoWindowHeight", Messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         int ibsX= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferXSize();
-        int ibsY= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferXSize();
+        int ibsY= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferYSize();
         cp5.addTextlabel("nfoInternalBuffer", Messages.getString("GeneratorGui.INFO_INTERNAL_BUFFERSIZE")+ibsX+"/"+ibsY, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         nfoXPos += xposAdd;
