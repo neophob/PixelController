@@ -186,8 +186,27 @@ void updatePixels() {
 
   //update panel content only once, even if we send multiple packets.
   //this can be done on the PixelController software
-  if (currentPacket==totalPacket-1) {  
-    strip.show();   // write all the pixels out  
+  if (currentPacket>=totalPacket-1) {  
+    strip.show();   // write all the pixels out
+#ifdef DEBUG      
+    Serial.print(" OK");
+    Serial.print(currentPacket, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
+  } else {
+    
+#ifdef DEBUG      
+    Serial.print(" No update yet ");
+    Serial.print(currentPacket, DEC);
+    Serial.print(" / ");
+    Serial.print(totalPacket-1, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
+    
   }
 }
 
@@ -224,6 +243,15 @@ int16_t readCommand() {
   //get remaining bytes
   uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
   if (recvNr!=psize) {
+#ifdef DEBUG      
+    Serial.print(" Failed ");
+    Serial.print(recvNr, DEC);
+    Serial.print(" / ");
+    Serial.print(psize, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
     return -5;
   }  
   

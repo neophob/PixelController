@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.output;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -52,7 +51,7 @@ public class CacheMechanismTest {
 			return lastDataMap.get(i);
 		}
 		
-		public boolean didFrameChange(byte ofs, byte data[]) {
+		public boolean didFrameChange(byte ofs, int data[]) {
 			return super.didFrameChange(ofs, data);
 		}
 
@@ -68,34 +67,33 @@ public class CacheMechanismTest {
     public void speedAdler() {
     	DummyOutput out = new DummyOutput();
     	byte[] data = new byte[128];
+    	int[] datai = new int[128];
     	byte ofs=(byte)0;
     	
-    	int sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(1, sentFrames);
+    	boolean sentFrames = out.sendFrame(ofs, data,1);
+    	assertTrue(sentFrames);
     	
     	//simulate successful data send
     	out.ackReturnValue=true;
-    	sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(0, sentFrames);
-    	
-    	long initContent = out.getCache(ofs);
-    	    	
+    	sentFrames = out.sendFrame(ofs, data,1);
+    	assertTrue(sentFrames);
+    	    	    	
     	data[0] = 20;
-    	assertTrue(out.didFrameChange(ofs, data));
-    	assertFalse(out.didFrameChange(ofs, data));
-    	sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(1, sentFrames);
+    	datai[0] = 20;
+    	assertTrue(out.didFrameChange(ofs, datai));
+    	assertFalse(out.didFrameChange(ofs, datai));
+    	sentFrames = out.sendFrame(ofs, data, 1);
+    	assertTrue(sentFrames);
     	
     	data[1] = 120;
     	data[111] = 120;
-    	assertTrue(out.didFrameChange(ofs, data));
-    	assertFalse(out.didFrameChange(ofs, data));
-    	sentFrames = out.sendFrame(ofs, data);
-    	assertEquals(1, sentFrames);
+    	datai[1] = 120;
+    	datai[111] = 120;
+    	assertTrue(out.didFrameChange(ofs, datai));
+    	assertFalse(out.didFrameChange(ofs, datai));
+    	sentFrames = out.sendFrame(ofs, data, 1);
+    	assertTrue(sentFrames);
 
-    	long x = out.getCache(ofs);
-    	assertTrue(initContent!=x);
-    	assertTrue(0!=x);
     }
     
 }

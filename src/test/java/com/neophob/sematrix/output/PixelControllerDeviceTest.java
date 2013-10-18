@@ -35,7 +35,7 @@ public class PixelControllerDeviceTest extends Lpd6803Common {
 	
     @Test
     public void testChaching() {
-    	byte[] b = new byte[64];    	
+    	int[] b = new int[64];    	
     	assertTrue(didFrameChange((byte)0, b));
     	assertFalse(didFrameChange((byte)0, b));
     	b[0]=5;

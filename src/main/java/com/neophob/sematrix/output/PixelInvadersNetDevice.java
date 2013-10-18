@@ -99,8 +99,8 @@ public class PixelInvadersNetDevice extends Output {
 				
 				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
-				int sf = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
-				sendedFrames += sf;
+		//		int sf = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
+		//		sendedFrames += sf;
 			}			
 		}
 	}

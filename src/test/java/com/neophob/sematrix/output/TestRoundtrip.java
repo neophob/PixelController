@@ -68,7 +68,7 @@ public class TestRoundtrip extends PApplet {
 	public void draw() {
 		long l1 = System.currentTimeMillis();
 		//r.sendRgbFrame((byte)1, frame1);
-		r.sendFrame((byte)0, frame2);
+		r.sendFrame((byte)0, frame2, 1);
 		//r.ping();
 		long l2= System.currentTimeMillis()-l1;
 		System.out.println("need "+l2+"ms to send data");

@@ -18,7 +18,9 @@
  */
 package com.neophob.sematrix.output;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +53,9 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	/** The lpd6803. */
 	private Lpd6803 lpd6803 = null;
 
+	//primitive arrays can not added to a map, and autoboxing do not work
+	private Map<Integer, Object> transformedBuffer = new HashMap<Integer, Object>(); 
+			
 	/**
 	 * init the lpd6803 devices.
 	 *
@@ -64,7 +69,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
-		this.initialized = false;	
+		this.initialized = false;			
 		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), panelOrder.size() );			
@@ -117,25 +122,40 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	public void update() {
 		
 		if (initialized) {			
+			this.transformedBuffer.clear();
+			
+			int totalFrames = 0;
+			//step 1, check how many data packages need to send
 			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
 				//draw only on available screens!
 				
 				//get the effective panel buffer
 				int panelNr = this.panelOrder.get(ofs);
 				
-				int[] transformedBuffer = 
+				int[] bfr = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 							Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
-				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
+				bfr = OutputHelper.flipSecondScanline(bfr, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
 				
-				int sendedFrames = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
-				if (sendedFrames>0) {
-					needUpdate+=sendedFrames;
-				} else {
-					noUpdate++;
+				if (lpd6803.didFrameChange((byte)ofs, bfr)) {
+					this.transformedBuffer.put(panelNr, bfr);
+					totalFrames++;
 				}
 			}
+
+			//step 2, send data out
+			for (Map.Entry<Integer, Object> entry: this.transformedBuffer.entrySet()) {
+				int panelNr = entry.getKey();
+				int[] data = (int[])entry.getValue();
+				if (lpd6803.sendRgbFrame((byte)panelNr, data, colorFormat.get(panelNr), totalFrames)) {
+					needUpdate++;
+				} else {
+					noUpdate++;
+					System.out.println("NOP");
+				}								
+			}
+			
 			
 			if ((noUpdate+needUpdate)%1000==0) {
 				float f = noUpdate+needUpdate;

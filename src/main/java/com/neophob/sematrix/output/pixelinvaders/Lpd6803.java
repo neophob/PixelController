@@ -108,7 +108,7 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
 	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int totalPanels) throws NoSerialPortFoundException {
-		this(app, null, 0, portBlacklist, correctionMap, totalPanels);
+		this(app, null, 0, portBlacklist, correctionMap);
 	}
 
 
@@ -120,14 +120,13 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int totalPanels) throws NoSerialPortFoundException {
+	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
 		this.app = app;
 		app.registerDispose(this);		
 		this.correctionMap = correctionMap;
-		this.totalPanels = totalPanels;
 		
 		serialPortName="";
 		if(baud > 0) {
@@ -289,7 +288,6 @@ public class Lpd6803 extends Lpd6803Common {
 		}
 		
 		try {
-System.out.println("write "+cmdfull.length+" serial bytes");
 			port.output.write(cmdfull);			
 			port.output.flush();
 		} catch (Exception e) {
@@ -312,7 +310,6 @@ System.out.println("write "+cmdfull.length+" serial bytes");
 		while (timeout > 0 && port.available() < 2) {
 			sleep(TIMEOUT_SLEEP); //in ms
 			timeout--;
-System.out.println("port.available(): "+port.available()+", timeout: "+timeout);			
 		}
 		if (timeout == 0 && port.available() < 2) {
 			LOG.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);

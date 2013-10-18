@@ -1,5 +1,6 @@
 package com.neophob.sematrix.output.pixelinvaders;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -44,8 +45,6 @@ public abstract class Lpd6803Common {
 	/** The ack errors. */
 	protected long ackErrors = 0;
 	
-	protected int totalPanels = 0;
-
 	
 	/**
 	 * return connection state of lib.
@@ -64,9 +63,10 @@ public abstract class Lpd6803Common {
 	 * @param ofs the image ofs
 	 * @param data rgb data (int[64], each int contains one RGB pixel)
 	 * @param colorFormat the color format
+	 * @param totalPanels total panels
 	 * @return nr of sended update frames
 	 */
-	public int sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat) {
+	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat, int totalPanels) {
 		if (data.length!=BUFFERSIZE) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
@@ -74,10 +74,10 @@ public abstract class Lpd6803Common {
 		int ofsAsInt = ofs;
 		if (correctionMap.containsKey(ofsAsInt)) {
 			RGBAdjust correction = correctionMap.get(ofsAsInt);
-			return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat, correction));			
+			return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat, correction), totalPanels);			
 		}
 
-		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat));
+		return sendFrame(ofs, OutputHelper.convertBufferTo15bit(data, colorFormat), totalPanels);
 	}
 	
 
@@ -91,26 +91,18 @@ public abstract class Lpd6803Common {
 	 * @return nr of sended frames
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public int sendFrame(byte ofs, byte data[]) throws IllegalArgumentException {		
+	public boolean sendFrame(byte ofs, byte data[], int totalPanels) throws IllegalArgumentException {		
 		if (data.length!=128) {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
-		
 		byte[] imagePayload = Tpm2NetProtocol.createImagePayload(ofs, totalPanels, data);
 
-		int returnValue = 0;
-		//send frame one
-		if (didFrameChange(ofs, imagePayload)) {
-			
-			if (sendData(imagePayload)) {
-				returnValue++;
-			} else {
-				//in case of an error, make sure we send it the next time!
-				lastDataMap.put(ofs, 0L);
-			}
+		if (sendData(imagePayload)) {
+			return true;
 		}
-		
-		return returnValue;
+		//in case of an error, make sure we send it the next time!
+		lastDataMap.put(ofs, 0L);
+		return false;
 	}
 	
 	/**
@@ -136,7 +128,7 @@ public abstract class Lpd6803Common {
 	 * @param cmdfull the cmdfull
 	 * @return true, if successful
 	 */
-	protected boolean sendData(byte cmdfull[]) {
+	public boolean sendData(byte cmdfull[]) {
 		try {
 			writeData(cmdfull);
 
@@ -189,7 +181,7 @@ public abstract class Lpd6803Common {
 	 * @param data the data
 	 * @return true if send was successful
 	 */
-	protected boolean didFrameChange(byte ofs, byte data[]) {
+	private boolean didFrameChange(byte ofs, byte data[]) {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();
@@ -210,6 +202,21 @@ public abstract class Lpd6803Common {
 		return true;
 	}
 
+	
+	/**
+	 * 
+	 * @param ofs
+	 * @param data
+	 * @return
+	 */
+	public boolean didFrameChange(byte ofs, int data[]) {
+		ByteBuffer b = ByteBuffer.allocate(data.length*4);
+		for (int i: data) {
+			b.putInt(i);			
+		}
+
+		return didFrameChange(ofs, b.array());
+	}
 
 	
     /**
