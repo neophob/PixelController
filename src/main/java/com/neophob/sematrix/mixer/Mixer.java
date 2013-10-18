@@ -65,6 +65,10 @@ public abstract class Mixer {
 		HALFHALF(9),
 		
 		HALFHALFVERTICAL(10),
+		
+		MINIMUM(11),
+		
+		MAXIMUM(12),
 		;
 		
 		/** The id. */

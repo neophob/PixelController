@@ -60,6 +60,8 @@ public class PixelControllerMixer implements PixelControllerElement {
 		new SubSat(this);
 		new HalfHalf(this);
 		new HalfHalfVertical(this);
+		new Maximum(this);
+		new Minimum(this);
 	}
 	
 	/* (non-Javadoc)
