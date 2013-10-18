@@ -60,13 +60,13 @@ public class Plasma2 extends Generator {
 		int ySize = internalBufferYSize;
 		// Plasma algorithm
 		for (int x = 0; x < internalBufferXSize; x++, xc++) {
-			float yc = 10;
+			float yc = 20;
 			float s1 = aaa + aaa * (float)Math.sin(PApplet.radians(xc) * calculation1 );
 
 			for (int y = 0; y < ySize; y++, yc++) {
 				float s2 = aaa + aaa * (float)Math.sin(PApplet.radians(yc) * calculation2 );
 				float s3 = aaa + aaa * (float)Math.sin(PApplet.radians((xc + yc + timeDisplacement * 3) / 2));  
-				float s  = (s1+ s2 + s3) / 128;
+				float s  = (s1+ s2 + s3) / 255;
 				
 				int aa = (int)(s*255f+0.5f);
 				this.internalBuffer[y*internalBufferXSize+x] = aa%0xff;
