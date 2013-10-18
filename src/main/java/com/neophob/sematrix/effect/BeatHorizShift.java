@@ -60,8 +60,9 @@ public class BeatHorizShift extends Effect {
 	 * @param ammount the ammount
 	 * @return the int[]
 	 */
-	private int[] doHorizShift(int[] buffer, int ammount) {
+	private int[] doHorizShift(int[] buffer, int ammount) {		
 		int[] ret = new int[buffer.length];
+		ammount %= internalBufferXSize;
 
 		int x,idx=0,ofs;
 		for (int y=0; y<internalBufferYSize; y++) {
