@@ -58,7 +58,8 @@ public class Rotate90 extends Effect {
 	}
 	
 	/**
-	 * simplyfied rotozoom effect
+	 * Simplified RotoZoom effect
+	 * 
 	 * @param scaleP
 	 * @param bufferSrc
 	 * @return
