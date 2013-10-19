@@ -47,7 +47,8 @@ public class Fire extends Generator implements PConstants {
 	public Fire(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
-		buffer = new int[internalBufferXSize*internalBufferYSize];
+		this.buffer = new int[internalBufferXSize*(internalBufferYSize+10)];
+System.out.println("BFRS: "+this.buffer.length);		
 		r = new Random();
 	}
 
@@ -56,8 +57,7 @@ public class Fire extends Generator implements PConstants {
 	 */
 	@Override
 	public void update() {
-		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()-1);
-
+		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()+1);
 		int random;
 		for (int i = 0; i < this.getInternalBufferXSize(); i++) {
 			random = r.nextInt(16);
@@ -72,7 +72,7 @@ public class Fire extends Generator implements PConstants {
 		
 		/* move fire upwards, start at bottom*/
 		int temp;
-		for (int index = 0; index < internalBufferYSize-1; index++) {
+		for (int index = 0; index < internalBufferYSize+1; index++) {
 			for (int i = 0; i < internalBufferXSize; i++) {
 				if (i == 0) {
 					/* at the left border*/
@@ -81,7 +81,7 @@ public class Fire extends Generator implements PConstants {
 					temp += buffer[j - internalBufferXSize];
 					temp /=3;
 				} else 
-					if (i == this.getInternalBufferXSize() - 1) {
+					if (i == this.getInternalBufferXSize()) {
 						/* at the right border*/
 						temp = buffer[j + i];
 						temp += buffer[j - internalBufferXSize + i];
@@ -98,8 +98,12 @@ public class Fire extends Generator implements PConstants {
 					/* decay */
 					temp --; 
 				}
-				this.buffer[j - internalBufferXSize + i] = temp;
-				this.internalBuffer[j - internalBufferXSize + i] = temp;
+				
+				int dofs = j - internalBufferXSize + i;
+				this.buffer[dofs] = temp;
+				if (dofs<this.internalBuffer.length) {
+					this.internalBuffer[dofs] = temp;					
+				}
 			}
 			j -= this.getInternalBufferXSize();
 		}      
