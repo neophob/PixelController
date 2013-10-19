@@ -57,6 +57,7 @@ public abstract class PixelInvadersDevice extends Output {
 
 	protected long sentFrames = 0;
 	protected long ignoredFrames = 0;
+	protected long errorFrames = 0;
 	
 	/**
 	 * 
@@ -102,6 +103,8 @@ public abstract class PixelInvadersDevice extends Output {
 			if (lpd6803.didFrameChange((byte)ofs, bfr)) {
 				this.transformedBuffer.put(panelNr, bfr);
 				totalFrames++;
+			} else {
+				ignoredFrames++;
 			}
 		}
 
@@ -112,16 +115,15 @@ public abstract class PixelInvadersDevice extends Output {
 			if (lpd6803.sendRgbFrame((byte)panelNr, data, colorFormat.get(panelNr), totalFrames)) {
 				sentFrames++;
 			} else {
-				ignoredFrames++;
-				System.out.println("NOP");
+				errorFrames++;
 			}								
 		}
 		
 		if ((sentFrames+ignoredFrames)%2000==0) {
 			float f = sentFrames+ignoredFrames;
 			float result = (100.0f/f)*sentFrames;
-			LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}", 
-					new Object[] {result, sentFrames, ignoredFrames});				
+			LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, errors: {3}", 
+					new Object[] {result, sentFrames, ignoredFrames, errorFrames});				
 		}
 		
 	}
