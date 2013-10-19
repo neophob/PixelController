@@ -36,8 +36,8 @@ import com.neophob.sematrix.output.MiniDmxDevice;
 import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.output.OutputDeviceEnum;
-import com.neophob.sematrix.output.PixelInvadersDevice;
 import com.neophob.sematrix.output.PixelInvadersNetDevice;
+import com.neophob.sematrix.output.PixelInvadersSerialDevice;
 import com.neophob.sematrix.output.RainbowduinoV2Device;
 import com.neophob.sematrix.output.RainbowduinoV3Device;
 import com.neophob.sematrix.output.StealthDevice;
@@ -140,7 +140,7 @@ public class InitApplication {
         try {
             switch (outputDeviceEnum) {
             case PIXELINVADERS:
-                output = new PixelInvadersDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new PixelInvadersSerialDevice(applicationConfig, collector.getPixelControllerOutput());
                 break;
             case PIXELINVADERS_NET:
                 output = new PixelInvadersNetDevice(applicationConfig, collector.getPixelControllerOutput());

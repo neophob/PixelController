@@ -24,7 +24,7 @@ package com.neophob.sematrix.output;
 public enum OutputDeviceEnum {
 	
 	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
-	PIXELINVADERS(PixelInvadersDevice.class, true),
+	PIXELINVADERS(PixelInvadersSerialDevice.class, true),
 	
 	/** The Element STEALTH LED PANELS. */
 	STEALTH(StealthDevice.class, true),

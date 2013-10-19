@@ -36,10 +36,10 @@ import com.neophob.sematrix.properties.DeviceConfig;
  *
  * @author michu
  */
-public class PixelInvadersDevice extends ArduinoOutput {
+public class PixelInvadersSerialDevice extends ArduinoOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PixelInvadersDevice.class.getName());
+	private static final Logger LOG = Logger.getLogger(PixelInvadersSerialDevice.class.getName());
 		
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	private List<DeviceConfig> displayOptions;
@@ -63,7 +63,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public PixelInvadersDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
+	public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);
 		
 		this.displayOptions = ph.getLpdDevice();
@@ -157,7 +157,7 @@ public class PixelInvadersDevice extends ArduinoOutput {
 			}
 			
 			
-			if ((noUpdate+needUpdate)%1000==0) {
+			if ((noUpdate+needUpdate)%2000==0) {
 				float f = noUpdate+needUpdate;
 				float result = (100.0f/f)*needUpdate;
 				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
