@@ -1086,6 +1086,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
         }
 
+        //close all open tabs
         if (!clickedOn.contains(GuiElement.GENERATOR_ONE_DROPDOWN)) {
             generatorListOne.setOpen(false);
         }
@@ -1147,11 +1148,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * select visual by keypress
      */
     public void keyPressed() {
-    	if (keyCode==ESC) {		//ignored
+    	//ignore escape key
+    	if (keyCode==ESC) {
     		key=0;
-/*            if (MouseHandler.quitApplicationYesOrNo()) {
-                MouseHandler.exit();
-            }*/
     	} else {
             KeyboardHandler.keyboardHandler(key, keyCode);    		
     	}
@@ -1163,10 +1162,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     @Override
     public void activeVisual(int n) {
         selectedVisualList.activate(n);
-        
-        //example how to activate a tab
-        //cp5.getTab("default").setActive(false);
-        //infoTab.setActive(true);        
     }
 
 	@Override
