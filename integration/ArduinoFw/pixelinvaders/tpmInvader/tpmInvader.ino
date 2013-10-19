@@ -153,8 +153,8 @@ void loop() {
     updatePixels();
     digitalWrite(LED_PIN, LOW);    
   }
-#ifdef DEBUG      
   else {
+    //return error number
     if (res!=-1) {
       Serial.print("ERR: ");
       Serial.print(res, DEC);
@@ -163,7 +163,6 @@ void loop() {
 #endif      
     }
   }
-#endif  
 
   if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
     rainbow();
@@ -243,14 +242,12 @@ int16_t readCommand() {
   //get remaining bytes
   uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
   if (recvNr!=psize) {
-#ifdef DEBUG      
     Serial.print(" Failed ");
     Serial.print(recvNr, DEC);
     Serial.print(" / ");
     Serial.print(psize, DEC);    
 #if defined (CORE_TEENSY_SERIAL)
     Serial.send_now();
-#endif
 #endif    
     return -5;
   }  
