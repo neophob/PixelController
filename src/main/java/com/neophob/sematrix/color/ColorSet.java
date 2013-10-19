@@ -42,8 +42,6 @@ public class ColorSet implements Comparable<ColorSet> {
 
 	private int[] precalc;
 
-	private int boarderCount;
-
 	/**
 	 * 
 	 * @param name
@@ -52,7 +50,7 @@ public class ColorSet implements Comparable<ColorSet> {
 	public ColorSet(String name, int[] colors) {
 		this.name = name;
 		this.colors = colors.clone();
-		this.boarderCount = (int)((255f / colors.length)+0.5);
+		float boarderCount = 255f / (float)colors.length;
 
 		//precalc colorset to save to cpu cycles
 		precalc = new int[256];
