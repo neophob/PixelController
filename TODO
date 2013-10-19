@@ -28,6 +28,7 @@ Roadmap PixelController
 -Syphon support https://code.google.com/p/syphon-implementations/
 -OLA (http://www.opendmx.net/index.php/Open_Lighting_Architecture) input plugin see https://github.com/neophob/ola-to-tpm2net
 -Use Observer Pattern to update GUI elements
+-Game of life generator
 
 
 Roadmap PixelInvaders Firmware
