@@ -58,7 +58,7 @@ public class Rotate90 extends Effect {
 	}
 	
 	/**
-	 * copy paste rotozoom effect
+	 * simplyfied rotozoom effect
 	 * @param scaleP
 	 * @param bufferSrc
 	 * @return
@@ -78,8 +78,8 @@ public class Rotate90 extends Effect {
 			tx=txx;
 			for (int x=0; x<internalBufferXSize; x++) {
 				ty+=sa;				
-				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
-			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];    
+				soffs = Math.abs((int)(tx)+(int)(ty)*internalBufferXSize);
+			    tmp[offs++] = bufferSrc[soffs%(bufferSrc.length-1)];    			    
 			}
 		}
 
