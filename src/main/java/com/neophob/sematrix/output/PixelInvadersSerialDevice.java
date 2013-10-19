@@ -105,12 +105,6 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 		return false;
 	}
 
-	@Override
-	public long getErrorCounter() {
-		if (initialized) {			
-			return lpd6803.getConnectionErrorCounter();
-		}
-	    return 0;
-	}
+
 
 }

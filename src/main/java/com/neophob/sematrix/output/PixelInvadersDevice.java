@@ -124,7 +124,11 @@ public abstract class PixelInvadersDevice extends Output {
 			float result = (100.0f/f)*sentFrames;
 			LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, errors: {3}", 
 					new Object[] {result, sentFrames, ignoredFrames, errorFrames});				
-		}
-		
+		}		
+	}
+	
+	@Override
+	public long getErrorCounter() {
+	    return errorFrames;
 	}
 }
