@@ -18,16 +18,12 @@
  */
 package com.neophob.sematrix.output;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
 import com.neophob.sematrix.output.pixelinvaders.Lpd6803Net;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.properties.ColorFormat;
-import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
  * Send data to the PixelInvaders Device.
@@ -35,26 +31,13 @@ import com.neophob.sematrix.properties.DeviceConfig;
  *
  * @author michu
  */
-public class PixelInvadersNetDevice extends Output {
+public class PixelInvadersNetDevice extends PixelInvadersDevice {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelInvadersNetDevice.class.getName());
-		
-	/** The display options, does the buffer needs to be flipped? rotated? */
-	private List<DeviceConfig> displayOptions;
-	
-	/** The output color format. */
-	private List<ColorFormat> colorFormat;
-	
-	/** define how the panels are arranged */
-	private List<Integer> panelOrder;
-	
+			
 	/** The lpd6803. */
 	private Lpd6803Net lpd6803 = null;
-
-	private boolean initialized;
-	
-	long sendedFrames = 0;
 	
 	/**
 	 * init the lpd6803 devices.
@@ -65,11 +48,6 @@ public class PixelInvadersNetDevice extends Output {
 	 */
 	public PixelInvadersNetDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.PIXELINVADERS_NET, ph, controller, 5);
-		
-		this.displayOptions = ph.getLpdDevice();
-		this.colorFormat = ph.getColorFormat();
-		this.panelOrder = ph.getPanelOrder();
-		this.initialized = false;	
 		
 		String ip = ph.getPixelinvadersNetIp();
 		int port = ph.getPixelinvadersNetPort();
@@ -86,22 +64,8 @@ public class PixelInvadersNetDevice extends Output {
 	 * @see com.neophob.sematrix.output.Output#update()
 	 */
 	public void update() {
-		if (initialized) {			
-			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
-				//draw only on available screens!
-				
-				//get the effective panel buffer
-				int panelNr = this.panelOrder.get(ofs);
-				
-				int[] transformedBuffer = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
-							Lpd6803Net.NR_OF_LED_HORIZONTAL, Lpd6803Net.NR_OF_LED_VERTICAL);
-				
-				transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
-				
-		//		int sf = lpd6803.sendRgbFrame((byte)panelNr, transformedBuffer, colorFormat.get(panelNr));
-		//		sendedFrames += sf;
-			}			
+		if (initialized) {
+			sendPayload(lpd6803);			
 		}
 	}
 

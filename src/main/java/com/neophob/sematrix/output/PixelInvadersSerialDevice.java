@@ -18,17 +18,12 @@
  */
 package com.neophob.sematrix.output;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.properties.ColorFormat;
-import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
  * Send data to the PixelInvaders Device.
@@ -36,25 +31,14 @@ import com.neophob.sematrix.properties.DeviceConfig;
  *
  * @author michu
  */
-public class PixelInvadersSerialDevice extends ArduinoOutput {
+public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelInvadersSerialDevice.class.getName());
 		
-	/** The display options, does the buffer needs to be flipped? rotated? */
-	private List<DeviceConfig> displayOptions;
-	
-	/** The output color format. */
-	private List<ColorFormat> colorFormat;
-	
-	/** define how the panels are arranged */
-	private List<Integer> panelOrder;
-	
 	/** The lpd6803. */
 	private Lpd6803 lpd6803 = null;
 
-	//primitive arrays can not added to a map, and autoboxing do not work
-	private Map<Integer, Object> transformedBuffer = new HashMap<Integer, Object>(); 
 			
 	/**
 	 * init the lpd6803 devices.
@@ -64,12 +48,7 @@ public class PixelInvadersSerialDevice extends ArduinoOutput {
 	 * @param colorFormat the color format
 	 */
 	public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);
-		
-		this.displayOptions = ph.getLpdDevice();
-		this.colorFormat = ph.getColorFormat();
-		this.panelOrder = ph.getPanelOrder();
-		this.initialized = false;			
+		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);		
 		
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), panelOrder.size() );			
@@ -87,84 +66,11 @@ public class PixelInvadersSerialDevice extends ArduinoOutput {
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.ArduinoOutput#getLatestHeartbeat()
-	 */
-	public long getLatestHeartbeat() {
-		if (initialized) {
-			return lpd6803.getArduinoHeartbeat();			
-		}
-		return -1;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoBufferSize()
-	 */
-	public int getArduinoBufferSize() {
-		if (initialized) {
-			return lpd6803.getArduinoBufferSize();			
-		}
-		return -1;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.output.ArduinoOutput#getArduinoErrorCounter()
-	 */
-	public long getArduinoErrorCounter() {
-		if (initialized) {
-			return lpd6803.getAckErrors();			
-		}
-		return -1;
-	}
-
-	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.output.Output#update()
 	 */
-	public void update() {
-		
-		if (initialized) {			
-			this.transformedBuffer.clear();
-			
-			int totalFrames = 0;
-			//step 1, check how many data packages need to send
-			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
-				//draw only on available screens!
-				
-				//get the effective panel buffer
-				int panelNr = this.panelOrder.get(ofs);
-				
-				int[] bfr = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
-							Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
-				
-				bfr = OutputHelper.flipSecondScanline(bfr, Lpd6803.NR_OF_LED_HORIZONTAL, Lpd6803.NR_OF_LED_VERTICAL);
-				
-				if (lpd6803.didFrameChange((byte)ofs, bfr)) {
-					this.transformedBuffer.put(panelNr, bfr);
-					totalFrames++;
-				}
-			}
-
-			//step 2, send data out
-			for (Map.Entry<Integer, Object> entry: this.transformedBuffer.entrySet()) {
-				int panelNr = entry.getKey();
-				int[] data = (int[])entry.getValue();
-				if (lpd6803.sendRgbFrame((byte)panelNr, data, colorFormat.get(panelNr), totalFrames)) {
-					needUpdate++;
-				} else {
-					noUpdate++;
-					System.out.println("NOP");
-				}								
-			}
-			
-			
-			if ((noUpdate+needUpdate)%2000==0) {
-				float f = noUpdate+needUpdate;
-				float result = (100.0f/f)*needUpdate;
-				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
-						new Object[] {result, needUpdate, noUpdate, lpd6803.getAckErrors(), 
-						lpd6803.getArduinoErrorCounter(), lpd6803.getArduinoBufferSize()});				
-			}
-			
+	public void update() {		
+		if (initialized) {
+			sendPayload(lpd6803);			
 		}
 	}
 
