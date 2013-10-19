@@ -21,7 +21,6 @@ Roadmap PixelController
 -Add Perlin Noise generator
 -Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
  see https://sites.google.com/site/stamb2012/examples/batch-processing
--add option to query buffersize via OSC
 -add more fader (pixel fader for example)
 -support more than 2 rows
 -Option to save output of PixelController (byte stream) to a flat file
