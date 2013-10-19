@@ -1,5 +1,5 @@
 /*
- * PixelInvaders serial-led-gateway, Copyright (C) 2011-2013 michael vogt <michu@neophob.com>
+ * PixelInvaders serial-led-gateway v2.0, Copyright (C) 2011-2013 michael vogt <michu@neophob.com>
  * Tested on Teensy and Arduino.
  *
  * This is the firmware you should use if you bought a PixelInvaders DIY Kit!
@@ -38,6 +38,7 @@
 #include <SPI.h>
 #include <Neophob_LPD6803.h>
 
+//send debug messages back via serial line
 //#define DEBUG 1
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
@@ -258,7 +259,7 @@ int16_t readCommand() {
     return -6;
   }
 
-  //check for a ping request
+  //check for a ping request, the payload of the cmd is ignored
   if (dataFrame == TPM2NET_CMD_COMMAND) {
     sendAck();
     return -50;
