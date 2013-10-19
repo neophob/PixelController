@@ -59,8 +59,7 @@ public abstract class RotoZoomEffect extends Effect {
 		float txx=0-(internalBufferXSize/2.0f)*sa;
 		float tyy=0+(internalBufferYSize/2.0f)*ca;
 
-		for (int y=0; y<internalBufferYSize; y++) {
-		    
+		for (int y=0; y<internalBufferYSize; y++) {		    
 	        txx-=sa;
 			tyy+=ca;
 			
@@ -69,11 +68,10 @@ public abstract class RotoZoomEffect extends Effect {
 			for (int x=0; x<internalBufferXSize; x++) {
 				tx+=ca;
 				ty+=sa;				
-				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
-			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];    
+				soffs = Math.abs((int)(tx)+(int)(ty)*internalBufferXSize);
+			    tmp[offs++] = bufferSrc[soffs%(bufferSrc.length-1)];    
 			}
 		}
-
 		return tmp;
 	}
 
@@ -86,7 +84,7 @@ public abstract class RotoZoomEffect extends Effect {
 	 */
 	protected int[] zoom(float scaleX, float scaleY, int bufferSrc[]) {
 		int[] tmp = new int[bufferSrc.length];
-		int offs=0,soffs;
+		int offs=0,soffs=0;
 		float tx=0,ty;
 		
 		float dx = ((float)internalBufferXSize/scaleX)/internalBufferXSize;
@@ -101,7 +99,7 @@ public abstract class RotoZoomEffect extends Effect {
 			tx=txStart;
 			for (int x=0; x<internalBufferXSize; x++) {												
 				soffs = (int)(tx)+(int)(ty)*internalBufferXSize;
-			    tmp[offs++] = bufferSrc[soffs&(bufferSrc.length-1)];
+			    tmp[offs++] = bufferSrc[soffs%(bufferSrc.length-1)];			    
 			    tx+=dx;
 			}
 			ty+=dy;
