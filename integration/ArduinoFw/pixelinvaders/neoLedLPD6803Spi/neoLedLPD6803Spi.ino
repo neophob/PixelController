@@ -38,66 +38,50 @@
 #include <SPI.h>
 #include <Neophob_LPD6803.h>
 
-// ======= START OF USER CONFIGURATION =======
-
-//define nr of Panels*2 here, 4 means 2 panels
-#define NR_OF_PANELS 4
-
-// ======= END OF USER CONFIGURATION ======= 
-
-#define PIXELS_PER_PANEL 32
+//#define DEBUG 1
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
 #define BAUD_RATE 115200
 
-//--- protocol data start
-#define CMD_START_BYTE 0x01
-#define CMD_SENDFRAME 0x03
-#define CMD_PING  0x04
-#define CMD_CONNECTION_CLOSED 0x05
+#define NR_OF_PANELS 2
+#define PIXELS_PER_PANEL 64
 
-#define START_OF_DATA 0x10 
-#define END_OF_DATA 0x20
+//define some tpm2 constants
+#define TPM2NET_HEADER_SIZE 4
+#define TPM2NET_HEADER_IDENT 0x9c
+#define TPM2NET_CMD_DATAFRAME 0xda
+#define TPM2NET_CMD_COMMAND 0xc0
+#define TPM2NET_CMD_ANSWER 0xaa
+#define TPM2NET_FOOTER_IDENT 0x36
 
-//frame size for specific color resolution
-//32pixels * 2 byte per color (15bit - one bit wasted)
-#define COLOR_5BIT_FRAME_SIZE 64
-#define SERIAL_HEADER_SIZE 5
-#define SERIAL_FOOTER_SIZE 1
-#define SERIAL_PACKET_SIZE (COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE+SERIAL_FOOTER_SIZE)
-//--- protocol data end
+//package size we expect. 
+#define MAX_PACKED_SIZE 255
 
-//8ms is the minimum! else we dont get any data!
-#define SERIAL_DELAY_LOOP 3
-#define SERIAL_WAIT_DELAY 3
+//Teensy 2.0 has the LED on pin 11.
+//Teensy++ 2.0 has the LED on pin 6
+//Teensy 3.0 has the LED on pin 13
+#define LED_PIN 11
 
-//this should match RX_BUFFER_SIZE from HardwareSerial.cpp
-//array that will hold the serial input string
-uint8_t serInStr[SERIAL_PACKET_SIZE];
+// buffers for receiving and sending data
+uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
+uint16_t psize;
+uint8_t currentPacket;
+uint8_t totalPacket;
 
-//initialize pixels
-Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
-
-#define SERIALBUFFERSIZE 4
-uint8_t serialResonse[SERIALBUFFERSIZE];
-
-uint8_t g_errorCounter;
-
+// rainbow animation stuff
 int j=0,k=0;
 uint8_t serialDataRecv;
 
+//initialize pixels
+Neophob_LPD6803 strip = Neophob_LPD6803(NR_OF_PANELS*PIXELS_PER_PANEL);
 
 // --------------------------------------------
 //     send status back to library
 // --------------------------------------------
 static void sendAck() {
-  serialResonse[0] = 'A';
-  serialResonse[1] = 'K';
-  serialResonse[2] = Serial.available();
-  serialResonse[3] = g_errorCounter;
-  Serial.write(serialResonse, SERIALBUFFERSIZE);
-
+  Serial.print("AK PIXELINVADERS, PANELS:");
+  Serial.print(NR_OF_PANELS, DEC);
 #if defined (CORE_TEENSY_SERIAL)
   //Teensy supports send now
   Serial.send_now();
@@ -105,6 +89,190 @@ static void sendAck() {
 }
 
 
+// --------------------------------------------
+//      setup
+// --------------------------------------------
+void setup() {
+  memset(packetBuffer, 0, MAX_PACKED_SIZE);
+  
+  //im your slave and wait for your commands, master!
+  Serial.begin(BAUD_RATE); //Setup high speed Serial
+  Serial.flush();
+  Serial.setTimeout(20);
+
+  digitalWrite(LED_PIN, HIGH);
+  delay(250);
+  digitalWrite(LED_PIN, LOW);  
+  
+  //SETUP SPI SPEED AND ISR ROUTINE
+  //-------------------------------
+  //The SPI setup is quite important to set up correctly
+
+  //SPI SPEED REFERENCE  
+  //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
+  //strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+  //strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+  //strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
+  //strip.begin(SPI_CLOCK_DIV8);        // Start up the LED counterm 2.0MHz - 0.5uS
+  //strip.begin(SPI_CLOCK_DIV4);        // Start up the LED counterm 4.0MHz - 0.25uS
+  //strip.begin(SPI_CLOCK_DIV2);        // Start up the LED counterm 8.0MHz - 0.125uS
+
+  //SETTING#1 - SPEEDY
+  strip.setCPU(36);                    // call the isr routine each 36us to drive the pwm
+  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
+
+  //SETTING#2 - CONSERVATIVE
+  //  strip.setCPU(68);                    // call the isr routine each 68us to drive the pwm
+  //  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
+
+  rainbow();      // display some colors
+  serialDataRecv = 0;   //no serial data received yet  
+}
+
+uint8_t dataFrame;
+
+
+// --------------------------------------------
+//      main loop
+// --------------------------------------------
+void loop() {
+  int16_t res = readCommand();  
+  
+  if (res > 0) {
+    serialDataRecv = 1;
+/*#ifdef DEBUG      
+    Serial.print(" OK");
+    Serial.print(psize, DEC);    
+    Serial.print("/");
+    Serial.print(currentPacket, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif*/
+    digitalWrite(LED_PIN, HIGH);
+    updatePixels();
+    digitalWrite(LED_PIN, LOW);    
+  }
+  else {
+    //return error number
+    if (res!=-1) {
+      Serial.print("ERR: ");
+      Serial.print(res, DEC);
+#if defined (CORE_TEENSY_SERIAL)      
+      Serial.send_now();
+#endif      
+    }
+  }
+
+  if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
+    rainbow();
+  }
+}
+
+//********************************
+// UPDATE PIXELS
+//********************************
+void updatePixels() {
+  uint8_t nrOfPixels = psize/2;
+  
+  uint16_t ofs=0;
+  uint16_t ledOffset = PIXELS_PER_PANEL*currentPacket;
+  
+  for (uint8_t i=0; i < nrOfPixels; i++) {
+    strip.setPixelColor(ledOffset++, packetBuffer[ofs]<<8 | packetBuffer[ofs+1]);
+    ofs+=2;
+  }  
+
+  //update panel content only once, even if we send multiple packets.
+  //this can be done on the PixelController software
+  if (currentPacket>=totalPacket-1) {  
+    strip.show();   // write all the pixels out
+#ifdef DEBUG      
+    Serial.print(" OK");
+    Serial.print(currentPacket, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
+  } else {
+    
+#ifdef DEBUG      
+    Serial.print(" No update yet ");
+    Serial.print(currentPacket, DEC);
+    Serial.print(" / ");
+    Serial.print(totalPacket-1, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
+    
+  }
+}
+
+
+//********************************
+// READ SERIAL PORT
+//********************************
+int16_t readCommand() {  
+  uint8_t startChar = Serial.read();  
+  if (startChar != TPM2NET_HEADER_IDENT) {
+    return -1;
+  }
+
+  //uint8_t 
+  dataFrame = Serial.read();
+  if (dataFrame != TPM2NET_CMD_DATAFRAME && dataFrame != TPM2NET_CMD_COMMAND) {
+    return -2;  
+  }
+
+  uint8_t s1 = Serial.read();
+  uint8_t s2 = Serial.read();  
+  psize = (s1<<8) + s2;
+  //ignore payload size if a command packet is send
+  if (dataFrame != TPM2NET_CMD_COMMAND && (psize < 6 || psize > MAX_PACKED_SIZE)) {
+    return -3;
+  }  
+
+  currentPacket = Serial.read();  
+  totalPacket = Serial.read();    
+  if (totalPacket>NR_OF_PANELS || currentPacket>NR_OF_PANELS) {
+    return -4;
+  }
+  
+  //get remaining bytes
+  uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
+  if (recvNr!=psize) {
+    Serial.print(" Failed ");
+    Serial.print(recvNr, DEC);
+    Serial.print(" / ");
+    Serial.print(psize, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif    
+    return -5;
+  }  
+  
+
+  uint8_t endChar = Serial.read();
+  if (endChar != TPM2NET_FOOTER_IDENT) {
+    return -6;
+  }
+
+  //check for a ping request
+  if (dataFrame == TPM2NET_CMD_COMMAND) {
+    sendAck();
+    return -50;
+  }
+  
+  return psize;
+}
+
+
+
+
+// --------------------------------------------
+//     do some color magic
+// --------------------------------------------
 unsigned int Color(byte r, byte g, byte b) {
   //Take the lowest 5 bits of each value and append them end to end
   return( (((unsigned int)g & 0x1F )<<10) | (((unsigned int)b & 0x1F)<<5) | ((unsigned int)r & 0x1F));
@@ -157,172 +325,4 @@ void rainbow() {
     strip.show();    
   }
 }
-
-
-// --------------------------------------------
-//      setup
-// --------------------------------------------
-void setup() {
-  memset(serialResonse, 0, SERIALBUFFERSIZE);
-
-  //im your slave and wait for your commands, master!
-  Serial.begin(BAUD_RATE); //Setup high speed Serial
-  Serial.flush();
-  Serial.setTimeout(8);
-
-  //SETUP SPI SPEED AND ISR ROUTINE
-  //-------------------------------
-  //The SPI setup is quite important to set up correctly
-
-  //SPI SPEED REFERENCE  
-  //strip.begin(SPI_CLOCK_DIV128);        // Start up the LED counterm 0.125MHz - 8uS
-  //strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
-  //strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
-  //strip.begin(SPI_CLOCK_DIV16);        // Start up the LED counterm 1.0MHz - 1uS
-  //strip.begin(SPI_CLOCK_DIV8);        // Start up the LED counterm 2.0MHz - 0.5uS
-  //strip.begin(SPI_CLOCK_DIV4);        // Start up the LED counterm 4.0MHz - 0.25uS
-  //strip.begin(SPI_CLOCK_DIV2);        // Start up the LED counterm 8.0MHz - 0.125uS
-
-
-  //SETTING#1 - SPEEDY
-  strip.setCPU(36);                    // call the isr routine each 36us to drive the pwm
-  strip.begin(SPI_CLOCK_DIV32);        // Start up the LED counterm 0.5MHz - 2uS
-
-  //SETTING#2 - CONSERVATIVE
-  //  strip.setCPU(68);                    // call the isr routine each 68us to drive the pwm
-  //  strip.begin(SPI_CLOCK_DIV64);        // Start up the LED counterm 0.25MHz - 4uS
-
-
-  rainbow();      // display some colors
-  serialDataRecv = 0;   //no serial data received yet  
-}
-
-// --------------------------------------------
-//      main loop
-// --------------------------------------------
-void loop() {
-  g_errorCounter=0;
-
-  // see if we got a proper command string yet
-  if (readCommand(serInStr) == 0) {
-    //nope, nothing arrived yet...
-    if (g_errorCounter!=0 && g_errorCounter!=102) {
-      sendAck();
-    }
-
-    if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
-      rainbow();	
-    }
-    return;
-  }
-
-  //led offset
-  uint8_t ofs = serInStr[1];
-  //how many bytes we're sending
-  uint8_t sendlen = serInStr[2];
-  //what kind of command we send
-  uint8_t type = serInStr[3];
-  //get the image data
-  uint8_t* cmd = serInStr+5;
-
-  switch (type) {
-  case CMD_SENDFRAME:
-    //the size of an image must be exactly 64bytes for 8*4 pixels
-    if (sendlen == COLOR_5BIT_FRAME_SIZE) {
-      updatePixels(ofs, cmd);
-    } 
-    else {
-      g_errorCounter=100;
-    }
-    break;
-
-  case CMD_PING:
-    //just send the ack!
-    serialDataRecv = 1;        
-    break;
-
-  case CMD_CONNECTION_CLOSED:
-    //pixelcontroller just stopped, display the rainbow!
-    serialDataRecv = 0;
-    Serial.flush();
-    rainbow();
-    return;
-
-  default:
-    //invalid command
-    g_errorCounter=130; 
-    break;
-  }
-
-  //send ack to library - command processed
-  sendAck();
-}
-
-// --------------------------------------------
-//    update 32 bytes of the led matrix
-//    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
-// --------------------------------------------
-void updatePixels(uint8_t ofs, uint8_t* buffer) {
-  uint16_t currentLed = PIXELS_PER_PANEL;
-
-  currentLed *= ofs;
-  uint8_t x=0;
-  for (uint8_t i=0; i < PIXELS_PER_PANEL; i++) {
-    strip.setPixelColor(currentLed++, buffer[x]<<8 | buffer[x+1]);
-    x+=2;
-  }  
-  
-  //update panel only if the whole panel was updated
-  if (ofs%2==1) {
-    strip.show();   // write all the pixels out
-  }
-}
-
-/* 
- --------------------------------------------
- read serial command
- --------------------------------------------
- read a string from the serial and store it in an array
- you must supply the str array variable
- returns number of bytes read, or zero if fail
- 
- example ping command:
- 		cmdfull[0] = START_OF_CMD (marker);
- 		cmdfull[1] = addr;
- 		cmdfull[2] = 0x01; 
- 		cmdfull[3] = CMD_PING;
- 		cmdfull[4] = START_OF_DATA (marker);
- 		cmdfull[5] = 0x02;
- 		cmdfull[6] = END_OF_DATA (marker);
- */
-
-uint8_t readCommand(byte *str) {
-  uint8_t recvNr = Serial.readBytes((char*)str, SERIAL_PACKET_SIZE);
-  if (recvNr==0) {
-    g_errorCounter = 102;
-    return 0;        //no data available!    
-  }
-
-  //check header
-  if (str[4] != START_OF_DATA) {
-    g_errorCounter = 104;
-    return 0;
-  }
-  
-  uint8_t sendlen = str[2];  
-  
-  //check footer
-  if (str[SERIAL_HEADER_SIZE+sendlen] != END_OF_DATA) {
-    g_errorCounter = 106;
-    return 0;
-  }
-
-  if (sendlen>recvNr) {
-    g_errorCounter = 109;
-    return 0;
-  }
-
-  return sendlen;
-}
-
 
