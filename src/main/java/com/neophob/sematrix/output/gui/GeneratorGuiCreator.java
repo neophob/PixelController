@@ -51,16 +51,20 @@ public class GeneratorGuiCreator {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGuiCreator(int maximalXSize, String version) {
+	public GeneratorGuiCreator(int maximalXSize, int maximalYSize, String version) {
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
         
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
-        
         float aspect = (float)g.getInternalBufferXSize()/(float)g.getInternalBufferYSize();
-        int singleVisualXSize,singleVisualYSize;   
-        singleVisualXSize=maximalXSize/nrOfScreens;
-        singleVisualYSize=(int)(maximalXSize/nrOfScreens/aspect);
+        
+        int singleVisualXSize=0,singleVisualYSize=1000;
+        
+        while (singleVisualYSize>maximalYSize) {
+            singleVisualXSize=maximalXSize/nrOfScreens;
+            singleVisualYSize=(int)(maximalXSize/nrOfScreens/aspect);
+            maximalXSize-=100;
+        }
 
         int windowXSize=singleVisualXSize*nrOfScreens;
         int windowYSize=singleVisualYSize + 350;

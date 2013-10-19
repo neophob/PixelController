@@ -4,7 +4,7 @@ Changelog v1.4.1 to v1.5.0
 -Add Zoom Effect, add Zoom options (zoom in, zoom out, vertical, horizontal)
 -Add Textwriter option (PingPong scrolling, left scrolling)
 -Add new Minimum and Maximum Mixer
--Add new keyboard shortcut to select tabs
+-Add new keyboard shortcut to select tabs (arrow keys)
 -Fix use colorset name (instead of index) if a preset is saved
 -Fix colorscroll GUI element initialization
 -Fix Effect Rotate90 for non square output

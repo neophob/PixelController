@@ -1117,6 +1117,14 @@ public class ApplicationConfigurationHelper {
     }
 
     /**
+     * 
+     * @return
+     */
+    public int getDebugWindowMaximalYSize() {        
+        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_Y_SIZE, 500);
+    }
+
+    /**
      * Gets the layout.
      *
      * @return the layout

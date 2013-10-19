@@ -133,6 +133,7 @@ public final class ConfigConstant {
 	public static final String SHOW_DEBUG_WINDOW = "show.debug.window";
 	
 	public static final String DEBUG_WINDOW_MAX_X_SIZE = "maximal.debug.window.xsize";
+	public static final String DEBUG_WINDOW_MAX_Y_SIZE = "maximal.debug.window.ysize";
 	
 	public static final String CAPTURE_OFFSET = "screen.capture.offset";
 	
