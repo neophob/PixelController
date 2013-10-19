@@ -32,9 +32,6 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class TextureDeformation extends Effect {
 
-    /** The h. */
-    private int w, h;
-
     /** The m lut. */
     private int[] lookUpTable;
 
@@ -54,9 +51,7 @@ public class TextureDeformation extends Effect {
     public TextureDeformation(PixelControllerEffect controller) {
         super(controller, EffectName.TEXTURE_DEFORMATION, ResizeName.QUALITY_RESIZE);
 
-        w = this.internalBufferXSize;
-        h = this.internalBufferYSize;
-        lookUpTable =  new int[3 * w * h];
+        lookUpTable =  new int[3 * this.internalBufferXSize * this.internalBufferYSize];
 
         // use higher resolution textures if things get to pixelated
         this.selectedLut=7;
@@ -70,15 +65,15 @@ public class TextureDeformation extends Effect {
     public int[] getBuffer(int[] buffer) {
         int[] ret = new int[buffer.length];
 
-        for (int pixelCount = 0; pixelCount < buffer.length; pixelCount++)
-        {
+        for (int pixelCount = 0; pixelCount < buffer.length; pixelCount++) {
             int o = (pixelCount << 1) + pixelCount;  // equivalent to 3 * pixelCount
             int u = lookUpTable[o+0] + timeDisplacement;    // to look like its animating, add timeDisplacement
             int v = lookUpTable[o+1] + timeDisplacement;
             int adjustBrightness = lookUpTable[o+2];
 
             // get the R,G,B values from texture
-            int currentPixel = buffer[w * (v & h-1) + (u & w-1)];
+            int sofs = Math.abs(this.internalBufferXSize * v + u);
+            int currentPixel = buffer[sofs%(buffer.length-1)];
 
             // only apply brightness if it was calculated
             if (adjustBrightness != 0) {       
@@ -180,11 +175,11 @@ public class TextureDeformation extends Effect {
         // u and v are euclidean coordinates  
         float u,v,bright = 0; 
 
-        for (int j=0; j < h; j++ ) {
-            float y = -1.00f + 2.00f*(float)j/(float)h;
+        for (int j=0; j < this.internalBufferYSize; j++ ) {
+            float y = -1.00f + 2.00f*(float)j/(float)this.internalBufferYSize;
 
-            for (int i=0; i < w; i++ ) {
-                float x = -1.00f + 2.00f*(float)i/(float)w;
+            for (int i=0; i < this.internalBufferXSize; i++ ) {
+                float x = -1.00f + 2.00f*(float)i/(float)this.internalBufferXSize;
                 float d = (float)Math.sqrt( x*x + y*y );
                 float a = (float)Math.atan2( y, x );
                 float r = d;
@@ -250,8 +245,8 @@ public class TextureDeformation extends Effect {
                         bright = 0;
                         break;
                 }
-                lookUpTable[k++] = (int)(w*u) & w-1;
-                lookUpTable[k++] = (int)(h*v) & h-1;
+                lookUpTable[k++] = (int)(this.internalBufferXSize*u) % (this.internalBufferXSize-1);
+                lookUpTable[k++] = (int)(this.internalBufferYSize*v) % (this.internalBufferYSize-1);
                 lookUpTable[k++] = (int)(bright);
             }
         }
