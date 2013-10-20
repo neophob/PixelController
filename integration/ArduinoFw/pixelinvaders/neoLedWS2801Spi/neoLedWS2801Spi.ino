@@ -1,7 +1,9 @@
 /*
- * PixelInvaders serial-led-gateway, Copyright (C) 2012 michael vogt <michu@neophob.com>
- * Tested on Teensy and Arduino
- * 
+ * PixelInvaders serial-led-gateway v2.0, Copyright (C) 2011-2013 michael vogt <michu@neophob.com>
+ * Tested on Teensy and Arduino.
+ *
+ * THIS FIRMWARE IS UNTESTED! please give me feedback if it works!
+ *
  * ------------------------------------------------------------------------
  *
  * This is the SPI version, unlike software SPI which is configurable, hardware 
@@ -31,51 +33,54 @@
  * 	
  */
 
+#include <SPI.h>
 #include <FastSPI_LED.h>
 
 // ======= START OF USER CONFIGURATION =======
 
-//define nr of Panels*2 here, 4 means 2 panels
+//send debug messages back via serial line
+//#define DEBUG 1
+
+//how many pixelinvaders panels are connected?
 #define NR_OF_PANELS 2
+
+//Teensy 2.0 has the LED on pin 11.
+//Teensy++ 2.0 has the LED on pin 6
+//Teensy 3.0 has the LED on pin 13
+#define LED_PIN 11
 
 // ======= END OF USER CONFIGURATION ======= 
 
-#define PIXELS_PER_PANEL 32
-#define NUM_LEDS (NR_OF_PANELS*PIXELS_PER_PANEL)
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
 #define BAUD_RATE 115200
 
-//--- protocol data start
-#define CMD_START_BYTE 0x01
-#define CMD_SENDFRAME 0x03
-#define CMD_PING  0x04
+#define PIXELS_PER_PANEL 64
 
-#define START_OF_DATA 0x10 
-#define END_OF_DATA 0x20
+#define NUM_LEDS (NR_OF_PANELS*PIXELS_PER_PANEL)
 
-//frame size for specific color resolution
-//32pixels * 2 byte per color (15bit - one bit wasted)
-#define COLOR_5BIT_FRAME_SIZE 64
-#define SERIAL_HEADER_SIZE 5
-//--- protocol data end
 
-//8ms is the minimum! else we dont get any data!
-#define SERIAL_DELAY_LOOP 3
-#define SERIAL_WAIT_DELAY 3
+//define some tpm2 constants
+#define TPM2NET_HEADER_SIZE 4
+#define TPM2NET_HEADER_IDENT 0x9c
+#define TPM2NET_CMD_DATAFRAME 0xda
+#define TPM2NET_CMD_COMMAND 0xc0
+#define TPM2NET_CMD_ANSWER 0xaa
+#define TPM2NET_FOOTER_IDENT 0x36
 
-//this should match RX_BUFFER_SIZE from HardwareSerial.cpp
-//array that will hold the serial input string
-byte serInStr[COLOR_5BIT_FRAME_SIZE+SERIAL_HEADER_SIZE]; 	 				 
+//package size we expect. 
+#define MAX_PACKED_SIZE 255
 
-#define SERIALBUFFERSIZE 4
-byte serialResonse[SERIALBUFFERSIZE];
+// buffers for receiving and sending data
+uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
+uint16_t psize;
+uint8_t currentPacket;
+uint8_t totalPacket;
 
-byte g_errorCounter;
-
+// rainbow animation stuff
 int jj=0,k=0;
-byte serialDataRecv;
+uint8_t serialDataRecv;
 
 // Sometimes chipsets wire in a backwards sort of way
 struct CRGB { 
@@ -86,17 +91,12 @@ struct CRGB {
 // struct CRGB { unsigned char r; unsigned char g; unsigned char b; };
 struct CRGB *leds;
 
-
 // --------------------------------------------
 //     send status back to library
 // --------------------------------------------
 static void sendAck() {
-  serialResonse[0] = 'A';
-  serialResonse[1] = 'K';
-  serialResonse[2] = Serial.available();
-  serialResonse[3] = g_errorCounter;
-  Serial.write(serialResonse, SERIALBUFFERSIZE);
-
+  Serial.print("AK PIXELINVADERS, PANELS:");
+  Serial.print(NR_OF_PANELS, DEC);
 #if defined (CORE_TEENSY_SERIAL)
   //Teensy supports send now
   Serial.send_now();
@@ -104,7 +104,189 @@ static void sendAck() {
 }
 
 
-// Create a 24 bit color value from R,G,B
+// --------------------------------------------
+//      setup
+// --------------------------------------------
+void setup() {
+  memset(packetBuffer, 0, MAX_PACKED_SIZE);
+  
+  //im your slave and wait for your commands, master!
+  Serial.begin(BAUD_RATE); //Setup high speed Serial
+  Serial.flush();
+  Serial.setTimeout(20);
+
+  digitalWrite(LED_PIN, HIGH);
+  delay(250);
+  digitalWrite(LED_PIN, LOW);  
+  
+  FastSPI_LED.setLeds(NUM_LEDS);
+  FastSPI_LED.setChipset(CFastSPI_LED::SPI_WS2801);
+
+  //select spi speed, 7 is very slow, 0 is blazing fast
+  FastSPI_LED.setDataRate(1);
+  FastSPI_LED.init();
+  FastSPI_LED.start();
+  leds = (struct CRGB*)FastSPI_LED.getRGBData(); 
+
+  rainbow();      // display some colors
+  serialDataRecv = 0;   //no serial data received yet  
+}
+
+uint8_t dataFrame;
+
+
+// --------------------------------------------
+//      main loop
+// --------------------------------------------
+void loop() {
+  int16_t res = readCommand();  
+  
+  if (res > 0) {
+    serialDataRecv = 1;
+/*#ifdef DEBUG      
+    Serial.print(" OK");
+    Serial.print(psize, DEC);    
+    Serial.print("/");
+    Serial.print(currentPacket, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif*/
+    digitalWrite(LED_PIN, HIGH);
+    updatePixels();
+    digitalWrite(LED_PIN, LOW);    
+  }
+  else {
+    //return error number
+    if (res!=-1) {
+      Serial.print(" ERR: ");
+      Serial.print(res, DEC);
+#if defined (CORE_TEENSY_SERIAL)      
+      Serial.send_now();
+#endif      
+    }
+  }
+
+  if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
+    rainbow();
+  }
+}
+
+//convert a 15bit color value into a 24bit color value
+uint32_t convert15bitTo24bit(uint16_t col15bit) {
+  uint8_t r=col15bit & 0x1f;
+  uint8_t g=(col15bit>>5) & 0x1f;
+  uint8_t b=(col15bit>>10) & 0x1f;
+
+  return Color(r<<3, g<<3, b<<3);
+}
+
+
+//********************************
+// UPDATE PIXELS
+//********************************
+void updatePixels() {
+  uint8_t nrOfPixels = psize/2;
+  
+  uint16_t ofs=0;
+  uint16_t ledOffset = PIXELS_PER_PANEL*currentPacket;
+  
+  for (uint8_t i=0; i < nrOfPixels; i++) {
+    uint32_t color = convert15bitTo24bit(packetBuffer[ofs]<<8 | packetBuffer[ofs+1]);
+    leds[ledOffset].r = (color>>16)&255;
+    leds[ledOffset].g = (color>>8)&255; 
+    leds[ledOffset].b = color&255; 
+    ledOffset++;
+    ofs+=2;
+  }  
+
+  //update panel content only once, even if we send multiple packets.
+  //this can be done on the PixelController software
+  if (currentPacket>=totalPacket-1) {  
+    FastSPI_LED.show();   // write all the pixels out
+#ifdef DEBUG      
+    Serial.print(" OK");
+    Serial.print(currentPacket, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
+  } else {
+    
+#ifdef DEBUG      
+    Serial.print(" No update yet ");
+    Serial.print(currentPacket, DEC);
+    Serial.print(" / ");
+    Serial.print(totalPacket-1, DEC);    
+#if defined (CORE_TEENSY_SERIAL)
+    Serial.send_now();
+#endif
+#endif    
+    
+  }
+}
+
+
+//********************************
+// READ SERIAL PORT
+//********************************
+int16_t readCommand() {  
+  uint8_t startChar = Serial.read();  
+  if (startChar != TPM2NET_HEADER_IDENT) {
+    return -1;
+  }
+
+  //uint8_t 
+  dataFrame = Serial.read();
+  if (dataFrame != TPM2NET_CMD_DATAFRAME && dataFrame != TPM2NET_CMD_COMMAND) {
+    return -2;  
+  }
+
+  uint8_t s1 = Serial.read();
+  uint8_t s2 = Serial.read();  
+  psize = (s1<<8) + s2;
+  //ignore payload size if a command packet is send
+  if (dataFrame != TPM2NET_CMD_COMMAND && (psize < 6 || psize > MAX_PACKED_SIZE)) {
+    return -3;
+  }  
+
+  currentPacket = Serial.read();  
+  totalPacket = Serial.read();    
+  if (totalPacket>NR_OF_PANELS || currentPacket>NR_OF_PANELS) {
+    return -4;
+  }
+  
+  //get remaining bytes
+  uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
+  if (recvNr!=psize) {
+    Serial.print(" MissingData: ");
+    Serial.print(recvNr, DEC);
+    Serial.print("/");
+    Serial.print(psize, DEC);    
+    return -5;
+  }  
+  
+
+  uint8_t endChar = Serial.read();
+  if (endChar != TPM2NET_FOOTER_IDENT) {
+    return -6;
+  }
+
+  //check for a ping request, the payload of the cmd is ignored
+  if (dataFrame == TPM2NET_CMD_COMMAND) {
+    sendAck();
+    return -50;
+  }
+  
+  return psize;
+}
+
+
+
+
+// --------------------------------------------
+//     do some color magic
+// --------------------------------------------
 uint32_t Color(byte r, byte g, byte b) {
   uint32_t c;
   c = r;
@@ -115,8 +297,10 @@ uint32_t Color(byte r, byte g, byte b) {
   return c;
 }
 
-//Input a value 0 to 255 to get a color value.
-//The colours are a transition r - g -b - back to r
+// --------------------------------------------
+//     Input a value 0 to 255 to get a color value.
+//     The colours are a transition r - g -b - back to r
+// --------------------------------------------
 uint32_t Wheel(byte WheelPos) {
   if (WheelPos < 85) {
     return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
@@ -130,6 +314,7 @@ uint32_t Wheel(byte WheelPos) {
     return Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
 }
+
 
 // --------------------------------------------
 //     do some animation until serial data arrives
@@ -157,211 +342,6 @@ void rainbow() {
     }
     FastSPI_LED.show();
   }
+
 }
-
-
-
-// --------------------------------------------
-//      setup
-// --------------------------------------------
-void setup() {
-  memset(serialResonse, 0, SERIALBUFFERSIZE);
-
-  //im your slave and wait for your commands, master!
-  Serial.begin(BAUD_RATE); //Setup high speed Serial
-  Serial.flush();
-
-  FastSPI_LED.setLeds(NUM_LEDS);
-  FastSPI_LED.setChipset(CFastSPI_LED::SPI_WS2801);
-
-  //select spi speed, 7 is very slow, 0 is blazing fast
-  FastSPI_LED.setDataRate(1);
-  FastSPI_LED.init();
-  FastSPI_LED.start();
-  leds = (struct CRGB*)FastSPI_LED.getRGBData(); 
-
-  rainbow();      // display some colors
-
-  serialDataRecv = 0;   //no serial data received yet  
-}
-
-// --------------------------------------------
-//      main loop
-// --------------------------------------------
-void loop() {
-  g_errorCounter=0;
-
-  // see if we got a proper command string yet, 0 means no data read
-  if (readCommand(serInStr) == 0) {
-    //nope, nothing arrived yet...
-    if (serialDataRecv==0) { //if no serial data arrived yet, show the rainbow...
-      rainbow();    	
-    }
-    return;
-  }
-
-  //led offset
-  byte ofs    = serInStr[1];
-  //how many bytes we're sending
-  byte sendlen = serInStr[2];
-  //what kind of command we send
-  byte type = serInStr[3];
-  //get the image data
-  byte* cmd    = serInStr+5;
-
-  switch (type) {
-  case CMD_SENDFRAME:
-    //the size of an image must be exactly 64bytes for 8*4 pixels
-    if (sendlen == COLOR_5BIT_FRAME_SIZE) {
-      updatePixels(ofs, cmd);
-    } 
-    else {
-      g_errorCounter=100;
-    }
-    break;
-
-  case CMD_PING:
-    //just send the ack!
-    serialDataRecv = 1;        
-    break;
-
-    // case CMD_CONNECTION_CLOSED:
-    //   serialDataRecv = 0;        
-    //   break;
-
-  default:
-    //invalid command
-    g_errorCounter=130; 
-    break;
-  }
-
-  //send ack to library - command processed
-  sendAck();
-}
-
-
-//convert a 15bit color value into a 24bit color value
-uint32_t convert15bitTo24bit(uint16_t col15bit) {
-  uint8_t r=col15bit & 0x1f;
-  uint8_t g=(col15bit>>5) & 0x1f;
-  uint8_t b=(col15bit>>10) & 0x1f;
-
-  return Color(r<<3, g<<3, b<<3);
-}
-
-// --------------------------------------------
-//    update 32 bytes of the led matrix
-//    ofs: which panel, 0 (ofs=0), 1 (ofs=32), 2 (ofs=64)...
-// --------------------------------------------
-void updatePixels(byte ofs, byte* buffer) {
-  int currentLed = ofs*PIXELS_PER_PANEL;
-  byte x=0;
-  for (byte i=0; i < PIXELS_PER_PANEL; i++) {
-    uint32_t color = convert15bitTo24bit(buffer[x]<<8 | buffer[x+1]);
-
-    leds[currentLed].r = (color>>16)&255;
-    leds[currentLed].g = (color>>8)&255; 
-    leds[currentLed].b = color&255; 
-
-    x+=2;
-    currentLed++;
-  }
-  FastSPI_LED.show();
-}
-
-/* 
- --------------------------------------------
- read serial command
- --------------------------------------------
- read a string from the serial and store it in an array
- you must supply the str array variable
- returns number of bytes read, or zero if fail
- 
- example ping command:
- 		cmdfull[0] = START_OF_CMD (marker);
- 		cmdfull[1] = addr;
- 		cmdfull[2] = 0x01; 
- 		cmdfull[3] = CMD_PING;
- 		cmdfull[4] = START_OF_DATA (marker);
- 		cmdfull[5] = 0x02;
- 		cmdfull[6] = END_OF_DATA (marker);
- */
-
-byte readCommand(byte *str) {
-  byte b,i,sendlen;
-
-  //wait until we get a CMD_START_BYTE or queue is empty
-  i=0;
-  while (Serial.available()>0 && i==0) {
-    b = Serial.read();
-    if (b == CMD_START_BYTE) {
-      i=1;
-    }
-  }
-
-  if (i==0) {
-    //failed to get data ignore it
-    g_errorCounter = 102;
-    return 0;    
-  }
-
-
-
-  //read header  
-  i=1;
-  b=SERIAL_DELAY_LOOP;
-  while (i<SERIAL_HEADER_SIZE) {
-    if (Serial.available()) {
-      str[i++] = Serial.read();
-    } 
-    else {
-      delay(SERIAL_WAIT_DELAY); 
-      if (b-- == 0) {
-        g_errorCounter = 103;
-        return 0;        //no data available!
-      }      
-    }
-  }
-
-  // --- START HEADER CHECK    
-  //check if data is correct, 0x10 = START_OF_DATA
-  if (str[4] != START_OF_DATA) {
-    g_errorCounter = 104;
-    return 0;
-  }
-
-  //check sendlen, its possible that sendlen is 0!
-  sendlen = str[2];  
-  // --- END HEADER CHECK
-
-  //read data  
-  i=0;
-  b=SERIAL_DELAY_LOOP;
-  while (i<sendlen+1) {
-    if (Serial.available()) {
-      str[SERIAL_HEADER_SIZE+i++] = Serial.read();
-    } 
-    else {
-      delay(SERIAL_WAIT_DELAY); 
-      if (b-- == 0) {
-        g_errorCounter = 105;
-        return 0;        //no data available!
-      }      
-    }
-  }
-
-  //check if data is correct, 0x20 = END_OF_DATA
-  if (str[SERIAL_HEADER_SIZE+sendlen] != END_OF_DATA) {
-    g_errorCounter = 106;
-    return 0;
-  }
-
-  //return data size (without meta data)
-  return sendlen;
-}
-
-
-
-
-
 
