@@ -179,6 +179,38 @@ public class PropertiesHelperTest {
         }
     }
     
+    @Test
+    public void testPixelInvadersAndNullOutputConfig() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_BLACKLIST, "/dev/tty.Bluetooth-Serial-1,/dev/cu.Bluetooth-Serial-1,/dev/cu.Bluetooth-Modem,/dev/cu.Bluetooth-Serial-2,/dev/cu.Bluetooth-PDA-Sync,/dev/tty.Bluetooth-PDA-Sync,/dev/cu.Bluetooth-Modem,/dev/tty.Bluetooth-Modem,/dev/tty.Bluetooth-Serial-2");
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "16");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "16");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        
+        assertEquals(8, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        assertEquals(2, ph.getNrOfScreens());
+    }
+
+    @Test
+    public void testPixelInvadersNetAndNullOutputConfig() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
+        config.put(ConfigConstant.PIXELINVADERS_BLACKLIST, "/dev/tty.Bluetooth-Serial-1,/dev/cu.Bluetooth-Serial-1,/dev/cu.Bluetooth-Modem,/dev/cu.Bluetooth-Serial-2,/dev/cu.Bluetooth-PDA-Sync,/dev/tty.Bluetooth-PDA-Sync,/dev/cu.Bluetooth-Modem,/dev/tty.Bluetooth-Modem,/dev/tty.Bluetooth-Serial-2");
+        config.put(ConfigConstant.PIXELINVADERS_NET_IP, "127.0.0.1");
+        config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "16");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "16");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        
+        assertEquals(8, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        assertEquals(2, ph.getNrOfScreens());
+    }
     
     @Test
     public void testInvalidPixelInvadersConfigOne() {     

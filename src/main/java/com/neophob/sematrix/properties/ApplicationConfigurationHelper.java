@@ -108,10 +108,10 @@ public class ApplicationConfigurationHelper {
     private int devicesInRow2 = 0;
 
     /** The output device x resolution. */
-    private int deviceXResolution;
+    private int deviceXResolution = 0;
 
     /** The output device y resolution. */
-    private int deviceYResolution;
+    private int deviceYResolution = 0;
     
     /** user selected gamma correction */
     private GammaType gammaType;
@@ -127,6 +127,7 @@ public class ApplicationConfigurationHelper {
     public ApplicationConfigurationHelper(Properties config) {
         this.config = config;
         
+        int nullDevices = parseNullOutputAddress();
         int rainbowduinoV2Devices = parseI2cAddress();
         int rainbowduinoV3Devices = parseRainbowduinoV3Config();
         int pixelInvadersDevices = parsePixelInvaderConfig();
@@ -136,8 +137,7 @@ public class ApplicationConfigurationHelper {
         int e131Devices = parseE131Devices();
         int miniDmxDevices = parseMiniDmxDevices();
         int tpm2Devices = parseTpm2Devices();
-        int tpm2NetDevices = parseTpm2NetDevices();
-        int nullDevices = parseNullOutputAddress();
+        int tpm2NetDevices = parseTpm2NetDevices();        
         int adalightDevices = parseAdavisionDevices();
         int udpDevices = parseUdpDevices();       
         //track how many output systems are enabled
@@ -453,6 +453,10 @@ public class ApplicationConfigurationHelper {
         if (StringUtils.isNotBlank(value)) {
             this.deviceXResolution = 8;
             this.deviceYResolution = 8;
+            
+            devicesInRow1 = 0;
+            devicesInRow2 = 0;
+            
             for (String s: value.split(ConfigConstant.DELIM)) {
                 try {
                     DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
@@ -722,18 +726,18 @@ public class ApplicationConfigurationHelper {
         int row1=parseInt(ConfigConstant.NULLOUTPUT_ROW1);
         int row2=parseInt(ConfigConstant.NULLOUTPUT_ROW2);
         if (row1+row2>0) {
-            devicesInRow1 = row1;
-            devicesInRow2 = row2;
+        	devicesInRow1 = row1;
+        	devicesInRow2 = row2;
 
-            //check for a user specific output size
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-            
-            //fallback
-            if (deviceXResolution < 1 || deviceYResolution < 1) {
-                this.deviceXResolution = 8;
-                this.deviceYResolution = 8;                
-            }
+        	//check for a user specific output size
+        	this.deviceXResolution = parseOutputXResolution();
+        	this.deviceYResolution = parseOutputYResolution();
+
+        	//fallback
+        	if (deviceXResolution < 1 || deviceYResolution < 1) {
+        		this.deviceXResolution = 8;
+        		this.deviceYResolution = 8;                
+        	}            	
         }
 
         return row1+row2;
