@@ -33,8 +33,7 @@
  * 	
  */
 
-#include <SPI.h>
-#include <FastSPI_LED.h>
+#include <FastSPI_LED2.h>
 
 // ======= START OF USER CONFIGURATION =======
 
@@ -58,7 +57,7 @@
 
 #define PIXELS_PER_PANEL 64
 
-#define NUM_LEDS (NR_OF_PANELS*PIXELS_PER_PANEL)
+#define NUM_LEDS 128
 
 
 //define some tpm2 constants
@@ -82,20 +81,13 @@ uint8_t totalPacket;
 int jj=0,k=0;
 uint8_t serialDataRecv;
 
-// Sometimes chipsets wire in a backwards sort of way
-struct CRGB { 
-  unsigned char b; 
-  unsigned char r; 
-  unsigned char g; 
-};
-// struct CRGB { unsigned char r; unsigned char g; unsigned char b; };
-struct CRGB *leds;
+CRGB leds[NUM_LEDS];
 
 // --------------------------------------------
 //     send status back to library
 // --------------------------------------------
 static void sendAck() {
-  Serial.print("AK PIXELINVADERS, PANELS:");
+  Serial.print("AK PIXELINVADERS2801, PANELS:");
   Serial.print(NR_OF_PANELS, DEC);
 #if defined (CORE_TEENSY_SERIAL)
   //Teensy supports send now
@@ -115,24 +107,28 @@ void setup() {
   Serial.flush();
   Serial.setTimeout(20);
 
+  //first blink: init
   digitalWrite(LED_PIN, HIGH);
   delay(250);
   digitalWrite(LED_PIN, LOW);  
   
-  FastSPI_LED.setLeds(NUM_LEDS);
-  FastSPI_LED.setChipset(CFastSPI_LED::SPI_WS2801);
-
-  //select spi speed, 7 is very slow, 0 is blazing fast
-  FastSPI_LED.setDataRate(1);
-  FastSPI_LED.init();
-  FastSPI_LED.start();
-  leds = (struct CRGB*)FastSPI_LED.getRGBData(); 
+  LEDS.setBrightness(255);
+  
+  //LEDS.addLeds<WS2801, RGB>(leds, NUM_LEDS);
+  
+  //duemillanove, 11: MOSI, 13: SCK
+  //teensy 2.0,    2: MOSI,  1: SCK
+  LEDS.addLeds<WS2801, 1, 2, BGR, DATA_RATE_MHZ(1)>(leds, NUM_LEDS);
 
   rainbow();      // display some colors
   serialDataRecv = 0;   //no serial data received yet  
-}
 
-uint8_t dataFrame;
+  //second blink: init done
+  delay(250);  
+  digitalWrite(LED_PIN, HIGH);
+  delay(250);
+  digitalWrite(LED_PIN, LOW);  
+}
 
 
 // --------------------------------------------
@@ -143,7 +139,7 @@ void loop() {
   
   if (res > 0) {
     serialDataRecv = 1;
-/*#ifdef DEBUG      
+#ifdef DEBUG      
     Serial.print(" OK");
     Serial.print(psize, DEC);    
     Serial.print("/");
@@ -151,7 +147,7 @@ void loop() {
 #if defined (CORE_TEENSY_SERIAL)
     Serial.send_now();
 #endif
-#endif*/
+#endif
     digitalWrite(LED_PIN, HIGH);
     updatePixels();
     digitalWrite(LED_PIN, LOW);    
@@ -193,17 +189,15 @@ void updatePixels() {
   
   for (uint8_t i=0; i < nrOfPixels; i++) {
     uint32_t color = convert15bitTo24bit(packetBuffer[ofs]<<8 | packetBuffer[ofs+1]);
-    leds[ledOffset].r = (color>>16)&255;
-    leds[ledOffset].g = (color>>8)&255; 
-    leds[ledOffset].b = color&255; 
-    ledOffset++;
+    leds[ledOffset++] = CRGB(color);     
+//    leds[ledOffset++] = color;     
     ofs+=2;
   }  
 
   //update panel content only once, even if we send multiple packets.
   //this can be done on the PixelController software
   if (currentPacket>=totalPacket-1) {  
-    FastSPI_LED.show();   // write all the pixels out
+    LEDS.show();   // write all the pixels out
 #ifdef DEBUG      
     Serial.print(" OK");
     Serial.print(currentPacket, DEC);    
@@ -237,7 +231,7 @@ int16_t readCommand() {
   }
 
   //uint8_t 
-  dataFrame = Serial.read();
+  uint8_t dataFrame = Serial.read();
   if (dataFrame != TPM2NET_CMD_DATAFRAME && dataFrame != TPM2NET_CMD_COMMAND) {
     return -2;  
   }
@@ -330,17 +324,11 @@ void rainbow() {
       jj=0; 
     }
 
-    for (int j = 0; j < 3; j++) { 
-      for (int i = 0 ; i < NUM_LEDS; i++ ) {
-
-        uint32_t color = Wheel( (i + jj) % 255);
-        leds[i].r = (color>>16)&255;
-        leds[i].g = (color>>8)&255; 
-        leds[i].b = color&255; 
-
-      }
+    for (int i = 0 ; i < NUM_LEDS; i++ ) {
+      uint32_t color = Wheel( (i + jj) % 255);
+      leds[i] = CRGB(color);  
     }
-    FastSPI_LED.show();
+   LEDS.show();
   }
 
 }
