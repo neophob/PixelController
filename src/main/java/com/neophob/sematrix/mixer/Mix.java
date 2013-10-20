@@ -49,7 +49,7 @@ public class Mix extends Mixer {
         int[] dst = new int [src1.length];
 
         for (int i=0; i<src1.length; i++){			
-            dst[i]=(src1[i]+src2[i])/2;
+            dst[i]=(src1[i]+src2[i])%255;
         }
 
         return dst;
