@@ -57,7 +57,7 @@
 
 #define PIXELS_PER_PANEL 64
 
-#define NUM_LEDS 128
+#define NUM_LEDS (NR_OF_PANELS*PIXELS_PER_PANEL)
 
 
 //define some tpm2 constants
@@ -118,7 +118,8 @@ void setup() {
   
   //duemillanove, 11: MOSI, 13: SCK
   //teensy 2.0,    2: MOSI,  1: SCK
-  LEDS.addLeds<WS2801, 1, 2, BGR, DATA_RATE_MHZ(1)>(leds, NUM_LEDS);
+  LEDS.addLeds<WS2801, 1, 2, RGB, DATA_RATE_KHZ(500)>(leds, NUM_LEDS);
+//  LEDS.addLeds<WS2801, 1, 2, RGB, DATA_RATE_MHZ(1)>(leds, NUM_LEDS);
 
   rainbow();      // display some colors
   serialDataRecv = 0;   //no serial data received yet  
