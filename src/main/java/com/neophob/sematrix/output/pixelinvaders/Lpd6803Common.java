@@ -64,9 +64,9 @@ public abstract class Lpd6803Common {
 	 * @param data rgb data (int[64], each int contains one RGB pixel)
 	 * @param colorFormat the color format
 	 * @param totalPanels total panels
-	 * @return nr of sended update frames
+	 * @return nr of sended bytes
 	 */
-	public boolean sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat, int totalPanels) {
+	public int sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat, int totalPanels) {
 		if (data.length!=BUFFERSIZE) {
 			throw new IllegalArgumentException("data lenght must be 64 bytes!");
 		}
@@ -86,23 +86,23 @@ public abstract class Lpd6803Common {
 	/**
 	 * send a frame to the active lpd6803 device.
 	 *
-	 * @param ofs - the offset get multiplied by 32 on the arduino!
+	 * @param ofs - the offset get multiplied by 32 on the Arduino!
 	 * @param data byte[3*8*4]
-	 * @return nr of sended frames
+	 * @return nr of sended bytes or -1 if an error occurred
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public boolean sendFrame(byte ofs, byte data[], int totalPanels) throws IllegalArgumentException {		
+	public int sendFrame(byte ofs, byte data[], int totalPanels) throws IllegalArgumentException {		
 		if (data.length!=128) {
 			throw new IllegalArgumentException("data lenght must be 128 bytes!");
 		}
 		byte[] imagePayload = Tpm2NetProtocol.createImagePayload(ofs, totalPanels, data);
 
 		if (sendData(imagePayload)) {
-			return true;
+			return imagePayload.length;
 		}
 		//in case of an error, make sure we send it the next time!
 		lastDataMap.put(ofs, 0L);
-		return false;
+		return -1;
 	}
 	
 	/**
@@ -136,6 +136,9 @@ public abstract class Lpd6803Common {
 			byte[] replyFromController = getReplyFromController();
 			if (replyFromController!=null && replyFromController.length > 0) {
 				String reply = Bytes.getAsString(replyFromController);
+				if (reply.contains("ERR:")) {
+					connectionErrorCounter++;
+				}
 				LOG.log(Level.INFO, "<<< ["+reply+"]");
 			}  			
 			return true;

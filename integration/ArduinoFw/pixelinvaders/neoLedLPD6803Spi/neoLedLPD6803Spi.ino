@@ -38,14 +38,26 @@
 #include <SPI.h>
 #include <Neophob_LPD6803.h>
 
+// ======= START OF USER CONFIGURATION =======
+
 //send debug messages back via serial line
 //#define DEBUG 1
+
+//how many pixelinvaders panels are connected?
+#define NR_OF_PANELS 2
+
+//Teensy 2.0 has the LED on pin 11.
+//Teensy++ 2.0 has the LED on pin 6
+//Teensy 3.0 has the LED on pin 13
+#define LED_PIN 11
+
+// ======= END OF USER CONFIGURATION ======= 
+
 
 //to draw a frame we need arround 20ms to send an image. the serial baudrate is
 //NOT the bottleneck. 
 #define BAUD_RATE 115200
 
-#define NR_OF_PANELS 2
 #define PIXELS_PER_PANEL 64
 
 //define some tpm2 constants
@@ -58,11 +70,6 @@
 
 //package size we expect. 
 #define MAX_PACKED_SIZE 255
-
-//Teensy 2.0 has the LED on pin 11.
-//Teensy++ 2.0 has the LED on pin 6
-//Teensy 3.0 has the LED on pin 13
-#define LED_PIN 11
 
 // buffers for receiving and sending data
 uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
@@ -157,7 +164,7 @@ void loop() {
   else {
     //return error number
     if (res!=-1) {
-      Serial.print("ERR: ");
+      Serial.print(" ERR: ");
       Serial.print(res, DEC);
 #if defined (CORE_TEENSY_SERIAL)      
       Serial.send_now();
@@ -243,13 +250,10 @@ int16_t readCommand() {
   //get remaining bytes
   uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
   if (recvNr!=psize) {
-    Serial.print(" Failed ");
+    Serial.print(" MissingData: ");
     Serial.print(recvNr, DEC);
-    Serial.print(" / ");
+    Serial.print("/");
     Serial.print(psize, DEC);    
-#if defined (CORE_TEENSY_SERIAL)
-    Serial.send_now();
-#endif    
     return -5;
   }  
   

@@ -56,8 +56,11 @@ public abstract class PixelInvadersDevice extends Output {
 	protected boolean initialized = false;
 
 	protected long sentFrames = 0;
+	protected long sentBytes = 0;
 	protected long ignoredFrames = 0;
 	protected long errorFrames = 0;
+	
+	private Lpd6803Common lpd6803;
 	
 	/**
 	 * 
@@ -75,15 +78,23 @@ public abstract class PixelInvadersDevice extends Output {
 		this.panelOrder = ph.getPanelOrder();
 		
 		this.initialized = false;
+		this.lpd6803 = null;
 	}
 
 	
+	
+	public void setLpd6803(Lpd6803Common lpd6803) {
+		this.lpd6803 = lpd6803;
+	}
+
+
+
 	/**
 	 * 
 	 * @param lpd6803
 	 * @param o
 	 */
-	public void sendPayload(Lpd6803Common lpd6803) {
+	public void sendPayload() {
 		this.transformedBuffer.clear();
 
 		int totalFrames = 0;
@@ -112,7 +123,9 @@ public abstract class PixelInvadersDevice extends Output {
 		for (Map.Entry<Integer, Object> entry: this.transformedBuffer.entrySet()) {
 			int panelNr = entry.getKey();
 			int[] data = (int[])entry.getValue();
-			if (lpd6803.sendRgbFrame((byte)panelNr, data, colorFormat.get(panelNr), totalFrames)) {
+			int sendedBytes = lpd6803.sendRgbFrame((byte)panelNr, data, colorFormat.get(panelNr), totalFrames);
+			if (sendedBytes>0) {
+				sentBytes += sendedBytes;
 				sentFrames++;
 			} else {
 				errorFrames++;
@@ -122,13 +135,16 @@ public abstract class PixelInvadersDevice extends Output {
 		if ((sentFrames+ignoredFrames)%2000==0) {
 			float f = sentFrames+ignoredFrames;
 			float result = (100.0f/f)*sentFrames;
-			LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, errors: {3}", 
-					new Object[] {result, sentFrames, ignoredFrames, errorFrames});				
+			LOG.log(Level.INFO, "sent frames: {0}% ({1}/{2}, total {3}kb), errors: {4}", 
+					new Object[] {result, sentFrames, ignoredFrames, (sentBytes/1024), (errorFrames+lpd6803.getConnectionErrorCounter())});				
 		}		
 	}
 	
 	@Override
 	public long getErrorCounter() {
-	    return errorFrames;
+		if (this.lpd6803==null) {
+			return errorFrames;
+		}
+	    return errorFrames+lpd6803.getConnectionErrorCounter();
 	}
 }

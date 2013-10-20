@@ -53,6 +53,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 		try {
 			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), panelOrder.size() );			
 			this.initialized = lpd6803.ping();
+			super.setLpd6803(lpd6803);
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			
 		} catch (NoSerialPortFoundException e) {
 			LOG.log(Level.WARNING, "failed to initialize serial port!");
@@ -70,7 +71,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 	 */
 	public void update() {		
 		if (initialized) {
-			sendPayload(lpd6803);			
+			sendPayload();			
 		}
 	}
 

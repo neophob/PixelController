@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.output;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -69,21 +70,22 @@ public class CacheMechanismTest {
     	byte[] data = new byte[128];
     	int[] datai = new int[128];
     	byte ofs=(byte)0;
+    	final int TPM2_HEADER_SIZE = 7;
     	
-    	boolean sentFrames = out.sendFrame(ofs, data,1);
-    	assertTrue(sentFrames);
+    	int sentFrames = out.sendFrame(ofs, data,1);
+    	assertEquals(sentFrames, data.length+TPM2_HEADER_SIZE);
     	
     	//simulate successful data send
     	out.ackReturnValue=true;
     	sentFrames = out.sendFrame(ofs, data,1);
-    	assertTrue(sentFrames);
+    	assertEquals(sentFrames, data.length+TPM2_HEADER_SIZE);
     	    	    	
     	data[0] = 20;
     	datai[0] = 20;
     	assertTrue(out.didFrameChange(ofs, datai));
     	assertFalse(out.didFrameChange(ofs, datai));
     	sentFrames = out.sendFrame(ofs, data, 1);
-    	assertTrue(sentFrames);
+    	assertEquals(sentFrames, data.length+TPM2_HEADER_SIZE);
     	
     	data[1] = 120;
     	data[111] = 120;
@@ -92,7 +94,7 @@ public class CacheMechanismTest {
     	assertTrue(out.didFrameChange(ofs, datai));
     	assertFalse(out.didFrameChange(ofs, datai));
     	sentFrames = out.sendFrame(ofs, data, 1);
-    	assertTrue(sentFrames);
+    	assertEquals(sentFrames, data.length+TPM2_HEADER_SIZE);
 
     }
     
