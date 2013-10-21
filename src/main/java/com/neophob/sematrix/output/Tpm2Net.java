@@ -99,6 +99,9 @@ public class Tpm2Net extends Output {
     /** flip each 2nd scanline? */
 	private boolean snakeCabeling;
     
+    /** Manual mapping */
+	private int[] mapping;
+
 	/**
 	 * 
 	 * @param ph
@@ -111,7 +114,8 @@ public class Tpm2Net extends Output {
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
 		this.snakeCabeling = ph.isOutputSnakeCabeling();
-		
+		this.mapping = ph.getOutputMappingValues();
+		 
 		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 		this.lastDataMap = new HashMap<Integer, Long>();
@@ -197,6 +201,9 @@ public class Tpm2Net extends Output {
 				if (this.snakeCabeling) {
 		            //flip each 2nd scanline
 		            transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+		        } else if (this.mapping.length>0) {
+		        	//do manual mapping
+		        	transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
 		        }
 				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
