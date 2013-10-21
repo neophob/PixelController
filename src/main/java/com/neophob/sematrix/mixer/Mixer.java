@@ -66,8 +66,10 @@ public abstract class Mixer {
 		
 		HALFHALFVERTICAL(10),
 		
+		/** Darken */
 		MINIMUM(11),
 		
+		/** Lighten */
 		MAXIMUM(12),
 		;
 		
