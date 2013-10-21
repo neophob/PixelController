@@ -803,7 +803,13 @@ public class ApplicationConfigurationHelper {
      * @return
      */
     public int getArtNetPixelsPerUniverse() {
-        return parseInt(ConfigConstant.ARTNET_PIXELS_PER_UNIVERSE, 170);
+        int ppU = parseInt(ConfigConstant.ARTNET_PIXELS_PER_UNIVERSE, MAXIMAL_PIXELS_PER_UNIVERSE);
+        if (ppU > MAXIMAL_PIXELS_PER_UNIVERSE) {
+        	LOG.log(Level.WARNING, "Invalid configuration found, "+ConfigConstant.E131_PIXELS_PER_UNIVERSE+"="+ppU+
+        			". Maximal value is "+MAXIMAL_PIXELS_PER_UNIVERSE+", I fixed that for you.");
+        	ppU = MAXIMAL_PIXELS_PER_UNIVERSE;
+        }
+        return ppU;
     }
 
     /**
