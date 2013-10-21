@@ -53,7 +53,6 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
 	 */
 	public AbstractDmxDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		super(outputDeviceEnum, ph, controller, bpp);
-
 		this.initialized = false;	        
 	}
 	
@@ -111,6 +110,30 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
 				}
 			}			
 		}
+		
+		
+		
+		/*if (initialized) {
+			int nrOfScreens = Collector.getInstance().getNrOfScreens();
+			for (int ofs=0; ofs<nrOfScreens; ofs++) {
+				//get the effective panel buffer
+				int panelNr = this.panelOrder.get(ofs);
+
+				int[] transformedBuffer = 
+						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
+								this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+
+				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
+
+				//send small UDP packages, this is not optimal but the client needs less memory
+				//TODO maybe add option to send one or multiple packets				
+
+				if (didFrameChange(ofs, rgbBuffer)) {
+					sendTpm2NetPacketOut(ofs, nrOfScreens, rgbBuffer);
+				}
+			}
+		}*/
+		
 	}
 	
 	@Override
@@ -130,5 +153,19 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
     public boolean isConnected() {
         return initialized;
     }
+
+	public int getPixelsPerUniverse() {
+		return pixelsPerUniverse;
+	}
+
+	public int getNrOfUniverse() {
+		return nrOfUniverse;
+	}
+
+	public int getFirstUniverseId() {
+		return firstUniverseId;
+	}
+
+	
 
 }

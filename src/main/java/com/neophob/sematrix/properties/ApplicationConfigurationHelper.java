@@ -68,6 +68,8 @@ public class ApplicationConfigurationHelper {
 
     /** The Constant FAILED_TO_PARSE. */
     private static final String FAILED_TO_PARSE = "Failed to parse {0}";
+    
+    private static final int MAXIMAL_PIXELS_PER_UNIVERSE = 170;
 
     /** The config. */
     protected Properties config=null;
@@ -316,7 +318,7 @@ public class ApplicationConfigurationHelper {
             } catch (Exception e) {
                 LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
             }
-        }
+        }  
         return defaultValue;		
     }
     
@@ -769,7 +771,13 @@ public class ApplicationConfigurationHelper {
      * @return
      */
     public int getE131PixelsPerUniverse() {
-        return parseInt(ConfigConstant.E131_PIXELS_PER_UNIVERSE, 170);
+        int ppU = parseInt(ConfigConstant.E131_PIXELS_PER_UNIVERSE, MAXIMAL_PIXELS_PER_UNIVERSE);
+        if (ppU > MAXIMAL_PIXELS_PER_UNIVERSE) {
+        	LOG.log(Level.WARNING, "Invalid configuration found, "+ConfigConstant.E131_PIXELS_PER_UNIVERSE+"="+ppU+
+        			". Maximal value is "+MAXIMAL_PIXELS_PER_UNIVERSE+", I fixed that for you.");
+        	ppU = MAXIMAL_PIXELS_PER_UNIVERSE;
+        }
+        return ppU;
     }
 
     /**
