@@ -349,6 +349,23 @@ public class PropertiesHelperTest {
         assertEquals(170, device.getPixelsPerUniverse());
     }    
 
+    @Test
+    public void testMultipleE131Config() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.E131_IP, "192.168.1.1");        
+        config.put(ConfigConstant.E131_ROW1, "NO_ROTATE,NO_ROTATE");
+        config.put(ConfigConstant.E131_ROW2, "NO_ROTATE,NO_ROTATE");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "8");
+        config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+
+        assertEquals(4, ph.getNrOfScreens());
+        assertEquals(10, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        assertEquals(true, ph.isOutputSnakeCabeling());
+        assertEquals(4, ph.getPanelOrder());
+    }
     
     @Test
     public void testMiniDmxConfig() {     

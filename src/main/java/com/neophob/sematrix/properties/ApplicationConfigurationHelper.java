@@ -89,8 +89,9 @@ public class ApplicationConfigurationHelper {
     /** The stealth device. */
     private List<DeviceConfig> stealthDevice=null;
 
-    /** The stealth device. */
     private List<DeviceConfig> tpm2netDevice=null;
+    private List<DeviceConfig> artNetDevice=null;
+    private List<DeviceConfig> e131Device=null;
 
     /** The color format. */
     private List<ColorFormat> colorFormat=null;
@@ -846,19 +847,58 @@ public class ApplicationConfigurationHelper {
      * @return the int
      */
     private int parseE131Devices() {
+    	e131Device = new ArrayList<DeviceConfig>();
+    	
         if (StringUtils.length(getE131Ip())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
-            this.devicesInRow1=1;
-            this.devicesInRow2=0;
-            this.deviceXResolution = parseOutputXResolution();
+        	
+            this.deviceXResolution = parseOutputXResolution();            
             this.deviceYResolution = parseOutputYResolution();
-            return 1;
+            
+            String value = config.getProperty(ConfigConstant.E131_ROW1);
+            if (StringUtils.isNotBlank(value)) {
+
+                devicesInRow1 = 0;
+                devicesInRow2 = 0;
+
+                for (String s: value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
+                        e131Device.add(cfg);
+                        devicesInRow1++;
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
+
+            value = config.getProperty(ConfigConstant.E131_ROW2);
+            if (StringUtils.isNotBlank(value)) {
+                for (String s: value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
+                        e131Device.add(cfg);
+                        devicesInRow2++;				
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
         }
 
-        return 0;
+        return e131Device.size();
     }
     
     
     /**
+     * 
+     * @return
+     */
+    public List<DeviceConfig> getE131Device() {
+		return e131Device;
+	}
+    
+
+	/**
      * 
      * @return
      */
@@ -918,6 +958,10 @@ public class ApplicationConfigurationHelper {
             
             String value = config.getProperty(ConfigConstant.TPM2NET_ROW1);
             if (StringUtils.isNotBlank(value)) {
+            	
+                devicesInRow1 = 0;
+                devicesInRow2 = 0;
+            	
                 for (String s: value.split(ConfigConstant.DELIM)) {
                     try {
                         DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));

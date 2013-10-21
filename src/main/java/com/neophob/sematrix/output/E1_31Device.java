@@ -59,9 +59,11 @@ public class E1_31Device extends AbstractDmxDevice {
 	 */
 	public E1_31Device(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.E1_31, ph, controller, 8);
-
+		this.displayOptions = ph.getE131Device();
+		
         //Get dmx specific config
 		this.pixelsPerUniverse = ph.getE131PixelsPerUniverse();
+		
 	    try {
 	    	String ip = ph.getE131Ip();
 	    	String sendMode = "Unicast";
@@ -70,7 +72,7 @@ public class E1_31Device extends AbstractDmxDevice {
 	    		sendMode = "Multicast";
 	    	}
 			this.targetAdress = InetAddress.getByName(ip);
-			this.firstUniverseId = ph.getE131StartUniverseId();
+			this.firstUniverseId = ph.getE131StartUniverseId();			
 			calculateNrOfUniverse();
 			packet = new DatagramPacket(new byte[0], 0, targetAdress, E1_31DataPacket.E131_PORT);
 			dsocket = new DatagramSocket();

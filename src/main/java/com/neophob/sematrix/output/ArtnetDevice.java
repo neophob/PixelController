@@ -55,7 +55,10 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 	 */
 	public ArtnetDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.ARTNET, ph, controller, 8);
-
+		
+		//TODO
+		this.displayOptions = ph.getTpm2NetDevice();
+		
         //Get dmx specific config
 		this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
 	    try {

@@ -19,20 +19,39 @@
 package com.neophob.sematrix.output;
 
 import java.net.InetAddress;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.properties.ColorFormat;
+import com.neophob.sematrix.properties.DeviceConfig;
 
 /**
  * 
  * @author michu
  *
  */
-public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
+public abstract class AbstractDmxDevice extends Output {
 
 	private static final Logger LOG = Logger.getLogger(AbstractDmxDevice.class.getName());
 
+	/** The display options, does the buffer needs to be flipped? rotated? */
+	protected List<DeviceConfig> displayOptions;
+
+	/** The output color format. */
+	private List<ColorFormat> colorFormat;
+
+	/** define how the panels are arranged */
+	private List<Integer> panelOrder;
+
+	/** The x size. */
+	private int xResolution;
+ 
+ 	/** The y size. */
+	private int yResolution;
+ 
 	//dmx specific settings
 	protected int sequenceID;
 	protected int pixelsPerUniverse;
@@ -43,6 +62,8 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
 	/** The initialized. */
 	protected boolean initialized;
 
+    /** flip each 2nd scanline? */
+	protected boolean snakeCabeling;
 	
 	/**
 	 * 
@@ -53,6 +74,13 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
 	 */
 	public AbstractDmxDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
 		super(outputDeviceEnum, ph, controller, bpp);
+
+		this.colorFormat = ph.getColorFormat();
+		this.panelOrder = ph.getPanelOrder();		
+	    this.xResolution = ph.parseOutputXResolution();
+	    this.yResolution = ph.parseOutputYResolution();
+	    this.snakeCabeling = ph.isOutputSnakeCabeling();
+	    
 		this.initialized = false;	        
 	}
 	
@@ -80,7 +108,7 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
 
         LOG.log(Level.INFO, "\tPixels per universe: "+pixelsPerUniverse);
         LOG.log(Level.INFO, "\tFirst universe ID: "+firstUniverseId);
-        LOG.log(Level.INFO, "\t# of universe: "+nrOfUniverse);
+        LOG.log(Level.INFO, "\t# of universe: "+nrOfUniverse*Collector.getInstance().getNrOfScreens());
         LOG.log(Level.INFO, "\tTarget address: "+targetAdress);		
 	}
 	
@@ -90,56 +118,51 @@ public abstract class AbstractDmxDevice extends OnePanelResolutionAwareOutput {
      */
 	@Override
 	public void update() {
-		if (this.initialized) {
-			if (this.nrOfUniverse == 1) {
-				sendBufferToReceiver(this.firstUniverseId, OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat) );
-			} else {
-				int[] fullBuffer = getTransformedBuffer();				
-				int remainingInt = fullBuffer.length;
-				int ofs=0;
-				for (int i=0; i<this.nrOfUniverse; i++) {
-					int tmp=pixelsPerUniverse;
-					if (remainingInt<pixelsPerUniverse) {
-						tmp = remainingInt;
-					}
-					int[] buffer = new int[tmp];
-					System.arraycopy(fullBuffer, ofs, buffer, 0, tmp);
-					remainingInt-=tmp;
-					ofs+=tmp;
-					sendBufferToReceiver(this.firstUniverseId+i, OutputHelper.convertBufferTo24bit(buffer, colorFormat) );					
-				}
-			}			
-		}
+		int universeOfs = 0;
 		
-		
-		
-		/*if (initialized) {
+		if (initialized) {
 			int nrOfScreens = Collector.getInstance().getNrOfScreens();
-			for (int ofs=0; ofs<nrOfScreens; ofs++) {
+			for (int nr=0; nr<nrOfScreens; nr++) {
 				//get the effective panel buffer
-				int panelNr = this.panelOrder.get(ofs);
+				int panelNr = this.panelOrder.get(nr);
 
-				int[] transformedBuffer = 
-						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
-								this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
-
+				//get buffer data
+				int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(nr), displayOptions.get(panelNr),
+											this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+				
+				if (this.snakeCabeling) {
+		            //flip each 2nd scanline
+		            transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+		        }
+				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 
-				//send small UDP packages, this is not optimal but the client needs less memory
-				//TODO maybe add option to send one or multiple packets				
-
-				if (didFrameChange(ofs, rgbBuffer)) {
-					sendTpm2NetPacketOut(ofs, nrOfScreens, rgbBuffer);
+				//send out
+				int remainingBytes = rgbBuffer.length;//510
+				int ofs=0;
+				for (int i=0; i<this.nrOfUniverse; i++) {
+					int tmp=pixelsPerUniverse*3;//tmp=510
+					if (remainingBytes<=pixelsPerUniverse*3) {
+						tmp = remainingBytes;
+					}
+					byte[] buffer = new byte[tmp];
+					System.arraycopy(rgbBuffer, ofs, buffer, 0, tmp);			
+					remainingBytes-=tmp;
+					ofs+=tmp;
+					sendBufferToReceiver(this.firstUniverseId+universeOfs, buffer);
+					
+					universeOfs++;
 				}
+
 			}
-		}*/
+		}
 		
 	}
 	
 	@Override
     public String getConnectionStatus(){
         if (initialized) {
-            return "Target IP: "+targetAdress+", Nr. of universe: "+nrOfUniverse;            
+            return "Target IP: "+targetAdress+", # of universe: "+nrOfUniverse*Collector.getInstance().getNrOfScreens();            
         }
         return "Not connected!";
     }
