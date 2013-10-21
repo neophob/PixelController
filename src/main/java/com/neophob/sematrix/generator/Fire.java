@@ -47,8 +47,7 @@ public class Fire extends Generator implements PConstants {
 	public Fire(PixelControllerGenerator controller) {
 		super(controller, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
-		this.buffer = new int[internalBufferXSize*(internalBufferYSize+10)];
-System.out.println("BFRS: "+this.buffer.length);		
+		this.buffer = new int[internalBufferXSize*(internalBufferYSize+10)];		
 		r = new Random();
 	}
 
