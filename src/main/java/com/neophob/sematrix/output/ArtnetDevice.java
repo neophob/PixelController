@@ -56,8 +56,7 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 	public ArtnetDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
 		super(OutputDeviceEnum.ARTNET, ph, controller, 8);
 		
-		//TODO
-		this.displayOptions = ph.getTpm2NetDevice();
+		this.displayOptions = ph.getArtNetDevice();
 		
         //Get dmx specific config
 		this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
@@ -67,7 +66,7 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 		    calculateNrOfUniverse();
 		    
 			this.artnet = new ArtNet();				
-		    String broadcastAddr = ph.getArtNetBroadcastAddr();
+		    String broadcastAddr = ph.getArtNetBroadcastAddr();	    
 		    if (StringUtils.isBlank(broadcastAddr)) {
 		        broadcastAddr = ArtNetServer.DEFAULT_BROADCAST_IP;
 		    }
@@ -83,7 +82,7 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 		    this.artnet.startNodeDiscovery();
 		    		    
 		    this.initialized = true;
-			LOG.log(Level.INFO, "ArtNet device initialized");
+			LOG.log(Level.INFO, "ArtNet device initialized, use "+this.displayOptions.size()+" panels");
 			
 		} catch (BindException e) {
 			LOG.log(Level.WARNING, "\nFailed to initialize ArtNet device:", e);

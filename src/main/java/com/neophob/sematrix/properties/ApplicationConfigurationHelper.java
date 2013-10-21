@@ -825,7 +825,7 @@ public class ApplicationConfigurationHelper {
      * @return
      */
     public String getArtNetBroadcastAddr() {
-        return config.getProperty(ConfigConstant.ARTNET_BROADCAST_ADDR);
+        return config.getProperty(ConfigConstant.ARTNET_BROADCAST_ADDR, "");
     }
     
 
@@ -835,19 +835,58 @@ public class ApplicationConfigurationHelper {
      * @return the int
      */
     private int parseArtNetDevices() {
+    	artNetDevice = new ArrayList<DeviceConfig>();
+
         //minimal ip length 1.1.1.1
-        if (StringUtils.length(getArtNetIp())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {
-            this.devicesInRow1=1;
-            this.devicesInRow2=0;
-            this.deviceXResolution = parseOutputXResolution();
+        if (StringUtils.length(getArtNetIp())>6 && parseOutputXResolution()>0 && parseOutputYResolution()>0) {        	
+            this.deviceXResolution = parseOutputXResolution();            
             this.deviceYResolution = parseOutputYResolution();
-            return 1;
+            
+            String value = config.getProperty(ConfigConstant.ARTNET_ROW1);
+            if (StringUtils.isNotBlank(value)) {
+
+                devicesInRow1 = 0;
+                devicesInRow2 = 0;
+
+                for (String s: value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
+                        artNetDevice.add(cfg);
+                        devicesInRow1++;
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
+
+            value = config.getProperty(ConfigConstant.ARTNET_ROW2);
+            if (StringUtils.isNotBlank(value)) {
+                for (String s: value.split(ConfigConstant.DELIM)) {
+                    try {
+                        DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
+                        artNetDevice.add(cfg);
+                        devicesInRow2++;				
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
+                    }
+                }
+            }
         }
 
-        return 0;
+        return artNetDevice.size();        
     }
-
+    
+    
     /**
+     * 
+     * @return
+     */
+    public List<DeviceConfig> getArtNetDevice() {
+		return artNetDevice;
+	}
+    
+
+	/**
      * Parses the e131 devices.
      *
      * @return the int

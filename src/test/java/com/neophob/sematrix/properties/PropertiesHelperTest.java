@@ -280,9 +280,10 @@ public class PropertiesHelperTest {
     }
 
     @Test
-    public void testArtnetConfig() {     
+    public void testArtnetConfigSimple() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.ARTNET_IP, "192.168.1.1");        
+        config.put(ConfigConstant.ARTNET_IP, "192.168.1.1");
+        config.put(ConfigConstant.ARTNET_ROW1, "NO_ROTATE");
         config.put(ConfigConstant.ARTNET_BROADCAST_ADDR, "255.0.0.0");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
@@ -298,7 +299,32 @@ public class PropertiesHelperTest {
         PixelControllerOutput controller = new PixelControllerOutput();
         ArtnetDevice device = new ArtnetDevice(ph, controller);
         assertTrue(device.isConnected());       
+        assertEquals(170, device.getPixelsPerUniverse());
+        assertEquals(1, device.getNrOfUniverse());
+        assertEquals(0, device.getFirstUniverseId());
+    }
+        
+    @Test
+    public void testArtnetConfigAdvanced() {             
+    	Properties config = new Properties();
+        config.put(ConfigConstant.ARTNET_IP, "192.168.1.1"); 
+        config.put(ConfigConstant.ARTNET_PIXELS_PER_UNIVERSE, "333");
+        config.put(ConfigConstant.ARTNET_ROW1, "NO_ROTATE");
+        config.put(ConfigConstant.ARTNET_ROW2, "NO_ROTATE");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "8");
+        config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
+        assertEquals(OutputDeviceEnum.ARTNET, ph.getOutputDevice());
+        assertEquals(2, ph.getNrOfScreens());
+        assertEquals(10, ph.getDeviceXResolution());
+        assertEquals(8, ph.getDeviceYResolution());
+        assertEquals(true, ph.isOutputSnakeCabeling());
+
+        PixelControllerOutput controller = new PixelControllerOutput();
+        ArtnetDevice device = new ArtnetDevice(ph, controller);
+        assertEquals(170, device.getPixelsPerUniverse());
     }    
 
     
