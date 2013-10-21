@@ -203,6 +203,8 @@ public class MiniDmxSerial {
 	/** map to store checksum of image. */
 	private long lastDataMap;
 		
+	private String serialPortName="";	
+
 	/**
 	 * Create a new instance to communicate with the rainbowduino.
 	 *
@@ -245,7 +247,6 @@ public class MiniDmxSerial {
 		
 		lastDataMap = 0L;
 		
-		String serialPortName="";	
 		this.miniDmxPayload = MiniDmxPayloadEnum.getDmxPayload(targetBuffersize);
 		LOG.log(Level.INFO,  "MiniDMX payload size: {0}, padding bytes: {1}, baudrate: {2}", new Object[] {
 		        this.miniDmxPayload.payloadSize,
@@ -363,7 +364,7 @@ public class MiniDmxSerial {
 		r.nextBytes(data);
 		
 		//just send a frame
-		return sendFrame(data);
+		return sendFrame(data)>0;
 	}
 	
 	
@@ -376,7 +377,7 @@ public class MiniDmxSerial {
 	 * @param colorFormat the color format
 	 * @return true if send was successful
 	 */
-	public boolean sendRgbFrame(int[] data, ColorFormat colorFormat) {
+	public int sendRgbFrame(int[] data, ColorFormat colorFormat) {
 		return sendFrame(OutputHelper.convertBufferTo24bit(data, colorFormat));
 	}
 
@@ -419,7 +420,7 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public boolean sendFrame(byte data[]) throws IllegalArgumentException {
+	public int sendFrame(byte data[]) throws IllegalArgumentException {
 	    //respect the padding!
         int sourceDataLength = miniDmxPayload.getPayloadSize()-miniDmxPayload.paddingBytes;
 
@@ -438,14 +439,14 @@ public class MiniDmxSerial {
 		//send frame only if needed
 		if (didFrameChange(data)) {
 			if (sendSerialData(cmdfull)) {
-				return true;
+				return cmdfull.length;
 			} else {
 				//in case of an error, make sure we send it the next time!
 				lastDataMap=0L;
 			}
 		}
 
-		return false;
+		return -1;
 	}
 	
 
@@ -581,6 +582,14 @@ public class MiniDmxSerial {
 	 */
 	public long getAckErrors() {
 		return ackErrors;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getSerialPortName() {
+		return serialPortName;
 	}
 
 

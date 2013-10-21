@@ -91,4 +91,18 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 	    return this.initialized;
 	}
 
+	@Override
+    public boolean isSupportConnectionState() {
+        return true;
+    }
+	
+
+	@Override
+	public String getConnectionStatus(){
+	    if (initialized) {
+	        return "Connected on port "+miniDmx.getSerialPortName();	        
+	    }
+	    return "Not connected!";
+	}
+	
 }
