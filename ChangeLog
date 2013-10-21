@@ -21,7 +21,8 @@ Changelog v1.4.1 to v1.5.0
 -Reduce filesize of distribution file, remove unneeded files
 -Remove support for Adavision product - does not exist anymore
 -Update PixConCli, improve message handling
--Update Fire Generator, remove visible random pixels 
+-Update Fire Generator, remove visible random pixels
+-Update Config example files 
 -Update PixelInvaders firmware, use the TPM2Net protocol to send data 
    Testcase: 2 PixelInvader Panels, ColorScroll Generator, no sound update
    Framerate old fw: 35fps, Framerate new fw: 140fps -> 400% faster!
