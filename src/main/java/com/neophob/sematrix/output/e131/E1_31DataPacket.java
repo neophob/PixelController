@@ -87,12 +87,12 @@ public class E1_31DataPacket {
         data[41]=0x00;
         data[42]=0x00;
         data[43]=0x02;
-        data[44]='p';   // User Assigned Name of Source (64 bytes), *should* be utf8 enoded
+        data[44]='P';   // User Assigned Name of Source (64 bytes), *should* be utf8 enoded
         data[45]='i';
         data[46]='x';
         data[47]='e';
         data[48]='l';
-        data[49]='c';
+        data[49]='C';
         data[50]='o';
         data[51]='n';
         data[52]='t';
