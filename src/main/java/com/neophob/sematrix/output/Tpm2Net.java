@@ -96,6 +96,9 @@ public class Tpm2Net extends Output {
 	/** map to store checksum of image. */
 	private Map<Integer, Long> lastDataMap;
 
+    /** flip each 2nd scanline? */
+	private boolean snakeCabeling;
+    
 	/**
 	 * 
 	 * @param ph
@@ -107,7 +110,8 @@ public class Tpm2Net extends Output {
 		this.displayOptions = ph.getTpm2NetDevice();		
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
-
+		this.snakeCabeling = ph.isOutputSnakeCabeling();
+		
 		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 		this.lastDataMap = new HashMap<Integer, Long>();
@@ -118,13 +122,13 @@ public class Tpm2Net extends Output {
 			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, Tpm2NetProtocol.TPM2_NET_PORT);
 
 			this.initialized = true;
-			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}, Resolution: {1}/{2}",  
-					new Object[] { this.targetAddr, 
-					this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize()}
+			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}:{1}, Resolution: {2}/{3}, snakeCabeling: {4}",  
+					new Object[] { this.targetAddr, Tpm2NetProtocol.TPM2_NET_PORT, 
+					this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize(), this.snakeCabeling}
 					);
 
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to resolve target address "+targetAddrStr+": {0}", e);
+			LOG.log(Level.SEVERE, "Failed to resolve target address "+targetAddrStr+":"+Tpm2NetProtocol.TPM2_NET_PORT+" {0}", e);
 		}
 	}
 
@@ -180,7 +184,7 @@ public class Tpm2Net extends Output {
 	 */
 	public void update() {
 
-		if (initialized) {			
+		if (initialized) {
 			int nrOfScreens = Collector.getInstance().getNrOfScreens();
 			for (int ofs=0; ofs<nrOfScreens; ofs++) {
 				//get the effective panel buffer
@@ -189,7 +193,12 @@ public class Tpm2Net extends Output {
 				int[] transformedBuffer = 
 						RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
 								this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
-
+				
+				if (this.snakeCabeling) {
+		            //flip each 2nd scanline
+		            transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+		        }
+				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
 
 				//send small UDP packages, this is not optimal but the client needs less memory

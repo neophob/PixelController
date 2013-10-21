@@ -29,6 +29,7 @@ Roadmap PixelController
 -OLA (http://www.opendmx.net/index.php/Open_Lighting_Architecture) input plugin see https://github.com/neophob/ola-to-tpm2net
 -Use Observer Pattern to update GUI elements
 -Game of life generator
+-Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 
 
 Roadmap PixelInvaders Firmware
