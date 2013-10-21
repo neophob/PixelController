@@ -50,7 +50,7 @@ public class NegativeMultiply extends Mixer {
         for (int i=0; i<src1.length; i++){
             int pixelOne = src1[i]&255;
             int pixelTwo = src2[i]&255;   
-            dst[i]=(255- ((255-pixelOne)*(255-pixelTwo) / 255));
+            dst[i]=255 - ((255-pixelOne)*(255-pixelTwo) / 255);
         }
 
         return dst;
