@@ -79,7 +79,7 @@ public class E1_31Device extends AbstractDmxDevice {
 			
 			this.initialized = true;
 		
-			LOG.log(Level.INFO, "E1.31 device initialized, send mode: "+sendMode);
+			LOG.log(Level.INFO, "E1.31 device initialized, send mode: "+sendMode+", use "+this.displayOptions.size()+" panels");
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "failed to initialize E1.31 device", e);
 		}
