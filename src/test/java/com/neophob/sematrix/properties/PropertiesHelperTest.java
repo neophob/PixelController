@@ -305,7 +305,8 @@ public class PropertiesHelperTest {
     @Test
     public void testE131Config() {     
         Properties config = new Properties();
-        config.put(ConfigConstant.E131_IP, "192.168.1.1");        
+        config.put(ConfigConstant.E131_IP, "192.168.1.1");      
+        config.put(ConfigConstant.E131_ROW1, "NO_ROTATE");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
         assertEquals(1, ph.getNrOfScreens());
@@ -327,13 +328,15 @@ public class PropertiesHelperTest {
         
         
         config = new Properties();
-        config.put(ConfigConstant.E131_IP, "239.255.1.1");        
+        config.put(ConfigConstant.E131_IP, "239.255.1.1");
+        config.put(ConfigConstant.E131_ROW1, "NO_ROTATE");
         config.put(ConfigConstant.E131_FIRST_UNIVERSE_ID, "1"); 
         config.put(ConfigConstant.E131_PIXELS_PER_UNIVERSE, "333");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
         config.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
         ph = new ApplicationConfigurationHelper(config);
 
+        assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
         assertEquals(1, ph.getNrOfScreens());
         assertEquals(10, ph.getDeviceXResolution());
         assertEquals(8, ph.getDeviceYResolution());
@@ -364,7 +367,7 @@ public class PropertiesHelperTest {
         assertEquals(10, ph.getDeviceXResolution());
         assertEquals(8, ph.getDeviceYResolution());
         assertEquals(true, ph.isOutputSnakeCabeling());
-        assertEquals(4, ph.getPanelOrder());
+        assertEquals(4, ph.getPanelOrder().size());
     }
     
     @Test
