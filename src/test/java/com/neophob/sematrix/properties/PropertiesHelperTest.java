@@ -440,6 +440,7 @@ public class PropertiesHelperTest {
         Properties config = new Properties();
         config.put(ConfigConstant.RAINBOWDUINO_V2_ROW1, "4");
         config.put(ConfigConstant.ARTNET_IP, "192.168.4.2");
+        config.put(ConfigConstant.ARTNET_ROW1, "NO_ROTATE");
         new ApplicationConfigurationHelper(config);
     }
 
