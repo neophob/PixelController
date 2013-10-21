@@ -137,8 +137,7 @@ public class ApplicationConfigurationHelper {
         int e131Devices = parseE131Devices();
         int miniDmxDevices = parseMiniDmxDevices();
         int tpm2Devices = parseTpm2Devices();
-        int tpm2NetDevices = parseTpm2NetDevices();        
-        int adalightDevices = parseAdavisionDevices();
+        int tpm2NetDevices = parseTpm2NetDevices();                
         int udpDevices = parseUdpDevices();       
         //track how many output systems are enabled
         int enabledOutputs = 0;
@@ -206,12 +205,6 @@ public class ApplicationConfigurationHelper {
             LOG.log(Level.INFO, "found Tpm2 Net device: "+totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.TPM2NET;
         }       
-        if (adalightDevices > 0) {
-            enabledOutputs++;
-            totalDevices = adalightDevices;
-            LOG.log(Level.INFO, "found Adalight device: "+totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.ADAVISION;
-        } 
         if (udpDevices > 0) {
             enabledOutputs++;
             totalDevices = udpDevices;
@@ -743,40 +736,6 @@ public class ApplicationConfigurationHelper {
         return row1+row2;
     }	
 
-    /**
-     * 
-     * @return
-     */
-    private int parseAdavisionDevices() {        
-    	if (StringUtils.isNotBlank(getAdavisionSerialPort()) &&
-    			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X)>0 && 
-    			parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y)>0) {
-            this.devicesInRow1=1;
-            this.devicesInRow2=0;
-            this.deviceXResolution = parseOutputXResolution();
-            this.deviceYResolution = parseOutputYResolution();
-    		return 1;
-    	}
-        return 0;
-    }	
-
-    /**
-     * get configured artnet ip.
-     *
-     * @return the art net ip
-     */
-    public String getAdavisionSerialPort() {
-        return config.getProperty(ConfigConstant.ADAVISION_SERIAL_PORT);
-    }
-
-    /**
-     * get serial baudspeed for the adavision output
-     *
-     * @return bps for adavision device or 0 if not defined
-     */
-    public int getAdavisionSerialPortSpeed() {
-    	return parseInt(ConfigConstant.ADAVISION_SERIAL_SPEED, 0);
-    }
 
     /**
      * get configured udp ip.

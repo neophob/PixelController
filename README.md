@@ -35,13 +35,13 @@ PixelController supports different (LED) matrix hardware devices:
 * Seeedstudios Rainbowduino V3 (Using this firmware: https://code.google.com/p/rainbowduino-v3-streaming-firmware)
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 * MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
-* Adavision (http://www.adafruit.com/products/611)
 * Element Labs Stealth LED panel. No longer in production (http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf)
 * Generic UDP Devices (for example Raspberry Pi, check out the PixelPi Software)
 * TPM2 Serial devices (see http://ledstyles.de for more information)
 * TPM2 Net devices (see http://ledstyles.de for more information)
+* E1.31 devices (see http://www.opendmx.net/index.php/E1.31)
 
-Check out the `data/ArduinoFW` directory, all Arduino based firmware files are stored there.
+Check out the `integration/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
 ## FRONTENDS
 There are different frontends for PixelController:

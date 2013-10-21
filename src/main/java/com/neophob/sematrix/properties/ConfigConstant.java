@@ -50,9 +50,6 @@ public final class ConfigConstant {
 	/** The Constant NULLOUTPUT_ROW2. */
 	public static final String NULLOUTPUT_ROW2 = "nulloutput.devices.row2";
 
-	public static final String ADAVISION_SERIAL_PORT = "adavision.serial.port";
-	public static final String ADAVISION_SERIAL_SPEED = "adavision.serial.speed";
-
 	/** The Constant ARTNET_IP. */
 	public static final String ARTNET_IP = "artnet.ip";
 	public static final String ARTNET_PIXELS_PER_UNIVERSE = "artnet.pixels.per.universe";	

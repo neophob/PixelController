@@ -44,9 +44,6 @@ public enum OutputDeviceEnum {
 	/** The MINIDMX. */
 	MINIDMX(MiniDmxDevice.class, true),
 
-	/** The ADAVISION. */
-	ADAVISION(AdaVision.class, true),
-
 	/** The TPM2. */
 	TPM2(Tpm2.class, true),
 

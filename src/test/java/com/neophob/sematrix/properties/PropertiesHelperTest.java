@@ -472,41 +472,6 @@ public class PropertiesHelperTest {
         assertEquals(-1, presetNr);
     }
     
-    @Test
-    public void testAdaVisionCorrect() {
-        Properties config = new Properties();        
-        config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/pille.palle");
-        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
-        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
-        assertEquals("/dev/pille.palle", ph.getAdavisionSerialPort());
-    }
-
-    @Test
-    public void testAdaVisionSerialPort() {
-        Properties config = new Properties();                
-        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
-        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
-        config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/xxx");
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        assertEquals(OutputDeviceEnum.ADAVISION, ph.getOutputDevice());
-        assertEquals("/dev/xxx", ph.getAdavisionSerialPort());
-    }
-    
-    @Test
-    public void testAdaVisionSerialPortSpeed() {
-        Properties config = new Properties();        
-        config.put(ConfigConstant.ADAVISION_SERIAL_PORT, "/dev/pille.palle");
-        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "15");
-        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "10");
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        assertEquals(0, ph.getAdavisionSerialPortSpeed());
-        
-        config.put(ConfigConstant.ADAVISION_SERIAL_SPEED, "115200");
-        ph = new ApplicationConfigurationHelper(config);
-        assertEquals(115200, ph.getAdavisionSerialPortSpeed());
-    }
 
     @Test
     public void testUdpDevice() {
