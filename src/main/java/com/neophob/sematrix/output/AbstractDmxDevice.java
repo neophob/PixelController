@@ -65,6 +65,8 @@ public abstract class AbstractDmxDevice extends Output {
     /** flip each 2nd scanline? */
 	protected boolean snakeCabeling;
 	
+	protected int[] mapping;
+	
 	/**
 	 * 
 	 * @param outputDeviceEnum
@@ -80,6 +82,7 @@ public abstract class AbstractDmxDevice extends Output {
 	    this.xResolution = ph.parseOutputXResolution();
 	    this.yResolution = ph.parseOutputYResolution();
 	    this.snakeCabeling = ph.isOutputSnakeCabeling();
+	    this.mapping = ph.getOutputMappingValues();
 	    
 		this.initialized = false;	        
 	}
@@ -109,6 +112,7 @@ public abstract class AbstractDmxDevice extends Output {
         LOG.log(Level.INFO, "\tPixels per universe: "+pixelsPerUniverse);
         LOG.log(Level.INFO, "\tFirst universe ID: "+firstUniverseId);
         LOG.log(Level.INFO, "\t# of universe: "+nrOfUniverse*Collector.getInstance().getNrOfScreens());
+        LOG.log(Level.INFO, "\tOutput Mapping entry size: "+this.mapping.length);
         LOG.log(Level.INFO, "\tTarget address: "+targetAdress);		
 	}
 	
@@ -133,6 +137,9 @@ public abstract class AbstractDmxDevice extends Output {
 				if (this.snakeCabeling) {
 		            //flip each 2nd scanline
 		            transformedBuffer= OutputHelper.flipSecondScanline(transformedBuffer, this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize());
+		        } else if (this.mapping.length>0) {
+		        	//do manual mapping
+		        	transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping, xResolution, yResolution);
 		        }
 				
 				byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(transformedBuffer, colorFormat.get(panelNr));
