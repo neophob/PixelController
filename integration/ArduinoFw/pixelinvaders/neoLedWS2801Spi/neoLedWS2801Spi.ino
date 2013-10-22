@@ -2,7 +2,6 @@
  * PixelInvaders serial-led-gateway v2.0, Copyright (C) 2011-2013 michael vogt <michu@neophob.com>
  * Tested on Teensy and Arduino.
  *
- * THIS FIRMWARE IS UNTESTED! please give me feedback if it works!
  *
  * ------------------------------------------------------------------------
  *
@@ -190,8 +189,7 @@ void updatePixels() {
   
   for (uint8_t i=0; i < nrOfPixels; i++) {
     uint32_t color = convert15bitTo24bit(packetBuffer[ofs]<<8 | packetBuffer[ofs+1]);
-    leds[ledOffset++] = CRGB(color);     
-//    leds[ledOffset++] = color;     
+    leds[ledOffset++] = CRGB(color);
     ofs+=2;
   }  
 

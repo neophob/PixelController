@@ -108,6 +108,7 @@ void setup() {
   Serial.flush();
   Serial.setTimeout(20);
 
+  //first blink: init
   digitalWrite(LED_PIN, HIGH);
   delay(250);
   digitalWrite(LED_PIN, LOW);  
@@ -135,6 +136,12 @@ void setup() {
 
   rainbow();      // display some colors
   serialDataRecv = 0;   //no serial data received yet  
+  
+  //second blink: init done
+  delay(250);  
+  digitalWrite(LED_PIN, HIGH);
+  delay(250);
+  digitalWrite(LED_PIN, LOW);    
 }
 
 uint8_t dataFrame;
