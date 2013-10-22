@@ -36,6 +36,10 @@ public class CacheMechanismTest {
 
 	class DummyOutput extends Lpd6803Common {
 
+		public DummyOutput() {
+			super(8,8);
+		}
+
 		boolean ackReturnValue=false;
 		
 		@Override

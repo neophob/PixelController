@@ -19,14 +19,12 @@ public abstract class Lpd6803Common {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Lpd6803Common.class.getName());
 
-	/** number of leds horizontal<br> TODO: should be dynamic, someday. */
-	public static final int NR_OF_LED_HORIZONTAL = 8;
+	protected int nrOfLedHorizontal;
 
-	/** number of leds vertical<br> TODO: should be dynamic, someday. */
-	public static final int NR_OF_LED_VERTICAL = NR_OF_LED_HORIZONTAL;
+	protected int nrOfLedVertical;
 
 	/** The Constant BUFFERSIZE. */
-	protected static final int BUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
+	protected int bufferSize;
 
 	protected static Adler32 adler = new Adler32();
 	
@@ -45,6 +43,11 @@ public abstract class Lpd6803Common {
 	/** The ack errors. */
 	protected long ackErrors = 0;
 	
+	public Lpd6803Common(int xRes, int yRes) {
+		this.nrOfLedHorizontal = xRes;
+		this.nrOfLedVertical = yRes;
+		this.bufferSize = xRes*yRes;
+	}
 	
 	/**
 	 * return connection state of lib.
@@ -67,8 +70,8 @@ public abstract class Lpd6803Common {
 	 * @return nr of sended bytes
 	 */
 	public int sendRgbFrame(byte ofs, int[] data, ColorFormat colorFormat, int totalPanels) {
-		if (data.length!=BUFFERSIZE) {
-			throw new IllegalArgumentException("data lenght must be 64 bytes!");
+		if (data.length!=bufferSize) {
+			throw new IllegalArgumentException("data lenght must be "+bufferSize+" bytes, was "+data.length);
 		}
 		
 		int ofsAsInt = ofs;
@@ -243,6 +246,22 @@ public abstract class Lpd6803Common {
 	 */
 	public boolean isInitialized() {
 		return initialized;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNrOfLedHorizontal() {
+		return nrOfLedHorizontal;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNrOfLedVertical() {
+		return nrOfLedVertical;
 	}
 
 

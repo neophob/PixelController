@@ -33,7 +33,11 @@ import com.neophob.sematrix.output.pixelinvaders.WriteDataException;
  */
 public class PixelControllerDeviceTest extends Lpd6803Common {
 	
-    @Test
+    public PixelControllerDeviceTest() {
+		super(8,8);
+	}
+
+	@Test
     public void testChaching() {
     	int[] b = new int[64];    	
     	assertTrue(didFrameChange((byte)0, b));

@@ -107,8 +107,8 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int totalPanels) throws NoSerialPortFoundException {
-		this(app, null, 0, portBlacklist, correctionMap);
+	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+		this(app, null, 0, portBlacklist, correctionMap, panelSize);
 	}
 
 
@@ -120,8 +120,8 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap) throws NoSerialPortFoundException {
-		
+	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+		super(panelSize, panelSize);
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
 		this.app = app;

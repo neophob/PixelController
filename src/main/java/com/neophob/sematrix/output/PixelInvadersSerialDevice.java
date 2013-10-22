@@ -51,7 +51,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);		
 		
 		try {
-			lpd6803 = new Lpd6803( Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), panelOrder.size() );			
+			lpd6803 = new Lpd6803(Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			
 			this.initialized = lpd6803.ping();
 			super.setLpd6803(lpd6803);
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			

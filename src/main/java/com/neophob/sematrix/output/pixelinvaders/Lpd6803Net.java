@@ -78,7 +78,8 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803Net(PApplet pa, String destIp, int destPort, Map<Integer, RGBAdjust> correctionMap) throws Exception {
+	public Lpd6803Net(PApplet pa, String destIp, int destPort, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws Exception {
+		super(panelSize, panelSize);
 		LOG.log(Level.INFO,	"Initialize LPD6803 net lib v{0}", VERSION);
 		
 		this.destIp = destIp;

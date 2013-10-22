@@ -447,8 +447,14 @@ public class ApplicationConfigurationHelper {
 
         String value = config.getProperty(ConfigConstant.PIXELINVADERS_ROW1);
         if (StringUtils.isNotBlank(value)) {
-            this.deviceXResolution = 8;
-            this.deviceYResolution = 8;
+        	
+        	if (parseBoolean(ConfigConstant.PIXELINVADERS_IS_AN_EXPEDITINVADER)) {
+                this.deviceXResolution = 4;
+                this.deviceYResolution = 4;        		
+        	} else {
+                this.deviceXResolution = 8;
+                this.deviceYResolution = 8;        		
+        	}
             
             devicesInRow1 = 0;
             devicesInRow2 = 0;
