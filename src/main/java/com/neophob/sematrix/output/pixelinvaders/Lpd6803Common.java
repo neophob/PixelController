@@ -95,9 +95,6 @@ public abstract class Lpd6803Common {
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
 	public int sendFrame(byte ofs, byte data[], int totalPanels) throws IllegalArgumentException {		
-		if (data.length!=128) {
-			throw new IllegalArgumentException("data lenght must be 128 bytes!");
-		}
 		byte[] imagePayload = Tpm2NetProtocol.createImagePayload(ofs, totalPanels, data);
 
 		if (sendData(imagePayload)) {
