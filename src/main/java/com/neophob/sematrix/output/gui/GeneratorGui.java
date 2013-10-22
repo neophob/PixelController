@@ -665,6 +665,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int ibsX= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferXSize();
         int ibsY= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferYSize();
         cp5.addTextlabel("nfoInternalBuffer", Messages.getString("GeneratorGui.INFO_INTERNAL_BUFFERSIZE")+ibsX+"/"+ibsY, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        nfoYPos+=yposAdd;
+        
+        Button saveScreenshot = cp5.addButton(GuiElement.SAVE_SCREENSHOT.guiText(), 0,
+        		nfoXPos, nfoYPos, 110, 15);
+        saveScreenshot.setCaptionLabel(Messages.getString("GeneratorGui.SAVE_SCREENSHOT")); //$NON-NLS-1$
+        saveScreenshot.moveTo(infoTab);
+        cp5.getTooltip().register(GuiElement.SAVE_SCREENSHOT.guiText(), Messages.getString("GeneratorGui.TOOLTIP_SAVE_SCREENSHOT")); //$NON-NLS-1$
+
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;

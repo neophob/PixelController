@@ -72,6 +72,7 @@ public enum GuiElement {
 	LOAD_PRESET,
 	SAVE_PRESET,
 	
+	SAVE_SCREENSHOT
 	;
 	
 	/**

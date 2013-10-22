@@ -5,6 +5,7 @@ Changelog v1.4.1 to v1.5.0
 -Add Textwriter option (PingPong scrolling, left scrolling)
 -Add new Minimum and Maximum Mixer
 -Add new keyboard shortcut to select tabs (arrow keys)
+-Add new GUI option to save screenshot of all visuals
 -Add missing option 'snake cabling' and 'mapping' for TPM2.Net device
 -Add missing option 'snake cabling' and 'mapping' for Artnet/E1.31 devices
 -Add multipanel support for Artnet/E1.31 output

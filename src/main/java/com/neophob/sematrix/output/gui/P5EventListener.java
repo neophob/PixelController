@@ -267,6 +267,10 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.CHANGE_BRIGHTNESS, brightness);
             	break;
             	
+            case SAVE_SCREENSHOT:
+            	createMessage(ValidCommands.SCREENSHOT, "");
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;
