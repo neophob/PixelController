@@ -48,7 +48,8 @@ There are different frontends for PixelController:
 
 * Native Java: the default frontend is started when PixelController starts.
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
-* PureData: PureData frontend (http://puredata.info/ download the extended Version), very flexible, extensible (OSC, MIDI). The PureData file is called `PixelController.pd`.
+* PureData: PureData frontend (http://puredata.info/ download the extended Version), very flexible, extensible (OSC, MIDI). The PureData file is called `PixelController.pd`. (*deprecated*)
+* OSC: Create your own interfaces, for example with the great TouchOSC application.
 
 ##INTERFACES
 * OSC interface, default listening port 9876. Processing examples included how to communicate with PixelController via OSC protocol
