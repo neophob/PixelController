@@ -19,6 +19,7 @@
 package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.fader.Fader.FaderName;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * 
@@ -27,8 +28,10 @@ import com.neophob.sematrix.fader.Fader.FaderName;
  */
 public final class PixelControllerFader {
 
-	private PixelControllerFader() {
-		//no instance allowed
+	private int presetLoadingFadeTime;
+	
+	public PixelControllerFader(ApplicationConfigurationHelper ah) {
+		presetLoadingFadeTime = ah.getPresetLoadingFadeTime();
 	}
 	
 	/* 
@@ -61,16 +64,16 @@ public final class PixelControllerFader {
 	 * @param index
 	 * @return
 	 */
-	public static Fader getFader(int index, int duration) {
+	public Fader getPresetFader(int index) {
 		switch (index) {
 		case 0:
 			return new Switch();
 		case 1:
-			return new Crossfader(duration);
+			return new Crossfader(presetLoadingFadeTime);
 		case 2:
-			return new SlideUpsideDown(duration);
+			return new SlideUpsideDown(presetLoadingFadeTime);
 		case 3:
-			return new SlideLeftRight(duration);
+			return new SlideLeftRight(presetLoadingFadeTime);
 		}
 		return null;
 	}
@@ -81,7 +84,7 @@ public final class PixelControllerFader {
 	 * @param index
 	 * @return
 	 */
-	public static Fader getFader(int index) {
+	public Fader getFader(int index) {
 		switch (index) {
 		case 0:
 			return new Switch();
@@ -99,7 +102,7 @@ public final class PixelControllerFader {
 	 * 
 	 * @return
 	 */
-	public static int getFaderCount() {
+	public int getFaderCount() {
 		return FaderName.values().length;
 	}
 

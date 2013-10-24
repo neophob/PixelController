@@ -294,13 +294,12 @@ public final class Shuffler {
 			}			
 
 			if (blah == 6 && col.getShufflerSelect(ShufflerOffset.FADER_OUTPUT)) {
-				int size = PixelControllerFader.getFaderCount();
+				int size = col.getPixelControllerFader().getFaderCount();
 				for (OutputMapping om: col.getAllOutputMappings()) {
 					Fader f=om.getFader();
 					if (!f.isStarted()) {
 						om.setFader(
-								PixelControllerFader.getFader(rand.nextInt(size))
-								);	
+								col.getPixelControllerFader().getFader(rand.nextInt(size)));	
 					}
 				}
 			}

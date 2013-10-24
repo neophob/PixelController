@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.glue.Collector;
 
 /**
@@ -63,7 +62,6 @@ public class PixelControllerTest {
 	@Test
 	public void testCollector() {
 		assertTrue(Collector.getInstance().getPresets().size() > 0);
-		assertTrue(PixelControllerFader.getFaderCount()>3);
 	}
 	
 

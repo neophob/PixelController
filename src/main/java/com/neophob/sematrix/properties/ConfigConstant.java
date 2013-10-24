@@ -154,4 +154,6 @@ public final class ConfigConstant {
 	public static final String PIXELINVADERS_COLORADJUST_B = "pixelinvaders.coloradjust.b.";
 	
 	public static final String SOUND_SILENCE_THRESHOLD = "sound.silence.threshold";
+	
+	public static final String PRESET_LOADING_FADE_TIME = "preset.loading.fade.time";
 }

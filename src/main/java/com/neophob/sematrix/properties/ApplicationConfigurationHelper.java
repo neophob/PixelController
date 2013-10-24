@@ -1350,12 +1350,18 @@ public class ApplicationConfigurationHelper {
         return config.getProperty(ConfigConstant.TPM2NET_IP);
     }
     
-    
-    
+    /**
+     *     
+     * @return
+     */
     public String getPixelinvadersNetIp() {
 		return pixelinvadersNetIp;
 	}
 
+    /**
+     * 
+     * @return
+     */
 	public int getPixelinvadersNetPort() {
 		return pixelinvadersNetPort;
 	}
@@ -1388,5 +1394,13 @@ public class ApplicationConfigurationHelper {
     	return DEFAULT_SOUND_THRESHOLD;
     }
     
+    
+    /**
+     * 
+     * @return
+     */
+    public int getPresetLoadingFadeTime() {
+    	return parseInt(ConfigConstant.PRESET_LOADING_FADE_TIME, 500);
+    }
 
 }

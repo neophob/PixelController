@@ -33,6 +33,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundDummy;
@@ -127,6 +128,8 @@ public final class Collector {
 	/** The pixel controller shuffler select. */
 	private PixelControllerShufflerSelect pixelControllerShufflerSelect;
 	
+	private PixelControllerFader pixelControllerFader;
+	
 	/** The pd srv. */
 	@SuppressWarnings("unused")
 	private TcpServer pdSrv;
@@ -213,6 +216,8 @@ public final class Collector {
 
 		pixelControllerMixer = new PixelControllerMixer();
 		pixelControllerMixer.initAll();
+		
+		pixelControllerFader = new PixelControllerFader(ph);
 		
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
@@ -797,7 +802,15 @@ public final class Collector {
 		return pixelControllerOutput;
 	}
 
-    /**
+	/**
+	 * 
+	 * @return
+	 */
+    public PixelControllerFader getPixelControllerFader() {
+		return pixelControllerFader;
+	}
+
+	/**
      * @return the ph
      */
     public ApplicationConfigurationHelper getPh() {
