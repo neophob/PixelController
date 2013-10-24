@@ -24,9 +24,9 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.output.gui.GuiCallbackAction;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * 
@@ -155,7 +155,9 @@ public abstract class KeyboardHandler {
             
         //randomize
         case 'R':
-            Shuffler.manualShuffleStuff();
+            String msg[] = new String[1];		
+            msg[0] = ""+ValidCommands.RANDOMIZE;
+            MessageProcessor.processMsg(msg, false, null);            
             break;
             
         default:
