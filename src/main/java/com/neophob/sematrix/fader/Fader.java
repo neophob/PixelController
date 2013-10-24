@@ -164,10 +164,10 @@ public abstract class Fader {
 	public abstract int[] getBuffer(int[] buffer);
 	
 	/**
-	 * Start fade.
+	 * Start to fade, visual to visual fader
 	 *
-	 * @param newVisual the new visual
-	 * @param screenNr the screen nr
+	 * @param newVisual - fade to which visual nr
+	 * @param screenNr - if the fading is finished, switch to this output
 	 */
 	public void startFade(int newVisual, int screenNr) {
 		this.newVisual = newVisual;
@@ -183,22 +183,22 @@ public abstract class Fader {
 	}
 
 	/**
+	 * Start to fade, static image to visual
 	 * 
-	 * @param newVisual
-	 * @param screenNr
-	 * @param bfr
+	 * @param newVisual - fade to which visual nr
+	 * @param bfr static buffer input, fade source
 	 */
-	public void startFade(int newVisual, int screenNr, int[] bfr) {
+	public void startFade(int newVisual, int[] bfr) {
 		this.newVisual = newVisual;
-		this.screenOutput = screenNr;
+		this.screenOutput = -1;
 		oldBuffer = bfr;
 
 		currentStep = 0;
 		started = true;
 		presetFader = true;
 		
-		LOG.log(Level.INFO, "Started preset fader {0}, duration {1}, steps {2}, new visual {3}, output screen {4}", 
-				new Object[] { faderName.toString(), fadeTime, steps, newVisual, screenNr });	
+		LOG.log(Level.INFO, "Started preset fader {0}, duration {1}, steps {2}, new visual {3}", 
+				new Object[] { faderName.toString(), fadeTime, steps, newVisual });	
 	}
 	
 	/**
@@ -210,9 +210,14 @@ public abstract class Fader {
 		}
 		
 		started=false;
-		Collector.getInstance().mapInputToScreen(screenOutput, newVisual);
-		LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}, output screen: {2}", 
-				new Object[] { faderName.toString(), newVisual, screenOutput });
+		if (screenOutput>=0) {
+			Collector.getInstance().mapInputToScreen(screenOutput, newVisual);			
+			LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}, output screen: {2}", 
+					new Object[] { faderName.toString(), newVisual, screenOutput });
+		} else {
+			LOG.log(Level.INFO, "Cleanup preset {0}, new visual: {1}", 
+					new Object[] { faderName.toString(), newVisual });			
+		}
 	}
 	
 	/**
