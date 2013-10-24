@@ -26,6 +26,7 @@ import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.RotoZoom;
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.TransitionManager;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
@@ -402,7 +403,11 @@ public final class MessageProcessor {
 				
 			case RANDOMIZE:	//one shot randomizer
 				try {
+					//save current visual buffer
+					TransitionManager transition = new TransitionManager(col);
 					Shuffler.manualShuffleStuff();
+					transition.startCrossfader();
+					
 					return ValidCommands.STATUS;
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -512,20 +517,23 @@ public final class MessageProcessor {
 		return null;
 	}
 	
+	
+	/**
+	 * 
+	 * @param nr
+	 */
 	private static void loadPreset(int nr) {
 		Collector col = Collector.getInstance();
+		
+		//save current selections
 		int currentVisual = col.getCurrentVisual();
 		int currentOutput = col.getCurrentOutput();
 							
 		List<String> present = col.getPresets().get(nr).getPresent();					
-		if (present!=null) {
-			//save current visual output, used for preset fading
-			int[][] b = new int[col.getAllVisuals().size()][];
-			int i = 0;
-			for (OutputMapping om: col.getAllOutputMappings()) {							
-				b[i++] = col.getVisual(om.getVisualId()).getBuffer();
-			}
-
+		if (present!=null) {	
+			//save current visual buffer
+			TransitionManager transition = new TransitionManager(col);
+			
 			//load preset
 			col.setCurrentStatus(present);
 			
@@ -534,11 +542,7 @@ public final class MessageProcessor {
 			col.setCurrentOutput(currentOutput);
 			
 			//start preset fader here, hardcoded to Crossfading
-			i=0;
-			for (OutputMapping om: col.getAllOutputMappings()) {
-				om.setFader(col.getPixelControllerFader().getPresetFader(1));
-				om.getFader().startFade(om.getVisualId(), b[i++]);
-			}
+			transition.startCrossfader();
 		}		
 	}
 	
