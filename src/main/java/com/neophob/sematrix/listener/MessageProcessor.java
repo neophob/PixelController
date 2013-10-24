@@ -263,34 +263,7 @@ public final class MessageProcessor {
 
 			case LOAD_PRESENT:
 				try {
-					int idxl = col.getSelectedPreset();
-					int currentVisual = col.getCurrentVisual();
-					int currentOutput = col.getCurrentOutput();
-										
-					List<String> present = col.getPresets().get(idxl).getPresent();					
-					if (present!=null) {
-						//save current visual output, used for preset fading
-						int[][] b = new int[col.getAllVisuals().size()][];
-						int i = 0;
-						for (OutputMapping om: col.getAllOutputMappings()) {							
-							b[i++] = col.getVisual(om.getVisualId()).getBuffer();
-						}
-
-						//load preset
-						col.setCurrentStatus(present);
-						
-						//Restore current Selection 
-						col.setCurrentVisual(currentVisual);
-						col.setCurrentOutput(currentOutput);
-						
-						//start preset fader here, hardcoded to Crossfading
-						i=0;
-						for (OutputMapping om: col.getAllOutputMappings()) {
-							om.setFader(col.getPixelControllerFader().getPresetFader(1));
-							om.getFader().startFade(om.getVisualId(), b[i++]);
-						}
-
-					}
+					loadPreset(col.getSelectedPreset());					
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -438,7 +411,7 @@ public final class MessageProcessor {
 
 			case PRESET_RANDOM:	//one shot randomizer, use a pre-stored present
 				try {
-					Shuffler.presentShuffler();
+					loadPreset(Shuffler.getRandomPreset());
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -538,4 +511,35 @@ public final class MessageProcessor {
 
 		return null;
 	}
+	
+	private static void loadPreset(int nr) {
+		Collector col = Collector.getInstance();
+		int currentVisual = col.getCurrentVisual();
+		int currentOutput = col.getCurrentOutput();
+							
+		List<String> present = col.getPresets().get(nr).getPresent();					
+		if (present!=null) {
+			//save current visual output, used for preset fading
+			int[][] b = new int[col.getAllVisuals().size()][];
+			int i = 0;
+			for (OutputMapping om: col.getAllOutputMappings()) {							
+				b[i++] = col.getVisual(om.getVisualId()).getBuffer();
+			}
+
+			//load preset
+			col.setCurrentStatus(present);
+			
+			//Restore current Selection 
+			col.setCurrentVisual(currentVisual);
+			col.setCurrentOutput(currentOutput);
+			
+			//start preset fader here, hardcoded to Crossfading
+			i=0;
+			for (OutputMapping om: col.getAllOutputMappings()) {
+				om.setFader(col.getPixelControllerFader().getPresetFader(1));
+				om.getFader().startFade(om.getVisualId(), b[i++]);
+			}
+		}		
+	}
+	
 }

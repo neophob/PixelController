@@ -31,6 +31,8 @@ import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.listener.MessageProcessor;
+import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * create random settings.
@@ -64,15 +66,20 @@ public final class Shuffler {
 
 		Random rand = new Random();
 		if (rand.nextInt(fps*3)==1) {
-			presentShuffler();
+			
+			LOG.log(Level.INFO, "Load random Preset");
+			
+			String[] msg = new String[1];
+			msg[0] = ""+ValidCommands.PRESET_RANDOM;
+			MessageProcessor.processMsg(msg, true, null);
 		}
 	}
 
 
 	/**
-	 * load a prestored preset, randomly.
+	 * get a random and valid preset
 	 */
-	public static void presentShuffler() {
+	public static int getRandomPreset() {
 		Collector col = Collector.getInstance();
 		Random rand = new Random();
 
@@ -80,16 +87,15 @@ public final class Shuffler {
 
 		int sanityCheck = 1000;
 		boolean done=false;
+		int idx = 0;
 		while (!done || sanityCheck--<1) {
-			int idx = rand.nextInt(col.getPresets().size());
+			idx = rand.nextInt(col.getPresets().size());
 			List<String> present = col.getPresets().get(idx).getPresent();
 			if (present!=null && present.size()>0) { 
-				col.setCurrentStatus(present);
-				col.setSelectedPreset(idx);
-				done = true;
+				done = true;				
 			}
-
 		}
+		return idx;
 	}
 
 	/**
