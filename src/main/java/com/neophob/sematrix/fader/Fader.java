@@ -105,6 +105,10 @@ public abstract class Fader {
 	protected int internalBufferYSize;
 
 	protected int[] newBuffer;
+	protected int[] oldBuffer;
+	
+	//the preset fader do not animate but fade from a static buffer to the new visual
+	protected boolean presetFader;
 	
 	/** The started. */
 	private boolean started;
@@ -162,9 +166,29 @@ public abstract class Fader {
 
 		currentStep = 0;
 		started = true;
+		presetFader = false;
 		
 		LOG.log(Level.INFO, "Started fader {0}, duration {1}, steps {2}, new visual {3}, output screen {4}", 
 				new Object[] { faderName.toString(), fadeTime, steps, newVisual, screenNr });
+	}
+
+	/**
+	 * 
+	 * @param newVisual
+	 * @param screenNr
+	 * @param bfr
+	 */
+	public void startFade(int newVisual, int screenNr, int[] bfr) {
+		this.newVisual = newVisual;
+		this.screenOutput = screenNr;
+		oldBuffer = bfr;
+
+		currentStep = 0;
+		started = true;
+		presetFader = true;
+		
+		LOG.log(Level.INFO, "Started preset fader {0}, duration {1}, steps {2}, new visual {3}, output screen {4}", 
+				new Object[] { faderName.toString(), fadeTime, steps, newVisual, screenNr });	
 	}
 	
 	/**
