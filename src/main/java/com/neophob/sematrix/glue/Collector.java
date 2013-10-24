@@ -237,7 +237,7 @@ public final class Collector {
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
-			ioMapping.add(new OutputMapping(n));			
+			ioMapping.add(new OutputMapping(pixelControllerFader, n));			
 		}
 		
 		pixConStat = new PixelControllerStatus(fps);

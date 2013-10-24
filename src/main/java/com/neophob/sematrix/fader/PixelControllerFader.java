@@ -29,9 +29,11 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 public final class PixelControllerFader {
 
 	private int presetLoadingFadeTime;
+	private int visualFadeTime;
 	
 	public PixelControllerFader(ApplicationConfigurationHelper ah) {
 		presetLoadingFadeTime = ah.getPresetLoadingFadeTime();
+		visualFadeTime = ah.getVisualFadeTime();
 	}
 	
 	/* 
@@ -44,16 +46,16 @@ public final class PixelControllerFader {
 	 * @param faderName the fader name
 	 * @return the fader
 	 */
-	public static Fader getFader(FaderName faderName) {
+	public Fader getFader(FaderName faderName) {
 		switch (faderName) {
 		case CROSSFADE:
-			return new Crossfader();
+			return new Crossfader(visualFadeTime);
 		case SWITCH:
 			return new Switch();
 		case SLIDE_UPSIDE_DOWN:
-			return new SlideUpsideDown();
+			return new SlideUpsideDown(visualFadeTime);
 		case SLIDE_LEFT_RIGHT:
-			return new SlideLeftRight();
+			return new SlideLeftRight(visualFadeTime);
 		}
 		return null;
 	}

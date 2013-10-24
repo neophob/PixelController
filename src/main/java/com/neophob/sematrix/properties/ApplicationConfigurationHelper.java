@@ -1403,4 +1403,12 @@ public class ApplicationConfigurationHelper {
     	return parseInt(ConfigConstant.PRESET_LOADING_FADE_TIME, 500);
     }
 
+    /**
+     * 
+     * @return
+     */
+    public int getVisualFadeTime() {
+    	return parseInt(ConfigConstant.VISUAL_FADE_TIME, 1500);
+    }
+
 }
