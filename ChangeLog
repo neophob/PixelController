@@ -1,9 +1,11 @@
 Changelog v1.5.0 to v1.5.1
 --------------------------
 -Add support for ExpeditInvaders output
--Add Fader effect if a preset is loaded, freeze current buffer and fade into new content 
+-Add Fader effect if a preset is loaded, freeze current buffer and fade into new content
+-Add Fader effect if current visual is randomized, freeze current buffer and fade into new content 
+-Add config option to make fader time configurable
 -Fix Checkbox Mixer, make checkbox size dependent on output
--Make fader time configurable
+
 
 Changelog v1.4.1 to v1.5.0
 --------------------------
