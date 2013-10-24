@@ -331,7 +331,9 @@ public final class MessageProcessor {
 			case BLINKEN:
 				try {
 					String fileToLoad = msg[1];
-					col.getPixelControllerGenerator().setFileBlinken(fileToLoad);
+					if (StringUtils.isNotBlank(fileToLoad)) {
+						col.getPixelControllerGenerator().setFileBlinken(fileToLoad);						
+					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
