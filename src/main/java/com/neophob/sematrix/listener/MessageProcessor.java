@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.RotoZoom;
@@ -331,9 +329,7 @@ public final class MessageProcessor {
 			case BLINKEN:
 				try {
 					String fileToLoad = msg[1];
-					if (StringUtils.isNotBlank(fileToLoad)) {
-						col.getPixelControllerGenerator().setFileBlinken(fileToLoad);						
-					}
+					col.getPixelControllerGenerator().setFileBlinken(fileToLoad);											
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -342,9 +338,7 @@ public final class MessageProcessor {
 			case IMAGE:
 				try {
 					String fileToLoad = msg[1];
-					if (StringUtils.isNotBlank(fileToLoad)) {
-					    col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);   
-					}					
+				    col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);   
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
