@@ -29,6 +29,13 @@ public class SlideUpsideDown extends Fader {
 	/**
 	 * Instantiates a new slide upside down.
 	 */
+	public SlideUpsideDown(int duration) {
+		super(FaderName.SLIDE_UPSIDE_DOWN, duration);
+	}
+
+	/**
+	 * 
+	 */
 	public SlideUpsideDown() {
 		super(FaderName.SLIDE_UPSIDE_DOWN, 1500);
 	}

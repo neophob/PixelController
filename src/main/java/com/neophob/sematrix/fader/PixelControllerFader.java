@@ -56,6 +56,27 @@ public final class PixelControllerFader {
 	}
 
 	/**
+	 * return a fader with a specific duration
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public static Fader getFader(int index, int duration) {
+		switch (index) {
+		case 0:
+			return new Switch();
+		case 1:
+			return new Crossfader(duration);
+		case 2:
+			return new SlideUpsideDown(duration);
+		case 3:
+			return new SlideLeftRight(duration);
+		}
+		return null;
+	}
+
+	/**
+	 * return a fader with default duration
 	 * 
 	 * @param index
 	 * @return

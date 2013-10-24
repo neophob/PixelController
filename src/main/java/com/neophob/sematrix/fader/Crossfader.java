@@ -52,7 +52,7 @@ public class Crossfader extends Fader {
 	 * Instantiates a new crossfader.
 	 */
 	public Crossfader() {
-		super(FaderName.CROSSFADE, 1500);
+		super(FaderName.CROSSFADE);
 	}
 
 	/**

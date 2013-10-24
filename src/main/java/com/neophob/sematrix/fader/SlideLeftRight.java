@@ -33,6 +33,14 @@ public class SlideLeftRight extends Fader {
 		super(FaderName.SLIDE_LEFT_RIGHT, 1500);
 	}
 
+	/**
+	 * 
+	 * @param duration
+	 */
+	public SlideLeftRight(int duration) {
+		super(FaderName.SLIDE_LEFT_RIGHT, duration);
+	}
+
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
 	 */

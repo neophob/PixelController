@@ -41,6 +41,8 @@ public abstract class Fader {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Fader.class.getName());
 
+	private static final int DEFAULT_FADER_DURATION = 1500;
+	
 	/**
 	 * The Enum FaderName.
 	 */
@@ -113,6 +115,14 @@ public abstract class Fader {
 	/** The started. */
 	private boolean started;
 
+	/**
+	 * 
+	 * @param faderName
+	 */
+	public Fader(FaderName faderName) {
+		this(faderName, DEFAULT_FADER_DURATION);
+	}
+	
 	/**
 	 * Instantiates a new fader.
 	 *
