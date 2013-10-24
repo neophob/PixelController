@@ -289,7 +289,7 @@ public final class MessageProcessor {
 //preset fader: start fader here
 						i=0;
 						for (OutputMapping om: col.getAllOutputMappings()) {
-							om.setFader(PixelControllerFader.getFader(1));
+							om.setFader(PixelControllerFader.getFader(1, 500));
 							om.getFader().startFade(om.getVisualId(), i, b[i++]);							
 						}
 //preset fader: END
