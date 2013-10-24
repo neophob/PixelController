@@ -33,6 +33,7 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.properties.ValidCommands;
 
@@ -269,12 +270,31 @@ public final class MessageProcessor {
 					int idxl = col.getSelectedPreset();
 					int currentVisual = col.getCurrentVisual();
 					int currentOutput = col.getCurrentOutput();
+					
+//preset fader: start fader here					
+					List<Visual> allVisuals = col.getAllVisuals();
+					int[][] b = new int[allVisuals.size()][];
+					int i=0;
+					for (Visual v: allVisuals) {
+						b[i++] = v.getBuffer();
+					}
+//preset fader: END					
+					
 					List<String> present = col.getPresets().get(idxl).getPresent();
+					
 					if (present!=null) { 
 						col.setCurrentStatus(present);
 						//Restore current Selection 
 						col.setCurrentVisual(currentVisual);
 						col.setCurrentOutput(currentOutput);
+						
+//preset fader: start fader here
+						i=0;
+						for (OutputMapping om: col.getAllOutputMappings()) {
+							om.setFader(PixelControllerFader.getFader(1));
+							om.getFader().startFade(om.getVisualId(), i, b[i++]);							
+						}
+//preset fader: END
 					}
 					return ValidCommands.STATUS;					
 				} catch (Exception e) {
