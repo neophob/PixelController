@@ -19,6 +19,7 @@
 package com.neophob.sematrix.mixer;
 
 import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -29,12 +30,12 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Checkbox extends Mixer {
     
-    private static final int CHECK_BOX_SIZE = 8;
-
 	/** The pixels per line. */
 	private int flpX = -1;
 	private int flpY = -1;
 	
+	private int checkBoxSizeX;
+	private int checkBoxSizeY;
 	/**
 	 * Instantiates a new checkbox.
 	 *
@@ -42,6 +43,8 @@ public class Checkbox extends Mixer {
 	 */
 	public Checkbox(PixelControllerMixer controller) {
 		super(controller, MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
+		checkBoxSizeX = Collector.getInstance().getMatrix().getDeviceXSize();
+		checkBoxSizeY = Collector.getInstance().getMatrix().getDeviceYSize();
 	}
 
 	/* (non-Javadoc)
@@ -57,8 +60,8 @@ public class Checkbox extends Mixer {
 		
 		//lazy init
 		if (flpX == -1) {
-	        this.flpX= gen1.getInternalBufferXSize()/CHECK_BOX_SIZE;	        
-	        this.flpY = gen1.getInternalBufferXSize()*gen1.getInternalBufferYSize()/CHECK_BOX_SIZE;	
+	        this.flpX= gen1.getInternalBufferXSize()/checkBoxSizeX;	        
+	        this.flpY = gen1.getInternalBufferXSize()*gen1.getInternalBufferYSize()/checkBoxSizeY;	
 		}
 		
 		int[] src1 = visual.getEffect1Buffer();
