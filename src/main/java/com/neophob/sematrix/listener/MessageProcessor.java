@@ -190,7 +190,7 @@ public final class MessageProcessor {
 					tmp=Integer.parseInt(msg[1]);
 					//do not start a new fader while the old one is still running
 					if (!col.getOutputMappings(nr).getFader().isStarted()) {
-					    Fader f = col.getPixelControllerFader().getFader(tmp);
+					    Fader f = col.getPixelControllerFader().getVisualFader(tmp);
 					    if (f!=null) {
 					        col.getOutputMappings(nr).setFader(f);   
 					    }
@@ -206,7 +206,7 @@ public final class MessageProcessor {
 					for (OutputMapping om: col.getAllOutputMappings()) {
 						//do not start a new fader while the old one is still running
 						if (!om.getFader().isStarted()) {
-						    Fader f = col.getPixelControllerFader().getFader(tmp);
+						    Fader f = col.getPixelControllerFader().getVisualFader(tmp);
 						    if (f!=null) {
 						        om.setFader(f);						        
 						    }

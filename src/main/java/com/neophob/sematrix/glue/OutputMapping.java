@@ -44,7 +44,7 @@ public class OutputMapping {
 	 * @param screenNr the screen nr
 	 */
 	public OutputMapping(PixelControllerFader pixelControllerFader, int visualNumber) {
-		this.fader = pixelControllerFader.getFader(FaderName.SWITCH);
+		this.fader = pixelControllerFader.getVisualFader(FaderName.SWITCH);
 		this.visualNumber = visualNumber;
 	}
 

@@ -46,7 +46,7 @@ public final class PixelControllerFader {
 	 * @param faderName the fader name
 	 * @return the fader
 	 */
-	public Fader getFader(FaderName faderName) {
+	public Fader getVisualFader(FaderName faderName) {
 		switch (faderName) {
 		case CROSSFADE:
 			return new Crossfader(visualFadeTime);
@@ -59,6 +59,26 @@ public final class PixelControllerFader {
 		}
 		return null;
 	}
+	
+	/**
+	 * return a fader with default duration
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public Fader getVisualFader(int index) {
+		switch (index) {
+		case 0:
+			return new Switch();
+		case 1:
+			return new Crossfader(visualFadeTime);
+		case 2:
+			return new SlideUpsideDown(visualFadeTime);
+		case 3:
+			return new SlideLeftRight(visualFadeTime);
+		}
+		return null;
+	}	
 
 	/**
 	 * return a fader with a specific duration
@@ -80,25 +100,6 @@ public final class PixelControllerFader {
 		return null;
 	}
 
-	/**
-	 * return a fader with default duration
-	 * 
-	 * @param index
-	 * @return
-	 */
-	public Fader getFader(int index) {
-		switch (index) {
-		case 0:
-			return new Switch();
-		case 1:
-			return new Crossfader();
-		case 2:
-			return new SlideUpsideDown();
-		case 3:
-			return new SlideLeftRight();
-		}
-		return null;
-	}
 
 	/**
 	 * 

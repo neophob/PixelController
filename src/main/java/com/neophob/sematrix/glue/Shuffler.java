@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.Fader;
-import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
@@ -299,7 +298,7 @@ public final class Shuffler {
 					Fader f=om.getFader();
 					if (!f.isStarted()) {
 						om.setFader(
-								col.getPixelControllerFader().getFader(rand.nextInt(size)));	
+								col.getPixelControllerFader().getVisualFader(rand.nextInt(size)));	
 					}
 				}
 			}
