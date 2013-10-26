@@ -42,6 +42,7 @@
 package com.neophob.sematrix.generator.blinken;
 
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +51,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.generator.blinken.jaxb.Blm;
@@ -64,32 +64,29 @@ import com.neophob.sematrix.generator.blinken.jaxb.Header;
  */
 public class BlinkenLibrary {
 
-	private static Logger log = Logger.getLogger(BlinkenLibrary.class.getName());
+	private static Logger LOG = Logger.getLogger(BlinkenLibrary.class.getName());
 
 	// the marshalled .blm file
 	private Blm blm;	
 
-	private PApplet parent;
-	
 	private PImage[] frames;
 	
 	private JAXBContext context;
 	private Unmarshaller unmarshaller;
 
 	public final static String NAME = "blinkenlights-mini";
-	public final static String VERSION = "v0.1";
+	public final static String VERSION = "v0.2";
 
 	/**
 	 * 
 	 * @param parent
 	 */
-	public BlinkenLibrary(PApplet parent) {
-		this.parent = parent;
+	public BlinkenLibrary() {
 		try {
 			context = JAXBContext.newInstance("com.neophob.sematrix.generator.blinken.jaxb");
 			unmarshaller = context.createUnmarshaller();			
 		} catch (JAXBException e) {
-			log.log(Level.SEVERE, "Failed to initialize Blinkenlights lib, Error: {1}" , new Object[] { e });
+			LOG.log(Level.SEVERE, "Failed to initialize Blinkenlights lib, Error: {1}" , new Object[] { e });
 		}
 
 	}
@@ -105,20 +102,15 @@ public class BlinkenLibrary {
 
 		try {
 			//make sure input file exist
-			input = this.parent.createInput(filename);
-			if (input == null) {
-				//we failed to find file
-				log.log(Level.WARNING, "Failed to load {0}, File not found", new Object[] { filename });
-				return false;
-			}
+			input = new FileInputStream(filename);
 			blm = (Blm) unmarshaller.unmarshal(input);
 			this.frames = extractFrames(255);			
 	
 			long timeNeeded = System.currentTimeMillis()-start;
-			log.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename, frames.length,timeNeeded });
+			LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename, frames.length,timeNeeded });
 			return true;
 		} catch (Exception e) {
-			log.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { filename, e });
+			LOG.log(Level.WARNING, "Failed to load "+filename+", Error: ", e);
 			return false;
 		} finally {
 			try {
@@ -126,7 +118,7 @@ public class BlinkenLibrary {
 					input.close();
 				}
 			} catch (Exception e) {
-				log.log(Level.WARNING, "Failed to close file {0}, Error: {1}" , new Object[] { filename, e });
+				LOG.log(Level.WARNING, "Failed to close file {0}, Error: {1}" , new Object[] { filename, e });
 			}
 		}
 	}

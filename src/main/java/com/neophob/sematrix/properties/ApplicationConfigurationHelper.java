@@ -1091,6 +1091,14 @@ public class ApplicationConfigurationHelper {
         return config.getProperty(ConfigConstant.TPM2_DEVICE);
     }
 
+    /**
+     * overwrite root path of resources
+     * 
+     * @return
+     */
+    public String getResourcePath() {
+    	return config.getProperty(ConfigConstant.RESOURCE_PATH);
+    }
 
     /**
      * baudrate of the minidmx device

@@ -28,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
@@ -81,7 +80,7 @@ public class PixelController extends PApplet {
 	private boolean initializationFailed = false;
 		
 	private int setupStep=0;
-	private float steps = 1f/8f;
+	private float steps = 1f/7f;
     private ApplicationConfigurationHelper applicationConfig;
 
 
@@ -118,8 +117,7 @@ public class PixelController extends PApplet {
 	 */
 	public void setup() {
 		try {
-	        LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");
-	        LOG.log(Level.INFO, "");
+	        LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");	        
 
 		    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
 		    background(0);
@@ -165,18 +163,10 @@ public class PixelController extends PApplet {
         		this.collector = Collector.getInstance();
         		setupStep++;
         		drawProgressBar(steps*setupStep);
-        		drawSetupText("Load Palettes", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 2:
-        		List<ColorSet> colorSets = InitApplication.getColorPalettes(this);
-        		this.collector.setColorSets(colorSets);
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
         		drawSetupText("Initialize System", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
         		return;
 
-        	case 3:
+        	case 2:
         		this.collector.init(this, applicationConfig);     
         		frameRate(applicationConfig.parseFps());
         		noSmooth();
@@ -185,14 +175,14 @@ public class PixelController extends PApplet {
         		drawSetupText("Initialize TCP/OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
         		return;
 
-        	case 4:
+        	case 3:
         		this.collector.initDaemons(applicationConfig);     
         		setupStep++;
         		drawProgressBar(steps*setupStep);
         		drawSetupText("Initialize Output device", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
         		return;
 
-        	case 5:
+        	case 4:
         		this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
         		if (this.output==null) {
         			throw new IllegalArgumentException("No output device found!");
@@ -203,7 +193,7 @@ public class PixelController extends PApplet {
         		drawSetupText("Apply Settings", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
         		return;
 
-        	case 6:
+        	case 5:
         		//start in random mode?
         		if (applicationConfig.startRandommode()) {
         			LOG.log(Level.INFO, "Random Mode enabled");
@@ -229,7 +219,7 @@ public class PixelController extends PApplet {
         		drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
         		return;
 
-        	case 7:
+        	case 6:
         		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
 
         		//create gui window

@@ -41,16 +41,21 @@ public class PixelResize extends Resize {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.resize.Resize#getBuffer(int[], int, int, int, int)
 	 */
-	public int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize) {
+	public int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize) {
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
-		
-		bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, deviceXSize, deviceYSize);
-
-		int[] ret = getPixelsFromImage(bi, deviceXSize, deviceYSize);
+		return getBuffer(bi, newX, newY);
+	}
+	
+	
+	@Override
+	public int[] getBuffer(BufferedImage bi, int newX, int newY) {
+		bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, newX, newY);
+		int[] ret = getPixelsFromImage(bi, newX, newY);
 		
 		//destroy image
 		bi.flush();
 		
 		return ret;
 	}
+	
 }

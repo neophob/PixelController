@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,8 +32,8 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.generator.blinken.BlinkenLibrary;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.ShufflerOffset;
-import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -72,6 +73,8 @@ public class Blinkenlights extends Generator implements PConstants {
     private int currentFrame;
     
     private int frameNr;
+    
+    private FileUtils fileUtils;
 
     /**
      * Instantiates a new blinkenlights.
@@ -79,28 +82,28 @@ public class Blinkenlights extends Generator implements PConstants {
      * @param controller the controller
      * @param filename the filename
      */
-    public Blinkenlights(PixelControllerGenerator controller, String filename) {
+    public Blinkenlights(PixelControllerGenerator controller, String filename, FileUtils fu) {
         super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
-        this.filename = filename;		
+        this.filename = null;
+        this.fileUtils = fu;
         this.random=false;
 
         //find movie files		
         movieFiles = new ArrayList<String>();
 
         try {
-            for (String s: FileUtils.findBlinkenFiles()) {
+            for (String s: fu.findBlinkenFiles()) {
                 movieFiles.add(s);
             }
         } catch (NullPointerException e) {
-            LOG.log(Level.SEVERE, "Failed to search blinken files, make sure directory 'data/blinken' exist!");
-            throw new IllegalArgumentException("Failed to search blinken files, make sure directory 'data/blinken' exist!");
+            LOG.log(Level.SEVERE, "Failed to search blinken files, make sure directory '"+fu.getRootDirectory()+"data/blinken' exist!");
+            throw new IllegalArgumentException("Failed to search blinken files, make sure directory '"+fu.getRootDirectory()+"data/blinken' exist!");
         }
 
         LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");
 
-        blinken = new BlinkenLibrary(Collector.getInstance().getPapplet());
-        blinken.loadFile(PREFIX+filename);
-
+        blinken = new BlinkenLibrary();
+        this.loadFile(filename);
     }
 
     /**
@@ -108,16 +111,17 @@ public class Blinkenlights extends Generator implements PConstants {
      *
      * @param file the file
      */
-    public void loadFile(String file) {
+    public synchronized void loadFile(String file) {
         if (StringUtils.isBlank(file)) {
             LOG.log(Level.INFO, "Empty filename provided, call ignored!");
             return;
         }
 
         //only load if needed
-        if (!StringUtils.equals(file, this.filename)) {            
-            LOG.log(Level.INFO, "Load blinkenlights file {0}.", file);
-            if (blinken.loadFile(PREFIX+file)) {
+        if (!StringUtils.equals(file, this.filename)) {
+        	String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+file;
+            LOG.log(Level.INFO, "Load blinkenlights file {0}.", fileToLoad);
+            if (blinken.loadFile(fileToLoad)) {
                 this.filename = file;
                 LOG.log(Level.INFO, "DONE");
                 currentFrame=0;            	
@@ -170,12 +174,6 @@ public class Blinkenlights extends Generator implements PConstants {
      */
     public void setRandom(boolean random) {
         this.random = random;
-        /*		if (random) {
-			blinken.noLoop();
-			blinken.stop();
-		} else {
-			blinken.loop();
-		}*/
     }
 
 

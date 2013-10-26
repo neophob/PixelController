@@ -18,6 +18,10 @@
  */
 package com.neophob.sematrix.generator;
 
+
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,8 +33,8 @@ import org.apache.commons.lang3.StringUtils;
 import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.ShufflerOffset;
-import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -56,8 +60,10 @@ public class Image extends Generator {
 	/** The Constant LOG. */
 	private static final Logger LOG = Logger.getLogger(Image.class.getName());
 	
-	/** The filename. */
+	/** The currently loaded file */
 	private String filename;
+	
+	private FileUtils fileUtils;
 		
 	/**
 	 * Instantiates a new image.
@@ -65,15 +71,16 @@ public class Image extends Generator {
 	 * @param controller the controller
 	 * @param filename the filename
 	 */
-	public Image(PixelControllerGenerator controller, String filename) {
+	public Image(PixelControllerGenerator controller, String filename, FileUtils fu) {
 		super(controller, GeneratorName.IMAGE, RESIZE_TYP);
+		this.fileUtils = fu;
 		this.loadFile(filename);
 		
 	    //find image files      
 		imageFiles = new ArrayList<String>();
 		
 		try {
-	        for (String s: FileUtils.findImagesFiles()) {
+	        for (String s: fu.findImagesFiles()) {
 	            imageFiles.add(s);
 	        }		    
 		} catch (NullPointerException e) {
@@ -90,7 +97,7 @@ public class Image extends Generator {
 	 *
 	 * @param filename the filename
 	 */
-	public void loadFile(String filename) {
+	public synchronized void loadFile(String filename) {
 		if (StringUtils.isBlank(filename)) {
 			LOG.log(Level.INFO, "Empty filename provided, call ignored!");
 			return;
@@ -103,11 +110,16 @@ public class Image extends Generator {
 		}
 						
 		try {
-			PImage img = Collector.getInstance().getPapplet().loadImage(Image.PREFIX+filename);
+			String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+filename;
+
+			//use the ancient MediaTracker to load the image. ImageIO.read(new File(fileToLoad))
+			//would me easier, however additional work has to be done (convert to RGB image)
+			java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(fileToLoad);
+			PImage img = loadImageMT(awtImage);								
 			if (img==null || img.height<2) {
 				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename);
 				return;
-			}						
+			}
 			this.filename = filename;
 			
 	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
@@ -131,10 +143,30 @@ public class Image extends Generator {
 	        }
 	        
 		} catch (Exception e) {			
-			LOG.log(Level.WARNING,
-					"Failed to load image {0}: {1}", new Object[] { Image.PREFIX+filename,e });
+			LOG.log(Level.WARNING, "Failed to load image "+Image.PREFIX+filename, e);
 		}
 	}
+	
+	
+	 /**
+	  * Ripped from Processing
+	  * Load an AWT image synchronously by setting up a MediaTracker for
+	  * a single image, and blocking until it has loaded.
+	  */
+	private PImage loadImageMT(java.awt.Image awtImage) {
+		MediaTracker tracker = new MediaTracker(Collector.getInstance().getPapplet());
+		tracker.addImage(awtImage, 0);
+		try {
+			tracker.waitForAll();
+		} catch (InterruptedException e) {
+			//e.printStackTrace();  // non-fatal, right?
+		}
+
+		PImage image = new PImage(awtImage);
+	    //image.parent = this;
+	    return image;
+	}
+
 
 	
 	/* (non-Javadoc)

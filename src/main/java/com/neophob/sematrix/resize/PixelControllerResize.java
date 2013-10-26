@@ -86,8 +86,7 @@ public class PixelControllerResize implements PixelControllerElement {
 	 * @param newY the new y
 	 * @return the int[]
 	 */
-	public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY, int newX, int newY) {
-		
+	public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY, int newX, int newY) {		
 		Resize r=null;
 		r = getResize(resizeTyp);
 
@@ -99,6 +98,7 @@ public class PixelControllerResize implements PixelControllerElement {
 		return r.getBuffer(inputBuffer, newX, newY, currentX, currentY);		
 	}
 
+	
 	/*
 	 * RESIZER ======================================================
 	 */

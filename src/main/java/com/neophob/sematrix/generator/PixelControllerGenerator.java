@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -71,15 +72,18 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	private float brightness = 1.0f;	
     
     private ApplicationConfigurationHelper ph;
+    
+    private FileUtils fileUtils;
 
     private boolean isCaptureGeneratorActive = false;
     
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(ApplicationConfigurationHelper ph) {
+    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils) {
         allGenerators = new CopyOnWriteArrayList<Generator>();	
         this.ph = ph;
+        this.fileUtils = fileUtils;
     }
 
 
@@ -87,12 +91,12 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * initialize all generators.
      */
     public void initAll() {
-    	LOG.log(Level.INFO, "Start init");
+    	LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
         String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
-        blinkenlights = new Blinkenlights(this, fileBlinken);
+        blinkenlights = new Blinkenlights(this, fileBlinken, fileUtils);
 
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
-        image = new Image(this, fileImageSimple);
+        image = new Image(this, fileImageSimple, fileUtils);
 
         new Plasma2(this);
         
@@ -105,7 +109,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         textwriter = new Textwriter(this, 
                 ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
                 Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)),
-                ph.getProperty(Textwriter.INITIAL_TEXT, DEFAULT_TEXT)
+                ph.getProperty(Textwriter.INITIAL_TEXT, DEFAULT_TEXT),
+                fileUtils
         );
 
         new Cell(this);

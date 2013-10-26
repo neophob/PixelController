@@ -26,6 +26,9 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -33,7 +36,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -91,16 +94,26 @@ public class Textwriter extends Generator {
 	 * @param fontSize the font size
 	 * @param text the text
 	 */
-	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text) {
+	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text, FileUtils fu) {
 		super(controller, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
-		try {
-			InputStream is = Collector.getInstance().getPapplet().createInput(fontName);
+		String filename = fu.getRootDirectory()+File.separator+"data"+File.separator+fontName;
+		InputStream is = null;
+		try {			
+			is = new FileInputStream(filename);
 			textAsImage = new int[internalBuffer.length];
 			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
 			LOG.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to load font "+fontName+":", e);
-			throw new IllegalArgumentException("Failed to load font "+fontName+". Check your config.properties file.");
+			LOG.log(Level.WARNING, "Failed to load font "+filename+":", e);
+			throw new IllegalArgumentException("Failed to load font "+filename+". Check your config.properties file.");
+		} finally {
+			if(is!=null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					LOG.log(Level.WARNING, "Failed to close InputStream.", e);
+				}	
+			}	            		
 		}
 		createTextImage(text);
 		scroller = new PingPongScroller();

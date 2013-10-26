@@ -88,8 +88,9 @@ public abstract class Resize {
 	 * @param currentYSize the current y size
 	 * @return the buffer
 	 */
-	public abstract int[] getBuffer(int[] buffer, int deviceXSize, int deviceYSize, int currentXSize, int currentYSize);
+	public abstract int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize);
 	
+	public abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
 	/**
 	 * Gets the id.
 	 *
@@ -103,7 +104,7 @@ public abstract class Resize {
 	/**
 	 * internal use - get buffer from image.
 	 *
-	 * @param scaledImage the scaled image
+	 * @param scaledImage the scaled image, must the
 	 * @param deviceXSize the device x size
 	 * @param deviceYSize the device y size
 	 * @return the pixels from image
@@ -111,8 +112,11 @@ public abstract class Resize {
 	public static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
 		//painfull slow!
 		//return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0, deviceXSize);
+
+		//must be DataBuffer.TYPE_INT, or it will crash here. processing use only RGB images so this
+		//should work
 		DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();
-		return buf.getData();
+		return buf.getData();			
 	}
 
 	/**

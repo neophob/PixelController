@@ -157,4 +157,6 @@ public final class ConfigConstant {
 	
 	public static final String PRESET_LOADING_FADE_TIME = "preset.loading.fade.time";
 	public static final String VISUAL_FADE_TIME = "visual.fade.time";
+	
+	public static final String RESOURCE_PATH = "resource.root.path";
 }

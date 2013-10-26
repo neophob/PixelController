@@ -41,6 +41,7 @@ import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.PresetSettings;
 import com.neophob.sematrix.glue.ShufflerOffset;
@@ -50,7 +51,6 @@ import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.output.gui.helper.FileUtils;
 import com.neophob.sematrix.output.gui.helper.Theme;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -413,7 +413,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
         i=0;
-        for (String s: FileUtils.findBlinkenFiles()) {
+        
+        FileUtils fu = new FileUtils(col.getPapplet().sketchPath);
+        for (String s: fu.findBlinkenFiles()) {
             blinkenLightsList.addItem(s, i);
             i++;
         }
@@ -427,7 +429,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		genFxXOfs+Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
         i=0;
-        for (String s: FileUtils.findImagesFiles()) {
+        for (String s: fu.findImagesFiles()) {
             imageList.addItem(s, i);
             i++;
         }

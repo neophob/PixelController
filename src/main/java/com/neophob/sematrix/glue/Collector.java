@@ -50,11 +50,12 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
+import com.neophob.sematrix.setup.InitApplication;
 
 /**
  * The Class Collector.
  */
-public final class Collector {
+public class Collector {
 
 	private static final Logger LOG = Logger.getLogger(Collector.class.getName());
 	
@@ -184,14 +185,24 @@ public final class Collector {
 	 * @param ph the PropertiesHelper
 	 */
 	public synchronized void init(PApplet papplet, ApplicationConfigurationHelper ph) {
+		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
 		}
-		
+
 		this.papplet = papplet;
 		this.nrOfScreens = ph.getNrOfScreens();
 		this.ph = ph;
 		this.fps = ph.parseFps();
+		
+		String rootPath = ph.getResourcePath();
+		if (StringUtils.isEmpty(rootPath)) {
+			//use processing root path
+			rootPath = papplet.sketchPath;
+		}
+		FileUtils fileUtils = new FileUtils(rootPath);
+
+		this.colorSets = InitApplication.getColorPalettes(fileUtils);
 		
 		//choose sound implementation
 		try {
@@ -208,7 +219,7 @@ public final class Collector {
 		pixelControllerResize.initAll();
 
 		//create generators
-		pixelControllerGenerator = new PixelControllerGenerator(ph);
+		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils);
 		pixelControllerGenerator.initAll();
 		
 		pixelControllerEffect = new PixelControllerEffect();
@@ -910,6 +921,10 @@ public final class Collector {
         this.output = output;
     }    
     	
+    /**
+     * 
+     * @return
+     */
     public String getOutputDeviceName() {
         if (this.output==null) {
             return "";
@@ -917,6 +932,10 @@ public final class Collector {
         return output.getType().toString();
     }
     
+    /**
+     * 
+     * @return
+     */
     public Boolean isOutputDeviceConnected() {
         if (this.output==null || !this.output.isSupportConnectionState()) {
             return null;
@@ -925,7 +944,13 @@ public final class Collector {
         return this.output.isSupportConnectionState() && this.output.isConnected();
     }
     
+    /**
+     * 
+     * @return
+     */
     public Output getOutputDevice() {
         return this.output;
     }
+    
+
 }
