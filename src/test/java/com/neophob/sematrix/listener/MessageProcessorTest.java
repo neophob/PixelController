@@ -68,6 +68,18 @@ public class MessageProcessorTest {
 	@Test
 	public void processMessages() throws Exception {
 		if (java.awt.GraphicsEnvironment.isHeadless()) {
+			/**
+			 * Initialize PApplet on headless machines will fail, the
+			 * reason for this error is this field:
+			 * 
+			 * static public final int MENU_SHORTCUT = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+			 * 
+			 * -> there is not Toolkit on headless machines. 
+			 * 
+			 * I try to subclass, overwrite with reflection and set it with the Unsafe method
+			 * but I couldn't get this to work if the unit test is executed on a machine with
+			 * the option "-Djava.awt.headless=true" 
+			 */
 			return;
 		}
 
