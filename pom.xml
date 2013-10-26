@@ -138,10 +138,9 @@
 				<version>2.16</version>
 				<configuration>
            			<systemPropertyVariables>
-             		<propertyName>ProjBasedir</propertyName>
-             		<buildDirectory>${basedir}</buildDirectory>             
-           		</systemPropertyVariables>
-         </configuration>				
+             			<buildDirectory>${basedir}</buildDirectory>                  		        
+           			</systemPropertyVariables>
+         		</configuration>				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

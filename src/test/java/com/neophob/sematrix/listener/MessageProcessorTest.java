@@ -21,6 +21,8 @@ package com.neophob.sematrix.listener;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.mockito.Mock;
@@ -38,13 +40,19 @@ import com.neophob.sematrix.properties.ValidCommands;
  *
  */
 public class MessageProcessorTest {
-    
+
+	private static final Logger LOG = Logger.getLogger(MessageProcessorTest.class.getName());
+	
 	@Mock private PApplet papplet;
 
     @Test
     public void processMessages() {
 		Properties config = new Properties();
-		config.put(ConfigConstant.RESOURCE_PATH, "/Users/michu/_code/workspace/PixelController.github/PixelController");
+		String rootDir = System.getProperty("buildDirectory");
+		LOG.log(Level.INFO, "Test Root Directory: "+rootDir);
+		
+		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
+//		config.put(ConfigConstant.RESOURCE_PATH, "/Users/michu/_code/workspace/PixelController.github/PixelController");
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
     	
     	Collector.getInstance().init(papplet, ph);
