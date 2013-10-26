@@ -19,13 +19,15 @@
 package com.neophob.sematrix.listener;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Test;
-import org.mockito.Mock;
 
 import processing.core.PApplet;
 
@@ -42,76 +44,107 @@ import com.neophob.sematrix.properties.ValidCommands;
 public class MessageProcessorTest {
 
 	private static final Logger LOG = Logger.getLogger(MessageProcessorTest.class.getName());
-	
-	@Mock private PApplet papplet;
 
-    @Test
-    public void processMessages() {
+	/*public static Unsafe getUnsafe() {
+		try {
+			Field f = Unsafe.class.getDeclaredField("theUnsafe");
+			f.setAccessible(true);
+			return (Unsafe)f.get(null);
+		} catch (Exception e) { 
+ 		}
+		return null;
+	}*/
+
+	static void setFinalStatic(Field field, Object newValue) throws Exception {
+		field.setAccessible(true);
+
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+		modifiersField.setAccessible(true);
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+		field.set(null, newValue);
+	}
+
+	@Test
+	public void processMessages() throws Exception {
+		if (java.awt.GraphicsEnvironment.isHeadless()) {
+			return;
+		}
+
+/*		try {
+			Unsafe u = getUnsafe();
+			System.out.println(u.addressSize());
+			final long ofs = u.objectFieldOffset(PApplet.class.getDeclaredField("MENU_SHORTCUT"));
+			//u.putInt(ofs, 0);  			
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}*/
+
+		PApplet papplet = mock(PApplet.class);
+
 		Properties config = new Properties();
 		String rootDir = System.getProperty("buildDirectory");
 		LOG.log(Level.INFO, "Test Root Directory: "+rootDir);
-		
+
 		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
-//		config.put(ConfigConstant.RESOURCE_PATH, "/Users/michu/_code/workspace/PixelController.github/PixelController");
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-    	
-    	Collector.getInstance().init(papplet, ph);
-   
-    	
-    	String[] str = null;
-    	MessageProcessor.processMsg(str, false, null);
-    	
-    	str = new String[2];
-    	str[0] = "AAAAAAAAAA";
-    	str[1] = "ALSOINVALID";
-    	MessageProcessor.processMsg(str, false, null);
-    	
-    	str[0] = "CURRENT_VISUAL";
-    	str[1] = "23323223";
-    	MessageProcessor.processMsg(str, false, null);
-    	
-    	str[0] = "CURRENT_OUTPUT";
-    	str[1] = "99999";
-    	MessageProcessor.processMsg(str, false, null);
-    	
-    	str[0] = "COLOR_FADE_LENGTH";
-    	str[1] = "0";
-    	MessageProcessor.processMsg(str, false, null);
-    	
-    	str[0] = "CHANGE_GENERATOR_A";
-    	str[1] = "9999990";    	
-    	MessageProcessor.processMsg(str, false, null);
 
-    	str = new String[1];
-    	str[0] = "CHANGE_GENERATOR_A";
-    	MessageProcessor.processMsg(str, false, null);
+		Collector.getInstance().init(papplet, ph);
 
-    	str = new String[1];
-    	str[0] = "STATUS";
-    	assertEquals(ValidCommands.STATUS, MessageProcessor.processMsg(str, false, null));
+		String[] str = null;
+		MessageProcessor.processMsg(str, false, null);
 
-    	//test real life use case
-    	str = new String[2];
-    	str[0] = "CURRENT_VISUAL";
-    	str[1] = "0";    	
-    	MessageProcessor.processMsg(str, false, null);
+		str = new String[2];
+		str[0] = "AAAAAAAAAA";
+		str[1] = "ALSOINVALID";
+		MessageProcessor.processMsg(str, false, null);
 
-    	str[0] = "CHANGE_GENERATOR_A";
-    	str[1] = "2";    	
-    	MessageProcessor.processMsg(str, false, null);
-    	
-    	str[0] = "CHANGE_EFFECT_B";
-    	str[1] = "5";    	
-    	MessageProcessor.processMsg(str, false, null);
+		str[0] = "CURRENT_VISUAL";
+		str[1] = "23323223";
+		MessageProcessor.processMsg(str, false, null);
 
-    	str[0] = "CHANGE_MIXER";
-    	str[1] = "1";    	
-    	MessageProcessor.processMsg(str, false, null);
+		str[0] = "CURRENT_OUTPUT";
+		str[1] = "99999";
+		MessageProcessor.processMsg(str, false, null);
 
-    	assertEquals(2, Collector.getInstance().getVisual(0).getGenerator1Idx());
-    	assertEquals(5, Collector.getInstance().getVisual(0).getEffect2Idx());
-    	assertEquals(1, Collector.getInstance().getVisual(0).getMixerIdx());
-    }
+		str[0] = "COLOR_FADE_LENGTH";
+		str[1] = "0";
+		MessageProcessor.processMsg(str, false, null);
+
+		str[0] = "CHANGE_GENERATOR_A";
+		str[1] = "9999990";    	
+		MessageProcessor.processMsg(str, false, null);
+
+		str = new String[1];
+		str[0] = "CHANGE_GENERATOR_A";
+		MessageProcessor.processMsg(str, false, null);
+
+		str = new String[1];
+		str[0] = "STATUS";
+		assertEquals(ValidCommands.STATUS, MessageProcessor.processMsg(str, false, null));
+
+		//test real life use case
+		str = new String[2];
+		str[0] = "CURRENT_VISUAL";
+		str[1] = "0";    	
+		MessageProcessor.processMsg(str, false, null);
+
+		str[0] = "CHANGE_GENERATOR_A";
+		str[1] = "2";    	
+		MessageProcessor.processMsg(str, false, null);
+
+		str[0] = "CHANGE_EFFECT_B";
+		str[1] = "5";    	
+		MessageProcessor.processMsg(str, false, null);
+
+		str[0] = "CHANGE_MIXER";
+		str[1] = "1";    	
+		MessageProcessor.processMsg(str, false, null);
+
+		assertEquals(2, Collector.getInstance().getVisual(0).getGenerator1Idx());
+		assertEquals(5, Collector.getInstance().getVisual(0).getEffect2Idx());
+		assertEquals(1, Collector.getInstance().getVisual(0).getMixerIdx());
+	}
 
 
 }
