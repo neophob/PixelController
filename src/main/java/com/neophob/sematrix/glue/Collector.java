@@ -62,9 +62,6 @@ public class Collector {
 	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";
 	
-	/** The Constant NR_OF_PRESENT_SLOTS. */
-	public static final int NR_OF_PRESET_SLOTS = 128;
-	
 	/** The singleton instance. */
 	private static Collector instance = new Collector();
 
@@ -169,11 +166,9 @@ public class Collector {
 		initialized=false;
 
 		selectedPreset=0;
-		presets = new CopyOnWriteArrayList<PresetSettings>();
-		for (int n=0; n<NR_OF_PRESET_SLOTS; n++) {
-			presets.add(new PresetSettings());
-		}
-
+		
+		presets = PresetSettings.initializePresetSettings(ApplicationConfigurationHelper.NR_OF_PRESET_SLOTS);
+				
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
 		pixelControllerShufflerSelect.initAll();		 
 	}

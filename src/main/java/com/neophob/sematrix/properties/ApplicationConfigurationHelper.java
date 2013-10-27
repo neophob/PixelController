@@ -53,6 +53,9 @@ public class ApplicationConfigurationHelper {
     private static final int DEFAULT_RESOLUTION = 8;
     private static final float DEFAULT_SOUND_THRESHOLD = 0.0005f;
     
+	/** The Constant NR_OF_PRESENT_SLOTS. */
+	public static final int NR_OF_PRESET_SLOTS = 128;
+
     /** The Constant PRESENTS_FILENAME. */
     private static final String PRESENTS_FILENAME = "data/presents.led";
 
@@ -367,7 +370,7 @@ public class ApplicationConfigurationHelper {
             List<PresetSettings> presents = Collector.getInstance().getPresets();            
             String s;
             int count=0;
-            for (int i=0; i<Collector.NR_OF_PRESET_SLOTS; i++) {
+            for (int i=0; i<NR_OF_PRESET_SLOTS; i++) {
                 s=props.getProperty(""+i);
                 if (StringUtils.isNotBlank(s)) {
                     presents.get(i).setPresent(s.split(";"));
@@ -1139,7 +1142,7 @@ public class ApplicationConfigurationHelper {
      */
     public int loadPresetOnStart() {
         int val = parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
-        if (val < Collector.NR_OF_PRESET_SLOTS) {
+        if (val < NR_OF_PRESET_SLOTS) {
             return val;
         }
         return -1;

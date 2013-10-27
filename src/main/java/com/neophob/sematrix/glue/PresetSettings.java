@@ -20,6 +20,7 @@ package com.neophob.sematrix.glue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,7 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 public class PresetSettings {
 	
     private static final String NAME_MARKER = "presetname=";
-    
+    	
 	/** The present. */
 	private List<String> present;
 	private String name = "";
@@ -117,11 +118,29 @@ public class PresetSettings {
         this.name = name;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isSlotUsed() {
         if (present==null || present.size()==0) {
             return false;
         }
         return true;
-    }	
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public static List<PresetSettings> initializePresetSettings(int nrOfSlots) {
+    	List<PresetSettings> presets = new CopyOnWriteArrayList<PresetSettings>();
+    	for (int n=0; n<nrOfSlots; n++) {
+    		presets.add(new PresetSettings());
+    	}
+    	
+    	return presets;
+    }
+
 	
 }

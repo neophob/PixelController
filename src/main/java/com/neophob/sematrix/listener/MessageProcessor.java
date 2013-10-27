@@ -32,6 +32,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.mixer.Mixer;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -274,7 +275,7 @@ public final class MessageProcessor {
 			case CHANGE_PRESENT:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					if (a<Collector.NR_OF_PRESET_SLOTS) {
+					if (a<ApplicationConfigurationHelper.NR_OF_PRESET_SLOTS) {
 					    col.setSelectedPreset(a);					    
 					}					
 				} catch (Exception e) {
