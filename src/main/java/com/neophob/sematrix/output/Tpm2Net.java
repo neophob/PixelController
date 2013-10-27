@@ -73,7 +73,6 @@ public class Tpm2Net extends Output {
 	private static Adler32 adler = new Adler32();
 
 	private DatagramSocket outputSocket;
-	private InetAddress targetAddr;
 
 	/** The initialized. */
 	protected boolean initialized;
@@ -121,13 +120,13 @@ public class Tpm2Net extends Output {
 		this.lastDataMap = new HashMap<Integer, Long>();
 
 		try {
-			this.targetAddr = InetAddress.getByName(targetAddrStr);
+			InetAddress targetAddr = InetAddress.getByName(targetAddrStr);
 			this.outputSocket = new DatagramSocket();
 			this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr, Tpm2NetProtocol.TPM2_NET_PORT);
 
 			this.initialized = true;
 			LOG.log(Level.INFO, "Initialized TPM2NET device, target IP: {0}:{1}, Resolution: {2}/{3}, snakeCabeling: {4}",  
-					new Object[] { this.targetAddr, Tpm2NetProtocol.TPM2_NET_PORT, 
+					new Object[] { targetAddr, Tpm2NetProtocol.TPM2_NET_PORT, 
 					this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize(), this.snakeCabeling}
 					);
 

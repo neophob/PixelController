@@ -39,7 +39,6 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 
 	private DatagramPacket packet;
 	private DatagramSocket dsocket;
-	private InetAddress address;
 	
 	private String targetHost;
 	private int targetPort;
@@ -56,7 +55,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 		targetPort = ph.getUdpPort();
 		
 		try {
-			address = InetAddress.getByName(targetHost);
+			InetAddress address = InetAddress.getByName(targetHost);
 			packet = new DatagramPacket(new byte[0], 0, address, targetPort);
 			dsocket = new DatagramSocket();
 			
