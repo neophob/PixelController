@@ -92,7 +92,9 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 				int totalUniverse = (int)((bytesToSend/510f))+1;
 				while (currentUniverse < totalUniverse) { 
 					int l = bytesToSend - 510*currentUniverse;
-					if (l>510) l=510;
+					if (l>510) {
+						l=510;
+					}
 					byte[] tmp = new byte[l];
 					//System.out.println(l+" bytes, "+currentUniverse+"/"+totalUniverse );
 					
