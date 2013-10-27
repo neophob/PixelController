@@ -118,7 +118,7 @@ public class Image extends Generator {
 			java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(fileToLoad);
 			PImage img = loadImageMT(awtImage);								
 			if (img==null || img.height<2) {
-				LOG.log(Level.WARNING, "could not load "+Image.PREFIX+filename);
+				LOG.log(Level.WARNING, "Invalid image, image height is < 2!");
 				return;
 			}
 			this.filename = filename;
