@@ -45,7 +45,7 @@ import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.OscServer;
 import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
-import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
@@ -153,7 +153,7 @@ public class Collector {
 	/** flag to trigger a gui refresh (update current settings from the app to the gui)*/
 	private boolean triggerGuiRefresh = false;
 	
-	private Output output;
+	private IOutput output;
 	
 	/**
 	 * Instantiates a new collector.
@@ -912,7 +912,7 @@ public class Collector {
     /**
      * @param output the output to set
      */
-    public void setOutput(Output output) {
+    public void setOutput(IOutput output) {
         this.output = output;
     }    
     	
@@ -943,7 +943,7 @@ public class Collector {
      * 
      * @return
      */
-    public Output getOutputDevice() {
+    public IOutput getOutputDevice() {
         return this.output;
     }
     

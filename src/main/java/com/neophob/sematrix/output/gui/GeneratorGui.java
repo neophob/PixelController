@@ -50,7 +50,7 @@ import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
-import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.output.gui.helper.Theme;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -678,7 +678,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
-        Output output = col.getOutputDevice();
+        IOutput output = col.getOutputDevice();
         if (output!=null) {
             String gammaText = WordUtils.capitalizeFully(StringUtils.replace(output.getGammaType().toString(), "_", " "));
             cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
@@ -899,7 +899,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             int snd1000 = (int)(1000f*Sound.getInstance().getVolumeNormalized());
             currentVolume.setText(Messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
-            Output output = col.getOutputDevice();
+            IOutput output = col.getOutputDevice();
             if (output!=null) {
                 String outputStateStr = WordUtils.capitalizeFully(output.getConnectionStatus());
                 outputState.setText(outputStateStr);

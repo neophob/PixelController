@@ -39,7 +39,7 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  *
  * @author michu
  */
-public abstract class Output {
+public abstract class Output implements IOutput {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Output.class.getName());
