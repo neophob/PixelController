@@ -51,7 +51,6 @@ import processing.core.PApplet;
 import processing.serial.Serial;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
-import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
