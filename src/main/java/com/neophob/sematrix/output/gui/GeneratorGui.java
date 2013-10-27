@@ -335,7 +335,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //toggle internal visuals
         Toggle t2 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(), 730, 20, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
         t2.setLabelVisible(false);
-        cp5.addTextlabel("toggleIKnternalVisualsTxt", Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER"), 745, 23).moveTo(ALWAYS_VISIBLE_TAB);; //$NON-NLS-1$
+        cp5.addTextlabel("toggleIKnternalVisualsTxt", Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER"), 745, 23).moveTo(ALWAYS_VISIBLE_TAB); //$NON-NLS-1$
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),Messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
 
         
