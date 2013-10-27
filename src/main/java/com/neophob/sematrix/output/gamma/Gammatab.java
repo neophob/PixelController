@@ -149,10 +149,4 @@ public abstract class Gammatab {
     }
 
 
-    public static void main(String args[]) {
-        for (int i: gamma20) {
-            System.out.println(i);
-        }
-    }
-
 }
