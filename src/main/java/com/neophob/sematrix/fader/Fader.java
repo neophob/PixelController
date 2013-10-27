@@ -191,7 +191,7 @@ public abstract class Fader {
 	public void startFade(int newVisual, int[] bfr) {
 		this.newVisual = newVisual;
 		this.screenOutput = -1;
-		oldBuffer = bfr;
+		oldBuffer = bfr.clone();
 
 		currentStep = 0;
 		started = true;
