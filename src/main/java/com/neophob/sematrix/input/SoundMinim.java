@@ -21,8 +21,7 @@ package com.neophob.sematrix.input;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
-
+import processing.core.PApplet;
 import ddf.minim.AudioInput;
 import ddf.minim.Minim;
 import ddf.minim.analysis.BeatDetect;
@@ -69,8 +68,8 @@ public final class SoundMinim implements SeSound, Runnable {
 	/**
 	 * Instantiates a new sound minim.
 	 */
-	public SoundMinim(float silenceThreshold) {
-		minim = new Minim(Collector.getInstance().getPapplet());
+	public SoundMinim(PApplet pa, float silenceThreshold) {
+		minim = new Minim(pa);
 		//in = minim.getLineIn( Minim.STEREO, 512 );
 		in = minim.getLineIn( Minim.MONO, 1024 );
 
@@ -94,10 +93,10 @@ public final class SoundMinim implements SeSound, Runnable {
 		fft.window(FFT.HAMMING);
 		fft.logAverages(120,4); // 32 bands
 
-		if (Collector.getInstance().getPapplet() == null) {
+		if (pa == null) {
 		    LOG.log(Level.WARNING, "failed to registerDispose for SoundMinim!");
 		} else {
-		    Collector.getInstance().getPapplet().registerDispose(this);
+		    pa.registerDispose(this);
 		}
 		
 		this.silenceThreshold = silenceThreshold;
