@@ -35,7 +35,7 @@ import com.neophob.sematrix.setup.InitApplication;
  * @author michu
  *
  */
-public class InitHelper {
+public abstract class InitHelper {
 
     private static final Logger LOG = Logger.getLogger(InitApplication.class.getName());
 

@@ -47,7 +47,7 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  * @author mvogt
  *
  */
-public class InitApplication {
+public abstract class InitApplication {
 
     private static final Logger LOG = Logger.getLogger(InitApplication.class.getName());
     
