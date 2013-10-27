@@ -62,7 +62,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 		this.initialized = false;
 		this.supportConnectionState = true;
 		try {
-			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, serialPort, baud);
+			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), serialPort, baud);
 			this.initialized = true;
 			
 			LOG.log(Level.INFO, "Initialized TPM2 serial device v{0}, target port: {1}, Resolution: {2}/{3}",  
