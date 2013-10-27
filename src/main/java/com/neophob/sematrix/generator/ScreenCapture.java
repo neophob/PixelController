@@ -144,7 +144,7 @@ public class ScreenCapture extends Generator {
 			//resize it to internalBufferSize
 			screencapture = ScalrOld.resize(screencapture, ScalrOld.Method.QUALITY, internalBufferXSize, internalBufferYSize);
 
-			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize);; 
+			this.internalBuffer = Resize.getPixelsFromImage(screencapture, internalBufferXSize, internalBufferYSize); 
 		}		
 	}
 
