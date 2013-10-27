@@ -19,19 +19,14 @@
 
 package com.neophob.sematrix.setup;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.E1_31Device;
 import com.neophob.sematrix.output.MiniDmxDevice;
@@ -57,7 +52,6 @@ public class InitApplication {
     private static final Logger LOG = Logger.getLogger(InitApplication.class.getName());
     
     private static final String APPLICATION_CONFIG_FILENAME = "data/config.properties";
-    private static final String PALETTE_CONFIG_FILENAME = "data/palette.properties";
 
     
     /**
@@ -96,40 +90,7 @@ public class InitApplication {
         }
     }
     
-    
-    /**
-     * 
-     * @return
-     * @throws IllegalArgumentException
-     */
-    public static List<ColorSet> getColorPalettes(FileUtils fu) throws IllegalArgumentException {
-        //load palette
-        Properties palette = new Properties();
-        String filename = fu.getRootDirectory()+File.separator+PALETTE_CONFIG_FILENAME;
-        InputStream is = null;
-        try {
-        	is = new FileInputStream(filename);
-            palette.load(is);
-            List<ColorSet> colorSets = ColorSet.loadAllEntries(palette);
-
-            LOG.log(Level.INFO, "ColorSets loaded, {0} entries", colorSets.size());
-            return colorSets;
-        } catch (Exception e) {
-            String error = "Failed to load the palette config file "+filename;
-            LOG.log(Level.SEVERE, error, e);
-            throw new IllegalArgumentException(error, e);
-        } finally {
-        	try {
-        		if (is!=null) {
-        			is.close();        	
-        		}
-        	} catch (Exception e) {
-        		//ignored
-        	}
-        }
-
-    }
-    
+        
     
     /**
      * 

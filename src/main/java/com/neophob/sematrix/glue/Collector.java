@@ -35,6 +35,7 @@ import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
+import com.neophob.sematrix.glue.helper.InitHelper;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
@@ -50,7 +51,6 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
-import com.neophob.sematrix.setup.InitApplication;
 
 /**
  * The Class Collector.
@@ -202,7 +202,7 @@ public class Collector {
 		}
 		FileUtils fileUtils = new FileUtils(rootPath);
 
-		this.colorSets = InitApplication.getColorPalettes(fileUtils);
+		this.colorSets = InitHelper.getColorPalettes(fileUtils);
 		
 		//choose sound implementation
 		try {
