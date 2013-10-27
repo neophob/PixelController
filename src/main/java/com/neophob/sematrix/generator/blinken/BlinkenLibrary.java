@@ -64,7 +64,7 @@ import com.neophob.sematrix.generator.blinken.jaxb.Header;
  */
 public class BlinkenLibrary {
 
-	private static Logger LOG = Logger.getLogger(BlinkenLibrary.class.getName());
+	private static final Logger LOG = Logger.getLogger(BlinkenLibrary.class.getName());
 
 	// the marshalled .blm file
 	private Blm blm;	
