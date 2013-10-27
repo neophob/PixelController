@@ -232,6 +232,7 @@ public abstract class Lpd6803Common {
 			Thread.sleep(ms);
 		}
 		catch(InterruptedException e) {
+			LOG.log(Level.WARNING, "sleep failed", e);
 		}
 	}
 
