@@ -112,6 +112,7 @@ public class Image extends Generator {
 		try {
 			String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+filename;
 
+			LOG.log(Level.INFO, "load image "+fileToLoad);
 			//use the ancient MediaTracker to load the image. ImageIO.read(new File(fileToLoad))
 			//would me easier, however additional work has to be done (convert to RGB image)
 			java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(fileToLoad);
