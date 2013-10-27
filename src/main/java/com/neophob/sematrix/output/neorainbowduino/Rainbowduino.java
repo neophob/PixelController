@@ -651,11 +651,11 @@ public class Rainbowduino {
 	 * @param _app
 	 * @return
 	 */
-	public static List<Integer> scanI2cBus(PApplet _app) {
+	public static List<Integer> scanI2cBus(PApplet app) {
 		Rainbowduino r=null;
 		
 		try {
-			r = new Rainbowduino(_app, new ArrayList<Integer>());
+			r = new Rainbowduino(app, new ArrayList<Integer>());
 			r.i2cBusScan();
 		} catch (Exception e) {
 			log.log(Level.WARNING, "I2C scanner failed: {0}", e);
