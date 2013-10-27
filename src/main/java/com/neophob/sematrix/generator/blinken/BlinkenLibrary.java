@@ -74,8 +74,8 @@ public class BlinkenLibrary {
 	private JAXBContext context;
 	private Unmarshaller unmarshaller;
 
-	public final static String NAME = "blinkenlights-mini";
-	public final static String VERSION = "v0.2";
+	public static final String NAME = "blinkenlights-mini";
+	public static final String VERSION = "v0.2";
 
 	/**
 	 * 
