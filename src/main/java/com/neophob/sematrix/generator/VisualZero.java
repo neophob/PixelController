@@ -28,8 +28,6 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class VisualZero extends Generator {	
 
-	private Visual visual;
-	
 	/**
 	 * @param controller the controller
 	 */
@@ -42,7 +40,7 @@ public class VisualZero extends Generator {
 	 */
 	@Override
 	public void update() {
-		visual = Collector.getInstance().getVisual(0);
+		Visual visual = Collector.getInstance().getVisual(0);
 	    this.internalBuffer = visual.getMixer().getBuffer(visual);
 	}
 

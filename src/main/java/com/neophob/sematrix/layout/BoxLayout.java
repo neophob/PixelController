@@ -38,9 +38,6 @@ public class BoxLayout extends Layout {
 	private static final int YSIZE = 2;
 	private static final int MAXVAL = 1000;
 	
-	/** The io mapping size. */
-	private int ioMappingSize;
-
 	/**
 	 * Instantiates a new box layout.
 	 *
@@ -49,9 +46,8 @@ public class BoxLayout extends Layout {
 	 */
 	public BoxLayout(int row1Size, int row2Size) {
 		super(LayoutName.BOX, row1Size, row2Size);
-		ioMappingSize = Collector.getInstance().getAllOutputMappings().size();
 		
-		LOG.log(Level.INFO,	"BoxLayout created, size row1: {0}, row 2: {1}, mapping size: {2}", new Object[] {row1Size, row2Size, ioMappingSize});
+		LOG.log(Level.INFO,	"BoxLayout created, size row1: {0}, row 2: {1}", new Object[] {row1Size, row2Size});
 	}
 
 

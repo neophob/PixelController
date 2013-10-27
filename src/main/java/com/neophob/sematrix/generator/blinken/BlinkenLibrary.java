@@ -71,7 +71,6 @@ public class BlinkenLibrary {
 
 	private PImage[] frames;
 	
-	private JAXBContext context;
 	private Unmarshaller unmarshaller;
 
 	public static final String NAME = "blinkenlights-mini";
@@ -83,7 +82,7 @@ public class BlinkenLibrary {
 	 */
 	public BlinkenLibrary() {
 		try {
-			context = JAXBContext.newInstance("com.neophob.sematrix.generator.blinken.jaxb");
+			JAXBContext context = JAXBContext.newInstance("com.neophob.sematrix.generator.blinken.jaxb");
 			unmarshaller = context.createUnmarshaller();			
 		} catch (JAXBException e) {
 			LOG.log(Level.SEVERE, "Failed to initialize Blinkenlights lib, Error: {1}" , new Object[] { e });
