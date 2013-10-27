@@ -634,10 +634,10 @@ public class Rainbowduino {
 	 * @param port: the serial port to use
 	 * @return List of found i2c devices
 	 */
-	public static List<Integer> scanI2cBus(PApplet _app, String port) {
+	public static List<Integer> scanI2cBus(PApplet app, String port) {
 		Rainbowduino r=null;		
 		try {
-			r = new Rainbowduino(_app, new ArrayList<Integer>(), port);
+			r = new Rainbowduino(app, new ArrayList<Integer>(), port);
 			r.i2cBusScan();
 		} catch (Exception e) {
 			log.log(Level.WARNING, "I2C scanner failed: {0}", e);
