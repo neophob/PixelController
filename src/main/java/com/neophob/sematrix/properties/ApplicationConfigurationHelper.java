@@ -1208,7 +1208,7 @@ public class ApplicationConfigurationHelper {
      */
     public Layout getLayout() {
         if (devicesInRow1>0 && devicesInRow2==0) {
-            return new HorizontalLayout(devicesInRow1, devicesInRow2);
+            return new HorizontalLayout(devicesInRow1);
         }
 
         if (devicesInRow1>0 && devicesInRow2>0 && devicesInRow1==devicesInRow2) {

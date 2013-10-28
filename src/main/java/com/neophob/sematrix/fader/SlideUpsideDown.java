@@ -19,6 +19,7 @@
 package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 
 
 /**
@@ -29,15 +30,15 @@ public class SlideUpsideDown extends Fader {
 	/**
 	 * Instantiates a new slide upside down.
 	 */
-	public SlideUpsideDown(int duration) {
-		super(FaderName.SLIDE_UPSIDE_DOWN, duration);
+	public SlideUpsideDown(MatrixData matrix, int duration) {
+		super(matrix, FaderName.SLIDE_UPSIDE_DOWN, duration);
 	}
 
 	/**
 	 * 
 	 */
-	public SlideUpsideDown() {
-		super(FaderName.SLIDE_UPSIDE_DOWN, 1500);
+	public SlideUpsideDown(MatrixData matrix) {
+		this(matrix, 1500);
 	}
 
 	/* (non-Javadoc)

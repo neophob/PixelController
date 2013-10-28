@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.fader;
 
+import com.neophob.sematrix.glue.MatrixData;
+
 
 /**
  * The Class Switch.
@@ -27,8 +29,8 @@ public class Switch extends Fader {
 	/**
 	 * Instantiates a new switch.
 	 */
-	public Switch() {
-		super(FaderName.SWITCH, 50);
+	public Switch(MatrixData matrix) {
+		super(matrix, FaderName.SWITCH, 50);
 	}
 	
 	/* (non-Javadoc)

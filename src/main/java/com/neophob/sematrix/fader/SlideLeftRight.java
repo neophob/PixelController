@@ -19,6 +19,7 @@
 package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 
 
 /**
@@ -29,16 +30,16 @@ public class SlideLeftRight extends Fader {
 	/**
 	 * Instantiates a new slide left right.
 	 */
-	public SlideLeftRight() {
-		super(FaderName.SLIDE_LEFT_RIGHT, 1500);
+	public SlideLeftRight(MatrixData matrix) {
+		this(matrix, 1500);
 	}
 
 	/**
 	 * 
 	 * @param duration
 	 */
-	public SlideLeftRight(int duration) {
-		super(FaderName.SLIDE_LEFT_RIGHT, duration);
+	public SlideLeftRight(MatrixData matrix, int duration) {
+		super(matrix, FaderName.SLIDE_LEFT_RIGHT, duration);
 	}
 
 	/* (non-Javadoc)

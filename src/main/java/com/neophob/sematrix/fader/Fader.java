@@ -119,8 +119,8 @@ public abstract class Fader {
 	 * 
 	 * @param faderName
 	 */
-	public Fader(FaderName faderName) {
-		this(faderName, DEFAULT_FADER_DURATION);
+	public Fader(MatrixData matrix, FaderName faderName) {
+		this(matrix, faderName, DEFAULT_FADER_DURATION);
 	}
 	
 	/**
@@ -129,13 +129,17 @@ public abstract class Fader {
 	 * @param faderName the fader name
 	 * @param fadeTime the fade time
 	 */
-	public Fader(FaderName faderName, int fadeTime) {
+	public Fader(MatrixData matrix, FaderName faderName, int fadeTime) {
 		this.faderName = faderName;
 		this.fadeTime = fadeTime;
 		
 		//example: duration=2000, FPS=10 -> 20000frames 1000/10=100ms / frame
 		//example: duration=200,  FPS=50 -> 10000frames 1000/50=20ms / frame
 		int fps = Collector.getInstance().getFps();
+		if (fps==0) {
+			LOG.log(Level.WARNING, "FPS was 0, use default of 50");
+			fps = 50;
+		}
 		int timePerFrame = (int)(1000.0f / (float)fps);
 		
 		//just if a crazy guy defines more than 1000 fps...
@@ -147,7 +151,6 @@ public abstract class Fader {
 			this.fadeTime = timePerFrame;
 		}
 		
-		MatrixData matrix = Collector.getInstance().getMatrix();
 		this.internalBufferXSize = matrix.getBufferXSize();
 		this.internalBufferYSize = matrix.getBufferYSize();
 

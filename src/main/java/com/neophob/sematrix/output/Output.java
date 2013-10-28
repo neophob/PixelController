@@ -151,7 +151,7 @@ public abstract class Output implements IOutput {
 		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
 			LayoutModel lm = this.layout.getDataForScreen(screen, Collector.getInstance().getAllOutputMappings());
 			OutputMapping map = this.collector.getOutputMappings(screen);
-			v = this.collector.getVisual(lm.getFxInput());
+			v = this.collector.getVisual(lm.getVisualId());
 			
 			if (lm.screenDoesNotNeedStretching()) {
 				buffer = this.matrixData.getScreenBufferForDevice(v, map);

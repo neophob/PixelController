@@ -37,8 +37,8 @@ public class LayoutModel {
 	/** The ofs y. */
 	private int ofsY;
 	
-	/** The fx input. */
-	private int fxInput;
+	/** The visual id */
+	private int visualId;
 	
 	/** The screen fragment x. */
 	private float screenFragmentX;
@@ -61,12 +61,12 @@ public class LayoutModel {
 	 * @param ofsY the ofs y
 	 * @param fxInput the fx input
 	 */
-	public LayoutModel(int sameFxOnX, int sameFxOnY, int ofsX, int ofsY, int fxInput) {
+	public LayoutModel(int sameFxOnX, int sameFxOnY, int ofsX, int ofsY, int visualId) {
 		this.sameFxOnX = sameFxOnX;
 		this.sameFxOnY = sameFxOnY;
 		this.ofsX = ofsX;
 		this.ofsY = ofsY;
-		this.fxInput = fxInput;
+		this.visualId = visualId;
 		
 		if (!screenDoesNotNeedStretching()) {
 			screenFragmentX = 1.0f/sameFxOnX;
@@ -102,41 +102,41 @@ public class LayoutModel {
 	/**
 	 * Gets the x start.
 	 *
-	 * @param length the length
+	 * @param bufferWidth the width of the internal buffer
 	 * @return the x start
 	 */
-	public int getxStart(int length) {
-		return (int)(xStart*length);
+	public int getxStart(int bufferWidth) {
+		return (int)(xStart*bufferWidth);
 	}
 
 	/**
 	 * Gets the x width.
 	 *
-	 * @param length the length
+	 * @param bufferWidth the width of the internal buffer
 	 * @return the x width
 	 */
-	public int getxWidth(int length) {
-		return (int)(xWidth*length);
+	public int getxWidth(int bufferWidth) {
+		return (int)(xWidth*bufferWidth);
 	}
 
 	/**
 	 * Gets the y start.
 	 *
-	 * @param length the length
+	 * @param bufferHeight the height of the internal buffer
 	 * @return the y start
 	 */
-	public int getyStart(int length) {
-		return (int)(yStart*length);
+	public int getyStart(int bufferHeight) {
+		return (int)(yStart*bufferHeight);
 	}
 
 	/**
 	 * Gets the y width.
 	 *
-	 * @param length the length
+	 * @param bufferHeight the height of the internal buffer
 	 * @return the y width
 	 */
-	public int getyWidth(int length) {
-		return (int)(yWidth*length);
+	public int getyWidth(int bufferHeight) {
+		return (int)(yWidth*bufferHeight);
 	}
 
 	/**
@@ -176,12 +176,12 @@ public class LayoutModel {
 	}
 	
 	/**
-	 * Gets the fx input.
+	 * Gets the Visual ID.
 	 *
-	 * @return the fx input
+	 * @return the Visual ID.
 	 */
-	public int getFxInput() {
-		return fxInput;
+	public int getVisualId() {
+		return visualId;
 	}
 	
 }

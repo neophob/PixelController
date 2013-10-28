@@ -177,27 +177,26 @@ public class MatrixData {
         //apply the fader (if needed)
         buffer = doTheFaderBaby(buffer, map);
 
-        int xStart=lm.getxStart(getBufferXSize());
-        int xWidth=lm.getxWidth(getBufferXSize());
-        int yStart=lm.getyStart(getBufferYSize());
-        int yWidth=lm.getyWidth(getBufferYSize());
+        int xStart=lm.getxStart(bufferWidth);
+        int xWidth=lm.getxWidth(bufferWidth);
+        int yStart=lm.getyStart(bufferHeight);
+        int yWidth=lm.getyWidth(bufferHeight);
 
         // initialize PImage instance in a lazy way and store a dedicated
         // instance per output in an internal map to avoid constructing an
         // PImage instance with every method call.
         PImage tmpImage = this.pImagesMap.get(output);
-        if (tmpImage==null || tmpImage.width != getBufferXSize()) {
-            tmpImage = Collector.getInstance().getPapplet().createImage(getBufferXSize(), getBufferYSize(), PApplet.RGB);
+        if (tmpImage==null || tmpImage.width != bufferWidth) {
+            tmpImage = Collector.getInstance().getPapplet().createImage(bufferWidth, bufferHeight, PApplet.RGB);
             this.pImagesMap.put(output, tmpImage);
         } 
 
         tmpImage.loadPixels();
-        System.arraycopy(buffer, 0, tmpImage.pixels, 0, getBufferXSize()*getBufferYSize());
+        System.arraycopy(buffer, 0, tmpImage.pixels, 0, bufferWidth*bufferHeight);
 
         //TODO very UGLY and SLOW method to copy the image - im lazy!
         //copy(x, y, width, height, dx, dy, dwidth, dheight)
-        tmpImage.blend(xStart, yStart, xWidth, yWidth, 0, 0, getBufferXSize(), getBufferYSize(), PImage.REPLACE);
-
+        tmpImage.blend(xStart, yStart, xWidth, yWidth, 0, 0, bufferWidth, bufferHeight, PImage.REPLACE);
         int[] bfr2 = tmpImage.pixels;
         tmpImage.updatePixels();
 

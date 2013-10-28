@@ -33,6 +33,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.helper.InitHelper;
@@ -243,7 +244,7 @@ public class Collector {
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
-			ioMapping.add(new OutputMapping(pixelControllerFader, n));			
+			ioMapping.add(new OutputMapping(pixelControllerFader.getVisualFader(FaderName.SWITCH), n));			
 		}
 		
 		pixConStat = new PixelControllerStatus(fps);

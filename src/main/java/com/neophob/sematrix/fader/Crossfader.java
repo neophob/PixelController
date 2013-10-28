@@ -38,6 +38,7 @@
 package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 
 
 
@@ -51,8 +52,8 @@ public class Crossfader extends Fader {
 	/**
 	 * Instantiates a new crossfader.
 	 */
-	public Crossfader() {
-		super(FaderName.CROSSFADE);
+	public Crossfader(MatrixData matrix) {
+		this(matrix, 1500);
 	}
 
 	/**
@@ -60,8 +61,8 @@ public class Crossfader extends Fader {
 	 *
 	 * @param time the time
 	 */
-	public Crossfader(int time) {
-		super(FaderName.CROSSFADE, time);
+	public Crossfader(MatrixData matrix, int time) {
+		super(matrix, FaderName.CROSSFADE, time);
 	}
 
 	/* (non-Javadoc)

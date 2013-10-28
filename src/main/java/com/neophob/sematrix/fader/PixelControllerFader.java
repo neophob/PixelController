@@ -19,6 +19,8 @@
 package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.fader.Fader.FaderName;
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
@@ -47,15 +49,16 @@ public final class PixelControllerFader {
 	 * @return the fader
 	 */
 	public Fader getVisualFader(FaderName faderName) {
+		MatrixData matrix = Collector.getInstance().getMatrix();
 		switch (faderName) {
 		case CROSSFADE:
-			return new Crossfader(visualFadeTime);
+			return new Crossfader(matrix, visualFadeTime);
 		case SWITCH:
-			return new Switch();
+			return new Switch(matrix);
 		case SLIDE_UPSIDE_DOWN:
-			return new SlideUpsideDown(visualFadeTime);
+			return new SlideUpsideDown(matrix, visualFadeTime);
 		case SLIDE_LEFT_RIGHT:
-			return new SlideLeftRight(visualFadeTime);
+			return new SlideLeftRight(matrix, visualFadeTime);
 		}
 		return null;
 	}
@@ -67,15 +70,16 @@ public final class PixelControllerFader {
 	 * @return
 	 */
 	public Fader getVisualFader(int index) {
+		MatrixData matrix = Collector.getInstance().getMatrix();
 		switch (index) {
 		case 0:
-			return new Switch();
+			return new Switch(matrix);
 		case 1:
-			return new Crossfader(visualFadeTime);
+			return new Crossfader(matrix, visualFadeTime);
 		case 2:
-			return new SlideUpsideDown(visualFadeTime);
+			return new SlideUpsideDown(matrix, visualFadeTime);
 		case 3:
-			return new SlideLeftRight(visualFadeTime);
+			return new SlideLeftRight(matrix, visualFadeTime);
 		}
 		return null;
 	}	
@@ -87,15 +91,16 @@ public final class PixelControllerFader {
 	 * @return
 	 */
 	public Fader getPresetFader(int index) {
+		MatrixData matrix = Collector.getInstance().getMatrix();
 		switch (index) {
 		case 0:
-			return new Switch();
+			return new Switch(matrix);
 		case 1:
-			return new Crossfader(presetLoadingFadeTime);
+			return new Crossfader(matrix, presetLoadingFadeTime);
 		case 2:
-			return new SlideUpsideDown(presetLoadingFadeTime);
+			return new SlideUpsideDown(matrix, presetLoadingFadeTime);
 		case 3:
-			return new SlideLeftRight(presetLoadingFadeTime);
+			return new SlideLeftRight(matrix, presetLoadingFadeTime);
 		}
 		return null;
 	}

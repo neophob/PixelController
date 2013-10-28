@@ -41,8 +41,8 @@ public class HorizontalLayout extends Layout {
 	 * @param row1Size the row1 size
 	 * @param row2Size the row2 size
 	 */
-	public HorizontalLayout(int row1Size, int row2Size) {
-		super(LayoutName.HORIZONTAL, row1Size, row2Size);
+	public HorizontalLayout(int row1Size) {
+		super(LayoutName.HORIZONTAL, row1Size, 0);
 		
 		LOG.log(Level.INFO,	"HorizontalLayout created, size row1: {0}, row2:{1}", new Object[] {row1Size, row2Size});
 
