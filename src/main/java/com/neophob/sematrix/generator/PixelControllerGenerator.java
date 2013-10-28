@@ -26,11 +26,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
-import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;

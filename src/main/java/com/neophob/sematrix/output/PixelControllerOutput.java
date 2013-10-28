@@ -27,8 +27,8 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.jmx.TimeMeasureItemOutput;
 

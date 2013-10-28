@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**

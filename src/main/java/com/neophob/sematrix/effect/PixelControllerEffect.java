@@ -24,8 +24,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.effect.Effect.EffectName;
-import com.neophob.sematrix.glue.PixelControllerElement;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
