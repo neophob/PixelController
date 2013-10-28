@@ -19,6 +19,8 @@
 package com.neophob.sematrix.output.gui;
 
 import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
@@ -36,13 +38,15 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
  */
 public class OutputGui {
 
+	private static final Logger LOG = Logger.getLogger(OutputGui.class.getName());
+
 	private static final int MAX_BPP = 8;
 	
 	/** The Constant RAHMEN_SIZE. */
-	private static final int RAHMEN_SIZE = 4;
+	private static final int FRAME_SIZE = 2;
 	
 	/** The Constant LED_ABSTAND. */
-	private static final int LED_ABSTAND = 0;
+	private static final int LED_GAP = 0;
 	
 	/** The frame. */
 	private int frame = 0;
@@ -61,6 +65,9 @@ public class OutputGui {
 	private Collector collector;
 	
 	private Output output;
+	
+	private int oneMatrixXSize;
+	private int oneMatrixYSize;
 
 	/**
 	 * Instantiates a new matrix emulator.
@@ -88,9 +95,12 @@ public class OutputGui {
 			break;
 		}
 		
-		x+=RAHMEN_SIZE;
-		y+=20+2*RAHMEN_SIZE;
-		this.parent = this.collector.getPapplet();		
+		x+=FRAME_SIZE;
+		y+=20+2*FRAME_SIZE;
+		this.parent = this.collector.getPapplet();	
+		
+		LOG.log(Level.INFO, "Resize Window to {0}/{1}", new Integer[] {x,y});
+		
 		this.parent.size(x, y);
 		this.parent.frame.setSize(x,y);
 		this.parent.frame.setTitle("PixelController Output Window");
@@ -115,6 +125,9 @@ public class OutputGui {
 			//nothing left todo...
 		}
 		this.parent.background(33,33,33);
+		
+		oneMatrixXSize = getOneMatrixXSize();
+		oneMatrixYSize = getOneMatrixYSize();
 	}
 
 	/**
@@ -123,7 +136,7 @@ public class OutputGui {
 	 * @return the one matrix x size
 	 */
 	private int getOneMatrixXSize() {
-		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceXSize()*(RAHMEN_SIZE+ledSize);
+		return LED_GAP+FRAME_SIZE+matrixData.getDeviceXSize()*(FRAME_SIZE+ledSize);
 	}
 	
 	/**
@@ -132,7 +145,7 @@ public class OutputGui {
 	 * @return the one matrix y size
 	 */
 	private int getOneMatrixYSize() {
-		return LED_ABSTAND+RAHMEN_SIZE+matrixData.getDeviceYSize()*(RAHMEN_SIZE+ledSize);
+		return LED_GAP+FRAME_SIZE+matrixData.getDeviceYSize()*(FRAME_SIZE+ledSize);
 	}
 
 	/**
@@ -184,8 +197,8 @@ public class OutputGui {
 	 * @param buffer - the buffer to draw
 	 */
 	private void drawOutput(int nr, int nrX, int nrY, int buffer[], int currentOutput) {
-		int xOfs = nrX*(getOneMatrixXSize()+LED_ABSTAND);
-		int yOfs = nrY*(getOneMatrixYSize()+LED_ABSTAND);
+		int xOfs = nrX*(oneMatrixXSize+LED_GAP);
+		int yOfs = nrY*(oneMatrixYSize+LED_GAP);
 		int ofs=0;
 		int tmp,r,g,b;
 
@@ -195,7 +208,7 @@ public class OutputGui {
 		} else {
 			parent.fill(33,33,33);
 		}
-		parent.rect(xOfs, yOfs, getOneMatrixXSize(), getOneMatrixYSize());
+		parent.rect(xOfs, yOfs, oneMatrixXSize, oneMatrixYSize);
 		
 		int shift = MAX_BPP - this.output.getBpp();
 		
@@ -216,8 +229,8 @@ public class OutputGui {
 					b <<= shift;
 				}
 				parent.fill(r,g,b);
-				parent.rect(xOfs+RAHMEN_SIZE+x*(RAHMEN_SIZE+ledSize),
-							yOfs+RAHMEN_SIZE+y*(RAHMEN_SIZE+ledSize),
+				parent.rect(xOfs+FRAME_SIZE+x*(FRAME_SIZE+ledSize),
+							yOfs+FRAME_SIZE+y*(FRAME_SIZE+ledSize),
 							ledSize,ledSize);
 			}
 		}
