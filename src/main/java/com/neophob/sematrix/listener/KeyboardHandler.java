@@ -39,7 +39,7 @@ public abstract class KeyboardHandler {
 
 	private static final Logger LOG = Logger.getLogger(KeyboardHandler.class.getName());
 
-    public static GuiCallbackAction registerGuiClass;
+	private static GuiCallbackAction registerGuiClass;
     
     /**
      * 
