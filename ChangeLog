@@ -5,6 +5,7 @@ Changelog v1.5.0 to v1.5.1
 -Add Fader effect if current visual is randomized, freeze current buffer and fade into new content 
 -Add config option to make fader time configurable
 -Fix Checkbox Mixer, make checkbox size dependent on output
+-Fix PixelImage, possible exception 
 
 
 Changelog v1.4.1 to v1.5.0

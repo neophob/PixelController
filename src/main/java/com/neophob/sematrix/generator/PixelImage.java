@@ -20,9 +20,12 @@ package com.neophob.sematrix.generator;
 
 import java.security.InvalidParameterException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -32,6 +35,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  */
 public class PixelImage extends Generator {
+
+	private static final Logger LOG = Logger.getLogger(PixelImage.class.getName());
 
 	/** The Constant PIXELNR. */
 	private static final int PIXELNR = 8;
@@ -53,6 +58,8 @@ public class PixelImage extends Generator {
 	
 	/** The frame. */
 	private int frame = 0;
+	
+	private int fps;
 
 	/**
 	 * Instantiates a new pixel image.
@@ -63,6 +70,8 @@ public class PixelImage extends Generator {
 	public PixelImage(PixelControllerGenerator controller) throws InvalidParameterException {
 		super(controller, GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
 
+		this.fps = Collector.getInstance().getFps();
+		
 		//populate known images
 		images[0][0]=0x1537; 
 		images[0][1]=0xfbdb;        //neorainbowduino logo
@@ -105,8 +114,10 @@ gelesen von der mitte!
 		0110 ....	-> 0x6
 */	
 
-		xDiff = internalBufferXSize/PIXELNR;
-		yDiff = internalBufferYSize/PIXELNR;
+		xDiff = (int)Math.round(internalBufferXSize/(float)PIXELNR);
+		yDiff = (int)Math.round(internalBufferYSize/(float)PIXELNR);
+		
+		LOG.log(Level.INFO, "PixelImage resize value {0}/{1} [{2}/{3}]", new Integer[] {xDiff, yDiff, xDiff*PIXELNR, yDiff*PIXELNR});
 	}
 
 	/* (non-Javadoc)
@@ -114,14 +125,16 @@ gelesen von der mitte!
 	 */
 	@Override
 	public void update() {
-		if (frame==0 || Sound.getInstance().getVolumeNormalized()>0.5f && frame>8 || 
-				Sound.getInstance().isKick() && frame>40) {
+		if (frame==0 || Sound.getInstance().getVolumeNormalized()>0.5f && frame>this.fps/2 || 
+				Sound.getInstance().isKick() && frame>this.fps) {
+
+			//make sure the pixel are not displayed too fast 
 			frame=0;
 			doInvader();
 			
 			int xofs, yofs=-1, dst=0;
 
-			//resize image from 8x8 to 128x128
+			//resize image from 8x8 to internal buffer size
 			for (int y=0; y<internalBufferYSize; y++) {
 				if (y%yDiff==0) {
 					yofs++;
@@ -131,7 +144,7 @@ gelesen von der mitte!
 					if (x%xDiff==0) {
 						xofs++;
 					}
-					int col = 128*this.grid[xofs][yofs];
+					int col = 128*this.grid[xofs%PIXELNR][yofs%PIXELNR];
 					this.internalBuffer[dst++] = (col)%255;
 				}				
 			}
