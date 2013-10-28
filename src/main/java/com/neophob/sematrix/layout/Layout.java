@@ -18,8 +18,11 @@
  */
 package com.neophob.sematrix.layout;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.neophob.sematrix.glue.OutputMapping;
 
 /**
  * this class defines how multiple panels are arranged.
@@ -96,7 +99,7 @@ public abstract class Layout {
 	 * @param screenNr the screen nr
 	 * @return the data for screen
 	 */
-	public abstract LayoutModel getDataForScreen(int screenNr);
+	public abstract LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping);
 	
 	/**
 	 * Gets the row1 size.

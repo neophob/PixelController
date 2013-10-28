@@ -18,10 +18,10 @@
  */
 package com.neophob.sematrix.layout;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.OutputMapping;
 
 /**
@@ -54,9 +54,9 @@ public class HorizontalLayout extends Layout {
 	 * @param fxInput the fx input
 	 * @return the int
 	 */
-	private int howManyScreensShareThisFxOnTheXAxis(int fxInput) {
+	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, List<OutputMapping> ioMapping) {
 		int ret=0;
-		for (OutputMapping o: Collector.getInstance().getAllOutputMappings()) {
+		for (OutputMapping o: ioMapping) {
 			if (o.getVisualId()==fxInput) {
 				ret++;
 			}
@@ -71,11 +71,11 @@ public class HorizontalLayout extends Layout {
 	 * @param screenNr the screen nr
 	 * @return the x offset for screen
 	 */
-	private int getXOffsetForScreen(int fxInput, int screenNr) {
+	private int getXOffsetForScreen(int fxInput, int screenNr, List<OutputMapping> ioMapping) {
 		int ret=0;
 
 		for (int i=0; i<screenNr; i++) {
-			if (Collector.getInstance().getOutputMappings(i).getVisualId()==fxInput) {
+			if (ioMapping.get(i).getVisualId()==fxInput) {
 				ret++;
 			}
 		}
@@ -87,13 +87,13 @@ public class HorizontalLayout extends Layout {
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.layout.Layout#getDataForScreen(int)
 	 */
-	public LayoutModel getDataForScreen(int screenNr) {
-		int fxInput = Collector.getInstance().getOutputMappings(screenNr).getVisualId();
+	public LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping) {
+		int fxInput = ioMapping.get(screenNr).getVisualId();
 
 		return new LayoutModel(
-				this.howManyScreensShareThisFxOnTheXAxis(fxInput), 
+				this.howManyScreensShareThisFxOnTheXAxis(fxInput, ioMapping), 
 				1,
-				this.getXOffsetForScreen(fxInput, screenNr),
+				this.getXOffsetForScreen(fxInput, screenNr, ioMapping),
 				0,
 				fxInput);
 	}

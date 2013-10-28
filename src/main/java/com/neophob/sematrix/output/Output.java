@@ -149,7 +149,7 @@ public abstract class Output implements IOutput {
 		Visual v;
 		
 		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
-			LayoutModel lm = this.layout.getDataForScreen(screen);
+			LayoutModel lm = this.layout.getDataForScreen(screen, Collector.getInstance().getAllOutputMappings());
 			OutputMapping map = this.collector.getOutputMappings(screen);
 			v = this.collector.getVisual(lm.getFxInput());
 			
