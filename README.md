@@ -123,7 +123,7 @@ Here are some common errors:
    deal, as the timeout value cold be adjusted in the firmware. Use a Teensy 2 board for best results.
 * Make sure you're using an up-to date Java Runtime (JRE), this usually helps if the JVM crashes.
 * If you use an extra long USB Cable (more than 5 meter) you might discover strange issues, try to use a short cable especially if you're uploading a firmware to the Arduino/Teensy.
-* The **OSC Generator** does not work: make sure you select the correct resolution for the OSC sender, take a look at the INFO tab, there you see the PixelController internal buffer size. Use this resolution in you OSC sender (or Processing sketch).
+* The **OSC Generator** does not work: make sure you select the correct resolution for the OSC sender, take a look at the INFO tab, there you see the PixelController internal buffer size. Use this resolution in your OSC sender (or Processing sketch).
 
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
