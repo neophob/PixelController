@@ -43,6 +43,12 @@ PixelController supports different (LED) matrix hardware devices:
 
 Check out the `integration/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
+### Which firmware should I use?
+If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between different firmwares.  
+* If you bought a PixelInvaders DIY Kit, use the `integration/ArduinoFw/pixelinvaders/neoLedLPD6803Spi` firmware
+* If you want to create a ONE panel matrix with an arbitrary resolution, use the `integration/ArduinoFw/tpm2serial` firmware
+* If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware
+
 ## FRONTENDS
 There are different frontends for PixelController:
 
