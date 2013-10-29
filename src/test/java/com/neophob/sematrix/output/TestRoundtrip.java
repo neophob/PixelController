@@ -23,7 +23,7 @@ import java.util.HashMap;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.output.gamma.RGBAdjust;
-import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
+import com.neophob.sematrix.output.pixelinvaders.Lpd6803Serial;
 
 /**
  * simply test class, only used to test the lib<br>
@@ -41,7 +41,7 @@ public class TestRoundtrip extends PApplet {
 	private static final long serialVersionUID = 5014930687650644180L;
 	
 	
-	Lpd6803 r;
+	Lpd6803Serial r;
 	int [] frame1;
 	byte [] frame2;
 	 
@@ -52,7 +52,7 @@ public class TestRoundtrip extends PApplet {
 		frameRate(500);
 		
 		try {
-			r = new Lpd6803(this, null, new HashMap<Integer, RGBAdjust>(), 1);		
+			r = new Lpd6803Serial(this, null, new HashMap<Integer, RGBAdjust>(), 1);		
 			long l1 = System.currentTimeMillis();
 			r.ping();
 			long l2= System.currentTimeMillis()-l1;

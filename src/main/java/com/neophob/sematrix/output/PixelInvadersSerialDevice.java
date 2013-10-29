@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.output.pixelinvaders.Lpd6803;
+import com.neophob.sematrix.output.pixelinvaders.Lpd6803Serial;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
@@ -37,7 +37,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 	private static final Logger LOG = Logger.getLogger(PixelInvadersSerialDevice.class.getName());
 		
 	/** The lpd6803. */
-	private Lpd6803 lpd6803 = null;
+	private Lpd6803Serial lpd6803 = null;
 
 			
 	/**
@@ -51,7 +51,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 		super(OutputDeviceEnum.PIXELINVADERS, ph, 5);		
 		
 		try {
-			lpd6803 = new Lpd6803(Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			
+			lpd6803 = new Lpd6803Serial(Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			
 			this.initialized = lpd6803.ping();
 			super.setLpd6803(lpd6803);
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			

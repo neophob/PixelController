@@ -60,10 +60,10 @@ import com.neophob.sematrix.output.gamma.RGBAdjust;
  *
  * @author Michael Vogt / neophob.com
  */
-public class Lpd6803 extends Lpd6803Common {
+public class Lpd6803Serial extends Lpd6803Common {
 		
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Lpd6803.class.getName());
+	private static final Logger LOG = Logger.getLogger(Lpd6803Serial.class.getName());
 	
 	/** internal lib version. */
 	public static final String VERSION = "2.0";
@@ -106,7 +106,7 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+	public Lpd6803Serial(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
 		this(app, null, 0, portBlacklist, correctionMap, panelSize);
 	}
 
@@ -119,7 +119,7 @@ public class Lpd6803 extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+	public Lpd6803Serial(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
 		super(panelSize, panelSize);
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
