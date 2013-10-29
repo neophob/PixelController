@@ -34,8 +34,8 @@ public class QualityResize extends Resize {
 	 *
 	 * @param controller the controller
 	 */
-	public QualityResize(PixelControllerResize controller) {
-		super(controller, ResizeName.QUALITY_RESIZE);
+	public QualityResize() {
+		super(ResizeName.QUALITY_RESIZE);
 	}
 	
 	/* (non-Javadoc)

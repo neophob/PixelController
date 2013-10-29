@@ -33,7 +33,7 @@ public class VisualZero extends Generator {
 	 * @param controller the controller
 	 */
 	public VisualZero(MatrixData matrix) {
-		super(matrix, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);		
+		super(matrix, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);	
 	}
 
 	/* (non-Javadoc)

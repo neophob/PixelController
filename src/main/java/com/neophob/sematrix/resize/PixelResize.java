@@ -34,8 +34,8 @@ public class PixelResize extends Resize {
 	 *
 	 * @param controller the controller
 	 */
-	public PixelResize(PixelControllerResize controller) {
-		super(controller, ResizeName.PIXEL_RESIZE);
+	public PixelResize() {
+		super(ResizeName.PIXEL_RESIZE);
 	}
 	
 	/* (non-Javadoc)

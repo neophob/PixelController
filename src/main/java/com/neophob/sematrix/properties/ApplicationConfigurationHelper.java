@@ -1125,7 +1125,7 @@ public class ApplicationConfigurationHelper {
      * @return
      */
     public int parseScreenCaptureWindowSizeX() {
-        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_X, 64);        
+        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_X, 0);        
     }
 
     /**

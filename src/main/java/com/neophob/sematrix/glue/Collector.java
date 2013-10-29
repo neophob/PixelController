@@ -52,6 +52,7 @@ import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
+import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
  * The Class Collector.
@@ -215,7 +216,8 @@ public class Collector {
 		pixelControllerResize.initAll();
 
 		//create generators
-		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, this.fps);
+		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, this.fps, 
+				Sound.getInstance(), pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
 		pixelControllerGenerator.initAll();
 		
 		pixelControllerEffect = new PixelControllerEffect(matrix);

@@ -35,6 +35,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
+import com.neophob.sematrix.resize.IResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -77,16 +78,19 @@ public class Blinkenlights extends Generator implements PConstants {
     
     private FileUtils fileUtils;
 
+    private IResize resize;
+    
     /**
      * Instantiates a new blinkenlights.
      *
      * @param controller the controller
      * @param filename the filename
      */
-    public Blinkenlights(MatrixData matrix, String filename, FileUtils fu) {
+    public Blinkenlights(MatrixData matrix, String filename, FileUtils fu, IResize resize) {
         super(matrix, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
         this.filename = null;
         this.fileUtils = fu;
+        this.resize = resize;
         this.random=false;
 
         //find movie files		
@@ -152,8 +156,7 @@ public class Blinkenlights extends Generator implements PConstants {
         }
 
         img.loadPixels();
-        this.internalBuffer = Collector.getInstance().getPixelControllerResize().resizeImage(ResizeName.PIXEL_RESIZE, img.pixels, 
-                img.width, img.height, internalBufferXSize, internalBufferYSize);
+        this.internalBuffer = resize.getBuffer(img.pixels, internalBufferXSize, internalBufferYSize, img.width, img.height);
         img.updatePixels();	
         
         frameNr++;

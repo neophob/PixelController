@@ -238,20 +238,6 @@ public abstract class Generator implements RandomizeState {
 		return internalBuffer;
 	}
 	
-	/**
-	 * used for debug output.
-	 *
-	 * @return the buffer as image
-	 */
-/*	public PImage getBufferAsImage() {
-		PImage pImage = Collector.getInstance().getPapplet().createImage
-							( internalBufferXSize, internalBufferYSize, PApplet.RGB );
-		pImage.loadPixels();
-		System.arraycopy(internalBuffer, 0, pImage.pixels, 0, internalBuffer.length);
-		pImage.updatePixels();
-		return pImage;
-	}*/
-	
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.glue.RandomizeState#shuffle()
@@ -322,5 +308,14 @@ public abstract class Generator implements RandomizeState {
 	public boolean isPassThoughModeActive() {
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Generator [name=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s, active=%s]",
+						name, resizeOption, internalBufferXSize,
+						internalBufferYSize, active);
+	}
 		
+	
 }

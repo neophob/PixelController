@@ -30,7 +30,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.layout.LayoutModel;
 import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.resize.Resize;
+import com.neophob.sematrix.resize.IResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -220,7 +220,7 @@ public class MatrixData {
         //return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
         //return new int[deviceXSize* deviceYSize];	
 
-        Resize r = Collector.getInstance().getPixelControllerResize().getResize(resizeName);
+        IResize r = Collector.getInstance().getPixelControllerResize().getResize(resizeName);
         return r.getBuffer(buffer, deviceXSize, deviceYSize, getBufferXSize(), getBufferYSize());
     }
 

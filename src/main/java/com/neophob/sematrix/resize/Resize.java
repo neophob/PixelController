@@ -27,7 +27,7 @@ import java.awt.image.WritableRaster;
  *
  * @author michu
  */
-public abstract class Resize {
+public abstract class Resize implements IResize {
 	
 	/**
 	 * The Enum ResizeName.
@@ -73,9 +73,8 @@ public abstract class Resize {
 	 * @param controller the controller
 	 * @param resizeName the resize name
 	 */
-	public Resize(PixelControllerResize controller, ResizeName resizeName) {
+	public Resize(ResizeName resizeName) {
 		this.resizeName = resizeName;
-		controller.addResize(this);		
 	}
 	
 	/**

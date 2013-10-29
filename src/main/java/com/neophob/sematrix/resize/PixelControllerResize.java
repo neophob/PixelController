@@ -40,13 +40,13 @@ public class PixelControllerResize implements PixelControllerElement {
 	private static final Logger LOG = Logger.getLogger(PixelControllerResize.class.getName());
 	
 	/** The all resizers. */
-	private List<Resize> allResizers;
+	private List<IResize> allResizers;
 	
 	/**
 	 * Instantiates a new pixel controller resize.
 	 */
 	public PixelControllerResize() {
-		allResizers = new CopyOnWriteArrayList<Resize>();
+		allResizers = new CopyOnWriteArrayList<IResize>();
 	}
 	
 	/* (non-Javadoc)
@@ -61,8 +61,8 @@ public class PixelControllerResize implements PixelControllerElement {
 	 */
 	@Override
 	public void initAll() {
-		new PixelResize(this);
-		new QualityResize(this);
+		allResizers.add(new PixelResize());
+		allResizers.add(new QualityResize());
 	}
 	
 	/* (non-Javadoc)
@@ -87,7 +87,7 @@ public class PixelControllerResize implements PixelControllerElement {
 	 * @return the int[]
 	 */
 	public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY, int newX, int newY) {		
-		Resize r=null;
+		IResize r=null;
 		r = getResize(resizeTyp);
 
 		if (r==null) {
@@ -108,7 +108,7 @@ public class PixelControllerResize implements PixelControllerElement {
 	 *
 	 * @return the all resizers
 	 */
-	public List<Resize> getAllResizers() {
+	public List<IResize> getAllResizers() {
 		return allResizers;
 	}
 	
@@ -118,22 +118,13 @@ public class PixelControllerResize implements PixelControllerElement {
 	 * @param name the name
 	 * @return the resize
 	 */
-	public Resize getResize(ResizeName name) {
-		for (Resize r: allResizers) {
+	public IResize getResize(ResizeName name) {
+		for (IResize r: allResizers) {
 			if (r.getId() == name.getId()) {
 				return r;
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * Adds the resize.
-	 *
-	 * @param resize the resize
-	 */
-	public void addResize(Resize resize) {
-		allResizers.add(resize);
 	}
 
 

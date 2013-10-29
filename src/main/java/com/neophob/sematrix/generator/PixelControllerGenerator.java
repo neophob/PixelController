@@ -33,8 +33,10 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.input.SeSound;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;
+import com.neophob.sematrix.resize.IResize;
 
 /**
  * The Class PixelControllerGenerator.
@@ -82,15 +84,21 @@ public class PixelControllerGenerator implements PixelControllerElement {
     
     private int fps;
     
+    private SeSound sound;
+    
+    private IResize resize;
+    
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils, MatrixData matrix, int fps) {
-        allGenerators = new CopyOnWriteArrayList<Generator>();	
+    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils, MatrixData matrix, 
+    		int fps, SeSound sound, IResize resize) {
         this.ph = ph;
         this.fileUtils = fileUtils;
         this.matrix = matrix;
         this.fps = fps;
+        this.sound = sound;
+        this.resize = resize;
     }
 
 
@@ -100,8 +108,10 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public void initAll() {
     	LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
     	
+        allGenerators = new CopyOnWriteArrayList<Generator>();	
+
         String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
-        blinkenlights = new Blinkenlights(matrix, fileBlinken, fileUtils);
+        blinkenlights = new Blinkenlights(matrix, fileBlinken, fileUtils, resize);
         allGenerators.add(blinkenlights);
         
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
@@ -124,8 +134,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(textwriter);
 
         allGenerators.add(new Cell(matrix));
-        allGenerators.add(new FFTSpectrum(matrix));
-        allGenerators.add(new Geometrics(matrix));                
+        allGenerators.add(new FFTSpectrum(matrix, sound));
+        allGenerators.add(new Geometrics(matrix, sound));                
         
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
         if (screenCapureXSize>0) {

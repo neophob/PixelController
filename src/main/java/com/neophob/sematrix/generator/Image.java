@@ -156,11 +156,12 @@ public class Image extends Generator {
 	  * a single image, and blocking until it has loaded.
 	  */
 	private PImage loadImageMT(java.awt.Image awtImage) {
+		//TODO remove dependency to Collector/PApplet
 		MediaTracker tracker = new MediaTracker(Collector.getInstance().getPapplet());
 		tracker.addImage(awtImage, 0);
 		try {
 			tracker.waitForAll();
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
 			//e.printStackTrace();  // non-fatal, right?
 		}
 
