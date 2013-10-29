@@ -19,7 +19,7 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.SeSound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -30,13 +30,17 @@ public class BeatVerticalShift extends Effect {
 	/** The ammount. */
 	private int ammount=0;
 	
+	private SeSound sound;
+	
+	
 	/**
 	 * Instantiates a new beat vertical shift.
 	 *
 	 * @param controller the controller
 	 */
-	public BeatVerticalShift(MatrixData matrix) {
+	public BeatVerticalShift(MatrixData matrix, SeSound sound) {
 		super(matrix, EffectName.BEAT_VERTICAL_SHIFT, ResizeName.QUALITY_RESIZE);
+		this.sound = sound;
 	}
 
 	/* (non-Javadoc)
@@ -49,8 +53,8 @@ public class BeatVerticalShift extends Effect {
 	
     @Override
     public void update() {
-        if (Sound.getInstance().isPang()) {
-            ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferYSize);
+        if (sound.isPang()) {
+            ammount = (int)(sound.getVolumeNormalized()*internalBufferYSize);
         }
     }
     

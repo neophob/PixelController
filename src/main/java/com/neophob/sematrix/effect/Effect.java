@@ -168,6 +168,14 @@ public abstract class Effect implements RandomizeState {
 	public void shuffle() {
 		//default shuffle method - do nothing	
 	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Effect [effectName=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s]",
+						effectName, resizeOption, internalBufferXSize,
+						internalBufferYSize);
+	}
 	
 
 }

@@ -16,44 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.mixer;
+package com.neophob.sematrix.effect;
 
 import org.junit.Test;
 
 import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.PassThru;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.SeSound;
 import com.neophob.sematrix.input.SoundDummy;
+import com.neophob.sematrix.mixer.Checkbox;
+import com.neophob.sematrix.mixer.Mixer;
 
-public class GenerateAllMixerTest {
+public class GenerateAllResolutionEffectTest {
 
 	private SeSound sound;
 	
     @Test
-    public void verifyMixersDoNotCrash() throws Exception {
+    public void verifyEffectsDoNotCrash() throws Exception {
     	final int maxResolution = 17;
     	sound = new SoundDummy();
     	
-    	int i=0;
     	for (int x=1; x<maxResolution; x++) {
     		for (int y=1; y<maxResolution; y++) {
-    			System.out.println(i+" test: "+x+"/"+y);
     			testWithResolution(x,y);
     			testWithResolution(y,x);
-        		i++;    	
     		}
     	}
     }
     
     private void testWithResolution(int x, int y) {
     	MatrixData matrix = new MatrixData(x,y);
-    	PixelControllerMixer pcm = new PixelControllerMixer(matrix, sound);
-    	pcm.initAll();
+    	PixelControllerEffect pce = new PixelControllerEffect(matrix, sound);
+    	pce.initAll();
 
     	Generator g = new PassThruGen(matrix);
     	Effect e = new PassThru(matrix);
@@ -61,9 +58,8 @@ public class GenerateAllMixerTest {
     	ColorSet c = new ColorSet("test", new int[]{1,2,3});
     	Visual v = new Visual(g,e,m,c);    	
 
-    	for (Mixer mix: pcm.getAllMixer()) {
-    		System.out.println(mix);
-    		mix.getBuffer(v);
+    	for (Effect eff: pce.getAllEffects()) {
+    		eff.getBuffer(v.getBuffer());
     	}
     	
     }

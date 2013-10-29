@@ -220,7 +220,7 @@ public class Collector {
 				Sound.getInstance(), pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
 		pixelControllerGenerator.initAll();
 		
-		pixelControllerEffect = new PixelControllerEffect(matrix);
+		pixelControllerEffect = new PixelControllerEffect(matrix, Sound.getInstance());
 		pixelControllerEffect.initAll();
 
 		pixelControllerMixer = new PixelControllerMixer(matrix, Sound.getInstance());

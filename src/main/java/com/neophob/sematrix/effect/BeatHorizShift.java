@@ -19,7 +19,7 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.SeSound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -30,13 +30,16 @@ public class BeatHorizShift extends Effect {
 	/** The ammount. */
 	private int ammount=0;
 	
+	private SeSound sound;
+	
 	/**
 	 * Instantiates a new beat horiz shift.
 	 *
 	 * @param controller the controller
 	 */
-	public BeatHorizShift(MatrixData matrix) {
+	public BeatHorizShift(MatrixData matrix, SeSound sound) {
 		super(matrix, EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
+		this.sound = sound;
 	}
 
 	/* (non-Javadoc)
@@ -49,8 +52,8 @@ public class BeatHorizShift extends Effect {
 	
     @Override
     public void update() {
-        if (Sound.getInstance().isPang()) {
-            ammount = (int)(Sound.getInstance().getVolumeNormalized()*internalBufferYSize);
+        if (sound.isPang()) {
+            ammount = (int)(sound.getVolumeNormalized()*internalBufferYSize);
         }
     }
 	
