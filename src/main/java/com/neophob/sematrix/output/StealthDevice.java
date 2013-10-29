@@ -56,8 +56,8 @@ public class StealthDevice extends ArduinoOutput {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public StealthDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.STEALTH, ph, controller, 5);
+	public StealthDevice(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.STEALTH, ph, 5);
 		
 		this.displayOptions = ph.getStealthDevice();
 		this.colorFormat = ph.getColorFormat();

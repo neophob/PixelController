@@ -46,8 +46,8 @@ public class PixelInvadersNetDevice extends PixelInvadersDevice {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public PixelInvadersNetDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.PIXELINVADERS_NET, ph, controller, 5);
+	public PixelInvadersNetDevice(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.PIXELINVADERS_NET, ph, 5);
 		
 		String ip = ph.getPixelinvadersNetIp();
 		int port = ph.getPixelinvadersNetPort();

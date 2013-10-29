@@ -32,8 +32,8 @@ public class NullDevice extends Output {
      *
      * @param controller the controller
      */
-    public NullDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-        super(OutputDeviceEnum.NULL, ph, controller, 8);
+    public NullDevice(ApplicationConfigurationHelper ph) {
+        super(OutputDeviceEnum.NULL, ph, 8);
         this.supportConnectionState = true;
     }
 

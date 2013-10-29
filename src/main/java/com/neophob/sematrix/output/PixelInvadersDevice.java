@@ -68,9 +68,8 @@ public abstract class PixelInvadersDevice extends Output {
 	 * @param controller
 	 * @param bpp
 	 */
-	public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph,
-			PixelControllerOutput controller, int bpp) {
-		super(outputDeviceEnum, ph, controller, bpp);
+	public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+		super(outputDeviceEnum, ph, bpp);
 		
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();

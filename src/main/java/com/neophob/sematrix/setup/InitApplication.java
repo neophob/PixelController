@@ -103,44 +103,47 @@ public abstract class InitApplication {
         try {
             switch (outputDeviceEnum) {
             case PIXELINVADERS:
-                output = new PixelInvadersSerialDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new PixelInvadersSerialDevice(applicationConfig);
                 break;
             case PIXELINVADERS_NET:
-                output = new PixelInvadersNetDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new PixelInvadersNetDevice(applicationConfig);
                 break;            	
             case STEALTH:
-                output = new StealthDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new StealthDevice(applicationConfig);
                 break;
             case RAINBOWDUINO_V2:
-                output = new RainbowduinoV2Device(applicationConfig, collector.getPixelControllerOutput());
+                output = new RainbowduinoV2Device(applicationConfig);
                 break;
             case RAINBOWDUINO_V3:
-                output = new RainbowduinoV3Device(applicationConfig, collector.getPixelControllerOutput());
+                output = new RainbowduinoV3Device(applicationConfig);
                 break;
             case ARTNET:
-                output = new ArtnetDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new ArtnetDevice(applicationConfig);
                 break;
             case E1_31:
-                output = new E1_31Device(applicationConfig, collector.getPixelControllerOutput());
+                output = new E1_31Device(applicationConfig);
                 break;            	
             case MINIDMX:
-                output = new MiniDmxDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new MiniDmxDevice(applicationConfig);
                 break;
             case NULL:
-                output = new NullDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new NullDevice(applicationConfig);
                 break;
             case UDP:
-                output = new UdpDevice(applicationConfig, collector.getPixelControllerOutput());
+                output = new UdpDevice(applicationConfig);
                 break;
             case TPM2:
-                output = new Tpm2(applicationConfig, collector.getPixelControllerOutput());
+                output = new Tpm2(applicationConfig);
                 break;
             case TPM2NET:
-                output = new Tpm2Net(applicationConfig, collector.getPixelControllerOutput());                
+                output = new Tpm2Net(applicationConfig);                
                 break;
             default:
                 throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
             }
+            
+            collector.getPixelControllerOutput().addOutput(output);
+            
         } catch (Exception e) {
             LOG.log(Level.SEVERE,"\n\nERROR: Unable to initialize output device: " + outputDeviceEnum, e);
         }

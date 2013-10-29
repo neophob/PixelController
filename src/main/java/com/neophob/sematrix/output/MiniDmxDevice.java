@@ -45,8 +45,8 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 	 *
 	 * @param controller the controller
 	 */
-	public MiniDmxDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.MINIDMX, ph, controller, 8);
+	public MiniDmxDevice(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.MINIDMX, ph, 8);
 		
 		int baud = ph.parseMiniDmxBaudRate();
 		if (baud==0) {

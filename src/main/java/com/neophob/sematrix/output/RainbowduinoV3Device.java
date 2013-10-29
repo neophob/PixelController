@@ -42,8 +42,8 @@ public class RainbowduinoV3Device extends Output {
 	private RainbowduinoV3[] rainbowduinoV3Devices;
 	private boolean initialized =  false;
 
-	public RainbowduinoV3Device(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.RAINBOWDUINO_V3, ph, controller, 8);
+	public RainbowduinoV3Device(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.RAINBOWDUINO_V3, ph, 8);
 		
 		// initialize internal variables
 		try {

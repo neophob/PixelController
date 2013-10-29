@@ -48,8 +48,8 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 	 *
 	 * @param controller the controller
 	 */
-	public Tpm2(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.TPM2, ph, controller, 8);
+	public Tpm2(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.TPM2, ph, 8);
 		
 		int baud = ph.parseTpm2BaudRate();
 		if (baud==0) {

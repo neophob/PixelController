@@ -48,8 +48,8 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 	 * 
 	 * @param controller
 	 */
-	public UdpDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.UDP, ph, controller, 8);
+	public UdpDevice(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.UDP, ph, 8);
 
 		targetHost = ph.getUdpIp();
 		targetPort = ph.getUdpPort();

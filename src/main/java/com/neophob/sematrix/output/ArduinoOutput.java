@@ -50,8 +50,8 @@ public abstract class ArduinoOutput extends Output {
 	 * @param ph the ph
 	 * @param controller the controller
 	 */
-	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
-		super(outputDeviceEnum, ph, controller, bpp);
+	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+		super(outputDeviceEnum, ph, bpp);
 		this.supportConnectionState = true;
 	}
 	

@@ -53,8 +53,8 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 	 * 
 	 * @param controller
 	 */
-	public ArtnetDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.ARTNET, ph, controller, 8);
+	public ArtnetDevice(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.ARTNET, ph, 8);
 		
 		this.displayOptions = ph.getArtNetDevice();
 		

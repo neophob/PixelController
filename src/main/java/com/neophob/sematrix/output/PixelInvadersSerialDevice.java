@@ -47,8 +47,8 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.PIXELINVADERS, ph, controller, 5);		
+	public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.PIXELINVADERS, ph, 5);		
 		
 		try {
 			lpd6803 = new Lpd6803(Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			

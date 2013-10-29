@@ -296,8 +296,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.ARTNET, ph.getOutputDevice());
         
-        PixelControllerOutput controller = new PixelControllerOutput();
-        ArtnetDevice device = new ArtnetDevice(ph, controller);
+        ArtnetDevice device = new ArtnetDevice(ph);
         assertTrue(device.isConnected());       
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -322,8 +321,7 @@ public class PropertiesHelperTest {
         assertEquals(8, ph.getDeviceYResolution());
         assertEquals(true, ph.isOutputSnakeCabeling());
 
-        PixelControllerOutput controller = new PixelControllerOutput();
-        ArtnetDevice device = new ArtnetDevice(ph, controller);
+        ArtnetDevice device = new ArtnetDevice(ph);
         assertEquals(170, device.getPixelsPerUniverse());
     }    
 
@@ -344,8 +342,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
-        PixelControllerOutput controller = new PixelControllerOutput();
-        E1_31Device device = new E1_31Device(ph, controller);
+        E1_31Device device = new E1_31Device(ph);
         assertFalse(device.isSendMulticast());
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -372,7 +369,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
     
-        device = new E1_31Device(ph, controller);
+        device = new E1_31Device(ph);
         assertTrue(device.isSendMulticast());    
         assertEquals(1, device.getFirstUniverseId());
         assertEquals(170, device.getPixelsPerUniverse());
@@ -430,8 +427,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
         
-        PixelControllerOutput controller = new PixelControllerOutput();
-        NullDevice device = new NullDevice(ph, controller);
+        NullDevice device = new NullDevice(ph);
         assertTrue(device.isConnected());       
     }     
 
@@ -539,8 +535,7 @@ public class PropertiesHelperTest {
         assertEquals("1.2.3.4", ph.getUdpIp());
         assertEquals(15, ph.getUdpPort());
         
-        PixelControllerOutput controller = new PixelControllerOutput();
-        UdpDevice device = new UdpDevice(ph, controller);
+        UdpDevice device = new UdpDevice(ph);
         assertTrue(device.isConnected());               
     }
 

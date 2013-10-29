@@ -41,6 +41,7 @@ public final class RotateBuffer {
 		//no instance
 	}
 
+	
 	/**
 	 * Rotate90.
 	 *

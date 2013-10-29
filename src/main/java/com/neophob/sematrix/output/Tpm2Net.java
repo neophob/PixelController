@@ -106,8 +106,8 @@ public class Tpm2Net extends Output {
 	 * @param ph
 	 * @param controller
 	 */
-	public Tpm2Net(ApplicationConfigurationHelper ph, PixelControllerOutput controller) {
-		super(OutputDeviceEnum.TPM2NET, ph, controller, 8);
+	public Tpm2Net(ApplicationConfigurationHelper ph) {
+		super(OutputDeviceEnum.TPM2NET, ph, 8);
 
 		this.displayOptions = ph.getTpm2NetDevice();		
 		this.colorFormat = ph.getColorFormat();

@@ -84,7 +84,7 @@ public abstract class Output implements IOutput {
 	 * @param controller the controller
 	 * @param bpp the bpp
 	 */
-	public Output(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, PixelControllerOutput controller, int bpp) {
+	public Output(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
 		this.outputDeviceEnum = outputDeviceEnum;
 		
 		this.collector = Collector.getInstance();
@@ -97,9 +97,6 @@ public abstract class Output implements IOutput {
 		this.totalNrOfOutputBuffers = this.collector.getNrOfScreens();
 		this.switchBuffer=0;
 		
-		//add to list
-		controller.addOutput(this);
-
 		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}, Gamma Correction: {3}"
 				, new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp, this.gammaType });	
 	}
