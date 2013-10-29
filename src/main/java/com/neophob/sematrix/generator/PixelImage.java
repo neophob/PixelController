@@ -23,8 +23,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import processing.core.PApplet;
-
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -40,7 +38,7 @@ public class PixelImage extends Generator {
 
 	/** The Constant PIXELNR. */
 	private static final int PIXELNR = 8;
-	
+
 	/** The Constant NR_OF_IMAGES. */
 	private static final int NR_OF_IMAGES = 14;
 
@@ -49,16 +47,16 @@ public class PixelImage extends Generator {
 
 	/** The grid. */
 	private int[][] grid = new int[PIXELNR][PIXELNR];
-	
+
 	/** The images. */
 	private int[][] images = new int[15][2];
 
 	/** The rnd. */
 	private Random rnd = new Random();
-	
+
 	/** The frame. */
 	private int frame = 0;
-	
+
 	private int fps;
 
 	/**
@@ -72,7 +70,7 @@ public class PixelImage extends Generator {
 
 		this.fps = fps;
 		frame = 0;
-		
+
 		//populate known images
 		images[0][0]=0x1537; 
 		images[0][1]=0xfbdb;        //neorainbowduino logo
@@ -102,22 +100,22 @@ public class PixelImage extends Generator {
 		images[12][1]=0x645D;       //pixelinvaders logo
 		images[13][0]=0x52C0; 
 		images[13][1]=0x0CE1;       //ninja
-/*
+		/*
 gelesen von der mitte!
 		1010 ....   -> 0xa  -> 0xacaf  .. ganz rechts (F) ist oben
 		1100 ....	-> 0xc
 		1010 ....	-> 0xa
 		1111 ....	-> 0xf
-		
+
 		1101 ....	-> 0xd	->0x45d9
 		0101 ....	-> 0x5
 		0100 ....	-> 0x4
 		0110 ....	-> 0x6
-*/	
+		 */	
 
 		xDiff = (int)Math.round(internalBufferXSize/(float)PIXELNR);
 		yDiff = (int)Math.round(internalBufferYSize/(float)PIXELNR);
-		
+
 		LOG.log(Level.INFO, "PixelImage resize value {0}/{1} [{2}/{3}]", new Integer[] {xDiff, yDiff, xDiff*PIXELNR, yDiff*PIXELNR});
 	}
 
@@ -132,7 +130,7 @@ gelesen von der mitte!
 			//make sure the pixel are not displayed too fast 
 			frame=0;
 			doInvader();
-			
+
 			int xofs, yofs=-1, dst=0;
 
 			//resize image from 8x8 to internal buffer size
@@ -159,7 +157,7 @@ gelesen von der mitte!
 	 */
 	private void doInvader() {
 		int r = rnd.nextInt(7);
-		
+
 		switch (r) {
 		case 0: //mix prestored
 		case 5:  
@@ -182,7 +180,7 @@ gelesen von der mitte!
 			break;
 		}
 	}
-	
+
 	/**
 	 * Mirror invader.
 	 *
@@ -197,7 +195,7 @@ gelesen von der mitte!
 		}
 	}
 
-	
+
 	/**
 	 * create a random mutation.
 	 */
@@ -237,16 +235,16 @@ gelesen von der mitte!
 			if (i==2) {
 				nr=nr2;
 			}
-			String bin = PApplet.binary((int)(nr & 0xff), 8);
+			String bin = binary((int)(nr & 0xff), 8);
 			nr = nr>>8;
-			for (int j=7; j>-1; j--) {
-				char x = bin.charAt(j);
-				if (x=='0') {
-					value[ofs++] = 0;
-				} else {
-					value[ofs++] = 1;
-				}
+		for (int j=7; j>-1; j--) {
+			char x = bin.charAt(j);
+			if (x=='0') {
+				value[ofs++] = 0;
+			} else {
+				value[ofs++] = 1;
 			}
+		}
 		}
 
 		ofs=0;
@@ -256,5 +254,24 @@ gelesen von der mitte!
 			}
 		}
 		mirrorInvader(grid);
+	}
+
+
+	/**
+	 * Returns a String that contains the binary value of an int.
+	 * The digits parameter determines how many digits will be used.
+	 */
+	private static final String binary(int what, int digits) {
+		String stuff = Integer.toBinaryString(what);
+
+		int length = stuff.length();
+		if (length > digits) {
+			return stuff.substring(length - digits);
+
+		} else if (length < digits) {
+			int offset = 32 - (digits-length);
+			return "00000000000000000000000000000000".substring(offset) + stuff;
+		}
+		return stuff;
 	}
 }
