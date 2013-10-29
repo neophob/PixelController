@@ -195,7 +195,9 @@ public class Cell extends Generator {
 		 */
 		public float distanceTo(int xx,int yy) {
 			// Euclidian Distance
-			return distlookup[Math.abs(xx-this.x)][Math.abs(yy-this.y)]; 
+			int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
+//TODO fixme, % hsize
+			return distlookup[Math.abs(xx-this.x)%hsize][Math.abs(yy-this.y)%hsize]; 
 		}
 	}
 }
