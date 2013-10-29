@@ -27,26 +27,48 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.SoundDummy;
 
-public class CheckboxTest {
+public class GenerateAllMixerTest {
 
+	private SeSound sound;
+	
     @Test
-    public void mixTest() throws Exception {
+    public void verifyMixersDoNotCrash() throws Exception {
+    	final int maxResolution = 17;
+    	sound = new SoundDummy();
     	
-    	for (int x=2; x<99; x++) {
-    		for (int y=2; y<99; y++) {
-    	    	MatrixData matrix = new MatrixData(x,y);
-    	    	Generator g = new PassThruGen(matrix);
-    	    	Effect e = new PassThru(matrix);
-    	    	Mixer m = new Checkbox(matrix);
-    	    	ColorSet c = new ColorSet("test", new int[]{1,2,3});
-    	    	Visual v = new Visual(g,e,m,c);    	
-    	    	
-    	    	m.getBuffer(v);    			
+    	int i=0;
+    	for (int x=1; x<maxResolution; x++) {
+    		for (int y=1; y<maxResolution; y++) {
+    			System.out.println(i+" test: "+x+"/"+y);
+    			testWithResolution(x,y);
+    			testWithResolution(y,x);
+        		i++;    	
     		}
     	}
-
     }
+    
+    private void testWithResolution(int x, int y) {
+    	MatrixData matrix = new MatrixData(x,y);
+    	PixelControllerMixer pcm = new PixelControllerMixer(matrix, sound);
+    	pcm.initAll();
+
+    	Generator g = new PassThruGen(matrix);
+    	Effect e = new PassThru(matrix);
+    	Mixer m = new Checkbox(matrix);
+    	ColorSet c = new ColorSet("test", new int[]{1,2,3});
+    	Visual v = new Visual(g,e,m,c);    	
+
+    	for (Mixer mix: pcm.getAllMixer()) {
+    		System.out.println(mix);
+    		mix.getBuffer(v);
+    	}
+    	
+    }
+    	
+    	
 
     
     

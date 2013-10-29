@@ -223,7 +223,7 @@ public class Collector {
 		pixelControllerEffect = new PixelControllerEffect(matrix);
 		pixelControllerEffect.initAll();
 
-		pixelControllerMixer = new PixelControllerMixer(matrix);
+		pixelControllerMixer = new PixelControllerMixer(matrix, Sound.getInstance());
 		pixelControllerMixer.initAll();
 		
 		pixelControllerFader = new PixelControllerFader(ph, matrix, this.fps);

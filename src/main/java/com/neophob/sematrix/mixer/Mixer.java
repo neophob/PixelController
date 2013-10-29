@@ -146,5 +146,12 @@ public abstract class Mixer {
 	public int getId() {
 		return this.mixerName.getId();
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Mixer [mixerName=%s, resizeOption=%s]",
+				mixerName, resizeOption);
+	}
+	
 	
 }

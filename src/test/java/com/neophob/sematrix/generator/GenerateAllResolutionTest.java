@@ -50,10 +50,11 @@ public class GenerateAllResolutionTest {
 	
     @Test
     public void verifyGeneratorsDoNotCrash() {
-    	final int maxResolution = 16;
+    	final int maxResolution = 17;
     	
 		String rootDir = System.getProperty("buildDirectory");
 		if (rootDir == null) {
+			//TODO fixme
 			rootDir = "/Users/michu/_code/workspace/PixelController.github/PixelController/";
 		}
     	ph = new ApplicationConfigurationHelper(new Properties());
