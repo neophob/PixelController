@@ -23,6 +23,7 @@ import java.util.Random;
 import processing.core.PConstants;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -48,8 +49,8 @@ public class TextureDeformation extends Effect {
      *
      * @param controller the controller
      */
-    public TextureDeformation(PixelControllerEffect controller) {
-        super(controller, EffectName.TEXTURE_DEFORMATION, ResizeName.QUALITY_RESIZE);
+    public TextureDeformation(MatrixData matrix) {
+        super(matrix, EffectName.TEXTURE_DEFORMATION, ResizeName.QUALITY_RESIZE);
 
         lookUpTable =  new int[3 * this.internalBufferXSize * this.internalBufferYSize];
 

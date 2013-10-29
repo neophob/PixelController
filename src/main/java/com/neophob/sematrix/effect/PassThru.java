@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -31,8 +32,8 @@ public class PassThru extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public PassThru(PixelControllerEffect controller) {
-		super(controller, EffectName.PASSTHRU, ResizeName.QUALITY_RESIZE);
+	public PassThru(MatrixData matrix) {
+		super(matrix, EffectName.PASSTHRU, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

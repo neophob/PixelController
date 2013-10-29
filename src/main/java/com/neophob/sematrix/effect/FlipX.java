@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -31,8 +32,8 @@ public class FlipX extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public FlipX(PixelControllerEffect controller) {
-		super(controller, EffectName.FLIP_X, ResizeName.QUALITY_RESIZE);
+	public FlipX(MatrixData matrix) {
+		super(matrix, EffectName.FLIP_X, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

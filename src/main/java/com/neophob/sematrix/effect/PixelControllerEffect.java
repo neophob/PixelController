@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -66,21 +68,32 @@ public class PixelControllerEffect implements PixelControllerElement {
 	 */
 	@Override
 	public void initAll() {
-		//create effects
-		new Inverter(this);
-		new PassThru(this);
-		rotoZoom = new RotoZoom(this, 1.5f, 2.3f);
-		new BeatVerticalShift(this);
-		new BeatHorizShift(this);
-		new Voluminize(this);
-		threshold = new Threshold(this);
+		MatrixData matrix = Collector.getInstance().getMatrix();
 		
-		zoom = new Zoom(this);
-		new FlipY(this);
-		new FlipX(this);
-		new Strobo(this);
-		new Rotate90(this);
-		textureDeformation = new TextureDeformation(this);
+		//create effects
+		allEffects.add(new Inverter(matrix));
+		allEffects.add(new PassThru(matrix));
+		
+		rotoZoom = new RotoZoom(matrix, 1.5f, 2.3f);
+		allEffects.add(rotoZoom);
+		
+		allEffects.add(new BeatVerticalShift(matrix));
+		allEffects.add(new BeatHorizShift(matrix));
+		allEffects.add(new Voluminize(matrix));
+		
+		threshold = new Threshold(matrix);
+		allEffects.add(threshold);
+		
+		zoom = new Zoom(matrix);
+		allEffects.add(zoom);
+		
+		allEffects.add(new FlipY(matrix));
+		allEffects.add(new FlipX(matrix));
+		allEffects.add(new Strobo(matrix));
+		allEffects.add(new Rotate90(matrix));
+		
+		textureDeformation = new TextureDeformation(matrix);
+		allEffects.add(textureDeformation);
 	}
 	
 	/* (non-Javadoc)
@@ -152,16 +165,7 @@ public class PixelControllerEffect implements PixelControllerElement {
 		}
         LOG.log(Level.WARNING, "Invalid Effect index selected: {0}", index);		
 		return null;
-	}
-
-	/**
-	 * Adds the effect.
-	 *
-	 * @param effect the effect
-	 */
-	public void addEffect(Effect effect) {
-		allEffects.add(effect);
-	}
+	}	
 
 	
 	/**

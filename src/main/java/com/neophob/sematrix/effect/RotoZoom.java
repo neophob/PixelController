@@ -22,6 +22,7 @@ import java.util.Random;
 
 import com.neophob.sematrix.fader.CrossfaderHelper;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -79,8 +80,8 @@ public class RotoZoom extends RotoZoomEffect {
 	 * @param scale the scale
 	 * @param angle the angle
 	 */
-	public RotoZoom(PixelControllerEffect controller, float scale, float angle) {
-		super(controller, EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
+	public RotoZoom(MatrixData matrix, float scale, float angle) {
+		super(matrix, EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
 		this.scale = scale;
 		this.scaleOrig = scale;
 		this.angle = angle;

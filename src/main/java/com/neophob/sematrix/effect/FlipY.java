@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -31,8 +32,8 @@ public class FlipY extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public FlipY(PixelControllerEffect controller) {
-		super(controller, EffectName.FLIP_Y, ResizeName.QUALITY_RESIZE);
+	public FlipY(MatrixData matrix) {
+		super(matrix, EffectName.FLIP_Y, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

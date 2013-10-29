@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -59,8 +60,8 @@ public class Zoom extends RotoZoomEffect {
 	 * @param scale the scale
 	 * @param angle the angle
 	 */
-	public Zoom(PixelControllerEffect controller) {
-		super(controller, EffectName.ZOOM, ResizeName.QUALITY_RESIZE);
+	public Zoom(MatrixData matrix) {
+		super(matrix, EffectName.ZOOM, ResizeName.QUALITY_RESIZE);
 	}
 
 

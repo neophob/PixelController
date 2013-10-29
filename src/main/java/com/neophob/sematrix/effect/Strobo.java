@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -35,8 +36,8 @@ public class Strobo extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public Strobo(PixelControllerEffect controller) {
-		super(controller, EffectName.STROBO, ResizeName.QUALITY_RESIZE);
+	public Strobo(MatrixData matrix) {
+		super(matrix, EffectName.STROBO, ResizeName.QUALITY_RESIZE);
 		this.stro = 0;
 		this.count = 0;
 	}

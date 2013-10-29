@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -31,8 +32,8 @@ public class Rotate90 extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public Rotate90(PixelControllerEffect controller) {
-		super(controller, EffectName.ROTATE90, ResizeName.QUALITY_RESIZE);
+	public Rotate90(MatrixData matrix) {
+		super(matrix, EffectName.ROTATE90, ResizeName.QUALITY_RESIZE);
 	}
 	
 

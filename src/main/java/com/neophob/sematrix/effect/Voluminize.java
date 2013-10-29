@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -33,8 +34,8 @@ public class Voluminize extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public Voluminize(PixelControllerEffect controller) {
-		super(controller, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
+	public Voluminize(MatrixData matrix) {
+		super(matrix, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

@@ -21,6 +21,7 @@ package com.neophob.sematrix.effect;
 import java.util.Random;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -39,8 +40,8 @@ public class Threshold extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public Threshold(PixelControllerEffect controller) {
-		super(controller, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
+	public Threshold(MatrixData matrix) {
+		super(matrix, EffectName.THRESHOLD, ResizeName.QUALITY_RESIZE);
 		this.threshold = 128;
 	}
 

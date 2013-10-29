@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -34,8 +35,8 @@ public class BeatHorizShift extends Effect {
 	 *
 	 * @param controller the controller
 	 */
-	public BeatHorizShift(PixelControllerEffect controller) {
-		super(controller, EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
+	public BeatHorizShift(MatrixData matrix) {
+		super(matrix, EffectName.BEAT_HORIZONTAL_SHIFT, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

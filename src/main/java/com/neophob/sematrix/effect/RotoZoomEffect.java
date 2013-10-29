@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.effect;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -37,8 +38,8 @@ public abstract class RotoZoomEffect extends Effect {
 	 * @param effectName the effect name
 	 * @param resizeOption the resize option
 	 */
-	public RotoZoomEffect(PixelControllerEffect controller, EffectName effectName, ResizeName resizeOption) {
-		super(controller, effectName, resizeOption);
+	public RotoZoomEffect(MatrixData matrix, EffectName effectName, ResizeName resizeOption) {
+		super(matrix, effectName, resizeOption);
 	}
 	
 	/**

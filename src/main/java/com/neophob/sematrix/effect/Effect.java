@@ -21,7 +21,6 @@ package com.neophob.sematrix.effect;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.RandomizeState;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -123,13 +122,11 @@ public abstract class Effect implements RandomizeState {
 	 * @param effectName the effect name
 	 * @param resizeOption the resize option
 	 */
-	public Effect(PixelControllerEffect controller, EffectName effectName, ResizeName resizeOption) {
+	public Effect(MatrixData matrix, EffectName effectName, ResizeName resizeOption) {
 		this.effectName = effectName;
 		this.resizeOption = resizeOption;
-		MatrixData matrix = Collector.getInstance().getMatrix();
 		this.internalBufferXSize = matrix.getBufferXSize();
 		this.internalBufferYSize = matrix.getBufferYSize();
-		controller.addEffect(this);
 	}
 	
 	/**
