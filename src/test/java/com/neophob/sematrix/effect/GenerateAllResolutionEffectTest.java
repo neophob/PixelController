@@ -21,6 +21,8 @@ package com.neophob.sematrix.effect;
 import org.junit.Test;
 
 import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.effect.Effect.EffectName;
+import com.neophob.sematrix.effect.Zoom.ZoomMode;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.glue.MatrixData;
@@ -60,6 +62,41 @@ public class GenerateAllResolutionEffectTest {
 
     	for (Effect eff: pce.getAllEffects()) {
     		eff.getBuffer(v.getBuffer());
+    		eff.update();
+    		
+    		if (eff.getId() == EffectName.ROTOZOOM.getId()) {
+    			RotoZoom roto = (RotoZoom)eff;
+    			roto.setAngle(50);
+    			eff.getBuffer(v.getBuffer());
+    			eff.update();
+    			roto.setAngle(5000);
+    		}
+
+    		if (eff.getId() == EffectName.ZOOM.getId()) {
+    			Zoom zoom = (Zoom)eff;
+    			zoom.setZoomMode(ZoomMode.ZOOM_OUT.ordinal());
+    			zoom.update();
+    			zoom.getBuffer(v.getBuffer());
+    			zoom.setZoomMode(ZoomMode.HORIZONTAL.ordinal());
+    			zoom.update();
+    			zoom.getBuffer(v.getBuffer());
+    			zoom.setZoomMode(ZoomMode.VERTICAL.ordinal());
+    			zoom.update();
+    			zoom.getBuffer(v.getBuffer());
+    			zoom.setZoomMode(ZoomMode.ZOOM_IN.ordinal());
+    		}
+
+    		if (eff.getId() == EffectName.TEXTURE_DEFORMATION.getId()) {
+    			TextureDeformation td = (TextureDeformation)eff;
+    			for (int i=0;i<16;i++) {
+    				td.changeLUT(i);
+        			td.update();
+        			td.getBuffer(v.getBuffer());
+    			}
+    		}
+
+    		
+
     	}
     	
     }

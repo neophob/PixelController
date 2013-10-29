@@ -78,7 +78,7 @@ public class Threshold extends Effect {
 	 * @param threshold the new threshold
 	 */
 	public void setThreshold(int threshold) {
-		this.threshold = threshold;
+		this.threshold = threshold%0xff;
 	}	
 	
 	/**

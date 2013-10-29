@@ -16,7 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.mixer;
+package com.neophob.sematrix.resize;
+
+import java.awt.image.BufferedImage;
+
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -27,17 +31,14 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.SeSound;
-import com.neophob.sematrix.input.SoundDummy;
+import com.neophob.sematrix.mixer.Checkbox;
+import com.neophob.sematrix.mixer.Mixer;
 
-public class GenerateAllResolutionMixerTest {
+public class GenerateAllResolutionResizeTest {
 
-	private SeSound sound;
-	
     @Test
-    public void verifyMixersDoNotCrash() throws Exception {
+    public void verifyResizersDoNotCrash() throws Exception {
     	final int maxResolution = 17;
-    	sound = new SoundDummy();
     	
     	for (int x=1; x<maxResolution; x++) {
     		for (int y=1; y<maxResolution; y++) {
@@ -49,8 +50,8 @@ public class GenerateAllResolutionMixerTest {
     
     private void testWithResolution(int x, int y) {
     	MatrixData matrix = new MatrixData(x,y);
-    	PixelControllerMixer pcm = new PixelControllerMixer(matrix, sound);
-    	pcm.initAll();
+    	PixelControllerResize pcr = new PixelControllerResize();
+    	pcr.initAll();
 
     	Generator g = new PassThruGen(matrix);
     	Effect e = new PassThru(matrix);
@@ -58,9 +59,12 @@ public class GenerateAllResolutionMixerTest {
     	ColorSet c = new ColorSet("test", new int[]{1,2,3});
     	Visual v = new Visual(g,e,m,c);    	
 
-    	for (Mixer mix: pcm.getAllMixer()) {
-    		//System.out.println(mix);
-    		mix.getBuffer(v);
+    	for (IResize rsz: pcr.getAllResizers()) {
+    		BufferedImage bi = rsz.createImage(v.getBuffer(), matrix.getBufferXSize(), matrix.getBufferYSize());
+    		int[] b1 = rsz.getBuffer(bi, matrix.getDeviceXSize(), matrix.getDeviceYSize());
+    		int[] b2 = rsz.getBuffer(v.getBuffer(), matrix.getDeviceXSize(), matrix.getDeviceYSize(), 
+    				matrix.getBufferXSize(), matrix.getBufferYSize());
+    		assertArrayEquals(b1, b2);
     	}
     	
     }

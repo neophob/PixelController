@@ -124,7 +124,7 @@
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
-				<version>1.9.0</version>
+				<version>1.10.b1</version>
 				<configuration>
 					<header>src/build/header.txt</header>
 				</configuration>
