@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -68,10 +67,11 @@ public class PixelImage extends Generator {
 	 * @param controller the controller
 	 * @throws InvalidParameterException the invalid parameter exception
 	 */
-	public PixelImage(MatrixData matrix) throws InvalidParameterException {
+	public PixelImage(MatrixData matrix, int fps) throws InvalidParameterException {
 		super(matrix, GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
 
-		this.fps = Collector.getInstance().getFps();
+		this.fps = fps;
+		frame = 0;
 		
 		//populate known images
 		images[0][0]=0x1537; 

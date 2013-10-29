@@ -94,6 +94,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public void initAll() {
     	LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
     	MatrixData matrix = Collector.getInstance().getMatrix();
+    	int fps = Collector.getInstance().getFps();
     	
         String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
         blinkenlights = new Blinkenlights(matrix, fileBlinken, fileUtils);
@@ -108,7 +109,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(new Fire(matrix));
         allGenerators.add(new PassThruGen(matrix));
         allGenerators.add(new Metaballs(matrix));
-        allGenerators.add(new PixelImage(matrix));
+        allGenerators.add(new PixelImage(matrix, fps));
         
         textwriter = new Textwriter(matrix, 
                 ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
