@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.layout.LayoutModel;
 import com.neophob.sematrix.output.Output;
 import com.neophob.sematrix.resize.Resize;
@@ -121,7 +121,7 @@ public class MatrixData {
      * @return the int[]
      */
     private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
-        Fader fader = map.getFader();
+        IFader fader = map.getFader();
         if (fader.isStarted()) {
             buffer=fader.getBuffer(buffer);
             //do not cleanup fader here, the box layout gets messed up!

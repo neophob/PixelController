@@ -28,18 +28,19 @@ import com.neophob.sematrix.glue.MatrixData;
 public class SlideUpsideDown extends Fader {
 
 	/**
-	 * Instantiates a new slide upside down.
+	 * 
 	 */
-	public SlideUpsideDown(MatrixData matrix, int duration) {
-		super(matrix, FaderName.SLIDE_UPSIDE_DOWN, duration);
+	public SlideUpsideDown(MatrixData matrix, int fps) {
+		this(matrix, DEFAULT_FADER_DURATION, fps);
 	}
 
 	/**
-	 * 
+	 * Instantiates a new slide upside down.
 	 */
-	public SlideUpsideDown(MatrixData matrix) {
-		this(matrix, 1500);
+	public SlideUpsideDown(MatrixData matrix, int duration, int fps) {
+		super(matrix, FaderName.SLIDE_UPSIDE_DOWN, duration, fps);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])

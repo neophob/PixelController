@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
-import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.input.Sound;
@@ -301,7 +301,7 @@ public final class Shuffler {
 			if (blah == 6 && col.getShufflerSelect(ShufflerOffset.FADER_OUTPUT)) {
 				int size = col.getPixelControllerFader().getFaderCount();
 				for (OutputMapping om: col.getAllOutputMappings()) {
-					Fader f=om.getFader();
+					IFader f=om.getFader();
 					if (!f.isStarted()) {
 						om.setFader(
 								col.getPixelControllerFader().getVisualFader(rand.nextInt(size)));	
@@ -326,7 +326,7 @@ public final class Shuffler {
 				int nrOfVisuals = col.getAllVisuals().size();
 				int screenNr = 0;
 				for (OutputMapping om: col.getAllOutputMappings()) {
-					Fader f=om.getFader();
+					IFader f=om.getFader();
 					if (!f.isStarted()) {
 						//start fader only if not another one is started
 						f.startFade(rand.nextInt(nrOfVisuals), screenNr);

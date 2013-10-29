@@ -32,8 +32,8 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
-import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.Fader.FaderName;
+import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.helper.InitHelper;
@@ -340,7 +340,7 @@ public class Collector {
 		//cleanup faders
 		l = System.currentTimeMillis();
 		for (OutputMapping om: ioMapping) {
-			Fader fader = om.getFader();
+			IFader fader = om.getFader();
 			if (fader!=null && fader.isDone()) {
 				//fading is finished, cleanup
 				fader.cleanUp();

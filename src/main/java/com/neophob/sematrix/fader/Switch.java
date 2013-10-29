@@ -29,8 +29,8 @@ public class Switch extends Fader {
 	/**
 	 * Instantiates a new switch.
 	 */
-	public Switch(MatrixData matrix) {
-		super(matrix, FaderName.SWITCH, 50);
+	public Switch(MatrixData matrix, int fps) {
+		super(matrix, FaderName.SWITCH, 50, fps);
 	}
 	
 	/* (non-Javadoc)

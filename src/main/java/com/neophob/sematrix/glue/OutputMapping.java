@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.glue;
 
-import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.IFader;
 
 /**
  * class used to store input/ouput mapping.
@@ -33,7 +33,7 @@ public class OutputMapping {
 	private int visualNumber;
 	
 	/** The fader. */
-	private Fader fader;
+	private IFader fader;
 
 	/**
 	 * initialize the mapping.
@@ -41,7 +41,7 @@ public class OutputMapping {
 	 * @param visualId the visual id
 	 * @param screenNr the screen nr
 	 */
-	public OutputMapping(Fader fader, int visualNumber) {
+	public OutputMapping(IFader fader, int visualNumber) {
 		this.fader = fader;
 		this.visualNumber = visualNumber;
 	}
@@ -69,7 +69,7 @@ public class OutputMapping {
 	 *
 	 * @return the fader
 	 */
-	public Fader getFader() {
+	public IFader getFader() {
 		return fader;
 	}
 
@@ -78,7 +78,7 @@ public class OutputMapping {
 	 *
 	 * @param fader the new fader
 	 */
-	public void setFader(Fader fader) {
+	public void setFader(IFader fader) {
 		this.fader = fader;
 	}
 	

@@ -36,12 +36,12 @@ import com.neophob.sematrix.glue.MatrixData;
  * @author mvogt
  *
  */
-public abstract class Fader {
+public abstract class Fader implements IFader {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(Fader.class.getName());
 
-	private static final int DEFAULT_FADER_DURATION = 1500;
+	protected static final int DEFAULT_FADER_DURATION = 1500;
 	
 	/**
 	 * The Enum FaderName.
@@ -114,14 +114,6 @@ public abstract class Fader {
 	
 	/** The started. */
 	private boolean started;
-
-	/**
-	 * 
-	 * @param faderName
-	 */
-	public Fader(MatrixData matrix, FaderName faderName) {
-		this(matrix, faderName, DEFAULT_FADER_DURATION);
-	}
 	
 	/**
 	 * Instantiates a new fader.
@@ -129,15 +121,14 @@ public abstract class Fader {
 	 * @param faderName the fader name
 	 * @param fadeTime the fade time
 	 */
-	public Fader(MatrixData matrix, FaderName faderName, int fadeTime) {
+	public Fader(MatrixData matrix, FaderName faderName, int fadeTime, int fps) {
 		this.faderName = faderName;
 		this.fadeTime = fadeTime;
 		
 		//example: duration=2000, FPS=10 -> 20000frames 1000/10=100ms / frame
 		//example: duration=200,  FPS=50 -> 10000frames 1000/50=20ms / frame
-		int fps = Collector.getInstance().getFps();
-		if (fps==0) {
-			LOG.log(Level.WARNING, "FPS was 0, use default of 50");
+		if (fps<1) {
+			LOG.log(Level.WARNING, "Invalid FPS detected {0}, use default of 50", fps);
 			fps = 50;
 		}
 		int timePerFrame = (int)(1000.0f / (float)fps);

@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.fader.Switch;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
@@ -42,7 +42,7 @@ public class BoxLayoutTest {
     	assertEquals(Layout.LayoutName.BOX, l.getLayoutName());
     	
     	MatrixData matrix = new MatrixData(8, 8);
-    	Fader fader = new Switch(matrix);
+    	IFader fader = new Switch(matrix, 50);
     	List<OutputMapping> ioMapping = new ArrayList<OutputMapping>();
 		for (int n=0; n<panels+panels; n++) {
 			ioMapping.add(new OutputMapping(fader, n));			

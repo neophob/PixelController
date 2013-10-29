@@ -48,17 +48,19 @@ public final class PixelControllerFader {
 	 * @param faderName the fader name
 	 * @return the fader
 	 */
-	public Fader getVisualFader(FaderName faderName) {
+	public IFader getVisualFader(FaderName faderName) {
 		MatrixData matrix = Collector.getInstance().getMatrix();
+		int fps = Collector.getInstance().getFps();
+		
 		switch (faderName) {
 		case CROSSFADE:
-			return new Crossfader(matrix, visualFadeTime);
+			return new Crossfader(matrix, visualFadeTime, fps);
 		case SWITCH:
-			return new Switch(matrix);
+			return new Switch(matrix, fps);
 		case SLIDE_UPSIDE_DOWN:
-			return new SlideUpsideDown(matrix, visualFadeTime);
+			return new SlideUpsideDown(matrix, visualFadeTime, fps);
 		case SLIDE_LEFT_RIGHT:
-			return new SlideLeftRight(matrix, visualFadeTime);
+			return new SlideLeftRight(matrix, visualFadeTime, fps);
 		}
 		return null;
 	}
@@ -69,17 +71,19 @@ public final class PixelControllerFader {
 	 * @param index
 	 * @return
 	 */
-	public Fader getVisualFader(int index) {
+	public IFader getVisualFader(int index) {
 		MatrixData matrix = Collector.getInstance().getMatrix();
+		int fps = Collector.getInstance().getFps();
+		
 		switch (index) {
 		case 0:
-			return new Switch(matrix);
+			return new Switch(matrix, fps);
 		case 1:
-			return new Crossfader(matrix, visualFadeTime);
+			return new Crossfader(matrix, visualFadeTime, fps);
 		case 2:
-			return new SlideUpsideDown(matrix, visualFadeTime);
+			return new SlideUpsideDown(matrix, visualFadeTime, fps);
 		case 3:
-			return new SlideLeftRight(matrix, visualFadeTime);
+			return new SlideLeftRight(matrix, visualFadeTime, fps);
 		}
 		return null;
 	}	
@@ -90,17 +94,19 @@ public final class PixelControllerFader {
 	 * @param index
 	 * @return
 	 */
-	public Fader getPresetFader(int index) {
+	public IFader getPresetFader(int index) {
 		MatrixData matrix = Collector.getInstance().getMatrix();
+		int fps = Collector.getInstance().getFps();
+		
 		switch (index) {
 		case 0:
-			return new Switch(matrix);
+			return new Switch(matrix, fps);
 		case 1:
-			return new Crossfader(matrix, presetLoadingFadeTime);
+			return new Crossfader(matrix, presetLoadingFadeTime, fps);
 		case 2:
-			return new SlideUpsideDown(matrix, presetLoadingFadeTime);
+			return new SlideUpsideDown(matrix, presetLoadingFadeTime, fps);
 		case 3:
-			return new SlideLeftRight(matrix, presetLoadingFadeTime);
+			return new SlideLeftRight(matrix, presetLoadingFadeTime, fps);
 		}
 		return null;
 	}

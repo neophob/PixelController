@@ -34,7 +34,7 @@ import javax.management.ObjectName;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 
-import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.output.OutputDeviceEnum;
 
 /**
@@ -77,10 +77,10 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	private Map<TimeMeasureItemGlobal, CircularFifoBuffer> timeMeasureMapGlobal;
 	
 	/** The output dependent measure values */
-	private Map<Output, Map<TimeMeasureItemOutput, CircularFifoBuffer>> timeMeasureMapOutput;
+	private Map<IOutput, Map<TimeMeasureItemOutput, CircularFifoBuffer>> timeMeasureMapOutput;
 	
 	/** The output list. */
-	private List<Output> outputList;
+	private List<IOutput> outputList;
 	
 	private PacketAndBytesStatictics oscServerStatistics;
 	
@@ -99,8 +99,8 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		for (TimeMeasureItemGlobal timeMeasureItem : TimeMeasureItemGlobal.values()) {
 			this.timeMeasureMapGlobal.put(timeMeasureItem, new CircularFifoBuffer(this.configuredFps * SECONDS));
 		}
-		this.timeMeasureMapOutput = new ConcurrentHashMap<Output, Map<TimeMeasureItemOutput, CircularFifoBuffer>>();
-		this.outputList = new ArrayList<Output>();
+		this.timeMeasureMapOutput = new ConcurrentHashMap<IOutput, Map<TimeMeasureItemOutput, CircularFifoBuffer>>();
+		this.outputList = new ArrayList<IOutput>();
 
 		startTime = System.currentTimeMillis();
 		
@@ -219,7 +219,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 * @param outputValueEnum the output value enum
 	 * @param time the time
 	 */
-	public void trackOutputTime(Output output, TimeMeasureItemOutput timeMeasureItem, long time) {
+	public void trackOutputTime(IOutput output, TimeMeasureItemOutput timeMeasureItem, long time) {
 		if (this.ignoreValue()) {
 			return;
 		}

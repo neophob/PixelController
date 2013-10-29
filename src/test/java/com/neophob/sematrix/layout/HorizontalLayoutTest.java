@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.fader.Fader;
+import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.fader.Switch;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.OutputMapping;
@@ -42,7 +42,7 @@ public class HorizontalLayoutTest {
     	assertEquals(Layout.LayoutName.HORIZONTAL, l.getLayoutName());
     	
     	MatrixData matrix = new MatrixData(8, 8);
-    	Fader f = new Switch(matrix);
+    	IFader f = new Switch(matrix, 50);
     	List<OutputMapping> ioMapping = new ArrayList<OutputMapping>();
     	
     	//testcase#1: each output has a visual assigned
