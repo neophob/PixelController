@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.glue.FileUtils;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -94,8 +95,8 @@ public class Textwriter extends Generator {
 	 * @param fontSize the font size
 	 * @param text the text
 	 */
-	public Textwriter(PixelControllerGenerator controller, String fontName, int fontSize, String text, FileUtils fu) {
-		super(controller, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
+	public Textwriter(MatrixData matrix, String fontName, int fontSize, String text, FileUtils fu) {
+		super(matrix, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
 		String filename = fu.getRootDirectory()+File.separator+"data"+File.separator+fontName;
 		InputStream is = null;
 		try {			

@@ -19,6 +19,7 @@
 package com.neophob.sematrix.generator;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -56,8 +57,8 @@ public class Metaballs extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public Metaballs(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
+	public Metaballs(MatrixData matrix) {
+		super(matrix, GeneratorName.METABALLS, ResizeName.QUALITY_RESIZE);
 		vy = new int[NUM_BLOBS][getInternalBufferYSize()];
 		vx = new int[NUM_BLOBS][getInternalBufferXSize()];
 		

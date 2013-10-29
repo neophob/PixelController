@@ -20,6 +20,7 @@ package com.neophob.sematrix.generator;
 
 import java.util.Arrays;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -35,8 +36,8 @@ public class ColorFade extends Generator {
      *
      * @param controller the controller
      */
-    public ColorFade(PixelControllerGenerator controller) {
-        super(controller, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
+    public ColorFade(MatrixData matrix) {
+        super(matrix, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
     }
 
     @Override

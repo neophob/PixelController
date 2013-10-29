@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -54,8 +55,8 @@ public class Cell extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public Cell(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
+	public Cell(MatrixData matrix) {
+		super(matrix, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
 		//create LUT
 		int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));

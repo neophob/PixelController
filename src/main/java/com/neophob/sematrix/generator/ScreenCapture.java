@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 import com.neophob.sematrix.resize.util.ScalrOld;
@@ -57,8 +58,8 @@ public class ScreenCapture extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public ScreenCapture(PixelControllerGenerator controller, final int offset, int width, int height) {
-		super(controller, GeneratorName.SCREEN_CAPTURE, ResizeName.QUALITY_RESIZE);
+	public ScreenCapture(MatrixData matrix, final int offset, int width, int height) {
+		super(matrix, GeneratorName.SCREEN_CAPTURE, ResizeName.QUALITY_RESIZE);
 
 		if (width<1) {
 			width=internalBufferXSize*2;

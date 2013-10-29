@@ -19,6 +19,7 @@
 package com.neophob.sematrix.generator;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -31,8 +32,8 @@ public class VisualZero extends Generator {
 	/**
 	 * @param controller the controller
 	 */
-	public VisualZero(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);		
+	public VisualZero(MatrixData matrix) {
+		super(matrix, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);		
 	}
 
 	/* (non-Javadoc)

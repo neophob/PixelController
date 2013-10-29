@@ -20,6 +20,7 @@ package com.neophob.sematrix.generator;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -38,8 +39,8 @@ public class Plasma2 extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public Plasma2(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
+	public Plasma2(MatrixData matrix) {
+		super(matrix, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 	}
 

@@ -21,6 +21,7 @@ package com.neophob.sematrix.generator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -46,8 +47,8 @@ public class OscListener extends Generator {
      * @param controller the controller
      * @param filename the filename
      */
-    public OscListener(PixelControllerGenerator controller, GeneratorName generatorName) {
-        super(controller, generatorName, RESIZE_TYP);
+    public OscListener(MatrixData matrix, GeneratorName generatorName) {
+        super(matrix, generatorName, RESIZE_TYP);
     }
 
     /**

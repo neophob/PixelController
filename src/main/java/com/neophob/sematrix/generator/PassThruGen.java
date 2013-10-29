@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.generator;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -32,8 +33,8 @@ public class PassThruGen extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public PassThruGen(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.PASSTHRU, ResizeName.PIXEL_RESIZE);
+	public PassThruGen(MatrixData matrix) {
+		super(matrix, GeneratorName.PASSTHRU, ResizeName.PIXEL_RESIZE);
 	}
 	
 	/* (non-Javadoc)

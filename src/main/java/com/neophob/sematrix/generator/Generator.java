@@ -24,10 +24,6 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import processing.core.PApplet;
-import processing.core.PImage;
-
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.RandomizeState;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -161,10 +157,9 @@ public abstract class Generator implements RandomizeState {
 	 * @param name the name
 	 * @param resizeOption the resize option
 	 */
-	public Generator(PixelControllerGenerator controller, GeneratorName name, ResizeName resizeOption) {
+	public Generator(MatrixData matrix, GeneratorName name, ResizeName resizeOption) {
 		this.name = name;
 		this.resizeOption = resizeOption;
-		MatrixData matrix = Collector.getInstance().getMatrix();
 		this.internalBufferXSize = matrix.getBufferXSize();
 		this.internalBufferYSize = matrix.getBufferYSize();
 		this.internalBuffer = new int[internalBufferXSize*internalBufferYSize];
@@ -174,7 +169,6 @@ public abstract class Generator implements RandomizeState {
 				, new Object[] { internalBuffer.length, internalBufferXSize, internalBufferYSize, name, resizeOption.toString() });
 		
 		//add to list
-		controller.addInput(this);
 		this.active = false;
 	}
 
@@ -249,14 +243,14 @@ public abstract class Generator implements RandomizeState {
 	 *
 	 * @return the buffer as image
 	 */
-	public PImage getBufferAsImage() {
+/*	public PImage getBufferAsImage() {
 		PImage pImage = Collector.getInstance().getPapplet().createImage
 							( internalBufferXSize, internalBufferYSize, PApplet.RGB );
 		pImage.loadPixels();
 		System.arraycopy(internalBuffer, 0, pImage.pixels, 0, internalBuffer.length);
 		pImage.updatePixels();
 		return pImage;
-	}
+	}*/
 	
 	
 	/* (non-Javadoc)

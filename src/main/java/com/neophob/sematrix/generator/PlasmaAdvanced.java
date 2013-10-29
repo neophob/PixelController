@@ -20,6 +20,7 @@ package com.neophob.sematrix.generator;
 
 import java.util.Random;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -77,8 +78,8 @@ public class PlasmaAdvanced extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public PlasmaAdvanced(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
+	public PlasmaAdvanced(MatrixData matrix) {
+		super(matrix, GeneratorName.PLASMA_ADVANCED, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 		random = new Random();
 		makeSwingCurve();		

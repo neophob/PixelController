@@ -33,6 +33,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.generator.blinken.BlinkenLibrary;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -82,8 +83,8 @@ public class Blinkenlights extends Generator implements PConstants {
      * @param controller the controller
      * @param filename the filename
      */
-    public Blinkenlights(PixelControllerGenerator controller, String filename, FileUtils fu) {
-        super(controller, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
+    public Blinkenlights(MatrixData matrix, String filename, FileUtils fu) {
+        super(matrix, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
         this.filename = null;
         this.fileUtils = fu;
         this.random=false;

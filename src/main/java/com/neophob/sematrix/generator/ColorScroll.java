@@ -21,6 +21,7 @@ package com.neophob.sematrix.generator;
 import java.util.Random;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -113,8 +114,8 @@ public class ColorScroll extends Generator {
      * @param controller the controller
      * @param colorList the color list
      */
-    public ColorScroll(PixelControllerGenerator controller) {
-        super(controller, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
+    public ColorScroll(MatrixData matrix) {
+        super(matrix, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
 
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 

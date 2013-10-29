@@ -34,6 +34,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
@@ -71,8 +72,8 @@ public class Image extends Generator {
 	 * @param controller the controller
 	 * @param filename the filename
 	 */
-	public Image(PixelControllerGenerator controller, String filename, FileUtils fu) {
-		super(controller, GeneratorName.IMAGE, RESIZE_TYP);
+	public Image(MatrixData matrix, String filename, FileUtils fu) {
+		super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
 		this.fileUtils = fu;
 		this.loadFile(filename);
 		

@@ -31,6 +31,7 @@ import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;
@@ -92,43 +93,53 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public void initAll() {
     	LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
+    	MatrixData matrix = Collector.getInstance().getMatrix();
+    	
         String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
-        blinkenlights = new Blinkenlights(this, fileBlinken, fileUtils);
-
+        blinkenlights = new Blinkenlights(matrix, fileBlinken, fileUtils);
+        allGenerators.add(blinkenlights);
+        
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
-        image = new Image(this, fileImageSimple, fileUtils);
-
-        new Plasma2(this);
+        image = new Image(matrix, fileImageSimple, fileUtils);
+        allGenerators.add(image);
+        		
+        allGenerators.add(new Plasma2(matrix));        
+        allGenerators.add(new PlasmaAdvanced(matrix));
+        allGenerators.add(new Fire(matrix));
+        allGenerators.add(new PassThruGen(matrix));
+        allGenerators.add(new Metaballs(matrix));
+        allGenerators.add(new PixelImage(matrix));
         
-        new PlasmaAdvanced(this);
-        new Fire(this);
-        new PassThruGen(this);
-        new Metaballs(this);
-        new PixelImage(this);
-        
-        textwriter = new Textwriter(this, 
+        textwriter = new Textwriter(matrix, 
                 ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
                 Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)),
                 ph.getProperty(Textwriter.INITIAL_TEXT, DEFAULT_TEXT),
                 fileUtils
         );
+        allGenerators.add(textwriter);
 
-        new Cell(this);
-        new FFTSpectrum(this);
-        new Geometrics(this);                
+        allGenerators.add(new Cell(matrix));
+        allGenerators.add(new FFTSpectrum(matrix));
+        allGenerators.add(new Geometrics(matrix));                
         
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
         if (screenCapureXSize>0) {
-            new ScreenCapture(this, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY());
+        	allGenerators.add(
+        			new ScreenCapture(matrix, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY())
+        	);
             isCaptureGeneratorActive = true;
         }
-        colorScroll = new ColorScroll(this);
-        new ColorFade(this);
+        colorScroll = new ColorScroll(matrix);
+        allGenerators.add(colorScroll);
         
-        this.oscListener1 = new OscListener(this, GeneratorName.OSC_GEN1);
-        this.oscListener2 = new OscListener(this, GeneratorName.OSC_GEN2);
+        allGenerators.add(new ColorFade(matrix));
         
-        new VisualZero(this);
+        this.oscListener1 = new OscListener(matrix, GeneratorName.OSC_GEN1);
+        this.oscListener2 = new OscListener(matrix, GeneratorName.OSC_GEN2);
+        allGenerators.add(oscListener1);
+        allGenerators.add(oscListener2);
+        
+        allGenerators.add(new VisualZero(matrix));
         
     	LOG.log(Level.INFO, "Init finished");
     }
@@ -233,15 +244,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public int getSize() {
         return allGenerators.size();
-    }
-
-    /**
-     * Adds the input.
-     *
-     * @param input the input
-     */
-    public void addInput(Generator input) {
-        allGenerators.add(input);
     }
 
 

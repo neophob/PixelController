@@ -22,6 +22,7 @@ import java.util.Random;
 
 import processing.core.PConstants;
 
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -44,8 +45,8 @@ public class Fire extends Generator implements PConstants {
 	 *
 	 * @param controller the controller
 	 */
-	public Fire(PixelControllerGenerator controller) {
-		super(controller, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
+	public Fire(MatrixData matrix) {
+		super(matrix, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
 		this.buffer = new int[internalBufferXSize*(internalBufferYSize+10)];		
 		r = new Random();
