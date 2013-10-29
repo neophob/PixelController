@@ -18,8 +18,6 @@
  */
 package com.neophob.sematrix.generator;
 
-import processing.core.PApplet;
-
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -30,6 +28,8 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  */
 public class Plasma2 extends Generator {
+
+	private static float DEG_TO_RAD = (float)Math.PI/180.0f;
 
 	/** The frame count. */
 	private int frameCount;
@@ -43,6 +43,16 @@ public class Plasma2 extends Generator {
 		super(matrix, GeneratorName.PLASMA, ResizeName.QUALITY_RESIZE);
 		frameCount=1;
 	}
+	
+	/**
+	 * ripped from PApplet
+	 * @param degrees
+	 * @return
+	 */
+	private float radians(float degrees) {
+	    return degrees * DEG_TO_RAD;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.generator.Generator#update()
@@ -54,19 +64,19 @@ public class Plasma2 extends Generator {
 		int timeDisplacement = frameCount++;
 
 		// No need to do this math for every pixel
-		float calculation1 = (float)Math.sin( PApplet.radians(timeDisplacement * 0.61655617f));
-		float calculation2 = (float)Math.sin( PApplet.radians(timeDisplacement * -3.6352262f));
+		float calculation1 = (float)Math.sin( radians(timeDisplacement * 0.61655617f));
+		float calculation2 = (float)Math.sin( radians(timeDisplacement * -3.6352262f));
 
 		int aaa = 128;
 		int ySize = internalBufferYSize;
 		// Plasma algorithm
 		for (int x = 0; x < internalBufferXSize; x++, xc++) {
 			float yc = 20;
-			float s1 = aaa + aaa * (float)Math.sin(PApplet.radians(xc) * calculation1 );
+			float s1 = aaa + aaa * (float)Math.sin(radians(xc) * calculation1 );
 
 			for (int y = 0; y < ySize; y++, yc++) {
-				float s2 = aaa + aaa * (float)Math.sin(PApplet.radians(yc) * calculation2 );
-				float s3 = aaa + aaa * (float)Math.sin(PApplet.radians((xc + yc + timeDisplacement * 3) / 2));  
+				float s2 = aaa + aaa * (float)Math.sin(radians(yc) * calculation2 );
+				float s3 = aaa + aaa * (float)Math.sin(radians((xc + yc + timeDisplacement * 3) / 2));  
 				float s  = (s1+ s2 + s3) / 255;
 				
 				int aa = (int)(s*255f+0.5f);
