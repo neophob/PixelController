@@ -41,8 +41,7 @@ public class ArtnetDeviceTest {
 	    		bufferSize -= pixelsPerUniverse;
 	    	}
 	    }
-	    System.out.println("nrOfUniverse: "+nrOfUniverse);
-	    
+	    //System.out.println("nrOfUniverse: "+nrOfUniverse);	    
 		int remainingInt = bfrsze;
 		
 		
@@ -54,7 +53,7 @@ public class ArtnetDeviceTest {
 			}
 			remainingInt-=tmp;
 			ofs+=tmp;
-			System.out.println(i+": ofs:"+ofs+", remainingInt:"+remainingInt);
+			//System.out.println(i+": ofs:"+ofs+", remainingInt:"+remainingInt);
 		}
 
     }
