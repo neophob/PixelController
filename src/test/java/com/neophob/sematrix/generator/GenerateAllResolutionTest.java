@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.PassThru;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.MatrixData;
@@ -86,8 +87,15 @@ public class GenerateAllResolutionTest {
     	PixelControllerGenerator pcGen = new PixelControllerGenerator(ph, fileUtils, matrix, fps, sound, resize);
     	pcGen.initAll();
     	for (Generator gen: pcGen.getAllGenerators()) {
-    		//System.out.println(gen);
     		gen.update();
+    		
+    		if (gen.getId() == GeneratorName.COLOR_SCROLL.getId()) {
+    			for (int i=0; i<16; i++) {
+    				ColorScroll cs = (ColorScroll)gen;
+    				cs.setScrollMode(i);
+    				cs.update();
+    			}
+    		}
     	}
     	
     }
