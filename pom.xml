@@ -138,7 +138,8 @@
 				<version>2.16</version>
 				<configuration>
            			<systemPropertyVariables>
-             			<buildDirectory>${basedir}</buildDirectory>                  		        
+             			<buildDirectory>${basedir}</buildDirectory>
+             			<java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>                  		        
            			</systemPropertyVariables>
          		</configuration>				
 			</plugin>
