@@ -78,13 +78,19 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private boolean isCaptureGeneratorActive = false;
     
+    private MatrixData matrix;
+    
+    private int fps;
+    
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils) {
+    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils, MatrixData matrix, int fps) {
         allGenerators = new CopyOnWriteArrayList<Generator>();	
         this.ph = ph;
         this.fileUtils = fileUtils;
+        this.matrix = matrix;
+        this.fps = fps;
     }
 
 
@@ -93,8 +99,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     public void initAll() {
     	LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
-    	MatrixData matrix = Collector.getInstance().getMatrix();
-    	int fps = Collector.getInstance().getFps();
     	
         String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
         blinkenlights = new Blinkenlights(matrix, fileBlinken, fileUtils);

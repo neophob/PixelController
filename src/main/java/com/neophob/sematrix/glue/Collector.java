@@ -209,22 +209,22 @@ public class Collector {
 		}
 		
 		//create the device with specific size
-		new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
+		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
 		pixelControllerResize = new PixelControllerResize();
 		pixelControllerResize.initAll();
 
 		//create generators
-		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils);
+		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, this.fps);
 		pixelControllerGenerator.initAll();
 		
-		pixelControllerEffect = new PixelControllerEffect();
+		pixelControllerEffect = new PixelControllerEffect(matrix);
 		pixelControllerEffect.initAll();
 
-		pixelControllerMixer = new PixelControllerMixer();
+		pixelControllerMixer = new PixelControllerMixer(matrix);
 		pixelControllerMixer.initAll();
 		
-		pixelControllerFader = new PixelControllerFader(ph);
+		pixelControllerFader = new PixelControllerFader(ph, matrix, this.fps);
 		
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();

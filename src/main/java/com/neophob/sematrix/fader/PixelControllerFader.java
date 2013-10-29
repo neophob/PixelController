@@ -19,7 +19,6 @@
 package com.neophob.sematrix.fader;
 
 import com.neophob.sematrix.fader.Fader.FaderName;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
@@ -32,10 +31,14 @@ public final class PixelControllerFader {
 
 	private int presetLoadingFadeTime;
 	private int visualFadeTime;
+	private MatrixData matrix;
+	private int fps;
 	
-	public PixelControllerFader(ApplicationConfigurationHelper ah) {
+	public PixelControllerFader(ApplicationConfigurationHelper ah, MatrixData matrix, int fps) {
 		presetLoadingFadeTime = ah.getPresetLoadingFadeTime();
 		visualFadeTime = ah.getVisualFadeTime();
+		this.matrix = matrix;
+		this.fps = fps;
 	}
 	
 	/* 
@@ -49,9 +52,6 @@ public final class PixelControllerFader {
 	 * @return the fader
 	 */
 	public IFader getVisualFader(FaderName faderName) {
-		MatrixData matrix = Collector.getInstance().getMatrix();
-		int fps = Collector.getInstance().getFps();
-		
 		switch (faderName) {
 		case CROSSFADE:
 			return new Crossfader(matrix, visualFadeTime, fps);
@@ -72,9 +72,6 @@ public final class PixelControllerFader {
 	 * @return
 	 */
 	public IFader getVisualFader(int index) {
-		MatrixData matrix = Collector.getInstance().getMatrix();
-		int fps = Collector.getInstance().getFps();
-		
 		switch (index) {
 		case 0:
 			return new Switch(matrix, fps);
@@ -95,9 +92,6 @@ public final class PixelControllerFader {
 	 * @return
 	 */
 	public IFader getPresetFader(int index) {
-		MatrixData matrix = Collector.getInstance().getMatrix();
-		int fps = Collector.getInstance().getFps();
-		
 		switch (index) {
 		case 0:
 			return new Switch(matrix, fps);

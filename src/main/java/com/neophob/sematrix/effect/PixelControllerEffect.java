@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.effect.Effect.EffectName;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.properties.ValidCommands;
 
@@ -45,12 +44,14 @@ public class PixelControllerEffect implements PixelControllerElement {
 	private RotoZoom rotoZoom;
 	private Zoom zoom;	
 	private TextureDeformation textureDeformation;
+	private MatrixData matrix;
 	
 	/**
 	 * Instantiates a new pixel controller effect.
 	 */
-	public PixelControllerEffect() {
+	public PixelControllerEffect(MatrixData matrix) {
 		allEffects = new CopyOnWriteArrayList<Effect>();
+		this.matrix = matrix;
 	}
 	
 	/* (non-Javadoc)
@@ -68,8 +69,6 @@ public class PixelControllerEffect implements PixelControllerElement {
 	 */
 	@Override
 	public void initAll() {
-		MatrixData matrix = Collector.getInstance().getMatrix();
-		
 		//create effects
 		allEffects.add(new Inverter(matrix));
 		allEffects.add(new PassThru(matrix));

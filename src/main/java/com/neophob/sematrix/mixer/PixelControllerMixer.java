@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.PixelControllerElement;
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.input.SeSound;
 import com.neophob.sematrix.input.Sound;
@@ -40,19 +39,20 @@ public class PixelControllerMixer implements PixelControllerElement {
 
 	/** The all mixer. */
 	private List<Mixer> allMixer;
+	private MatrixData matrix;
 	
 	/**
 	 * Instantiates a new pixel controller mixer.
 	 */
-	public PixelControllerMixer() {
+	public PixelControllerMixer(MatrixData matrix) {
 		allMixer = new CopyOnWriteArrayList<Mixer>();
+		this.matrix = matrix;
 	}
 	
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.glue.PixelControllerElement#initAll()
 	 */
 	public void initAll() {
-		MatrixData matrix = Collector.getInstance().getMatrix();
 		SeSound sound = Sound.getInstance();
 		
 		//create mixer
