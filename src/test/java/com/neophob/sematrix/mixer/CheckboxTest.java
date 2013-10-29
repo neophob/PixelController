@@ -18,28 +18,36 @@
  */
 package com.neophob.sematrix.mixer;
 
+import org.junit.Test;
+
+import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.effect.Effect;
+import com.neophob.sematrix.effect.PassThru;
+import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.generator.PassThruGen;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.resize.Resize.ResizeName;
 
-/**
- * The Class PassThruMixer.
- */
-public class PassThruMixer extends Mixer {
+public class CheckboxTest {
 
-	/**
-	 * Instantiates a new pass thru mixer.
-	 *
-	 * @param controller the controller
-	 */
-	public PassThruMixer() {
-		super(MixerName.PASSTHRU, ResizeName.QUALITY_RESIZE);
-	}
+    @Test
+    public void mixTest() throws Exception {
+    	
+    	for (int x=2; x<50; x++) {
+    		for (int y=2; y<50; y++) {
+    	    	MatrixData matrix = new MatrixData(x,y);
+    	    	Generator g = new PassThruGen(matrix);
+    	    	Effect e = new PassThru(matrix);
+    	    	Mixer m = new Checkbox(matrix);
+    	    	ColorSet c = new ColorSet("test", new int[]{1,2,3});
+    	    	Visual v = new Visual(g,e,m,c);    	
+    	    	
+    	    	m.getBuffer(v);    			
+    		}
+    	}
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.mixer.Mixer#getBuffer(com.neophob.sematrix.glue.Visual)
-	 */
-	public int[] getBuffer(Visual visual) {
-		return visual.getEffect1Buffer();
-	}
+    }
 
+    
+    
 }

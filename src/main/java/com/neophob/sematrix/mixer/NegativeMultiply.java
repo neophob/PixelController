@@ -31,8 +31,8 @@ public class NegativeMultiply extends Mixer {
      *
      * @param controller the controller
      */
-    public NegativeMultiply(PixelControllerMixer controller) {
-        super(controller, MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
+    public NegativeMultiply() {
+        super(MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
     }
 
     /* (non-Javadoc)

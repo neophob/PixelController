@@ -32,8 +32,8 @@ public class Mix extends Mixer {
      *
      * @param controller the controller
      */
-    public Mix(PixelControllerMixer controller) {
-        super(controller, MixerName.MIX, ResizeName.QUALITY_RESIZE);
+    public Mix() {
+        super(MixerName.MIX, ResizeName.QUALITY_RESIZE);
     }
 
     /* (non-Javadoc)

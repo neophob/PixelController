@@ -31,8 +31,8 @@ public class SubSat extends Mixer {
 	 *
 	 * @param controller the controller
 	 */
-	public SubSat(PixelControllerMixer controller) {
-		super(controller, MixerName.SUBSAT, ResizeName.QUALITY_RESIZE);
+	public SubSat() {
+		super(MixerName.SUBSAT, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

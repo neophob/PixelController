@@ -31,8 +31,8 @@ public class HalfHalf extends Mixer {
      *
      * @param controller the controller
      */
-    public HalfHalf(PixelControllerMixer controller) {
-        super(controller, MixerName.HALFHALF, ResizeName.PIXEL_RESIZE);
+    public HalfHalf() {
+        super(MixerName.HALFHALF, ResizeName.PIXEL_RESIZE);
     }
 
     /* (non-Javadoc)

@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -47,10 +47,10 @@ public class Checkbox extends Mixer {
 	 *
 	 * @param controller the controller
 	 */
-	public Checkbox(PixelControllerMixer controller) {
-		super(controller, MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
-		checkBoxSizeX = Collector.getInstance().getMatrix().getDeviceXSize();
-		checkBoxSizeY = Collector.getInstance().getMatrix().getDeviceYSize();
+	public Checkbox(MatrixData matrix) {
+		super(MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
+		checkBoxSizeX = matrix.getDeviceXSize();
+		checkBoxSizeY = matrix.getDeviceYSize();
 	}
 
 	/* (non-Javadoc)

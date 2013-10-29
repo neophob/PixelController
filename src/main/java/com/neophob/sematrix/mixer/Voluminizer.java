@@ -19,7 +19,7 @@
 package com.neophob.sematrix.mixer;
 
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.SeSound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -29,13 +29,15 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Voluminizer extends Mixer {
 
+	private SeSound sound;
 	/**
 	 * Instantiates a new voluminizer.
 	 *
 	 * @param controller the controller
 	 */
-	public Voluminizer(PixelControllerMixer controller) {
-		super(controller, MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
+	public Voluminizer(SeSound sound) {
+		super(MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
+		this.sound = sound;
 	}
 
 	/* (non-Javadoc)
@@ -50,9 +52,9 @@ public class Voluminizer extends Mixer {
 		int[] src2 = visual.getEffect2Buffer();
 		int[] dst = new int [src1.length];
 
-		float sound = Sound.getInstance().getVolumeNormalized();
+		float snd = sound.getVolumeNormalized();
 		for (int i=0; i<src1.length; i++){
-    		dst[i]=(int)(src2[i]*sound + ((1.0f-sound)*src1[i]));
+    		dst[i]=(int)(src2[i]*snd + ((1.0f-snd)*src1[i]));
         }
 	
 		return dst;

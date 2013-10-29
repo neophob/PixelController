@@ -31,8 +31,8 @@ public class Minimum extends Mixer {
      *
      * @param controller the controller
      */
-    public Minimum(PixelControllerMixer controller) {
-        super(controller, MixerName.MINIMUM, ResizeName.QUALITY_RESIZE);
+    public Minimum() {
+        super(MixerName.MINIMUM, ResizeName.QUALITY_RESIZE);
     }
 
     /* (non-Javadoc)

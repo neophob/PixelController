@@ -31,8 +31,8 @@ public class Multiply extends Mixer {
      *
      * @param controller the controller
      */
-    public Multiply(PixelControllerMixer controller) {
-        super(controller, MixerName.MULTIPLY, ResizeName.QUALITY_RESIZE);
+    public Multiply() {
+        super(MixerName.MULTIPLY, ResizeName.QUALITY_RESIZE);
     }
 
     /* (non-Javadoc)

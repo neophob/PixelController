@@ -25,6 +25,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.PixelControllerElement;
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.MatrixData;
+import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.Sound;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
 
 /**
@@ -48,20 +52,23 @@ public class PixelControllerMixer implements PixelControllerElement {
 	 * @see com.neophob.sematrix.glue.PixelControllerElement#initAll()
 	 */
 	public void initAll() {
+		MatrixData matrix = Collector.getInstance().getMatrix();
+		SeSound sound = Sound.getInstance();
+		
 		//create mixer
-		new AddSat(this);
-		new Multiply(this);
-		new Mix(this);
-		new PassThruMixer(this);
-		new NegativeMultiply(this);
-		new Checkbox(this);
-		new Voluminizer(this);
-		new Either(this);
-		new SubSat(this);
-		new HalfHalf(this);
-		new HalfHalfVertical(this);
-		new Maximum(this);
-		new Minimum(this);
+		allMixer.add(new AddSat());
+		allMixer.add(new Multiply());
+		allMixer.add(new Mix());
+		allMixer.add(new PassThruMixer());
+		allMixer.add(new NegativeMultiply());
+		allMixer.add(new Checkbox(matrix));
+		allMixer.add(new Voluminizer(sound));
+		allMixer.add(new Either());
+		allMixer.add(new SubSat());
+		allMixer.add(new HalfHalf());
+		allMixer.add(new HalfHalfVertical());
+		allMixer.add(new Maximum());
+		allMixer.add(new Minimum());
 	}
 	
 	/* (non-Javadoc)
@@ -136,15 +143,6 @@ public class PixelControllerMixer implements PixelControllerElement {
 		
         LOG.log(Level.WARNING, "Invalid Mixer index selected: {0}", index);
 		return null;
-	}
-
-	/**
-	 * Adds the mixer.
-	 *
-	 * @param mixer the mixer
-	 */
-	public void addMixer(Mixer mixer) {
-		allMixer.add(mixer);
 	}
 
 }

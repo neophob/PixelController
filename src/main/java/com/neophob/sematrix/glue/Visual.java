@@ -75,6 +75,15 @@ public class Visual {
 		col.addVisual(this);
 	}
 
+	public Visual(Generator g, Effect e, Mixer m, ColorSet c) {
+		this.generator1 = g;
+		this.generator2 = g;		
+		this.effect1 = e;
+		this.effect2 = e;
+		this.mixer = m;
+
+		this.colorSet = c;
+	}
 	/**
 	 * Gets the buffer.
 	 *

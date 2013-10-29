@@ -31,8 +31,8 @@ public class Maximum extends Mixer {
      *
      * @param controller the controller
      */
-    public Maximum(PixelControllerMixer controller) {
-        super(controller, MixerName.MAXIMUM, ResizeName.QUALITY_RESIZE);
+    public Maximum() {
+        super(MixerName.MAXIMUM, ResizeName.QUALITY_RESIZE);
     }
 
     /* (non-Javadoc)

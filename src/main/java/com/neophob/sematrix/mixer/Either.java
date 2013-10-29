@@ -33,8 +33,8 @@ public class Either extends Mixer {
 	 *
 	 * @param controller the controller
 	 */
-	public Either(PixelControllerMixer controller) {
-		super(controller, MixerName.EITHER, ResizeName.QUALITY_RESIZE);
+	public Either() {
+		super(MixerName.EITHER, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

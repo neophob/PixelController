@@ -31,8 +31,8 @@ public class AddSat extends Mixer {
 	 *
 	 * @param controller the controller
 	 */
-	public AddSat(PixelControllerMixer controller) {
-		super(controller, MixerName.ADDSAT, ResizeName.QUALITY_RESIZE);
+	public AddSat() {
+		super(MixerName.ADDSAT, ResizeName.QUALITY_RESIZE);
 	}
 
 	/* (non-Javadoc)

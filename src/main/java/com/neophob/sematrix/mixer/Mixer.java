@@ -116,10 +116,9 @@ public abstract class Mixer {
 	 * @param mixerName the mixer name
 	 * @param resizeOption the resize option
 	 */
-	public Mixer(PixelControllerMixer controller, MixerName mixerName, ResizeName resizeOption) {
+	public Mixer(MixerName mixerName, ResizeName resizeOption) {
 		this.mixerName = mixerName;
 		this.resizeOption = resizeOption;
-		controller.addMixer(this);
 	}
 	
 	/**
