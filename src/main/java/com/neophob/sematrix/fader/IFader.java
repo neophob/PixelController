@@ -33,7 +33,7 @@ public interface IFader {
 	 * @param buffer
 	 * @return
 	 */
-	int[] getBuffer(int[] buffer);
+	int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer);
 	
 	/**
 	 * start visual to visual buffer
@@ -71,10 +71,27 @@ public interface IFader {
 	int getId();
 
 	/**
+	 * get fadername
+	 * @return
+	 */
+	String getFaderName();
+	
+	/**
 	 * Checks if fader is started.
 	 *
 	 * @return true, if is started
 	 */
 	 boolean isStarted();
 
+	 /**
+	  * get the id of the new visual
+	  * @return
+	  */
+	 int getNewVisual();
+	 
+	 /**
+	  * switch to this output if fader is finished
+	  * @return
+	  */
+	 int getScreenOutput();
 }

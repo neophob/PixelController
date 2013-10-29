@@ -341,9 +341,18 @@ public class Collector {
 		l = System.currentTimeMillis();
 		for (OutputMapping om: ioMapping) {
 			IFader fader = om.getFader();
-			if (fader!=null && fader.isDone()) {
+			if (fader!=null && fader.isStarted() && fader.isDone()) {
 				//fading is finished, cleanup
 				fader.cleanUp();
+				
+				if (fader.getScreenOutput()>=0) {
+					mapInputToScreen(fader.getScreenOutput(), fader.getNewVisual());			
+					LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}, output screen: {2}", 
+							new Object[] { fader.getFaderName(), fader.getNewVisual(), fader.getScreenOutput() });
+				} else {
+					LOG.log(Level.INFO, "Cleanup preset {0}, new visual: {1}", 
+							new Object[] { fader.getFaderName(), fader.getNewVisual() });			
+				}
 			}
 		}
 		pixConStat.trackTime(TimeMeasureItemGlobal.FADER, System.currentTimeMillis()-l);

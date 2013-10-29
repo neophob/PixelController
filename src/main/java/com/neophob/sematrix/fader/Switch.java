@@ -37,8 +37,8 @@ public class Switch extends Fader {
 	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
 	 */
 	@Override
-	public int[] getBuffer(int[] buffer) {
-		return buffer;
+	public int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer) {
+		return visual1Buffer;
 	}
 	
 	/* (non-Javadoc)

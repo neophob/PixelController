@@ -123,7 +123,7 @@ public class MatrixData {
     private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
         IFader fader = map.getFader();
         if (fader.isStarted()) {
-            buffer=fader.getBuffer(buffer);
+            buffer=fader.getBuffer(buffer, Collector.getInstance().getVisual(fader.getNewVisual()).getBuffer());
             //do not cleanup fader here, the box layout gets messed up!
             //the fader is cleaned up in the update system method
             /*			if (fader.isDone()) {

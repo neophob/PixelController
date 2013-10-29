@@ -21,7 +21,7 @@ package com.neophob.sematrix.fader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
+//import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 
 
@@ -106,7 +106,6 @@ public abstract class Fader implements IFader {
 	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 
-	protected int[] newBuffer;
 	protected int[] oldBuffer;
 	
 	//the preset fader do not animate but fade from a static buffer to the new visual
@@ -155,7 +154,7 @@ public abstract class Fader implements IFader {
 	 * @param buffer the buffer
 	 * @return the buffer
 	 */
-	public abstract int[] getBuffer(int[] buffer);
+	public abstract int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer);
 	
 	/**
 	 * Start to fade, visual to visual fader
@@ -166,7 +165,6 @@ public abstract class Fader implements IFader {
 	public void startFade(int newVisual, int screenNr) {
 		this.newVisual = newVisual;
 		this.screenOutput = screenNr;
-		newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
 
 		currentStep = 0;
 		started = true;
@@ -203,15 +201,7 @@ public abstract class Fader implements IFader {
 			return;
 		}
 		
-		started=false;
-		if (screenOutput>=0) {
-			Collector.getInstance().mapInputToScreen(screenOutput, newVisual);			
-			LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}, output screen: {2}", 
-					new Object[] { faderName.toString(), newVisual, screenOutput });
-		} else {
-			LOG.log(Level.INFO, "Cleanup preset {0}, new visual: {1}", 
-					new Object[] { faderName.toString(), newVisual });			
-		}
+		started=false;		
 	}
 	
 	/**
@@ -259,6 +249,29 @@ public abstract class Fader implements IFader {
 	 */
 	public boolean isStarted() {
 		return started;
+	}
+	
+
+	public int getNewVisual() {
+		return newVisual;
+	}
+
+	
+	public int getScreenOutput() {
+		return screenOutput;
+	}
+	
+	public String getFaderName() {
+		return faderName.name();
+	}
+
+	@Override
+	public String toString() {
+		return String
+				.format("Fader [faderName=%s, fadeTime=%s, newVisual=%s, screenOutput=%s, steps=%s, currentStep=%s, internalBufferXSize=%s, internalBufferYSize=%s, presetFader=%s, started=%s]",
+						faderName, fadeTime, newVisual, screenOutput, steps,
+						currentStep, internalBufferXSize, internalBufferYSize,
+						presetFader, started);
 	}
 	
 

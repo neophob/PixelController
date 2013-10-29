@@ -37,7 +37,9 @@
 
 package com.neophob.sematrix.fader;
 
-import com.neophob.sematrix.glue.Collector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.glue.MatrixData;
 
 
@@ -48,6 +50,8 @@ import com.neophob.sematrix.glue.MatrixData;
  * @author michu
  */
 public class Crossfader extends Fader {
+
+	private static final Logger LOG = Logger.getLogger(Crossfader.class.getName());
 
 	/**
 	 * Instantiates a new crossfader.
@@ -69,23 +73,23 @@ public class Crossfader extends Fader {
 	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
 	 */
 	@Override
-	public int[] getBuffer(int[] buffer) {
+	public int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer) {
 		currentStep++;		
 		
 		try {			
-			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
 			if (super.isDone()) {
-				return newBuffer;
+				return visual2Buffer;
 			}
-			
+
 			if (presetFader) {
-				return CrossfaderHelper.getBuffer(getCurrentStep(), oldBuffer, newBuffer);	
+				return CrossfaderHelper.getBuffer(getCurrentStep(), oldBuffer, visual2Buffer);	
 			}
 			
-			return CrossfaderHelper.getBuffer(getCurrentStep(), buffer, newBuffer);			
+			return CrossfaderHelper.getBuffer(getCurrentStep(), visual1Buffer, visual2Buffer);			
 		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "getBuffer failed, ignore error", e);
 			super.setDone();
-			return buffer;
+			return visual1Buffer;
 		}
 	}
 

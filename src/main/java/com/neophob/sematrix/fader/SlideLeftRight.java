@@ -18,7 +18,9 @@
  */
 package com.neophob.sematrix.fader;
 
-import com.neophob.sematrix.glue.Collector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.glue.MatrixData;
 
 
@@ -26,6 +28,8 @@ import com.neophob.sematrix.glue.MatrixData;
  * The Class SlideLeftRight.
  */
 public class SlideLeftRight extends Fader {
+
+	private static final Logger LOG = Logger.getLogger(SlideLeftRight.class.getName());
 
 	/**
 	 * Instantiates a new slide left right.
@@ -46,36 +50,39 @@ public class SlideLeftRight extends Fader {
 	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
 	 */
 	@Override
-	public int[] getBuffer(int[] buffer) {
+	public int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer) {
 		currentStep++;	
 
 		try {
 			if (super.isDone()) {
-				return newBuffer;
+				return visual2Buffer;
 			}
 
-			int[] ret = new int[buffer.length];		
+			if (presetFader) {
+				LOG.log(Level.SEVERE, "presetFader not supported!");
+			}
+			
+			int[] ret = new int[visual1Buffer.length];		
 			float f = getCurrentStep();
 			
 			int ammount=(int)(internalBufferXSize*f);
 			int ofs,x,idx=0;
 			
-			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
-
 			int linesize=internalBufferXSize;
 			for (int y=0; y<internalBufferYSize; y++) {
 				ofs=internalBufferXSize*y;
 				for (x=0; x<ammount; x++) {
-					ret[idx++] = newBuffer[ofs+(linesize-ammount+x)];
+					ret[idx++] = visual2Buffer[ofs+(linesize-ammount+x)];
 				}
 				for (x=ammount; x<internalBufferXSize; x++) {
-					ret[idx++] = buffer[ofs+x];
+					ret[idx++] = visual1Buffer[ofs+x];
 				}
 			}
 			return ret;
 		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "getBuffer failed, ignore error", e);
 			super.setDone();
-			return buffer;
+			return visual1Buffer;
 		}
 
 	}

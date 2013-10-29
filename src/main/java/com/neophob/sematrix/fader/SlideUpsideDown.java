@@ -18,7 +18,9 @@
  */
 package com.neophob.sematrix.fader;
 
-import com.neophob.sematrix.glue.Collector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.glue.MatrixData;
 
 
@@ -26,6 +28,8 @@ import com.neophob.sematrix.glue.MatrixData;
  * The Class SlideUpsideDown.
  */
 public class SlideUpsideDown extends Fader {
+
+	private static final Logger LOG = Logger.getLogger(SlideUpsideDown.class.getName());
 
 	/**
 	 * 
@@ -46,33 +50,36 @@ public class SlideUpsideDown extends Fader {
 	 * @see com.neophob.sematrix.fader.Fader#getBuffer(int[])
 	 */
 	@Override
-	public int[] getBuffer(int[] buffer) {
+	public int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer) {
 		currentStep++;		
 
 		try {
 			if (super.isDone()) {
-				return newBuffer;
+				return visual2Buffer;
 			}
 
-			int[] ret = new int[buffer.length];
+			if (presetFader) {
+				LOG.log(Level.SEVERE, "presetFader not supported!");
+			}
+
+			int[] ret = new int[visual1Buffer.length];
 			float f = getCurrentStep();
 			
-			newBuffer = Collector.getInstance().getVisual(this.newVisual).getBuffer();
-
 			int ammount=(int)(internalBufferYSize*f)*internalBufferXSize;
 			int totalSize=internalBufferYSize*internalBufferXSize;
 			for (int y=0; y<ammount; y++) {
-				ret[y]=newBuffer[totalSize-ammount+y];
+				ret[y]=visual2Buffer[totalSize-ammount+y];
 			}
 			int idx=0;
 			for (int y=ammount; y<totalSize; y++) {
-				ret[y]=buffer[idx++];
+				ret[y]=visual1Buffer[idx++];
 			}
 			return ret;
 			
 		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "getBuffer failed, ignore error", e);
 			super.setDone();
-			return buffer;
+			return visual1Buffer;
 		}
 
 	}

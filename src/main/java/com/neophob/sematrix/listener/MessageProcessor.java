@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.RotoZoom;
-import com.neophob.sematrix.fader.Fader;
 import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.fader.TransitionManager;
 import com.neophob.sematrix.generator.Generator;
