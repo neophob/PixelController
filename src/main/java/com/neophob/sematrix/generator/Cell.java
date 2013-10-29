@@ -49,6 +49,9 @@ public class Cell extends Generator {
 	
 	/** The distlookup. */
 	private float[][] distlookup;
+	
+	private int lowXRes, lowYRes;
+	private int hsize;
 
 	/**
 	 * Instantiates a new cell.
@@ -59,7 +62,7 @@ public class Cell extends Generator {
 		super(matrix, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
 		//create LUT
-		int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
+		hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
 		distlookup=new float[hsize][hsize];
 		for (int i=0;i<hsize;i++) {
 			for (int j=0;j<hsize;j++) {
@@ -71,6 +74,8 @@ public class Cell extends Generator {
 			points.add(new Attractor());   
 		}
 
+		lowXRes = (int)Math.floor(internalBufferXSize/(float)RENDERSIZE);
+		lowYRes = (int)Math.floor(internalBufferYSize/(float)RENDERSIZE);
 	}
 
 
@@ -79,8 +84,8 @@ public class Cell extends Generator {
 	 */
 	@Override
 	public void update() {
-		for (int x=0;x<internalBufferXSize/RENDERSIZE;x+=RENDERSIZE) {
-			for (int y=0;y<internalBufferYSize/RENDERSIZE;y+=RENDERSIZE) {
+		for (int x=0;x<lowXRes;x+=RENDERSIZE) {
+			for (int y=0;y<lowYRes;y+=RENDERSIZE) {
 
 				int nearest=0;
 				float closest=1000.0f;      
@@ -154,8 +159,17 @@ public class Cell extends Generator {
 		 * Instantiates a new attractor.
 		 */
 		public Attractor() {
-			this.x=random.nextInt(internalBufferXSize/RENDERSIZE);
-			this.y=random.nextInt(internalBufferYSize/RENDERSIZE);
+			if (lowXRes>0) {
+				this.x=random.nextInt(lowXRes);				
+			} else {
+				this.x=1;
+			}
+			
+			if (lowYRes>0) {
+				this.y=random.nextInt(lowYRes);				
+			} else {
+				this.y=1;
+			}
 			while (this.dx==0) {
 				this.dx=-1+random.nextInt(2);
 			}
@@ -172,10 +186,10 @@ public class Cell extends Generator {
 			// move with wrap-around
 			this.x+=this.dx;
 			this.y+=this.dy;
-			if (this.x<0 || this.x>internalBufferXSize/RENDERSIZE) {
+			if (this.x<0 || this.x>lowXRes) {
 				this.dx=-this.dx;
 			}
-			if (this.y<0 || this.y>internalBufferYSize/RENDERSIZE) {
+			if (this.y<0 || this.y>lowYRes) {
 				this.dy=-this.dy;
 			}
 			
@@ -195,8 +209,6 @@ public class Cell extends Generator {
 		 */
 		public float distanceTo(int xx,int yy) {
 			// Euclidian Distance
-			int hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
-//TODO fixme, % hsize
 			return distlookup[Math.abs(xx-this.x)%hsize][Math.abs(yy-this.y)%hsize]; 
 		}
 	}
