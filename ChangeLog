@@ -108,6 +108,7 @@ Changelog v1.3.0 to v1.3.1
 
 Changelog v1.2.x to v1.3.0
 --------------------------
+313 files changed, 65869 insertions(+), 11626 deletions(-)
 -add integrated GUI!
 -add Color-Sets, predefined color definition for all generators, effects and mixers
 -add support for UDP output device
@@ -135,12 +136,14 @@ Changelog v1.2.x to v1.3.0
 
 Changelog v1.1 to v1.2
 ------------------------
+30 files changed, 840 insertions(+), 268 deletions(-)
 -PixelInvaders Firmware, fixed strip.doSwapBuffersAsap(0)
 -Support AdaVision
 
 
 Changelog v1.0.3 to v1.1
 ------------------------
+85 files changed, 4915 insertions(+), 3380 deletions(-)
 -add notification if random mode is selected or not
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. 
  if they would run in separate thread, that would be faster...
