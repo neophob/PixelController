@@ -12,6 +12,7 @@ Changelog v1.5.0 to v1.5.1
 
 Changelog v1.4.1 to v1.5.0
 --------------------------
+116 files changed, 12084 insertions(+), 5503 deletions(-)
 -Add new Help Tab, display a short help how to use PixelController
 -Add Zoom Effect, add Zoom options (zoom in, zoom out, vertical, horizontal)
 -Add Textwriter option (PingPong scrolling, left scrolling)
@@ -43,6 +44,7 @@ Changelog v1.4.1 to v1.5.0
 
 Changelog v1.4.0 to v1.4.1
 --------------------------
+58 files changed, 2376 insertions(+), 2490 deletions(-)
 -Fix update TPM2.net implementation (add total packet bytes)
 -Fix cleanup unused files
 -Fix OSC listener, increased buffer size to 50kb so large image content can be sent via OSC
@@ -55,6 +57,7 @@ Changelog v1.4.0 to v1.4.1
 
 Changelog v1.3.1 to v1.4.0
 --------------------------
+115 files changed, 2705 insertions(+), 1451 deletions(-)
 -Add support for E1.31 devices
 -Add more 8x8 icon images
 -Add new effect, rotate 90 degrees
@@ -85,6 +88,7 @@ Changelog v1.3.1 to v1.4.0
 
 Changelog v1.3.0 to v1.3.1
 --------------------------
+82 files changed, 3416 insertions(+), 746 deletions(-)
 -Updated PixelInvaders firmware, more speed, improved image quality
 -Add two generic (OSC) input generators, see Processing examples (integration/Processing/OscSendImageData) how to use it.
  Hint: They get selected in random mode only if they are active (receiving data)
