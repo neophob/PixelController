@@ -49,6 +49,8 @@ If you don't have a hardware controller (like ArtNet or E1.31) and would like to
 * If you want to create a ONE panel matrix with an arbitrary resolution, use the `integration/ArduinoFw/tpm2serial` firmware
 * If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware
 
+I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency. You need to install the Arduino IDE, see the "Getting started with Arduino" (http://arduino.cc/en/Guide/HomePage) Tutorial.
+
 ## FRONTENDS
 There are different frontends for PixelController:
 
