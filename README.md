@@ -50,6 +50,7 @@ If you don't have a hardware controller (like ArtNet or E1.31) and would like to
 * If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware
 
 I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency. You need to install the Arduino IDE, see the "Getting started with Arduino" (http://arduino.cc/en/Guide/HomePage) Tutorial.
+You need to know how to install an Arduino Library (http://arduino.cc/en/Guide/Libraries). For PixelInvaders Panels (LPD6803) install the `integration/ArduinoFw/libraries/timer1` and `integration/ArduinoFw/libraries/neophob_lpd6803spi` libraries, for other panels (WS2801, WS281x...) install the `integration/ArduinoFw/libraries/FastSPI_LED2` Library.  
 
 ## FRONTENDS
 There are different frontends for PixelController:
@@ -116,7 +117,7 @@ Here are some common errors:
 
 * Is Java installed on your system? Open a terminal Windows (cmd.exe on Windows, terminal on OSX) and enter "java -version".
 * Did you forgot to **edit the configuration file** `config.properties`. Take a look at the config.examples subdirectory!
-* Did you flash the **correct firmware** to you Arduino/Teensy? 
+* Did you flash the **correct firmware** to your Arduino/Teensy? 
 * **PixelInvaders panels**: Make sure that the Panel shows an **animated rainbow pattern** when the panels are powered on (make sure 
   that you also power the Arduino/Teensy board). If you don't see a animated rainbow, make sure the directon of the modules is correct and that
   the Arduino/Teensy, LED modules and PSU share common ground. Verify the Arduino IDE don't spit out errors when you upload the firmware to the teensy
