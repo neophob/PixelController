@@ -639,11 +639,12 @@ public class Rainbowduino {
 		try {
 			r = new Rainbowduino(app, new ArrayList<Integer>(), port);
 			r.i2cBusScan();
+			return r.scannedI2cDevices;
 		} catch (Exception e) {
 			log.log(Level.WARNING, "I2C scanner failed: {0}", e);
 		}
 				
-		return r.scannedI2cDevices;
+		return new ArrayList<Integer>();
 	}
 
 	/**
@@ -657,11 +658,11 @@ public class Rainbowduino {
 		try {
 			r = new Rainbowduino(app, new ArrayList<Integer>());
 			r.i2cBusScan();
+			return r.scannedI2cDevices;
 		} catch (Exception e) {
 			log.log(Level.WARNING, "I2C scanner failed: {0}", e);
 		}
-				
-		return r.scannedI2cDevices;
+		return new ArrayList<Integer>();				
 	}
 
 }
