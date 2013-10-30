@@ -263,7 +263,7 @@ gelesen von der mitte!
 	 * Returns a String that contains the binary value of an int.
 	 * The digits parameter determines how many digits will be used.
 	 */
-	private static final String binary(int what, int digits) {
+	private static String binary(int what, int digits) {
 		String stuff = Integer.toBinaryString(what);
 
 		int length = stuff.length();
