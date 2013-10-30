@@ -244,7 +244,8 @@ public class Tpm2Serial {
 	 */
 	private synchronized void writeSerialData(byte[] cmdfull) {
 		if (port==null) {
-			LOG.log(Level.INFO, "port not ready!");
+			LOG.log(Level.INFO, "port not ready (null)!");
+			return;
 		}
 		
 		try {
@@ -253,7 +254,7 @@ public class Tpm2Serial {
 			//DO NOT flush the buffer... hmm not sure about this, processing flush also
 			//and i discovered strange "hangs"...
 		} catch (Exception e) {
-			LOG.log(Level.INFO, "Error sending serial data!", e);			
+			LOG.log(Level.WARNING, "Error sending serial data!", e);			
 		}		
 	}
 
