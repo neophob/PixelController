@@ -92,10 +92,7 @@ public class Rainbowduino {
 	
 	//logical errors reported by arduino, TODO: rename to lastErrorCode
 	private int arduinoErrorCounter;
-	
-	//connection errors to arduino, TODO: use it!
-	private int connectionErrorCounter;
-	
+		
 	/**
 	 * result of i2c bus scan
 	 */
@@ -501,8 +498,7 @@ public class Rainbowduino {
 			port.output.write(cmdfull);
 			//DO NOT flush the buffer
 		} catch (Exception e) {
-			log.log(Level.INFO, "Error sending serial data!", e);
-			connectionErrorCounter++;
+			log.log(Level.WARNING, "Error sending serial data!", e);
 			throw new SerialPortException("cannot send serial data: "+e);
 		}		
 	}
