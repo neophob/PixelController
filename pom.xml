@@ -1,23 +1,31 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>neophob.com</groupId>
 	<artifactId>PixelController</artifactId>
 	<name>PixelController</name>
-	<packaging>jar</packaging>	
-	<description>PixelController Driver</description>
-	<prerequisites>
-		<maven>2.2.1</maven>
-	</prerequisites>
-	<url>http://www.PixelInvaders.ch</url>
+	<version>SNAPSHOT</version>
 	
+	<packaging>jar</packaging>
+	<description>
+		PixelController - a (LED) matrix control project. 
+		The main goal of this application is to create an easy to use matrix controller software 
+		which creates stunning visuals!</description>
+	<url>http://www.PixelInvaders.ch</url>
+	<inceptionYear>2010</inceptionYear>
+
 	<properties>
 		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
 		<sonar.phase>generate-sources</sonar.phase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-	
+
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
+
 	<developers>
 		<developer>
 			<name>Michael Vogt</name>
@@ -25,6 +33,18 @@
 			<email>michu@neophob.com</email>
 		</developer>
 	</developers>
+
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/neophob/PixelController/issues</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:https://github.com/neophob/PixelController.git</connection>
+		<developerConnection>scm:git:git@github.com:neophob/PixelController.git</developerConnection>
+		<url>https://github.com/neophob/PixelController</url>
+		<tag>HEAD</tag>
+	</scm>
 	
 	<repositories>
 		<repository>
@@ -34,7 +54,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mc-release</id>
@@ -50,15 +70,17 @@
 	</pluginRepositories>
 
 	<build>
-  
-    <!-- include properties files in jar -->
-    <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <excludes><exclude>**/*.java</exclude></excludes>
-      </resource>
-    </resources>
-  
+
+		<!-- include properties files in jar -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -94,33 +116,28 @@
 					</execution>
 				</executions>
 			</plugin>
-			
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-jar-plugin</artifactId>
-	        <version>2.4</version><!--$NO-MVN-MAN-VER$-->
-	        <configuration>
-	          <archive>
-	            <manifest>
-	              <addClasspath>true</addClasspath>
-	              <mainClass>com.neophob.PixelController</mainClass>
-	              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-	              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-	            </manifest>
-                <manifestEntries>
-                 <url>${project.url}</url>
-                </manifestEntries>
-	          </archive>
-	        </configuration>	        
-	      </plugin>
-			
-			<!-- 
-				CHECK: 
-					mvn license:check -Dyear=2013 -Demail=michu@neophob.com
-				
-				ADD:
-					mvn license:format -Dyear=2013 -Demail=michu@neophob.com
-			-->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version><!--$NO-MVN-MAN-VER$ -->
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.neophob.PixelController</mainClass>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<url>${project.url}</url>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- CHECK: mvn license:check -Dyear=2013 -Demail=michu@neophob.com ADD: 
+				mvn license:format -Dyear=2013 -Demail=michu@neophob.com -->
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
@@ -130,26 +147,26 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- The Surefire Plugin is used during the test phase of the build lifecycle to 
-				execute the unit tests of an application. It generates reports in 2 different file 
-				formats -->
+				<!-- The Surefire Plugin is used during the test phase of the build lifecycle 
+					to execute the unit tests of an application. It generates reports in 2 different 
+					file formats -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.16</version>
 				<configuration>
-           			<systemPropertyVariables>
-             			<buildDirectory>${basedir}</buildDirectory>
-             			<java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>                  		        
-           			</systemPropertyVariables>
-         		</configuration>				
+					<systemPropertyVariables>
+						<buildDirectory>${basedir}</buildDirectory>
+						<java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.2</version>
 			</plugin>
-			<!-- use the Maven Install Plugin to deploy needed jars to the local
-			repository since they aren't available in the public Maven repositories. -->
+			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
+				since they aren't available in the public Maven repositories. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
@@ -183,20 +200,10 @@
 							<goal>install-file</goal>
 						</goals>
 					</execution>
-<!--					<execution>
-						<id>pde.jar</id>
-						<configuration>
-							<file>lib/pde.jar</file>
-							<groupId>org.processing</groupId>
-							<artifactId>pde</artifactId>
-							<version>1.2.1</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution> -->
+					<!-- <execution> <id>pde.jar</id> <configuration> <file>lib/pde.jar</file> 
+						<groupId>org.processing</groupId> <artifactId>pde</artifactId> <version>1.2.1</version> 
+						<packaging>jar</packaging> </configuration> <phase>initialize</phase> <goals> 
+						<goal>install-file</goal> </goals> </execution> -->
 					<execution>
 						<id>serial.jar</id>
 						<configuration>
@@ -368,10 +375,11 @@
 				</executions>
 			</plugin>
 		</plugins>
-		
+
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -389,7 +397,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute/>
+										<execute />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -398,7 +406,7 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		
+
 	</build>
 
 	<reporting>
@@ -466,7 +474,7 @@
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
@@ -482,17 +490,12 @@
 			<artifactId>jargs</artifactId>
 			<version>1.0</version>
 		</dependency>
-<!--		<dependency>
-			<groupId>org.eclipse.jdt.core.compiler</groupId>
-			<artifactId>ecj</artifactId>
-			<version>3.5.1</version>
-		</dependency> -->
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>3.2.7</version>
 		</dependency>
-		
+
 		<!-- local deps, make sure you installed them in your local repo! -->
 		<!-- processing -->
 		<dependency>
@@ -505,11 +508,6 @@
 			<artifactId>net</artifactId>
 			<version>1.2.1</version>
 		</dependency>
-<!--		<dependency>
-			<groupId>org.processing</groupId>
-			<artifactId>pde</artifactId>
-			<version>1.2.1</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.processing</groupId>
 			<artifactId>serial</artifactId>
@@ -581,6 +579,5 @@
 			<version>0.9.9</version>
 		</dependency>
 	</dependencies>
-
-	<version>SNAPSHOT</version>
+	
 </project>
