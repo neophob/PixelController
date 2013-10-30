@@ -27,14 +27,14 @@ import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.PassThruGen;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.mixer.Checkbox;
 import com.neophob.sematrix.mixer.Mixer;
 
 public class GenerateAllResolutionEffectTest {
 
-	private SeSound sound;
+	private ISound sound;
 	
     @Test
     public void verifyEffectsDoNotCrash() throws Exception {

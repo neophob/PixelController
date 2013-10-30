@@ -37,7 +37,7 @@ import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.fader.PixelControllerFader;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.helper.InitHelper;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
@@ -157,6 +157,8 @@ public class Collector {
 	
 	private IOutput output;
 	
+	private ISound sound;
+	
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -203,10 +205,10 @@ public class Collector {
 		
 		//choose sound implementation
 		try {
-			Sound.getInstance().setImplementation(new SoundMinim(papplet, ph.getSoundSilenceThreshold()));			
+			sound = new SoundMinim(papplet, ph.getSoundSilenceThreshold());			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE, Exception: {0}.", e);
-			Sound.getInstance().setImplementation(new SoundDummy());
+			sound = new SoundDummy();
 		}
 		
 		//create the device with specific size
@@ -217,13 +219,13 @@ public class Collector {
 
 		//create generators
 		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, this.fps, 
-				Sound.getInstance(), pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
+				sound, pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
 		pixelControllerGenerator.initAll();
 		
-		pixelControllerEffect = new PixelControllerEffect(matrix, Sound.getInstance());
+		pixelControllerEffect = new PixelControllerEffect(matrix, sound);
 		pixelControllerEffect.initAll();
 
-		pixelControllerMixer = new PixelControllerMixer(matrix, Sound.getInstance());
+		pixelControllerMixer = new PixelControllerMixer(matrix, sound);
 		pixelControllerMixer.initAll();
 		
 		pixelControllerFader = new PixelControllerFader(ph, matrix, this.fps);
@@ -303,7 +305,7 @@ public class Collector {
 		
 		if (soundAware) {
 			//get sound volume
-			float f = Sound.getInstance().getVolumeNormalized();
+			float f = sound.getVolumeNormalized();
 			u = (int)(0.5f+f*1.5f);
 			//check for silence - in this case update slowly
 			if (u<1) {
@@ -311,10 +313,10 @@ public class Collector {
 					u=1;
 				}
 			}
-			if (Sound.getInstance().isKick()) {
+			if (sound.isKick()) {
 				u+=3;
 			}
-			if (Sound.getInstance().isHat()) {
+			if (sound.isHat()) {
 				u+=1;
 			}			
 		}
@@ -360,9 +362,9 @@ public class Collector {
 		pixConStat.trackTime(TimeMeasureItemGlobal.FADER, System.currentTimeMillis()-l);
 		
 		if (randomMode) {
-			Shuffler.shuffleStuff();
+			Shuffler.shuffleStuff(sound);
 		} else if (randomPresetMode) {
-			Shuffler.randomPresentModeShuffler();
+			Shuffler.randomPresentModeShuffler(sound);
 		}
 		
 		frames++;
@@ -958,6 +960,14 @@ public class Collector {
     public IOutput getOutputDevice() {
         return this.output;
     }
+
+    /**
+     * sound implementation
+     * @return
+     */
+	public ISound getSound() {
+		return sound;
+	}
     
 
 }

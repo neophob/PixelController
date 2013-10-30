@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.fader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -48,8 +49,8 @@ public class GenerateAllFaderTest {
     	
 		String rootDir = System.getProperty("buildDirectory");
 		if (rootDir == null) {
-			//TODO fixme
-			rootDir = "/Users/michu/_code/workspace/PixelController.github/PixelController/";
+			//if unit test is run in eclipse
+			rootDir = "."+File.separatorChar;
 		}
     	ph = new ApplicationConfigurationHelper(new Properties());
     	col = new ColorSet("test", new int[]{1,2,3});

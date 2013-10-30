@@ -19,7 +19,7 @@
 package com.neophob.sematrix.effect;
 
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -28,14 +28,14 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class Voluminize extends Effect {
 
     private float volume = 0;
-    private SeSound sound;
+    private ISound sound;
     
 	/**
 	 * Instantiates a new voluminize.
 	 *
 	 * @param controller the controller
 	 */
-	public Voluminize(MatrixData matrix, SeSound sound) {
+	public Voluminize(MatrixData matrix, ISound sound) {
 		super(matrix, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
 		this.sound = sound;
 	}

@@ -19,7 +19,7 @@
 package com.neophob.sematrix.generator;
 
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 
@@ -32,7 +32,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
 public class FFTSpectrum extends Generator {
 
 	/** The sound. */
-	private SeSound sound;
+	private ISound sound;
 	
 	/** The fft smooth. */
 	private float[] fftSmooth;
@@ -45,7 +45,7 @@ public class FFTSpectrum extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public FFTSpectrum(MatrixData matrix, SeSound sound) {
+	public FFTSpectrum(MatrixData matrix, ISound sound) {
 		super(matrix, GeneratorName.FFT, ResizeName.PIXEL_RESIZE);
 		this.sound = sound;
 		

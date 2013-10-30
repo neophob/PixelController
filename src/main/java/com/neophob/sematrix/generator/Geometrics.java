@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -47,7 +47,7 @@ public class Geometrics extends Generator {
 	private List<Drop> tmp;
 
 	/** The sound. */
-	private SeSound sound;
+	private ISound sound;
 
 	public int[] internalBufferTmp;
 	
@@ -59,7 +59,7 @@ public class Geometrics extends Generator {
 	 *
 	 * @param controller the controller
 	 */
-	public Geometrics(MatrixData matrix, SeSound sound) {
+	public Geometrics(MatrixData matrix, ISound sound) {
 		super(matrix, GeneratorName.DROPS, ResizeName.QUALITY_RESIZE);
 		drops = new ArrayList<Drop>();
 		tmp = new ArrayList<Drop>();

@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.PixelControllerElement;
 import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -46,12 +46,12 @@ public class PixelControllerEffect implements PixelControllerElement {
 	private Zoom zoom;	
 	private TextureDeformation textureDeformation;
 	private MatrixData matrix;
-	private SeSound sound;
+	private ISound sound;
 	
 	/**
 	 * Instantiates a new pixel controller effect.
 	 */
-	public PixelControllerEffect(MatrixData matrix, SeSound sound) {
+	public PixelControllerEffect(MatrixData matrix, ISound sound) {
 		allEffects = new CopyOnWriteArrayList<Effect>();
 		this.matrix = matrix;
 		this.sound = sound;

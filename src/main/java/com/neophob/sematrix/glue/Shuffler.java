@@ -30,7 +30,7 @@ import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.properties.ValidCommands;
 
@@ -54,9 +54,9 @@ public final class Shuffler {
 	/**
 	 * used for randomized preset mode, rarely change stuff.
 	 */
-	public static void randomPresentModeShuffler() {
-		boolean kick = Sound.getInstance().isKick();
-		boolean hat = Sound.getInstance().isHat();
+	public static void randomPresentModeShuffler(ISound sound) {
+		boolean kick = sound.isKick();
+		boolean hat = sound.isHat();
 
 		if (!kick && !hat) {
 			return;
@@ -228,10 +228,10 @@ public final class Shuffler {
 	/**
 	 * used for randomized mode, rarely change stuff.
 	 */
-	public static void shuffleStuff() {
-		boolean kick = Sound.getInstance().isKick();
-		boolean hat = Sound.getInstance().isHat();
-		boolean snare = Sound.getInstance().isSnare();
+	public static void shuffleStuff(ISound sound) {
+		boolean kick = sound.isKick();
+		boolean hat = sound.isHat();
+		boolean snare = sound.isSnare();
 
 		if (!hat && !kick && !snare) {
 			return;

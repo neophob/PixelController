@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -58,6 +58,8 @@ public class PixelImage extends Generator {
 	private int frame = 0;
 
 	private int fps;
+	
+	private ISound sound;
 
 	/**
 	 * Instantiates a new pixel image.
@@ -65,9 +67,9 @@ public class PixelImage extends Generator {
 	 * @param controller the controller
 	 * @throws InvalidParameterException the invalid parameter exception
 	 */
-	public PixelImage(MatrixData matrix, int fps) throws InvalidParameterException {
+	public PixelImage(MatrixData matrix, ISound sound, int fps) throws InvalidParameterException {
 		super(matrix, GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
-
+		this.sound = sound;
 		this.fps = fps;
 		frame = 0;
 
@@ -124,8 +126,8 @@ gelesen von der mitte!
 	 */
 	@Override
 	public void update() {
-		if (frame==0 || Sound.getInstance().getVolumeNormalized()>0.5f && frame>this.fps/2 || 
-				Sound.getInstance().isKick() && frame>this.fps) {
+		if (frame==0 || sound.getVolumeNormalized()>0.5f && frame>this.fps/2 || 
+				sound.isKick() && frame>this.fps) {
 
 			//make sure the pixel are not displayed too fast 
 			frame=0;

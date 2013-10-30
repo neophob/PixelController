@@ -30,7 +30,7 @@ import ddf.minim.analysis.FFT;
 /**
  * The Class SoundMinim.
  */
-public final class SoundMinim implements SeSound, Runnable {
+public final class SoundMinim implements ISound, Runnable {
 
 	//samples per 1/4s
 	/** The Constant SOUND_BUFFER_RESOLUTION. */

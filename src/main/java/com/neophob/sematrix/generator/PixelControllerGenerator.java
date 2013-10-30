@@ -33,7 +33,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.IResize;
@@ -84,7 +84,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
     
     private int fps;
     
-    private SeSound sound;
+    private ISound sound;
     
     private IResize resize;
     
@@ -92,7 +92,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * Instantiates a new pixel controller generator.
      */
     public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils, MatrixData matrix, 
-    		int fps, SeSound sound, IResize resize) {
+    		int fps, ISound sound, IResize resize) {
         this.ph = ph;
         this.fileUtils = fileUtils;
         this.matrix = matrix;
@@ -123,7 +123,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(new Fire(matrix));
         allGenerators.add(new PassThruGen(matrix));
         allGenerators.add(new Metaballs(matrix));
-        allGenerators.add(new PixelImage(matrix, fps));
+        allGenerators.add(new PixelImage(matrix,sound, fps));
         
         textwriter = new Textwriter(matrix, 
                 ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 

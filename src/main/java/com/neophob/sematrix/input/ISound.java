@@ -23,15 +23,18 @@ package com.neophob.sematrix.input;
  *
  * @author michu
  */
-public interface SeSound {
+public interface ISound {
 
-	
+	/**
+	 * 
+	 * @return sound input implementation name
+	 */
 	String getImplementationName();
 	
 	/**
 	 * Gets the volume.
 	 *
-	 * @return the volume
+	 * @return the current volume
 	 */
 	float getVolume();
 	
@@ -45,28 +48,28 @@ public interface SeSound {
 	/**
 	 * Checks if is kick.
 	 *
-	 * @return true, if is kick
+	 * @return true, if is kick drum is heard
 	 */
 	boolean isKick();
 	
 	/**
 	 * Checks if is snare.
 	 *
-	 * @return true, if is snare
+	 * @return true, if is snare drum is heard
 	 */
 	boolean isSnare();
 	
 	/**
 	 * Checks if is hat.
 	 *
-	 * @return true, if is hat
+	 * @return true, if is hat is heard
 	 */
 	boolean isHat();
 	
 	/**
 	 * Checks if is pang.
 	 *
-	 * @return true, if is pang
+	 * @return true, if is kick/snare or hat is hit
 	 */
 	boolean isPang();
 

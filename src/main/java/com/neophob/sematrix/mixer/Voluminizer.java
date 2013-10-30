@@ -19,7 +19,7 @@
 package com.neophob.sematrix.mixer;
 
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -29,13 +29,13 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  */
 public class Voluminizer extends Mixer {
 
-	private SeSound sound;
+	private ISound sound;
 	/**
 	 * Instantiates a new voluminizer.
 	 *
 	 * @param controller the controller
 	 */
-	public Voluminizer(SeSound sound) {
+	public Voluminizer(ISound sound) {
 		super(MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
 		this.sound = sound;
 	}

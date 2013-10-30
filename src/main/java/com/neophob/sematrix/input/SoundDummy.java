@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 /**
  * The Class SoundDummy.
  */
-public class SoundDummy implements SeSound {
+public class SoundDummy implements ISound {
 	
 	private static final Logger LOG = Logger.getLogger(SoundDummy.class.getName());
 
@@ -55,7 +55,7 @@ public class SoundDummy implements SeSound {
 	 * @see com.neophob.sematrix.input.SeSound#isKick()
 	 */
 	public boolean isKick() {
-		return false;
+		return true;
 	}
 
 	/* (non-Javadoc)

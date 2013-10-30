@@ -46,7 +46,7 @@ import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.PresetSettings;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
@@ -660,7 +660,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoSrvVersion", Messages.getString("GeneratorGui.SERVER_VERSION")+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+Sound.getInstance().getVolumeNormalized(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+col.getSound().getVolumeNormalized(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoWindowHeight", Messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
@@ -896,7 +896,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
-            int snd1000 = (int)(1000f*Sound.getInstance().getVolumeNormalized());
+            int snd1000 = (int)(1000f*col.getSound().getVolumeNormalized());
             currentVolume.setText(Messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
             IOutput output = col.getOutputDevice();
@@ -973,7 +973,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         rect(GENERIC_X_OFS+frames, localY+SELECTED_MARKER+4, xSizeForEachWidget-frames-WIDGET_BOARDER, WIDGET_BAR_SIZE);
 
         //draw sound stats
-        Sound snd = Sound.getInstance();
+        ISound snd = Collector.getInstance().getSound();
         int xofs = GENERIC_X_OFS+xSizeForEachWidget;
         int xx = (xSizeForEachWidget-WIDGET_BOARDER*2)/3;
 

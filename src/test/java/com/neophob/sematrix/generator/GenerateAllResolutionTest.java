@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -32,7 +33,7 @@ import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.SeSound;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.input.SoundDummy;
 import com.neophob.sematrix.mixer.Mixer;
 import com.neophob.sematrix.mixer.PassThruMixer;
@@ -43,7 +44,7 @@ import com.neophob.sematrix.resize.PixelResize;
 public class GenerateAllResolutionTest {
 
 	private FileUtils fileUtils;
-	private SeSound sound;
+	private ISound sound;
 	private IResize resize;
 	private ColorSet col;
 	private ApplicationConfigurationHelper ph;
@@ -53,10 +54,12 @@ public class GenerateAllResolutionTest {
     public void verifyGeneratorsDoNotCrash() {
     	final int maxResolution = 17;
     	
+    	System.setProperty("java.awt.headless", "true");
+    	
 		String rootDir = System.getProperty("buildDirectory");
 		if (rootDir == null) {
-			//TODO fixme
-			rootDir = "/Users/michu/_code/workspace/PixelController.github/PixelController/";
+			//if unit test is run in eclipse
+			rootDir = "."+File.separatorChar;
 		}
     	ph = new ApplicationConfigurationHelper(new Properties());
     	fileUtils = new FileUtils(rootDir);
@@ -64,19 +67,20 @@ public class GenerateAllResolutionTest {
     	resize = new PixelResize();
     	col = new ColorSet("test", new int[]{1,2,3});
     	
-    	int i=0;
     	for (int x=1; x<maxResolution; x++) {
     		for (int y=1; y<maxResolution; y++) {
-    			System.out.println(i+" test: "+x+"/"+y);
     			testWithResolution(x,y);
     			testWithResolution(y,x);
-        		i++;    	
     		}
     	}
 
     }
 
-    
+    /**
+     * 
+     * @param x
+     * @param y
+     */
     private void testWithResolution(int x, int y) {
     	MatrixData matrix = new MatrixData(x,y);
     	
@@ -100,7 +104,12 @@ public class GenerateAllResolutionTest {
     	
     }
     
-    
+    /**
+     * create a dummy visual
+     * @param matrix
+     * @param col
+     * @return
+     */
     private Visual createVisual(MatrixData matrix, ColorSet col) {
     	Generator g = new PassThruGen(matrix);
     	Effect e = new PassThru(matrix);
