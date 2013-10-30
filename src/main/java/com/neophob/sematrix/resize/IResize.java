@@ -49,10 +49,16 @@ public interface IResize {
 
 	/**
 	 * 
-	 * @return name of the resizer
+	 * @return id of the resizer
 	 */
 	int getId();
 
+	/**
+	 * 
+	 * @return name of the resizer
+	 */
+	String getName();
+	
 	/**
 	 * create a buffered image
 	 * @param buffer

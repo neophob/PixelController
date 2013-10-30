@@ -115,7 +115,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(blinkenlights);
         
         String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
-        image = new Image(matrix, fileImageSimple, fileUtils);
+        image = new Image(matrix, fileImageSimple, fileUtils, resize);
         allGenerators.add(image);
         		
         allGenerators.add(new Plasma2(matrix));        

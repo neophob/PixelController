@@ -90,6 +90,7 @@ public abstract class Resize implements IResize {
 	public abstract int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize);
 	
 	public abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
+	
 	/**
 	 * Gets the id.
 	 *
@@ -99,6 +100,13 @@ public abstract class Resize implements IResize {
 		return this.resizeName.getId();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getName() {
+		return this.resizeName.toString();
+	}
 	
 	/**
 	 * internal use - get buffer from image.

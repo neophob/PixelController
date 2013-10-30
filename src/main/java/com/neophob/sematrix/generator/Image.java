@@ -19,8 +19,7 @@
 package com.neophob.sematrix.generator;
 
 
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +27,15 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.imageio.ImageIO;
 
-import processing.core.PImage;
+import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
-import com.neophob.sematrix.resize.PixelControllerResize;
+import com.neophob.sematrix.resize.IResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -66,15 +65,18 @@ public class Image extends Generator {
 	
 	private FileUtils fileUtils;
 		
+	private IResize resize;
+	
 	/**
 	 * Instantiates a new image.
 	 *
 	 * @param controller the controller
 	 * @param filename the filename
 	 */
-	public Image(MatrixData matrix, String filename, FileUtils fu) {
+	public Image(MatrixData matrix, String filename, FileUtils fu, IResize resize) {
 		super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
 		this.fileUtils = fu;
+		this.resize = resize;
 		this.loadFile(filename);
 		
 	    //find image files      
@@ -114,23 +116,21 @@ public class Image extends Generator {
 			String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+filename;
 
 			LOG.log(Level.INFO, "load image "+fileToLoad);
-			//use the ancient MediaTracker to load the image. ImageIO.read(new File(fileToLoad))
-			//would me easier, however additional work has to be done (convert to RGB image)
-			java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(fileToLoad);
-			PImage img = loadImageMT(awtImage);								
-			if (img==null || img.height<2) {
+			BufferedImage img = ImageIO.read(new File(fileToLoad));
+			if (img==null || img.getHeight()<2) {
 				LOG.log(Level.WARNING, "Invalid image, image height is < 2!");
 				return;
-			}
+			}			
+			
+			//convert to RGB colorspace
+			int w = img.getWidth();
+		    int h = img.getHeight();
+			int[] dataBuffInt = img.getRGB(0, 0, w, h, null, 0, w); 
+			
+	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize+" using "+resize.getName());
+			this.internalBuffer = resize.getBuffer(dataBuffInt, internalBufferXSize, internalBufferYSize, w, h);
 			this.filename = filename;
 			
-	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize);
-	        PixelControllerResize res = Collector.getInstance().getPixelControllerResize();
-	        img.loadPixels();
-	        this.internalBuffer = res.resizeImage(RESIZE_TYP, img.pixels, 
-	                img.width, img.height, internalBufferXSize, internalBufferYSize);
-	        img.updatePixels();	        
-	       
 	        short r,g,b;
 	        int rgbColor;
 
@@ -148,28 +148,6 @@ public class Image extends Generator {
 			LOG.log(Level.WARNING, "Failed to load image "+Image.PREFIX+filename, e);
 		}
 	}
-	
-	
-	 /**
-	  * Ripped from Processing
-	  * Load an AWT image synchronously by setting up a MediaTracker for
-	  * a single image, and blocking until it has loaded.
-	  */
-	private PImage loadImageMT(java.awt.Image awtImage) {
-		//TODO remove dependency to Collector/PApplet
-		MediaTracker tracker = new MediaTracker(Collector.getInstance().getPapplet());
-		tracker.addImage(awtImage, 0);
-		try {
-			tracker.waitForAll();
-		} catch (Exception e) {
-			//e.printStackTrace();  // non-fatal, right?
-		}
-
-		PImage image = new PImage(awtImage);
-	    //image.parent = this;
-	    return image;
-	}
-
 
 	
 	/* (non-Javadoc)
