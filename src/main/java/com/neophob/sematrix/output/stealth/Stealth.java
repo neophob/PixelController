@@ -75,8 +75,7 @@ public class Stealth {
 
 	/** The Constant BUFFERSIZE. */
 	private static final int PANELBUFFERSIZE = NR_OF_LED_HORIZONTAL*NR_OF_LED_VERTICAL;
-	// payload buffer is 64 bytes for 15bit color
-//	private static final int DATABUFFERSIZE = 64;
+
 	// payload buffer is 96 bytes for 24 bit color
 	private static final int DATABUFFERSIZE = 96;
 	
@@ -354,7 +353,6 @@ public class Stealth {
 		
 		if (lastDataMap.get(ofs) == l) {
 			//last frame was equal current frame, do not send it!
-			//log.log(Level.INFO, "do not send frame to {0}", addr);
 			return false;
 		}
 		//update new hash
@@ -376,11 +374,6 @@ public class Stealth {
 			throw new IllegalArgumentException("data length must be 768 bytes! ");
 		}
 		
-/*		//TODO stop if connection counter > n
- 		if (connectionErrorCounter>) {
-			return false;
-		}*/
-
 		byte ofsOne = (byte)(ofs*2);
 		byte ofsTwo = (byte)(ofsOne+1);
 		byte ofsThree = (byte)(ofsTwo+1);
@@ -389,7 +382,7 @@ public class Stealth {
 		byte ofsSix = (byte)(ofsFive+1);
 		byte ofsSeven = (byte)(ofsSix+1);
 		byte ofsEight = (byte)(ofsSeven+1);
-//		byte ofsNine = (byte)(ofsEight+1);
+
 		byte frameOne[] = new byte[DATABUFFERSIZE];
 		byte frameTwo[] = new byte[DATABUFFERSIZE];
 		byte frameThree[] = new byte[DATABUFFERSIZE];
@@ -398,7 +391,7 @@ public class Stealth {
 		byte frameSix[] = new byte[DATABUFFERSIZE];
 		byte frameSeven[] = new byte[DATABUFFERSIZE];
 		byte frameEight[] = new byte[DATABUFFERSIZE];
-//		byte frameNine[] = new byte[DATABUFFERSIZE];
+
 		boolean returnValue = false;
 		
 		System.arraycopy(data, 0, frameOne, 0, DATABUFFERSIZE);
@@ -409,7 +402,6 @@ public class Stealth {
 		System.arraycopy(data, DATABUFFERSIZE*5, frameSix, 0, DATABUFFERSIZE);
 		System.arraycopy(data, DATABUFFERSIZE*6, frameSeven, 0, DATABUFFERSIZE);
 		System.arraycopy(data, DATABUFFERSIZE*7, frameEight, 0, DATABUFFERSIZE);
-//		System.arraycopy(data, DATABUFFERSIZE*8, frameNine, 0, DATABUFFERSIZE);
 
 		byte sendlen = DATABUFFERSIZE;
 		byte cmdfull[] = new byte[sendlen+7];
@@ -510,18 +502,6 @@ public class Stealth {
 			}
 		}
 
-/*		//send frame Nine
-		if (didFrameChange(ofsNine, frameNine)) {
-			cmdfull[1] = ofsNine;
-			flipSecondScanline(cmdfull, frameNine);
-			if (sendSerialData(cmdfull)) {
-				returnValue=true;
-			} else {
-				lastDataMap.put(ofsNine, "");
-			}
-		}
-*/
-		/**/
 		return returnValue;
 	}
 	
@@ -543,21 +523,6 @@ public class Stealth {
 			
 		}
 
-/*		int toggler=14;
-		for (int i=0; i<16; i++) {
-			cmdfull[   5+i] = frameData[i];
-			cmdfull[32+5+i] = frameData[i+32];
-			
-			cmdfull[16+5+i] = frameData[16+toggler];				
-			cmdfull[48+5+i] = frameData[48+toggler];
-			
-			if (i%2==0) {
-				toggler++;
-			} else {
-				toggler-=3;
-			}
-		}
-*/
 	}
 
 	/**
@@ -708,8 +673,6 @@ public class Stealth {
 	}
 
 
-
-
 	/**
 	 * Sleep wrapper.
 	 *
@@ -723,8 +686,4 @@ public class Stealth {
 		}
 	}
 	
-
-
-
-
 }
