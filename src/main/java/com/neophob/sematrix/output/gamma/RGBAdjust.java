@@ -18,10 +18,22 @@
  */
 package com.neophob.sematrix.output.gamma;
 
+/**
+ * fine tune color resolution of multiple pixelinvaders panels
+ * 
+ * @author michu
+ *
+ */
 public class RGBAdjust {
 
 	private int r,g,b;
 	
+	/**
+	 * 
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
 	public RGBAdjust(int r, int g, int b) {
 		this.r = r;
 		this.g = g;
@@ -40,9 +52,12 @@ public class RGBAdjust {
 		return b;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "[r=" + r + ", g=" + g + ", b=" + b + "]";
+		return String.format("RGBAdjust [r=%s, g=%s, b=%s]", r, g, b);
 	}
 	
 	
