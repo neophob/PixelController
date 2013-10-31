@@ -182,7 +182,7 @@ public abstract class Fader implements IFader {
 	public void startFade(int newVisual, int[] bfr) {
 		this.newVisual = newVisual;
 		this.screenOutput = -1;
-		oldBuffer = bfr.clone();
+		oldBuffer = bfr;
 
 		currentStep = 0;
 		started = true;

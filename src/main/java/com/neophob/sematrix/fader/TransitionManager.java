@@ -41,8 +41,8 @@ public class TransitionManager {
 		this.col = col;
 		savedVisuals = new int[col.getAllVisuals().size()][];
 		int i = 0;
-		for (OutputMapping om: col.getAllOutputMappings()) {							
-			savedVisuals[i++] = col.getVisual(om.getVisualId()).getBuffer();
+		for (OutputMapping om: col.getAllOutputMappings()) {
+			savedVisuals[i++] = col.getVisual(om.getVisualId()).getBuffer().clone();
 		}		
 	}
 	
