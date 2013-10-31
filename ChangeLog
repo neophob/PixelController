@@ -7,6 +7,7 @@ Changelog v1.5.0 to v1.5.1
 -Fix Checkbox Mixer, make checkbox size dependent on output
 -Fix PixelImage, possible exception 
 -Fix Geometrics and Cell generators, possible exception
+-Fix rename Rainbowduino firmware to prevent crash
 -Huge refactoring, improve unit testing
 
 
