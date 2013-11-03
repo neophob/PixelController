@@ -101,8 +101,8 @@ public class Blinkenlights extends Generator implements PConstants {
                 movieFiles.add(s);
             }
         } catch (NullPointerException e) {
-            LOG.log(Level.SEVERE, "Failed to search blinken files, make sure directory '"+fu.getRootDirectory()+"data/blinken' exist!");
-            throw new IllegalArgumentException("Failed to search blinken files, make sure directory '"+fu.getRootDirectory()+"data/blinken' exist!");
+            LOG.log(Level.SEVERE, "Failed to search blinken files, make sure directory '"+fu.getBmlDir()+"' exist!");
+            throw new IllegalArgumentException("Failed to search blinken files, make sure directory '"+fu.getBmlDir()+"' exist!");
         }
 
         LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");

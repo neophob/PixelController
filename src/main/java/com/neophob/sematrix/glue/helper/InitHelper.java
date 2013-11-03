@@ -39,7 +39,7 @@ public abstract class InitHelper {
 
     private static final Logger LOG = Logger.getLogger(InitApplication.class.getName());
 
-    private static final String PALETTE_CONFIG_FILENAME = "data/palette.properties";
+    private static final String PALETTE_CONFIG_FILENAME = "palette.properties";
 
     /**
      * 
@@ -49,7 +49,7 @@ public abstract class InitHelper {
     public static List<ColorSet> getColorPalettes(FileUtils fu) throws IllegalArgumentException {
         //load palette
         Properties palette = new Properties();
-        String filename = fu.getRootDirectory()+File.separator+PALETTE_CONFIG_FILENAME;
+        String filename = fu.getDataDir()+File.separator+PALETTE_CONFIG_FILENAME;
         InputStream is = null;
         try {
         	is = new FileInputStream(filename);

@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import processing.core.PApplet;
 
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.Shuffler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.KeyboardHandler;
@@ -82,7 +83,7 @@ public class PixelController extends PApplet {
 	private int setupStep=0;
 	private float steps = 1f/7f;
     private ApplicationConfigurationHelper applicationConfig;
-
+    private FileUtils fileUtils;
 
 	
 	/**
@@ -153,7 +154,14 @@ public class PixelController extends PApplet {
         	
         	switch (setupStep) {
         	case 0:
-        		applicationConfig = InitApplication.loadConfiguration(this);
+        		fileUtils = new FileUtils();
+        		applicationConfig = InitApplication.loadConfiguration(fileUtils);
+        		String rootPath = applicationConfig.getResourcePath();
+        		if (StringUtils.isEmpty(rootPath)) {
+        			//use processing root path
+        			rootPath = this.sketchPath;
+        		}		
+        		
         		setupStep++;
         		drawProgressBar(steps);
         		drawSetupText("Create Collector", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
@@ -167,7 +175,7 @@ public class PixelController extends PApplet {
         		return;
 
         	case 2:
-        		this.collector.init(this, applicationConfig);     
+        		this.collector.init(this, fileUtils, applicationConfig);     
         		frameRate(applicationConfig.parseFps());
         		noSmooth();
         		setupStep++;

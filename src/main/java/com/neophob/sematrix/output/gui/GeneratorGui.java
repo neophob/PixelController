@@ -414,7 +414,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Theme.themeDropdownList(blinkenLightsList);
         i=0;
         
-        FileUtils fu = new FileUtils(col.getPapplet().sketchPath);
+        //TODO inject
+        FileUtils fu = new FileUtils();
         for (String s: fu.findBlinkenFiles()) {
             blinkenLightsList.addItem(s, i);
             i++;

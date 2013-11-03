@@ -97,7 +97,7 @@ public class Textwriter extends Generator {
 	 */
 	public Textwriter(MatrixData matrix, String fontName, int fontSize, String text, FileUtils fu) {
 		super(matrix, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
-		String filename = fu.getRootDirectory()+File.separator+"data"+File.separator+fontName;
+		String filename = fu.getDataDir()+File.separator+fontName;
 		InputStream is = null;
 		try {			
 			is = new FileInputStream(filename);

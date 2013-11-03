@@ -76,9 +76,6 @@ public class Collector {
 	/** The initialized. */
 	private boolean initialized;
 	
-	/** The papplet. */
-	private PApplet papplet;
-	
 	/** The matrix. */
 	private MatrixData matrix;
 
@@ -159,6 +156,8 @@ public class Collector {
 	
 	private ISound sound;
 	
+	private PApplet papplet;
+	
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -183,7 +182,7 @@ public class Collector {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(PApplet papplet, ApplicationConfigurationHelper ph) {
+	public synchronized void init(PApplet papplet, FileUtils fileUtils, ApplicationConfigurationHelper ph) {
 		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
@@ -194,13 +193,6 @@ public class Collector {
 		this.ph = ph;
 		this.fps = ph.parseFps();
 		
-		String rootPath = ph.getResourcePath();
-		if (StringUtils.isEmpty(rootPath)) {
-			//use processing root path
-			rootPath = papplet.sketchPath;
-		}
-		FileUtils fileUtils = new FileUtils(rootPath);
-
 		this.colorSets = InitHelper.getColorPalettes(fileUtils);
 		
 		//choose sound implementation

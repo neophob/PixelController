@@ -48,9 +48,6 @@ public class Image extends Generator {
     /** The Constant INITIAL_IMAGE. */
     public static final String INITIAL_IMAGE = "initial.image.simple";
     
-	/** The Constant PREFIX. */
-    public static final String PREFIX = "pics/";
-	
 	//list to store movie files used by shuffler
     private List<String> imageFiles;
     
@@ -87,8 +84,8 @@ public class Image extends Generator {
 	            imageFiles.add(s);
 	        }		    
 		} catch (NullPointerException e) {
-		    LOG.log(Level.SEVERE, "Failed to search image files, make sure directory 'data/pics' exist!");
-		    throw new IllegalArgumentException("Failed to search image files, make sure directory 'data/pics' exist!");
+		    LOG.log(Level.SEVERE, "Failed to search image files, make sure directory '"+fu.getImageDir()+"' exist!");
+		    throw new IllegalArgumentException("Failed to search image files, make sure directory '"+fu.getImageDir()+"' exist!");
 		}
 		
         LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");
@@ -108,12 +105,12 @@ public class Image extends Generator {
 
 		//only load if needed
 		if (StringUtils.equals(filename, this.filename)) {
-			LOG.log(Level.INFO, "new filename does not differ from old: "+Image.PREFIX+filename);
+			LOG.log(Level.INFO, "new filename does not differ from old: "+filename);
 			return;
 		}
 						
 		try {
-			String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+filename;
+			String fileToLoad = fileUtils.getImageDir()+File.separator+filename;
 
 			LOG.log(Level.INFO, "load image "+fileToLoad);
 			BufferedImage img = ImageIO.read(new File(fileToLoad));
@@ -145,7 +142,7 @@ public class Image extends Generator {
 	        }
 	        
 		} catch (Exception e) {			
-			LOG.log(Level.WARNING, "Failed to load image "+Image.PREFIX+filename, e);
+			LOG.log(Level.WARNING, "Failed to load image "+filename, e);
 		}
 	}
 

@@ -19,14 +19,15 @@
 
 package com.neophob.sematrix.setup;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import processing.core.PApplet;
-
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.E1_31Device;
 import com.neophob.sematrix.output.MiniDmxDevice;
@@ -51,7 +52,7 @@ public abstract class InitApplication {
 
     private static final Logger LOG = Logger.getLogger(InitApplication.class.getName());
     
-    private static final String APPLICATION_CONFIG_FILENAME = "data/config.properties";
+    private static final String APPLICATION_CONFIG_FILENAME = "config.properties";
 
     
     /**
@@ -61,11 +62,12 @@ public abstract class InitApplication {
      * @return
      * @throws IllegalArgumentException
      */
-    public static ApplicationConfigurationHelper loadConfiguration(PApplet papplet) throws IllegalArgumentException {
+    public static ApplicationConfigurationHelper loadConfiguration(FileUtils fileUtils) throws IllegalArgumentException {
         Properties config = new Properties();
         InputStream is = null;
         try {
-        	is = papplet.createInput(APPLICATION_CONFIG_FILENAME);        	
+        	String fileToLoad = fileUtils.getDataDir()+File.separator+APPLICATION_CONFIG_FILENAME;
+        	is = new FileInputStream(fileToLoad);
             config.load(is);            
             LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
         } catch (Exception e) {

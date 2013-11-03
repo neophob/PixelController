@@ -62,7 +62,7 @@ public class GenerateAllResolutionTest {
 			rootDir = "."+File.separatorChar;
 		}
     	ph = new ApplicationConfigurationHelper(new Properties());
-    	fileUtils = new FileUtils(rootDir);
+    	fileUtils = new FileUtils();
     	sound = new SoundDummy();
     	resize = new PixelResize();
     	col = new ColorSet("test", new int[]{1,2,3});

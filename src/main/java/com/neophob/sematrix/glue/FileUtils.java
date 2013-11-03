@@ -20,6 +20,8 @@ package com.neophob.sematrix.glue;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Helper Class to find some files
@@ -28,14 +30,21 @@ import java.io.FilenameFilter;
  */
 public class FileUtils {
 
+	private static final Logger LOG = Logger.getLogger(FileUtils.class.getName());
+
+	private static final String DATA_DIR = File.separator+"data";
+
+	private static final String BML_DIR = DATA_DIR+File.separator+"blinken"+File.separator;
+	private static final String IMAGE_DIR = DATA_DIR+File.separator+"pics";
+	
 	private String rootDirectory;
 	
 	/**
 	 * 
 	 * @param rootDirectory
 	 */
-	public FileUtils(String rootDirectory) {
-		this.rootDirectory = rootDirectory;
+	public FileUtils() {
+		this.rootDirectory = System.getProperty("user.dir");
 	}
 	
 	/**
@@ -46,8 +55,9 @@ public class FileUtils {
 	 * @return
 	 */
 	private String[] findFiles(String path, FilenameFilter ff) {
-		File f = new File(rootDirectory+path);
+		File f = new File(path);
 		if (!f.isDirectory()) {
+			LOG.log(Level.WARNING, f+" is not a directoy");
 			return null;
 		}
 		
@@ -61,7 +71,7 @@ public class FileUtils {
 	 */
 	public String[] findBlinkenFiles() {
 		FilenameFilter ff = new BlinkenlightsFilter();
-		return findFiles("/data/blinken", ff);
+		return findFiles(this.rootDirectory+BML_DIR, ff);
 	}
 	
 	/**
@@ -71,7 +81,7 @@ public class FileUtils {
 	 */
 	public String[] findImagesFiles() {
 		FilenameFilter ff = new ImageFilter();
-		return findFiles("/data/pics", ff);
+		return findFiles(this.rootDirectory+IMAGE_DIR, ff);
 	}
 	
 	/**
@@ -80,6 +90,28 @@ public class FileUtils {
 	 */
 	public String getRootDirectory() {
 		return rootDirectory;
+	}
+	
+	
+	/**
+	 * @return the dataDir
+	 */
+	public String getDataDir() {
+		return rootDirectory+DATA_DIR;
+	}
+
+	/**
+	 * @return the bmlDir
+	 */
+	public String getBmlDir() {
+		return rootDirectory+BML_DIR;
+	}
+
+	/**
+	 * @return the imageDir
+	 */
+	public String getImageDir() {
+		return rootDirectory+IMAGE_DIR;
 	}
 
 
