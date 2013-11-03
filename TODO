@@ -31,6 +31,7 @@ Roadmap PixelController
 -Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 -Merge code of the output package, alot of duplicate code 
 -Update PixelInvaders Net Device
+-Use Maven release plugin
 
 
 Roadmap PixelInvaders Firmware
