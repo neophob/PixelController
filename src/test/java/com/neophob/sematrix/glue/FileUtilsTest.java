@@ -22,6 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
 import org.junit.Test;
 
 /**
@@ -46,6 +48,12 @@ public class FileUtilsTest {
     	
     	assertFalse(fu.getRootDirectory().isEmpty());
 
+    	List<PresetSettings> presets = fu.loadPresents(128);
+    	assertNotNull(presets);
+    	assertTrue(presets.size()>2);
+    	
+    	fu.savePresents(presets);
+    	
     }
 
 

@@ -34,7 +34,6 @@ import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.E1_31Device;
 import com.neophob.sematrix.output.NullDevice;
 import com.neophob.sematrix.output.OutputDeviceEnum;
-import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.output.UdpDevice;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 

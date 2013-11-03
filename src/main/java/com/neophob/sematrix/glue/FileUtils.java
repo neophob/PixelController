@@ -131,7 +131,11 @@ public class FileUtils {
      */
     public List<PresetSettings> loadPresents(int nrOfElements) {
         Properties props = new Properties();
-        List<PresetSettings> presents = new ArrayList<PresetSettings>(nrOfElements);
+        List<PresetSettings> presets = new ArrayList<PresetSettings>(nrOfElements);
+        for (int i=0; i<nrOfElements; i++) {
+        	presets.add(new PresetSettings());
+        }
+        
         InputStream input = null;
         try {
         	String filename = this.getDataDir()+File.separator+PRESENTS_FILENAME;
@@ -142,7 +146,7 @@ public class FileUtils {
             for (int i=0; i<nrOfElements; i++) {
                 s=props.getProperty(""+i);
                 if (StringUtils.isNotBlank(s)) {
-                    presents.get(i).setPresent(s.split(";"));
+                	presets.get(i).setPresent(s.split(";"));
                     count++;
                 }
             }
@@ -159,16 +163,16 @@ public class FileUtils {
             }        
         }
         
-        return presents;
+        return presets;
     }
 
     /**
      * Save presents.
      */
-    public void savePresents(List<PresetSettings> presents) {
+    public void savePresents(List<PresetSettings> presets) {
         Properties props = new Properties();
         int idx=0;
-        for (PresetSettings p: presents) {
+        for (PresetSettings p: presets) {
             props.setProperty( ""+idx, p.getSettingsAsString() );
             idx++;
         }
