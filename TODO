@@ -18,8 +18,8 @@ Roadmap PixelController
 -Option to modify colorsets of all visuals
 -implement colorlib Procesing lib (http://code.google.com/p/colorlib/)
 -Add Perlin Noise generator
--Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC)
- see https://sites.google.com/site/stamb2012/examples/batch-processing
+-Run headless (Use case: PixelController runns on a remote computer and PixelController is controlled via OSC) 
+ remove dependency to PApplet. PApplet should only used in the GUI part
 -add more fader (pixel fader for example)
 -support more than 2 rows
 -Option to save output of PixelController (byte stream) to a flat file (Offline usage)
@@ -30,6 +30,7 @@ Roadmap PixelController
 -Game of life generator
 -Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 -Merge code of the output package, alot of duplicate code 
+-Update PixelInvaders Net Device
 
 
 Roadmap PixelInvaders Firmware

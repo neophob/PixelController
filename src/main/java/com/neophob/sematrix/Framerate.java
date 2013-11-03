@@ -14,11 +14,13 @@ public class Framerate {
 	private long nextRepaintDue = 0;
 	private long startTime;
 	private long delay;
+	private int targetFps;
 
 	public Framerate(int targetFps) {
 		LOG.info("Target fps: "+targetFps);
 		this.delay = 1000/targetFps;		
 		this.startTime = System.currentTimeMillis();
+		this.targetFps = targetFps;
 	}
 
 	public void waitForFps(long cnt) {
@@ -33,7 +35,7 @@ public class Framerate {
 		}
 		nextRepaintDue = System.currentTimeMillis() + delay;
 		
-		if (cnt % 20 == 0) {
+		if (cnt % (targetFps*5) == 0) {
 			long tdiff = (System.currentTimeMillis() - startTime) / 1000;
 			if (tdiff>0) {
 				LOG.info("FPS: "+ (cnt/tdiff));						
