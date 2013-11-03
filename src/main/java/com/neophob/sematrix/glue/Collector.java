@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.glue;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +28,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.lang3.StringUtils;
 
 import processing.core.PApplet;
-import processing.core.PImage;
 
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
@@ -39,7 +43,6 @@ import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.helper.InitHelper;
 import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.input.SoundDummy;
-import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.MessageProcessor;
@@ -203,12 +206,12 @@ public class Collector {
 		
 		//choose sound implementation
 		try {
-			sound = new SoundMinim(papplet, ph.getSoundSilenceThreshold());			
+	//		sound = new SoundMinim(papplet, ph.getSoundSilenceThreshold());			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE, Exception: {0}.", e);
 			sound = new SoundDummy();
 		}
-		
+		sound = new SoundDummy();
 		//create the device with specific size
 		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
@@ -230,13 +233,15 @@ public class Collector {
 		
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
+		LOG.log(Level.INFO, "Initialize Visuals");
 		try {
 	        Visual.initializeVisuals(nrOfScreens+additionalVisuals);		    
 		} catch (IndexOutOfBoundsException e) {
 		    LOG.log(Level.SEVERE, "Failed to initialize Visual, maybe missing palette files?\n");
 		    throw new IllegalArgumentException("Failed to initialize Visuals, maybe missing palette files?");
 		}
-				
+		
+		LOG.log(Level.INFO, "Initialize output");
 		pixelControllerOutput = new PixelControllerOutput();
 		pixelControllerOutput.initAll();
 		
@@ -390,6 +395,20 @@ public class Collector {
 	}
 
 	
+	private void saveImage(Visual v, String filename, int[] data) {
+		try {
+		    // retrieve image
+			
+			//maybe colorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer))
+		    BufferedImage bi = new BufferedImage(v.getGenerator1().getInternalBufferXSize(), 
+		    		v.getGenerator1().getInternalBufferYSize(), BufferedImage.TYPE_INT_RGB);
+		    File outputfile = new File(filename);
+		    ImageIO.write(bi, "png", outputfile);
+		} catch (IOException e) {
+		    LOG.log(Level.SEVERE, "Failed to save screenshot "+filename, e);
+		}
+	}
+	
 	/**
 	 * create screenshot
 	 */
@@ -398,16 +417,13 @@ public class Collector {
 		String suffix = ".png";
 		for (Visual v: allVisuals) {
 			String prefix = "screenshot/"+frames+"-"+ofs+"-";
-			PImage p = v.getGeneratorAsImage(0);
-			p.save(prefix+"gen1"+suffix);
-			p=v.getGeneratorAsImage(1);
-			p.save(prefix+"gen2"+suffix);
-			p=v.getEffectAsImage(0);
-			p.save(prefix+"fx1"+suffix);
-			p=v.getEffectAsImage(1);
-			p.save(prefix+"fx2"+suffix);
-			p=v.getMixerAsImage();
-			p.save(prefix+"mix"+suffix);
+			saveImage(v, prefix+"gen1"+suffix, v.getGenerator1().internalBuffer);
+			saveImage(v, prefix+"gen2"+suffix, v.getGenerator2().internalBuffer);
+
+			saveImage(v, prefix+"fx1"+suffix, v.getEffect1Buffer());
+			saveImage(v, prefix+"fx2"+suffix, v.getEffect2Buffer());
+
+			saveImage(v, prefix+"mix"+suffix, v.getMixerBuffer());
 			ofs++;
 		}
 	}

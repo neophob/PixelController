@@ -72,7 +72,7 @@ public class PixelControllerConsole {
 		framerate = new Framerate(applicationConfig.parseFps());
 
 		LOG.log(Level.INFO, "Initialize TCP/OSC Server");
-		this.collector.initDaemons(applicationConfig);     
+//		this.collector.initDaemons(applicationConfig);     
 
 		LOG.log(Level.INFO, "Initialize Output device");
 		this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
@@ -109,7 +109,7 @@ public class PixelControllerConsole {
 	}
 
 
-	public void mainLoop() {
+	public void mainLoop() {		
 		LOG.info("enter main loop...");
         long cnt = 0;
         
@@ -149,7 +149,14 @@ public class PixelControllerConsole {
 	 * @param args the arguments
 	 */
 	public static void main(String args[]) {
-		new PixelControllerConsole().mainLoop();	        
+		
+		System.setProperty("java.awt.headless", "true");
+		try {
+			new PixelControllerConsole().mainLoop();	        			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.log(Level.SEVERE, "PixelController Exception", e);
+		}
 	}
 
 

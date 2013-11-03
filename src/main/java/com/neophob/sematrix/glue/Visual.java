@@ -20,9 +20,6 @@ package com.neophob.sematrix.glue;
 
 import java.util.List;
 
-import processing.core.PApplet;
-import processing.core.PImage;
-
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.Effect;
 import com.neophob.sematrix.effect.Effect.EffectName;
@@ -399,56 +396,6 @@ public class Visual {
         return colorSet;
     }
 
-    /**
-	 * 
-	 * @param buffer
-	 * @return
-	 */
-	private PImage getBufferAsImage(int[] buffer) {
-		PImage pImage = Collector.getInstance().getPapplet().createImage
-							(generator1.getInternalBufferXSize() , generator1.getInternalBufferYSize(), PApplet.RGB );
-		pImage.loadPixels();
-		System.arraycopy(buffer, 0, pImage.pixels, 0, buffer.length);
-		pImage.updatePixels();
-		return pImage;
-	}
-
-	/**
-	 * get screenshot of generator
-	 * 
-	 * @param ofs
-	 * @return
-	 */
-	public PImage getGeneratorAsImage(int ofs) {
-		if (ofs==0) {
-			return getBufferAsImage(colorSet.convertToColorSetImage(generator1.internalBuffer));			
-		}
-		return getBufferAsImage(colorSet.convertToColorSetImage(generator2.internalBuffer));
-	}
-
-	/**
-	 * get screenshot of effects
-	 * @param ofs
-	 * @return
-	 */
-	public PImage getEffectAsImage(int ofs) {
-		if (ofs==0) {
-			return getBufferAsImage(
-					colorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer))
-			);			
-		}
-		return getBufferAsImage(
-				colorSet.convertToColorSetImage(effect2.getBuffer(generator2.internalBuffer))
-		);			
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public PImage getMixerAsImage() {
-		return getBufferAsImage(getMixerBuffer());
-	}
 	
 	//TODO make configurable
 	private static final int MAX_NR_OF_VISUALS = 12;
