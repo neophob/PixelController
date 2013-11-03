@@ -1,0 +1,488 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.neophob.pixelcontroller</groupId>
+		<artifactId>pixelcontroller</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>SNAPSHOT</version>
+	</parent>
+        
+        
+	<groupId>com.neophob.pixelcontroller</groupId>
+	<artifactId>pixelcontroller-core</artifactId>
+	<name>PixelController Core Library</name>
+	<version>SNAPSHOT</version>
+	
+	<packaging>jar</packaging>
+	<description>
+		PixelController - a (LED) matrix control project. 
+		The main goal of this application is to create an easy to use matrix controller software 
+		which creates stunning visuals!</description>
+	<url>http://www.PixelInvaders.ch</url>
+	<inceptionYear>2010</inceptionYear>
+
+	<properties>
+		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
+		<sonar.phase>generate-sources</sonar.phase>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<prerequisites>
+		<maven>2.2.1</maven>
+	</prerequisites>
+
+	<developers>
+		<developer>
+			<name>Michael Vogt</name>
+			<id>michu</id>
+			<email>michu@neophob.com</email>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/neophob/PixelController/issues</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:https://github.com/neophob/PixelController.git</connection>
+		<developerConnection>scm:git:git@github.com:neophob/PixelController.git</developerConnection>
+		<url>https://github.com/neophob/PixelController</url>
+		<tag>HEAD</tag>
+	</scm>
+	
+	<repositories>
+		<repository>
+			<id>maven2-repository.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Local Maven repository of releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+
+		<!-- include properties files in jar -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerVersion>1.6</compilerVersion>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- Package all files together -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<finalName>assembly</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<outputDirectory>${project.build.directory}</outputDirectory>
+							<descriptors>
+								<descriptor>${basedir}/src/build/assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version><!--$NO-MVN-MAN-VER$ -->
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.neophob.PixelController</mainClass>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<url>${project.url}</url>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<!-- CHECK: mvn license:check -Dyear=2013 -Demail=michu@neophob.com ADD: 
+				mvn license:format -Dyear=2013 -Demail=michu@neophob.com -->
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.10.b1</version>
+				<configuration>
+					<header>src/build/header.txt</header>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- The Surefire Plugin is used during the test phase of the build lifecycle 
+					to execute the unit tests of an application. It generates reports in 2 different 
+					file formats -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.16</version>
+				<configuration>
+					<systemPropertyVariables>
+						<buildDirectory>${basedir}</buildDirectory>
+						<java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.2</version>
+			</plugin>
+			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
+				since they aren't available in the public Maven repositories. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>RXTXcomm.jar</id>
+						<configuration>
+							<file>lib/serial/RXTXcomm.jar</file>
+							<groupId>org.qbang</groupId>
+							<artifactId>rxtx</artifactId>
+							<version>2.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>minim.jar</id>
+						<configuration>
+							<file>lib/minim/library/minim.jar</file>
+							<groupId>compartmental.net</groupId>
+							<artifactId>minim</artifactId>
+							<version>2.0.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jsminim.jar</id>
+						<configuration>
+							<file>lib/minim/library/jsminim.jar</file>
+							<groupId>compartmental.net</groupId>
+							<artifactId>jsminim</artifactId>
+							<version>2.0.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>minim-spi.jar</id>
+						<configuration>
+							<file>lib/minim/library/minim-spi.jar</file>
+							<groupId>compartmental.net</groupId>
+							<artifactId>minim-spi</artifactId>
+							<version>2.0.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>tritonus_aos.jar</id>
+						<configuration>
+							<file>lib/minim/library/tritonus_aos.jar</file>
+							<groupId>compartmental.net</groupId>
+							<artifactId>tritonus_aos</artifactId>
+							<version>2.0.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>tritonus_share.jar</id>
+						<configuration>
+							<file>lib/minim/library/tritonus_share.jar</file>
+							<groupId>compartmental.net</groupId>
+							<artifactId>tritonus_share</artifactId>
+							<version>2.0.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>artnet4j-0001.jar</id>
+						<configuration>
+							<file>lib/artnet4j-0001.jar</file>
+							<groupId>artnet4j</groupId>
+							<artifactId>artnet4j</artifactId>
+							<version>0001</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>rv3sf_api.jar</id>
+						<configuration>
+							<file>lib/rv3sf_api-0.2.jar</file>
+							<groupId>rv3sf_api</groupId>
+							<artifactId>rv3sf_api</artifactId>
+							<version>0.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>oscP5.jar</id>
+						<configuration>
+							<file>lib/oscP5.jar</file>
+							<groupId>oscp5</groupId>
+							<artifactId>oscp5</artifactId>
+							<version>0.9.9</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-install-plugin</artifactId>
+										<versionRange>[2.3.1,)</versionRange>
+										<goals>
+											<goal>install-file</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.16</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<targetJdk>1.6</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.5.2</version>
+				<configuration>
+					<xmlOutput>true</xmlOutput>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.10</version>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<dependencies>
+		<!-- dependencies from repos -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.jargs</groupId>
+			<artifactId>jargs</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.2.7</version>
+		</dependency>
+
+		<!-- processing deps -->
+		<dependency>
+			<groupId>org.qbang</groupId>
+			<artifactId>rxtx</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>minim</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>jsminim</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>minim-spi</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>tritonus_aos</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>compartmental.net</groupId>
+			<artifactId>tritonus_share</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<!-- src: http://code.google.com/p/artnet4j/ -->
+		<dependency>
+			<groupId>artnet4j</groupId>
+			<artifactId>artnet4j</artifactId>
+			<version>0001</version>
+		</dependency>
+		<!-- src: https://code.google.com/p/rainbowduino-v3-streaming-firmware/ -->
+		<dependency>
+			<groupId>rv3sf_api</groupId>
+			<artifactId>rv3sf_api</artifactId>
+			<version>0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+	</dependencies>
+	
+</project>
