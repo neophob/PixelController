@@ -18,8 +18,6 @@
  */
 package com.neophob.sematrix.properties;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,8 +29,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.PresetSettings;
 import com.neophob.sematrix.layout.BoxLayout;
 import com.neophob.sematrix.layout.HorizontalLayout;
 import com.neophob.sematrix.layout.Layout;
@@ -53,12 +49,6 @@ public class ApplicationConfigurationHelper {
     private static final int DEFAULT_RESOLUTION = 8;
     private static final float DEFAULT_SOUND_THRESHOLD = 0.0005f;
     
-	/** The Constant NR_OF_PRESENT_SLOTS. */
-	public static final int NR_OF_PRESET_SLOTS = 128;
-
-    /** The Constant PRESENTS_FILENAME. */
-    private static final String PRESENTS_FILENAME = "data/presents.led";
-
     /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
     private static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = 
     		"Multiple devices configured, illegal configuration!";
@@ -358,68 +348,6 @@ public class ApplicationConfigurationHelper {
     }
 
 
-    /**
-     * Load presents.
-     */
-    public void loadPresents() {
-        Properties props = new Properties();
-        InputStream input = null;
-        try {
-            input = Collector.getInstance().getPapplet().createInput(PRESENTS_FILENAME);
-            props.load(input);
-            List<PresetSettings> presents = Collector.getInstance().getPresets();            
-            String s;
-            int count=0;
-            for (int i=0; i<NR_OF_PRESET_SLOTS; i++) {
-                s=props.getProperty(""+i);
-                if (StringUtils.isNotBlank(s)) {
-                    presents.get(i).setPresent(s.split(";"));
-                    count++;
-                }
-            }
-            LOG.log(Level.INFO, "Loaded {0} presents from file {1}", new Object[] { count, PRESENTS_FILENAME });
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
-        } finally {
-            try {
-                if (input!=null) {
-                    input.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close input stream", e);
-            }        
-        }
-    }
-
-    /**
-     * Save presents.
-     */
-    public void savePresents() {
-        Properties props = new Properties();
-        List<PresetSettings> presents = Collector.getInstance().getPresets();
-        int idx=0;
-        for (PresetSettings p: presents) {
-            props.setProperty( ""+idx, p.getSettingsAsString() );
-            idx++;
-        }
-
-        OutputStream output = null;
-        try {
-            output = Collector.getInstance().getPapplet().createOutput(PRESENTS_FILENAME);
-            props.store(output, "Visual Daemon presents file");
-            LOG.log(Level.INFO, "Presents saved as {0}", PRESENTS_FILENAME );
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
-        } finally {
-            try {
-                if (output!=null) {
-                    output.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close output stream", e);
-            }        
-        }
-    }
     
     
     /**
@@ -1140,9 +1068,9 @@ public class ApplicationConfigurationHelper {
      * 
      * @return
      */
-    public int loadPresetOnStart() {
+    public int loadPresetOnStart(int maxEntry) {
         int val = parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
-        if (val < NR_OF_PRESET_SLOTS) {
+        if (val < maxEntry) {
             return val;
         }
         return -1;

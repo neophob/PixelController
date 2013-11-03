@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.layout.Layout.LayoutName;
 import com.neophob.sematrix.output.ArtnetDevice;
 import com.neophob.sematrix.output.E1_31Device;
@@ -509,18 +510,18 @@ public class PropertiesHelperTest {
     public void testLoadPresetOnStartup() {
         Properties config = new Properties();
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        int presetNr = ph.loadPresetOnStart();
+        int presetNr = ph.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
         assertEquals(-1, presetNr);
         
         config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "22");
         ph = new ApplicationConfigurationHelper(config);
-        presetNr = ph.loadPresetOnStart();
+        presetNr = ph.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
         assertEquals(22, presetNr);
         
         config = new Properties();
         config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "2222");
         ph = new ApplicationConfigurationHelper(config);
-        presetNr = ph.loadPresetOnStart();
+        presetNr = ph.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
         assertEquals(-1, presetNr);
     }
     

@@ -64,6 +64,9 @@ public class Collector {
 	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";
 	
+	/** The Constant NR_OF_PRESENT_SLOTS. */
+	public static final int NR_OF_PRESET_SLOTS = 128;
+
 	/** The singleton instance. */
 	private static Collector instance = new Collector();
 
@@ -158,6 +161,8 @@ public class Collector {
 	
 	private PApplet papplet;
 	
+	private FileUtils fileUtils;
+	
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -170,7 +175,7 @@ public class Collector {
 
 		selectedPreset=0;
 		
-		presets = PresetSettings.initializePresetSettings(ApplicationConfigurationHelper.NR_OF_PRESET_SLOTS);
+		presets = PresetSettings.initializePresetSettings(NR_OF_PRESET_SLOTS);
 				
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
 		pixelControllerShufflerSelect.initAll();		 
@@ -189,6 +194,7 @@ public class Collector {
 		}
 
 		this.papplet = papplet;
+		this.fileUtils = fileUtils;
 		this.nrOfScreens = ph.getNrOfScreens();
 		this.ph = ph;
 		this.fps = ph.parseFps();
@@ -234,7 +240,7 @@ public class Collector {
 		pixelControllerOutput = new PixelControllerOutput();
 		pixelControllerOutput.initAll();
 		
-		ph.loadPresents();
+		this.presets = fileUtils.loadPresents(NR_OF_PRESET_SLOTS);
 		soundAware = ph.isAudioAware();
 		
 		//create an empty mapping
@@ -314,8 +320,10 @@ public class Collector {
 		}
 		
 		//update the current value of frames per second
-		pixConStat.setCurrentFps(papplet.frameRate);
-		pixConStat.setFrameCount(papplet.frameCount);
+		if (papplet!=null) {
+			pixConStat.setCurrentFps(papplet.frameRate);
+			pixConStat.setFrameCount(papplet.frameCount);			
+		}
 
 		framesEffective+=u;
 		long l = System.currentTimeMillis();
@@ -487,6 +495,10 @@ public class Collector {
 
 	public void setRandomPresetMode(boolean randomPresetMode) {
 		this.randomPresetMode = randomPresetMode;
+	}
+	
+	public void savePresets() {
+		fileUtils.savePresents(presets);
 	}
 
 	/**

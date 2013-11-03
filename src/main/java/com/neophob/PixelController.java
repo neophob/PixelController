@@ -210,7 +210,7 @@ public class PixelController extends PApplet {
         		}
 
         		//load saves presets
-        		int presetNr = applicationConfig.loadPresetOnStart();
+        		int presetNr = applicationConfig.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
         		if (presetNr >= 0) {
         		    presetNr--;
         			LOG.log(Level.INFO,"Load preset "+presetNr);

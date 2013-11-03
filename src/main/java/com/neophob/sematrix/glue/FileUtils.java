@@ -19,9 +19,18 @@
 package com.neophob.sematrix.glue;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Helper Class to find some files
@@ -37,6 +46,9 @@ public class FileUtils {
 	private static final String BML_DIR = DATA_DIR+File.separator+"blinken"+File.separator;
 	private static final String IMAGE_DIR = DATA_DIR+File.separator+"pics";
 	
+    /** The Constant PRESENTS_FILENAME. */
+    private static final String PRESENTS_FILENAME = "presents.led";
+
 	private String rootDirectory;
 	
 	/**
@@ -113,6 +125,72 @@ public class FileUtils {
 	public String getImageDir() {
 		return rootDirectory+IMAGE_DIR;
 	}
+
+    /**
+     * Load presents.
+     */
+    public List<PresetSettings> loadPresents(int nrOfElements) {
+        Properties props = new Properties();
+        List<PresetSettings> presents = new ArrayList<PresetSettings>(nrOfElements);
+        InputStream input = null;
+        try {
+        	String filename = this.getDataDir()+File.separator+PRESENTS_FILENAME;
+        	input = new FileInputStream(filename);
+            props.load(input);                        
+            String s;
+            int count=0;
+            for (int i=0; i<nrOfElements; i++) {
+                s=props.getProperty(""+i);
+                if (StringUtils.isNotBlank(s)) {
+                    presents.get(i).setPresent(s.split(";"));
+                    count++;
+                }
+            }
+            LOG.log(Level.INFO, "Loaded {0} presents from file {1}", new Object[] { count, PRESENTS_FILENAME });
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
+        } finally {
+            try {
+                if (input!=null) {
+                    input.close();
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "Failed to close input stream", e);
+            }        
+        }
+        
+        return presents;
+    }
+
+    /**
+     * Save presents.
+     */
+    public void savePresents(List<PresetSettings> presents) {
+        Properties props = new Properties();
+        int idx=0;
+        for (PresetSettings p: presents) {
+            props.setProperty( ""+idx, p.getSettingsAsString() );
+            idx++;
+        }
+
+        OutputStream output = null;
+        try {
+        	String filename = this.getDataDir()+File.separator+PRESENTS_FILENAME;
+        	output = new FileOutputStream(filename);
+            props.store(output, "Visual Daemon presents file");
+            LOG.log(Level.INFO, "Presents saved as {0}", PRESENTS_FILENAME );
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
+        } finally {
+            try {
+                if (output!=null) {
+                    output.close();
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "Failed to close output stream", e);
+            }        
+        }
+    }
 
 
 	/**
