@@ -1,0 +1,110 @@
+<!--
+
+    Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+
+    This file is part of PixelController.
+
+    PixelController is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    PixelController is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    
+	<id>distribution</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+ 
+    <baseDirectory>${project.artifactId}-${project.version}</baseDirectory>
+ 	 
+ 	<moduleSets>
+ 		<moduleSet>
+ 			<includes>
+				<include>com.neophob.pixelcontroller.pixelcontroller-core</include>
+		        <include>com.neophob.pixelcontroller.pixelcontroller-gui</include>
+ 			</includes>
+ 		</moduleSet>
+ 	</moduleSets>
+ 	
+	<!-- Overlay with files from "src/build/dist" -->
+	<fileSets>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/data</directory>
+			<outputDirectory>/data</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/integration</directory>
+			<outputDirectory>/integration</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/docs</directory>
+			<outputDirectory>/docs</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/startscript</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+		
+		<fileSet>
+			<directory>${basedir}/pixelcontroller-core/target/assembly/pixelcontroller-core</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>		
+
+		<fileSet>
+			<directory>${basedir}/pixelcontroller-gui/target/assembly/pixelcontroller-gui</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>		
+		
+		<!-- Small hack to create a log folder:
+		Copy a existing folder without subfolders, 
+		rename it, but do not copy files. -->
+		<fileSet>
+			<directory>${basedir}/src/main/resources/startscript</directory>
+			<outputDirectory>/log</outputDirectory>
+			<directoryMode>0755</directoryMode>
+			<excludes>
+				<exclude>*</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets> 	
+ 	
+ 	<files>
+ 		<file>
+			<source>${basedir}/TODO</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>TODO.txt</destName>
+		</file>
+
+ 		<file>
+			<source>${basedir}/ChangeLog</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>Changelog.txt</destName>
+		</file>
+ 	
+ 	</files>
+ 	
+</assembly>
