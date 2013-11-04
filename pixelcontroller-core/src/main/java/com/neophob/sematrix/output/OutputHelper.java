@@ -23,8 +23,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import processing.serial.Serial;
-
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 import com.neophob.sematrix.properties.ColorFormat;
 

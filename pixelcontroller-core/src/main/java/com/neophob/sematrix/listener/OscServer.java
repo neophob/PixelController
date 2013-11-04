@@ -23,13 +23,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import oscP5.OscEventListener;
-import oscP5.OscMessage;
-import oscP5.OscP5;
-import oscP5.OscProperties;
-import oscP5.OscStatus;
-import processing.core.PApplet;
-
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.jmx.PacketAndBytesStatictics;
 import com.neophob.sematrix.properties.ValidCommands;
@@ -40,12 +33,12 @@ import com.neophob.sematrix.properties.ValidCommands;
  * @author michu
  *
  */
-public class OscServer implements OscEventListener, PacketAndBytesStatictics {
+public class OscServer implements PacketAndBytesStatictics {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(OscServer.class.getName());
 
-	private OscP5 oscP5;
+	//private OscP5 oscP5;
 	
 	private int oscPacketCounter;
 	private long oscBytesRecieved;
@@ -54,7 +47,7 @@ public class OscServer implements OscEventListener, PacketAndBytesStatictics {
 	 * 
 	 * @param listeningPort
 	 */
-	public OscServer(PApplet papplet, int listeningPort) {
+	public OscServer(int listeningPort) {
 	    if (listeningPort<1) {
 	        LOG.log(Level.INFO, "Configured Port {0}, OSC Server disabled", new Object[] { listeningPort });
 	        return;
@@ -62,25 +55,25 @@ public class OscServer implements OscEventListener, PacketAndBytesStatictics {
 
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });
 		
-        OscProperties prop = new OscProperties();
+  /*      OscProperties prop = new OscProperties();
         //49152 bytes UDP buffer, 16 is the maximal internal buffer size (128*128*3)
         prop.setDatagramSize(50000);
         prop.setNetworkProtocol(OscProperties.UDP);
         prop.setListeningPort(listeningPort);
-		this.oscP5 = new OscP5(papplet, prop);
+		this.oscP5 = new OscP5(null, prop);
 		this.oscP5.addListener(this);
 		
 		//log only error and warnings
 		OscP5.setLogStatus(netP5.Logger.ALL, netP5.Logger.OFF);
 		OscP5.setLogStatus(netP5.Logger.ERROR, netP5.Logger.ON);
-		OscP5.setLogStatus(netP5.Logger.WARNING, netP5.Logger.ON);
+		OscP5.setLogStatus(netP5.Logger.WARNING, netP5.Logger.ON);*/
 	}
 
 	/**
 	 * 
 	 * @param theOscMessage
 	 */
-	public void oscEvent(OscMessage theOscMessage) {
+/*	public void oscEvent(OscMessage theOscMessage) {
 		//sanity check
 		if (StringUtils.isBlank(theOscMessage.addrPattern())) {
 			LOG.log(Level.INFO,	"Ignore empty OSC message...");
@@ -136,12 +129,12 @@ public class OscServer implements OscEventListener, PacketAndBytesStatictics {
 			LOG.log(Level.WARNING, "Failed to parse OSC Message", e);
 			return;
 		}		
-	}
+	}*/
 
-	@Override
+/*	@Override
 	public void oscStatus(OscStatus arg0) {
 		// TODO Auto-generated method stub	
-	}
+	}*/
 
     /* (non-Javadoc)
      * @see com.neophob.sematrix.jmx.PacketAndBytesStatictics#getPacketCounter()

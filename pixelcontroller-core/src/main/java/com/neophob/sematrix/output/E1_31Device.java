@@ -57,8 +57,8 @@ public class E1_31Device extends AbstractDmxDevice {
 	 * 
 	 * @param controller
 	 */
-	public E1_31Device(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.E1_31, ph, 8);
+	public E1_31Device(ApplicationConfigurationHelper ph, int nrOfScreens) {
+		super(OutputDeviceEnum.E1_31, ph, 8, nrOfScreens);
 		this.displayOptions = ph.getE131Device();
 		
         //Get dmx specific config

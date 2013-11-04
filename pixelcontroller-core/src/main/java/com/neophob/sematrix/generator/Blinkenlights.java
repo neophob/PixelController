@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.generator;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
-
-import processing.core.PConstants;
-import processing.core.PImage;
 
 import com.neophob.sematrix.generator.blinken.BlinkenLibrary;
 import com.neophob.sematrix.glue.Collector;
@@ -45,7 +43,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  *
  * @author mvogt
  */
-public class Blinkenlights extends Generator implements PConstants {
+public class Blinkenlights extends Generator {
 
     public static final String INITIAL_FILENAME = "initial.blinken";
 
@@ -70,8 +68,6 @@ public class Blinkenlights extends Generator implements PConstants {
     /** The filename. */
     private String filename="";
 
-    private PImage img;
-
     private int currentFrame;
     
     private int frameNr;
@@ -79,6 +75,8 @@ public class Blinkenlights extends Generator implements PConstants {
     private FileUtils fileUtils;
 
     private IResize resize;
+    
+    private BufferedImage img;
     
     /**
      * Instantiates a new blinkenlights.
@@ -155,9 +153,10 @@ public class Blinkenlights extends Generator implements PConstants {
             }
         }
 
-        img.loadPixels();
-        this.internalBuffer = resize.getBuffer(img.pixels, internalBufferXSize, internalBufferYSize, img.width, img.height);
-        img.updatePixels();	
+		int w = img.getWidth();
+	    int h = img.getHeight();
+		int[] dataBuffInt = img.getRGB(0, 0, w, h, null, 0, w); 
+		this.internalBuffer = resize.getBuffer(dataBuffInt, internalBufferXSize, internalBufferYSize, w, h);
         
         frameNr++;
     }

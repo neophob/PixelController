@@ -21,7 +21,6 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.output.tpm2.Tpm2Serial;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -62,7 +61,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 		this.initialized = false;
 		this.supportConnectionState = true;
 		try {
-			tpm2 = new Tpm2Serial(Collector.getInstance().getPapplet(), serialPort, baud);
+			tpm2 = new Tpm2Serial(serialPort, baud);
 			this.initialized = true;
 			
 			LOG.log(Level.INFO, "Initialized TPM2 serial device v{0}, target port: {1}, Resolution: {2}/{3}",  

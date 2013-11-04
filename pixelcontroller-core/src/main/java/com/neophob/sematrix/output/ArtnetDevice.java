@@ -53,8 +53,8 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
 	 * 
 	 * @param controller
 	 */
-	public ArtnetDevice(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.ARTNET, ph, 8);
+	public ArtnetDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
+		super(OutputDeviceEnum.ARTNET, ph, 8, nrOfScreens);
 		
 		this.displayOptions = ph.getArtNetDevice();
 		

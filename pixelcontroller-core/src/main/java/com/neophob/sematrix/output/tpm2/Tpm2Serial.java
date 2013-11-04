@@ -24,11 +24,9 @@ import java.util.zip.Adler32;
 
 import org.apache.commons.lang3.StringUtils;
 
-import processing.core.PApplet;
-import processing.serial.Serial;
-
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
+import com.neophob.sematrix.output.Serial;
 import com.neophob.sematrix.properties.ColorFormat;
 
 /**
@@ -48,9 +46,6 @@ public class Tpm2Serial {
 
 	private static Adler32 adler = new Adler32();
 	
-	/** The app. */
-	private PApplet app;
-
 	/** The baud. */
 	private int baud;
 	
@@ -66,8 +61,8 @@ public class Tpm2Serial {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Tpm2Serial(PApplet app, int baud) throws NoSerialPortFoundException {
-		this(app, null, baud);
+	public Tpm2Serial(int baud) throws NoSerialPortFoundException {
+		this(null, baud);
 	}
 
 
@@ -78,12 +73,10 @@ public class Tpm2Serial {
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Tpm2Serial(PApplet app, String portName, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
+	public Tpm2Serial(String portName, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize Tpm2Serial lib v{0}", VERSION);
 		
-		this.app = app;
-		this.app.registerDispose(this);
 		this.baud = baud;
 		
 		lastDataMap = 0L;
@@ -170,7 +163,7 @@ public class Tpm2Serial {
 	 */
 	private void openPort(String portName) throws NoSerialPortFoundException {
 		try {
-			port = new Serial(app, portName, this.baud);			
+			port = new Serial(portName, this.baud);			
 			port.output.write("PXL".getBytes());
 		} catch (Exception e) {	
 			LOG.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});

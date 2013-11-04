@@ -21,7 +21,6 @@ package com.neophob.sematrix.glue;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -31,8 +30,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
-
-import processing.core.PApplet;
 
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.PixelControllerEffect;
@@ -47,7 +44,6 @@ import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.MessageProcessor;
 import com.neophob.sematrix.listener.OscServer;
-import com.neophob.sematrix.listener.TcpServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.output.PixelControllerOutput;
@@ -133,10 +129,6 @@ public class Collector {
 	
 	private PixelControllerFader pixelControllerFader;
 	
-	/** The pd srv. */
-	@SuppressWarnings("unused")
-	private TcpServer pdSrv;
-	
 	private OscServer oscServer;
 	
 	private ApplicationConfigurationHelper ph;
@@ -161,8 +153,6 @@ public class Collector {
 	private IOutput output;
 	
 	private ISound sound;
-	
-	private PApplet papplet;
 	
 	private FileUtils fileUtils;
 	
@@ -190,13 +180,12 @@ public class Collector {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(PApplet papplet, FileUtils fileUtils, ApplicationConfigurationHelper ph) {
+	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph) {
 		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
 		}
 
-		this.papplet = papplet;
 		this.fileUtils = fileUtils;
 		this.nrOfScreens = ph.getNrOfScreens();
 		this.ph = ph;
@@ -266,22 +255,10 @@ public class Collector {
 	 * @param ph
 	 */
 	public synchronized void initDaemons(ApplicationConfigurationHelper ph) {
-        try {           
-            //Start TCP server (FUDI Interface)
-            int listeningFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "3448") );
-            int sendFudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_SEND_PORT, "3449") );
-            String listeningIp = ph.getProperty(ConfigConstant.NET_LISTENING_ADDR, "127.0.0.1");
-            pdSrv = new TcpServer(papplet, listeningFudiPort, listeningIp, sendFudiPort);
-        } catch (BindException e) {
-            LOG.log(Level.SEVERE, "failed to start TCP Server", e);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "failed to start TCP Server", e);
-        }
-        
         //Start OSC Server (OSC Interface)
         try {           
             int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
-            oscServer = new OscServer(papplet, listeningOscPort);
+            oscServer = new OscServer(listeningOscPort);
             //register osc server in the statistic class
             this.pixConStat.setOscServerStatistics(oscServer);
         } catch (Exception e) {
@@ -325,10 +302,10 @@ public class Collector {
 		}
 		
 		//update the current value of frames per second
-		if (papplet!=null) {
+/*		if (papplet!=null) {
 			pixConStat.setCurrentFps(papplet.frameRate);
 			pixConStat.setFrameCount(papplet.frameCount);			
-		}
+		}*/
 
 		framesEffective+=u;
 		long l = System.currentTimeMillis();
@@ -467,15 +444,6 @@ public class Collector {
 			ofs++;
 		}
 		return ret;
-	}
-
-	/**
-	 * Gets the papplet.
-	 *
-	 * @return the papplet
-	 */
-	public PApplet getPapplet() {
-		return papplet;
 	}
 
 	/**

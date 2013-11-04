@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.generator.blinken;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,8 +26,6 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.generator.blinken.jaxb.Blm;
 import com.neophob.sematrix.generator.blinken.jaxb.Frame;
 import com.neophob.sematrix.generator.blinken.jaxb.Row;
-
-import processing.core.PImage;
 
 
 /**
@@ -48,7 +47,7 @@ public final class BlinkenHelper {
 	 * @param blm to marshalled object, our source
 	 * @return an image out of the frame
 	 */
-	public static PImage grabFrame(int frameNr, Blm blm, int color) throws NumberFormatException {
+	public static BufferedImage grabFrame(int frameNr, Blm blm, int color) throws NumberFormatException {
 		int frames = blm.getFrame().size();
 		
 		//some sanity checks
@@ -64,8 +63,7 @@ public final class BlinkenHelper {
 		Frame f = blm.getFrame().get(frameNr);
 		List<Row> rows = f.getRow();
 		
-		PImage img = new PImage(width, height, PImage.RGB);
-		img.loadPixels();
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);//PImage(width, height, PImage.RGB);
 		
 		/**
 		 * Structure of row data (http://blinkenlights.net/project/bml)
@@ -97,10 +95,14 @@ public final class BlinkenHelper {
 						, new Object[] { width, data.length });
 			}
 			
-			System.arraycopy(data, 0, img.pixels, ofs, width);
+			//System.arraycopy(data, 0, img.pixels, ofs, width);
+			//setRGB(int startX, int startY, int w, int h, int[] rgbArray, int offset, int scansize)
+			//TODO
+			//img.setRGB(startX, startY, width, 1, data, 0, width);
+			
 			ofs += width;			
 		}
-		img.updatePixels();
+
 		return img;
 	}
 	

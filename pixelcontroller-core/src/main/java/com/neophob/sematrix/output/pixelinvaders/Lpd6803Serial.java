@@ -46,11 +46,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import netP5.Bytes;
-import processing.core.PApplet;
-import processing.serial.Serial;
-
 import com.neophob.sematrix.output.NoSerialPortFoundException;
+import com.neophob.sematrix.output.Serial;
+import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
@@ -73,9 +71,6 @@ public class Lpd6803Serial extends Lpd6803Common {
 	
 	//wait TIMEOUT_SLEEP ms, until next loop
 	private static final int TIMEOUT_SLEEP = 4;
-
-	/** The app. */
-	private PApplet app;
 
 	/** The baud. */
 	private int baud = 115200;
@@ -106,8 +101,8 @@ public class Lpd6803Serial extends Lpd6803Common {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803Serial(PApplet app, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
-		this(app, null, 0, portBlacklist, correctionMap, panelSize);
+	public Lpd6803Serial(List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+		this(null, 0, portBlacklist, correctionMap, panelSize);
 	}
 
 
@@ -119,12 +114,10 @@ public class Lpd6803Serial extends Lpd6803Common {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Lpd6803Serial(PApplet app, String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+	public Lpd6803Serial(String portName, int baud, List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
 		super(panelSize, panelSize);
 		LOG.log(Level.INFO,	"Initialize LPD6803 lib v{0}", VERSION);
 		
-		this.app = app;
-		app.registerDispose(this);		
 		this.correctionMap = correctionMap;
 		
 		serialPortName="";
@@ -207,7 +200,7 @@ public class Lpd6803Serial extends Lpd6803Common {
 		}
 		
 		try {
-			port = new Serial(app, portName, this.baud);
+			port = new Serial(portName, this.baud);
 			sleep(1500); //give it time to initialize
 			if (ping()) {
 				return;
@@ -216,7 +209,7 @@ public class Lpd6803Serial extends Lpd6803Common {
 			LOG.log(Level.WARNING, "No response from port {0}", portName);
 			if (port != null) {
 				port.stop();
-				LOG.log(Level.WARNING, Bytes.getAsString(getReplyFromController()));
+				LOG.log(Level.WARNING, new String(getReplyFromController()));
 			}
 			port = null;
 			throw new NoSerialPortFoundException("No response from port "+portName);
@@ -317,7 +310,7 @@ public class Lpd6803Serial extends Lpd6803Common {
 		}
 		
 		byte[] msg = port.readBytes();
-		String reply = Bytes.getAsString(msg);
+		String reply = new String(msg);
 		LOG.log(Level.INFO, "got ACK: {0}", reply);
 
 		if (reply.contains("AK")) {

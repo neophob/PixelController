@@ -46,11 +46,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
-import processing.core.PApplet;
-import processing.serial.Serial;
-
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
+import com.neophob.sematrix.output.Serial;
 import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.properties.ColorFormat;
 
@@ -191,9 +189,6 @@ public class MiniDmxSerial {
 	/** The ack errors. */
 	private long ackErrors = 0;
 
-	/** The app. */
-	private PApplet app;
-
 	/** The baud. */
 	private int baud;
 	
@@ -212,8 +207,8 @@ public class MiniDmxSerial {
 	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet app, int targetBuffersize, int baud) throws NoSerialPortFoundException {
-		this(app, null, targetBuffersize, baud);
+	public MiniDmxSerial(int targetBuffersize, int baud) throws NoSerialPortFoundException {
+		this(null, targetBuffersize, baud);
 	}
 
 	/**
@@ -224,8 +219,8 @@ public class MiniDmxSerial {
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet app, int targetBuffersize, String portName, int baud) throws NoSerialPortFoundException {
-		this(app, portName, targetBuffersize, baud);
+	public MiniDmxSerial(int targetBuffersize, String portName, int baud) throws NoSerialPortFoundException {
+		this(portName, targetBuffersize, baud);
 	}
 
 
@@ -237,12 +232,10 @@ public class MiniDmxSerial {
 	 * @param targetBuffersize the target buffersize
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public MiniDmxSerial(PApplet app, String portName, int targetBuffersize, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
+	public MiniDmxSerial(String portName, int targetBuffersize, int baud) throws IllegalArgumentException, NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize MiniDMX lib v{0}", VERSION);
 		
-		this.app = app;
-		this.app.registerDispose(this);
 		this.baud = baud;
 		
 		lastDataMap = 0L;
@@ -326,7 +319,7 @@ public class MiniDmxSerial {
 		}
 		
 		try {
-			port = new Serial(app, portName, this.baud);
+			port = new Serial(portName, this.baud);
 			sleep(1500); //give it time to initialize
 			if (ping()) {
 				return;

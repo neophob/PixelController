@@ -22,11 +22,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.stealth.Stealth;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
-import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
 /**
  * Send data to the Element Stealth Device.
@@ -48,6 +47,8 @@ public class StealthDevice extends ArduinoOutput {
 	
 	/** The Stealth. */
 	private Stealth stealth = null;
+	
+	private int nrOfScreens;
 
 	/**
 	 * init the Stealth devices.
@@ -56,14 +57,15 @@ public class StealthDevice extends ArduinoOutput {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public StealthDevice(ApplicationConfigurationHelper ph) {
+	public StealthDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
 		super(OutputDeviceEnum.STEALTH, ph, 5);
 		
+		this.nrOfScreens = nrOfScreens;
 		this.displayOptions = ph.getStealthDevice();
 		this.colorFormat = ph.getColorFormat();
 		this.initialized = false;		
 		try {
-			stealth = new Stealth( Collector.getInstance().getPapplet() );			
+			stealth = new Stealth();			
 			this.initialized = stealth.ping();
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
@@ -113,7 +115,7 @@ public class StealthDevice extends ArduinoOutput {
 	public void update() {
 		
 		if (initialized) {			
-			for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
+			for (int ofs=0; ofs<nrOfScreens; ofs++) {
 				//draw only on available screens!
 				int[] transformedBuffer = 
 					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs),

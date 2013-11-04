@@ -47,11 +47,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
-import processing.core.PApplet;
-import processing.serial.Serial;
-
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.OutputHelper;
+import com.neophob.sematrix.output.Serial;
 import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.properties.ColorFormat;
 
@@ -97,9 +95,6 @@ public class Stealth {
 	/** The Constant END_OF_DATA. */
 	private static final byte END_OF_DATA = 0x20;
 
-	/** The app. */
-	private PApplet app;
-
 	/** The baud. */
 	private int baud = 115200;
 	
@@ -134,8 +129,8 @@ public class Stealth {
 	 * @param app the app
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Stealth(PApplet app) throws NoSerialPortFoundException {
-		this(app, null, 0);
+	public Stealth() throws NoSerialPortFoundException {
+		this(null, 0);
 	}
 
 	/**
@@ -145,8 +140,8 @@ public class Stealth {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Stealth(PApplet app, int baud) throws NoSerialPortFoundException {
-		this(app, null, baud);
+	public Stealth(int baud) throws NoSerialPortFoundException {
+		this(null, baud);
 	}
 
 	/**
@@ -156,8 +151,8 @@ public class Stealth {
 	 * @param portName the port name
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Stealth(PApplet app, String portName) throws NoSerialPortFoundException {
-		this(app, portName, 0);
+	public Stealth(String portName) throws NoSerialPortFoundException {
+		this(portName, 0);
 	}
 
 
@@ -169,12 +164,9 @@ public class Stealth {
 	 * @param baud the baud
 	 * @throws NoSerialPortFoundException the no serial port found exception
 	 */
-	public Stealth(PApplet app, String portName, int baud) throws NoSerialPortFoundException {
+	public Stealth(String portName, int baud) throws NoSerialPortFoundException {
 		
 		LOG.log(Level.INFO,	"Initialize Stealth lib v{0}", VERSION);
-		
-		this.app = app;
-		app.registerDispose(this);
 		
 		lastDataMap = new HashMap<Byte, Long>();
 		
@@ -255,7 +247,7 @@ public class Stealth {
 		}
 		
 		try {
-			port = new Serial(app, portName, this.baud);
+			port = new Serial(portName, this.baud);
 			sleep(1500); //give it time to initialize
 			if (ping()) {
 				return;

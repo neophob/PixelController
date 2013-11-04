@@ -28,6 +28,7 @@
 		<sonar.phase>generate-sources</sonar.phase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<minim.version>2.1.0-BETA</minim.version>
 	</properties>
 
 	<prerequisites>
@@ -200,7 +201,7 @@
 							<file>lib/minim/library/minim.jar</file>
 							<groupId>compartmental.net</groupId>
 							<artifactId>minim</artifactId>
-							<version>2.0.2</version>
+							<version>${minim.version}</version>
 							<packaging>jar</packaging>
 						</configuration>
 						<phase>initialize</phase>
@@ -214,7 +215,7 @@
 							<file>lib/minim/library/jsminim.jar</file>
 							<groupId>compartmental.net</groupId>
 							<artifactId>jsminim</artifactId>
-							<version>2.0.2</version>
+							<version>${minim.version}</version>
 							<packaging>jar</packaging>
 						</configuration>
 						<phase>initialize</phase>
@@ -228,7 +229,7 @@
 							<file>lib/minim/library/minim-spi.jar</file>
 							<groupId>compartmental.net</groupId>
 							<artifactId>minim-spi</artifactId>
-							<version>2.0.2</version>
+							<version>${minim.version}</version>
 							<packaging>jar</packaging>
 						</configuration>
 						<phase>initialize</phase>
@@ -439,17 +440,17 @@
 		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>minim</artifactId>
-			<version>2.0.2</version>
+			<version>${minim.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>jsminim</artifactId>
-			<version>2.0.2</version>
+			<version>${minim.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>compartmental.net</groupId>
 			<artifactId>minim-spi</artifactId>
-			<version>2.0.2</version>
+			<version>${minim.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>compartmental.net</groupId>

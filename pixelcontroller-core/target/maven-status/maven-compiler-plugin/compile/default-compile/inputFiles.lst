@@ -60,8 +60,8 @@
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/output/pixelinvaders/Lpd6803Net.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/resize/PixelResize.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/effect/FlipX.java
+/Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/output/pixelinvaders/TcpClient.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/output/PixelControllerOutput.java
-/Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/listener/TcpServer.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/glue/helper/InitHelper.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/generator/Image.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/glue/RandomizeState.java
@@ -119,6 +119,7 @@
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/mixer/Mixer.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/resize/util/ScalrOld.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/input/BeatListener.java
+/Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/output/Serial.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/properties/ApplicationConfigurationHelper.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/effect/FlipY.java
 /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/src/main/java/com/neophob/sematrix/input/SoundMinim.java

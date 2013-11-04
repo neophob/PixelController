@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
 import com.neophob.sematrix.properties.DeviceConfig;
@@ -67,6 +66,8 @@ public abstract class AbstractDmxDevice extends Output {
 	
 	protected int[] mapping;
 	
+	private int nrOfScreens;
+	
 	/**
 	 * 
 	 * @param outputDeviceEnum
@@ -74,9 +75,10 @@ public abstract class AbstractDmxDevice extends Output {
 	 * @param controller
 	 * @param bpp
 	 */
-	public AbstractDmxDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+	public AbstractDmxDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp, int nrOfScreens) {
 		super(outputDeviceEnum, ph, bpp);
-
+		
+		this.nrOfScreens = nrOfScreens;
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();		
 	    this.xResolution = ph.parseOutputXResolution();
@@ -111,7 +113,7 @@ public abstract class AbstractDmxDevice extends Output {
 
         LOG.log(Level.INFO, "\tPixels per universe: "+pixelsPerUniverse);
         LOG.log(Level.INFO, "\tFirst universe ID: "+firstUniverseId);
-        LOG.log(Level.INFO, "\t# of universe: "+nrOfUniverse*Collector.getInstance().getNrOfScreens());
+        LOG.log(Level.INFO, "\t# of universe: "+nrOfUniverse*nrOfScreens);
         LOG.log(Level.INFO, "\tOutput Mapping entry size: "+this.mapping.length);
         LOG.log(Level.INFO, "\tTarget address: "+targetAdress);		
 	}
@@ -125,7 +127,6 @@ public abstract class AbstractDmxDevice extends Output {
 		int universeOfs = 0;
 		
 		if (initialized) {
-			int nrOfScreens = Collector.getInstance().getNrOfScreens();
 			for (int nr=0; nr<nrOfScreens; nr++) {
 				//get the effective panel buffer
 				int panelNr = this.panelOrder.get(nr);
@@ -169,7 +170,7 @@ public abstract class AbstractDmxDevice extends Output {
 	@Override
     public String getConnectionStatus(){
         if (initialized) {
-            return "Target IP: "+targetAdress+", # of universe: "+nrOfUniverse*Collector.getInstance().getNrOfScreens();            
+            return "Target IP: "+targetAdress+", # of universe: "+nrOfUniverse*nrOfScreens;            
         }
         return "Not connected!";
     }

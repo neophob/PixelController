@@ -24,9 +24,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import processing.core.PApplet;
-import processing.net.Client;
-
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
@@ -58,12 +55,10 @@ public class Lpd6803Net extends Lpd6803Common{
 	public static final int MAX_ACK_WAIT = 40;
 	public static final int WAIT_PER_LOOP = 2;
 	
-	private Client clientConnection;
+	private TcpClient clientConnection;
 	
 	private String destIp;	
 	private int destPort;
-	
-	private PApplet pa;
 	
 	private long delayTotal;
 	private int delayCount;
@@ -76,18 +71,17 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @param baud the baud
 	 * @throws Exception the no serial port found exception
 	 */
-	public Lpd6803Net(PApplet pa, String destIp, int destPort, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws Exception {
+	public Lpd6803Net(String destIp, int destPort, Map<Integer, RGBAdjust> correctionMap, int panelSize) throws Exception {
 		super(panelSize, panelSize);
 		LOG.log(Level.INFO,	"Initialize LPD6803 net lib v{0}", VERSION);
 		
 		this.destIp = destIp;
 		this.destPort = destPort;
-		this.pa = pa;
 		this.correctionMap = correctionMap;
 		
 		//output connection
 		LOG.log(Level.INFO, "Connect to target "+destIp+":"+destPort);
-		this.clientConnection = new Client(pa, destIp, destPort); 
+		clientConnection = new TcpClient(destIp, destPort); 
 		this.initialized = this.ping();		
 		LOG.log(Level.INFO,	"initialized: "+this.initialized);			
 	}
@@ -146,7 +140,7 @@ public class Lpd6803Net extends Lpd6803Common{
 		} catch (SocketException se) {
 		    if (connectionErrorCounter%10==9) {
 		        //try to reconnect
-		        this.clientConnection = new Client(pa, destIp, destPort);   
+		        this.clientConnection = new TcpClient(destIp, destPort);   
 		    }			
 			//LOG.log(Level.INFO, "Error sending network data!", se);
 			connectionErrorCounter++;

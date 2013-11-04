@@ -20,8 +20,6 @@ package com.neophob.sematrix.effect;
 
 import java.util.Random;
 
-import processing.core.PConstants;
-
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.ShufflerOffset;
@@ -197,12 +195,12 @@ public class TextureDeformation extends Effect {
                         break;
                     case 3:  // rotating tunnel of wonder
                         v = 2/(6*r + 3*x);
-                        u = a*3/PConstants.PI;
+                        u = a*3/(float)Math.PI;
                         bright = 15 * -v;
                         break;
                     case 4:  // wavy star-burst
                         v = (-0.4f/r)+.1f*(float)Math.sin(8*a);
-                        u = .5f + .5f*a/PConstants.PI;
+                        u = .5f + .5f*a/(float)Math.PI;
                         bright=0;
                         break;
                     case 5:  // hyper-space travel
@@ -212,7 +210,7 @@ public class TextureDeformation extends Effect {
                         break;
                     case 6:  // five point magnetic flare
                         u = 1f/(r+0.5f+0.5f*(float)Math.sin(5*a));
-                        v = a*3/PConstants.PI;
+                        v = a*3/(float)Math.PI;
                         bright = 0;
                         break;
                     case 7:  // cloud like dream scroll
@@ -226,13 +224,13 @@ public class TextureDeformation extends Effect {
                         bright = 10* -v;
                         break;
                     case 9:  // hot magma liquid swirl
-                        u = 0.5f*(a)/PConstants.PI;
+                        u = 0.5f*(a)/(float)Math.PI;
                         v = (float)Math.sin(2*r);
                         bright = 0;
                         break;
                     case 10:  // clockwise flush down the toilet
                         v = (float)Math.pow(r,0.1);
-                        u = (1*a/PConstants.PI)+r;
+                        u = (1*a/(float)Math.PI)+r;
                         bright=0;
                         break;
                     case 11:  // 3D ball

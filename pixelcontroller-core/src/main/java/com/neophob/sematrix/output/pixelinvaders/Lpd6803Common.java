@@ -25,8 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
-import netP5.Bytes;
-
 import com.neophob.sematrix.output.OutputHelper;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 import com.neophob.sematrix.output.tpm2.Tpm2NetProtocol;
@@ -153,7 +151,7 @@ public abstract class Lpd6803Common {
 			//just write out debug output from the microcontroller
 			byte[] replyFromController = getReplyFromController();
 			if (replyFromController!=null && replyFromController.length > 0) {
-				String reply = Bytes.getAsString(replyFromController);
+				String reply = new String(replyFromController);
 				if (reply.contains("ERR:")) {
 					connectionErrorCounter++;
 				}

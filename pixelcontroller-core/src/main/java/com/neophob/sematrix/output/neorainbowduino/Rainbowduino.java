@@ -32,10 +32,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
-import processing.core.PApplet;
-import processing.serial.Serial;
-
 import com.neophob.sematrix.output.NoSerialPortFoundException;
+import com.neophob.sematrix.output.Serial;
 import com.neophob.sematrix.output.SerialPortException;
 
 /**
@@ -81,8 +79,6 @@ public class Rainbowduino {
 
 	private static Adler32 adler = new Adler32();
 	
-	private PApplet app;
-
 	private int baud = 115200;
 	private Serial port;
 	
@@ -111,9 +107,8 @@ public class Rainbowduino {
 	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet app, List<Integer> rainbowduinoAddr) 
-		throws NoSerialPortFoundException {
-		this(app, null, 0, rainbowduinoAddr);
+	public Rainbowduino(List<Integer> rainbowduinoAddr) throws NoSerialPortFoundException {
+		this(null, 0, rainbowduinoAddr);
 	}
 
 	/**
@@ -124,9 +119,8 @@ public class Rainbowduino {
 	 * @param baud
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet app, List<Integer> rainbowduinoAddr, int baud) 
-		throws NoSerialPortFoundException {
-		this(app, null, baud, rainbowduinoAddr);
+	public Rainbowduino(List<Integer> rainbowduinoAddr, int baud) throws NoSerialPortFoundException {
+		this(null, baud, rainbowduinoAddr);
 	}
 
 	/**
@@ -137,9 +131,8 @@ public class Rainbowduino {
 	 * @param portName
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet app, List<Integer> rainbowduinoAddr, String portName) 
-		throws NoSerialPortFoundException {
-		this(app, portName, 0, rainbowduinoAddr);
+	public Rainbowduino(List<Integer> rainbowduinoAddr, String portName) throws NoSerialPortFoundException {
+		this(portName, 0, rainbowduinoAddr);
 	}
 
 
@@ -152,13 +145,10 @@ public class Rainbowduino {
 	 * @param rainbowduinoAddr
 	 * @throws NoSerialPortFoundException
 	 */
-	public Rainbowduino(PApplet app, String portName, int baud, List<Integer> rainbowduinoAddr) 
+	public Rainbowduino(String portName, int baud, List<Integer> rainbowduinoAddr) 
 		throws NoSerialPortFoundException {
 		
 		log.log(Level.INFO,	"Initialize neorainbowduino lib v{0}", VERSION);
-		
-		this.app = app;
-		app.registerDispose(this);
 		
 		scannedI2cDevices = new ArrayList<Integer>();
 		lastDataMap = new HashMap<Byte, Long>();
@@ -239,7 +229,7 @@ public class Rainbowduino {
 		}
 		
 		try {
-			port = new Serial(app, portName, this.baud);
+			port = new Serial(portName, this.baud);
 			sleep(1500); //give it time to initialize
 			if (ping()) {
 
@@ -630,10 +620,10 @@ public class Rainbowduino {
 	 * @param port: the serial port to use
 	 * @return List of found i2c devices
 	 */
-	public static List<Integer> scanI2cBus(PApplet app, String port) {
+	public static List<Integer> scanI2cBus(String port) {
 		Rainbowduino r=null;		
 		try {
-			r = new Rainbowduino(app, new ArrayList<Integer>(), port);
+			r = new Rainbowduino(new ArrayList<Integer>(), port);
 			r.i2cBusScan();
 			return r.scannedI2cDevices;
 		} catch (Exception e) {
@@ -641,24 +631,6 @@ public class Rainbowduino {
 		}
 				
 		return new ArrayList<Integer>();
-	}
-
-	/**
-	 * Scan I2C bus, using port autodetection
-	 * @param _app
-	 * @return
-	 */
-	public static List<Integer> scanI2cBus(PApplet app) {
-		Rainbowduino r=null;
-		
-		try {
-			r = new Rainbowduino(app, new ArrayList<Integer>());
-			r.i2cBusScan();
-			return r.scannedI2cDevices;
-		} catch (Exception e) {
-			log.log(Level.WARNING, "I2C scanner failed: {0}", e);
-		}
-		return new ArrayList<Integer>();				
 	}
 
 }

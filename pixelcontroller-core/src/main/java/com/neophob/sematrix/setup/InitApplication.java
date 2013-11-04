@@ -105,13 +105,13 @@ public abstract class InitApplication {
         try {
             switch (outputDeviceEnum) {
             case PIXELINVADERS:
-                output = new PixelInvadersSerialDevice(applicationConfig);
+                output = new PixelInvadersSerialDevice(applicationConfig, collector.getNrOfScreens());
                 break;
             case PIXELINVADERS_NET:
-                output = new PixelInvadersNetDevice(applicationConfig);
+                output = new PixelInvadersNetDevice(applicationConfig, collector.getNrOfScreens());
                 break;            	
             case STEALTH:
-                output = new StealthDevice(applicationConfig);
+                output = new StealthDevice(applicationConfig, collector.getNrOfScreens());
                 break;
             case RAINBOWDUINO_V2:
                 output = new RainbowduinoV2Device(applicationConfig);
@@ -120,10 +120,10 @@ public abstract class InitApplication {
                 output = new RainbowduinoV3Device(applicationConfig);
                 break;
             case ARTNET:
-                output = new ArtnetDevice(applicationConfig);
+                output = new ArtnetDevice(applicationConfig, collector.getNrOfScreens());
                 break;
             case E1_31:
-                output = new E1_31Device(applicationConfig);
+                output = new E1_31Device(applicationConfig, collector.getNrOfScreens());
                 break;            	
             case MINIDMX:
                 output = new MiniDmxDevice(applicationConfig);

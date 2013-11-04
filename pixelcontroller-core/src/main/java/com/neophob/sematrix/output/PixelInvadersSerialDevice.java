@@ -21,7 +21,6 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.pixelinvaders.Lpd6803Serial;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
@@ -47,11 +46,11 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 	 * @param displayOptions the display options
 	 * @param colorFormat the color format
 	 */
-	public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.PIXELINVADERS, ph, 5);		
+	public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
+		super(OutputDeviceEnum.PIXELINVADERS, ph, 5, nrOfScreens);		
 		
 		try {
-			lpd6803 = new Lpd6803Serial(Collector.getInstance().getPapplet(), ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			
+			lpd6803 = new Lpd6803Serial(ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			
 			this.initialized = lpd6803.ping();
 			super.setLpd6803(lpd6803);
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			

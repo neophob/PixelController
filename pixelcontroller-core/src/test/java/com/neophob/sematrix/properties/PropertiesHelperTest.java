@@ -296,7 +296,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.ARTNET, ph.getOutputDevice());
         
-        ArtnetDevice device = new ArtnetDevice(ph);
+        ArtnetDevice device = new ArtnetDevice(ph, 1);
         assertTrue(device.isConnected());       
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -321,7 +321,7 @@ public class PropertiesHelperTest {
         assertEquals(8, ph.getDeviceYResolution());
         assertEquals(true, ph.isOutputSnakeCabeling());
 
-        ArtnetDevice device = new ArtnetDevice(ph);
+        ArtnetDevice device = new ArtnetDevice(ph, 1);
         assertEquals(170, device.getPixelsPerUniverse());
     }    
 
@@ -342,7 +342,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
-        E1_31Device device = new E1_31Device(ph);
+        E1_31Device device = new E1_31Device(ph, 1);
         assertFalse(device.isSendMulticast());
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -369,7 +369,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
     
-        device = new E1_31Device(ph);
+        device = new E1_31Device(ph, 1);
         assertTrue(device.isSendMulticast());    
         assertEquals(1, device.getFirstUniverseId());
         assertEquals(170, device.getPixelsPerUniverse());
@@ -611,17 +611,6 @@ public class PropertiesHelperTest {
         assertEquals(OutputDeviceEnum.TPM2NET, ph.getOutputDevice());
         assertEquals(4, ph.getTpm2NetDevice().size());
         assertEquals("127.0.0.1", ph.getTpm2NetIpAddress());        
-    }
-
-    @Test
-    public void testNetworkSettings() {
-        Properties config = new Properties();        
-        config.put(ConfigConstant.NET_LISTENING_ADDR, "1.2.3.4");
-        config.put(ConfigConstant.NET_LISTENING_PORT, "4444");
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        
-        int fudiPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_LISTENING_PORT, "1") );
-        assertEquals(4444, fudiPort);
     }
 
 

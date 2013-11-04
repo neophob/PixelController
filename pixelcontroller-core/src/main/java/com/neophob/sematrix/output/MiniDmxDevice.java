@@ -21,7 +21,6 @@ package com.neophob.sematrix.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.minidmx.MiniDmxSerial;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 
@@ -56,7 +55,7 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 		this.supportConnectionState = true;
 		this.initialized = false;
 		try {
-			miniDmx = new MiniDmxSerial(Collector.getInstance().getPapplet(), this.xResolution*this.yResolution*3, baud);			
+			miniDmx = new MiniDmxSerial(this.xResolution*this.yResolution*3, baud);			
 			this.initialized = miniDmx.ping();			
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {

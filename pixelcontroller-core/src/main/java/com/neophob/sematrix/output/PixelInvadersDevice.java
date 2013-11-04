@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.output.pixelinvaders.Lpd6803Common;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ColorFormat;
@@ -61,6 +60,7 @@ public abstract class PixelInvadersDevice extends Output {
 	
 	private Lpd6803Common lpd6803;
 	
+	private int nrOfScreens;
 	/**
 	 * 
 	 * @param outputDeviceEnum
@@ -68,9 +68,10 @@ public abstract class PixelInvadersDevice extends Output {
 	 * @param controller
 	 * @param bpp
 	 */
-	public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+	public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp, int nrOfScreens) {
 		super(outputDeviceEnum, ph, bpp);
 		
+		this.nrOfScreens = nrOfScreens;
 		this.displayOptions = ph.getLpdDevice();
 		this.colorFormat = ph.getColorFormat();
 		this.panelOrder = ph.getPanelOrder();
@@ -97,7 +98,7 @@ public abstract class PixelInvadersDevice extends Output {
 
 		int totalFrames = 0;
 		//step 1, check how many data packages need to send
-		for (int ofs=0; ofs<Collector.getInstance().getNrOfScreens(); ofs++) {
+		for (int ofs=0; ofs<nrOfScreens; ofs++) {
 			//draw only on available screens!
 
 			//get the effective panel buffer

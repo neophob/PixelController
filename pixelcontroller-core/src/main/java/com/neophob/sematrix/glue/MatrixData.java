@@ -24,9 +24,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import processing.core.PApplet;
-import processing.core.PImage;
-
 import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.layout.LayoutModel;
 import com.neophob.sematrix.output.Output;
@@ -90,7 +87,7 @@ public class MatrixData {
             bufferHeight = deviceYSize*internalBufferSizeMultiplier;
         }
 
-        this.pImagesMap = new HashMap<Output, PImage>();
+        //this.pImagesMap = new HashMap<Output, PImage>();
 
         LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), multiplication factor: {3} ({4} * {5})", 
         		new Object[] { deviceSize, deviceXSize, deviceYSize, internalBufferSizeMultiplier, bufferWidth, bufferHeight});
@@ -189,7 +186,8 @@ public class MatrixData {
         int[] bfr2 = tmpImage.pixels;
         tmpImage.updatePixels();*/
 
-        return resizeBufferForDevice(bfr2, visual.getResizeOption(), deviceXSize, deviceYSize);
+        //hint buffer was bfr2
+        return resizeBufferForDevice(buffer, visual.getResizeOption(), deviceXSize, deviceYSize);
     }
 
     /**

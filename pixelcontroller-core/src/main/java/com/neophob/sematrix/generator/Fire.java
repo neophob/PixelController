@@ -20,8 +20,6 @@ package com.neophob.sematrix.generator;
 
 import java.util.Random;
 
-import processing.core.PConstants;
-
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -31,7 +29,7 @@ import com.neophob.sematrix.resize.Resize.ResizeName;
  * @author mvogt
  * ripped from http://demo-effects.cvs.sourceforge.net/viewvc/demo-effects/demo-effects/FIRE/fire.c?revision=1.5&content-type=text%2Fplain
  */
-public class Fire extends Generator implements PConstants {
+public class Fire extends Generator {
 
 	/** The r. */
 	private Random r;

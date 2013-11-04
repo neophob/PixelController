@@ -19,8 +19,12 @@
 package com.neophob.sematrix.listener;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
+import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
+import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.properties.ConfigConstant;
+import com.neophob.sematrix.properties.ValidCommands;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Properties;
@@ -28,14 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Test;
-
-import processing.core.PApplet;
-
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.FileUtils;
-import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * verify the rotate buffer code
@@ -93,7 +89,7 @@ public class MessageProcessorTest {
 			e.printStackTrace();
 		}*/
 
-		PApplet papplet = mock(PApplet.class);
+//		PApplet papplet = mock(PApplet.class);
 
 		Properties config = new Properties();
 		String rootDir = System.getProperty("buildDirectory");
@@ -102,7 +98,7 @@ public class MessageProcessorTest {
 		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
-		Collector.getInstance().init(papplet, new FileUtils(), ph);
+		Collector.getInstance().init(new FileUtils(), ph);
 
 		String[] str = null;
 		MessageProcessor.processMsg(str, false, null);

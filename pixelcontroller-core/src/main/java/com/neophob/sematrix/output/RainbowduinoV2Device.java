@@ -54,7 +54,7 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 		this.allI2cAddress = ph.getI2cAddr();		
 		this.initialized = false;		
 		try {
-			rainbowduino = new Rainbowduino( Collector.getInstance().getPapplet(), allI2cAddress);			
+			rainbowduino = new Rainbowduino(allI2cAddress);			
 			this.initialized = rainbowduino.ping();
 			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
 		} catch (NoSerialPortFoundException e) {
