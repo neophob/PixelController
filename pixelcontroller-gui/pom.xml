@@ -1,0 +1,38 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.neophob.pixelcontroller</groupId>
+		<artifactId>pixelcontroller</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>SNAPSHOT</version>
+	</parent>
+        
+        
+	<groupId>com.neophob.pixelcontroller</groupId>
+	<artifactId>pixelcontroller-gui</artifactId>
+	<name>PixelController Processing Frontend</name>
+	<version>SNAPSHOT</version>
+	
+	<packaging>jar</packaging>
+	<description>
+		PixelController - a (LED) matrix control project. 
+		The main goal of this application is to create an easy to use matrix controller software 
+		which creates stunning visuals!</description>
+	<url>http://www.PixelInvaders.ch</url>
+	<inceptionYear>2010</inceptionYear>
+
+	<properties>
+		<sonar.dynamicAnalysis>true</sonar.dynamicAnalysis>
+		<sonar.phase>generate-sources</sonar.phase>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<minim.version>2.1.0-BETA</minim.version>
+	</properties>
+
+
+	<dependencies>
+	</dependencies>
+	
+</project>

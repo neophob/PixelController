@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.neophob.sematrix.generator.GenerateAllResolutionTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.431 sec - in com.neophob.sematrix.generator.GenerateAllResolutionTest

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.052" tests="34" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib"/>
+    <property name="java.vm.version" value="23.21-b01"/>
+    <property name="user.country.format" value="CH"/>
+    <property name="gopherProxySet" value="false"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core"/>
+    <property name="java.runtime.version" value="1.7.0_21-b12"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/endorsed"/>
+    <property name="os.arch" value="x86_64"/>
+    <property name="java.io.tmpdir" value="/var/folders/d4/jrqqh4pj15sf21y5l7d49z1m0000gn/T/"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="classworlds.conf" value="/Users/michu/_code/mvn/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/michu/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="51.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.9"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="user.home" value="/Users/michu"/>
+    <property name="user.timezone" value="Europe/Zurich"/>
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/>
+    <property name="java.specification.version" value="1.7"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="michu"/>
+    <property name="java.class.path" value="/Users/michu/_code/mvn/boot/plexus-classworlds-2.4.jar"/>
+    <property name="java.vm.specification.version" value="1.7"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean package"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.7.0_21"/>
+    <property name="java.ext.dirs" value="/Users/michu/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/classes"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="/Users/michu/_code/mvn"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase name="testMultipleE131Config" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testPixelInvadersNetAndNullOutputConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testPixelInvadersAdvancedConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.002"/>
+  <testcase name="testPixelInvadersBlacklist" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testTpm2Net" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testTpm2" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testInvalidCabling" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testMultipleConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testMultiple2Config" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testE131Config" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.015"/>
+  <testcase name="testEmptyConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testSoundSilence" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.003"/>
+  <testcase name="testArtnetConfigSimple" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.011"/>
+  <testcase name="testRainbowduinosConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testUdpDevice" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testPixelInvadersAndNullOutputConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testNullConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testPixelInvadersConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.002"/>
+  <testcase name="testMiniDmxConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testValidMapping" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testInvalidPixelInvadersConfigOne" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testInvalidPixelInvadersConfigTwo" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testLoadPresetOnStartup" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.002"/>
+  <testcase name="testBoxLayout" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testArtnetConfigAdvanced" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.006"/>
+  <testcase name="testInvalidMappingCount" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testHorizontalLayout" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testLayout" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testMissingRgbValue" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+  <testcase name="testRgbValue" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testNegativeSettings" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testPixelInvadersDefaultConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testPixelInvadersNetConfig" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0"/>
+  <testcase name="testRainbowduinosV3Config" classname="com.neophob.sematrix.properties.PropertiesHelperTest" time="0.001"/>
+</testsuite>
