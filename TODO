@@ -33,6 +33,16 @@ Roadmap PixelController
 -Update PixelInvaders Net Device
 -Use Maven release plugin
 
+Refactoring
+-----------
+-update blinkenlights generator
+-change osc implementation
+-test minim implementation without processing dependency
+-update copy function for streched output
+-test test test
+-add cli client
+-support multiple clients for appstart (properties filename equal jar filename)
+
 
 Roadmap PixelInvaders Firmware
 ------------------------------
