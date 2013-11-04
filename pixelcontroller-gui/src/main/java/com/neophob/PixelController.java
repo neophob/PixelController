@@ -31,13 +31,13 @@ import processing.core.PApplet;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.gui.GeneratorGuiCreator;
+import com.neophob.sematrix.gui.OutputGui;
+import com.neophob.sematrix.gui.handler.KeyboardHandler;
+import com.neophob.sematrix.gui.handler.WindowHandler;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.listener.KeyboardHandler;
-import com.neophob.sematrix.listener.WindowHandler;
 import com.neophob.sematrix.output.ArduinoOutput;
 import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.output.gui.GeneratorGuiCreator;
-import com.neophob.sematrix.output.gui.OutputGui;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.setup.InitApplication;
@@ -175,7 +175,7 @@ public class PixelController extends PApplet {
         		return;
 
         	case 2:
-        		this.collector.init(this, fileUtils, applicationConfig);     
+        		this.collector.init(fileUtils, applicationConfig);     
         		frameRate(applicationConfig.parseFps());
         		noSmooth();
         		setupStep++;
@@ -228,7 +228,7 @@ public class PixelController extends PApplet {
         		return;
 
         	case 6:
-        		this.matrixEmulator = new OutputGui(applicationConfig, this.output);
+        		this.matrixEmulator = new OutputGui(applicationConfig, this.output, this);
 
         		//create gui window
         		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW, "true").equalsIgnoreCase("true")) {
@@ -249,7 +249,7 @@ public class PixelController extends PApplet {
             		}
             		
             	    //add our own window listener
-            	    frame.addWindowListener( new WindowHandler() );        			
+            	    frame.addWindowListener( new WindowHandler(this) );        			
         		} catch (Exception e) {
         			LOG.log(Level.INFO, "failed to remove/add window listeners", e);
 				}

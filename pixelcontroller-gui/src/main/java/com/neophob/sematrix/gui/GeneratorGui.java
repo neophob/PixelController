@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.output.gui;
+package com.neophob.sematrix.gui;
 
 
 import java.io.File;
@@ -41,17 +41,16 @@ import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.glue.FileUtils;
 import com.neophob.sematrix.glue.OutputMapping;
 import com.neophob.sematrix.glue.PresetSettings;
 import com.neophob.sematrix.glue.ShufflerOffset;
 import com.neophob.sematrix.glue.Visual;
-import com.neophob.sematrix.input.Sound;
+import com.neophob.sematrix.gui.handler.KeyboardHandler;
+import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.listener.KeyboardHandler;
 import com.neophob.sematrix.mixer.Mixer.MixerName;
-import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.output.gui.helper.FileUtils;
-import com.neophob.sematrix.output.gui.helper.Theme;
+import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -404,6 +403,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //GENERATOR OPTIONS
         //-----------------
         
+        FileUtils fu = new FileUtils();
+        
         genElYOfs = p5GuiYOffset+35;
         cp5.addTextlabel("genOptionsGen", Messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
@@ -413,7 +414,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
         i=0;
-        for (String s: FileUtils.findBlinkenFiles()) {
+        for (String s: fu.findBlinkenFiles()) {
             blinkenLightsList.addItem(s, i);
             i++;
         }
@@ -427,7 +428,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		genFxXOfs+Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
         i=0;
-        for (String s: FileUtils.findImagesFiles()) {
+        for (String s: fu.findImagesFiles()) {
             imageList.addItem(s, i);
             i++;
         }
@@ -658,7 +659,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoSrvVersion", Messages.getString("GeneratorGui.SERVER_VERSION")+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+Sound.getInstance().getVolumeNormalized(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        float volNorm = Collector.getInstance().getSound().getVolumeNormalized();
+        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+volNorm, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoWindowHeight", Messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
@@ -676,7 +678,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
-        Output output = col.getOutputDevice();
+        IOutput output = col.getOutputDevice();
         if (output!=null) {
             String gammaText = WordUtils.capitalizeFully(StringUtils.replace(output.getGammaType().toString(), "_", " "));
             cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
@@ -695,9 +697,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos = yPosStartDrowdown+20;
         String oscPort = col.getPh().getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, ""); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("nfoOscPort", Messages.getString("GeneratorGui.OSC_PORT")+oscPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        nfoYPos+=yposAdd;
-        String tcpPort = col.getPh().getProperty(ConfigConstant.NET_LISTENING_PORT, ""); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("nfoTcpPort", Messages.getString("GeneratorGui.TCP_PORT")+tcpPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         oscStatistic = cp5.addTextlabel("nfoOscStatistic", Messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
         nfoYPos+=yposAdd;
@@ -847,7 +846,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             //lazy init
             if (pImage==null) {
                 //create an image out of the buffer
-                pImage = col.getPapplet().createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
+            	
+                pImage = this.createImage(singleVisualXSize, singleVisualYSize, PApplet.RGB );
             }
 
             //set used to find out if visual is on screen
@@ -894,10 +894,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
-            int snd1000 = (int)(1000f*Sound.getInstance().getVolumeNormalized());
+            int snd1000 = (int)(1000f*Collector.getInstance().getSound().getVolumeNormalized());
             currentVolume.setText(Messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
-            Output output = col.getOutputDevice();
+            IOutput output = col.getOutputDevice();
             if (output!=null) {
                 String outputStateStr = WordUtils.capitalizeFully(output.getConnectionStatus());
                 outputState.setText(outputStateStr);
@@ -971,7 +971,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         rect(GENERIC_X_OFS+frames, localY+SELECTED_MARKER+4, xSizeForEachWidget-frames-WIDGET_BOARDER, WIDGET_BAR_SIZE);
 
         //draw sound stats
-        Sound snd = Sound.getInstance();
+        ISound snd = Collector.getInstance().getSound();
         int xofs = GENERIC_X_OFS+xSizeForEachWidget;
         int xx = (xSizeForEachWidget-WIDGET_BOARDER*2)/3;
 
@@ -1167,12 +1167,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     /* (non-Javadoc)
      * @see com.neophob.sematrix.output.gui.GuiCallbackAction#activeVisual(int)
      */
-    @Override
     public void activeVisual(int n) {
         selectedVisualList.activate(n);
     }
 
-	@Override
 	public void refreshGui() {
 		Collector.getInstance().setTriggerGuiRefresh(true);		
 	}
@@ -1193,7 +1191,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     	return textGenerator.isFocus() || presetName.isFocus();
     }
 
-	@Override
+
 	public void selectPreviousTab() {
 		Tab currentTab = cp5.getWindow().getCurrentTab();
 		Tab lastTab=null;
@@ -1208,7 +1206,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		allTabs.get(allTabs.size()-1).bringToFront();
 	}
 	
-	@Override
+
 	public void selectNextTab() {
 		boolean activateNextTab = false;		
 		Tab currentTab = cp5.getWindow().getCurrentTab();		

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.neophob.sematrix.resize.GenerateAllResolutionResizeTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.693 sec - in com.neophob.sematrix.resize.GenerateAllResolutionResizeTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.917 sec - in com.neophob.sematrix.resize.GenerateAllResolutionResizeTest

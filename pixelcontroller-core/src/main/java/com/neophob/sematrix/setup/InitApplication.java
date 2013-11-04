@@ -65,13 +65,13 @@ public abstract class InitApplication {
     public static ApplicationConfigurationHelper loadConfiguration(FileUtils fileUtils) throws IllegalArgumentException {
         Properties config = new Properties();
         InputStream is = null;
+    	String fileToLoad = fileUtils.getDataDir()+File.separator+APPLICATION_CONFIG_FILENAME;
         try {
-        	String fileToLoad = fileUtils.getDataDir()+File.separator+APPLICATION_CONFIG_FILENAME;
         	is = new FileInputStream(fileToLoad);
             config.load(is);            
             LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
         } catch (Exception e) {
-        	String error = "Failed to open the configfile "+APPLICATION_CONFIG_FILENAME;
+        	String error = "Failed to open the configfile "+fileToLoad;
             LOG.log(Level.SEVERE, error, e);
             throw new IllegalArgumentException(error);
         } finally {

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.output.gui;
+package com.neophob.sematrix.gui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
  *
  */
 public class Messages {
-    private static final String BUNDLE_NAME = "com.neophob.sematrix.output.gui.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "com.neophob.sematrix.gui.messages"; //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

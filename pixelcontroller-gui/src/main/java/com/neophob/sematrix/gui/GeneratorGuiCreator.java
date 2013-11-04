@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.output.gui;
+package com.neophob.sematrix.gui;
 
 import java.awt.Image;
 import java.util.logging.Level;
@@ -29,7 +29,7 @@ import processing.core.PImage;
 
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.listener.WindowHandler;
+import com.neophob.sematrix.gui.handler.WindowHandler;
 
 /**
  * Helper class to create a new window
@@ -84,7 +84,7 @@ public class GeneratorGuiCreator {
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
         JFrame childFrame = new JFrame("PixelController Generator Window "+version);        
         childFrame.setResizable(false);
-        childFrame.setIconImage(GeneratorGuiCreator.createLargeIcon());
+        childFrame.setIconImage(createLargeIcon(gui));
         
         childFrame.add(gui);
         
@@ -98,15 +98,15 @@ public class GeneratorGuiCreator {
         
         //childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         childFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);                
-        childFrame.addWindowListener( new WindowHandler() );
+        childFrame.addWindowListener( new WindowHandler(gui) );
 	}	
 
 	/**
 	 * helper function to load the large pixelinvaders logo
 	 * @return
 	 */
-	public static Image createLargeIcon() {
-	    PImage img = Collector.getInstance().getPapplet().loadImage("pics/logoBig.jpg");
+	public static Image createLargeIcon(PApplet papplet) {
+	    PImage img = papplet.loadImage("pics/logoBig.jpg");
 	    if (img!=null) {
 	        return img.getImage();	        
 	    }

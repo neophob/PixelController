@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.neophob.sematrix.glue.FileUtilsTest" time="0.038" tests="1" errors="0" skipped="0" failures="0">
+<testsuite name="com.neophob.sematrix.glue.FileUtilsTest" time="0.003" tests="1" errors="0" skipped="0" failures="1">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib"/>
@@ -16,7 +16,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core"/>
+    <property name="user.dir" value="/Users/michu/_code/workspace/PixelController.github/PixelController"/>
     <property name="java.runtime.version" value="1.7.0_21-b12"/>
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/endorsed"/>
@@ -43,7 +43,7 @@
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean package"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/>
@@ -61,5 +61,16 @@
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="findFilesTest" classname="com.neophob.sematrix.glue.FileUtilsTest" time="0.038"/>
+  <testcase name="findFilesTest" classname="com.neophob.sematrix.glue.FileUtilsTest" time="0.003">
+    <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
+	at org.junit.Assert.fail(Assert.java:86)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at org.junit.Assert.assertNotNull(Assert.java:621)
+	at org.junit.Assert.assertNotNull(Assert.java:631)
+	at com.neophob.sematrix.glue.FileUtilsTest.findFilesTest(FileUtilsTest.java:42)
+</failure>
+    <system-err><![CDATA[Nov 04, 2013 10:52:16 PM com.neophob.sematrix.glue.FileUtils findFiles
+WARNING: /Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/data/blinken is not a directoy
+]]></system-err>
+  </testcase>
 </testsuite>

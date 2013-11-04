@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.output.gui;
+package com.neophob.sematrix.gui;
 
 /**
  * this interface is used to define gui actions are needed because of 

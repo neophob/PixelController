@@ -1,4 +1,11 @@
 -------------------------------------------------------------------------------
 Test set: com.neophob.sematrix.generator.GenerateAllResolutionTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.431 sec - in com.neophob.sematrix.generator.GenerateAllResolutionTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.026 sec <<< FAILURE! - in com.neophob.sematrix.generator.GenerateAllResolutionTest
+verifyGeneratorsDoNotCrash(com.neophob.sematrix.generator.GenerateAllResolutionTest)  Time elapsed: 0.024 sec  <<< ERROR!
+java.lang.IllegalArgumentException: Failed to search blinken files, make sure directory '/Users/michu/_code/workspace/PixelController.github/PixelController/pixelcontroller-core/data/blinken/' exist!
+	at com.neophob.sematrix.generator.Blinkenlights.<init>(Blinkenlights.java:103)
+	at com.neophob.sematrix.generator.PixelControllerGenerator.initAll(PixelControllerGenerator.java:114)
+	at com.neophob.sematrix.generator.GenerateAllResolutionTest.testWithResolution(GenerateAllResolutionTest.java:92)
+	at com.neophob.sematrix.generator.GenerateAllResolutionTest.verifyGeneratorsDoNotCrash(GenerateAllResolutionTest.java:72)
+

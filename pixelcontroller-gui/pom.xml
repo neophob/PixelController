@@ -31,8 +31,67 @@
 		<minim.version>2.1.0-BETA</minim.version>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>core.jar</id>
+						<configuration>
+							<file>lib/core.jar</file>
+							<groupId>org.processing</groupId>
+							<artifactId>core</artifactId>
+							<version>1.2.1</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>controlP5.jar</id>
+						<configuration>
+							<file>lib/controlP5.jar</file>
+							<groupId>controlP5</groupId>
+							<artifactId>controlP5</artifactId>
+							<version>1.5.2</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>									
+				</executions>
+			</plugin>		
+		</plugins>
+	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.processing</groupId>
+			<artifactId>core</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>controlP5</groupId>
+			<artifactId>controlP5</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.neophob.pixelcontroller</groupId>
+			<artifactId>pixelcontroller-core</artifactId>
+			<version>SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>					
 	</dependencies>
 	
 </project>

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.output.gui;
+package com.neophob.sematrix.gui;
 
 import java.lang.reflect.Method;
 
@@ -61,13 +61,13 @@ public class OutputGui {
 	private Collector collector;
 	
 	private Output output;
-
+	
 	/**
 	 * Instantiates a new matrix emulator.
 	 *
 	 * @param controller the controller
 	 */
-	public OutputGui(ApplicationConfigurationHelper ph, Output output) {
+	public OutputGui(ApplicationConfigurationHelper ph, Output output, PApplet papplet) {
 		this.output = output;
 		this.ledSize = ph.getLedPixelSize();
 		this.collector = Collector.getInstance();
@@ -90,11 +90,11 @@ public class OutputGui {
 		
 		x+=RAHMEN_SIZE;
 		y+=20+2*RAHMEN_SIZE;
-		this.parent = this.collector.getPapplet();		
+		this.parent = papplet;		
 		this.parent.size(x, y);
 		this.parent.frame.setSize(x,y);
 		this.parent.frame.setTitle("PixelController Output Window");
-		this.parent.frame.setIconImage(GeneratorGuiCreator.createLargeIcon());
+		this.parent.frame.setIconImage(GeneratorGuiCreator.createLargeIcon(papplet));
 		if (this.parent.frame.isAlwaysOnTopSupported()) {
 			this.parent.frame.setAlwaysOnTop(true);			
 		}
@@ -109,7 +109,7 @@ public class OutputGui {
                 Method getAppMethod = appClass.getMethod("getApplication");
                 Object appInstance = getAppMethod.invoke(null);
                 Method dockMethod = appInstance.getClass().getMethod("setDockIconImage", java.awt.Image.class);
-                dockMethod.invoke(appInstance, GeneratorGuiCreator.createLargeIcon());				
+                dockMethod.invoke(appInstance, GeneratorGuiCreator.createLargeIcon(papplet));				
 			}
 		} catch (Throwable e) {
 			//nothing left todo...
