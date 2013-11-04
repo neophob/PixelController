@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.neophob.sematrix.properties.PropertiesHelperTest
--------------------------------------------------------------------------------
-Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.073 sec - in com.neophob.sematrix.properties.PropertiesHelperTest
