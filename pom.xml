@@ -72,6 +72,7 @@
 	<modules>
 		<module>pixelcontroller-core</module>
 		<module>pixelcontroller-gui</module>
+		<module>pixelcontroller-cli</module>
 	</modules>
 
 	<build>
