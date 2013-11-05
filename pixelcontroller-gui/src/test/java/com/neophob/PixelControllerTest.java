@@ -18,16 +18,12 @@
  */
 package com.neophob;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 
 import processing.core.PApplet;
-
-import com.neophob.sematrix.glue.Collector;
 
 /**
  * test start
@@ -58,11 +54,11 @@ public class PixelControllerTest {
 		}
 	}
 
-	
-	@Test
+
+/*	@Test
 	public void testCollector() {
 		assertTrue(Collector.getInstance().getPresets().size() > 0);
 	}
-	
+	*/
 
 }
