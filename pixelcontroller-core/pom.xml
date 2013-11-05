@@ -268,11 +268,6 @@
 			<version>3.1</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.jargs</groupId>
-			<artifactId>jargs</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>3.2.7</version>
