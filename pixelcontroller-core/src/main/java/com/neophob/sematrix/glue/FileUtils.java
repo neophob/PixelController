@@ -56,7 +56,8 @@ public class FileUtils {
 	 * @param rootDirectory
 	 */
 	public FileUtils() {
-		this.rootDirectory =System.getProperty("user.dir")+"/../src/main/resources";// System.getProperty("user.dir");
+		//this.rootDirectory = System.getProperty("user.dir")+"/../src/main/resources";// 
+		this.rootDirectory = System.getProperty("user.dir");
 		
 		LOG.log(Level.INFO, "Root directory: {0}", rootDirectory);
 	}
