@@ -18,43 +18,17 @@
  */
 package com.neophob.sematrix.glue;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import org.junit.Test;
 
 /**
- * test internal buffer size
- * 
+ * Helper Class to find some files
  * @author michu
  *
  */
-public class FileUtilsTest {
-    
-    @Test
-    public void findFilesTest() throws Exception {
-    	FileUtils fu = new FileUtilsJunit();
-    	
-    	String[] bmlFiles = fu.findBlinkenFiles();
-    	assertNotNull(bmlFiles);
-    	assertTrue(bmlFiles.length>2);
+public class FileUtilsJunit extends FileUtils {
 
-    	String[] imgFiles = fu.findImagesFiles();
-    	assertNotNull(imgFiles);
-    	assertTrue(imgFiles.length>2);
-    	
-    	assertFalse(fu.getRootDirectory().isEmpty());
-
-    	List<PresetSettings> presets = fu.loadPresents(128);
-    	assertNotNull(presets);
-    	assertTrue(presets.size()>2);
-    	
-    	fu.savePresents(presets);
-    	
-    }
+	public FileUtilsJunit() {
+		super(System.getProperty("user.dir")+"/../src/main/resources");
+	}
 
 
 }

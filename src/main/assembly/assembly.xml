@@ -34,6 +34,7 @@
  			<includes>
 				<include>com.neophob.pixelcontroller.pixelcontroller-core</include>
 		        <include>com.neophob.pixelcontroller.pixelcontroller-gui</include>
+		        <include>com.neophob.pixelcontroller.pixelcontroller-cli</include>
  			</includes>
  		</moduleSet>
  	</moduleSets>
@@ -73,6 +74,12 @@
 
 		<fileSet>
 			<directory>${basedir}/pixelcontroller-gui/target/assembly/pixelcontroller-gui</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>		
+
+		<fileSet>
+			<directory>${basedir}/pixelcontroller-cli/target/assembly/pixelcontroller-cli</directory>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 		</fileSet>		

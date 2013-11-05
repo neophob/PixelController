@@ -16,6 +16,10 @@
 	
 	<packaging>jar</packaging>
 
+	<properties>
+		<minim.version>2.1.0-BETA</minim.version>
+	</properties>
+	
 	<build>
 		<!-- include properties files in jar -->
 		<resources>

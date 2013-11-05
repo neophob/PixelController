@@ -31,6 +31,7 @@ import com.neophob.sematrix.effect.PassThru;
 import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
+import com.neophob.sematrix.glue.FileUtilsJunit;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.glue.Visual;
 import com.neophob.sematrix.input.ISound;
@@ -62,7 +63,7 @@ public class GenerateAllResolutionTest {
 			rootDir = "."+File.separatorChar;
 		}
     	ph = new ApplicationConfigurationHelper(new Properties());
-    	fileUtils = new FileUtils();
+    	fileUtils = new FileUtilsJunit();
     	sound = new SoundDummy();
     	resize = new PixelResize();
     	col = new ColorSet("test", new int[]{1,2,3});

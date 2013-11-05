@@ -57,8 +57,14 @@ public class FileUtils {
 	 */
 	public FileUtils() {
 		this.rootDirectory = System.getProperty("user.dir");
+		LOG.log(Level.INFO, "Root directory: {0}", rootDirectory);
 	}
-	
+
+	protected FileUtils(String rootDirectory) {
+		this.rootDirectory = rootDirectory;
+		LOG.log(Level.INFO, "Root directory: {0}", rootDirectory);
+	}
+
 	/**
 	 * get files by extension
 	 * not recursive
