@@ -62,7 +62,7 @@ public class Metaballs extends Generator {
 		vy = new int[NUM_BLOBS][getInternalBufferYSize()];
 		vx = new int[NUM_BLOBS][getInternalBufferXSize()];
 		
-		int deviceXSize = Collector.getInstance().getMatrix().getDeviceXSize();
+		int deviceXSize = matrix.getDeviceXSize();
 		if (deviceXSize<10) {
 			resolutionAwareMul = 60000;
 		} else {

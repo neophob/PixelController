@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.input;
 
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,7 +69,7 @@ public final class SoundMinim implements ISound, Runnable {
 	 * Instantiates a new sound minim.
 	 */
 	public SoundMinim(float silenceThreshold) {
-		minim = new Minim(null);
+		minim = new Minim(this);
 		//in = minim.getLineIn( Minim.STEREO, 512 );
 		in = minim.getLineIn( Minim.MONO, 1024 );
 
@@ -100,6 +101,25 @@ public final class SoundMinim implements ISound, Runnable {
 		this.runner.start();
 	}
 
+	/**
+	 * Minim requirement
+	 * @param fileName
+	 * @return
+	 */
+	public String sketchPath(String fileName) {
+		LOG.log(Level.INFO, "Not implemented, not used, sketchPath: "+fileName);
+		return "";
+	}
+
+	/**
+	 * Minim requirement
+	 * @param fileName
+	 * @return
+	 */
+	public InputStream createInput(String fileName) {
+		LOG.log(Level.INFO, "Not implemented, not used, createInput: "+fileName);
+		return null;
+	}
 
 	/**
 	 * Gets the current level of the buffer. It is calculated as 

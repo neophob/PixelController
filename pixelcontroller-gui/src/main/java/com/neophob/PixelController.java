@@ -301,7 +301,7 @@ public class PixelController extends PApplet {
 			//no update here, we're in pause mode
 			return;
 		}
-		
+
 		// update all generators
 		Collector.getInstance().updateSystem();
 		

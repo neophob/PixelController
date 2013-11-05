@@ -40,6 +40,7 @@ import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.helper.InitHelper;
 import com.neophob.sematrix.input.ISound;
 import com.neophob.sematrix.input.SoundDummy;
+import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.MessageProcessor;
@@ -195,12 +196,11 @@ public class Collector {
 		
 		//choose sound implementation
 		try {
-	//		sound = new SoundMinim(papplet, ph.getSoundSilenceThreshold());			
+			sound = new SoundMinim(ph.getSoundSilenceThreshold());			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE, Exception: {0}.", e);
 			sound = new SoundDummy();
 		}
-		sound = new SoundDummy();
 		//create the device with specific size
 		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 

@@ -155,6 +155,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     private boolean initialized = false;
     
+    private Messages messages;
+    
     /**
      * Instantiates a new internal buffer.
      *
@@ -170,7 +172,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         this.windowHeight = windowHeigth;
         this.singleVisualXSize = singleVisualXSize;
         this.singleVisualYSize = singleVisualYSize;
-        this.p5GuiYOffset = this.singleVisualYSize + 110;        
+        this.p5GuiYOffset = this.singleVisualYSize + 110;
+        
+        messages = new Messages();
     }
 
     /* (non-Javadoc)
@@ -205,25 +209,25 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedVisualList.setItemsPerRow(nrOfVisuals);
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
-            String s = Messages.getString("GeneratorGui.GUI_SELECTED_VISUAL")+(1+i);			 //$NON-NLS-1$
+            String s = messages.getString("GeneratorGui.GUI_SELECTED_VISUAL")+(1+i);			 //$NON-NLS-1$
             Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize-1, 13);
             t.setCaptionLabel(s);
             selectedVisualList.addItem(t, i);			
-            cp5.getTooltip().register(s, Messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_PREFIX")+(1+i)+Messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
+            cp5.getTooltip().register(s, messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_PREFIX")+(1+i)+messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
         }
         selectedVisualList.moveTo(ALWAYS_VISIBLE_TAB);
 
-        cp5.addTextlabel("gen1", Messages.getString("GeneratorGui.GUI_GENERATOR_LAYER_1"), GENERIC_X_OFS+3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("gen2", Messages.getString("GeneratorGui.GUI_GENERATOR_LAYER_2"), GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("fx1", Messages.getString("GeneratorGui.GUI_EFFECT_LAYER_1"), GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("fx2", Messages.getString("GeneratorGui.GUI_EFFECT_LAYER_2"), GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("mix2", Messages.getString("GeneratorGui.GUI_LAYER_MIXER"), GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("gen1", messages.getString("GeneratorGui.GUI_GENERATOR_LAYER_1"), GENERIC_X_OFS+3, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("gen2", messages.getString("GeneratorGui.GUI_GENERATOR_LAYER_2"), GENERIC_X_OFS+3+3*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("fx1", messages.getString("GeneratorGui.GUI_EFFECT_LAYER_1"), GENERIC_X_OFS+3+1*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("fx2", messages.getString("GeneratorGui.GUI_EFFECT_LAYER_2"), GENERIC_X_OFS+3+4*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("mix2", messages.getString("GeneratorGui.GUI_LAYER_MIXER"), GENERIC_X_OFS+3+2*Theme.DROPBOX_XOFS, 3+p5GuiYOffset).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
-        cp5.getTooltip().register("gen1", Messages.getString("GeneratorGui.GUI_TOOLTIP_GENERATOR_1")); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.getTooltip().register("gen2", Messages.getString("GeneratorGui.GUI_TOOLTIP_GENERATOR_2")); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.getTooltip().register("fx1", Messages.getString("GeneratorGui.GUI_TOOLTIP_EFFECT_1")); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.getTooltip().register("fx2", Messages.getString("GeneratorGui.GUI_TOOLTIP_EFFECT_2")); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.getTooltip().register("mix2", Messages.getString("GeneratorGui.GUI_TOOLTIP_MIXER")); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.getTooltip().register("gen1", messages.getString("GeneratorGui.GUI_TOOLTIP_GENERATOR_1")); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.getTooltip().register("gen2", messages.getString("GeneratorGui.GUI_TOOLTIP_GENERATOR_2")); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.getTooltip().register("fx1", messages.getString("GeneratorGui.GUI_TOOLTIP_EFFECT_1")); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.getTooltip().register("fx2", messages.getString("GeneratorGui.GUI_TOOLTIP_EFFECT_2")); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.getTooltip().register("mix2", messages.getString("GeneratorGui.GUI_TOOLTIP_MIXER")); //$NON-NLS-1$ //$NON-NLS-2$
 
         //Generator 
         generatorListOne = cp5.addDropdownList(GuiElement.GENERATOR_ONE_DROPDOWN.guiText(), 
@@ -292,25 +296,25 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //there a default tab which is present all the time. rename this tab
         Tab generatorTab = cp5.getTab("default"); //$NON-NLS-1$
         allTabs.add(generatorTab);
-        generatorTab.setLabel(Messages.getString("GeneratorGui.TAB_GENERATOR_EFFECT"));		 //$NON-NLS-1$
-        Tab outputTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_SINGLE_OUTPUT_MAPPING")); //$NON-NLS-1$
+        generatorTab.setLabel(messages.getString("GeneratorGui.TAB_GENERATOR_EFFECT"));		 //$NON-NLS-1$
+        Tab outputTab = cp5.addTab(messages.getString("GeneratorGui.TAB_SINGLE_OUTPUT_MAPPING")); //$NON-NLS-1$
         allTabs.add(outputTab);
         Tab allOutputTab = null;
         
         //add all output mapping only if multiple output panels exist
         if (nrOfVisuals>2) {
-            allOutputTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_ALL_OUTPUT_MAPPING"));		 //$NON-NLS-1$
+            allOutputTab = cp5.addTab(messages.getString("GeneratorGui.TAB_ALL_OUTPUT_MAPPING"));		 //$NON-NLS-1$
             allOutputTab.setColorForeground(0xffff0000);
             allTabs.add(allOutputTab);
         }
 
-        Tab randomTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_RANDOMIZE"));		 //$NON-NLS-1$
+        Tab randomTab = cp5.addTab(messages.getString("GeneratorGui.TAB_RANDOMIZE"));		 //$NON-NLS-1$
         allTabs.add(randomTab);
-        Tab presetTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_PRESETS")); //$NON-NLS-1$
+        Tab presetTab = cp5.addTab(messages.getString("GeneratorGui.TAB_PRESETS")); //$NON-NLS-1$
         allTabs.add(presetTab);
-        Tab infoTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_INFO")); //$NON-NLS-1$
+        Tab infoTab = cp5.addTab(messages.getString("GeneratorGui.TAB_INFO")); //$NON-NLS-1$
         allTabs.add(infoTab);
-        Tab helpTab = cp5.addTab(Messages.getString("GeneratorGui.TAB_HELP")); //$NON-NLS-1$
+        Tab helpTab = cp5.addTab(messages.getString("GeneratorGui.TAB_HELP")); //$NON-NLS-1$
         allTabs.add(helpTab);
         
         generatorTab.setColorForeground(0xffff0000);
@@ -328,14 +332,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //freeze update 
         Toggle t1 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 730, 2, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
         t1.setLabelVisible(false);
-        cp5.addTextlabel("freezeUpdateTxt", Messages.getString("GeneratorGui.GUI_TOGGLE_FREEZE"), 745, 5).moveTo(ALWAYS_VISIBLE_TAB);
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),Messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
+        cp5.addTextlabel("freezeUpdateTxt", messages.getString("GeneratorGui.GUI_TOGGLE_FREEZE"), 745, 5).moveTo(ALWAYS_VISIBLE_TAB);
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
         
         //toggle internal visuals
         Toggle t2 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(), 730, 20, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
         t2.setLabelVisible(false);
-        cp5.addTextlabel("toggleIKnternalVisualsTxt", Messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER"), 745, 23).moveTo(ALWAYS_VISIBLE_TAB);; //$NON-NLS-1$
-        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),Messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
+        cp5.addTextlabel("toggleIKnternalVisualsTxt", messages.getString("GeneratorGui.GUI_TOGGLE_INTERNAL_BUFFER"), 745, 23).moveTo(ALWAYS_VISIBLE_TAB);; //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_INTERNAL_VISUALS.guiText(),messages.getString("GeneratorGui.TOOLTIP_GUI_TOGGLE_INTERNAL_BUFFER")); //$NON-NLS-1$
 
         
         //-------------
@@ -347,7 +351,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //EFFECTS OPTIONS
         //---------------
         int genElYOfs = yPosStartDrowdown+70;
-        cp5.addTextlabel("genOptionsFx", Messages.getString("GeneratorGui.EFFECT_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
+        cp5.addTextlabel("genOptionsFx", messages.getString("GeneratorGui.EFFECT_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         
         //threshold slider
         thresholdSlider = cp5.addSlider(GuiElement.THRESHOLD.guiText(), 
@@ -362,40 +366,40 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         fxRotoSlider.setSliderMode(Slider.FIX);
         fxRotoSlider.setGroup(generatorTab);
         fxRotoSlider.setDecimalPrecision(0);
-        fxRotoSlider.setCaptionLabel(Messages.getString("GeneratorGui.EFFECT_ROTOZOOM_SPEED")); //$NON-NLS-1$
+        fxRotoSlider.setCaptionLabel(messages.getString("GeneratorGui.EFFECT_ROTOZOOM_SPEED")); //$NON-NLS-1$
 
         
         
         genElYOfs = yPosStartDrowdown+90;
 
         //texturedeform options
-        cp5.addTextlabel("genTextdefOpt", Messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), genFxXOfs+3+0*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("genTextdefOpt", messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), genFxXOfs+3+0*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         textureDeformOptions = cp5.addDropdownList(GuiElement.TEXTUREDEFORM_OPTIONS.guiText(), 
         		genFxXOfs+0*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 80);
         Theme.themeDropdownList(textureDeformOptions);		        
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_ANAMORPHOSIS"), 1); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 2); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_ROTATINGTUNNEL"), 3); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_START"), 4); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_TUNNEL"), 5); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_FLOWER"), 6); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_CLOUD"), 7); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_PLANAR"), 8); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_CIRCLE"), 9); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 10); //$NON-NLS-1$
-        textureDeformOptions.addItem(Messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 11); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_ANAMORPHOSIS"), 1); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 2); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_ROTATINGTUNNEL"), 3); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_START"), 4); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_TUNNEL"), 5); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLOWER"), 6); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CLOUD"), 7); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_PLANAR"), 8); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CIRCLE"), 9); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 10); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 11); //$NON-NLS-1$
         textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
         textureDeformOptions.setGroup(generatorTab);		
 
         
-        cp5.addTextlabel("genZoomOpt", Messages.getString("GeneratorGui.ZOOM_OPTIONS"), genFxXOfs+3+1*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("genZoomOpt", messages.getString("GeneratorGui.ZOOM_OPTIONS"), genFxXOfs+3+1*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         zoomOptions = cp5.addDropdownList(GuiElement.ZOOM_OPTIONS.guiText(), 
         		genFxXOfs+1*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 80);
         Theme.themeDropdownList(zoomOptions);		        
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_IN"), 0); //$NON-NLS-1$
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_OUT"), 1); //$NON-NLS-1$
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 2); //$NON-NLS-1$
-        zoomOptions.addItem(Messages.getString("GeneratorGui.ZOOM_VERTICAL"), 3); //$NON-NLS-1$
+        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_IN"), 0); //$NON-NLS-1$
+        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_OUT"), 1); //$NON-NLS-1$
+        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_HORIZONTAL"), 2); //$NON-NLS-1$
+        zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_VERTICAL"), 3); //$NON-NLS-1$
         zoomOptions.setLabel(zoomOptions.getItem(0).getName());
         zoomOptions.setGroup(generatorTab);		
 
@@ -406,10 +410,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         FileUtils fu = new FileUtils();
         
         genElYOfs = p5GuiYOffset+35;
-        cp5.addTextlabel("genOptionsGen", Messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("genOptionsGen", messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         genElYOfs=yPosStartLabel+5;
-        cp5.addTextlabel("genBlinken", Messages.getString("GeneratorGui.BLINKENLIGHT_LOAD"), genFxXOfs+3, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("genBlinken", messages.getString("GeneratorGui.BLINKENLIGHT_LOAD"), genFxXOfs+3, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.guiText(), 
         		genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
@@ -423,7 +427,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         blinkenLightsList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //images
-        cp5.addTextlabel("genImg", Messages.getString("GeneratorGui.IMAGE_LOAD"), genFxXOfs+3+1*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("genImg", messages.getString("GeneratorGui.IMAGE_LOAD"), genFxXOfs+3+1*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.guiText(), 
         		genFxXOfs+Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
@@ -437,7 +441,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         imageList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
         //colorscroll options
-        cp5.addTextlabel("genColorScroll", Messages.getString("GeneratorGui.COLORSCROLL_OPTIONS"), genFxXOfs+3+2*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
+        cp5.addTextlabel("genColorScroll", messages.getString("GeneratorGui.COLORSCROLL_OPTIONS"), genFxXOfs+3+2*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         colorScrollList = cp5.addDropdownList(GuiElement.COLORSCROLL_OPTIONS.guiText(), 
         		genFxXOfs+2*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorScrollList);		
@@ -450,12 +454,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setLabel(col.getPixelControllerGenerator().getScrollMode().getDisplayName());
         
         //add textfield options
-        cp5.addTextlabel("genTextwriterOpt", Messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
+        cp5.addTextlabel("genTextwriterOpt", messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         textwriterOption = cp5.addDropdownList(GuiElement.TEXTWR_OPTION.guiText(), 
         		genFxXOfs+3*Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(textwriterOption);
-        textwriterOption.addItem(Messages.getString("GeneratorGui.TEXTWRITER_PINGPONG"), 0); //$NON-NLS-1$
-        textwriterOption.addItem(Messages.getString("GeneratorGui.TEXTWRITER_LEFT"), 1); //$NON-NLS-1$
+        textwriterOption.addItem(messages.getString("GeneratorGui.TEXTWRITER_PINGPONG"), 0); //$NON-NLS-1$
+        textwriterOption.addItem(messages.getString("GeneratorGui.TEXTWRITER_LEFT"), 1); //$NON-NLS-1$
         textwriterOption.setLabel(textwriterOption.getItem(0).getName());
         textwriterOption.setGroup(generatorTab);
         textwriterOption.setHeight(Theme.DROPBOXLIST_HEIGHT);
@@ -471,7 +475,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-----------------				
 
         //brightness control
-        cp5.addTextlabel("brightnessControllTxt", Messages.getString("GeneratorGui.BRIGHTNESS"), 5, yPosStartDrowdown+95).moveTo(outputTab);
+        cp5.addTextlabel("brightnessControllTxt", messages.getString("GeneratorGui.BRIGHTNESS"), 5, yPosStartDrowdown+95).moveTo(outputTab);
 
         brightnessControll = cp5.addSlider(GuiElement.BRIGHTNESS.guiText(), 0, 255, 255, 38, yPosStartDrowdown+110, 160, 14);
         brightnessControll.setSliderMode(Slider.FIX);
@@ -486,22 +490,22 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedOutputs.setItemsPerRow(nrOfOutputs);
         selectedOutputs.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfOutputs; i++) {
-            String s = Messages.getString("GeneratorGui.OUTPUT_NR")+(1+i);			 //$NON-NLS-1$
+            String s = messages.getString("GeneratorGui.OUTPUT_NR")+(1+i);			 //$NON-NLS-1$
             Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize, 13);
             t.setCaptionLabel(s);
             selectedOutputs.addItem(t, i);			
-            cp5.getTooltip().register(s, Messages.getString("GeneratorGui.TOOLTIP_OUTPUT_PREFIX")+(1+i)+Messages.getString("GeneratorGui.TOOLTIP_OUTPUT_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
+            cp5.getTooltip().register(s, messages.getString("GeneratorGui.TOOLTIP_OUTPUT_PREFIX")+(1+i)+messages.getString("GeneratorGui.TOOLTIP_OUTPUT_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
         }
         selectedOutputs.moveTo(outputTab);
 
         //visual
-        cp5.addTextlabel("singleOutputVisual", Messages.getString("GeneratorGui.OUTPUT_VISUAL"), 38, yPosStartDrowdown+60).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("singleOutputVisual", messages.getString("GeneratorGui.OUTPUT_VISUAL"), 38, yPosStartDrowdown+60).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         dropdownOutputVisual = GeneratorGuiHelper.createVisualDropdown(cp5, 
                 GuiElement.OUTPUT_SELECTED_VISUAL_DROPDOWN.guiText(), yPosStartDrowdown+10, nrOfVisuals); 
         dropdownOutputVisual.moveTo(outputTab);
 
         //Fader         
-        cp5.addTextlabel("singleOutputTransition", Messages.getString("GeneratorGui.OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+60).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("singleOutputTransition", messages.getString("GeneratorGui.OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+60).moveTo(outputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         dropdownOutputFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                 GuiElement.OUTPUT_FADER_DROPDOWN.guiText(), yPosStartDrowdown+10); 
         dropdownOutputFader.moveTo(outputTab);
@@ -512,16 +516,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //--------------				
         
         if (allOutputTab!=null) {
-            cp5.addTextlabel("allOutputTabLabel", Messages.getString("GeneratorGui.TEXT_CHANGE_ALL_OUTPUT_MAPPINGS"), 20, yPosStartDrowdown) //$NON-NLS-1$ //$NON-NLS-2$
+            cp5.addTextlabel("allOutputTabLabel", messages.getString("GeneratorGui.TEXT_CHANGE_ALL_OUTPUT_MAPPINGS"), 20, yPosStartDrowdown) //$NON-NLS-1$ //$NON-NLS-2$
             .moveTo(allOutputTab).getValueLabel();
 
-            cp5.addTextlabel("allOutputVisual", Messages.getString("GeneratorGui.ALL_OUTPUT_VISUAL"), 38, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+            cp5.addTextlabel("allOutputVisual", messages.getString("GeneratorGui.ALL_OUTPUT_VISUAL"), 38, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
             allOutputTabVis = GeneratorGuiHelper.createVisualDropdown(cp5, 
                     GuiElement.OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN.guiText(), yPosStartDrowdown+20, nrOfVisuals); 
             allOutputTabVis.moveTo(allOutputTab);
 
             //Fader         
-            cp5.addTextlabel("allOutputTransition", Messages.getString("GeneratorGui.ALL_OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+            cp5.addTextlabel("allOutputTransition", messages.getString("GeneratorGui.ALL_OUTPUT_TRANSITION"), 38+Theme.DROPBOX_XOFS*2, yPosStartDrowdown+68).moveTo(allOutputTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
             allOutputTabFader = GeneratorGuiHelper.createFaderDropdown(cp5, 
                     GuiElement.OUTPUT_ALL_FADER_DROPDOWN.guiText(), yPosStartDrowdown+20); 
             allOutputTabFader.moveTo(allOutputTab);        	        	
@@ -529,7 +533,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
 
         //palette dropdown list	
-        cp5.addTextlabel("colSet", Messages.getString("GeneratorGui.SELECT_COLORSET"), GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("colSet", messages.getString("GeneratorGui.SELECT_COLORSET"), GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+3).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
         colorSetList = cp5.addDropdownList(GuiElement.COLOR_SET_DROPDOWN.guiText(), 
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
@@ -542,7 +546,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorSetList.setLabel(colorSetList.getItem(1).getName());
         colorSetList.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
         colorSetList.moveTo(ALWAYS_VISIBLE_TAB);
-        cp5.getTooltip().register("colSet", Messages.getString("GeneratorGui.TOOLTIP_COLORSET")); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.getTooltip().register("colSet", messages.getString("GeneratorGui.TOOLTIP_COLORSET")); //$NON-NLS-1$ //$NON-NLS-2$
 
         
         //----------
@@ -550,7 +554,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //----------				
 
         Textlabel tRnd = cp5.addTextlabel("rndDesc",  //$NON-NLS-1$
-        		Messages.getString("GeneratorGui.TEXT_RANDOM_MODE_SELECT_ELEMENTS"),  //$NON-NLS-1$
+        		messages.getString("GeneratorGui.TEXT_RANDOM_MODE_SELECT_ELEMENTS"),  //$NON-NLS-1$
         		20, yPosStartDrowdown);
         tRnd.moveTo(randomTab).getValueLabel();
         
@@ -575,15 +579,15 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //Button
         randomSelection = cp5.addButton(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), 0,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+30, 110, 15);
-        randomSelection.setCaptionLabel(Messages.getString("GeneratorGui.RANDOMIZE")); //$NON-NLS-1$
+        randomSelection.setCaptionLabel(messages.getString("GeneratorGui.RANDOMIZE")); //$NON-NLS-1$
         randomSelection.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), Messages.getString("GeneratorGui.TOOLTIP_RANDOMIZE")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_CONFIGURATION.guiText(), messages.getString("GeneratorGui.TOOLTIP_RANDOMIZE")); //$NON-NLS-1$
 
         randomPresets = cp5.addButton(GuiElement.BUTTON_RANDOM_PRESET.guiText(), 0,
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+55, 110, 15);
-        randomPresets.setCaptionLabel(Messages.getString("GeneratorGui.RANDOM_PRESET")); //$NON-NLS-1$
+        randomPresets.setCaptionLabel(messages.getString("GeneratorGui.RANDOM_PRESET")); //$NON-NLS-1$
         randomPresets.moveTo(randomTab);
-        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.BUTTON_RANDOM_PRESET.guiText(),messages.getString("GeneratorGui.TOOLTIP_RANDOM_PRESET")); //$NON-NLS-1$
 
         randomButtons = cp5.addRadioButton(GuiElement.BUTTONS_RANDOM_MODE.guiText())
                 .setPosition(GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset+85)
@@ -595,8 +599,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 .setSpacingColumn(26)
                 .setNoneSelectedAllowed(true)
                 .moveTo(randomTab);
-        randomButtons.addItem(Messages.getString("GeneratorGui.RANDOM_MODE"), 0);
-        randomButtons.addItem(Messages.getString("GeneratorGui.RANDOM_MODE_PRESET"), 1);
+        randomButtons.addItem(messages.getString("GeneratorGui.RANDOM_MODE"), 0);
+        randomButtons.addItem(messages.getString("GeneratorGui.RANDOM_MODE_PRESET"), 1);
         
         //----------
         //PRESET Tab
@@ -626,13 +630,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+124, 100, 15);
         loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.guiText());
         loadPreset.moveTo(presetTab);
-        cp5.getTooltip().register(GuiElement.LOAD_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_LOAD_PRESET")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.LOAD_PRESET.guiText(),messages.getString("GeneratorGui.TOOLTIP_LOAD_PRESET")); //$NON-NLS-1$
 
         savePreset = cp5.addButton(GuiElement.SAVE_PRESET.guiText(), 0,
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+124, 100, 15);
         savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.guiText());
         savePreset.moveTo(presetTab);
-        cp5.getTooltip().register(GuiElement.SAVE_PRESET.guiText(),Messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.SAVE_PRESET.guiText(),messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
 
         presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+124, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab); //$NON-NLS-1$
         presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+142).moveTo(presetTab).getValueLabel();         //$NON-NLS-1$ //$NON-NLS-2$
@@ -651,29 +655,29 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int nfoYPos = yPosStartDrowdown+20;
         int nfoXPos = xOfs;
 
-        cp5.addTextlabel("nfoFpsConf", Messages.getString("GeneratorGui.CONF_FPS")+col.getFps(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS")+col.getFps(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         currentFps = cp5.addTextlabel("nfoFpsCurrent", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         runtime = cp5.addTextlabel("nfoRuntime", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        cp5.addTextlabel("nfoSrvVersion", Messages.getString("GeneratorGui.SERVER_VERSION")+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         float volNorm = Collector.getInstance().getSound().getVolumeNormalized();
-        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", Messages.getString("GeneratorGui.CURRENT_VOLUME")+volNorm, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        currentVolume = cp5.addTextlabel("nfoVolumeCurrent", messages.getString("GeneratorGui.CURRENT_VOLUME")+volNorm, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        cp5.addTextlabel("nfoWindowHeight", Messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoWindowHeight", messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         int ibsX= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferXSize();
         int ibsY= col.getPixelControllerGenerator().getGenerator(0).getInternalBufferYSize();
-        cp5.addTextlabel("nfoInternalBuffer", Messages.getString("GeneratorGui.INFO_INTERNAL_BUFFERSIZE")+ibsX+"/"+ibsY, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoInternalBuffer", messages.getString("GeneratorGui.INFO_INTERNAL_BUFFERSIZE")+ibsX+"/"+ibsY, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         
         Button saveScreenshot = cp5.addButton(GuiElement.SAVE_SCREENSHOT.guiText(), 0,
         		nfoXPos, nfoYPos, 110, 15);
-        saveScreenshot.setCaptionLabel(Messages.getString("GeneratorGui.SAVE_SCREENSHOT")); //$NON-NLS-1$
+        saveScreenshot.setCaptionLabel(messages.getString("GeneratorGui.SAVE_SCREENSHOT")); //$NON-NLS-1$
         saveScreenshot.moveTo(infoTab);
-        cp5.getTooltip().register(GuiElement.SAVE_SCREENSHOT.guiText(), Messages.getString("GeneratorGui.TOOLTIP_SAVE_SCREENSHOT")); //$NON-NLS-1$
+        cp5.getTooltip().register(GuiElement.SAVE_SCREENSHOT.guiText(), messages.getString("GeneratorGui.TOOLTIP_SAVE_SCREENSHOT")); //$NON-NLS-1$
 
         
         nfoXPos += xposAdd;
@@ -681,9 +685,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         IOutput output = col.getOutputDevice();
         if (output!=null) {
             String gammaText = WordUtils.capitalizeFully(StringUtils.replace(output.getGammaType().toString(), "_", " "));
-            cp5.addTextlabel("nfoGamma", Messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
+            cp5.addTextlabel("nfoGamma", messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
             nfoYPos+=yposAdd;
-            cp5.addTextlabel("nfoBps", Messages.getString("GeneratorGui.OUTPUT_BPP")+output.getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+            cp5.addTextlabel("nfoBps", messages.getString("GeneratorGui.OUTPUT_BPP")+output.getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
             nfoYPos+=yposAdd;
         }
         sentFrames = cp5.addTextlabel("nfoSentFrames", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -696,9 +700,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
         String oscPort = col.getPh().getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, ""); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("nfoOscPort", Messages.getString("GeneratorGui.OSC_PORT")+oscPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoOscPort", messages.getString("GeneratorGui.OSC_PORT")+oscPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        oscStatistic = cp5.addTextlabel("nfoOscStatistic", Messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
+        oscStatistic = cp5.addTextlabel("nfoOscStatistic", messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
         nfoYPos+=yposAdd;
         
         
@@ -712,47 +716,47 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int hlpXOfs2 = 240;
         int hlpYposAdd = 15;
         
-        cp5.addTextlabel("hlpHeader1", Messages.getString("GeneratorGui.HLP_HEADER1"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("hlpHeader1", messages.getString("GeneratorGui.HLP_HEADER1"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd/2;
-        cp5.addTextlabel("hlpHeader2", Messages.getString("GeneratorGui.HLP_HEADER2"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("hlpHeader2", messages.getString("GeneratorGui.HLP_HEADER2"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("hlpHeader3", Messages.getString("GeneratorGui.HLP_HEADER3"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("hlpHeader3", messages.getString("GeneratorGui.HLP_HEADER3"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("hlpHeader4", Messages.getString("GeneratorGui.HLP_HEADER4"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("hlpHeader4", messages.getString("GeneratorGui.HLP_HEADER4"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         hlpYOfs += hlpYposAdd;
         hlpYOfs += hlpYposAdd/2;
-        cp5.addTextlabel("hlpKeyHeader", Messages.getString("GeneratorGui.HLP_KEYBINDING_HEADER"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("hlpKeyHeader", messages.getString("GeneratorGui.HLP_KEYBINDING_HEADER"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         hlpXOfs1 *=2 ;
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_19", Messages.getString("GeneratorGui.HLP_KEY_19"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_19", messages.getString("GeneratorGui.HLP_KEY_19"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_F", Messages.getString("GeneratorGui.HLP_KEY_F"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("HLP_KEY_G", Messages.getString("GeneratorGui.HLP_KEY_G"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_F", messages.getString("GeneratorGui.HLP_KEY_F"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_G", messages.getString("GeneratorGui.HLP_KEY_G"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_W", Messages.getString("GeneratorGui.HLP_KEY_W"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("HLP_KEY_E", Messages.getString("GeneratorGui.HLP_KEY_E"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_W", messages.getString("GeneratorGui.HLP_KEY_W"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_E", messages.getString("GeneratorGui.HLP_KEY_E"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_M", Messages.getString("GeneratorGui.HLP_KEY_M"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_M", messages.getString("GeneratorGui.HLP_KEY_M"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_C", Messages.getString("GeneratorGui.HLP_KEY_C"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_C", messages.getString("GeneratorGui.HLP_KEY_C"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_R", Messages.getString("GeneratorGui.HLP_KEY_R"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_R", messages.getString("GeneratorGui.HLP_KEY_R"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         hlpYOfs += hlpYposAdd;
-        cp5.addTextlabel("HLP_KEY_LEFT", Messages.getString("GeneratorGui.HLP_KEY_LEFT"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("HLP_KEY_RIGHT", Messages.getString("GeneratorGui.HLP_KEY_RIGHT"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_LEFT", messages.getString("GeneratorGui.HLP_KEY_LEFT"), hlpXOfs1, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("HLP_KEY_RIGHT", messages.getString("GeneratorGui.HLP_KEY_RIGHT"), hlpXOfs2, hlpYOfs).moveTo(helpTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         //----------
         // LOGO
         //----------    
 
         try {
-            logo = loadImage("gui"+File.separatorChar+"guilogo.jpg");   
+            logo = loadImage(fu.getDataDir()+File.separator+"gui"+File.separatorChar+"guilogo.jpg");   
             LOG.log(Level.INFO, "GUI logo loaded");
         } catch (Exception e) {
             LOG.log(Level.INFO, "Failed to load gui logo!",e);
@@ -765,10 +769,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/NR_OF_WIDGETS;        
         
-        cp5.addTextlabel("frameDesc", Messages.getString("GeneratorGui.FRAME_PROGRESS"), GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("sndDesc", Messages.getString("GeneratorGui.SOUND_DESC"), GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("sndVol", Messages.getString("GeneratorGui.INPUT_VOLUME"), GENERIC_X_OFS+xSizeForEachWidget*2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("outputDevice", Messages.getString("GeneratorGui.OUTPUT_DEVICE"), GENERIC_X_OFS+xSizeForEachWidget*3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("frameDesc", messages.getString("GeneratorGui.FRAME_PROGRESS"), GENERIC_X_OFS, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("sndDesc", messages.getString("GeneratorGui.SOUND_DESC"), GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("sndVol", messages.getString("GeneratorGui.INPUT_VOLUME"), GENERIC_X_OFS+xSizeForEachWidget*2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("outputDevice", messages.getString("GeneratorGui.OUTPUT_DEVICE"), GENERIC_X_OFS+xSizeForEachWidget*3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("outputDeviceName", col.getOutputDeviceName(), 15+GENERIC_X_OFS+xSizeForEachWidget*3, 2+GENERIC_Y_OFS+10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$
         
         //register event listener
@@ -890,27 +894,27 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         if (frames%12==1) {
             //INFO TAB
             int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
-            currentFps.setText(Messages.getString("GeneratorGui.CURRENT_FPS")+fps10/10f); //$NON-NLS-1$
+            currentFps.setText(messages.getString("GeneratorGui.CURRENT_FPS")+fps10/10f); //$NON-NLS-1$
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
-            runtime.setText(Messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
-            sentFrames.setText(Messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
+            runtime.setText(messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
+            sentFrames.setText(messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
             int snd1000 = (int)(1000f*Collector.getInstance().getSound().getVolumeNormalized());
-            currentVolume.setText(Messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
+            currentVolume.setText(messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
             IOutput output = col.getOutputDevice();
             if (output!=null) {
                 String outputStateStr = WordUtils.capitalizeFully(output.getConnectionStatus());
                 outputState.setText(outputStateStr);
-                outputErrorCounter.setText(Messages.getString("GeneratorGui.IO_ERRORS")+output.getErrorCounter());             //$NON-NLS-1$            	
+                outputErrorCounter.setText(messages.getString("GeneratorGui.IO_ERRORS")+output.getErrorCounter());             //$NON-NLS-1$            	
             }
             long recievedMB = col.getPixConStat().getRecievedOscBytes()/1024/1024;
-            String oscStat  = Messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
+            String oscStat  = messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
             oscStatistic.setText(oscStat);
             
             Visual v = col.getVisual(col.getCurrentVisual());
             if (v!=null) {		    
                 if (v.getGenerator1().isPassThoughModeActive() || v.getGenerator2().isPassThoughModeActive()) {
-                	passThroughMode.setText(Messages.getString("GeneratorGui.PASSTHROUGH_MODE"));
+                	passThroughMode.setText(messages.getString("GeneratorGui.PASSTHROUGH_MODE"));
                 } else {
                 	passThroughMode.setText("");
                 }
@@ -941,15 +945,15 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         if (preset!=null) {
             String presetState;
             if (preset.isSlotUsed()) {
-                presetState = Messages.getString("GeneratorGui.STR_TRUE"); //$NON-NLS-1$
+                presetState = messages.getString("GeneratorGui.STR_TRUE"); //$NON-NLS-1$
             } else {
-                presetState = Messages.getString("GeneratorGui.STR_FALSE"); //$NON-NLS-1$
+                presetState = messages.getString("GeneratorGui.STR_FALSE"); //$NON-NLS-1$
             }
 
-            presetInfo.setText(Messages.getString("GeneratorGui.VALID_ENTRY_EMPTY")+presetState); //$NON-NLS-1$
+            presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_EMPTY")+presetState); //$NON-NLS-1$
             presetName.setText(preset.getName());                
         } else {
-            presetInfo.setText(Messages.getString("GeneratorGui.VALID_ENTRY_FALSE")); //$NON-NLS-1$
+            presetInfo.setText(messages.getString("GeneratorGui.VALID_ENTRY_FALSE")); //$NON-NLS-1$
             presetName.setText("");                             //$NON-NLS-1$
         }
         
