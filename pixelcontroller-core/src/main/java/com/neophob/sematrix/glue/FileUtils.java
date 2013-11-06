@@ -56,10 +56,19 @@ public class FileUtils {
 	 * @param rootDirectory
 	 */
 	public FileUtils() {
-		//this.rootDirectory = System.getProperty("user.dir")+"/../src/main/resources";// 
 		this.rootDirectory = System.getProperty("user.dir");
 		
-		LOG.log(Level.INFO, "Root directory: {0}", rootDirectory);
+		if (!new File(getDataDir()).isDirectory()) {						
+			this.rootDirectory = System.getProperty("user.dir")+"/../src/main/resources";//
+			LOG.log(Level.INFO, "Try root directory: {0}", rootDirectory);
+			
+			if (!new File(getDataDir()).isDirectory()) {
+				LOG.log(Level.INFO, "Root directory {0} is not correct!", rootDirectory);
+			}
+		} else {
+			LOG.log(Level.INFO, "Use root directory: {0}", rootDirectory);	
+		}
+				
 	}
 
 	protected FileUtils(String rootDirectory) {
