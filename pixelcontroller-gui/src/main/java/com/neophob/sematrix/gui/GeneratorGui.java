@@ -824,19 +824,20 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     	return (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
     }
     
-    
+    long frames=0;
     /**
      * draw the whole internal buffer on screen.
      * this method is quite cpu intensive
      */
     public void draw() {
+    	//background(0);
         long l = System.currentTimeMillis();
         Collector col = Collector.getInstance();
         int localX = getVisualCenter(col);
         int localY=40;
 
-        long frames = col.getPixConStat().getFrameCount();
-        
+        frames++;
+
         //clear screen each 2nd frame and put logo on it
         if (frames%2==1) {
             background(0);        
@@ -891,7 +892,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         displayWidgets(GENERIC_Y_OFS);
         
         //update more details, mostly info tab
-        if (frames%12==1) {
+        if (frames%10==1) {
             //INFO TAB
             int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
             currentFps.setText(messages.getString("GeneratorGui.CURRENT_FPS")+fps10/10f); //$NON-NLS-1$
@@ -923,7 +924,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         
         //refresh gui from time to time
-        if (col.isTriggerGuiRefresh() || frames++%50==2) {
+        if (col.isTriggerGuiRefresh() || frames%50==2) {
             callbackRefreshWholeGui();
             col.setTriggerGuiRefresh(false);
         }

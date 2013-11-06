@@ -20,6 +20,8 @@ package com.neophob.sematrix.gui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * load gui text files from properties file
@@ -28,17 +30,29 @@ import java.util.ResourceBundle;
  */
 public class Messages {
 	
-    private static final String BUNDLE_NAME = "messages";//"com.neophob.sematrix.gui.messages"; //$NON-NLS-1$
+	private static final Logger LOG = Logger.getLogger(Messages.class.getName());
+	
+    //private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "com.neophob.sematrix.gui.messages"; //$NON-NLS-1$
 
     private ResourceBundle bundle;    
 
     public Messages() {
-    	bundle = ResourceBundle.getBundle(BUNDLE_NAME);
+    	try {
+    		bundle = ResourceBundle.getBundle(BUNDLE_NAME);
+        } catch (MissingResourceException e) {
+            LOG.log(Level.SEVERE, "Failed to load resource bundle!", e);
+        }
+    		
     }
 
     public String getString(String key) {
     	if (key==null) {
     		return "";
+    	}
+    	
+    	if (bundle==null) {
+    		return key;
     	}
     	
         try {
