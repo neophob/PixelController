@@ -309,7 +309,7 @@ public class PixelController extends PApplet {
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
 		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);
-		
+		this.collector.getPixConStat().setCurrentFps(frameRate);
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
 		}

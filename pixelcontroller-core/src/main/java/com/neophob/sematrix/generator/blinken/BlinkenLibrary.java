@@ -101,7 +101,7 @@ public class BlinkenLibrary {
 			//make sure input file exist
 			input = new FileInputStream(filename);
 			blm = (Blm) unmarshaller.unmarshal(input);
-			this.frames = extractFrames(128);			
+			this.frames = extractFrames(255);			
 	
 			long timeNeeded = System.currentTimeMillis()-start;
 			LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename, frames.length,timeNeeded });
