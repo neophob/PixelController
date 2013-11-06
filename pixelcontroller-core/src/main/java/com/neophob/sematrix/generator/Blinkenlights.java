@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.neophob.sematrix.generator.blinken.BlinkenImage;
 import com.neophob.sematrix.generator.blinken.BlinkenLibrary;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.FileUtils;
@@ -76,7 +77,7 @@ public class Blinkenlights extends Generator {
 
     private IResize resize;
     
-    private BufferedImage img;
+    private BlinkenImage img;
     
     /**
      * Instantiates a new blinkenlights.
@@ -153,11 +154,8 @@ public class Blinkenlights extends Generator {
             }
         }
 
-		int w = img.getWidth();
-	    int h = img.getHeight();
-		int[] dataBuffInt = img.getRGB(0, 0, w, h, null, 0, w); 
-		this.internalBuffer = resize.getBuffer(dataBuffInt, internalBufferXSize, internalBufferYSize, w, h);
-        
+        BufferedImage bi = resize.createImage(img.getData(), img.getWidth(), img.getHeight());
+		this.internalBuffer = resize.getBuffer(bi, internalBufferXSize, internalBufferYSize);
         frameNr++;
     }
 

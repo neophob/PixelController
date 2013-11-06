@@ -42,8 +42,6 @@
 package com.neophob.sematrix.generator.blinken;
 
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -69,12 +67,12 @@ public class BlinkenLibrary {
 	// the marshalled .blm file
 	private Blm blm;	
 
-	private BufferedImage[] frames;
+	private BlinkenImage[] frames;
 	
 	private Unmarshaller unmarshaller;
 
 	public static final String NAME = "blinkenlights-mini";
-	public static final String VERSION = "v0.2";
+	public static final String VERSION = "v0.4";
 
 	/**
 	 * 
@@ -103,7 +101,7 @@ public class BlinkenLibrary {
 			//make sure input file exist
 			input = new FileInputStream(filename);
 			blm = (Blm) unmarshaller.unmarshal(input);
-			this.frames = extractFrames(255);			
+			this.frames = extractFrames(128);			
 	
 			long timeNeeded = System.currentTimeMillis()-start;
 			LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename, frames.length,timeNeeded });
@@ -127,9 +125,9 @@ public class BlinkenLibrary {
 	 * creates a PImage-array of gif frames in a GifDecoder object 
 	 * @return 
 	 */
-	public BufferedImage[] extractFrames(int color) {
+	public BlinkenImage[] extractFrames(int color) {
 		int n = blm.getFrame().size();
-		BufferedImage[] framesTmp = new BufferedImage[n];
+		BlinkenImage[] framesTmp = new BlinkenImage[n];
 
 		for (int i = 0; i < n; i++) {
 			framesTmp[i] = BlinkenHelper.grabFrame(i, blm, color);
@@ -163,7 +161,7 @@ public class BlinkenLibrary {
 	}
 
 
-	public Image[] getFrames() {
+	public BlinkenImage[] getFrames() {
 		return frames;
 	}
 	
@@ -171,7 +169,7 @@ public class BlinkenLibrary {
 		return frames.length;
 	}
 	
-	public BufferedImage getFrame(int nr) {
+	public BlinkenImage getFrame(int nr) {
 		if (frames==null) {
 			return null;
 		}

@@ -125,6 +125,9 @@ public class Cell extends Generator {
 		if (xsize+xofs>internalBufferXSize) {
 			xsize=xsize+xofs-internalBufferXSize;
 		}
+		
+		System.out.println("rect: "+xofs+" "+yofs+" "+col);
+		
 		for (int y=0; y<ysize; y++) {
 			int ofs=(yofs+y)*internalBufferXSize+xofs;
 			for (int x=0; x<xsize; x++) {				
