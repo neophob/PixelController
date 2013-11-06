@@ -305,11 +305,13 @@ public class PixelController extends PApplet {
 		// update all generators
 		Collector.getInstance().updateSystem();
 		
+		//TODO calculate fps in pixelcontroller-core
+		this.collector.getPixConStat().setCurrentFps(frameRate);
+		
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
-		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);
-		this.collector.getPixConStat().setCurrentFps(frameRate);
+		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
 		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 			this.output.logStatistics();
 		}

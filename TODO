@@ -35,12 +35,13 @@ Roadmap PixelController
 
 Refactoring
 -----------
--update blinkenlights generator
 -change osc implementation
 -update copy function for streched output
 -test test test
--add cli client
 -support multiple clients for appstart (properties filename equal jar filename)
+-TODO calculate fps in pixelcontroller-core
+ //this.collector.getPixConStat().setCurrentFps(frameRate);
+-fix cell generator
 
 
 Roadmap PixelInvaders Firmware
