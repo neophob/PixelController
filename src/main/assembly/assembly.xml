@@ -32,9 +32,10 @@
  	<moduleSets>
  		<moduleSet>
  			<includes>
+				<include>com.neophob.pixelcontroller.pixelcontroller-osc</include>
 				<include>com.neophob.pixelcontroller.pixelcontroller-core</include>
-		        <include>com.neophob.pixelcontroller.pixelcontroller-gui</include>
-		        <include>com.neophob.pixelcontroller.pixelcontroller-cli</include>
+				<include>com.neophob.pixelcontroller.pixelcontroller-gui</include>
+				<include>com.neophob.pixelcontroller.pixelcontroller-cli</include>
  			</includes>
  		</moduleSet>
  	</moduleSets>

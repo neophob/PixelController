@@ -44,8 +44,8 @@ import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.listener.OscServer;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
+import com.neophob.sematrix.osc.PixelControllerOscServer;
 import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.output.PixelControllerOutput;
 import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
@@ -130,7 +130,7 @@ public class Collector {
 	
 	private PixelControllerFader pixelControllerFader;
 	
-	private OscServer oscServer;
+	private PixelControllerOscServer oscServer;
 	
 	private ApplicationConfigurationHelper ph;
 	
@@ -258,7 +258,7 @@ public class Collector {
         //Start OSC Server (OSC Interface)
         try {           
             int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
-            oscServer = new OscServer(listeningOscPort);
+            oscServer = new PixelControllerOscServer(listeningOscPort);
             //register osc server in the statistic class
             this.pixConStat.setOscServerStatistics(oscServer);
         } catch (Exception e) {

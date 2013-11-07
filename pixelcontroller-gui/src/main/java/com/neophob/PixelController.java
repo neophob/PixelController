@@ -180,7 +180,7 @@ public class PixelController extends PApplet {
         		noSmooth();
         		setupStep++;
         		drawProgressBar(steps*setupStep);
-        		drawSetupText("Initialize TCP/OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+        		drawSetupText("Initialize OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
         		return;
 
         	case 3:

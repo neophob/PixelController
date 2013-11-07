@@ -16,15 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.listener;
+package com.neophob.sematrix.osc;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.jmx.PacketAndBytesStatictics;
+import com.neophob.sematrix.listener.MessageProcessor;
+import com.neophob.sematrix.osc.client.OscMessageHandler;
+import com.neophob.sematrix.osc.model.OscMessage;
+import com.neophob.sematrix.osc.server.OscServerException;
+import com.neophob.sematrix.osc.server.impl.OscServer;
+import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 import com.neophob.sematrix.properties.ValidCommands;
 
 /**
@@ -33,21 +38,19 @@ import com.neophob.sematrix.properties.ValidCommands;
  * @author michu
  *
  */
-public class OscServer implements PacketAndBytesStatictics {
+public class PixelControllerOscServer extends OscMessageHandler implements PacketAndBytesStatictics {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(OscServer.class.getName());
+	private static final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
 
-	//private OscP5 oscP5;
+	private OscServer oscServer;
 	
-	private int oscPacketCounter;
-	private long oscBytesRecieved;
-
 	/**
 	 * 
 	 * @param listeningPort
+	 * @throws OscServerException 
 	 */
-	public OscServer(int listeningPort) {
+	public PixelControllerOscServer(int listeningPort) throws OscServerException {
 	    if (listeningPort<1) {
 	        LOG.log(Level.INFO, "Configured Port {0}, OSC Server disabled", new Object[] { listeningPort });
 	        return;
@@ -55,18 +58,41 @@ public class OscServer implements PacketAndBytesStatictics {
 
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });
 		
-  /*      OscProperties prop = new OscProperties();
-        //49152 bytes UDP buffer, 16 is the maximal internal buffer size (128*128*3)
-        prop.setDatagramSize(50000);
-        prop.setNetworkProtocol(OscProperties.UDP);
-        prop.setListeningPort(listeningPort);
-		this.oscP5 = new OscP5(null, prop);
-		this.oscP5.addListener(this);
+		oscServer = OscServerFactory.createServer(this, listeningPort, 50000);
+	}
+
+	@Override
+	public void handleOscMessage(OscMessage oscIn) {
+		//sanity check
+		if (StringUtils.isBlank(oscIn.getPattern())) {
+			LOG.log(Level.INFO,	"Ignore empty OSC message...");
+			return;
+		}
 		
-		//log only error and warnings
-		OscP5.setLogStatus(netP5.Logger.ALL, netP5.Logger.OFF);
-		OscP5.setLogStatus(netP5.Logger.ERROR, netP5.Logger.ON);
-		OscP5.setLogStatus(netP5.Logger.WARNING, netP5.Logger.ON);*/
+		String pattern = oscIn.getPattern().trim().toUpperCase();
+		//remove beginning "/"
+		if (pattern.startsWith("/")) {
+			pattern = pattern.substring(1, pattern.length());
+		}
+		
+		ValidCommands command;		
+		try {
+			command = ValidCommands.valueOf(pattern);
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "Failed to parse OSC Message "+pattern, e);
+			return;			
+		}
+		
+		String[] msg = new String[1+command.getNrOfParams()];
+		msg[0] = pattern;
+		byte[] blobData = null;
+
+		for (int i=0; i<command.getNrOfParams(); i++) {
+			msg[1+i] = oscIn.getArgs()[i];
+		}
+
+		MessageProcessor.processMsg(msg, true, blobData);
+		
 	}
 
 	/**
@@ -74,11 +100,6 @@ public class OscServer implements PacketAndBytesStatictics {
 	 * @param theOscMessage
 	 */
 /*	public void oscEvent(OscMessage theOscMessage) {
-		//sanity check
-		if (StringUtils.isBlank(theOscMessage.addrPattern())) {
-			LOG.log(Level.INFO,	"Ignore empty OSC message...");
-			return;
-		}
 		
 		oscPacketCounter++;
 		oscBytesRecieved += theOscMessage.getBytes().length;
@@ -141,7 +162,7 @@ public class OscServer implements PacketAndBytesStatictics {
      */
     @Override
     public int getPacketCounter() {
-        return oscPacketCounter;
+        return oscServer.getPacketCounter();
     }
 
     /* (non-Javadoc)
@@ -149,9 +170,8 @@ public class OscServer implements PacketAndBytesStatictics {
      */
     @Override
     public long getBytesRecieved() {
-        return oscBytesRecieved;
-    }
-	
+        return oscServer.getBytesRecieved();
+    }	
 	
 	
 }

@@ -324,6 +324,12 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>1.6.3</version>
 		</dependency>
+		<dependency>
+			<groupId>com.neophob.pixelcontroller</groupId>
+			<artifactId>pixelcontroller-osc</artifactId>
+			<version>SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 	
 </project>

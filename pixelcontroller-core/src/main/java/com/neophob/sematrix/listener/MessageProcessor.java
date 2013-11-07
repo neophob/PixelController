@@ -484,12 +484,12 @@ public final class MessageProcessor {
 				
 			//pause output, needed to create screenshots or take an image of the output
 			case FREEZE:
-				Collector.getInstance().togglePauseMode();
+				col.togglePauseMode();
 				break;
 			
 			//show/hide internal visuals to save cpu power
 			case TOGGLE_INTERNAL_VISUAL:
-				Collector.getInstance().toggleInternalVisual();
+				col.toggleInternalVisual();
 				break;
 				
 			case OSC_GENERATOR1:
