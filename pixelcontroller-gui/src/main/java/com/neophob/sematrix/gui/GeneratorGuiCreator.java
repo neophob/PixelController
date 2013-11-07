@@ -110,6 +110,7 @@ public class GeneratorGuiCreator {
 	    if (img!=null) {
 	        return img.getImage();	        
 	    }
+	    LOG.log(Level.WARNING, "failed to load icon image!");
 	    img = new PImage(400,400);
 	    return img.getImage();
 	}
