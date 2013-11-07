@@ -53,6 +53,21 @@ I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad
 
 You need to know how to install an Arduino Library (http://arduino.cc/en/Guide/Libraries). For PixelInvaders Panels (LPD6803) install the `integration/ArduinoFw/libraries/timer1` and `integration/ArduinoFw/libraries/neophob_lpd6803spi` libraries, for other panels (WS2801, WS281x...) install the `integration/ArduinoFw/libraries/FastSPI_LED2` library.  
 
+### How does it work?
+
+PixelController generates the content for the LED matrix, sends the data out to the controller, the controller will update the LED modules. There are two options for "sends the data": 
+* sends the data via USB to the Arduino/Teensy board
+* sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device
+
+Here are two primitive schemes:
+
+    [PixelController]---<USB>---[Teensy with PixelInvaders firmware]---<SPI>---[LED#1]---[LED#2]...
+
+    [PixelController]---<USB>---[Teensy with TPM2 firmware using fastspi2 lib]---<SPI>---[LED#1]---[LED#2]...
+
+    [PixelController]---<ethernet>---[Artnet Controller]---<???>---[LED#1]---[LED#2]...
+
+
 ## FRONTENDS
 There are different frontends for PixelController:
 
