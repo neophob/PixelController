@@ -9,10 +9,8 @@
 		<version>SNAPSHOT</version>
 	</parent>
                 
-	<groupId>com.neophob.pixelcontroller</groupId>
 	<artifactId>pixelcontroller-core</artifactId>
 	<name>PixelController Core Library</name>
-	<version>SNAPSHOT</version>
 	
 	<packaging>jar</packaging>
 

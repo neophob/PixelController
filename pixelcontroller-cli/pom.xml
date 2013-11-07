@@ -9,10 +9,8 @@
 		<version>SNAPSHOT</version>
 	</parent>        
         
-	<groupId>com.neophob.pixelcontroller</groupId>
 	<artifactId>pixelcontroller-cli</artifactId>
 	<name>PixelController Command Line Interface</name>
-	<version>SNAPSHOT</version>
 	
 	<packaging>jar</packaging>
 

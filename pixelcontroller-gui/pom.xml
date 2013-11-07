@@ -9,10 +9,8 @@
 		<version>SNAPSHOT</version>
 	</parent>
                 
-	<groupId>com.neophob.pixelcontroller</groupId>
 	<artifactId>pixelcontroller-gui</artifactId>
 	<name>PixelController Processing Frontend</name>
-	<version>SNAPSHOT</version>
 	
 	<packaging>jar</packaging>
 
