@@ -126,8 +126,6 @@ public class Cell extends Generator {
 			xsize=xsize+xofs-internalBufferXSize;
 		}
 		
-		System.out.println("rect: "+xofs+" "+yofs+" "+col);
-		
 		for (int y=0; y<ysize; y++) {
 			int ofs=(yofs+y)*internalBufferXSize+xofs;
 			for (int x=0; x<xsize; x++) {				
@@ -180,6 +178,7 @@ public class Cell extends Generator {
 				this.dy=-1+random.nextInt(2); 
 			}
 			this.color=random.nextInt(255);
+			System.out.println("CellCol: "+color);
 		}
 
 		/**
@@ -199,6 +198,7 @@ public class Cell extends Generator {
 			int rnd = random.nextInt(100);
 			if (rnd==3) {
 				this.color=random.nextInt(255);
+				System.out.println("CellCol2: "+color);
 			}
 			
 		}

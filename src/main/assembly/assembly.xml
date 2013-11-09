@@ -29,7 +29,7 @@
  
     <baseDirectory>${project.artifactId}-${project.version}</baseDirectory>
  	 
- 	<moduleSets>
+<!-- 	<moduleSets>
  		<moduleSet>
  			<includes>
 				<include>com.neophob.pixelcontroller.pixelcontroller-osc</include>
@@ -39,7 +39,7 @@
  			</includes>
  		</moduleSet>
  	</moduleSets>
- 	
+--> 	
 	<!-- Overlay with files from "src/build/dist" -->
 	<fileSets>
 

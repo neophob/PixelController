@@ -8,6 +8,7 @@ Changelog v1.5.0 to v1.5.1
 -Fix PixelImage, possible exception 
 -Fix Geometrics and Cell generators, possible exception
 -Fix rename Rainbowduino firmware to prevent crash
+-Fix rainbowduinov3 firmware bug, the serial line could block
 -Huge refactoring, improve unit testing
 
 

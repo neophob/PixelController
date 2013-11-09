@@ -36,7 +36,16 @@ public class OscMessage {
 	 * @return the pattern
 	 */
 	public String getPattern() {
-		return pattern;
+		if (pattern==null) {
+			return null;
+		}
+		
+		String ret = pattern.trim().toUpperCase();
+		//remove beginning "/"
+		if (ret.startsWith("/")) {
+			ret = ret.substring(1, pattern.length());
+		}
+		return ret;
 	}
 
 	/**

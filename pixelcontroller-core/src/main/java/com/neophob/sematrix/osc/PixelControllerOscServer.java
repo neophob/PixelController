@@ -43,6 +43,9 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
 
+	//size of recieving buffer, should fit a whole image buffer
+	private static final int BUFFER_SIZE = 50000;
+	
 	private OscServer oscServer;
 	
 	/**
@@ -58,7 +61,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });
 		
-		oscServer = OscServerFactory.createServer(this, listeningPort, 50000);
+		oscServer = OscServerFactory.createServer(this, listeningPort, BUFFER_SIZE);
 	}
 
 	/**
@@ -78,30 +81,38 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 			return;
 		}
 		
-		String pattern = oscIn.getPattern().trim().toUpperCase();
-		//remove beginning "/"
-		if (pattern.startsWith("/")) {
-			pattern = pattern.substring(1, pattern.length());
-		}
+		String pattern = oscIn.getPattern();
+		
+		System.out.println("OSC IN: "+oscIn);
 		
 		ValidCommands command;		
 		try {
 			command = ValidCommands.valueOf(pattern);
 		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to parse OSC Message "+pattern, e);
+			LOG.log(Level.WARNING, "Unknown message: "+pattern, e);
 			return;			
 		}
 		
 		String[] msg = new String[1+command.getNrOfParams()];
 		msg[0] = pattern;
-		byte[] blobData = null;
-
-		for (int i=0; i<command.getNrOfParams(); i++) {
-			msg[1+i] = oscIn.getArgs()[i];
+		
+		if (oscIn.getBlob()==null && command.getNrOfParams()>0 &&
+				command.getNrOfParams()!=oscIn.getArgs().length) {
+			String args = oscIn.getArgs()==null ? "null" : ""+oscIn.getArgs().length; 
+			LOG.log(Level.WARNING, "Parameter cound missmatch, expected: {0} available: {1} ",
+					new String[]{""+command.getNrOfParams(), ""+args});
+			return;
+		}
+		
+		//ignore nr of parameter for osc generator
+		if (command != ValidCommands.OSC_GENERATOR1 && command != ValidCommands.OSC_GENERATOR2) {
+			System.out.println(command);
+			for (int i=0; i<command.getNrOfParams(); i++) {
+				msg[1+i] = oscIn.getArgs()[i];
+			}			
 		}
 
-		MessageProcessor.processMsg(msg, true, blobData);
-		
+		MessageProcessor.processMsg(msg, true, oscIn.getBlob());		
 	}
 
 	/**

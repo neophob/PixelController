@@ -1,21 +1,22 @@
 package com.neophob.sematrix.osc.server.impl;
 
-import java.net.SocketException;
+import java.io.IOException;
+import java.net.SocketAddress;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.illposed.osc.OSCListener;
-import com.illposed.osc.OSCMessage;
-import com.illposed.osc.OSCPortIn;
 import com.neophob.sematrix.osc.client.OscMessageHandler;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscServerException;
 
+import de.sciss.net.OSCListener;
+import de.sciss.net.OSCMessage;
+import de.sciss.net.OSCServer;
+
 /**
- * concrete osc implementation
+ * concrete osc server implementation
  * @author michu
  *
  */
@@ -23,53 +24,62 @@ class OscServerImpl extends OscServer implements OSCListener {
 
 	private static final Logger LOG = Logger.getLogger(OscServer.class.getName());
 	
-	private OSCPortIn receiver;
+	private OSCServer oscServer;
 	
 	public OscServerImpl(OscMessageHandler handler, String host, int port, int bufferSize) throws OscServerException {
 		super(handler, host, port, bufferSize);
 		try {
-			receiver = new OSCPortIn(port, bufferSize);
-			receiver.addAllListener(this);
+			oscServer = OSCServer.newUsing( OSCServer.UDP, port );
+			oscServer.addOSCListener(this);
+			oscServer.setBufferSize(bufferSize);
 			LOG.log(Level.INFO, "OSC Server initialized on port "+port+", buffersize: "+bufferSize);
-		} catch (SocketException e) {
+		} catch (Exception e) {
 			throw new OscServerException("Failed to start OSC Server", e);			
 		}		
 	}
 
 	@Override
 	public void startServer() {
-		receiver.startListening();
-		LOG.log(Level.INFO, "OSC Server started");
+		try {
+			oscServer.start();
+			LOG.log(Level.INFO, "OSC Server started");
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Failed to start OSC Server!", e);
+		}
 	}
 
 	@Override
 	public void stopServer() {
-		receiver.stopListening();
-		LOG.log(Level.INFO, "OSC Server stopped");
+		try {
+			oscServer.stop();
+			LOG.log(Level.INFO, "OSC Server stopped");
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Failed to stop OSC Server!", e);
+		}		
 	}
 
 	@Override
-	public void acceptMessage(Date time, OSCMessage message) {
-		//ignore time
-		LOG.log(Level.INFO, "MESSAGE: "+message);
-		
-		List<String> args = new ArrayList<String>();
+	public void messageReceived(OSCMessage m, SocketAddress addr, long time) {
+		String[] args = null;
 		byte[] blob = null;
-new NullPointerException().printStackTrace();
-		if (message.getArguments() != null) {
-			for (Object o: message.getArguments()) {
-				if (o==null) continue;
-				LOG.log(Level.INFO, "\n  OSC PARAM: "+o+", type: "+o.getClass());
-				if (o.getClass()==Integer.class || o.getClass()==String.class) {
-					args.add(""+o);
-//				} else if () {
-//					args.add(""+o);
+		if (m.getArgCount()>0) {
+			List<String> tmp = new ArrayList<String>();
+			for (int i=0; i<m.getArgCount(); i++) {
+				Object o = m.getArg(i);
+
+				if (o instanceof Integer || o instanceof String || o instanceof Long) {
+					tmp.add(""+o);
+				} else if (o instanceof byte[]) {
+					blob = (byte[])o;
 				} 
-			}			
+			}
+			args = new String[tmp.size()];
+			args = tmp.toArray(args);
+			
 		}
-		
-		OscMessage msg = new OscMessage(message.getAddress()/*, String[] args, byte[] blob*/);
-		this.notifyOscClients(msg);
+		OscMessage msg = new OscMessage(m.getName(), args, blob);
+		this.notifyOscClients(msg);		
 	}
+
 
 }

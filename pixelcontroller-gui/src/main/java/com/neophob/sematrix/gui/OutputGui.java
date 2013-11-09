@@ -39,7 +39,7 @@ public class OutputGui {
 	private static final int MAX_BPP = 8;
 	
 	/** The Constant RAHMEN_SIZE. */
-	private static final int RAHMEN_SIZE = 4;
+	private static final int RAHMEN_SIZE = 2;
 	
 	/** The Constant LED_ABSTAND. */
 	private static final int LED_ABSTAND = 0;
