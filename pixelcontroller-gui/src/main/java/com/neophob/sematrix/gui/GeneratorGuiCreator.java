@@ -51,7 +51,7 @@ public class GeneratorGuiCreator {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGuiCreator(int maximalXSize, int maximalYSize, String version) {
+	public GeneratorGuiCreator(PApplet parentPapplet, int maximalXSize, int maximalYSize, String version) {
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
         
@@ -78,7 +78,8 @@ public class GeneratorGuiCreator {
         
         //connect the new PApplet to our frame
         gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
-        gui.init();        
+        gui.init();
+         
 
         //create new window for child
         LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
@@ -98,7 +99,7 @@ public class GeneratorGuiCreator {
         
         //childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         childFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);                
-        childFrame.addWindowListener( new WindowHandler(gui) );
+        childFrame.addWindowListener( new WindowHandler(parentPapplet) );
 	}	
 
 	/**

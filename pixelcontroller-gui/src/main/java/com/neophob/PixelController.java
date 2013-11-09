@@ -233,7 +233,7 @@ public class PixelController extends PApplet {
         		//create gui window
         		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW, "true").equalsIgnoreCase("true")) {
         			//create GUI Window
-        			GeneratorGuiCreator ggc = new GeneratorGuiCreator(applicationConfig.getDebugWindowMaximalXSize(), applicationConfig.getDebugWindowMaximalYSize(), getVersion());
+        			GeneratorGuiCreator ggc = new GeneratorGuiCreator(this, applicationConfig.getDebugWindowMaximalXSize(), applicationConfig.getDebugWindowMaximalYSize(), getVersion());
         			//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
         			KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
         		}  

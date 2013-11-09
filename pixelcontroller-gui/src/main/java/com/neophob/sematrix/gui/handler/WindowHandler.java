@@ -20,6 +20,8 @@ package com.neophob.sematrix.gui.handler;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -32,6 +34,8 @@ import processing.core.PApplet;
  */
 public class WindowHandler extends WindowAdapter {
 
+	private static final Logger LOG = Logger.getLogger(WindowHandler.class.getName());
+	
 	private PApplet papplet;
 	
 	public WindowHandler(PApplet papplet) {
@@ -43,9 +47,14 @@ public class WindowHandler extends WindowAdapter {
      * @return
      */
     public boolean quitApplicationYesOrNo() {
+    	if (papplet.frame==null) {
+    		LOG.log(Level.WARNING, "papplet.frame==null, cannot display dialog!");
+    		return false;
+    	}
+    	
     	//bring the papplet to front, the dialog will be displayed on top of this window
     	papplet.frame.toFront();
-    	
+
     	//display dialog
         int result = JOptionPane.showConfirmDialog(
         	papplet,

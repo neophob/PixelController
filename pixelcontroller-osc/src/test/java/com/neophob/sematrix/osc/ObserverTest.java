@@ -17,7 +17,8 @@ public class ObserverTest extends OscMessageHandler {
 	public void TestObserver() {
 		OscServer srv = new TestOscServer(this);				
 		srv.startServer();
-		assertEquals("/HELLO", msg.getPattern());
+		//initial / removed
+		assertEquals("HELLO", msg.getPattern());
 		assertEquals("WORLD", msg.getArgs()[0]);
 		assertEquals(4, srv.getPacketCounter());
 		assertTrue(srv.getBytesRecieved() > 20);
