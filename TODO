@@ -35,7 +35,7 @@ Roadmap PixelController
 
 Refactoring
 -----------
--change osc implementation
+-update cli utils, use osc protocol
 -update copy function for streched output
 -test test test
 -support multiple clients for appstart (properties filename equal jar filename)

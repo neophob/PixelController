@@ -183,5 +183,18 @@ public class LayoutModel {
 	public int getVisualId() {
 		return visualId;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String
+				.format("LayoutModel [sameFxOnX=%s, sameFxOnY=%s, ofsX=%s, ofsY=%s, visualId=%s, screenFragmentX=%s, screenFragmentY=%s, xStart=%s, xWidth=%s, yStart=%s, yWidth=%s]",
+						sameFxOnX, sameFxOnY, ofsX, ofsY, visualId,
+						screenFragmentX, screenFragmentY, xStart, xWidth,
+						yStart, yWidth);
+	}
+	
 	
 }

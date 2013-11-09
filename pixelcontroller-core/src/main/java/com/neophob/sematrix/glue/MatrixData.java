@@ -161,12 +161,37 @@ public class MatrixData {
         //apply the fader (if needed)
         buffer = doTheFaderBaby(buffer, map);
 
-/*        int xStart=lm.getxStart(bufferWidth);
+        int xStart=lm.getxStart(bufferWidth);
         int xWidth=lm.getxWidth(bufferWidth);
         int yStart=lm.getyStart(bufferHeight);
         int yWidth=lm.getyWidth(bufferHeight);
+                
+        int resizedBuffer[] = new int[bufferWidth*bufferHeight];
+        
+        //resize image (strech), example source image is 64x64 which gets resized to
+        // panel 1: X:0, 32  Y:0, 64    
+        // panel 2: X:32, 32  Y:0, 64
+        float deltaX = xWidth/(float)bufferWidth;
+        float deltaY = yWidth/(float)bufferHeight;
+        
+//        System.out.println("size: "+bufferWidth+"x"+bufferHeight+", X:"+xStart+", "+xWidth+"  Y:"+yStart+", "+yWidth+", DELTA: "+deltaX+", "+deltaY);
+//        System.out.println(lm);
+//        System.out.println(map);
+        int dst=0;
+        int src;
+        
+        float srcYofs = yStart;
+        for (int y = 0; y<bufferHeight; y++) {
+            float srcXofs = xStart + (int)(srcYofs * bufferWidth);
+        	for (int x = 0; x<bufferWidth; x++) {
+        		src = (int)(srcXofs);
+        		resizedBuffer[dst++] = buffer[src%resizedBuffer.length];
+        		srcXofs += deltaX;
+        	}
+        	srcYofs += deltaY;
+        }
 
-        // initialize PImage instance in a lazy way and store a dedicated
+/*        // initialize PImage instance in a lazy way and store a dedicated
         // instance per output in an internal map to avoid constructing an
         // PImage instance with every method call.
         PImage tmpImage = this.pImagesMap.get(output);
@@ -185,7 +210,7 @@ public class MatrixData {
         tmpImage.updatePixels();*/
 
         //hint buffer was bfr2
-        return resizeBufferForDevice(buffer, visual.getResizeOption(), deviceXSize, deviceYSize);
+        return resizeBufferForDevice(resizedBuffer, visual.getResizeOption(), deviceXSize, deviceYSize);
     }
 
     /**

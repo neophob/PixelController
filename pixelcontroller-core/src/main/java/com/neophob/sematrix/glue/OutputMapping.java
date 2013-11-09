@@ -81,5 +81,14 @@ public class OutputMapping {
 	public void setFader(IFader fader) {
 		this.fader = fader;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("OutputMapping [visualNumber=%s, fader=%s]",
+				visualNumber, fader);
+	}
+
 }
