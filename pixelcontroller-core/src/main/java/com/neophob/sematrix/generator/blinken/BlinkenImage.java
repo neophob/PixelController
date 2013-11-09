@@ -2,7 +2,7 @@ package com.neophob.sematrix.generator.blinken;
 
 public class BlinkenImage {
 
-	final private int width, height;	
+	private final int width, height;	
 	private int pointer;
 	private int[] data;
 	

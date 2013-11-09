@@ -191,26 +191,9 @@ public class MatrixData {
         	srcYofs += deltaY;
         }
 
-/*        // initialize PImage instance in a lazy way and store a dedicated
-        // instance per output in an internal map to avoid constructing an
-        // PImage instance with every method call.
-        PImage tmpImage = this.pImagesMap.get(output);
-        if (tmpImage==null || tmpImage.width != bufferWidth) {
-            tmpImage = Collector.getInstance().getPapplet().createImage(bufferWidth, bufferHeight, PApplet.RGB);
-            this.pImagesMap.put(output, tmpImage);
-        } 
-
-        tmpImage.loadPixels();
-        System.arraycopy(buffer, 0, tmpImage.pixels, 0, bufferWidth*bufferHeight);
-
-        //TODO very UGLY and SLOW method to copy the image - im lazy!
-        //copy(x, y, width, height, dx, dy, dwidth, dheight)
-        tmpImage.blend(xStart, yStart, xWidth, yWidth, 0, 0, bufferWidth, bufferHeight, PImage.REPLACE);
-        int[] bfr2 = tmpImage.pixels;
-        tmpImage.updatePixels();*/
-
-        //hint buffer was bfr2
-        return resizeBufferForDevice(resizedBuffer, visual.getResizeOption(), deviceXSize, deviceYSize);
+        //make sure that we use the PIXEL resize or the output is VERY blurred!
+        //speak, do not use visual.getResizeOption(), or the output is SOMETIMES very ugly!
+        return resizeBufferForDevice(resizedBuffer, ResizeName.PIXEL_RESIZE, deviceXSize, deviceYSize);
     }
 
     /**

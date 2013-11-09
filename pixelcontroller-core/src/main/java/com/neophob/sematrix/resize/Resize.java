@@ -87,8 +87,11 @@ public abstract class Resize implements IResize {
 	 * @param currentYSize the current y size
 	 * @return the buffer
 	 */
-	public abstract int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize);
-	
+	public int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize) {
+		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
+		return getBuffer(bi, newX, newY);
+	}
+
 	public abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
 	
 	/**

@@ -38,14 +38,6 @@ public class PixelResize extends Resize {
 		super(ResizeName.PIXEL_RESIZE);
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.resize.Resize#getBuffer(int[], int, int, int, int)
-	 */
-	public int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize) {
-		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
-		return getBuffer(bi, newX, newY);
-	}
-	
 	
 	@Override
 	public int[] getBuffer(BufferedImage bi, int newX, int newY) {

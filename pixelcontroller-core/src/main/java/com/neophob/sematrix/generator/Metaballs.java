@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.generator;
 
-import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.MatrixData;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 

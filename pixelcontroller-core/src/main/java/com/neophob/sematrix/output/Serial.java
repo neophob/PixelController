@@ -246,7 +246,7 @@ public class Serial implements SerialPortEventListener {
    * @usage web_application
    * @param serialEvent the port where new data is available
    */
-  synchronized public void serialEvent(SerialPortEvent serialEvent) {
+  public synchronized void serialEvent(SerialPortEvent serialEvent) {
     if (serialEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
       try {
         while (input.available() > 0) {

@@ -48,7 +48,6 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.output.NoSerialPortFoundException;
 import com.neophob.sematrix.output.Serial;
-import com.neophob.sematrix.output.SerialPortException;
 import com.neophob.sematrix.output.gamma.RGBAdjust;
 
 /**
@@ -272,7 +271,7 @@ public class Lpd6803Serial extends Lpd6803Common {
 	 * send the data to the serial port.
 	 *
 	 * @param cmdfull the cmdfull
-	 * @throws SerialPortException the serial port exception
+	 * @throws WriteDataException the serial port exception
 	 */
 	protected synchronized void writeData(byte[] cmdfull) throws WriteDataException {
 		if (port==null) {
