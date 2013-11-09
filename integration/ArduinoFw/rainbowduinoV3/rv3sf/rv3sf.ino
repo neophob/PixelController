@@ -232,7 +232,8 @@ void sendAckReply(byte stateCode, int value) {
   ackReply[3] = stateCode;
   // send ack reply message
   Serial.write(ackReply, ACK_REPLY_LENGTH);
-  Serial.flush();
+  //do not flush, strange things will happen!
+  //Serial.flush();
   // reset global variables that have been in use to parse the frame fragment
   frameFragmentPos = -1;
   frameFragmentPosOffset = -1;
