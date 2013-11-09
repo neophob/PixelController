@@ -60,12 +60,6 @@ public class OSCPortIn extends OSCPort implements Runnable {
 	}
 
 	/**
-	 * Buffers were 1500 bytes in size, but were
-	 * increased to 1536, as this is a common MTU.
-	 */
-	//private static final int BUFFER_SIZE = 1536;
-
-	/**
 	 * Run the loop that listens for OSC on a socket until
 	 * {@link #isListening()} becomes false.
 	 * @see java.lang.Runnable#run()
@@ -90,9 +84,8 @@ public class OSCPortIn extends OSCPort implements Runnable {
 						continue;
 					}
 				}
-System.out.println("Send packet out now!");				
-				OSCPacket oscPacket = converter.convert(buffer,
-						packet.getLength());
+
+				OSCPacket oscPacket = converter.convert(buffer, packet.getLength());
 				dispatcher.dispatchPacket(oscPacket);
 			} catch (IOException e) {
 				e.printStackTrace();

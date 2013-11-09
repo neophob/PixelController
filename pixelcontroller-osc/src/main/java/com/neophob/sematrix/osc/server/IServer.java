@@ -13,7 +13,12 @@ public interface IServer {
 	 * start the OSC server
 	 */
 	void startServer();
-	
+
+	/**
+	 * start the OSC server
+	 */
+	void stopServer();
+
 	/**
 	 * @return listening port of the osc server
 	 */

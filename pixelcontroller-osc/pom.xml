@@ -15,4 +15,12 @@
 	<packaging>jar</packaging>
 
 	<description>Provide OSC Server and callback functions</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>de.sciss</groupId>
+			<artifactId>netutil</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
 </project>

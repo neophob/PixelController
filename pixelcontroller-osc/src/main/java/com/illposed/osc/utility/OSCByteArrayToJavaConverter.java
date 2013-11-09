@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.illposed.osc.OSCBundle;
 import com.illposed.osc.OSCMessage;
@@ -25,6 +27,8 @@ import com.illposed.osc.OSCPacket;
  * @author Chandrasekhar Ramakrishnan
  */
 public class OSCByteArrayToJavaConverter {
+
+	private static final Logger LOG = Logger.getLogger(OSCByteArrayToJavaConverter.class.getName());
 
 	private byte[] bytes;
 	private int bytesLength;
@@ -179,7 +183,10 @@ public class OSCByteArrayToJavaConverter {
 				return Boolean.FALSE;
 			case 't' :
 				return readTimeTag();
+			case 'b' :
+				return readBlob();
 			default:
+				LOG.log(Level.WARNING, "Unsupported argument found: "+type);
 				return null;
 		}
 	}
@@ -199,6 +206,11 @@ public class OSCByteArrayToJavaConverter {
 	 */
 	private Object readDouble() {
 		return readFloat();
+	}
+
+	private Object readBlob() {
+		//byte[] blob = new byte[];
+		return null;
 	}
 
 	/**

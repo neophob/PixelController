@@ -18,5 +18,11 @@ public class TestOscServer extends OscServer {
 		this.notifyOscClients(new OscMessage("/HELLO", new String[] {"WORLD"}, new byte[] {0,1,2}));
 		this.notifyOscClients(new OscMessage("/HELLO", "WORLD"));
 	}
+
+	@Override
+	public void stopServer() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
