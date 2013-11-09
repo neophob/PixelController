@@ -259,6 +259,7 @@ public class Collector {
         try {           
             int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
             oscServer = new PixelControllerOscServer(listeningOscPort);
+            oscServer.startServer();
             //register osc server in the statistic class
             this.pixConStat.setOscServerStatistics(oscServer);
         } catch (Exception e) {

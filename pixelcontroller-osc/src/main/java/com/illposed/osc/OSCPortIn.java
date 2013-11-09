@@ -74,6 +74,9 @@ public class OSCPortIn extends OSCPort implements Runnable {
 		byte[] buffer = new byte[bufferSize];
 		DatagramPacket packet = new DatagramPacket(buffer, bufferSize);
 		DatagramSocket socket = getSocket();
+		
+		System.out.println("enter mainloop");				
+		
 		while (listening) {
 			try {
 				try {
@@ -87,6 +90,7 @@ public class OSCPortIn extends OSCPort implements Runnable {
 						continue;
 					}
 				}
+System.out.println("Send packet out now!");				
 				OSCPacket oscPacket = converter.convert(buffer,
 						packet.getLength());
 				dispatcher.dispatchPacket(oscPacket);

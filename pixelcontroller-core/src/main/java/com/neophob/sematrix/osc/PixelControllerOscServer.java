@@ -61,6 +61,15 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		oscServer = OscServerFactory.createServer(this, listeningPort, 50000);
 	}
 
+	/**
+	 * 
+	 */
+	public void startServer() {
+		oscServer.startServer();
+	}
+	
+	//TODO stop server
+	
 	@Override
 	public void handleOscMessage(OscMessage oscIn) {
 		//sanity check
