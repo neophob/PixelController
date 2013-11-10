@@ -150,20 +150,6 @@
 							<goal>install-file</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>oscP5.jar</id>
-						<configuration>
-							<file>lib/oscP5.jar</file>
-							<groupId>oscp5</groupId>
-							<artifactId>oscp5</artifactId>
-							<version>0.9.9</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>
 		</plugins>
