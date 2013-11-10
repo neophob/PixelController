@@ -33,7 +33,7 @@ public class Messages {
 	private static final Logger LOG = Logger.getLogger(Messages.class.getName());
 	
     private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
-    //private static final String BUNDLE_NAME = "com.neophob.sematrix.gui.messages"; //$NON-NLS-1$
+    //private static final String BUNDLE_NAME = "com.neophob.sematrix.core.gui.messages"; //$NON-NLS-1$
 
     private ResourceBundle bundle;    
 

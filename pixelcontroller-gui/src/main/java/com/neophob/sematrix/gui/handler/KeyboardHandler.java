@@ -22,13 +22,13 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.core.color.ColorSet;
+import com.neophob.sematrix.core.generator.Generator;
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.glue.Visual;
+import com.neophob.sematrix.core.listener.MessageProcessor;
+import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.gui.GuiCallbackAction;
-import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.properties.ValidCommands;
 
 /**
  * 

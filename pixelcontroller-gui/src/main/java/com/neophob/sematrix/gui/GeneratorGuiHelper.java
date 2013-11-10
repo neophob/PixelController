@@ -18,8 +18,8 @@
  */
 package com.neophob.sematrix.gui;
 
-import com.neophob.sematrix.effect.Effect.EffectName;
-import com.neophob.sematrix.fader.Fader.FaderName;
+import com.neophob.sematrix.core.effect.Effect.EffectName;
+import com.neophob.sematrix.core.fader.Fader.FaderName;
 
 import controlP5.ControlP5;
 import controlP5.DropdownList;

@@ -34,25 +34,25 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.sematrix.color.ColorSet;
-import com.neophob.sematrix.effect.Effect.EffectName;
-import com.neophob.sematrix.effect.PixelControllerEffect;
-import com.neophob.sematrix.generator.ColorScroll.ScrollMode;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
-import com.neophob.sematrix.generator.PixelControllerGenerator;
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.FileUtils;
-import com.neophob.sematrix.glue.OutputMapping;
-import com.neophob.sematrix.glue.PresetSettings;
-import com.neophob.sematrix.glue.ShufflerOffset;
-import com.neophob.sematrix.glue.Visual;
+import com.neophob.sematrix.core.color.ColorSet;
+import com.neophob.sematrix.core.effect.PixelControllerEffect;
+import com.neophob.sematrix.core.effect.Effect.EffectName;
+import com.neophob.sematrix.core.generator.PixelControllerGenerator;
+import com.neophob.sematrix.core.generator.ColorScroll.ScrollMode;
+import com.neophob.sematrix.core.generator.Generator.GeneratorName;
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.OutputMapping;
+import com.neophob.sematrix.core.glue.PresetSettings;
+import com.neophob.sematrix.core.glue.ShufflerOffset;
+import com.neophob.sematrix.core.glue.Visual;
+import com.neophob.sematrix.core.input.ISound;
+import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.core.mixer.Mixer.MixerName;
+import com.neophob.sematrix.core.output.IOutput;
+import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
-import com.neophob.sematrix.input.ISound;
-import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.mixer.Mixer.MixerName;
-import com.neophob.sematrix.output.IOutput;
-import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.resize.Resize.ResizeName;
 
 import controlP5.Button;
 import controlP5.CheckBox;
@@ -1170,7 +1170,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     }
 
     /* (non-Javadoc)
-     * @see com.neophob.sematrix.output.gui.GuiCallbackAction#activeVisual(int)
+     * @see com.neophob.sematrix.core.output.gui.GuiCallbackAction#activeVisual(int)
      */
     public void activeVisual(int n) {
         selectedVisualList.activate(n);

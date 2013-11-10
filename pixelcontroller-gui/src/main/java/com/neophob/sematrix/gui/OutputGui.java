@@ -22,11 +22,11 @@ import java.lang.reflect.Method;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.MatrixData;
-import com.neophob.sematrix.layout.Layout;
-import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.glue.MatrixData;
+import com.neophob.sematrix.core.layout.Layout;
+import com.neophob.sematrix.core.output.Output;
+import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
 /**
  * The low resolution software matrix 

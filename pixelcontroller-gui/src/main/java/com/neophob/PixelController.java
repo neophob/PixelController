@@ -28,19 +28,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.FileUtils;
-import com.neophob.sematrix.glue.Shuffler;
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.Shuffler;
+import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.core.output.ArduinoOutput;
+import com.neophob.sematrix.core.output.Output;
+import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.setup.InitApplication;
 import com.neophob.sematrix.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.gui.OutputGui;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
 import com.neophob.sematrix.gui.handler.WindowHandler;
-import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.output.ArduinoOutput;
-import com.neophob.sematrix.output.Output;
-import com.neophob.sematrix.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.properties.ConfigConstant;
-import com.neophob.sematrix.setup.InitApplication;
 
 
 /**

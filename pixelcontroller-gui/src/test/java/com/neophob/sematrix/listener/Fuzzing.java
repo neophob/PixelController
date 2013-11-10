@@ -23,7 +23,8 @@ import java.util.UUID;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.properties.ValidCommands;
+import com.neophob.sematrix.core.listener.MessageProcessor;
+import com.neophob.sematrix.core.properties.ValidCommands;
 
 /**
  * manual fuzzing test

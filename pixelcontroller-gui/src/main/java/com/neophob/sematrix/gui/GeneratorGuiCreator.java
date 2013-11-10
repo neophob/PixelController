@@ -27,8 +27,8 @@ import javax.swing.JFrame;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.glue.Collector;
+import com.neophob.sematrix.core.generator.Generator;
+import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.gui.handler.WindowHandler;
 
 /**

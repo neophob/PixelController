@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.glue.Collector;
-import com.neophob.sematrix.glue.PresetSettings;
-import com.neophob.sematrix.listener.MessageProcessor;
-import com.neophob.sematrix.properties.ValidCommands;
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.glue.PresetSettings;
+import com.neophob.sematrix.core.listener.MessageProcessor;
+import com.neophob.sematrix.core.properties.ValidCommands;
 
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
