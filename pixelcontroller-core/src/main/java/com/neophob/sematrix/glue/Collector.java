@@ -32,10 +32,14 @@ import javax.imageio.ImageIO;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.color.ColorSet;
+import com.neophob.sematrix.effect.Effect;
+import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.effect.PixelControllerEffect;
 import com.neophob.sematrix.fader.Fader.FaderName;
 import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.fader.PixelControllerFader;
+import com.neophob.sematrix.generator.Generator;
+import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.generator.PixelControllerGenerator;
 import com.neophob.sematrix.glue.helper.InitHelper;
 import com.neophob.sematrix.input.ISound;
@@ -44,6 +48,8 @@ import com.neophob.sematrix.input.SoundMinim;
 import com.neophob.sematrix.jmx.PixelControllerStatus;
 import com.neophob.sematrix.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.listener.MessageProcessor;
+import com.neophob.sematrix.mixer.Mixer;
+import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.mixer.PixelControllerMixer;
 import com.neophob.sematrix.osc.PixelControllerOscServer;
 import com.neophob.sematrix.output.IOutput;
@@ -53,6 +59,7 @@ import com.neophob.sematrix.properties.ConfigConstant;
 import com.neophob.sematrix.properties.ValidCommands;
 import com.neophob.sematrix.resize.PixelControllerResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
+//import com.neophob.sematrix.effect.Effect;
 
 /**
  * The Class Collector.
@@ -224,8 +231,14 @@ public class Collector {
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
 		LOG.log(Level.INFO, "Initialize Visuals");
 		try {
-			for (int i=0; i<nrOfScreens+additionalVisuals; i++) {
-				allVisuals.add(new Visual(i+1));
+			Generator genPassThru = pixelControllerGenerator.getGenerator(GeneratorName.PASSTHRU);
+			Effect effPassThru = pixelControllerEffect.getEffect(EffectName.PASSTHRU);
+			Mixer mixPassThru = pixelControllerMixer.getMixer(MixerName.PASSTHRU);
+			for (int i=1; i<nrOfScreens+additionalVisuals+1; i++) {
+				Generator g = pixelControllerGenerator.getGenerator(
+						GeneratorName.values()[ i%(GeneratorName.values().length) ]
+				);
+				allVisuals.add(new Visual(g, genPassThru, effPassThru, effPassThru, mixPassThru, colorSets.get(0)));
 			}
 	        
 		} catch (IndexOutOfBoundsException e) {

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.fader.IFader;
 import com.neophob.sematrix.layout.LayoutModel;
-import com.neophob.sematrix.output.Output;
+import com.neophob.sematrix.output.IOutput;
 import com.neophob.sematrix.resize.IResize;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
@@ -151,7 +151,7 @@ public class MatrixData {
      * @param output the output
      * @return the screen buffer for device
      */
-    public int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map, Output output) {
+    public int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map, IOutput output) {
         int[] buffer = visual.getBuffer();
 
         //apply output specific effect

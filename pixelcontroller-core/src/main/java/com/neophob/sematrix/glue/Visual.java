@@ -22,11 +22,8 @@ import java.util.List;
 
 import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.effect.Effect;
-import com.neophob.sematrix.effect.Effect.EffectName;
 import com.neophob.sematrix.generator.Generator;
-import com.neophob.sematrix.generator.Generator.GeneratorName;
 import com.neophob.sematrix.mixer.Mixer;
-import com.neophob.sematrix.mixer.Mixer.MixerName;
 import com.neophob.sematrix.resize.Resize.ResizeName;
 
 /**
@@ -52,33 +49,25 @@ public class Visual {
 	private Mixer mixer;
 	
 	private ColorSet colorSet;
-	private int colorSetIndex;
-
-	/**
-	 * initialize default.
-	 *
-	 * @param generatorName the generator name
-	 */
-	public Visual(GeneratorName generatorName) {
-		Collector col = Collector.getInstance();
-		
-		this.generator1 = col.getPixelControllerGenerator().getGenerator(generatorName);
-		this.generator2 = col.getPixelControllerGenerator().getGenerator(GeneratorName.PASSTHRU);		
-		this.effect1 = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
-		this.effect2 = col.getPixelControllerEffect().getEffect(EffectName.PASSTHRU);
-		this.mixer = col.getPixelControllerMixer().getMixer(MixerName.PASSTHRU);
-
-		this.colorSet = col.getColorSets().get(0);
-	}
 	
 	/**
 	 * 
-	 * @param screenNr
+	 * @param generator1
+	 * @param generator2
+	 * @param effect1
+	 * @param effect2
+	 * @param mixer
+	 * @param colorSet
 	 */
-	public Visual(int screenNr) {
-		this(GeneratorName.values()[screenNr%(GeneratorName.values().length)]);
+	public Visual(Generator generator1, Generator generator2, Effect effect1,
+			Effect effect2, Mixer mixer, ColorSet colorSet) {
+		this.generator1 = generator1;
+		this.generator2 = generator2;
+		this.effect1 = effect1;
+		this.effect2 = effect2;
+		this.mixer = mixer;
+		this.colorSet = colorSet;
 	}
-	
 
 	/**
 	 * 
@@ -93,7 +82,6 @@ public class Visual {
 		this.effect1 = e;
 		this.effect2 = e;
 		this.mixer = m;
-
 		this.colorSet = c;
 	}
 		
@@ -378,7 +366,6 @@ public class Visual {
 	        index = 0;
 	    }
 	    this.colorSet = allColorSets.get(index);
-	    this.colorSetIndex = index;
 	}
 
 	/**
@@ -387,23 +374,13 @@ public class Visual {
 	 */
 	public void setColorSet(String name) {
 	    List<ColorSet> allColorSets = Collector.getInstance().getColorSets();
-	    int idx=0;
 	    for (ColorSet cs: allColorSets) {
 	    	if (cs.getName().equalsIgnoreCase(name)) {
 	    	    this.colorSet = cs;
-	    	    this.colorSetIndex = idx;	    		
 	    	}
-	    	idx++;
 	    }
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public int getColorSetIndex() {
-	    return colorSetIndex;
-	}
 	
 	/**
      * @return the colorSet

@@ -22,6 +22,7 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.color.ColorSet;
 import com.neophob.sematrix.generator.Generator;
 import com.neophob.sematrix.glue.Collector;
 import com.neophob.sematrix.glue.Visual;
@@ -66,13 +67,22 @@ public abstract class KeyboardHandler {
         //change current Colorset
         case 'C':            
             if (v!=null) {
-                int currentColorSet = v.getColorSetIndex();
-                int colorSetsNrs = col.getColorSets().size();
+            	String colorSetName = v.getColorSet().getName();
                 
-                if (currentColorSet++>=colorSetsNrs-1) {
-                    currentColorSet=0;
+                boolean takeNext = false;
+                ColorSet nextColorSet = col.getColorSets().get(0);
+                for (ColorSet cs : col.getColorSets()) {
+                	if (takeNext) {
+                		nextColorSet = cs;
+                		break;
+                	}
+                	
+                	if (cs.getName().equals(colorSetName)) {
+                		takeNext = true;
+                	}
                 }
-                v.setColorSet(currentColorSet);
+
+                v.setColorSet(nextColorSet.getName());
                 registerGuiClass.refreshGui();
             }
             break;

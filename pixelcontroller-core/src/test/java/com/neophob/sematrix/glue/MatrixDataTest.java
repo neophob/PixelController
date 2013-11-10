@@ -109,7 +109,6 @@ public class MatrixDataTest {
                 assertNotNull(matrix.getScreenBufferForDevice(visual, lmBox1, map, output));
                 assertNotNull(matrix.getScreenBufferForDevice(visual, lmBox2, map, output));
                 assertNotNull(matrix.getScreenBufferForDevice(visual, lmBox4, map, output));
-            	
         	}    		
     	}
     }
