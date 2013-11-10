@@ -43,20 +43,20 @@ public class MatrixData {
     private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
     /** The device x size. */
-    private int deviceXSize;
+    private final int deviceXSize;
 
     /** The device y size. */
-    private int deviceYSize;
+    private final int deviceYSize;
 
     /** The device size. */
-    private int deviceSize;
+    private final int deviceSize;
 
     /** This map is used to store temporary images */
     //private Map<Output, PImage> pImagesMap;
 
     /** internal buffer size */
-    int bufferWidth;
-    int bufferHeight;
+    private int bufferWidth;
+    private int bufferHeight;
 
     /**
      * init matrix data.

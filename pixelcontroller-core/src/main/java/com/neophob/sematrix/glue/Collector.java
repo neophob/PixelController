@@ -224,7 +224,10 @@ public class Collector {
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
 		LOG.log(Level.INFO, "Initialize Visuals");
 		try {
-	        Visual.initializeVisuals(nrOfScreens+additionalVisuals);		    
+			for (int i=0; i<nrOfScreens+additionalVisuals; i++) {
+				allVisuals.add(new Visual(i+1));
+			}
+	        
 		} catch (IndexOutOfBoundsException e) {
 		    LOG.log(Level.SEVERE, "Failed to initialize Visual, maybe missing palette files?\n");
 		    throw new IllegalArgumentException("Failed to initialize Visuals, maybe missing palette files?");

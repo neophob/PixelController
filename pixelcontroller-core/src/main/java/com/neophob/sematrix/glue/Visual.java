@@ -69,9 +69,24 @@ public class Visual {
 		this.mixer = col.getPixelControllerMixer().getMixer(MixerName.PASSTHRU);
 
 		this.colorSet = col.getColorSets().get(0);
-		col.addVisual(this);
 	}
+	
+	/**
+	 * 
+	 * @param screenNr
+	 */
+	public Visual(int screenNr) {
+		this(GeneratorName.values()[screenNr%(GeneratorName.values().length)]);
+	}
+	
 
+	/**
+	 * 
+	 * @param g
+	 * @param e
+	 * @param m
+	 * @param c
+	 */
 	public Visual(Generator g, Effect e, Mixer m, ColorSet c) {
 		this.generator1 = g;
 		this.generator2 = g;		
@@ -81,6 +96,7 @@ public class Visual {
 
 		this.colorSet = c;
 	}
+		
 	/**
 	 * Gets the buffer.
 	 *
@@ -395,57 +411,5 @@ public class Visual {
     public ColorSet getColorSet() {
         return colorSet;
     }
-
 	
-	//TODO make configurable
-	private static final int MAX_NR_OF_VISUALS = 12;
-	
-	/**
-	 * initialize the visuals...
-	 * 
-	 * TODO move me away
-	 *
-	 * @param nrOfScreens the nr of screens
-	 */
-	public static void initializeVisuals(int nrOfScreens) {
-		for (int n=0; n<nrOfScreens && n<MAX_NR_OF_VISUALS; n++) {
-			switch (n%10) {
-			case 0:
-				new Visual(GeneratorName.BLINKENLIGHTS);
-				break;
-			case 1:
-				new Visual(GeneratorName.METABALLS);
-				break;
-			case 2:
-				new Visual(GeneratorName.COLOR_SCROLL);
-				break;
-			case 3:
-				new Visual(GeneratorName.PLASMA);
-				break;
-			case 4:
-				new Visual(GeneratorName.IMAGE);
-				break;
-			case 5:
-				new Visual(GeneratorName.FIRE);
-				break;
-			case 6:
-				new Visual(GeneratorName.FFT);
-				break;
-			case 7:
-				new Visual(GeneratorName.CELL);
-				break;
-			case 8:
-				new Visual(GeneratorName.DROPS);
-				break;
-			case 9:
-				new Visual(GeneratorName.PLASMA_ADVANCED);
-				break;
-			case 10:
-				new Visual(GeneratorName.PIXELIMAGE);
-				break;
-			}
-		}
-		
-	}
-
 }

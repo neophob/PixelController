@@ -36,7 +36,6 @@ Roadmap PixelController
 Refactoring
 -----------
 -update cli utils, use osc protocol
--update copy function for streched output
 -test test test
 -support multiple clients for appstart (properties filename equal jar filename)
 -TODO calculate fps in pixelcontroller-core
