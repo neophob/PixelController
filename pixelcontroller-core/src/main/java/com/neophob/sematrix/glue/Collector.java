@@ -198,7 +198,7 @@ public class Collector {
 		try {
 			sound = new SoundMinim(ph.getSoundSilenceThreshold());			
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE, Exception: {0}.", e);
+			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.", e);
 			sound = new SoundDummy();
 		}
 		//create the device with specific size

@@ -92,6 +92,9 @@ public abstract class Resize implements IResize {
 		return getBuffer(bi, newX, newY);
 	}
 
+	/**
+	 * subclass needs to implement it
+	 */
 	public abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
 	
 	/**
