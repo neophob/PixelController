@@ -25,9 +25,15 @@
 
 package com.neophob.sematrix.output.pixelinvaders;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.net.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ( begin auto-generated from Client.xml )
@@ -44,6 +50,9 @@ import java.net.*;
  * @see_external LIB_net/clientEvent
  */
 public class TcpClient implements Runnable {
+	
+	private static final Logger LOG = Logger.getLogger(TcpClient.class.getName());
+
 	Method clientEventMethod;
 	Method disconnectEventMethod;
 
@@ -79,11 +88,11 @@ public class TcpClient implements Runnable {
 			thread.start();
 
 		} catch (ConnectException ce) {
-			ce.printStackTrace();
+			LOG.log(Level.SEVERE, "Failed to initialize TcpClient", ce);
 			dispose();
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Failed to initialize TcpClient", e);
 			dispose();
 		}
 	}
@@ -142,7 +151,7 @@ public class TcpClient implements Runnable {
 				input = null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Failed to close input", e);
 		}
 
 		try {
@@ -151,7 +160,7 @@ public class TcpClient implements Runnable {
 				output = null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Failed to close output", e);
 		}
 
 		try {
@@ -160,7 +169,7 @@ public class TcpClient implements Runnable {
 				socket = null;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "Failed to close socket", e);
 		}
 	}
 
@@ -176,7 +185,8 @@ public class TcpClient implements Runnable {
 					try {
 						value = input.read();
 					} catch (SocketException e) {
-						System.err.println("Client SocketException: " + e.getMessage());
+						LOG.log(Level.SEVERE, "Client SocketException", e);
+
 						// the socket had a problem reading so don't try to read from it again.
 						stop();
 						return;
@@ -184,7 +194,7 @@ public class TcpClient implements Runnable {
 
 					// read returns -1 if end-of-stream occurs (for example if the host disappears)
 					if (value == -1) {
-						System.err.println("Client got end-of-stream.");
+						LOG.log(Level.SEVERE, "Client got end-of-stream");				
 						stop();
 						return;
 					}
@@ -202,8 +212,7 @@ public class TcpClient implements Runnable {
 
 				}
 			} catch (IOException e) {
-				//errorMessage("run", e);
-				e.printStackTrace();
+				LOG.log(Level.SEVERE, "Thread Exception!", e);				
 			}
 		}
 	}
@@ -536,7 +545,7 @@ public class TcpClient implements Runnable {
 			//e.printStackTrace();
 			//dispose();
 			//disconnect(e);
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "write(int) failed", e);				
 			stop();
 		}
 	}
@@ -551,7 +560,7 @@ public class TcpClient implements Runnable {
 			//errorMessage("write", e);
 			//e.printStackTrace();
 			//disconnect(e);
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "write(byte) failed", e);				
 			stop();
 		}
 	}

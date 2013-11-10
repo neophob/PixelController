@@ -46,7 +46,7 @@ import java.util.logging.Logger;
  */
 public class Serial implements SerialPortEventListener {
 
-	private static final Logger LOG = Logger.getLogger(Output.class.getName());
+	private static final Logger LOG = Logger.getLogger(Serial.class.getName());
 
 	Method serialEventMethod;
 
