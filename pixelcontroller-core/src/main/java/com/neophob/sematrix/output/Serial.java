@@ -36,6 +36,8 @@ import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @generate Serial.xml
@@ -43,6 +45,8 @@ import java.util.Vector;
  * @usage application
  */
 public class Serial implements SerialPortEventListener {
+
+	private static final Logger LOG = Logger.getLogger(Output.class.getName());
 
 	Method serialEventMethod;
 
@@ -165,27 +169,14 @@ public class Serial implements SerialPortEventListener {
       }
       
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.log(Level.SEVERE, "Failed to initialize Serial", e);
       errorMessage("<init>", e);
-      //exception = e;
-      //e.printStackTrace();
+
       port = null;
       input = null;
       output = null;
     }
 
-//    parent.registerMethod("dispose", this);
-
-    // reflection to check whether host applet has a call for
-    // public void serialEvent(processing.serial.Serial)
-    // which would be called each time an event comes in
-/*    try {
-      serialEventMethod =
-        parent.getClass().getMethod("serialEvent",
-                                    new Class[] { Serial.class });
-    } catch (Exception e) {
-      // no such method, or an error.. which is fine, just ignore
-    }*/
   }
 
 
@@ -209,7 +200,7 @@ public class Serial implements SerialPortEventListener {
         input = null;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+    	LOG.log(Level.SEVERE, "Failed to dispose Serial", e);
     }
 
     try {
@@ -218,7 +209,7 @@ public class Serial implements SerialPortEventListener {
         output = null;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+    	LOG.log(Level.SEVERE, "Failed to close Serial output", e);
     }
 
     try {
@@ -227,7 +218,7 @@ public class Serial implements SerialPortEventListener {
         port = null;
       }
     } catch (Exception e) {
-      e.printStackTrace();
+    	LOG.log(Level.SEVERE, "Failed to close port", e);
     }
   }
 
@@ -494,9 +485,10 @@ public class Serial implements SerialPortEventListener {
 
       int length = found - bufferIndex + 1;
       if (length > outgoing.length) {
-        System.err.println("readBytesUntil() byte buffer is" +
-                           " too small for the " + length +
-                           " bytes up to and including char " + interesting);
+      	LOG.log(Level.SEVERE, "readBytesUntil() byte buffer is" +
+                " too small for the " + length +
+                " bytes up to and including char " + interesting);
+
         return -1;
       }
       //byte outgoing[] = new byte[length];
@@ -552,7 +544,7 @@ public class Serial implements SerialPortEventListener {
       output.flush();   // hmm, not sure if a good idea
 
     } catch (Exception e) { // null pointer or serial port dead
-      errorMessage("write", e);
+    	LOG.log(Level.SEVERE, "Write(int[]) failed", e);
     }
   }
 
@@ -565,8 +557,7 @@ public class Serial implements SerialPortEventListener {
       output.flush();   // hmm, not sure if a good idea
 
     } catch (Exception e) { // null pointer or serial port dead
-      //errorMessage("write", e);
-      e.printStackTrace();
+    	LOG.log(Level.SEVERE, "Write(byte[]) failed", e);
     }
   }
 
