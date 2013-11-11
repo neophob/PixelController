@@ -421,6 +421,7 @@ public final class MessageProcessor {
 				try {
 					int a = Integer.parseInt(msg[1]);
 					col.setCurrentVisual(a);
+					col.notifyGuiUpdate();
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}

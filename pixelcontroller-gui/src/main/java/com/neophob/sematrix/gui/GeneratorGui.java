@@ -785,7 +785,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
 		GuiUpdateFeedback guf = new GuiUpdateFeedback(this); 
 		col.addObserver(guf);
-
+		col.notifyGuiUpdate();
+		
         initialized = true;
     }
 
@@ -925,14 +926,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 }
             }
 
-        }
-        
-        //refresh gui from time to time
-//        if (col.isTriggerGuiRefresh() || frames%50==2) {
-        if (frames%50==2) {        
-        	//XXX update text only
-//            callbackRefreshWholeGui();
-//            col.setTriggerGuiRefresh(false);
         }
         
         //update gui
@@ -1207,6 +1200,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					effectListTwo.setLabel(effectListTwo.getItem(Integer.parseInt(s.getValue())).getName());					
 					break;
 
+				case CURRENT_VISUAL:
+					//nothing todo
+					break;
+					
 				case CHANGE_MIXER:
 					mixerList.setLabel(mixerList.getItem(Integer.parseInt(s.getValue())).getName());					
 					break;
@@ -1249,6 +1246,18 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					
 				case TEXTDEF:						
 					textureDeformOptions.setLabel(textureDeformOptions.getItem(Integer.parseInt(s.getValue())-1).getName());
+					break;
+				
+				case CHANGE_BRIGHTNESS:
+					brightnessControll.changeValue(Float.parseFloat(s.getValue()));
+					break;
+				
+				case CHANGE_OUTPUT_FADER:
+					dropdownOutputFader.setLabel(dropdownOutputFader.getItem(Integer.parseInt(s.getValue())).getName());
+					break;
+
+				case CHANGE_OUTPUT_VISUAL:
+					dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(Integer.parseInt(s.getValue())).getName());
 					break;
 					
 				default:

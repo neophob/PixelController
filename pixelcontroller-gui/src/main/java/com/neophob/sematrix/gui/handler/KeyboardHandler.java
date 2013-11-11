@@ -182,8 +182,8 @@ public abstract class KeyboardHandler {
         if(key>='1' && key<'9') {
             if (registerGuiClass!=null) {
                 // convert a key-number (48-52) to an int between 0 and 4
-                int n = (int)key-49;
-                registerGuiClass.activeVisual(n);
+                int currentVisual = (int)key-49;
+                registerGuiClass.activeVisual(currentVisual);
             }
         }           
     }
