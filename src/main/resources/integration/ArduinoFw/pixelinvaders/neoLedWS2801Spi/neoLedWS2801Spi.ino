@@ -86,7 +86,7 @@ CRGB leds[NUM_LEDS];
 //     send status back to library
 // --------------------------------------------
 static void sendAck() {
-  Serial.print("AK PIXELINVADERS2801, PANELS:");
+  Serial.print("AK PXI");
   Serial.print(NR_OF_PANELS, DEC);
 #if defined (CORE_TEENSY_SERIAL)
   //Teensy supports send now
