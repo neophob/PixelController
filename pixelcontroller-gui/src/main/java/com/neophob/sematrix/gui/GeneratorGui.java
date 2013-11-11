@@ -1260,6 +1260,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(Integer.parseInt(s.getValue())).getName());
 					break;
 					
+				case TEXTWR:
+					textGenerator.setText(s.getValue());
+					break;
+					
 				default:
 					LOG.log(Level.WARNING, "Not implemented: "+s.getKey()+" "+s.getValue());
 					break;
