@@ -29,6 +29,8 @@ import javax.swing.JOptionPane;
 import processing.core.PApplet;
 
 /**
+ * Close application dialog
+ * 
  * @author mvogt
  *
  */
@@ -76,7 +78,8 @@ public class WindowHandler extends WindowAdapter {
     public void windowClosing(WindowEvent e) {
         if (quitApplicationYesOrNo()) {
         	try {
-                JFrame frame = (JFrame)e.getSource();
+        		//TODO signal shutdown to core...
+                JFrame frame = (JFrame)e.getSource();                
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        		
         	} catch (Exception exception) {
         		

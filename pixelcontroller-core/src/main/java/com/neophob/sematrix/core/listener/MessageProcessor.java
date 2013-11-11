@@ -60,9 +60,9 @@ public final class MessageProcessor {
 	 * @param startFader the start fader
 	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
 	 */
-	public static synchronized ValidCommands processMsg(String[] msg, boolean startFader, byte[] blob) {
+	public static synchronized void processMsg(String[] msg, boolean startFader, byte[] blob) {
 		if (msg==null || msg.length<1) {
-			return null;
+			return;
 		}
                 
 		int msgLength = msg.length-1;
@@ -71,9 +71,6 @@ public final class MessageProcessor {
 			ValidCommands cmd = ValidCommands.valueOf(msg[0]);
 			Collector col = Collector.getInstance();
 			switch (cmd) {
-			case STATUS:
-				return ValidCommands.STATUS;
-
 			case CHANGE_GENERATOR_A:
 				try {
 					int nr = col.getCurrentVisual();
@@ -264,8 +261,8 @@ public final class MessageProcessor {
 
 			case LOAD_PRESENT:
 				try {
-					loadPreset(col.getSelectedPreset());					
-					return ValidCommands.STATUS;					
+					loadPreset(col.getSelectedPreset());
+					col.notifyGuiUpdate();					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -368,13 +365,11 @@ public final class MessageProcessor {
 						col.setRandomPresetMode(false);
 						col.setRandomMode(true);
 						LOG.log(Level.INFO, "Random Mode enabled");
-						//no need to refresh the gui here (yet)
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
 						col.setRandomPresetMode(false);
 						col.setRandomMode(false);
 						LOG.log(Level.INFO, "Random Mode disabled");
-						return ValidCommands.STATUS;
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -388,13 +383,11 @@ public final class MessageProcessor {
 						col.setRandomMode(false);
 						col.setRandomPresetMode(true);
 						LOG.log(Level.INFO, "Random Preset Mode enabled");
-						//no need to refresh the gui here (yet)
 					}
 					if (onOrOff.equalsIgnoreCase("OFF")) {
 						col.setRandomMode(false);
 						col.setRandomPresetMode(false);
 						LOG.log(Level.INFO, "Random Preset Mode disabled");
-						return ValidCommands.STATUS;
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -407,8 +400,7 @@ public final class MessageProcessor {
 					TransitionManager transition = new TransitionManager(col);
 					Shuffler.manualShuffleStuff();
 					transition.startCrossfader();
-					
-					return ValidCommands.STATUS;
+					col.notifyGuiUpdate();
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -417,7 +409,7 @@ public final class MessageProcessor {
 			case PRESET_RANDOM:	//one shot randomizer, use a pre-stored present
 				try {
 					loadPreset(Shuffler.getRandomPreset());
-					return ValidCommands.STATUS;					
+					col.notifyGuiUpdate();
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -429,7 +421,6 @@ public final class MessageProcessor {
 				try {
 					int a = Integer.parseInt(msg[1]);
 					col.setCurrentVisual(a);
-					return ValidCommands.STATUS_MINI;
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -441,7 +432,6 @@ public final class MessageProcessor {
 				try {
 					int a = Integer.parseInt(msg[1]);
 					col.setCurrentOutput(a);
-					return ValidCommands.STATUS_MINI;
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
@@ -479,8 +469,7 @@ public final class MessageProcessor {
 					//now try to reference colorset by name
 					col.getVisual(nr).setColorSet(msg[1]);
 				}
-
-				return ValidCommands.STATUS_MINI;
+				break;
 				
 			//pause output, needed to create screenshots or take an image of the output
 			case FREEZE:
@@ -513,8 +502,6 @@ public final class MessageProcessor {
 		} catch (IllegalArgumentException e) {
 			LOG.log(Level.INFO,	"Unknown attribute ignored <{0}>", new Object[] { msg[0] });			
 		}		
-
-		return null;
 	}
 	
 	

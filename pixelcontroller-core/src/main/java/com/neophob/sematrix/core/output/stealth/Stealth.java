@@ -628,11 +628,6 @@ public class Stealth {
 		}
 		//TODO: next method is not very speed/memory efficient!
 		byte[] msg = port.readBytes();
-/*		log.log(Level.INFO, "got ACK! data length: {0}", msg.length);
-		for (byte b:msg)
-			System.out.print(Integer.toHexString(b)+' ');
-		System.out.println();
-*/		//INFO: MEEE [0, 0, 65, 67, 75, 0, 0]
 		for (int i=0; i<msg.length-1; i++) {
 			if (msg[i]== 'A' && msg[i+1]== 'K') {
 				try {

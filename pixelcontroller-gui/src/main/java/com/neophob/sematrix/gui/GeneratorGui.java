@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,9 +36,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.effect.PixelControllerEffect;
 import com.neophob.sematrix.core.effect.Effect.EffectName;
-import com.neophob.sematrix.core.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.core.generator.Generator.GeneratorName;
 import com.neophob.sematrix.core.glue.Collector;
@@ -51,7 +50,9 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
 
 import controlP5.Button;
@@ -242,6 +243,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             generatorListTwo.addItem(gn.guiText(), i);
             i++;
         }
+        
         generatorListOne.setLabel(generatorListOne.getItem(1).getName());
         generatorListTwo.setLabel(generatorListTwo.getItem(1).getName());
         generatorListOne.moveTo(ALWAYS_VISIBLE_TAB);
@@ -402,8 +404,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         zoomOptions.addItem(messages.getString("GeneratorGui.ZOOM_VERTICAL"), 3); //$NON-NLS-1$
         zoomOptions.setLabel(zoomOptions.getItem(0).getName());
         zoomOptions.setGroup(generatorTab);		
-
-        
+           
         //GENERATOR OPTIONS
         //-----------------
         
@@ -452,7 +453,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         colorScrollList.setGroup(generatorTab);		
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
         colorScrollList.setLabel(col.getPixelControllerGenerator().getScrollMode().getDisplayName());
-        
+                
         //add textfield options
         cp5.addTextlabel("genTextwriterOpt", messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         textwriterOption = cp5.addDropdownList(GuiElement.TEXTWR_OPTION.guiText(), 
@@ -782,6 +783,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedVisualList.activate(0);
         selectedOutputs.activate(0);
         
+		GuiUpdateFeedback guf = new GuiUpdateFeedback(this); 
+		col.addObserver(guf);
+
         initialized = true;
     }
 
@@ -924,9 +928,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         
         //refresh gui from time to time
-        if (col.isTriggerGuiRefresh() || frames%50==2) {
-            callbackRefreshWholeGui();
-            col.setTriggerGuiRefresh(false);
+//        if (col.isTriggerGuiRefresh() || frames%50==2) {
+        if (frames%50==2) {        
+        	//XXX update text only
+//            callbackRefreshWholeGui();
+//            col.setTriggerGuiRefresh(false);
         }
         
         //update gui
@@ -958,7 +964,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             presetName.setText("");                             //$NON-NLS-1$
         }
         
-        col.setTriggerGuiRefresh(true);
     }
     
     /**
@@ -1023,59 +1028,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         } else {
             fill(2, 52, 77);	
         }		
-    }
-
-    /**
-     * update only minimal parts of the gui
-     */
-    public Collector callbackRefreshMini() {
-        //LOG.log(Level.INFO, "Refresh Partitial GUI");
-        Collector col = Collector.getInstance();
-
-        //get visual status			
-        Visual v = col.getVisual(col.getCurrentVisual());
-        if (v!=null) {		    
-            generatorListOne.setLabel(generatorListOne.getItem(v.getGenerator1Idx()).getName());
-            generatorListTwo.setLabel(generatorListTwo.getItem(v.getGenerator2Idx()).getName());
-            effectListOne.setLabel(effectListOne.getItem(v.getEffect1Idx()).getName());
-            effectListTwo.setLabel(effectListTwo.getItem(v.getEffect2Idx()).getName());
-            mixerList.setLabel(mixerList.getItem(v.getMixerIdx()).getName());
-            colorSetList.setLabel(v.getColorSet().getName());            
-        }
-
-        //get output status
-        OutputMapping om = col.getOutputMappings(col.getCurrentOutput());
-        dropdownOutputVisual.setLabel(dropdownOutputVisual.getItem(om.getVisualId()).getName());
-        dropdownOutputFader.setLabel(dropdownOutputFader.getItem(om.getFader().getId()).getName());
-
-        //do not set the current preset, the result would be an endless event loop, limitation of oscp5
-        //see https://code.google.com/p/controlp5/issues/detail?id=79
-        //presetButtons.activate(col.getSelectedPreset());
-        
-        return col;
-    }
-
-    /**
-     * refresh whole gui
-     */
-    public void callbackRefreshWholeGui() {
-        //LOG.log(Level.INFO, "Refresh Whole GUI");
-        Collector col = this.callbackRefreshMini();		
-
-        PixelControllerEffect pce = col.getPixelControllerEffect();
-        thresholdSlider.changeValue(pce.getThresholdValue());
-        brightnessControll.changeValue(col.getPixelControllerGenerator().getBrightness()*100);
-        fxRotoSlider.changeValue(pce.getRotoZoomAngle());
-        zoomOptions.setLabel(zoomOptions.getItem(pce.getZoomOption()).getName());                
-        
-        PixelControllerGenerator pcg = col.getPixelControllerGenerator();
-        blinkenLightsList.setLabel(pcg.getFileBlinken()); 
-        imageList.setLabel(pcg.getFileImageSimple());
-        textwriterOption.setLabel(textwriterOption.getItem(pcg.getTextOption()).getName());
-        
-        // update current visual
-        //TODO somethings fishy here...
-        //selectedVisualList.activate(col.getCurrentVisual());
     }
 
 
@@ -1176,9 +1128,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedVisualList.activate(n);
     }
 
-	public void refreshGui() {
-		Collector.getInstance().setTriggerGuiRefresh(true);		
-	}
 
 	/**
 	 * 
@@ -1232,6 +1181,86 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		if (activateNextTab) {
 			allTabs.get(0).bringToFront();
 		}
+	}
+	
+
+	@Override
+	public void updateGuiElements(Map<String, String> diff) {
+		for (Map.Entry<String, String> s: diff.entrySet()) {
+			try {
+				ValidCommands cmd = ValidCommands.valueOf(s.getKey());
+				
+				switch (cmd) {
+				case CHANGE_GENERATOR_A:					
+					generatorListOne.setLabel(generatorListOne.getItem(Integer.parseInt(s.getValue())).getName());					
+					break;
+
+				case CHANGE_GENERATOR_B:
+					generatorListTwo.setLabel(generatorListTwo.getItem(Integer.parseInt(s.getValue())).getName());					
+					break;
+
+				case CHANGE_EFFECT_A:					
+					effectListOne.setLabel(effectListOne.getItem(Integer.parseInt(s.getValue())).getName());
+					break;
+
+				case CHANGE_EFFECT_B:
+					effectListTwo.setLabel(effectListTwo.getItem(Integer.parseInt(s.getValue())).getName());					
+					break;
+
+				case CHANGE_MIXER:
+					mixerList.setLabel(mixerList.getItem(Integer.parseInt(s.getValue())).getName());					
+					break;
+					
+				case BLINKEN:
+					blinkenLightsList.setLabel(s.getValue());
+					break;	
+					
+				case IMAGE:
+					imageList.setLabel(s.getValue());
+					break;
+				
+				case CURRENT_COLORSET:
+					colorSetList.setLabel(s.getValue());
+					break;
+					
+				case CHANGE_PRESENT:
+					presetButtons.activate(Integer.parseInt(s.getValue()));
+					break;
+					
+				case CHANGE_THRESHOLD_VALUE:
+					thresholdSlider.changeValue(Float.parseFloat(s.getValue()));
+					break;
+					
+				case CHANGE_ROTOZOOM:
+					fxRotoSlider.changeValue(Float.parseFloat(s.getValue()));
+					break;
+					
+				case COLOR_SCROLL_OPT:					
+					colorScrollList.setLabel(colorScrollList.getItem(Integer.parseInt(s.getValue())).getName());
+					break;
+				
+				case ZOOMOPT:					
+					zoomOptions.setLabel(zoomOptions.getItem(Integer.parseInt(s.getValue())).getName());
+					break;
+					
+				case TEXTWR_OPTION:		
+					textwriterOption.setLabel(textwriterOption.getItem(Integer.parseInt(s.getValue())).getName());
+					break;
+					
+				case TEXTDEF:						
+					textureDeformOptions.setLabel(textureDeformOptions.getItem(Integer.parseInt(s.getValue())-1).getName());
+					break;
+					
+				default:
+					LOG.log(Level.WARNING, "Not implemented: "+s.getKey()+" "+s.getValue());
+					break;
+				}
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Unknown entry: "+s.getKey(), e);
+			}
+		}
+
+		
 	}
 
 }

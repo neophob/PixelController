@@ -208,7 +208,7 @@ public class PixelController extends PApplet {
         			Shuffler.manualShuffleStuff();
         			this.collector.setRandomMode(true);
         		}
-
+        		
         		//load saves presets
         		int presetNr = applicationConfig.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
         		if (presetNr >= 0) {

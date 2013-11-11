@@ -83,7 +83,6 @@ public abstract class KeyboardHandler {
                 }
 
                 v.setColorSet(nextColorSet.getName());
-                registerGuiClass.refreshGui();
             }
             break;
 
@@ -101,8 +100,7 @@ public abstract class KeyboardHandler {
         		}
 
         		if (g!=null && g.getName() != null) {
-        			v.setGenerator1(currentGenerator%nrOfGenerators);
-        			registerGuiClass.refreshGui();            			
+        			v.setGenerator1(currentGenerator%nrOfGenerators);          			
         		} else {
         			LOG.log(Level.INFO, "Could not find new Generator!");
         		}
@@ -123,8 +121,7 @@ public abstract class KeyboardHandler {
         		}
 
         		if (g!=null && g.getName() != null) {
-        			v.setGenerator2(currentGenerator%nrOfGenerators);
-        			registerGuiClass.refreshGui();            			
+        			v.setGenerator2(currentGenerator%nrOfGenerators);            			
         		} else {
         			LOG.log(Level.INFO, "Could not find new Generator!");
         		}
@@ -138,7 +135,6 @@ public abstract class KeyboardHandler {
                 int nrOfEffects = col.getPixelControllerEffect().getSize();
                 currentEffect++;
                 v.setEffect1(currentEffect%nrOfEffects);
-                registerGuiClass.refreshGui();
             }
             break;
 
@@ -149,7 +145,6 @@ public abstract class KeyboardHandler {
                 int nrOfEffects = col.getPixelControllerEffect().getSize();
                 currentEffect++;
                 v.setEffect2(currentEffect%nrOfEffects);
-                registerGuiClass.refreshGui();
             }
             break;
 
@@ -160,7 +155,6 @@ public abstract class KeyboardHandler {
                 int nrOfMixerss = col.getPixelControllerMixer().getSize();
                 currentMixer++;
                 v.setMixer(currentMixer%nrOfMixerss);
-                registerGuiClass.refreshGui();
             }
             break;
             

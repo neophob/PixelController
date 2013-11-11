@@ -10,6 +10,7 @@ import com.neophob.sematrix.osc.model.OscMessage;
 /**
  * observer pattern implementation for client callback
  * 
+ * 
  * @author michu
  *
  */

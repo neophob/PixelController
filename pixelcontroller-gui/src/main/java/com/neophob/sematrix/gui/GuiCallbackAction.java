@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.gui;
 
+import java.util.Map;
+
 /**
  * this interface is used to define gui actions are needed because of 
  * keyboard input device
@@ -35,12 +37,6 @@ public interface GuiCallbackAction {
     void activeVisual(int n);
 
     /**
-     * update gui
-     * 
-     */
-    void refreshGui();
-
-    /**
      * 
      * 
      * @return
@@ -52,4 +48,6 @@ public interface GuiCallbackAction {
      */
     void selectNextTab();
     void selectPreviousTab();
+    
+	void updateGuiElements(Map<String, String> map);
 }

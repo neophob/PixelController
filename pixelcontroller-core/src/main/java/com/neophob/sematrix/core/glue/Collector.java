@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +64,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 /**
  * The Class Collector.
  */
-public class Collector {
+public class Collector extends Observable {
 
 	private static final Logger LOG = Logger.getLogger(Collector.class.getName());
 	
@@ -154,14 +155,13 @@ public class Collector {
 
 	private boolean internalVisualsVisible = true;
 
-	/** flag to trigger a gui refresh (update current settings from the app to the gui)*/
-	private boolean triggerGuiRefresh = false;
-	
 	private IOutput output;
 	
 	private ISound sound;
 	
 	private FileUtils fileUtils;
+	
+	
 	
 	/**
 	 * Instantiates a new collector.
@@ -522,11 +522,12 @@ public class Collector {
 	}
 	
 	/**
-	 * update the visual setting in the gui.
+	 * get current state of visuals/outputs
+	 * as string list - used to save current settings.
 	 *
-	 * @return the current mini status
+	 * @return the current status
 	 */
-	public List<String> getCurrentMiniStatus() {
+	public List<String> getCurrentStatus() {		
 		List<String> ret = new ArrayList<String>();
 		
 		//get visual status
@@ -549,18 +550,6 @@ public class Collector {
 			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
 			ofs++;
 		}
-
-		return ret;
-	}
-
-	/**
-	 * get current state of visuals/outputs
-	 * as string list - used to save current settings.
-	 *
-	 * @return the current status
-	 */
-	public List<String> getCurrentStatus() {		
-		List<String> ret = this.getCurrentMiniStatus();				
 				
 		//add element status
 		ret.addAll(pixelControllerEffect.getCurrentState());
@@ -914,20 +903,6 @@ public class Collector {
 	}
 
     /**
-     * @return the triggerGuiRefresh
-     */
-    public boolean isTriggerGuiRefresh() {
-        return triggerGuiRefresh;
-    }
-
-    /**
-     * @param triggerGuiRefresh the triggerGuiRefresh to set
-     */
-    public void setTriggerGuiRefresh(boolean triggerGuiRefresh) {
-        this.triggerGuiRefresh = triggerGuiRefresh;
-    }
-
-    /**
      * @param output the output to set
      */
     public void setOutput(IOutput output) {
@@ -973,5 +948,43 @@ public class Collector {
 		return sound;
 	}
     
+	
+	private List<String> getGuiState() {
+		List<String> ret = new ArrayList<String>();
+		
+		Visual v = allVisuals.get(currentVisual);
+		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
+		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
+		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
+		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
+		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
+		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
+		ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
 
+		//get output status
+		int ofs=0;
+		for (OutputMapping om: ioMapping) {
+			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+ofs);
+			ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
+			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+			ofs++;
+		}
+
+		ret.addAll(pixelControllerEffect.getCurrentState());
+		ret.addAll(pixelControllerGenerator.getCurrentState());
+		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
+		
+		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPreset);						
+		
+		return ret;
+	}
+
+	/**
+	 * 
+	 */
+	public void notifyGuiUpdate() {
+		setChanged();
+        notifyObservers(getGuiState());
+	}
+	
 }

@@ -133,7 +133,7 @@ public class TextureDeformation extends Effect {
     public void shuffle() {
         if (Collector.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORM)) {
             Random rand = new Random();
-            this.changeLUT(rand.nextInt(12));
+            this.changeLUT(1+rand.nextInt(11));
         }
     }
 

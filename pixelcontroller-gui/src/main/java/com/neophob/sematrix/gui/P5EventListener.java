@@ -283,30 +283,13 @@ public class P5EventListener implements ControlListener {
      * @param msg
      */
     private void singleSendMessageOut(String msg[]) {
-
     	if (System.currentTimeMillis()-lastCallbackEvent<CALLBACK_TIMEOUT) {
     		//do not flood the gui
     		return;
     	}
     	
-        ValidCommands ret = MessageProcessor.processMsg(msg, true, null);
-        if (ret != null) {
-            switch (ret) {
-                case STATUS:                    
-                    callback.callbackRefreshWholeGui();
-                    break;
-
-                case STATUS_MINI:
-                	callback.callbackRefreshMini();
-                    break;
-
-                default:
-                    break;
-            }
-
-            lastCallbackEvent = System.currentTimeMillis();
-            
-        }
+        MessageProcessor.processMsg(msg, true, null);
+        lastCallbackEvent = System.currentTimeMillis();
     }
 
 

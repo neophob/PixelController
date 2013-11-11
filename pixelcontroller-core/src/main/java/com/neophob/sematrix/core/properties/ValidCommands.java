@@ -26,12 +26,6 @@ import java.util.List;
  */
 public enum ValidCommands {
 	
-	/** The STATUS. */
-	STATUS(CommandGroup.MISC, 0, "<NO PARAM> refresh whole gui"),
-	
-	/** The STATUS mini. */
-	STATUS_MINI(CommandGroup.MISC, 0, "<NO PARAM> just refresh parts of the gui"),
-	
 	/** The CHANGE generator a. */
 	CHANGE_GENERATOR_A(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
 	

@@ -130,10 +130,6 @@ public class MessageProcessorTest {
 		str[0] = "CHANGE_GENERATOR_A";
 		MessageProcessor.processMsg(str, false, null);
 
-		str = new String[1];
-		str[0] = "STATUS";
-		assertEquals(ValidCommands.STATUS, MessageProcessor.processMsg(str, false, null));
-
 		//test real life use case
 		str = new String[2];
 		str[0] = "CURRENT_VISUAL";
