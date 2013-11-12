@@ -170,34 +170,34 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 
 Use the Maven version plugin to update your POM’s versions:
  
-    `# mvn versions:set -DnewVersion=1.5.1`
+    # mvn versions:set -DnewVersion=1.5.1
 
 
 Rebuild:
 
-    `# mvn clean deploy`
+    # mvn clean deploy
 
 
-Test application, make sure the config.properties file is correct.
+Test application, make sure the `config.properties` file is correct.
 
 
 Commit and push new version:
 
-    `# git commit pom.xml -m "release v1.5.1"`
-    `# git push`
+    # git commit pom.xml -m "release v1.5.1"
+    # git push
 
 
 Tag the release branch:
 
-    `# git tag -a v1.5.1`
-    `# git push --tags`
+    # git tag -a v1.5.1
+    # git push --tags
 
 
 Merge into the master branch and push:
 
-    `# git checkout master`
-    `# git merge develop`
-    `# git push`
+    # git checkout master
+    # git merge develop
+    # git push
     
 
 Checkout the master branch (already done)
