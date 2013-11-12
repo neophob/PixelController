@@ -1,4 +1,4 @@
-package com.neophob.sematrix.osc.client;
+package com.neophob.sematrix.osc.server;
 
 import java.util.Observable;
 import java.util.Observer;

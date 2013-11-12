@@ -2,9 +2,9 @@ package com.neophob.sematrix.osc.server.impl;
 
 import java.util.Observable;
 
-import com.neophob.sematrix.osc.client.OscMessageHandler;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.IServer;
+import com.neophob.sematrix.osc.server.OscMessageHandler;
 
 /**
  * this abstract osc server register the caller (which must extend the abstract class OscMessageHandler)

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.osc.client.OscMessageHandler;
 import com.neophob.sematrix.osc.model.OscMessage;
+import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
 
 import de.sciss.net.OSCListener;

@@ -49,6 +49,18 @@ public class OscMessage {
 	}
 
 	/**
+	 * 
+	 * @return message, make sure message starts with / 
+	 */
+	public String getOscPattern() {
+		if (pattern.startsWith("/")) {
+			return pattern;
+		}
+		return "/"+pattern;
+	}
+	
+	
+	/**
 	 * @return the args
 	 */
 	public String[] getArgs() {

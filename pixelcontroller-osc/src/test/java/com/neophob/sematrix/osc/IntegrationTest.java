@@ -1,7 +1,7 @@
 package com.neophob.sematrix.osc;
 
-import com.neophob.sematrix.osc.client.OscMessageHandler;
 import com.neophob.sematrix.osc.model.OscMessage;
+import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.impl.OscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
