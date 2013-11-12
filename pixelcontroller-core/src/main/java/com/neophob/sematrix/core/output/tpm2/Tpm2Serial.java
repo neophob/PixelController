@@ -166,7 +166,7 @@ public class Tpm2Serial {
 			port = new Serial(portName, this.baud);			
 			port.output.write("PXL".getBytes());
 		} catch (Exception e) {	
-			LOG.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});
+			LOG.log(Level.WARNING, "Failed to open port <"+portName+">", e);
 			if (port != null) {
 				port.stop();        					
 			}
