@@ -51,7 +51,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
 		
 		try {
 			lpd6803 = new Lpd6803Serial(ph.getPixelInvadersBlacklist(), ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());			
-			this.initialized = lpd6803.ping();
+			this.initialized = lpd6803.isInitialized();
 			super.setLpd6803(lpd6803);
 			LOG.log(Level.INFO, "\nPING result: "+ this.initialized+"\n\n");			
 		} catch (NoSerialPortFoundException e) {

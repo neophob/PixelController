@@ -63,13 +63,13 @@ public class Lpd6803Serial extends Lpd6803Common {
 	private static final Logger LOG = Logger.getLogger(Lpd6803Serial.class.getName());
 	
 	/** internal lib version. */
-	public static final String VERSION = "2.0";
+	public static final String VERSION = "2.1";
 
 	//how many attemps are made to get the data
 	private static final int TIMEOUT_LOOP = 50;
 	
 	//wait TIMEOUT_SLEEP ms, until next loop
-	private static final int TIMEOUT_SLEEP = 4;
+	private static final int TIMEOUT_SLEEP = 16;
 
 	/** The baud. */
 	private int baud = 115200;
@@ -208,12 +208,16 @@ public class Lpd6803Serial extends Lpd6803Common {
 			LOG.log(Level.WARNING, "No response from port {0}", portName);
 			if (port != null) {
 				port.stop();
-				LOG.log(Level.WARNING, new String(getReplyFromController()));
+				byte[] reply = getReplyFromController();
+				if (reply==null) {
+					reply = new byte[0];
+				}
+				LOG.log(Level.WARNING, new String(reply));
 			}
 			port = null;
 			throw new NoSerialPortFoundException("No response from port "+portName);
 		} catch (Exception e) {	
-			LOG.log(Level.WARNING, "Failed to open port {0}: {1}", new Object[] {portName, e});
+			LOG.log(Level.WARNING, "Failed to open port <"+portName+">", e);
 			if (port != null) {
 				port.stop();        					
 			}
@@ -298,11 +302,11 @@ public class Lpd6803Serial extends Lpd6803Common {
 		long start = System.currentTimeMillis();
 		int timeout=TIMEOUT_LOOP; //wait up to 50ms
 		//log.log(Level.INFO, "wait for ack");
-		while (timeout > 0 && port.available() < 2) {
+		while (timeout > 0 && port.available() < 4) {
 			sleep(TIMEOUT_SLEEP); //in ms
 			timeout--;
 		}
-		if (timeout == 0 && port.available() < 2) {
+		if (timeout == 0 && port.available() < 4) {
 			LOG.log(Level.INFO, "#### No serial reply, duration: {0}ms ###", System.currentTimeMillis()-start);
 			ackErrors++;
 			return false;
