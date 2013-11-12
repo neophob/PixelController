@@ -41,6 +41,7 @@ Refactoring
 -TODO calculate fps in pixelcontroller-core
  //this.collector.getPixConStat().setCurrentFps(frameRate);
 -fix cell generator
+fix pixelinvaders.net output
 
 
 Roadmap PixelInvaders Firmware

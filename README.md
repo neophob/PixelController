@@ -168,6 +168,11 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 
 ## NEW RELEASE
 
+Update Changelog, add git status:
+
+    # git diff v1.5.0 develop --stat
+    
+    
 Use the Maven version plugin to update your POM’s versions:
  
     # mvn versions:set -DnewVersion=1.5.1
@@ -205,7 +210,7 @@ Checkout the master branch (already done)
 
 Do a deployment build:
 
-    `# mvn clean deploy`
+    # mvn clean deploy
 
 Release
 

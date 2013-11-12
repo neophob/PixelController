@@ -1,5 +1,16 @@
+Changelog v1.5.1 to v1.6.0
+--------------------------
+865 files changed, 228273 insertions(+), 227051 deletions(-)
+-Modularize Project
+-Add new command line version of PixelController - run on headless server (like an RPi)
+-Fix Update GUI much faster
+-Fix faster startup time
+-Removed TCP Server, used by the old PureData frontend and CLI client
+
+
 Changelog v1.5.0 to v1.5.1
 --------------------------
+232 files changed, 12438 insertions(+), 12446 deletions(-)
 -Add support for ExpeditInvaders output
 -Add Fader effect if a preset is loaded, freeze current buffer and fade into new content
 -Add Fader effect if current visual is randomized, freeze current buffer and fade into new content 
@@ -9,6 +20,7 @@ Changelog v1.5.0 to v1.5.1
 -Fix Geometrics and Cell generators, possible exception
 -Fix rename Rainbowduino firmware to prevent crash
 -Fix rainbowduinov3 firmware bug, the serial line could block
+-Fix PixelInvaders, improve serial detection, *should* now works with regular Arduino boards
 -Huge refactoring, improve unit testing
 
 
