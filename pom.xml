@@ -5,7 +5,7 @@
 	<groupId>neophob.com</groupId>
 	<artifactId>PixelController</artifactId>
 	<name>PixelController</name>
-	<version>SNAPSHOT</version>
+	<version>1.5.1</version>
 	
 	<packaging>jar</packaging>
 	<description>
