@@ -70,13 +70,12 @@ public class Cell extends Generator {
 			}
 		}
 
-		for (int i=0;i<NR_OF_CELLS;i++) {
-			points.add(new Attractor());   
-		}
-
 		lowXRes = (int)Math.floor(internalBufferXSize/(float)RENDERSIZE);
 		lowYRes = (int)Math.floor(internalBufferYSize/(float)RENDERSIZE);
-		System.out.println(lowXRes+"  "+lowYRes);
+
+		for (int i=0;i<NR_OF_CELLS;i++) {
+			points.add(new Attractor(lowXRes, lowYRes));   
+		}
 	}
 
 
@@ -85,7 +84,6 @@ public class Cell extends Generator {
 	 */
 	@Override
 	public void update() {
-		int ofs = 0;
 		for (int x=0;x<lowXRes;x+=RENDERSIZE) {
 			for (int y=0;y<lowYRes;y+=RENDERSIZE) {
 
@@ -102,11 +100,10 @@ public class Cell extends Generator {
 				}
 
 				Attractor a=(Attractor)points.get(nearest);
-				//rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE_SQRT, RENDERSIZE_SQRT, a.color);
-				this.internalBuffer[ofs++] = a.color;
+				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE_SQRT, RENDERSIZE_SQRT, a.color);
 			}
 		}
-System.out.println("CL: "+ofs);
+
 		for (Attractor a: points) {			
 			a.move();
 		}   
@@ -137,84 +134,75 @@ System.out.println("CL: "+ofs);
 		}
 	}
 	
-	/**
-	 * helper class.
-	 *
-	 * @author michu
-	 */
 	class Attractor {
 
-		/** The x. */
-		int x;
-		
-		/** The y. */
-		int y;
-		
-		/** The dx. */
-		int dx;
-		
-		/** The dy. */
-		int dy;
-		
-		/** The color */
-		int color;
+        int x;
+        int y;
+        int dx;
+        int dy;
+        int color;
+        int lowXRes, lowYRes;
 
-		/**
-		 * Instantiates a new attractor.
-		 */
-		public Attractor() {
-			if (lowXRes>0) {
-				this.x=random.nextInt(lowXRes);				
-			} else {
-				this.x=1;
-			}
-			
-			if (lowYRes>0) {
-				this.y=random.nextInt(lowYRes);				
-			} else {
-				this.y=1;
-			}
-			while (this.dx==0) {
-				this.dx=-1+random.nextInt(2);
-			}
-			while (this.dy==0) {
-				this.dy=-1+random.nextInt(2); 
-			}
-			this.color=random.nextInt(255);			
-		}
+        /**
+         * Instantiates a new attractor.
+         */
+        public Attractor(int lowXRes, int lowYRes) {
+        		this.lowXRes = lowXRes;
+        		this.lowYRes = lowYRes;
+        		
+    			if (lowXRes>0) {
+    				this.x=random.nextInt(lowXRes);				
+    			} else {
+    				this.x=1;
+    			}
+    			
+    			if (lowYRes>0) {
+    				this.y=random.nextInt(lowYRes);				
+    			} else {
+    				this.y=1;
+    			}
 
-		/**
-		 * Move.
-		 */
-		public void move() {
-			// move with wrap-around
-			this.x+=this.dx;
-			this.y+=this.dy;
-			if (this.x<0 || this.x>lowXRes) {
-				this.dx=-this.dx;
-			}
-			if (this.y<0 || this.y>lowYRes) {
-				this.dy=-this.dy;
-			}
-			
-			int rnd = random.nextInt(100);
-			if (rnd==3) {
-				this.color=random.nextInt(255);
-				System.out.println("CellCol2: "+color);
-			}
-			
-		}
-		
-		/**
-		 * Distance to.
-		 *
-		 * @param xx the xx
-		 * @param yy the yy
-		 * @return the float
-		 */
-		public float distanceTo(int xx,int yy) {
-			// Euclidian Distance
-			return distlookup[Math.abs(xx-this.x)%hsize][Math.abs(yy-this.y)%hsize]; 
-		}
-	}
+                
+                while (this.dx==0) {
+                        this.dx=-1+random.nextInt(2);
+                }
+                while (this.dy==0) {
+                        this.dy=-1+random.nextInt(2); 
+                }
+                this.color=random.nextInt(255);
+        }
+
+        /**
+         * Move.
+         */
+        public void move() {
+                // move with wrap-around
+                this.x+=this.dx;
+                this.y+=this.dy;
+                if (this.x<0 || this.x>lowXRes) {
+                        this.dx=-this.dx;
+                }
+                if (this.y<0 || this.y>lowYRes) {
+                        this.dy=-this.dy;
+                }
+                
+                int rnd = random.nextInt(100);
+                if (rnd==3) {
+                        this.color=random.nextInt(255);
+                }
+                
+        }
+        
+        /**
+         * Distance to.
+         *
+         * @param xx the xx
+         * @param yy the yy
+         * @return the float
+         */
+        public float distanceTo(int xx,int yy) {
+                // Euclidian Distance
+                return distlookup[Math.abs(xx-this.x)][Math.abs(yy-this.y)]; 
+        }
+}
 }
