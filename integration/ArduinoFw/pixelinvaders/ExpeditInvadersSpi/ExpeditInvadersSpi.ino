@@ -99,7 +99,7 @@ static PROGMEM prog_uchar pixelOfs[NR_OF_PANELS*PIXELS_PER_PANEL] = {
 //     send status back to library
 // --------------------------------------------
 static void sendAck() {
-  Serial.print("AK EXPEDITINVADERS, PANELS:");
+  Serial.print("AK EXI");
   Serial.print(NR_OF_PANELS, DEC);
 #if defined (CORE_TEENSY_SERIAL)
   //Teensy supports send now
