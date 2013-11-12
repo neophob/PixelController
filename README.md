@@ -166,6 +166,35 @@ It should be pretty simple to add support for new hardware. All Output code shou
 
 As a string point, add your hardware in the `OutputDeviceEnum.java` class and have a look where the other entries are referenced. **Take a look at the existing Output classes**, this should help you!
 
+## NEW RELEASE
+
+Use the Maven version plugin to update your POM’s versions. 
+    # mvn versions:set -DnewVersion=1.5.1
+
+Rebuild:
+    `# mvn clean deploy`
+
+Test application, make sure the config.properties file is correct.
+
+Commit and push new version
+    `# git commit pom.xml -m "release v1.5.1"`
+    `# git push`
+
+Tag the release branch.
+    `# git tag -a v1.5.1`
+    `# git push --tags`
+
+Merge into the master branch and push
+    `# git checkout master`
+    `# git merge develop`
+    `# git push`
+
+Checkout the master branch (already done).
+
+Do a deployment build
+    `# mvn clean deploy`
+
+Release
 ## PERFORMANCE
 With the JMX interface you can monitor the status of your PixelController instance in real time. This 
 will provide you with useful data such as required time for each layer (generator, effect, mixer…), the 
@@ -209,6 +238,5 @@ Example how to use PixConCli:
 * **Pesi**:               miniDMX Output, Tester
 * **Scott Wilson**:       Arduino/Rainbowduino Howto
 * **Noxx6**:              Bugfixes
-* **Psykon**:             Example Visuals
 * **okyeron**:            Stealth output device
 * **Dr. Stahl**:          Documentation, Tester
