@@ -168,33 +168,47 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 
 ## NEW RELEASE
 
-Use the Maven version plugin to update your POM’s versions. 
-    # mvn versions:set -DnewVersion=1.5.1
+Use the Maven version plugin to update your POM’s versions:
+ 
+    `# mvn versions:set -DnewVersion=1.5.1`
+
 
 Rebuild:
+
     `# mvn clean deploy`
+
 
 Test application, make sure the config.properties file is correct.
 
-Commit and push new version
+
+Commit and push new version:
+
     `# git commit pom.xml -m "release v1.5.1"`
     `# git push`
 
-Tag the release branch.
+
+Tag the release branch:
+
     `# git tag -a v1.5.1`
     `# git push --tags`
 
-Merge into the master branch and push
+
+Merge into the master branch and push:
+
     `# git checkout master`
     `# git merge develop`
     `# git push`
+    
 
-Checkout the master branch (already done).
+Checkout the master branch (already done)
 
-Do a deployment build
+
+Do a deployment build:
+
     `# mvn clean deploy`
 
 Release
+
 ## PERFORMANCE
 With the JMX interface you can monitor the status of your PixelController instance in real time. This 
 will provide you with useful data such as required time for each layer (generator, effect, mixer…), the 
