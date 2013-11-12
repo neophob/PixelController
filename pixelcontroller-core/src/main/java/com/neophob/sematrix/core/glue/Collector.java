@@ -952,7 +952,7 @@ public class Collector extends Observable {
 	private List<String> getGuiState() {
 		List<String> ret = new ArrayList<String>();
 		
-		Visual v = allVisuals.get(currentVisual);
+		Visual v = allVisuals.get(currentVisual);		
 		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
 		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
 		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
