@@ -27,7 +27,7 @@
 					<execution>
 						<id>jargs</id>
 						<configuration>
-							<file>jargs-1.0.jar</file>
+							<file>lib/jargs-1.0.jar</file>
 							<groupId>net.sf</groupId>
 							<artifactId>jargs</artifactId>
 							<version>1.0</version>
