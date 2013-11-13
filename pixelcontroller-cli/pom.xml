@@ -14,6 +14,35 @@
 	
 	<packaging>jar</packaging>
 
+	<build>
+		<plugins>
+
+			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
+				since they aren't available in the public Maven repositories. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>jargs</id>
+						<configuration>
+							<file>jargs-1.0.jar</file>
+							<groupId>net.sf</groupId>
+							<artifactId>jargs</artifactId>
+							<version>1.0</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.neophob.pixelcontroller</groupId>
@@ -26,7 +55,7 @@
 			<version>3.1</version>
 		</dependency>		
 		<dependency>
-            <groupId>net.sourceforge.jargs</groupId>
+            <groupId>net.sf</groupId>
             <artifactId>jargs</artifactId>
             <version>1.0</version>
         </dependency>

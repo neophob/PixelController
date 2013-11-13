@@ -176,6 +176,7 @@ public class PixConClient {
         System.out.println(cmd);
         
         if (cmd.getCommand() == ValidCommands.JMX_STAT) {
+        	//send jmx request
             int port = cmd.getPort();
             if (port==DEFAULT_PORT) {
                 System.out.println("No Port specified, using default JMX port "+DEFAULT_JMX_PORT);   
@@ -183,12 +184,10 @@ public class PixConClient {
             }            
         	PixConClientJmx.queryJmxServer(cmd.getHostname(), port);
         } else {
-            //Client c = connectToServer(cmd);       
-            //c.write(cmd.getPayload(TcpServer.FUDI_MSG_END_MARKER));
-        	OscClientFactory.sendOscMessage(cmd.getHostname(), cmd.getPort(), cmd.getPayload());
-            
+        	//send osc payload
+        	System.out.println(cmd.getPayload());
+        	OscClientFactory.sendOscMessage(cmd.getHostname(), cmd.getPort(), cmd.getPayload());            
             System.out.println("Close connection, Bye!");
-            //c.dispose();        	
         }
     }
 }
