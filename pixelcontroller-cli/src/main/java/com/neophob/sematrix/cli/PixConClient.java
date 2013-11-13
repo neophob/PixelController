@@ -173,7 +173,7 @@ public class PixConClient {
             System.exit(1);            
         }
         
-        System.out.println("\t"+cmd);
+        System.out.println(cmd);
         
         if (cmd.getCommand() == ValidCommands.JMX_STAT) {
             int port = cmd.getPort();

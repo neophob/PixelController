@@ -101,7 +101,7 @@ class OscClientImpl implements IClient {
 		}
 		 
 		try {
-			LOG.log(Level.INFO, "Send OSC Package "+oscPacket+" to "+targetPort);
+			//LOG.log(Level.INFO, "Send OSC Package "+oscPacket+" to "+targetPort);
 			client.send(oscPacket);
 		} catch (IOException e) {
 			throw new OscClientException("Failed to send OSC Message", e);
