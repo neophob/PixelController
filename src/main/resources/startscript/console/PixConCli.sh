@@ -22,7 +22,7 @@
 CURRENT=$(dirname "$0")
 cd "$CURRENT"
 
-java -Djava.security.policy=./data/client.policy -classpath $CURRENT/lib/PixelController* com.neophob.sematrix.cli.PixConClient $@
+java -Djava.security.policy=./data/client.policy -classpath .:./lib/* com.neophob.sematrix.cli.PixConClient $@
 
 if [ $# -eq 0 ]
 then

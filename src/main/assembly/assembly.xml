@@ -65,6 +65,7 @@
 			<directory>${basedir}/src/main/resources/startscript</directory>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
+			<fileMode>0755</fileMode>
 		</fileSet>
 		
 		<fileSet>

@@ -14,6 +14,12 @@ import com.neophob.sematrix.core.output.Output;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.setup.InitApplication;
 
+/**
+ * PixelController CLI Daemon
+ * 
+ * @author michu
+ *
+ */
 public class PixelControllerCli {
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerCli.class.getName());
