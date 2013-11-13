@@ -21,7 +21,7 @@
 setlocal
 
 set BINDIR=%~dp0
-cd /D "%BINDIR%"
+cd /D "%BINDIR%"\..\
 
 java -Djava.security.policy=./data/client.policy -classpath "%BINDIR%\lib\*" com.neophob.sematrix.cli.PixConClient %*
 

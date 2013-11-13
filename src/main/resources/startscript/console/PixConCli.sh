@@ -20,7 +20,7 @@
 #!/bin/bash
 
 CURRENT=$(dirname "$0")
-cd "$CURRENT"
+cd "$CURRENT"/../
 
 java -Djava.security.policy=./data/client.policy -classpath .:./lib/* com.neophob.sematrix.cli.PixConClient $@
 
