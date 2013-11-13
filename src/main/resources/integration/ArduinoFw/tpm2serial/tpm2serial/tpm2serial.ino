@@ -109,8 +109,10 @@ void loop() {
     Serial.print(psize, DEC);    
     Serial.print("/");
     Serial.print(currentPacket, DEC);    
-    
+#if defined (CORE_TEENSY_SERIAL)    
     Serial.send_now();
+#endif
+
 #endif
     digitalWrite(ledPin, HIGH);
     updatePixels();
@@ -120,8 +122,10 @@ void loop() {
   else {
     if (res!=-1) {
       Serial.print("ERR: ");
-      Serial.println(res, DEC);    
+      Serial.println(res, DEC);
+#if defined (CORE_TEENSY_SERIAL)          
       Serial.send_now();
+#endif
     }
   }
 #endif  
@@ -144,14 +148,18 @@ void updatePixels() {
   if (currentPacket==totalPacket-1) {
 #ifdef DEBUG      
     Serial.println("DRAW!");
+#if defined (CORE_TEENSY_SERIAL)        
     Serial.send_now();
+#endif    
 #endif    
     LEDS.show();
   } else {
 #ifdef DEBUG     
     Serial.print("NOTUPDATE: ");
     Serial.println(currentPacket, DEC);
+#if defined (CORE_TEENSY_SERIAL)   
     Serial.send_now();
+#endif
 #endif        
   }
 }
