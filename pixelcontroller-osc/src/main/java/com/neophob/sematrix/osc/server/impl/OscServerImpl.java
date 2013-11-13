@@ -26,10 +26,23 @@ class OscServerImpl extends OscServer implements OSCListener {
 	
 	private OSCServer oscServer;
 	
-	public OscServerImpl(OscMessageHandler handler, String host, int port, int bufferSize) throws OscServerException {
+	/**
+	 * 
+	 * @param useTcp
+	 * @param handler
+	 * @param host
+	 * @param port
+	 * @param bufferSize
+	 * @throws OscServerException
+	 */
+	public OscServerImpl(boolean useTcp, OscMessageHandler handler, String host, int port, int bufferSize) throws OscServerException {
 		super(handler, host, port, bufferSize);
 		try {
-			oscServer = OSCServer.newUsing( OSCServer.UDP, port );
+			if (useTcp) {
+				oscServer = OSCServer.newUsing(OSCServer.TCP, port);				
+			} else {
+				oscServer = OSCServer.newUsing(OSCServer.UDP, port);				
+			}
 			oscServer.addOSCListener(this);
 			oscServer.setBufferSize(bufferSize);
 			LOG.log(Level.INFO, "OSC Server initialized on port "+port+", buffersize: "+bufferSize);
@@ -51,9 +64,9 @@ class OscServerImpl extends OscServer implements OSCListener {
 	@Override
 	public void stopServer() {
 		try {
-			oscServer.stop();
+			oscServer.dispose();
 			LOG.log(Level.INFO, "OSC Server stopped");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to stop OSC Server!", e);
 		}		
 	}

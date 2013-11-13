@@ -8,4 +8,5 @@ public interface IClient {
 	
 	void disconnect() throws OscClientException;
 	
+	boolean isConnected();
 }
