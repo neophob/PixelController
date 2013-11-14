@@ -15,9 +15,9 @@ Prerequisite:
 
  * Java Runtime, v1.6+
 
-Run `PixelController.jar` to start the application.
-Make sure your led matrix connected to you computer before the application is started and you **configured** your output hardware in 
-the data/config.properties file.
+You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version of PixelController by executing the `` Script.
+
+By default PixelController has **no configured** output device. To change that open the `data/config.properties` configuration file and make the necessary changes. Lines starting with # are ignored.
 
 You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
 
@@ -56,10 +56,10 @@ You need to know how to install an Arduino Library (http://arduino.cc/en/Guide/L
 ### How does it work?
 
 PixelController generates the content for the LED matrix, sends the data out to the controller, the controller will update the LED modules. There are two options for "sends the data": 
-* sends the data via USB to the Arduino/Teensy board
-* sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device
+* sends the data via USB to the Arduino/Teensy board aka. DIY LED controller.
+* sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device.
 
-Here are two primitive schemes:
+Here are some primitive schemes:
 
     [PixelController]---<USB>---[Teensy with PixelInvaders firmware]---<SPI>---[LED#1]---[LED#2]...
 
@@ -70,15 +70,12 @@ Here are two primitive schemes:
 
 ## FRONTENDS
 There are different frontends for PixelController:
-
-* Native Java: the default frontend is started when PixelController starts.
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
-* PureData: PureData frontend (http://puredata.info/ download the extended Version), very flexible, extensible (OSC, MIDI). The PureData file is called `PixelController.pd`. (*deprecated*)
 * OSC: Create your own interfaces, for example with the great TouchOSC application.
 
 ##INTERFACES
-* OSC interface, default listening port 9876. Processing examples included how to communicate with PixelController via OSC protocol
-* FUDI interface, default listening port 3448, used to communicate with PureData
+* OSC interface, default listening port 9876. Processing examples are included how to communicate with PixelController via OSC protocol. You can also use 
+the `PixConClient.java` CLI tool to control PixelController.
 
 **Valid commands**:
 
