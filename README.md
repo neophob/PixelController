@@ -114,10 +114,13 @@ There are different frontends for PixelController:
 Start PixelController, then open the console:
 
 Randomize current Visual
-`# ./PixConCli.sh -c RANDOMIZE`
+
+        # ./PixConCli.sh -c RANDOMIZE
+
 
 Select Image Generator (0 is Passthru, 1 is Blinkenlights...) for current Visual:
-`# ./PixConCli.sh -c CHANGE_GENERATOR_A 2`
+
+        # ./PixConCli.sh -c CHANGE_GENERATOR_A 2
 
 
 ## IT DOES NOT WORK!
@@ -196,7 +199,7 @@ Example how to use PixConCli:
 
 
 ## CREDITS
-* **Michael Vogt**:       Project Lead, Main Developer    	
+* **Michael Vogt**:       Project Lead, Main Developer      
 * **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements, Rainbowduino V3 support
 * **McGyver666**:         Contributor
 * **Rainer Ostendorf**:   Artnet Output
