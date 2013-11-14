@@ -118,9 +118,14 @@ Randomize current Visual
         # ./PixConCli.sh -c RANDOMIZE
 
 
-Select Image Generator (0 is Passthru, 1 is Blinkenlights...) for current Visual:
+Select Image Generator as Generator A (0 is Passthru, 1 is Blinkenlights...) for current Visual:
 
         # ./PixConCli.sh -c CHANGE_GENERATOR_A 2
+
+
+Load image gradient.jpg
+
+        # ./PixConCli.sh -c IMAGE gradient.jpg
 
 
 ## IT DOES NOT WORK!
