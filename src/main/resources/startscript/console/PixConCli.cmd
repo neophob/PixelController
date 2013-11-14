@@ -23,7 +23,7 @@ setlocal
 set BINDIR=%~dp0
 cd /D "%BINDIR%"\..\
 
-java -Djava.security.policy=./data/client.policy -classpath "%BINDIR%\lib\*" com.neophob.sematrix.cli.PixConClient %*
+java -Djava.security.policy=./data/client.policy -classpath ".;./lib/*" com.neophob.sematrix.cli.PixConClient %*
 
 IF "%1"=="" GOTO SHOWHINT
 
