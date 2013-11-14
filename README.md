@@ -17,9 +17,17 @@ Prerequisite:
 
 You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version of PixelController by executing the `console\PixelController.sh` (OSX/Linux) or `console\PixelController.cmd` (Windows) Script.
 
-By default PixelController has **no configured** output device. To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored.
+By default PixelController has **no configured** output device. To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
 
-TODO CONFIG EXAMPLES
+    output.resolution.x=8
+    output.resolution.y=8
+
+which defines the resolution of your matrix. And you need to define an Output device, for example for the PixelInvaders panels:
+
+    pixelinvaders.layout.row1=NO_ROTATE,ROTATE_180
+    #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
+
+this defines two PixelInvaders panels while the second panel is rotates 180 degrees. Take a look at the config file, there are alot of hints how to configure it.
 
 You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
 
@@ -71,13 +79,31 @@ Here are some primitive schemes:
 
 
 ## FRONTENDS
-There are different frontends for PixelController:
+There are different frontends for PixelController (besides the GUI frontend):
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
-* OSC: Create your own interfaces, for example with the great TouchOSC application.
+* OSC: Create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
+
+
+### CLI EXAMPLES
+You can send OSC messages to PixelController to control the software. PixelController includes a simple CLI tool to control the software by console. Start PixelController, then open the console:
+
+Randomize current Visual
+
+        # ./PixConCli.sh -c RANDOMIZE
+
+
+Select Image Generator as Generator A (0 is Passthru, 1 is Blinkenlights...) for current Visual:
+
+        # ./PixConCli.sh -c CHANGE_GENERATOR_A 2
+
+
+Load image gradient.jpg
+
+        # ./PixConCli.sh -c IMAGE gradient.jpg
+
 
 ##INTERFACES
-* OSC interface, default listening port 9876. Processing examples are included how to communicate with PixelController via OSC protocol. You can also use 
-the `PixConClient.java` CLI tool to control PixelController.
+* The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included how to communicate with PixelController via OSC protocol.
 
 **Valid commands**:
 
@@ -160,10 +186,12 @@ Hint: if you're using eclipse and you see an error like this
 `java.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersionjava.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersion`
 make sure you add the lib/serial directory as "Native library location"
 
+
 ## ADD NEW HARDWARE SUPPORT
 It should be pretty simple to add support for new hardware. All Output code should go into the com.neophob.sematrix.output package (`src/main/java/com/neophob/sematrix/output` directory). All you need to do in the Output class is, take an array of int's (one int is used to store the 24 bpp) and send this buffer to your output device (via serial port, ethernet, bluetooth...). Maybe you need to reduce the color depth, flip each second scanline due hardware wiring, such helper methods should go into the `OutputHelper.java` class.
 
 As a string point, add your hardware in the `OutputDeviceEnum.java` class and have a look where the other entries are referenced. **Take a look at the existing Output classes**, this should help you!
+
 
 ## NEW RELEASE
 
