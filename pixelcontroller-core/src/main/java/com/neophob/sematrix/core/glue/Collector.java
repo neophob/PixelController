@@ -228,7 +228,7 @@ public class Collector extends Observable {
 		
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
-		LOG.log(Level.INFO, "Initialize Visuals");
+		LOG.log(Level.INFO, "Initialize "+(nrOfScreens+additionalVisuals)+" Visuals");
 		try {
 			Generator genPassThru = pixelControllerGenerator.getGenerator(GeneratorName.PASSTHRU);
 			Effect effPassThru = pixelControllerEffect.getEffect(EffectName.PASSTHRU);
@@ -237,7 +237,13 @@ public class Collector extends Observable {
 				Generator g = pixelControllerGenerator.getGenerator(
 						GeneratorName.values()[ i%(GeneratorName.values().length) ]
 				);
-				allVisuals.add(new Visual(g, genPassThru, effPassThru, effPassThru, mixPassThru, colorSets.get(0)));
+				if (g==null) {
+					//its possible we select an inactive generator, in this case just ignore it...
+					additionalVisuals++;
+					LOG.log(Level.INFO, "Ignore null Visual, take next...");
+				} else {
+					allVisuals.add(new Visual(g, genPassThru, effPassThru, effPassThru, mixPassThru, colorSets.get(0)));
+				}
 			}
 	        
 		} catch (IndexOutOfBoundsException e) {
