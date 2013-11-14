@@ -78,7 +78,7 @@ Here are some primitive schemes:
     [PixelController]---<ethernet>---[Artnet Controller]---<???>---[LED#1]---[LED#2]...
 
 
-### Advanced configuration
+### Advanced PixelController configuration
 
 There are a lot of options in the `config.properties` file. Some examples, PixelController updates all Visuals depending on the Sound input. If a beat is detected, the Visuals are updated faster. You can disable this behaviour by setting this option:
 
@@ -110,6 +110,22 @@ Or you can save a preset and load that one per default if you start PixelControl
     #Warning, this will overwrite your settings configured above (initial generator values)!
     #=========================
     #startup.load.preset.nr=1
+
+You can define the size of the PixelController GUI, for example the size of the simulated LED Matrix (which is per default 16 pixels):
+
+    #=========================
+    #the size of the software output matrix
+    #=========================
+    led.pixel.size=16
+
+Or define the window size, depending on this setting, the Visuals are displayed larger or smaller.
+
+    #=========================
+    #define the maximal window size
+    #=========================
+    maximal.debug.window.xsize=600
+    maximal.debug.window.ysize=500
+
 
 There are more options in the config file, take a look - each option should be documented.
 
