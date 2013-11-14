@@ -78,6 +78,42 @@ Here are some primitive schemes:
     [PixelController]---<ethernet>---[Artnet Controller]---<???>---[LED#1]---[LED#2]...
 
 
+### Advanced configuration
+
+There are a lot of options in the `config.properties` file. Some examples, PixelController updates all Visuals depending on the Sound input. If a beat is detected, the Visuals are updated faster. You can disable this behaviour by setting this option:
+
+    #=========================
+    #use audio as input setting (true)
+    #or just regular fps (false)
+    #=========================
+    update.generators.by.sound=false
+
+There is a Generator called "Screen Caputure" which is disabled by default. If you want to enable this generator, edit the following settings:
+
+    #x/y offset for screen capturing generator
+    #if you define screen.capture.window.size.x as 0, the screen capture generator will be disabled
+    screen.capture.offset=100
+    screen.capture.window.size.x=500
+    screen.capture.window.size.y=300
+
+This enables the Screen Caputure Generator which captures a region of 500 x 300 pixels. Or you can start PixelController in the random mode where PixelController changes the Visuals randomly:
+
+    #=========================
+    #start in random mode?
+    #=========================
+    startup.in.randommode=false
+
+Or you can save a preset and load that one per default if you start PixelController:
+
+    #=========================
+    #load a preset if PixelController starts?
+    #Warning, this will overwrite your settings configured above (initial generator values)!
+    #=========================
+    #startup.load.preset.nr=1
+
+There are more options in the config file, take a look - each option should be documented.
+
+
 ## FRONTENDS
 There are different frontends for PixelController (besides the GUI frontend):
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
