@@ -110,6 +110,15 @@ There are different frontends for PixelController:
         FREEZE                      # of parameters: 0     <NO PARAM> toggle pause mode
         TOGGLE_INTERNAL_VISUAL      # of parameters: 0     <NO PARAM> show/hide internal visual to save CPU
 
+### CLI EXAMPLES
+Start PixelController, then open the console:
+
+Randomize current Visual
+`# ./PixConCli.sh -c RANDOMIZE`
+
+Select Image Generator (0 is Passthru, 1 is Blinkenlights...) for current Visual:
+`# ./PixConCli.sh -c CHANGE_GENERATOR_A 2`
+
 
 ## IT DOES NOT WORK!
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
