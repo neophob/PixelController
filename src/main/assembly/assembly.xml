@@ -90,7 +90,7 @@
 		Copy a existing folder without subfolders, 
 		rename it, but do not copy files. -->
 		<fileSet>
-			<directory>${basedir}/src/main/resources/startscript</directory>
+			<directory>${basedir}/src/main/resources/empty</directory>
 			<outputDirectory>/log</outputDirectory>
 			<directoryMode>0755</directoryMode>
 			<excludes>
