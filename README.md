@@ -9,15 +9,17 @@
 
 **Facebook**: https://www.facebook.com/PixelInvaders
 
+You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
+
 
 ## HOWTO USE PIXELCONTROLLER
 Prerequisite:
 
  * Java Runtime, v1.6+
 
-You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version of PixelController by executing the `console\PixelController.sh` (OSX/Linux) or `console\PixelController.cmd` (Windows) Script.
+You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version (for example on the Raspberry PI) of PixelController by executing the `console\PixelController.sh` (OSX/Linux) or `console\PixelController.cmd` (Windows) Script.
 
-By default PixelController has **no configured** output device. To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
+By default PixelController has **no configured** output device (= your . To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
 
     output.resolution.x=8
     output.resolution.y=8
@@ -29,15 +31,13 @@ which defines the resolution of your matrix. And you need to define an Output de
 
 this defines two PixelInvaders panels while the second panel is rotates 180 degrees. Take a look at the config file, there are alot of hints how to configure it.
 
-You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
-
 ## DEMO
 Check out https://vimeo.com/61141493, http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
 on two PixelInvaders panels. 
 
 
 ## SUPPORTED HARDWARE
-PixelController supports different (LED) matrix hardware devices:
+PixelController supports different (LED) matrix hardware devices/controller:
 
 * PixelInvaders 3D Panels serial device (see Readme.PixelInvaders, http://www.pixelinvaders.ch) 
 * PixelInvaders 3D Panels network device (see Readme.PixelInvaders, http://www.pixelinvaders.ch)
@@ -81,7 +81,7 @@ Here are some primitive schemes:
 ## FRONTENDS
 There are different frontends for PixelController (besides the GUI frontend):
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
-* OSC: Create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
+* OSC: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included how to communicate with PixelController via OSC protocol. Or create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
 
 
 ### CLI EXAMPLES
@@ -102,10 +102,9 @@ Load image gradient.jpg
         # ./PixConCli.sh -c IMAGE gradient.jpg
 
 
-##INTERFACES
-* The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included how to communicate with PixelController via OSC protocol.
+##OSC Messages
 
-**Valid commands**:
+Here are all commands PixelController knows.
 
         CHANGE_GENERATOR_A          # of parameters: 1     <INT> change first generator for current visual
         CHANGE_GENERATOR_B          # of parameters: 1     <INT> change first generator for current visual
@@ -135,8 +134,6 @@ Load image gradient.jpg
         CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
         CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
 
-        STATUS                      # of parameters: 0     <NO PARAM> refresh whole gui
-        STATUS_MINI                 # of parameters: 0     <NO PARAM> just refresh parts of the gui
         CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
         CHANGE_SHUFFLER_SELECT      # of parameters: 15    <INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0
         SAVE_PRESENT                # of parameters: 0     <NO PARAM> save current present settings
