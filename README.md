@@ -171,7 +171,10 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 Update Changelog, add git status:
 
     # git diff v1.5.0 develop --stat
-    
+
+
+Update `readme.pdf` - use `README.md` as source.
+
 
 Optional, license header check for all source files (http://code.google.com/p/maven-license-plugin/wiki/HowTo)
 
