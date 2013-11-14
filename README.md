@@ -111,7 +111,7 @@ There are different frontends for PixelController:
         TOGGLE_INTERNAL_VISUAL      # of parameters: 0     <NO PARAM> show/hide internal visual to save CPU
 
 ### CLI EXAMPLES
-Start PixelController, then open the console:
+You can send OSC messages to PixelController to control the software. PixelController includes a simple CLI tool to control the software by console. Start PixelController, then open the console:
 
 Randomize current Visual
 
