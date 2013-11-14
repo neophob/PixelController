@@ -15,9 +15,11 @@ Prerequisite:
 
  * Java Runtime, v1.6+
 
-You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version of PixelController by executing the `` Script.
+You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version of PixelController by executing the `console\PixelController.sh` (OSX/Linux) or `console\PixelController.cmd` (Windows) Script.
 
-By default PixelController has **no configured** output device. To change that open the `data/config.properties` configuration file and make the necessary changes. Lines starting with # are ignored.
+By default PixelController has **no configured** output device. To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored.
+
+TODO CONFIG EXAMPLES
 
 You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
 
