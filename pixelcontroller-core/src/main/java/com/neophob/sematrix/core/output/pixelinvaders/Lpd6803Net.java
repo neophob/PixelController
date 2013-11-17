@@ -52,7 +52,7 @@ public class Lpd6803Net extends Lpd6803Common{
 	public static final String VERSION = "1.0";
 	
 	//maximal network latency
-	public static final int MAX_ACK_WAIT = 40;
+	public static final int MAX_ACK_WAIT = 120;
 	public static final int WAIT_PER_LOOP = 2;
 	
 	private TcpClient clientConnection;
@@ -60,9 +60,6 @@ public class Lpd6803Net extends Lpd6803Common{
 	private String destIp;	
 	private int destPort;
 	
-	private long delayTotal;
-	private int delayCount;
-
 	/**
 	 * Create a new instance to communicate with the lpd6803 device.
 	 *
@@ -130,6 +127,7 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @throws WriteDataException the serial port exception
 	 */
 	protected synchronized void writeData(byte[] cmdfull) throws WriteDataException {
+		//LOG.log(Level.INFO,	"writeData: "+cmdfull.length);
 		try {
 			if (clientConnection.output == null) {
 				throw new SocketException("Output not connected");
@@ -140,7 +138,9 @@ public class Lpd6803Net extends Lpd6803Common{
 		} catch (SocketException se) {
 		    if (connectionErrorCounter%10==9) {
 		        //try to reconnect
-		        this.clientConnection = new TcpClient(destIp, destPort);   
+		    	LOG.log(Level.INFO, "Reinit TCP Client");
+		        this.clientConnection = new TcpClient(destIp, destPort);
+		        return;
 		    }			
 			//LOG.log(Level.INFO, "Error sending network data!", se);
 			connectionErrorCounter++;
@@ -160,50 +160,34 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @return true if ack received, false if not
 	 */
 	protected synchronized boolean waitForAck() {
-		int currentDelay=0;
+		LOG.log(Level.INFO, "Wait for ACK.");
 		if (clientConnection !=null) {
+			int currentDelay=0;
 			byte[] msg=null;
 			
 			//wait maximal MAX_ACK_WAIT ms until we get a reply
-			while (currentDelay<MAX_ACK_WAIT && (msg==null || msg.length<3)) {
+			while (currentDelay<MAX_ACK_WAIT && (msg==null || msg.length<4)) {
 				sleep(WAIT_PER_LOOP);
 				currentDelay+=WAIT_PER_LOOP;
 				msg = clientConnection.readBytes();
-			}
-			
-			delayTotal+=currentDelay;
-			delayCount++;
-
-			if (delayCount%1000==999) {
-				float avg = delayTotal/(float)delayCount;
-				LOG.log(Level.INFO, "Avg network latency: "+avg+"ms");
+				LOG.log(Level.INFO, "got reply: "+msg.length+" bytes");
 			}
 			
 			if (msg==null) {
+				LOG.log(Level.WARNING, "No reply recieved, verify that ser2net is started on the target machine!");
 				ackErrors++;
 				return false;
 			}
 
-			for (int i=0; i<msg.length-1; i++) {
-				if (msg[i]== 'A' && msg[i+1]== 'K') {
-					try {
-						int lastError = msg[i+3];
-						if (lastError!=0) {
-							LOG.log(Level.INFO, "Last Errorcode: {0}", lastError);
-							ackErrors++;
-							return false;
-						}
-						return true;
-					} catch (Exception e) {
-						// we failed to update statistics...
-					}
+			String reply = new String(msg);
+			LOG.log(Level.INFO, "got ACK: {0}", reply);
 
-					ackErrors++;
-					return false;					
-				}
-			}			
-		}
-		ackErrors++;
+			if (reply.contains("AK")) {
+				return true;
+			}
+			return false;		
+		} 
+		LOG.log(Level.WARNING, "No client connection available, verify that ser2net is started on the target machine");
 		return false;		
 	}
 

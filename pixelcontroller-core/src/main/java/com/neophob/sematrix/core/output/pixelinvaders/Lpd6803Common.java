@@ -59,6 +59,11 @@ public abstract class Lpd6803Common {
 	/** The ack errors. */
 	protected long ackErrors = 0;
 	
+	/**
+	 * 
+	 * @param xRes
+	 * @param yRes
+	 */
 	public Lpd6803Common(int xRes, int yRes) {
 		this.nrOfLedHorizontal = xRes;
 		this.nrOfLedVertical = yRes;

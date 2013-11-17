@@ -108,9 +108,9 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 			}			
 		}
 
+		LOG.log(Level.INFO, "Recieved OSC message: {0}", msg);
 		MessageProcessor.processMsg(msg, true, oscIn.getBlob());
 		
-		//TODO does not work yet
 		//notfiy gui if an osc message arrives
 		Collector.getInstance().notifyGuiUpdate();
 	}
