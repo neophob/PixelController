@@ -31,6 +31,17 @@ which defines the resolution of your matrix. And you need to define an Output de
 
 this defines two PixelInvaders panels while the second panel is rotates 180 degrees. Take a look at the config file, there are alot of hints how to configure it.
 
+### Main idea
+A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
+I try to visualize it: 
+
+    [GENERATOR A] ---> [EFFECT A] ---> [MIXER] <--- [EFFECT B] <--- [GENERATOR B]
+                                          |
+                                          V  [Colorset]
+                                       [VISUAL]
+
+
+
 ## DEMO
 Check out https://vimeo.com/61141493, http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
 on two PixelInvaders panels. 
@@ -96,7 +107,9 @@ There is a Generator called "Screen Caputure" which is disabled by default. If y
     screen.capture.window.size.x=500
     screen.capture.window.size.y=300
 
-This enables the Screen Caputure Generator which captures a region of 500 x 300 pixels. Or you can start PixelController in the random mode where PixelController changes the Visuals randomly:
+This enables the Screen Caputure Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube videos, other movie players...
+
+Or you can start PixelController in the random mode where PixelController changes the Visuals randomly:
 
     #=========================
     #start in random mode?
@@ -126,6 +139,11 @@ Or define the window size, depending on this setting, the Visuals are displayed 
     maximal.debug.window.xsize=600
     maximal.debug.window.ysize=500
 
+You can define your own Colorsets, they are defined in the file `data/palette.properties`. A Colorset definition consists of a name and multiple RGB color values. Here is an example:
+
+    MiamiVice=0x1be3ff, 0xff82dc, 0xffffff
+
+ 
 
 There are more options in the config file, take a look - each option should be documented.
 
@@ -154,7 +172,7 @@ Load image gradient.jpg
         # ./PixConCli.sh -c IMAGE gradient.jpg
 
 
-##OSC Messages
+##OSC MESSAGES
 
 Here are all commands PixelController knows.
 
