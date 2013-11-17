@@ -29,7 +29,7 @@ which defines the resolution of your matrix. And you need to define an Output de
     pixelinvaders.layout.row1=NO_ROTATE,ROTATE_180
     #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
 
-this defines two PixelInvaders panels while the second panel is rotates 180 degrees. Take a look at the config file, there are alot of hints how to configure it.
+this defines two PixelInvaders panels while the second panel is rotated by 180 degrees. Take a look at the config file, there are alot of hints how to configure PixelController.
 
 ### Main idea
 A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
@@ -40,7 +40,8 @@ I try to visualize it:
                                           V  [Colorset]
                                        [VISUAL]
 
-
+Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a non-visible Visual, that can be displayed later. 
+All Visuals can be stored (and of course loaded) in a preset.
 
 ## DEMO
 Check out https://vimeo.com/61141493, http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
