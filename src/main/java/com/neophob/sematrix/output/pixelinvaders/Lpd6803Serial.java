@@ -290,6 +290,8 @@ public class Lpd6803Serial extends Lpd6803Common {
 			throw new WriteDataException("serial port is not ready!");
 		}
 		
+		LOG.log(Level.INFO, "Write {0} bytes to serial port", cmdfull.length);
+		
 		try {
 			port.output.write(cmdfull);			
 			port.output.flush();
