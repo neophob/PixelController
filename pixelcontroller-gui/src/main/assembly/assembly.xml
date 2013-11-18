@@ -16,5 +16,13 @@
  
     <baseDirectory>${project.artifactId}</baseDirectory>
     
+    <fileSets>
+		<fileSet>
+			<directory>${basedir}/target/assembly/pixelcontroller-gui</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>		
+    </fileSets>
+        
 </assembly>
     

@@ -16,5 +16,13 @@
  
     <baseDirectory>${project.artifactId}</baseDirectory>
     
+    <fileSets>
+		<fileSet>
+			<directory>${basedir}/target/assembly/pixelcontroller-osc</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>		
+    </fileSets>
+    
 </assembly>
     

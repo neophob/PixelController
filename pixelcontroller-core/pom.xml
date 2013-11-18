@@ -6,7 +6,7 @@
 		<groupId>com.neophob.pixelcontroller</groupId>
 		<artifactId>pixelcontroller</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
                 
 	<artifactId>pixelcontroller-core</artifactId>
@@ -30,6 +30,24 @@
 		</resources>
 
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>com.neophob.PixelController</mainClass>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+						</manifest>
+						<manifestEntries>
+							<url>${project.url}</url>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
 
 			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
 				since they aren't available in the public Maven repositories. -->
@@ -313,7 +331,7 @@
 		<dependency>
 			<groupId>com.neophob.pixelcontroller</groupId>
 			<artifactId>pixelcontroller-osc</artifactId>
-			<version>SNAPSHOT</version>
+			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 		
 	</dependencies>

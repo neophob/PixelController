@@ -5,7 +5,7 @@
 	<groupId>com.neophob.pixelcontroller</groupId>
 	<artifactId>pixelcontroller</artifactId>
 	<name>PixelController</name>
-	<version>SNAPSHOT</version>
+	<version>2.0.0-SNAPSHOT</version>
 	
 	<packaging>pom</packaging>
 	<description>
@@ -89,6 +89,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			
 			<!-- Package all files together -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -117,19 +118,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version><!--$NO-MVN-MAN-VER$ -->
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.neophob.PixelController</mainClass>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-						</manifest>
-						<manifestEntries>
-							<url>${project.url}</url>
-						</manifestEntries>
-					</archive>
-				</configuration>
 			</plugin>
 
 			<plugin>
