@@ -49,11 +49,11 @@ public class Lpd6803Net extends Lpd6803Common{
 	private static final Logger LOG = Logger.getLogger(Lpd6803Net.class.getName());
 	
 	/** internal lib version. */
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.3";
 	
 	//maximal network latency
-	public static final int MAX_ACK_WAIT = 120;
-	public static final int WAIT_PER_LOOP = 2;
+	public static final int MAX_ACK_WAIT = 80;
+	public static final int WAIT_PER_LOOP = 6;
 	
 	private TcpClient clientConnection;
 	
@@ -160,7 +160,7 @@ public class Lpd6803Net extends Lpd6803Common{
 	 * @return true if ack received, false if not
 	 */
 	protected synchronized boolean waitForAck() {
-		LOG.log(Level.INFO, "Wait for ACK.");
+		LOG.log(Level.INFO, "Wait for ACK, max "+(MAX_ACK_WAIT*WAIT_PER_LOOP)+"ms");
 		if (clientConnection !=null) {
 			int currentDelay=0;
 			byte[] msg=null;
@@ -170,7 +170,7 @@ public class Lpd6803Net extends Lpd6803Common{
 				sleep(WAIT_PER_LOOP);
 				currentDelay+=WAIT_PER_LOOP;
 				msg = clientConnection.readBytes();
-				LOG.log(Level.INFO, "got reply: "+msg.length+" bytes");
+				LOG.log(Level.INFO, "got reply: "+msg.length+" bytes: "+new String(msg));
 			}
 			
 			if (msg==null) {

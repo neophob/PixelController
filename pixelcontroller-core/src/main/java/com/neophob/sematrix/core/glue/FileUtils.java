@@ -59,7 +59,7 @@ public class FileUtils {
 		this.rootDirectory = System.getProperty("user.dir");
 		
 		if (!new File(getDataDir()).isDirectory()) {						
-			this.rootDirectory = System.getProperty("user.dir")+"/../src/main/resources";//
+			this.rootDirectory = System.getProperty("user.dir")+"/../pixelcontroller-distribution/src/main/resources";//
 			LOG.log(Level.INFO, "Try root directory: {0}", rootDirectory);
 			
 			if (!new File(getDataDir()).isDirectory()) {

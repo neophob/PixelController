@@ -48,9 +48,6 @@
 				</configuration>
 			</plugin>
 
-
-			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
-				since they aren't available in the public Maven repositories. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>

@@ -1,0 +1,82 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    
+	<id>bin</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+ 
+    <baseDirectory>${project.artifactId}-${project.version}</baseDirectory>
+
+	<!-- Overlay with files from "src/build/dist" -->
+	<fileSets>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/data</directory>
+			<outputDirectory>/data</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/integration</directory>
+			<outputDirectory>/integration</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/log</directory>
+			<outputDirectory>/log</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/lib</directory>
+			<outputDirectory>/lib</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
+			<directory>${basedir}/src/main/resources/startscript</directory>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<fileMode>0755</fileMode>
+		</fileSet>
+
+		<!-- Small hack to create a log folder:
+		Copy a existing folder without subfolders, 
+		rename it, but do not copy files. -->
+		<fileSet>
+			<directory>${basedir}/src/main/resources/log</directory>
+			<outputDirectory>/log</outputDirectory>
+			<directoryMode>0755</directoryMode>
+			<excludes>
+				<exclude>*</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets> 	
+ 	
+ 	<files>
+ 		<file>
+			<source>${basedir}/src/main/resources/docs/readme.pdf</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>readme.pdf</destName>
+		</file>
+
+ 		<file>
+			<source>${basedir}/../TODO</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>TODO.txt</destName>
+		</file>
+
+ 		<file>
+			<source>${basedir}/../ChangeLog</source>
+			<outputDirectory>/</outputDirectory>
+			<filtered>false</filtered>
+			<destName>Changelog.txt</destName>
+		</file>
+ 	
+ 	</files>
+ 	
+</assembly>

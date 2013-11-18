@@ -29,7 +29,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 public class FileUtilsJunit extends FileUtils {
 
 	public FileUtilsJunit() {
-		super(System.getProperty("user.dir")+"/../src/main/resources");
+		super(System.getProperty("user.dir")+"/../pixelcontroller-distribution/src/main/resources");
 	}
 
 

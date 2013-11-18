@@ -20,6 +20,10 @@
 		<sonar.phase>generate-sources</sonar.phase>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<maven.assembly.plugin.version>2.4</maven.assembly.plugin.version>
+		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
+		<maven.dependency.plugin>2.8</maven.dependency.plugin>
 	</properties>
 
 	<prerequisites>
@@ -74,6 +78,7 @@
 		<module>pixelcontroller-core</module>
 		<module>pixelcontroller-gui</module>
 		<module>pixelcontroller-cli</module>
+		<module>pixelcontroller-distribution</module>
 	</modules>
 
 	<build>
@@ -81,7 +86,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -90,30 +95,6 @@
 				</configuration>
 			</plugin>
 			
-			<!-- Package all files together -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<finalName>assembly</finalName>
-							<appendAssemblyId>false</appendAssemblyId>
-							<outputDirectory>${project.build.directory}</outputDirectory>
-							<descriptors>
-								<descriptor>${basedir}/src/main/assembly/assembly.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
