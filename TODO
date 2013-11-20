@@ -25,6 +25,8 @@ Roadmap PixelController
 -Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 -Merge code of the output package, alot of duplicate code 
 -Support Multiple Output devices with different matrix sizes
+-Make speed of generators configurable via GUI and save it as part of the preset.
+
 
 Refactoring TODO
 ----------------
