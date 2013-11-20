@@ -271,6 +271,10 @@ public class P5EventListener implements ControlListener {
             	createMessage(ValidCommands.SCREENSHOT, "");
             	break;
             	
+            case GENERATOR_SPEED:
+            	createMessage(ValidCommands.GENERATOR_SPEED, value);
+            	break;
+            	
             default:
                 LOG.log(Level.INFO, "Invalid Object: "+selection+", Value: "+value);
                 break;

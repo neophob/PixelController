@@ -103,7 +103,6 @@ public class Collector extends Observable {
 	
 	/** The frames. */
 	private int frames;
-	private int framesEffective;
 	
 	/** The current visual. */
 	private int currentVisual;
@@ -143,8 +142,6 @@ public class Collector extends Observable {
 	
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
-	
-	private boolean soundAware=false;
 	
 	private PixelControllerStatus pixConStat;
 
@@ -201,12 +198,20 @@ public class Collector extends Observable {
 		this.colorSets = InitHelper.getColorPalettes(fileUtils);
 		
 		//choose sound implementation
-		try {
-			sound = new SoundMinim(ph.getSoundSilenceThreshold());			
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.", e);
+		if (ph.isAudioAware()) {
+			try {		
+				sound = new SoundMinim(ph.getSoundSilenceThreshold());			
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.");				
+			} catch (LinkageError e) {
+				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE (Linkage error). Disable sound input.");			
+			}			
+		} 
+		
+		if (sound==null) {
 			sound = new SoundDummy();
 		}
+		
 		//create the device with specific size
 		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
@@ -256,7 +261,6 @@ public class Collector extends Observable {
 		pixelControllerOutput.initAll();
 		
 		this.presets = fileUtils.loadPresents(NR_OF_PRESET_SLOTS);
-		soundAware = ph.isAudioAware();
 		
 		//create an empty mapping
 		ioMapping.clear();
@@ -302,39 +306,16 @@ public class Collector extends Observable {
 		if (isLoadingPresent()) {
 			return;
 		}
-		
-		int u = 1;
-		
-		if (soundAware) {
-			//get sound volume
-			float f = sound.getVolumeNormalized();
-			u = (int)(0.5f+f*1.5f);
-			//check for silence - in this case update slowly
-			if (u<1) {
-				if (frames%3==1) {
-					u=1;
-				}
-			}
-			if (sound.isKick()) {
-				u+=3;
-			}
-			if (sound.isHat()) {
-				u+=1;
-			}			
-		}
-		
+				
 		//update the current value of frames per second
 /*		if (papplet!=null) {
 			pixConStat.setCurrentFps(papplet.frameRate);
 			pixConStat.setFrameCount(papplet.frameCount);			
 		}*/
 
-		framesEffective+=u;
 		long l = System.currentTimeMillis();
 		//update generator depending on the input sound
-		for (int i=0; i<u; i++) {
-			pixelControllerGenerator.update();			
-		}
+		pixelControllerGenerator.update();			
 		pixConStat.trackTime(TimeMeasureItemGlobal.GENERATOR, System.currentTimeMillis()-l);
 		
 		l = System.currentTimeMillis();
@@ -841,7 +822,7 @@ public class Collector extends Observable {
      * @return
      */
 	public int getFrames() {
-		return framesEffective;
+		return frames;
 	}
 
 	
@@ -954,7 +935,7 @@ public class Collector extends Observable {
 		return sound;
 	}
     
-	
+
 	private List<String> getGuiState() {
 		List<String> ret = new ArrayList<String>();
 		

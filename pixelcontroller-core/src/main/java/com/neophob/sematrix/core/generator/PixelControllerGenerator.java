@@ -73,6 +73,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private Textwriter textwriter;
     
 	private float brightness = 1.0f;	
+	private float fpsAdjustment = 1.0f;
+
     
     private ApplicationConfigurationHelper ph;
     
@@ -87,6 +89,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private ISound sound;
     
     private IResize resize;
+    
+    private long frame;
     
     /**
      * Instantiates a new pixel controller generator.
@@ -172,7 +176,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         int brightnessInt = (int)(this.brightness*100f);
         ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
-        
+        int generatorSpeed = (int)(this.fpsAdjustment*100f);
+        ret.add(ValidCommands.GENERATOR_SPEED+" "+generatorSpeed);        
         return ret;
     }
 
@@ -180,7 +185,25 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()
      */
     @Override
-    public void update() {        
+    public void update() {
+    	//calculate update speed
+		float f = sound.getVolumeNormalized();
+		int updateAmount = (int)(0.5f+f*1.5f*fpsAdjustment);
+
+		if (sound.isKick()) {
+			updateAmount+=3;
+		}
+		if (sound.isHat()) {
+			updateAmount+=1;
+		}			
+
+		//check for silence - in this case update slowly
+		if (updateAmount<1) {
+			if (++frame%5==0) {
+				updateAmount=1;
+			}
+		}
+    	
         //get a set with active visuals
         List<Visual> allVisuals = Collector.getInstance().getAllVisuals();
         Set<Integer> activeVisuals = new HashSet<Integer>();        
@@ -192,7 +215,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
         //update only selected generators
         for (Generator m: allGenerators) {
             if (activeVisuals.contains(m.getId())) {
-                m.update();
+            	for (int i=0; i<updateAmount; i++) {
+                    m.update();            		
+            	}
                 m.setActive(true);
             } else {
             	m.setActive(false);
@@ -361,12 +386,26 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	 * @param brightness the brightness to set
 	 */
 	public void setBrightness(float brightness) {
-		if (brightness<0f || brightness>1.0f) {
-			LOG.log(Level.WARNING, "Invalid brightness value: {0}", brightness);
-			return;
-		}
 		this.brightness = brightness;
 	}
+
+	
+	
+	/**
+	 * @return the fpsAdjustment
+	 */
+	public float getFpsAdjustment() {
+		return fpsAdjustment;
+	}
+
+
+	/**
+	 * @param fpsAdjustment the fpsAdjustment to set
+	 */
+	public void setFpsAdjustment(float fpsAdjustment) {
+		this.fpsAdjustment = fpsAdjustment;
+	}
+
 
 	/**
 	 * 

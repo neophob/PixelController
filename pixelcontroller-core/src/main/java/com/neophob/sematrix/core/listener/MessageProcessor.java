@@ -442,11 +442,26 @@ public final class MessageProcessor {
 				try {
 					int a = Integer.parseInt(msg[1]);
 					if (a<0 || a>100) {
-						LOG.log(Level.WARNING, IGNORE_COMMAND, "Invalid brightness value: "+a);
+						LOG.log(Level.WARNING, IGNORE_COMMAND+", invalid brightness value: "+a);
 						break;
 					} else {
 						float f = a/100f;
 						col.getPixelControllerGenerator().setBrightness(f);
+					}
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				break;
+				
+			case GENERATOR_SPEED:
+				try {
+					int fpsAdjustment = Integer.parseInt(msg[1]);
+					if (fpsAdjustment<0 || fpsAdjustment>200) {
+						LOG.log(Level.WARNING, IGNORE_COMMAND+", invalid fps adjustment value: "+fpsAdjustment);
+						break;
+					} else {
+						float f = fpsAdjustment/100f;
+						col.getPixelControllerGenerator().setFpsAdjustment(f);
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -471,7 +486,7 @@ public final class MessageProcessor {
 					col.getVisual(nr).setColorSet(msg[1]);
 				}
 				break;
-				
+								
 			//pause output, needed to create screenshots or take an image of the output
 			case FREEZE:
 				col.togglePauseMode();

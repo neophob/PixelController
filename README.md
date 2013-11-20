@@ -184,7 +184,8 @@ Here are all commands PixelController knows.
         CHANGE_MIXER                # of parameters: 1     <INT> change mixer for current visual
         CURRENT_VISUAL              # of parameters: 1     <INT> select actual visual
         CURRENT_COLORSET            # of parameters: 1     <INT> select actual ColorSet
-
+        GENERATOR_SPEED             # of parameters: 1     <INT> generator speed 0 .. 200 (default speed is 100)
+	
         CHANGE_OUTPUT_VISUAL        # of parameters: 1     <INT> change visual for current output
         CHANGE_OUTPUT_FADER         # of parameters: 1     <INT> change fader for current output
         CHANGE_ALL_OUTPUT_VISUAL    # of parameters: 1     <INT> change visual for all outputs

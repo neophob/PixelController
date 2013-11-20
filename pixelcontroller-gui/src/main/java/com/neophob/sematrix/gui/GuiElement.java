@@ -40,6 +40,8 @@ public enum GuiElement {
 	
 	BRIGHTNESS,
 	
+	GENERATOR_SPEED,
+	
 	//effects
 	THRESHOLD,
 	FX_ROTOZOOMER,

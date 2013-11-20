@@ -67,7 +67,7 @@ public class GeneratorGuiCreator {
         }
 
         int windowXSize=singleVisualXSize*nrOfScreens;
-        int windowYSize=singleVisualYSize + 350;
+        int windowYSize=singleVisualYSize + 380;
 
         //ugly boarder stuff
         windowXSize+=20;

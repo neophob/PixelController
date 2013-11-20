@@ -55,7 +55,7 @@ public class SoundDummy implements ISound {
 	 * @see com.neophob.sematrix.core.input.SeSound#isKick()
 	 */
 	public boolean isKick() {
-		return true;
+		return false;
 	}
 
 	/* (non-Javadoc)

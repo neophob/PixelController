@@ -25,7 +25,6 @@ Roadmap PixelController
 -Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 -Merge code of the output package, alot of duplicate code 
 -Support Multiple Output devices with different matrix sizes
--Make speed of generators configurable via GUI and save it as part of the preset.
 
 
 Refactoring TODO
@@ -33,7 +32,6 @@ Refactoring TODO
 -test test test
 -TODO calculate fps in pixelcontroller-core
  //this.collector.getPixConStat().setCurrentFps(frameRate);
--fix pixelinvaders.net output
 -add documentation for pixelinvaders.net
 
 

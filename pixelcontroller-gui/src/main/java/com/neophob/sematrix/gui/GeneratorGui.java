@@ -119,6 +119,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     //Generator Tab
     private DropdownList blinkenLightsList, imageList, textwriterOption;	
     private Label passThroughMode;
+    private Slider generatorSpeedSlider;
     
     //Output Tab
     private DropdownList dropdownOutputVisual;
@@ -352,7 +353,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         //EFFECTS OPTIONS
         //---------------
-        int genElYOfs = yPosStartDrowdown+70;
+        int genElYOfs = yPosStartDrowdown+95;
         cp5.addTextlabel("genOptionsFx", messages.getString("GeneratorGui.EFFECT_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         
         //threshold slider
@@ -372,7 +373,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         
         
-        genElYOfs = yPosStartDrowdown+90;
+        genElYOfs += 25;
 
         //texturedeform options
         cp5.addTextlabel("genTextdefOpt", messages.getString("GeneratorGui.TEXTUREDDEFORM_OPTIONS"), genFxXOfs+3+0*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -414,6 +415,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("genOptionsGen", messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         
         genElYOfs=yPosStartLabel+5;
+        
+        //blinkenlights
         cp5.addTextlabel("genBlinken", messages.getString("GeneratorGui.BLINKENLIGHT_LOAD"), genFxXOfs+3, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.guiText(), 
         		genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
@@ -427,6 +430,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         blinkenLightsList.setGroup(generatorTab);
         blinkenLightsList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
+        
         //images
         cp5.addTextlabel("genImg", messages.getString("GeneratorGui.IMAGE_LOAD"), genFxXOfs+3+1*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.guiText(), 
@@ -471,6 +475,15 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+55).moveTo(generatorTab).getValueLabel();
         passThroughMode.setColor(0xffff0000);
   
+        //generator speed slider
+        generatorSpeedSlider = cp5.addSlider(GuiElement.GENERATOR_SPEED.guiText(), 
+        		0f, 2.0f, 1f, genFxXOfs, genElYOfs+40, 140, 14);
+        generatorSpeedSlider.setSliderMode(Slider.FIX);
+        generatorSpeedSlider.setGroup(generatorTab);	
+        generatorSpeedSlider.setDecimalPrecision(0);
+        generatorSpeedSlider.setRange(0, 200);
+        generatorSpeedSlider.setLabelVisible(true); 
+
         //-----------------
         //Single Output tab
         //-----------------				
@@ -1262,6 +1275,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					
 				case TEXTWR:
 					textGenerator.setText(s.getValue());
+					break;
+					
+				case GENERATOR_SPEED:
+					generatorSpeedSlider.changeValue(Float.parseFloat(s.getValue()));						
 					break;
 					
 				default:
