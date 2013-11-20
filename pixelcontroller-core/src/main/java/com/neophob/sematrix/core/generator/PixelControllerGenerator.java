@@ -85,12 +85,12 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private MatrixData matrix;
     
     private int fps;
+    private int frames;
+    private int notUpdatedSinceFrames;
     
     private ISound sound;
     
     private IResize resize;
-    
-    private long frame;
     
     /**
      * Instantiates a new pixel controller generator.
@@ -188,7 +188,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public void update() {
     	//calculate update speed
 		float f = sound.getVolumeNormalized();
-		int updateAmount = (int)(0.5f+f*1.5f*fpsAdjustment);
+//		int updateAmount = (int)(0.5f+f*1.5f);
+//		int updateAmount = (int)(0.5f+f*1.5f*fpsAdjustment);
+		int updateAmount = (int)((f*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
 
 		if (sound.isKick()) {
 			updateAmount+=3;
@@ -199,11 +201,18 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
 		//check for silence - in this case update slowly
 		if (updateAmount<1) {
-			if (++frame%5==0) {
-				updateAmount=1;
-			}
+			notUpdatedSinceFrames++;
+		} else {
+			notUpdatedSinceFrames=0;
 		}
-    	
+
+		if (notUpdatedSinceFrames>10) {
+			updateAmount=1;
+			notUpdatedSinceFrames=0;
+		}
+
+		frames+=updateAmount;
+		
         //get a set with active visuals
         List<Visual> allVisuals = Collector.getInstance().getAllVisuals();
         Set<Integer> activeVisuals = new HashSet<Integer>();        
@@ -430,6 +439,14 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public boolean isCaptureGeneratorActive() {
         return isCaptureGeneratorActive;
     }
+
+
+	/**
+	 * @return the frames
+	 */
+	public int getFrames() {
+		return frames;
+	}
 
 	
 }

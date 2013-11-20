@@ -101,9 +101,6 @@ public class Collector extends Observable {
 	/** The fps. */
 	private int fps;
 	
-	/** The frames. */
-	private int frames;
-	
 	/** The current visual. */
 	private int currentVisual;
 
@@ -351,8 +348,6 @@ public class Collector extends Observable {
 		} else if (randomPresetMode) {
 			Shuffler.randomPresentModeShuffler(sound);
 		}
-		
-		frames++;
 	}
 
 	/**
@@ -394,6 +389,7 @@ public class Collector extends Observable {
 	 */
 	public void saveScreenshot() {
 		int ofs=0;		
+		int frames = pixelControllerGenerator.getFrames();
 		String suffix = ".png";
 		for (Visual v: allVisuals) {
 			String prefix = "screenshot/"+frames+"-"+ofs+"-";
@@ -822,7 +818,7 @@ public class Collector extends Observable {
      * @return
      */
 	public int getFrames() {
-		return frames;
+		return pixelControllerGenerator.getFrames();
 	}
 
 	
