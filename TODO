@@ -25,6 +25,7 @@ Roadmap PixelController
 -Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 -Merge code of the output package, alot of duplicate code 
 -Support Multiple Output devices with different matrix sizes
+-Random-Mode with selectable time-life
 -Enable Sound reactive on the fly (GUI option)
 
 

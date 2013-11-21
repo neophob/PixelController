@@ -3,7 +3,7 @@ Changelog v1.5.1 to v2.0.0
 866 files changed, 228946 insertions(+), 227117 deletions(-)
 -Modularize Project, rewrote large parts
 -Add new command line version of PixelController - run on a headless server (like an RPi)
--Add make speed of generators configurable via GUI and save it as part of the preset.
+-Add make speed of generators configurable via GUI and save it as part of the preset. (Issue #46)
 -Fix Update GUI much faster (instant feedback)
 -Fix faster startup time
 -Removed TCP Server, used by the old PureData frontend and CLI client 
