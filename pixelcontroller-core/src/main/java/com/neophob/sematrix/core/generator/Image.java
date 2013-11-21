@@ -62,12 +62,12 @@ public class Image extends Generator {
 	private IResize resize;
 	
 	/**
-	 * Instantiates a new image.
+	 * Instantiates a new image viewer
 	 *
 	 * @param controller the controller
 	 * @param filename the filename
 	 */
-	public Image(MatrixData matrix/*, String filename*/, FileUtils fu, IResize resize) {
+	public Image(MatrixData matrix, FileUtils fu, IResize resize) {
 		super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
 		this.fileUtils = fu;
 		this.resize = resize;
@@ -85,8 +85,7 @@ public class Image extends Generator {
 		}
 
 		this.loadFile(imageFiles.get(0));
-        LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");
-        
+        LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");        
 	}
 	
 	/**

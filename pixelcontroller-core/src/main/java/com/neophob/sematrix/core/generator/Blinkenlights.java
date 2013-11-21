@@ -19,7 +19,6 @@
 package com.neophob.sematrix.core.generator;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -45,9 +44,6 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  * @author mvogt
  */
 public class Blinkenlights extends Generator {
-
-    /** The Constant PREFIX. */
-    private static final String PREFIX = "blinken/";
 
     //list to store movie files used by shuffler
     private List<String> movieFiles;
@@ -121,8 +117,7 @@ public class Blinkenlights extends Generator {
         
         //only load if needed
         if (!StringUtils.equals(file, this.filename)) {
-        	//TODO fileUtils.getBmlDir()
-        	String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+file;
+        	String fileToLoad = fileUtils.getBmlDir()+file;
             LOG.log(Level.INFO, "Load blinkenlights file {0}.", fileToLoad);
             if (blinken.loadFile(fileToLoad)) {
                 this.filename = file;
