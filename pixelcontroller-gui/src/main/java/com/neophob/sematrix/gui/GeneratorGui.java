@@ -54,6 +54,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
+import com.neophob.sematrix.gui.model.WindowSizeCalculator;
 
 import controlP5.Button;
 import controlP5.CheckBox;
@@ -168,12 +169,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * @param singleVisualXSize the target x size
      * @param singleVisualYSize the target y size 
      */
-    public GeneratorGui(int windowWidth, int windowHeigth, int singleVisualXSize, int singleVisualYSize) {
+    public GeneratorGui(WindowSizeCalculator wsc) {
     	super();        
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeigth;
-        this.singleVisualXSize = singleVisualXSize;
-        this.singleVisualYSize = singleVisualYSize;
+        this.windowWidth = wsc.getWindowWidth();
+        this.windowHeight = wsc.getWindowHeight();
+        this.singleVisualXSize = wsc.getSingleVisualWidth();
+        this.singleVisualYSize = wsc.getSingleVisualHeight();
         this.p5GuiYOffset = this.singleVisualYSize + 110;
         
         messages = new Messages();
@@ -788,6 +789,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         selectedVisualList.activate(0);
         selectedOutputs.activate(0);
         
+        //register callback function
 		GuiUpdateFeedback guf = new GuiUpdateFeedback(this); 
 		col.addObserver(guf);
 		col.notifyGuiUpdate();

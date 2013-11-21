@@ -30,6 +30,7 @@ import processing.core.PImage;
 import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.gui.handler.WindowHandler;
+import com.neophob.sematrix.gui.model.WindowSizeCalculator;
 
 /**
  * Helper class to create a new window
@@ -40,8 +41,6 @@ public class GeneratorGuiCreator {
 
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
-
-    private static final int MINIMAL_WINDOW_X_SIZE = 820;
 
     private PApplet gui;
     
@@ -54,43 +53,25 @@ public class GeneratorGuiCreator {
 	public GeneratorGuiCreator(PApplet parentPapplet, int maximalXSize, int maximalYSize, String version) {
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
-        
+                     
         Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
-        float aspect = (float)g.getInternalBufferXSize()/(float)g.getInternalBufferYSize();
-        
-        int singleVisualXSize=0,singleVisualYSize=1000;
-        
-        while (singleVisualYSize>maximalYSize) {
-            singleVisualXSize=maximalXSize/nrOfScreens;
-            singleVisualYSize=(int)(maximalXSize/nrOfScreens/aspect);
-            maximalXSize-=100;
-        }
-
-        int windowXSize=singleVisualXSize*nrOfScreens;
-        int windowYSize=singleVisualYSize + 380;
-
-        //ugly boarder stuff
-        windowXSize+=20;
-
-        if (windowXSize<MINIMAL_WINDOW_X_SIZE) {
-        	windowXSize = MINIMAL_WINDOW_X_SIZE;
-        }
+		WindowSizeCalculator wsc = new WindowSizeCalculator(g.getInternalBufferXSize(), 
+				g.getInternalBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
         
         //connect the new PApplet to our frame
-        gui = new GeneratorGui(windowXSize, windowYSize, singleVisualXSize, singleVisualYSize);
+        gui = new GeneratorGui(wsc);
         gui.init();
          
-
         //create new window for child
-        LOG.log(Level.INFO, "create frame with size "+windowXSize+"/"+windowYSize+", aspect: "+aspect);
+        LOG.log(Level.INFO, "Create new window: "+wsc);
         JFrame childFrame = new JFrame("PixelController Generator Window "+version);        
         childFrame.setResizable(false);
         childFrame.setIconImage(createLargeIcon(gui));
         
         childFrame.add(gui);
         
-        childFrame.setBounds(0, 0, windowXSize, windowYSize+30);
-        gui.setBounds(0, 0, windowXSize, windowYSize+30);
+        childFrame.setBounds(0, 0, wsc.getWindowWidth(), wsc.getWindowHeight()+30);
+        gui.setBounds(0, 0, wsc.getWindowWidth(), wsc.getWindowHeight()+30);
 
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
