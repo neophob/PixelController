@@ -429,11 +429,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.guiText(), 
         		genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(blinkenLightsList);
-        i=0;
-        for (String s: fu.findBlinkenFiles()) {
-            blinkenLightsList.addItem(s, i);
-            i++;
-        }
+        blinkenLightsList.addItems(fu.findBlinkenFiles());
         blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());
         blinkenLightsList.setGroup(generatorTab);
         blinkenLightsList.setHeight(Theme.DROPBOXLIST_HEIGHT);
@@ -444,11 +440,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         imageList = cp5.addDropdownList(GuiElement.IMAGE_DROPDOWN.guiText(), 
         		genFxXOfs+Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(imageList);		
-        i=0;
-        for (String s: fu.findImagesFiles()) {
-            imageList.addItem(s, i);
-            i++;
-        }
+        imageList.addItems(fu.findImagesFiles());
         imageList.setLabel(imageList.getItem(1).getName());
         imageList.setGroup(generatorTab);		
         imageList.setHeight(Theme.DROPBOXLIST_HEIGHT);
