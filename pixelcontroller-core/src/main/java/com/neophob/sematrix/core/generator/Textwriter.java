@@ -47,10 +47,10 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Textwriter extends Generator {
     
-    public static final String INITIAL_TEXT = "initial.text";
     public static final String FONT_FILENAME = "font.filename";
     public static final String FONT_SIZE = "font.size";
     
+    private static final String INITIAL_STRING = "PIXELCONTROLLER";
 	public enum TextwriterMode {
 		PINGPONG,
 		LEFT,
@@ -95,7 +95,7 @@ public class Textwriter extends Generator {
 	 * @param fontSize the font size
 	 * @param text the text
 	 */
-	public Textwriter(MatrixData matrix, String fontName, int fontSize, String text, FileUtils fu) {
+	public Textwriter(MatrixData matrix, String fontName, int fontSize, FileUtils fu) {
 		super(matrix, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
 		String filename = fu.getDataDir()+File.separator+fontName;
 		InputStream is = null;
@@ -116,7 +116,7 @@ public class Textwriter extends Generator {
 				}	
 			}	            		
 		}
-		createTextImage(text);
+		createTextImage(INITIAL_STRING);
 		scroller = new PingPongScroller();
 	}
 

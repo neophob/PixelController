@@ -1,6 +1,5 @@
 package com.neophob.sematrix.cli;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.output.ArduinoOutput;
 import com.neophob.sematrix.core.output.Output;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
@@ -61,27 +59,8 @@ public class PixelControllerCli {
 		}
 		this.collector.setOutput(output);
 
-		LOG.log(Level.INFO, "Apply Settings");
-		if (applicationConfig.startRandommode()) {
-			LOG.log(Level.INFO, "Random Mode enabled");
-			Shuffler.manualShuffleStuff();
-			this.collector.setRandomMode(true);
-		}
-
-		//load saves presets
-		int presetNr = applicationConfig.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
-		if (presetNr >= 0) {
-			presetNr--;
-			LOG.log(Level.INFO,"Load preset "+presetNr);
-			List<String> present = this.collector.getPresets().get(presetNr).getPresent();
-			this.collector.setSelectedPreset(presetNr);
-			if (present!=null) { 
-				this.collector.setCurrentStatus(present);
-			} else {
-				LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
-			}
-		} 
-
+		InitApplication.setupInitialConfig(collector, applicationConfig);
+		
 		LOG.log(Level.INFO, "--- PixelController Setup END ---");
 		LOG.log(Level.INFO, "---------------------------------");
 		LOG.log(Level.INFO, "");

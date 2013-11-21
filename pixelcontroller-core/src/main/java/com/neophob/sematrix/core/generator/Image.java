@@ -45,9 +45,6 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Image extends Generator {
 
-    /** The Constant INITIAL_IMAGE. */
-    public static final String INITIAL_IMAGE = "initial.image.simple";
-    
 	//list to store movie files used by shuffler
     private List<String> imageFiles;
     
@@ -70,11 +67,10 @@ public class Image extends Generator {
 	 * @param controller the controller
 	 * @param filename the filename
 	 */
-	public Image(MatrixData matrix, String filename, FileUtils fu, IResize resize) {
+	public Image(MatrixData matrix/*, String filename*/, FileUtils fu, IResize resize) {
 		super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
 		this.fileUtils = fu;
 		this.resize = resize;
-		this.loadFile(filename);
 		
 	    //find image files      
 		imageFiles = new ArrayList<String>();
@@ -87,7 +83,8 @@ public class Image extends Generator {
 		    LOG.log(Level.SEVERE, "Failed to search image files, make sure directory '"+fu.getImageDir()+"' exist!");
 		    throw new IllegalArgumentException("Failed to search image files, make sure directory '"+fu.getImageDir()+"' exist!");
 		}
-		
+
+		this.loadFile(imageFiles.get(0));
         LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");
         
 	}

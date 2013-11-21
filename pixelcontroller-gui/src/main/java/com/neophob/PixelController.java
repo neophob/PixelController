@@ -20,7 +20,6 @@ package com.neophob;
 
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +29,6 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.output.ArduinoOutput;
 import com.neophob.sematrix.core.output.Output;
@@ -202,26 +200,7 @@ public class PixelController extends PApplet {
         		return;
 
         	case 5:
-        		//start in random mode?
-        		if (applicationConfig.startRandommode()) {
-        			LOG.log(Level.INFO, "Random Mode enabled");
-        			Shuffler.manualShuffleStuff();
-        			this.collector.setRandomMode(true);
-        		}
-        		
-        		//load saves presets
-        		int presetNr = applicationConfig.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
-        		if (presetNr >= 0) {
-        		    presetNr--;
-        			LOG.log(Level.INFO,"Load preset "+presetNr);
-        			List<String> present = this.collector.getPresets().get(presetNr).getPresent();
-        			this.collector.setSelectedPreset(presetNr);
-        			if (present!=null) { 
-        				this.collector.setCurrentStatus(present);
-        			} else {
-        			    LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
-        			}
-        		} 
+        		InitApplication.setupInitialConfig(collector, applicationConfig);
         		setupStep++;
         		drawProgressBar(steps*setupStep);
         		drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);

@@ -46,8 +46,6 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  */
 public class Blinkenlights extends Generator {
 
-    public static final String INITIAL_FILENAME = "initial.blinken";
-
     /** The Constant PREFIX. */
     private static final String PREFIX = "blinken/";
 
@@ -85,7 +83,7 @@ public class Blinkenlights extends Generator {
      * @param controller the controller
      * @param filename the filename
      */
-    public Blinkenlights(MatrixData matrix, String filename, FileUtils fu, IResize resize) {
+    public Blinkenlights(MatrixData matrix, FileUtils fu, IResize resize) {
         super(matrix, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
         this.filename = null;
         this.fileUtils = fu;
@@ -107,7 +105,7 @@ public class Blinkenlights extends Generator {
         LOG.log(Level.INFO, "Blinkenlights, found "+movieFiles.size()+" movie files");
 
         blinken = new BlinkenLibrary();
-        this.loadFile(filename);
+        this.loadFile(movieFiles.get(0));
     }
 
     /**
@@ -120,9 +118,10 @@ public class Blinkenlights extends Generator {
             LOG.log(Level.INFO, "Empty filename provided, call ignored!");
             return;
         }
-
+        
         //only load if needed
         if (!StringUtils.equals(file, this.filename)) {
+        	//TODO fileUtils.getBmlDir()
         	String fileToLoad = fileUtils.getRootDirectory()+File.separator+"data"+File.separator+PREFIX+file;
             LOG.log(Level.INFO, "Load blinkenlights file {0}.", fileToLoad);
             if (blinken.loadFile(fileToLoad)) {

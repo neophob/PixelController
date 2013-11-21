@@ -48,9 +48,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The log. */
     private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
 
-    private static final String DEFAULT_BLINKENLIGHTS = "torus.bml";
-    private static final String DEFAULT_IMAGE = "logo.gif";
-    private static final String DEFAULT_TEXT = "PixelInvaders!";
     private static final String DEFAULT_TTF = "04B_03__.TTF";
     private static final String DEFAULT_TTF_SIZE = "82";
 
@@ -114,12 +111,10 @@ public class PixelControllerGenerator implements PixelControllerElement {
     	
         allGenerators = new CopyOnWriteArrayList<Generator>();	
 
-        String fileBlinken = ph.getProperty(Blinkenlights.INITIAL_FILENAME, DEFAULT_BLINKENLIGHTS);
-        blinkenlights = new Blinkenlights(matrix, fileBlinken, fileUtils, resize);
+        blinkenlights = new Blinkenlights(matrix, fileUtils, resize);
         allGenerators.add(blinkenlights);
         
-        String fileImageSimple = ph.getProperty(Image.INITIAL_IMAGE, DEFAULT_IMAGE);
-        image = new Image(matrix, fileImageSimple, fileUtils, resize);
+        image = new Image(matrix, fileUtils, resize);
         allGenerators.add(image);
         		
         allGenerators.add(new Plasma2(matrix));        
@@ -132,7 +127,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         textwriter = new Textwriter(matrix, 
                 ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
                 Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)),
-                ph.getProperty(Textwriter.INITIAL_TEXT, DEFAULT_TEXT),
                 fileUtils
         );
         allGenerators.add(textwriter);

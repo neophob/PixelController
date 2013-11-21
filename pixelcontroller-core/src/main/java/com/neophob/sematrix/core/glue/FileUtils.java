@@ -50,7 +50,7 @@ public class FileUtils {
 	private static final String IMAGE_DIR = DATA_DIR+File.separator+"pics";
 	
     /** The Constant PRESENTS_FILENAME. */
-    private static final String PRESENTS_FILENAME = "presents.led";
+    private static final String PRESETS_FILENAME = "presets.led";
 
 	private String rootDirectory;
 	
@@ -160,7 +160,7 @@ public class FileUtils {
         
         InputStream input = null;
         try {
-        	String filename = this.getDataDir()+File.separator+PRESENTS_FILENAME;
+        	String filename = this.getDataDir()+File.separator+PRESETS_FILENAME;
         	input = new FileInputStream(filename);
             props.load(input);                        
             String s;
@@ -172,9 +172,9 @@ public class FileUtils {
                     count++;
                 }
             }
-            LOG.log(Level.INFO, "Loaded {0} presents from file {1}", new Object[] { count, PRESENTS_FILENAME });
+            LOG.log(Level.INFO, "Loaded {0} presets from file {1}", new Object[] { count, PRESETS_FILENAME });
         } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
+            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { PRESETS_FILENAME, e });
         } finally {
             try {
                 if (input!=null) {
@@ -201,12 +201,12 @@ public class FileUtils {
 
         OutputStream output = null;
         try {
-        	String filename = this.getDataDir()+File.separator+PRESENTS_FILENAME;
+        	String filename = this.getDataDir()+File.separator+PRESETS_FILENAME;
         	output = new FileOutputStream(filename);
-            props.store(output, "Visual Daemon presents file");
-            LOG.log(Level.INFO, "Presents saved as {0}", PRESENTS_FILENAME );
+            props.store(output, "Visual Daemon presets file");
+            LOG.log(Level.INFO, "Presets saved as {0}", PRESETS_FILENAME );
         } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESENTS_FILENAME, e });
+            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESETS_FILENAME, e });
         } finally {
             try {
                 if (output!=null) {

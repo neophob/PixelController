@@ -167,8 +167,7 @@ public class Collector extends Observable {
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
 		initialized=false;
 
-		selectedPreset=0;
-		
+		selectedPreset=0;		
 		presets = PresetSettings.initializePresetSettings(NR_OF_PRESET_SLOTS);
 				
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();

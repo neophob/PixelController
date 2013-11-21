@@ -7,7 +7,6 @@
 * Enable Sound reactive on the fly, GUI option: Linear, Moderate Sound and Heavy Sound
 * Update Rotate 90 Effect
 * Rename config options (maximal.debug.window.xsize -> gui.window.maximal.width, update.generators.by.sound -> sound.analyze.input)
-* Remove config options "initial.image.simple", "initial.blinken", "initial.text" -> those settings are stored as a part of the preset. enable the "startup.load.preset.nr" per default, load nr 0 if nothing is defined
 
 ## Version 2.1
 
