@@ -6,7 +6,6 @@
 * add documentation for integration
 * Enable Sound reactive on the fly, GUI option: Linear, Moderate Sound and Heavy Sound
 * Update Rotate 90 Effect
-* Rename config options (maximal.debug.window.xsize -> gui.window.maximal.width, update.generators.by.sound -> sound.analyze.input)
 
 ## Version 2.1
 

@@ -5,10 +5,11 @@
 
 * Modularize Project, rewrote large parts
 * Add new command line version of PixelController - run on a headless server (like an RPi)
-* Add make speed of generators configurable via GUI and save it as part of the preset. (Issue #46)
+* Add make speed of generators configurable via GUI and save it as part of the preset (Issue #46)
 * Fix Update GUI much faster (instant feedback)
-* Fix GUI: sort images and blinkenlights file dropdown content case insensitive
-* Fix remove obsolete config options (initial.image.simple, initial.blinken, initial.text) but load a preset during startup.
+* Fix GUI, sort images and blinkenlights file dropdown content case insensitive
+* Fix remove obsolete config options (initial.image.simple, initial.blinken, initial.text) but load a preset during startup
+* Fix rename config options (maximal.debug.window.xsize -> gui.window.maximal.width, update.generators.by.sound -> sound.analyze.input)
 * Fix typo, rename data/presents.led -> data/presets.led
 * Much faster startup time
 * Removed TCP Server, used by the old PureData frontend and CLI client 

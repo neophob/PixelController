@@ -90,7 +90,7 @@ public final class ConfigConstant {
     public static final String STARTUP_LOAD_PRESET_NR = "startup.load.preset.nr";
 
 	/** The Constant STARTUP_IN_RANDOM_MODE. */
-	public static final String SOUND_AWARE_GENERATORS = "update.generators.by.sound";
+	public static final String SOUND_AWARE_GENERATORS = "sound.analyze.enabled";
 	
 	/** The Constant CFG_PIXEL_SIZE. */
 	public static final String CFG_PIXEL_SIZE = "led.pixel.size";
@@ -126,8 +126,8 @@ public final class ConfigConstant {
 	
 	public static final String SHOW_DEBUG_WINDOW = "show.debug.window";
 	
-	public static final String DEBUG_WINDOW_MAX_X_SIZE = "maximal.debug.window.xsize";
-	public static final String DEBUG_WINDOW_MAX_Y_SIZE = "maximal.debug.window.ysize";
+	public static final String DEBUG_WINDOW_MAX_X_SIZE = "gui.window.maximal.width";
+	public static final String DEBUG_WINDOW_MAX_Y_SIZE = "gui.window.maximal.height";
 	
 	public static final String CAPTURE_OFFSET = "screen.capture.offset";
 	
