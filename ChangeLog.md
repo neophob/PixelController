@@ -1,28 +1,30 @@
-Changelog v1.5.1 to v2.0.0 (TBD)
---------------------------------
+# PixelController ChangeLog
+
+## Changelog v1.5.1 to v2.0.0 (TBD)
 866 files changed, 228946 insertions(+), 227117 deletions(-)
--Modularize Project, rewrote large parts
--Add new command line version of PixelController - run on a headless server (like an RPi)
--Add make speed of generators configurable via GUI and save it as part of the preset. (Issue #46)
--Fix Update GUI much faster (instant feedback)
--Much faster startup time
--Removed TCP Server, used by the old PureData frontend and CLI client 
+
+* Modularize Project, rewrote large parts
+* Add new command line version of PixelController - run on a headless server (like an RPi)
+* Add make speed of generators configurable via GUI and save it as part of the preset. (Issue #46)
+* Fix Update GUI much faster (instant feedback)
+* Much faster startup time
+* Removed TCP Server, used by the old PureData frontend and CLI client 
 
 
 Changelog v1.5.0 to v1.5.1 (12. November 2013)
-----------------------------------------------
 232 files changed, 12438 insertions(+), 12446 deletions(-)
--Add support for ExpeditInvaders output
--Add Fader effect if a preset is loaded, freeze current buffer and fade into new content
--Add Fader effect if current visual is randomized, freeze current buffer and fade into new content 
--Add config option to make fader time configurable
--Fix Checkbox Mixer, make checkbox size dependent on output
--Fix PixelImage, possible exception 
--Fix Geometrics and Cell generators, possible exception
--Fix rename Rainbowduino firmware to prevent crash
--Fix rainbowduinov3 firmware bug, the serial line could block
--Fix PixelInvaders, improve serial detection, *should* now works with regular Arduino boards
--Huge refactoring, improve unit testing
+
+* Add support for ExpeditInvaders output
+* Add Fader effect if a preset is loaded, freeze current buffer and fade into new content
+* Add Fader effect if current visual is randomized, freeze current buffer and fade into new content 
+* Add config option to make fader time configurable
+* Fix Checkbox Mixer, make checkbox size dependent on output
+* Fix PixelImage, possible exception 
+* Fix Geometrics and Cell generators, possible exception
+* Fix rename Rainbowduino firmware to prevent crash
+* Fix rainbowduinov3 firmware bug, the serial line could block
+* Fix PixelInvaders, improve serial detection, *should* now works with regular Arduino boards
+* Huge refactoring, improve unit testing
 
 
 Changelog v1.4.1 to v1.5.0 (22. October 2013)
