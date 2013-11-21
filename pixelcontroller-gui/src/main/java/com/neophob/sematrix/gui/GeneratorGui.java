@@ -45,13 +45,13 @@ import com.neophob.sematrix.core.glue.OutputMapping;
 import com.neophob.sematrix.core.glue.PresetSettings;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
 

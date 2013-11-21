@@ -30,9 +30,9 @@ import com.neophob.sematrix.core.effect.Effect.EffectName;
 import com.neophob.sematrix.core.fader.IFader;
 import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.generator.Generator.GeneratorName;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.sound.ISound;
 
 /**
  * create random settings.

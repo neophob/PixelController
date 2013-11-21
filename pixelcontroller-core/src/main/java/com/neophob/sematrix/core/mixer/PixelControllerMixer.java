@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.mixer.Mixer.MixerName;
+import com.neophob.sematrix.core.sound.ISound;
 
 /**
  * The Class PixelControllerMixer.

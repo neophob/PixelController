@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.sound.ISound;
 
 /**
  * create some drops

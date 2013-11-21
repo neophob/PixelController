@@ -35,13 +35,13 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
 import com.neophob.sematrix.core.glue.MatrixData;
 import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.input.ISound;
-import com.neophob.sematrix.core.input.SoundDummy;
 import com.neophob.sematrix.core.mixer.Mixer;
 import com.neophob.sematrix.core.mixer.PassThruMixer;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.resize.PixelResize;
+import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.sound.SoundDummy;
 
 public class GenerateAllResolutionTest {
 

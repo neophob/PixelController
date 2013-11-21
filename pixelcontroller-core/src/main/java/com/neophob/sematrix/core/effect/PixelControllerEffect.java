@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.effect.Effect.EffectName;
 import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.sound.ISound;
 
 /**
  * The Class PixelControllerEffect.

@@ -33,10 +33,10 @@ import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.MatrixData;
 import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.sound.ISound;
 
 /**
  * The Class PixelControllerGenerator.

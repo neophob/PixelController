@@ -19,8 +19,8 @@
 package com.neophob.sematrix.core.mixer;
 
 import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.input.ISound;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.sound.ISound;
 
 /**
  * mix src/dst accoring to volume of sound!.

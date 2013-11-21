@@ -27,11 +27,11 @@ import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.generator.PassThruGen;
 import com.neophob.sematrix.core.glue.MatrixData;
 import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.input.ISound;
-import com.neophob.sematrix.core.input.SoundDummy;
 import com.neophob.sematrix.core.mixer.Checkbox;
 import com.neophob.sematrix.core.mixer.Mixer;
 import com.neophob.sematrix.core.mixer.PixelControllerMixer;
+import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.sound.SoundDummy;
 
 public class GenerateAllResolutionMixerTest {
 
