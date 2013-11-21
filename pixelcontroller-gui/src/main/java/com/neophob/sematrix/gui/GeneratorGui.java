@@ -331,7 +331,15 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         //Generic Options
         //-------------
-        
+        //generator speed slider
+        generatorSpeedSlider = cp5.addSlider(GuiElement.GENERATOR_SPEED.guiText(), 
+        		0f, 2.0f, 1f, 38+GENERIC_X_OFS, p5GuiYOffset+90, 140, 14);
+        generatorSpeedSlider.setSliderMode(Slider.FIX);
+        generatorSpeedSlider.setGroup(generatorTab);	
+        generatorSpeedSlider.setDecimalPrecision(0);
+        generatorSpeedSlider.setRange(0, 200);
+        generatorSpeedSlider.setLabelVisible(true); 
+
         //freeze update 
         Toggle t1 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 730, 2, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
         t1.setLabelVisible(false);
@@ -475,14 +483,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+55).moveTo(generatorTab).getValueLabel();
         passThroughMode.setColor(0xffff0000);
   
-        //generator speed slider
-        generatorSpeedSlider = cp5.addSlider(GuiElement.GENERATOR_SPEED.guiText(), 
-        		0f, 2.0f, 1f, genFxXOfs, genElYOfs+40, 140, 14);
-        generatorSpeedSlider.setSliderMode(Slider.FIX);
-        generatorSpeedSlider.setGroup(generatorTab);	
-        generatorSpeedSlider.setDecimalPrecision(0);
-        generatorSpeedSlider.setRange(0, 200);
-        generatorSpeedSlider.setLabelVisible(true); 
 
         //-----------------
         //Single Output tab
