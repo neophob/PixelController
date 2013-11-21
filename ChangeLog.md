@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
 ## Changelog v1.5.1 to v2.0.0 (TBD)
-866 files changed, 228946 insertions(+), 227117 deletions(-)
+    866 files changed, 228946 insertions(+), 227117 deletions(-)
 
 * Modularize Project, rewrote large parts
 * Add new command line version of PixelController - run on a headless server (like an RPi)
@@ -11,8 +11,8 @@
 * Removed TCP Server, used by the old PureData frontend and CLI client 
 
 
-Changelog v1.5.0 to v1.5.1 (12. November 2013)
-232 files changed, 12438 insertions(+), 12446 deletions(-)
+## Changelog v1.5.0 to v1.5.1 (12. November 2013)
+    232 files changed, 12438 insertions(+), 12446 deletions(-)
 
 * Add support for ExpeditInvaders output
 * Add Fader effect if a preset is loaded, freeze current buffer and fade into new content
