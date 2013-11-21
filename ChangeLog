@@ -1,5 +1,5 @@
-Changelog v1.5.1 to v2.0.0
---------------------------
+Changelog v1.5.1 to v2.0.0 (TBD)
+--------------------------------
 866 files changed, 228946 insertions(+), 227117 deletions(-)
 -Modularize Project, rewrote large parts
 -Add new command line version of PixelController - run on a headless server (like an RPi)
@@ -9,8 +9,8 @@ Changelog v1.5.1 to v2.0.0
 -Removed TCP Server, used by the old PureData frontend and CLI client 
 
 
-Changelog v1.5.0 to v1.5.1
---------------------------
+Changelog v1.5.0 to v1.5.1 (12. November 2013)
+----------------------------------------------
 232 files changed, 12438 insertions(+), 12446 deletions(-)
 -Add support for ExpeditInvaders output
 -Add Fader effect if a preset is loaded, freeze current buffer and fade into new content
@@ -25,8 +25,8 @@ Changelog v1.5.0 to v1.5.1
 -Huge refactoring, improve unit testing
 
 
-Changelog v1.4.1 to v1.5.0
---------------------------
+Changelog v1.4.1 to v1.5.0 (22. October 2013)
+---------------------------------------------
 116 files changed, 12084 insertions(+), 5503 deletions(-)
 -Add new Help Tab, display a short help how to use PixelController
 -Add Zoom Effect, add Zoom options (zoom in, zoom out, vertical, horizontal)
@@ -57,8 +57,8 @@ Changelog v1.4.1 to v1.5.0
    Framerate old fw: 35fps, Framerate new fw: 140fps -> 400% faster!
    
 
-Changelog v1.4.0 to v1.4.1
---------------------------
+Changelog v1.4.0 to v1.4.1 (19. September 2013)
+-----------------------------------------------
 58 files changed, 2376 insertions(+), 2490 deletions(-)
 -Fix update TPM2.net implementation (add total packet bytes)
 -Fix cleanup unused files
@@ -70,8 +70,8 @@ Changelog v1.4.0 to v1.4.1
 -Keep aspect ratio if internal buffer size is calculated
 
 
-Changelog v1.3.1 to v1.4.0
---------------------------
+Changelog v1.3.1 to v1.4.0 (4. July 2013)
+-----------------------------------------
 115 files changed, 2705 insertions(+), 1451 deletions(-)
 -Add support for E1.31 devices
 -Add more 8x8 icon images
@@ -101,8 +101,8 @@ Changelog v1.3.1 to v1.4.0
 -Add a lot of new presets and cleanup unused presets
 
 
-Changelog v1.3.0 to v1.3.1
---------------------------
+Changelog v1.3.0 to v1.3.1 (7. March 2013)
+------------------------------------------
 82 files changed, 3416 insertions(+), 746 deletions(-)
 -Updated PixelInvaders firmware, more speed, improved image quality
 -Add two generic (OSC) input generators, see Processing examples (integration/Processing/OscSendImageData) how to use it.
@@ -121,8 +121,8 @@ Changelog v1.3.0 to v1.3.1
 -Fix possible Freeze during Random Mode
 
 
-Changelog v1.2.x to v1.3.0
---------------------------
+Changelog v1.2.x to v1.3.0 (31. January 2013)
+---------------------------------------------
 313 files changed, 65869 insertions(+), 11626 deletions(-)
 -add integrated GUI!
 -add Color-Sets, predefined color definition for all generators, effects and mixers
@@ -149,15 +149,15 @@ Changelog v1.2.x to v1.3.0
 -Manual
 
 
-Changelog v1.1 to v1.2
-------------------------
+Changelog v1.1 to v1.2 (29. November 2011)
+------------------------------------------
 30 files changed, 840 insertions(+), 268 deletions(-)
 -PixelInvaders Firmware, fixed strip.doSwapBuffersAsap(0)
 -Support AdaVision
 
 
-Changelog v1.0.3 to v1.1
-------------------------
+Changelog v1.0.3 to v1.1 (8. November 2011)
+-------------------------------------------
 85 files changed, 4915 insertions(+), 3380 deletions(-)
 -add notification if random mode is selected or not
 -more threads! the output gets calculated on the fly, this means wait until the visuals are generated. 
