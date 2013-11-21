@@ -24,7 +24,9 @@
 * More layouts (Half/Half, 3/1...). Current layouts are hardware dependent. New layout shouldn't be. 
 ```
     +---+---+---+
+
     | a | b | c |
+    
     +---+---+---+   
     | d | e | f |
     +---+---+---+   
