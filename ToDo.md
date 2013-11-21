@@ -6,6 +6,7 @@
 * add documentation for integration
 * Enable Sound reactive on the fly, GUI option: Linear, Moderate Sound and Heavy Sound
 * Update Rotate 90 Effect
+* GUI: sort Images and Blinkenlights dropdown menus by name
 * Rename config options (maximal.debug.window.xsize -> gui.window.maximal.width, update.generators.by.sound -> sound.analyze.input)
 * Remove config options "initial.image.simple", "initial.blinken", "initial.text" -> those settings are stored as a part of the preset. enable the "startup.load.preset.nr" per default, load nr 0 if nothing is defined
 
@@ -45,6 +46,7 @@
 * Game of life generator
 * Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 * Merge code of the output package, alot of duplicate code 
+* Add Passthrough Colorset (for example to display an Image on the LED Matrix)
 
 
 # Rejected backlog features
