@@ -7,6 +7,7 @@
 * Add new command line version of PixelController - run on a headless server (like an RPi)
 * Add make speed of generators configurable via GUI and save it as part of the preset. (Issue #46)
 * Fix Update GUI much faster (instant feedback)
+* Fix GUI: sort images and blinkenlights file dropdown content case insensitive
 * Much faster startup time
 * Removed TCP Server, used by the old PureData frontend and CLI client 
 

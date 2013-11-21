@@ -25,6 +25,9 @@ import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -90,7 +93,9 @@ public class FileUtils {
 			return null;
 		}
 		
-		return f.list(ff);
+		List<String> tmp = Arrays.asList(f.list(ff));
+		Collections.sort(tmp, new SortIgnoreCase());
+		return tmp.toArray(new String[tmp.size()]);
 	}
 	
 	/**
@@ -239,5 +244,16 @@ public class FileUtils {
 	    }
 	}
 	
-
+	/**
+	 * 
+	 * @author michu
+	 *
+	 */
+	class SortIgnoreCase implements Comparator<String> {
+	    public int compare(String o1, String o2) {
+	        String s1 = (String) o1;
+	        String s2 = (String) o2;
+	        return s1.compareToIgnoreCase(s2);
+	    }
+	}
 }
