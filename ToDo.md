@@ -23,15 +23,15 @@
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * More layouts (Half/Half, 3/1...). Current layouts are hardware dependent. New layout shouldn't be. 
 ```
-    +---+---+---+
 
+    +---+---+---+
     | a | b | c |
-    
     +---+---+---+   
     | d | e | f |
     +---+---+---+   
      Example: 3/1 Layout defines 2 virtual panels, panel 1 using physical panel a,b,d,e panel 2 using physical panel c and f.
      Example: Fancy Layout defines 3 virtual panels, panel 1 using physical panel a,b,d,e, panel 2 using physical panel c panel 3 using physical panel f
+     
 ```
 * Option to invert GUI colors
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
