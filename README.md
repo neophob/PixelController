@@ -95,10 +95,9 @@ Here are some primitive schemes:
 There are a lot of options in the `config.properties` file. I describe some examples, PixelController updates all Visuals depending on the Sound input. If a beat is detected, the Visuals are updated faster. You can disable this behaviour by setting this option:
 
     #=========================
-    #use audio as input setting (true)
-    #or just regular fps (false)
+    #enable pixelcontroller sound analyzer (disable it if you don't have a sound card)
     #=========================
-    update.generators.by.sound=false
+    sound.analyze.enabled=true
 
 There is a Generator called "Screen Caputure" which is disabled by default. If you want to enable this generator, edit the following settings:
 
@@ -117,7 +116,7 @@ Or you can start PixelController in the random mode where PixelController change
     #=========================
     startup.in.randommode=false
 
-Or you can save a preset and load that one per default if you start PixelController:
+Or you can save a preset and load that one per default if you start PixelController (per default, preset 0 will be loaded)
 
     #=========================
     #load a preset if PixelController starts?
@@ -135,10 +134,10 @@ You can define the size of the PixelController GUI, for example the size of the 
 Or define the window size, depending on this setting, the Visuals are displayed larger or smaller.
 
     #=========================
-    #define the maximal window size
+    #define the maximal window size (control window)
     #=========================
-    maximal.debug.window.xsize=600
-    maximal.debug.window.ysize=500
+    gui.window.maximal.width=820
+    gui.window.maximal.height=600
 
 You can define your own Colorsets, they are defined in the file `data/palette.properties`. A Colorset definition consists of a name and multiple RGB color values. Here is an example:
 
