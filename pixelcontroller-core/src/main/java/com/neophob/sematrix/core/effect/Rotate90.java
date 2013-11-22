@@ -19,14 +19,17 @@
 package com.neophob.sematrix.core.effect;
 
 import com.neophob.sematrix.core.glue.MatrixData;
+import com.neophob.sematrix.core.resize.*;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
-
+import java.awt.image.*;
 
 /**
  * rotate 90 degree effect.
  */
 public class Rotate90 extends Effect {
 
+	Resize r = new PixelResize();
+	
 	/**
 	 * Instantiates a new inverter.
 	 *
@@ -54,37 +57,23 @@ public class Rotate90 extends Effect {
 			return ret;			
 		}
 		
-
-		return this.rotoZoom(1f, buffer);					
-	}
-	
-	/**
-	 * Simplified RotoZoom effect
-	 * 
-	 * @param scaleP
-	 * @param bufferSrc
-	 * @return
-	 */
-	private int[] rotoZoom(float scaleP, int bufferSrc[]) {
-		int[] tmp = new int[bufferSrc.length];
-		int offs=0,soffs;
-		float tx,ty;
-
-        float sa=(float)(scaleP*1);		
-		float txx=0-(internalBufferXSize/2.0f)*sa;
-
-		for (int y=0; y<internalBufferYSize; y++) {		    
-	        txx-=sa;
-			
-			ty=0;
-			tx=txx;
-			for (int x=0; x<internalBufferXSize; x++) {
-				ty+=sa;				
-				soffs = Math.abs((int)(tx)+(int)(ty)*internalBufferXSize);
-			    tmp[offs++] = bufferSrc[soffs%(bufferSrc.length-1)];    			    
+		//rotate image
+		int[] t1 = rotateNm(buffer);
+		
+		//resize output
+		BufferedImage bi = r.createImage(t1, internalBufferYSize, internalBufferXSize);
+		return r.getBuffer(bi, internalBufferXSize, internalBufferYSize); 
+    }
+        	
+        //src: http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
+        int[] rotateNm(int[] src) {
+			int[] ret = new int[src.length];
+			for (int y = 0; y < internalBufferYSize; y++) {
+                for (int x = 0; x < internalBufferXSize; x++) {					
+					ret[x * internalBufferYSize +(internalBufferYSize - y - 1)] = src[y * internalBufferXSize + x];
+				}
 			}
-		}
-
-		return tmp;
-	}
+			return ret;
+        }
 }
+
