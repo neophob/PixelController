@@ -12,6 +12,7 @@
 * Fix rename config options (maximal.debug.window.xsize -> gui.window.maximal.width, update.generators.by.sound -> sound.analyze.input)
 * Fix typo, rename data/presents.led -> data/presets.led
 * Fix respect maximal window size defined in the config file
+* Fix effect Rotate90 - works now for non-square resolutions
 * Much faster startup time
 * Removed TCP Server, used by the old PureData frontend and CLI client 
 
