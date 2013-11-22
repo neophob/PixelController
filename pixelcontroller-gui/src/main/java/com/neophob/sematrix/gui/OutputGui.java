@@ -77,17 +77,21 @@ public class OutputGui {
 		int x,y;
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
-			x = getOneMatrixXSize()*layout.getRow1Size()+layout.getRow2Size();
-			y = getOneMatrixYSize();
+			do {
+				x = getOneMatrixXSize()*layout.getRow1Size()+layout.getRow2Size();
+				y = getOneMatrixYSize();				
+			} while ((x>1000 || y>1000) && ledSize-->2 );
 			break;
 			
 		default: //AKA BOX
-			int xsize = (layout.getRow1Size()+layout.getRow2Size())/2;
-			x = getOneMatrixXSize()*xsize;
-			y = getOneMatrixYSize()*2; //2 rows
+			do {
+				int xsize = (layout.getRow1Size()+layout.getRow2Size())/2;
+				x = getOneMatrixXSize()*xsize;
+				y = getOneMatrixYSize()*2; //2 rows				
+			} while ((x>1000 || y>1000) && ledSize-->2 );
 			break;
 		}
-		
+System.out.println(x+" .. "+y+": led: "+ledSize);				
 		x+=RAHMEN_SIZE;
 		y+=20+2*RAHMEN_SIZE;
 		this.parent = papplet;		
