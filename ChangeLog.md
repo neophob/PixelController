@@ -11,6 +11,7 @@
 * Fix remove obsolete config options (initial.image.simple, initial.blinken, initial.text) but load a preset during startup
 * Fix rename config options (maximal.debug.window.xsize -> gui.window.maximal.width, update.generators.by.sound -> sound.analyze.input)
 * Fix typo, rename data/presents.led -> data/presets.led
+* Fix respect maximal window size defined in the config file
 * Much faster startup time
 * Removed TCP Server, used by the old PureData frontend and CLI client 
 

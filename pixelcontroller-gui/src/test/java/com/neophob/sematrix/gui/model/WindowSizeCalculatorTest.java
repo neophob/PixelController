@@ -33,7 +33,7 @@ public class WindowSizeCalculatorTest {
 		
 		System.out.println(wsc);
 		Assert.assertEquals(maximalWindowWidth, wsc.getWindowWidth());
-		Assert.assertEquals(maximalWindowHeight, wsc.getWindowHeight());
+		Assert.assertTrue(maximalWindowHeight >= wsc.getWindowHeight());
 		Assert.assertTrue(wsc.getSingleVisualWidth() > 0);
 		Assert.assertTrue(wsc.getSingleVisualHeight() > 0);
 		Assert.assertEquals(wsc.getSingleVisualWidth(), wsc.getSingleVisualHeight());
@@ -52,7 +52,7 @@ public class WindowSizeCalculatorTest {
 		
 		System.out.println(wsc);
 		Assert.assertEquals(maximalWindowWidth, wsc.getWindowWidth());
-		Assert.assertEquals(maximalWindowHeight, wsc.getWindowHeight());
+		Assert.assertTrue(maximalWindowHeight >= wsc.getWindowHeight());
 		Assert.assertTrue(wsc.getSingleVisualWidth() > 0);
 		Assert.assertTrue(wsc.getSingleVisualHeight() > 0);
 		Assert.assertTrue(wsc.getSingleVisualWidth() > wsc.getSingleVisualHeight());
@@ -88,7 +88,7 @@ public class WindowSizeCalculatorTest {
 		
 		System.out.println(wsc);
 		Assert.assertEquals(maximalWindowWidth, wsc.getWindowWidth());
-		Assert.assertEquals(maximalWindowHeight, wsc.getWindowHeight());
+		Assert.assertTrue(maximalWindowHeight >= wsc.getWindowHeight());
 		Assert.assertTrue(wsc.getSingleVisualWidth() > 0);
 		Assert.assertTrue(wsc.getSingleVisualHeight() > 0);
 		Assert.assertTrue(wsc.getSingleVisualWidth() < wsc.getSingleVisualHeight());

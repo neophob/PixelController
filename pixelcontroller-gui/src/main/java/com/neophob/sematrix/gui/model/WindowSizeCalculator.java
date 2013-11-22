@@ -13,10 +13,10 @@ public class WindowSizeCalculator {
 	private static final Logger LOG = Logger.getLogger(WindowSizeCalculator.class.getName());
 
 	//defined by the gui
-    public static final int MINIMAL_WINDOW_WIDTH = 820;
-    public static final int MINIMAL_WINDOW_HEIGHT = 420;
-    public static final int MINIMAL_VISUAL_HEIGHT = 40;
-    
+	public static final int MINIMAL_WINDOW_WIDTH = 820;
+	public static final int MINIMAL_WINDOW_HEIGHT = 400;
+	public static final int MINIMAL_VISUAL_HEIGHT = 40;
+
 
 	private int singleVisualWidth;
 	private int singleVisualHeight;
@@ -27,10 +27,9 @@ public class WindowSizeCalculator {
 	//input values
 	private int internalBufferWidth;
 	private int internalBufferHeight;
-	private int maxWindowWidth;
 	private int maxWindowHeight;
 	private int nrOfScreens;
-	
+
 	/**
 	 * 
 	 * @param internalBufferWidth
@@ -40,18 +39,18 @@ public class WindowSizeCalculator {
 	 */
 	public WindowSizeCalculator(int internalBufferWidth, int internalBufferHeight, int maximalWindowWidth, 
 			int maximalWindowHeight, int nrOfScreens) {
-		
+
 		this.internalBufferWidth = internalBufferWidth;
 		this.internalBufferHeight = internalBufferHeight; 
 		this.nrOfScreens = nrOfScreens;
-		
+
 		if (maximalWindowWidth<MINIMAL_WINDOW_WIDTH) {
-			maxWindowWidth = MINIMAL_WINDOW_WIDTH;
+			windowWidth = MINIMAL_WINDOW_WIDTH;
 			LOG.log(Level.WARNING, "Adjusted window width to minimal value {0}, configured value was {1}", new Object[] {MINIMAL_WINDOW_WIDTH, maximalWindowWidth});
 		} else {
-			maxWindowWidth = maximalWindowWidth;			
+			windowWidth = maximalWindowWidth;			
 		}
-		
+
 		if (maximalWindowHeight<MINIMAL_WINDOW_HEIGHT) {
 			maxWindowHeight = MINIMAL_WINDOW_HEIGHT;
 			LOG.log(Level.WARNING, "Adjusted window height to minimal value {0}, configured value was {1}", new Object[] {MINIMAL_WINDOW_HEIGHT, maximalWindowHeight});
@@ -62,39 +61,48 @@ public class WindowSizeCalculator {
 		calculateWidth();
 		calculateHeight();
 	}
-	
+
 	/**
 	 * calculate 1) window size and 2) single visual size
 	 */
 	private void calculateWidth() {
-		//if (nrOfScreens*internalBufferWidth > maxWindowWidth) {
-			//need to resize singleVisualWidth
-			singleVisualWidth = maxWindowWidth/nrOfScreens;
-			
-			//make sure the height get also adjustet
-			float aspect = (float)singleVisualWidth/(float)internalBufferWidth;
-			singleVisualHeight = (int)((float)internalBufferHeight*aspect+0.5f);
-		/*} else {
-			singleVisualWidth = internalBufferWidth;
-			singleVisualHeight = internalBufferHeight;
-		}*/
+		//calculate optimal visual with
+		singleVisualWidth = windowWidth/nrOfScreens;
+
+		//apply factor to height
+		float aspect = (float)singleVisualWidth/(float)internalBufferWidth;
+		singleVisualHeight = (int)((float)internalBufferHeight*aspect+0.5f);
 		
-		windowWidth = maxWindowWidth;
+		while (singleVisualHeight>maxWindowHeight) {
+			singleVisualHeight/=2;
+			singleVisualWidth/=2;
+		}
+		
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void calculateHeight() {
+		//calculate optimal height
+		//int oldSingleVisualHeight = singleVisualHeight;
+		int newSingleVisualHeight = maxWindowHeight-MINIMAL_WINDOW_HEIGHT+MINIMAL_VISUAL_HEIGHT;
 		
-		if (internalBufferHeight+MINIMAL_WINDOW_HEIGHT > maxWindowHeight) {
-			//need to resize singleVisualHeight
-			singleVisualHeight = maxWindowHeight-MINIMAL_WINDOW_HEIGHT+MINIMAL_VISUAL_HEIGHT;
-			float aspect = (float)internalBufferHeight/(float)singleVisualHeight;
-			singleVisualWidth /= aspect;
+		//apply factor to width
+		float aspect = (float)newSingleVisualHeight/(float)singleVisualHeight;
+		int newSingleVisualWidth = (int)(singleVisualWidth*aspect+0.5f);
+		
+		//shrinking of the single visual is allowed
+		if (singleVisualWidth > newSingleVisualWidth) {
+			singleVisualWidth = newSingleVisualWidth;
+			singleVisualHeight = newSingleVisualHeight;
+			windowHeight = maxWindowHeight;
+		} else {
+			//else shrink window height
+			LOG.log(Level.INFO, "Shrink window by "+(newSingleVisualHeight-singleVisualHeight));
+			windowHeight = maxWindowHeight-(newSingleVisualHeight-singleVisualHeight);
 		}
-		
-		windowHeight = maxWindowHeight;//singleVisualWidth+MINIMAL_WINDOW_HEIGHT;
+				
 	}
 
 
@@ -113,7 +121,7 @@ public class WindowSizeCalculator {
 	public int getSingleVisualHeight() {
 		return singleVisualHeight;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
