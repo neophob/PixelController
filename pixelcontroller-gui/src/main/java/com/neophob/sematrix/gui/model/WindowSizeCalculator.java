@@ -99,9 +99,19 @@ public class WindowSizeCalculator {
 			windowHeight = maxWindowHeight;
 		} else {
 			//else shrink window height
-			LOG.log(Level.INFO, "Shrink window by "+(newSingleVisualHeight-singleVisualHeight));
-			windowHeight = maxWindowHeight-(newSingleVisualHeight-singleVisualHeight);
+			int newWindowHeight = maxWindowHeight - (newSingleVisualHeight - singleVisualHeight);
+			if (newWindowHeight > MINIMAL_WINDOW_HEIGHT) {
+				LOG.log(Level.INFO, "Shrink window by "+(newSingleVisualHeight-singleVisualHeight));
+				windowHeight = newWindowHeight;
+			} else {
+				windowHeight = MINIMAL_WINDOW_HEIGHT;
+			}
 		}
+		
+		//make sure the visual is visible
+		if (singleVisualHeight < MINIMAL_VISUAL_HEIGHT) {
+      			singleVisualHeight = MINIMAL_VISUAL_HEIGHT;
+    		}
 				
 	}
 
