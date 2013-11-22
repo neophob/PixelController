@@ -268,5 +268,16 @@ public class MatrixData {
         return deviceSize;
     }
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String
+				.format("MatrixData [deviceXSize=%s, deviceYSize=%s, deviceSize=%s, bufferWidth=%s, bufferHeight=%s]",
+						deviceXSize, deviceYSize, deviceSize, bufferWidth,
+						bufferHeight);
+	}
+
 
 }

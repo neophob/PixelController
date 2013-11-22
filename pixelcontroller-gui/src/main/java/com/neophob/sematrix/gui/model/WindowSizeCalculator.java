@@ -72,12 +72,12 @@ public class WindowSizeCalculator {
 		//apply factor to height
 		float aspect = (float)singleVisualWidth/(float)internalBufferWidth;
 		singleVisualHeight = (int)((float)internalBufferHeight*aspect+0.5f);
-		
+
 		while (singleVisualHeight>maxWindowHeight) {
 			singleVisualHeight/=2;
 			singleVisualWidth/=2;
 		}
-		
+
 	}
 
 	/**
@@ -87,11 +87,11 @@ public class WindowSizeCalculator {
 		//calculate optimal height
 		//int oldSingleVisualHeight = singleVisualHeight;
 		int newSingleVisualHeight = maxWindowHeight-MINIMAL_WINDOW_HEIGHT+MINIMAL_VISUAL_HEIGHT;
-		
+
 		//apply factor to width
 		float aspect = (float)newSingleVisualHeight/(float)singleVisualHeight;
 		int newSingleVisualWidth = (int)(singleVisualWidth*aspect+0.5f);
-		
+
 		//shrinking of the single visual is allowed
 		if (singleVisualWidth > newSingleVisualWidth) {
 			singleVisualWidth = newSingleVisualWidth;
@@ -104,15 +104,16 @@ public class WindowSizeCalculator {
 				LOG.log(Level.INFO, "Shrink window by "+(newSingleVisualHeight-singleVisualHeight));
 				windowHeight = newWindowHeight;
 			} else {
+				LOG.log(Level.INFO, "Shrink window to "+MINIMAL_WINDOW_HEIGHT);
 				windowHeight = MINIMAL_WINDOW_HEIGHT;
 			}
 		}
-		
+
 		//make sure the visual is visible
 		if (singleVisualHeight < MINIMAL_VISUAL_HEIGHT) {
-      			singleVisualHeight = MINIMAL_VISUAL_HEIGHT;
-    		}
-				
+			singleVisualHeight = MINIMAL_VISUAL_HEIGHT;
+		}
+
 	}
 
 
