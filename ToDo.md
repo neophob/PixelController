@@ -8,7 +8,6 @@
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * update random mode for generator speed and sound reactive
 * adjust matrix simulation for large resolutions
-* Update Rotate 90 Effect
 
 ## Version 2.1
 
