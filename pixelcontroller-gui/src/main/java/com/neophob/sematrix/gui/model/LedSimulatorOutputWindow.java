@@ -15,6 +15,8 @@ import com.neophob.sematrix.core.layout.Layout;
  */
 public class LedSimulatorOutputWindow {
 
+	public static int OFS = 20;
+	
 	private static final Logger LOG = Logger.getLogger(LedSimulatorOutputWindow.class.getName());
 	
 	/** The Constant RAHMEN_SIZE. */
@@ -62,7 +64,7 @@ public class LedSimulatorOutputWindow {
 			
 			if (sanityCheck++ > 200) {
 				LOG.log(Level.SEVERE, "Infitie loop detected, fail here, current point: "+windowSize);
-				throw new IllegalStateException("Infinite loop detected!");
+				throw new IllegalStateException("Verify your configure resolution, something is fishy!");
 			}
 			windowSize = getWindowSize(layout);
 			
@@ -90,7 +92,7 @@ public class LedSimulatorOutputWindow {
 			break;
 		}
 
-		return new Point(x+rahmenSize,y+20+2*rahmenSize);
+		return new Point(x+rahmenSize,y+2*OFS+2*rahmenSize);
 	}
 
 	/**

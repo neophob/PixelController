@@ -14,7 +14,7 @@ public class WindowSizeCalculator {
 
 	//defined by the gui
 	public static final int MINIMAL_WINDOW_WIDTH = 820;
-	public static final int MINIMAL_WINDOW_HEIGHT = 400;
+	public static final int MINIMAL_WINDOW_HEIGHT = 440;
 	public static final int MINIMAL_VISUAL_HEIGHT = 40;
 
 

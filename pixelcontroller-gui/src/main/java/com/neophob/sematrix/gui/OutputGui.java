@@ -164,7 +164,7 @@ public class OutputGui {
 		} else {
 			parent.fill(33,33,33);
 		}
-		parent.rect(xOfs, yOfs, lsow.getOneMatrixXSize(), lsow.getOneMatrixYSize());
+		parent.rect(xOfs, yOfs + LedSimulatorOutputWindow.OFS/2, lsow.getOneMatrixXSize(), lsow.getOneMatrixYSize());
 		
 		int shift = MAX_BPP - this.output.getBpp();
 		
@@ -186,7 +186,7 @@ public class OutputGui {
 				}
 				parent.fill(r,g,b);
 				parent.rect(xOfs+lsow.getRahmenSize()+x*(lsow.getRahmenSize()+lsow.getLedSize()),
-							yOfs+lsow.getRahmenSize()+y*(lsow.getRahmenSize()+lsow.getLedSize()),
+							yOfs+lsow.getRahmenSize()+y*(lsow.getRahmenSize()+lsow.getLedSize()) + LedSimulatorOutputWindow.OFS/2,
 							lsow.getLedSize(), lsow.getLedSize());
 			}
 		}
