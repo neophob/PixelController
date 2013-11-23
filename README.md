@@ -199,6 +199,8 @@ Here are all commands PixelController knows.
         TEXTWR                      # of parameters: 1     <STRING> update text for textwriter generator
         TEXTWR_OPTION               # of parameters: 1     <INT> set mode textwriter (pingpong scroller, left scroller)
         CHANGE_BRIGHTNESS           # of parameters: 1     <INT> output brightness 0 .. 100
+        GENERATOR_SPEED             # of parameters: 1     <INT> generator speed 0 .. 200 (default speed is 100)
+        BEAT_WORKMODE               # of parameters: 1     <INT> change beat workmode 0-2
         OSC_GENERATOR1              # of parameters: 1     <BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)
         OSC_GENERATOR2              # of parameters: 1     <BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)
 
@@ -206,7 +208,7 @@ Here are all commands PixelController knows.
         CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
 
         CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
-        CHANGE_SHUFFLER_SELECT      # of parameters: 15    <INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0
+        CHANGE_SHUFFLER_SELECT      # of parameters: 18    <INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 1 1 1
         SAVE_PRESENT                # of parameters: 0     <NO PARAM> save current present settings
         LOAD_PRESENT                # of parameters: 0     <NO PARAM> load current present settings
         RANDOM                      # of parameters: 1     <ON|OFF> enable/disable random mode
