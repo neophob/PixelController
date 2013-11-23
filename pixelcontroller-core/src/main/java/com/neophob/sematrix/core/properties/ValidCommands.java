@@ -123,6 +123,8 @@ public enum ValidCommands {
 	
 	GENERATOR_SPEED(CommandGroup.GENERATOR, 1, "<INT> generator speed 0 .. 200 (default speed is 100)"),
 	
+	BEAT_WORKMODE(CommandGroup.GENERATOR, 1, "<INT> change beat workmode"),
+	
 	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)"),
 	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)"),
 	;

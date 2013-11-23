@@ -36,6 +36,7 @@ import com.neophob.sematrix.core.glue.Visual;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
 
 /**
@@ -71,7 +72,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
     
 	private float brightness = 1.0f;	
 	private float fpsAdjustment = 1.0f;
-
+	BeatToAnimation bta = BeatToAnimation.MODERATE; 
     
     private ApplicationConfigurationHelper ph;
     
@@ -171,8 +172,25 @@ public class PixelControllerGenerator implements PixelControllerElement {
         int brightnessInt = (int)(this.brightness*100f);
         ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
         int generatorSpeed = (int)(this.fpsAdjustment*100f);
-        ret.add(ValidCommands.GENERATOR_SPEED+" "+generatorSpeed);        
+        ret.add(ValidCommands.GENERATOR_SPEED+" "+generatorSpeed);
+        ret.add(ValidCommands.BEAT_WORKMODE+" "+bta.getId());
         return ret;
+    }
+    
+    private int calculateAnimationSteps(BeatToAnimation bta) {
+		float f = sound.getVolumeNormalized();
+		
+		switch (bta) {
+		case LINEAR:
+			return (int)(0.5f+f*1.5f*fpsAdjustment);
+
+		case MODERATE:
+			return (int)((f*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
+
+		case HEAVY:
+		default:
+			return (int)((f*4.5f*fpsAdjustment)/2f+0.5f);
+		}
     }
 
     /* (non-Javadoc)
@@ -180,12 +198,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     @Override
     public void update() {
-    	//calculate update speed
-		float f = sound.getVolumeNormalized();
-//		int updateAmount = (int)(0.5f+f*1.5f);
-//		int updateAmount = (int)(0.5f+f*1.5f*fpsAdjustment);
-		int updateAmount = (int)((f*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
-
+    	//calculate update speed    	    	
+    	int updateAmount = calculateAnimationSteps(bta);
+    	
 		if (sound.isKick()) {
 			updateAmount+=3;
 		}
@@ -440,6 +455,22 @@ public class PixelControllerGenerator implements PixelControllerElement {
 	 */
 	public int getFrames() {
 		return frames;
+	}
+
+
+	/**
+	 * @return the bta
+	 */
+	public BeatToAnimation getBta() {
+		return bta;
+	}
+
+
+	/**
+	 * @param bta the bta to set
+	 */
+	public void setBta(BeatToAnimation bta) {
+		this.bta = bta;
 	}
 
 	

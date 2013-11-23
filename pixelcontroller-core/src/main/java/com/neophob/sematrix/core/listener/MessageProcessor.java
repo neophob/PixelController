@@ -33,6 +33,7 @@ import com.neophob.sematrix.core.glue.OutputMapping;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.mixer.Mixer;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.sound.BeatToAnimation;
 
 /**
  * The Class MessageProcessor.
@@ -480,11 +481,19 @@ public final class MessageProcessor {
 				try {
 					//old method, reference colorset by index
 					int newColorSetIndex = Integer.parseInt(msg[1]);				                
-	                col.getVisual(nr).setColorSet(newColorSetIndex);				
+	                col.getVisual(nr).setColorSet(newColorSetIndex);
+	                break;
 				} catch (Exception e) {
+					//ignore
+				}
+				
+				try {
 					//now try to reference colorset by name
 					col.getVisual(nr).setColorSet(msg[1]);
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
 				}
+
 				break;
 								
 			//pause output, needed to create screenshots or take an image of the output
@@ -505,6 +514,21 @@ public final class MessageProcessor {
 				col.getPixelControllerGenerator().getOscListener2().updateBuffer(blob);
 				break;
 
+			case BEAT_WORKMODE:
+				try {
+					int workmodeId = Integer.parseInt(msg[1]);
+					for (BeatToAnimation bta: BeatToAnimation.values()) {
+						if (bta.getId() == workmodeId) {
+							col.getPixelControllerGenerator().setBta(bta);
+						}
+					}
+
+				} catch (Exception e) {
+					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+				}
+				
+				break;
+				
 			//unkown message
 			default:
 				StringBuffer sb = new StringBuffer();

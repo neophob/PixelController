@@ -41,6 +41,7 @@ public enum GuiElement {
 	BRIGHTNESS,
 	
 	GENERATOR_SPEED,
+	BEAT_WORKMODE,
 	
 	//effects
 	THRESHOLD,

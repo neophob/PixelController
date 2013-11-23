@@ -51,6 +51,7 @@ import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
@@ -118,7 +119,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private DropdownList textureDeformOptions, zoomOptions;
     
     //Generator Tab
-    private DropdownList blinkenLightsList, imageList, textwriterOption;	
+    private DropdownList blinkenLightsList, imageList, textwriterOption, beatWorkmode;	
     private Label passThroughMode;
     private Slider generatorSpeedSlider;
     
@@ -334,13 +335,25 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         //generator speed slider
         generatorSpeedSlider = cp5.addSlider(GuiElement.GENERATOR_SPEED.guiText(), 
-        		0f, 2.0f, 1f, 38+GENERIC_X_OFS, p5GuiYOffset+90, 140, 14);
+        		0f, 2.0f, 1f, 38+GENERIC_X_OFS, p5GuiYOffset+92, 140, 14);
         generatorSpeedSlider.setSliderMode(Slider.FIX);
         generatorSpeedSlider.setGroup(generatorTab);	
         generatorSpeedSlider.setDecimalPrecision(0);
         generatorSpeedSlider.setRange(0, 200);
         generatorSpeedSlider.setLabelVisible(true); 
 
+        //beat animation
+        beatWorkmode = cp5.addDropdownList(GuiElement.BEAT_WORKMODE.guiText(), 
+        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+90+17, Theme.DROPBOXLIST_LENGTH, 140);
+        Theme.themeDropdownList(beatWorkmode);
+        for (BeatToAnimation bta: BeatToAnimation.values()) {
+            beatWorkmode.addItem(bta.guiText(), bta.getId());        	
+        }
+        beatWorkmode.setLabel(beatWorkmode.getItem(0).getName());
+        beatWorkmode.setGroup(generatorTab);
+        beatWorkmode.setHeight(Theme.DROPBOXLIST_HEIGHT);
+
+        
         //freeze update 
         Toggle t1 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 730, 2, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
         t1.setLabelVisible(false);
@@ -623,7 +636,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 .setSpacingColumn(26)
                 .setNoneSelectedAllowed(false);
 
-        for (i=0; i<96+16; i++) {
+        for (i=0; i<96+48; i++) {
             String label = ""+i; //$NON-NLS-1$
             if (i<10) {
                 label = "0"+i; //$NON-NLS-1$
@@ -634,19 +647,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         presetButtons.moveTo(presetTab);                
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.guiText(), 0,
-        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+124, 100, 15);
+        		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, yPosStartDrowdown+170, 100, 15);
         loadPreset.setCaptionLabel(GuiElement.LOAD_PRESET.guiText());
         loadPreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.LOAD_PRESET.guiText(),messages.getString("GeneratorGui.TOOLTIP_LOAD_PRESET")); //$NON-NLS-1$
 
         savePreset = cp5.addButton(GuiElement.SAVE_PRESET.guiText(), 0,
-        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+124, 100, 15);
+        		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, yPosStartDrowdown+170, 100, 15);
         savePreset.setCaptionLabel(GuiElement.SAVE_PRESET.guiText());
         savePreset.moveTo(presetTab);
         cp5.getTooltip().register(GuiElement.SAVE_PRESET.guiText(),messages.getString("GeneratorGui.TOOLTIP_SAVE_PRESET")); //$NON-NLS-1$
 
-        presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+124, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab); //$NON-NLS-1$
-        presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+142).moveTo(presetTab).getValueLabel();         //$NON-NLS-1$ //$NON-NLS-2$
+        presetName = cp5.addTextfield("presetName", 20, yPosStartDrowdown+170, Theme.DROPBOXLIST_LENGTH*2, 16).moveTo(presetTab); //$NON-NLS-1$
+        presetInfo = cp5.addTextlabel("presetInfo", "", 160, yPosStartDrowdown+170+18).moveTo(presetTab).getValueLabel();         //$NON-NLS-1$ //$NON-NLS-2$
         
         updateCurrentPresetState();
         
@@ -1273,6 +1286,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					
 				case GENERATOR_SPEED:
 					generatorSpeedSlider.changeValue(Float.parseFloat(s.getValue()));						
+					break;
+					
+				case BEAT_WORKMODE:
+					beatWorkmode.setLabel(beatWorkmode.getItem(Integer.parseInt(s.getValue())).getName());
 					break;
 					
 				default:
