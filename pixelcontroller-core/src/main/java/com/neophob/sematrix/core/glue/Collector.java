@@ -34,21 +34,21 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.color.ColorSet;
 import com.neophob.sematrix.core.effect.Effect;
-import com.neophob.sematrix.core.effect.PixelControllerEffect;
 import com.neophob.sematrix.core.effect.Effect.EffectName;
+import com.neophob.sematrix.core.effect.PixelControllerEffect;
+import com.neophob.sematrix.core.fader.Fader.FaderName;
 import com.neophob.sematrix.core.fader.IFader;
 import com.neophob.sematrix.core.fader.PixelControllerFader;
-import com.neophob.sematrix.core.fader.Fader.FaderName;
 import com.neophob.sematrix.core.generator.Generator;
-import com.neophob.sematrix.core.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.generator.Generator.GeneratorName;
+import com.neophob.sematrix.core.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.glue.helper.InitHelper;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.mixer.Mixer;
-import com.neophob.sematrix.core.mixer.PixelControllerMixer;
 import com.neophob.sematrix.core.mixer.Mixer.MixerName;
+import com.neophob.sematrix.core.mixer.PixelControllerMixer;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
@@ -371,11 +371,10 @@ public class Collector extends Observable {
 	
 	private void saveImage(Visual v, String filename, int[] data) {
 		try {
-		    // retrieve image
-			
-			//maybe colorSet.convertToColorSetImage(effect1.getBuffer(generator1.internalBuffer))
-		    BufferedImage bi = new BufferedImage(v.getGenerator1().getInternalBufferXSize(), 
-		    		v.getGenerator1().getInternalBufferYSize(), BufferedImage.TYPE_INT_RGB);
+			int w = v.getGenerator1().getInternalBufferXSize();
+			int h = v.getGenerator1().getInternalBufferYSize();
+		    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+		    bi.setRGB(0, 0, w, h, data, 0, w);
 		    File outputfile = new File(filename);
 		    ImageIO.write(bi, "png", outputfile);
 		} catch (IOException e) {
@@ -390,13 +389,20 @@ public class Collector extends Observable {
 		int ofs=0;		
 		int frames = pixelControllerGenerator.getFrames();
 		String suffix = ".png";
+		File f = new File("screenshot"+File.separator);
+		if (!f.exists()) {
+			LOG.log(Level.INFO, "Create directory "+f.getAbsolutePath());
+			boolean result = f.mkdir();
+			LOG.log(Level.INFO, "Result: "+result);
+		}
 		for (Visual v: allVisuals) {
-			String prefix = "screenshot/"+frames+"-"+ofs+"-";
-			saveImage(v, prefix+"gen1"+suffix, v.getGenerator1().internalBuffer);
-			saveImage(v, prefix+"gen2"+suffix, v.getGenerator2().internalBuffer);
+			String prefix = "screenshot"+File.separator+frames+"-"+ofs+"-";
+			ColorSet cs = v.getColorSet();			
+			saveImage(v, prefix+"gen1"+suffix, cs.convertToColorSetImage(v.getGenerator1().internalBuffer));
+			saveImage(v, prefix+"gen2"+suffix, cs.convertToColorSetImage(v.getGenerator2().internalBuffer));
 
-			saveImage(v, prefix+"fx1"+suffix, v.getEffect1Buffer());
-			saveImage(v, prefix+"fx2"+suffix, v.getEffect2Buffer());
+			saveImage(v, prefix+"fx1"+suffix, cs.convertToColorSetImage(v.getEffect1Buffer()));
+			saveImage(v, prefix+"fx2"+suffix, cs.convertToColorSetImage(v.getEffect2Buffer()));
 
 			saveImage(v, prefix+"mix"+suffix, v.getMixerBuffer());
 			ofs++;
