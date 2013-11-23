@@ -343,8 +343,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorSpeedSlider.setLabelVisible(true); 
 
         //beat animation
+        cp5.addTextlabel("beatWorkmode", messages.getString("GeneratorGui.BEAT_WORKMODE"), 
+        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+108+5).moveTo(generatorTab).getValueLabel();
         beatWorkmode = cp5.addDropdownList(GuiElement.BEAT_WORKMODE.guiText(), 
-        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+90+17, Theme.DROPBOXLIST_LENGTH, 140);
+        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+108, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(beatWorkmode);
         for (BeatToAnimation bta: BeatToAnimation.values()) {
             beatWorkmode.addItem(bta.guiText(), bta.getId());        	
@@ -375,7 +377,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         //EFFECTS OPTIONS
         //---------------
-        int genElYOfs = yPosStartDrowdown+95;
+        int genElYOfs = yPosStartDrowdown+105;
         cp5.addTextlabel("genOptionsFx", messages.getString("GeneratorGui.EFFECT_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
         
         //threshold slider

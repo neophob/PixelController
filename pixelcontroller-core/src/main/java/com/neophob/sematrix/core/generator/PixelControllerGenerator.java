@@ -177,21 +177,28 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return ret;
     }
     
+    
+    /**
+     * 
+     * @param bta
+     * @return
+     */
     private int calculateAnimationSteps(BeatToAnimation bta) {
-		float f = sound.getVolumeNormalized();
+		float beatSteps = sound.getVolumeNormalized();
 		
 		switch (bta) {
 		case LINEAR:
-			return (int)(0.5f+f*1.5f*fpsAdjustment);
+			return (int)(0.5f+1.5f*fpsAdjustment);
 
 		case MODERATE:
-			return (int)((f*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
+			return (int)((beatSteps*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
 
 		case HEAVY:
 		default:
-			return (int)((f*4.5f*fpsAdjustment)/2f+0.5f);
+			return (int)((beatSteps*4.5f*fpsAdjustment)/2f+0.5f);
 		}
     }
+    
 
     /* (non-Javadoc)
      * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()

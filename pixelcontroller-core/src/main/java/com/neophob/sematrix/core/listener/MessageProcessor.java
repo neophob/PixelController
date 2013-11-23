@@ -520,6 +520,7 @@ public final class MessageProcessor {
 					for (BeatToAnimation bta: BeatToAnimation.values()) {
 						if (bta.getId() == workmodeId) {
 							col.getPixelControllerGenerator().setBta(bta);
+							LOG.log(Level.INFO, "Select beat workmode "+bta);
 						}
 					}
 
