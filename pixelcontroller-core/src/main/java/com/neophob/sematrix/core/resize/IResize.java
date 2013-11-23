@@ -1,0 +1,70 @@
+/**
+ * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ *
+ * This file is part of PixelController.
+ *
+ * PixelController is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PixelController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.neophob.sematrix.core.resize;
+
+import java.awt.image.BufferedImage;
+
+/**
+ * This interface is used to create different resizer (speed vs. quality)
+ * @author michu
+ *
+ */
+public interface IResize {
+
+	/**
+	 * resize an array of images
+	 * @param buffer
+	 * @param newX
+	 * @param newY
+	 * @param currentXSize
+	 * @param currentYSize
+	 * @return
+	 */
+	int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize);
+	
+	/**
+	 * resize an image type
+	 * @param bi
+	 * @param newX
+	 * @param newY
+	 * @return
+	 */
+	int[] getBuffer(BufferedImage bi, int newX, int newY);
+
+	/**
+	 * 
+	 * @return id of the resizer
+	 */
+	int getId();
+
+	/**
+	 * 
+	 * @return name of the resizer
+	 */
+	String getName();
+	
+	/**
+	 * create a buffered image
+	 * @param buffer
+	 * @param currentXSize
+	 * @param currentYSize
+	 * @return
+	 */
+	BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize);
+}

@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.neophob.pixelcontroller</groupId>
+		<artifactId>pixelcontroller</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>        
+        
+	<artifactId>pixelcontroller-cli</artifactId>
+	<name>PixelController Command Line Interface</name>
+	
+	<packaging>jar</packaging>
+
+	<build>
+		<plugins>
+
+			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
+				since they aren't available in the public Maven repositories. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>jargs</id>
+						<configuration>
+							<file>lib/jargs-1.0.jar</file>
+							<groupId>net.sf</groupId>
+							<artifactId>jargs</artifactId>
+							<version>1.0</version>
+							<packaging>jar</packaging>
+						</configuration>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.neophob.pixelcontroller</groupId>
+			<artifactId>pixelcontroller-core</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>		
+		<dependency>
+            <groupId>net.sf</groupId>
+            <artifactId>jargs</artifactId>
+            <version>1.0</version>
+        </dependency>
+	</dependencies>
+	
+</project>

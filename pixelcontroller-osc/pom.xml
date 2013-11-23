@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.neophob.pixelcontroller</groupId>
+		<artifactId>pixelcontroller</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>        
+        
+	<artifactId>pixelcontroller-osc</artifactId>
+	<name>PixelController OSC Interface</name>
+	
+	<packaging>jar</packaging>
+
+	<description>Provide OSC Server and callback functions</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>de.sciss</groupId>
+			<artifactId>netutil</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+</project>
