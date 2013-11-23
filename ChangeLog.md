@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
-## Changelog v1.5.1 to v2.0.0 (TBD)
-    866 files changed, 228946 insertions(+), 227117 deletions(-)
+## Changelog v1.5.1 to v2.0.0 (TBD)  
+    875 files changed, 229947 insertions(+), 227327 deletions(-)
 
 * Modularize Project, rewrote large parts
 * Add new command line version of PixelController - run on a headless server (like an RPi)

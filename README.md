@@ -3,13 +3,13 @@
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2013. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
-**Primary Website**: http://www.pixelinvaders.ch
+**Primary Website**: [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)
 
-**My Blog**: http://www.neophob.com
+**My Blog**: [http://www.neophob.com](http://www.neophob.com)
 
-**Facebook**: https://www.facebook.com/PixelInvaders
+**Facebook**: [https://www.facebook.com/PixelInvaders](https://www.facebook.com/PixelInvaders)
 
-You can **download** PixelController on Google Code: http://code.google.com/p/pixelcontroller/downloads/
+You can **download** PixelController on Google Code: [http://code.google.com/p/pixelcontroller/downloads/](http://code.google.com/p/pixelcontroller/downloads/)
 
 
 ## HOWTO USE PIXELCONTROLLER
@@ -44,36 +44,36 @@ Per default PixelController creates one Visual more than the number of connected
 All Visuals can be stored (and of course loaded) in a preset.
 
 ## DEMO
-Check out https://vimeo.com/61141493, http://vimeo.com/27453711 and http://vimeo.com/32580251 to see PixelController in action 
+Check out [PixelController Rough Cut #2. Featuring two PixelInvaders panels](https://vimeo.com/61141493), [PixelInvaders 3D RGB Panels](http://vimeo.com/27453711) and [PixelInvaders panels controlled by a tablet (OSC)](http://vimeo.com/32580251) to see PixelController in action 
 on two PixelInvaders panels. 
 
 
 ## SUPPORTED HARDWARE
 PixelController supports different (LED) matrix hardware devices/controller:
 
-* PixelInvaders 3D Panels serial device (see Readme.PixelInvaders, http://www.pixelinvaders.ch) 
-* PixelInvaders 3D Panels network device (see Readme.PixelInvaders, http://www.pixelinvaders.ch)
+* PixelInvaders 3D Panels serial device (see Readme.PixelInvaders, [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)) 
+* PixelInvaders 3D Panels network device (see Readme.PixelInvaders, [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch))
 * Seeedstudios Rainbowduino V2 (see Readme.rainbowduinoV2)
-* Seeedstudios Rainbowduino V3 (Using this firmware: https://code.google.com/p/rainbowduino-v3-streaming-firmware)
+* Seeedstudios Rainbowduino V3 (Using this firmware: [https://code.google.com/p/rainbowduino-v3-streaming-firmware](https://code.google.com/p/rainbowduino-v3-streaming-firmware))
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
-* MiniDmx Devices (like the SEDU board of http://www.led-studien.de)
-* Element Labs Stealth LED panel. No longer in production (http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf)
+* MiniDmx Devices (like the SEDU board of [http://www.led-studien.de](http://www.led-studien.de))
+* Element Labs Stealth LED panel. No longer in production ([](http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf))
 * Generic UDP Devices (for example Raspberry Pi, check out the PixelPi Software)
-* TPM2 Serial devices (see http://ledstyles.de for more information)
-* TPM2 Net devices (see http://ledstyles.de for more information)
-* E1.31 devices (see http://www.opendmx.net/index.php/E1.31)
+* TPM2 Serial devices (see [http://www.led-studien.de](http://www.led-studien.de) for more information)
+* TPM2 Net devices (see [http://www.led-studien.de](http://www.led-studien.de) for more information)
+* E1.31 devices (see [http://www.opendmx.net/index.php/E1.31](http://www.opendmx.net/index.php/E1.31))
 
 Check out the `integration/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
 ### Which firmware should I use?
 If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between different firmwares.  
-* If you bought a (http://shop.pixelinvaders.ch/product/pixelinvaders-diy-basic-pack)[PixelInvaders DIY Kit], use the `integration/ArduinoFw/pixelinvaders/neoLedLPD6803Spi` firmware
+* If you bought a [PixelInvaders DIY Kit](http://shop.pixelinvaders.ch/product/pixelinvaders-diy-basic-pack), use the `integration/ArduinoFw/pixelinvaders/neoLedLPD6803Spi` firmware
 * If you want to create a ONE panel matrix with an arbitrary resolution, use the `integration/ArduinoFw/tpm2serial` firmware
 * If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware
 
-I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency (especially the Arduino UNO r3). You need to install the Arduino IDE, see the "Getting started with Arduino" (http://arduino.cc/en/Guide/HomePage) Tutorial.
+I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency (especially the Arduino UNO r3). You need to install the Arduino IDE, see the "Getting started with Arduino" ([http://arduino.cc/en/Guide/HomePage](http://arduino.cc/en/Guide/HomePage)) Tutorial.
 
-You need to know how to install an Arduino Library (http://arduino.cc/en/Guide/Libraries). For PixelInvaders Panels (LPD6803) install the `integration/ArduinoFw/libraries/timer1` and `integration/ArduinoFw/libraries/neophob_lpd6803spi` libraries, for other panels (WS2801, WS281x...) install the `integration/ArduinoFw/libraries/FastSPI_LED2` library.  
+You need to know how to install an Arduino Library ([http://arduino.cc/en/Guide/Libraries](http://arduino.cc/en/Guide/Libraries)). For PixelInvaders Panels (LPD6803) install the `integration/ArduinoFw/libraries/timer1` and `integration/ArduinoFw/libraries/neophob_lpd6803spi` libraries, for other panels (WS2801, WS281x...) install the `integration/ArduinoFw/libraries/FastSPI_LED2` library.  
 
 ### How does it work?
 
@@ -150,6 +150,7 @@ There are more options in the config file, take a look - each option should be d
 
 ## FRONTENDS
 There are different frontends for PixelController (besides the GUI frontend):
+
 * PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
 * OSC: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included how to communicate with PixelController via OSC protocol. Or create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
 
@@ -184,7 +185,7 @@ Here are all commands PixelController knows.
         CURRENT_VISUAL              # of parameters: 1     <INT> select actual visual
         CURRENT_COLORSET            # of parameters: 1     <INT> select actual ColorSet
         GENERATOR_SPEED             # of parameters: 1     <INT> generator speed 0 .. 200 (default speed is 100)
-    
+	
         CHANGE_OUTPUT_VISUAL        # of parameters: 1     <INT> change visual for current output
         CHANGE_OUTPUT_FADER         # of parameters: 1     <INT> change fader for current output
         CHANGE_ALL_OUTPUT_VISUAL    # of parameters: 1     <INT> change visual for all outputs
@@ -242,7 +243,7 @@ Here are some common errors:
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
 
-* Maven v2.x (if you use Maven 3, make sure to read http://neophob.com/2011/11/maven-3-is-evil/ first!)
+* Maven v2.x (if you use Maven 3, make sure to read [http://neophob.com/2011/11/maven-3-is-evil/](http://neophob.com/2011/11/maven-3-is-evil/) first!)
 * JDK 1.6+
 
 Then run 
@@ -356,7 +357,7 @@ Example how to use PixConCli:
 
 
 ## CREDITS
-* **Michael Vogt**:       Project Lead, Main Developer      
+* **Michael Vogt**:       Project Lead, Main Developer    	
 * **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements, Rainbowduino V3 support
 * **McGyver666**:         Contributor
 * **Rainer Ostendorf**:   Artnet Output
