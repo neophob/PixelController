@@ -32,6 +32,7 @@ import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.generator.Generator.GeneratorName;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
 
 /**
@@ -221,6 +222,15 @@ public final class Shuffler {
 			int colorSets = col.getColorSets().size();
 			visual.setColorSet(rand.nextInt(colorSets));	
 		}
+		
+		if (col.getShufflerSelect(ShufflerOffset.BEAT_WORK_MODE)) {
+			BeatToAnimation bta = BeatToAnimation.values()[new Random().nextInt(BeatToAnimation.values().length)];
+			col.getPixelControllerGenerator().setBta(bta);
+		}
+		
+		if (col.getShufflerSelect(ShufflerOffset.GENERATORSPEED)) {
+			col.getPixelControllerGenerator().setFpsAdjustment(new Random().nextFloat()*2.0f);
+		}
 
 		LOG.log(Level.INFO, "Shuffle finished in {0}ms", (System.currentTimeMillis()-start));
 	}
@@ -272,21 +282,21 @@ public final class Shuffler {
 				}
 			}
 			
-			if (blah == 11 && col.getShufflerSelect(ShufflerOffset.COLORSET)) {
+			if (blah == 5 && col.getShufflerSelect(ShufflerOffset.COLORSET)) {
 				int colorSets = col.getColorSets().size();
 				for (Visual v: col.getAllVisuals()) {
 					v.setColorSet(rand.nextInt(colorSets));
 				}				
 			}
 
-			if (blah == 14) {
+			if (blah == 6) {
 				col.getPixelControllerEffect().getEffect(EffectName.THRESHOLD).shuffle();
 			}
 
 		}
 
 		if (hat) {
-			if (blah == 5 && col.getShufflerSelect(ShufflerOffset.MIXER)) {
+			if (blah == 7 && col.getShufflerSelect(ShufflerOffset.MIXER)) {
 				int size = col.getPixelControllerMixer().getSize();
 				for (Visual v: col.getAllVisuals()) {
 					if (v.getGenerator2Idx()==0) {
@@ -298,7 +308,7 @@ public final class Shuffler {
 				}
 			}			
 
-			if (blah == 6 && col.getShufflerSelect(ShufflerOffset.FADER_OUTPUT)) {
+			if (blah == 8 && col.getShufflerSelect(ShufflerOffset.FADER_OUTPUT)) {
 				int size = col.getPixelControllerFader().getFaderCount();
 				for (OutputMapping om: col.getAllOutputMappings()) {
 					IFader f=om.getFader();
@@ -310,19 +320,28 @@ public final class Shuffler {
 			}
 
 
-			if (blah == 15) {
+			if (blah == 9) {
 				col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM).shuffle();
 			}
 
-			if (blah == 17) {
+			if (blah == 10) {
 				col.getPixelControllerEffect().getEffect(EffectName.ZOOM).shuffle();
 			}
 
+			if (blah == 11 && col.getShufflerSelect(ShufflerOffset.GENERATORSPEED)) {
+				col.getPixelControllerGenerator().setFpsAdjustment(new Random().nextFloat()*2.0f);
+			}
+
+			if (blah == 12 && col.getShufflerSelect(ShufflerOffset.BEAT_WORK_MODE)) {
+				BeatToAnimation bta = BeatToAnimation.values()[new Random().nextInt(BeatToAnimation.values().length)];
+				col.getPixelControllerGenerator().setBta(bta);
+			}
+			
 		}
 
 
 		if (kick) {
-			if (blah == 7 && col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
+			if (blah == 13 && col.getShufflerSelect(ShufflerOffset.OUTPUT)) {
 				int nrOfVisuals = col.getAllVisuals().size();
 				int screenNr = 0;
 				for (OutputMapping om: col.getAllOutputMappings()) {
@@ -335,19 +354,19 @@ public final class Shuffler {
 				}
 			}
 
-			if (blah == 8) {
+			if (blah == 14) {
 				col.getPixelControllerGenerator().getGenerator(GeneratorName.IMAGE).shuffle();
 			}
 
-			if (blah == 9) {
+			if (blah == 15) {
 				col.getPixelControllerGenerator().getGenerator(GeneratorName.BLINKENLIGHTS).shuffle();
 			}
 
-			if (blah == 12) {
+			if (blah == 16) {
 				col.getPixelControllerEffect().getEffect(EffectName.TEXTURE_DEFORMATION).shuffle();
 			}
 
-			if (blah == 16) {
+			if (blah == 17) {
 				col.getPixelControllerGenerator().getGenerator(GeneratorName.COLOR_SCROLL).shuffle();
 			}
 
