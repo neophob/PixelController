@@ -72,7 +72,7 @@ public class Collector extends Observable {
 	private static final String EMPTY_CHAR = " ";
 	
 	/** The Constant NR_OF_PRESENT_SLOTS. */
-	public static final int NR_OF_PRESET_SLOTS = 128;
+	public static final int NR_OF_PRESET_SLOTS = 144;
 
 	/** The singleton instance. */
 	private static Collector instance = new Collector();

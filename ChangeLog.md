@@ -6,6 +6,7 @@
 * Modularize Project, rewrote large parts
 * Add new command line version of PixelController - run on a headless server (like an RPi)
 * Add make speed of generators configurable via GUI and save it as part of the preset (Issue #46)
+* Add Beat Workmode, define how beat input should be interpreted. Options: Linear, Moderate Sound and Heavy Sound
 * Fix Update GUI much faster (instant feedback)
 * Fix GUI, sort images and blinkenlights file dropdown content case insensitive
 * Fix remove obsolete config options (initial.image.simple, initial.blinken, initial.text) but load a preset during startup

@@ -72,7 +72,12 @@ public enum ShufflerOffset {
 	
 	COLORSET(14),
 	
-	ZOOM_EFFECT(15)
+	ZOOM_EFFECT(15),
+	
+	BEAT_WORK_MODE(16),
+
+	GENERATORSPEED(17),
+
 	;
 	
 	

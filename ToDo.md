@@ -4,7 +4,6 @@
 
 * add documentation for pixelinvaders.net
 * add documentation for integration
-* Enable Sound reactive on the fly, GUI option: Linear, Moderate Sound and Heavy Sound
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * update random mode for generator speed and sound reactive
 

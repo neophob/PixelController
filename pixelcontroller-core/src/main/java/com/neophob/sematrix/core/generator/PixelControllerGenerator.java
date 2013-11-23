@@ -177,7 +177,18 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return ret;
     }
     
-    
+    private int getKickValues() {
+    	int updateAmount = 0;
+    	
+		if (sound.isKick()) {
+			updateAmount+=3;
+		}
+		if (sound.isHat()) {
+			updateAmount+=1;
+		}			
+    	
+		return updateAmount;
+    }
     /**
      * 
      * @param bta
@@ -185,17 +196,22 @@ public class PixelControllerGenerator implements PixelControllerElement {
      */
     private int calculateAnimationSteps(BeatToAnimation bta) {
 		float beatSteps = sound.getVolumeNormalized();
+		int val;
 		
 		switch (bta) {
 		case LINEAR:
 			return (int)(0.5f+1.5f*fpsAdjustment);
 
 		case MODERATE:
-			return (int)((beatSteps*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
+			val = (int)((beatSteps*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
+			val += getKickValues();
+			return val;
 
 		case HEAVY:
 		default:
-			return (int)((beatSteps*4.5f*fpsAdjustment)/2f+0.5f);
+			val = (int)((beatSteps*4.5f*fpsAdjustment)/2f+0.5f);
+			val += getKickValues();
+			return val;
 		}
     }
     
@@ -208,13 +224,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     	//calculate update speed    	    	
     	int updateAmount = calculateAnimationSteps(bta);
     	
-		if (sound.isKick()) {
-			updateAmount+=3;
-		}
-		if (sound.isHat()) {
-			updateAmount+=1;
-		}			
-
 		//check for silence - in this case update slowly
 		if (updateAmount<1) {
 			notUpdatedSinceFrames++;
