@@ -3,8 +3,8 @@
 float i;
 
 //define the size of your matrix here. the maximal size is 16x16!
-int PIXELS_X = 96;
-int PIXELS_Y = 72;
+int PIXELS_X = 64;
+int PIXELS_Y = 64;
 int DATA_SIZE = PIXELS_X * PIXELS_Y;
 
 //the maximal UDP packet size
@@ -23,7 +23,7 @@ float geschwindigkeit = 0.002;
 void setup()
 {
   frameRate(30);
-  size(PIXELS_X, PIXELS_Y);
+  size(64, 64);
   println("\nOSC Packet size: "+DATA_SIZE*BPP);
   if (DATA_SIZE*BPP > MAXIMAL_UDP_PACKET_SIZE) {
     println("ERROR, you use OSC to send that much data (UDP Packet size limit is 64k). Lower your resolution.");

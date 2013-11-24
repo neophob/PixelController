@@ -17,7 +17,7 @@ int[][] bfr = new int[2][4096];
 
 void setup()
 {
-  frameRate(10);
+  frameRate(25);
   //must be 64 x 64!
   size(64, 64);
   smooth();
@@ -42,6 +42,7 @@ void draw()
  
 void keyPressed()
 {
+  println("."+key);
   if(key == '1') {
     activePanel=0;
   }
