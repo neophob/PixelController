@@ -40,6 +40,8 @@ I try to visualize it:
                                           V  [Colorset]
                                        [VISUAL]
 
+**Exception:** There are two exceptions, if you use the Capture generator or use the OSC Generator (that sends 24bpp data) PixelController switch to the **Pass-though mode**. This means no Colorset, Effect and Mixer can be used and the original input data is send to the panels.
+
 Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a non-visible Visual, that can be displayed later. 
 All Visuals can be stored (and of course loaded) in a preset.
 
