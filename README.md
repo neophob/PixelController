@@ -173,10 +173,16 @@ Load image gradient.jpg
         # ./PixConCli.sh -c IMAGE gradient.jpg
 
 
+### Processing Examples
+I included some [Processing](http://processing.org/) example Sketches. Maybe you can use one or several of those examples for your need. Those file should help you integrate PixelController into your environment. 
+* `OscSendImageData`:
+* `OscSendControllMessages`:
+* `AdapterApp`:
+
 ## MORE HINTS
 
 ### Run PixelController on a RPi
-As the RPi isn't the beefiest CPU (and PixelController doen't use the GPU) it's not really practical to run it with the graphial frontend. But you can run the console version of PixelController. You need to run PixelController **as root user **(or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
+As the RPi isn't the beefiest CPU (and PixelController doen't use the GPU) it's not really practical to run it with the graphial frontend. But you can run the console version of PixelController. You need to run PixelController **as root user** (or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
 
     pi@raspberrypi ~/pixelcontroller-distribution-2.0.0/console $ sudo ./PixelControllerRPi.sh 
     Nov 24, 2013 1:53:27 PM com.neophob.sematrix.cli.PixelControllerCli <init>
