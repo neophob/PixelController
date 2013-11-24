@@ -44,6 +44,7 @@
 * Merge code of the output package, alot of duplicate code 
 * Add Passthrough Colorset (for example to display an Image on the LED Matrix)
 * Use google-guice as DI container
+* option to configure strange mapings easy, use a gui? html5 frontend?
 
 
 # Rejected backlog features
