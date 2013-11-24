@@ -149,13 +149,13 @@ There are more options in the config file, take a look - each option should be d
 
 
 ## FRONTENDS
-There are different frontends for PixelController (besides the GUI frontend):
+There are different frontends for PixelController (besides the GUI frontend). It dosen't matter how you control PixelController - you have the same functions. See chapter **OSC Messages** to get an overview.
 
-* PixConCli: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX.
-* OSC: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included how to communicate with PixelController via OSC protocol. Or create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
+* **PixConCli**: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX. 
+* **OSC**: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included in the `integration/Processing` directory. You can send messages to control PixelController or you can send image content via OSC to PixelController. Of course you can create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
 
 
-### CLI EXAMPLES
+### PixConCli Examples
 You can send OSC messages to PixelController to control the software. PixelController includes a simple CLI tool to control the software by console. Start PixelController, then open the console:
 
 Randomize current Visual
@@ -239,6 +239,23 @@ Here are some common errors:
 * Make sure you're using an up-to date Java Runtime (JRE), this usually helps if the JVM crashes.
 * If you use an extra long USB Cable (more than 5 meter) you might discover strange issues, try to use a short cable especially if you're uploading a firmware to the Arduino/Teensy.
 * The **OSC Generator** does not work: make sure you select the correct resolution for the OSC sender, take a look at the INFO tab, there you see the PixelController internal buffer size. Use this resolution in your OSC sender (or Processing sketch).
+
+## RUN PIXELCONTROLLER ON A RPi
+As the RPi isn't the beefiest CPU (and PixelController doen't use the GPU) it's not really practical to run it with the graphial frontend. But you can run the console version of PixelController. You need to run PixelController **as root user **(or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
+
+    pi@raspberrypi ~/pixelcontroller-distribution-2.0.0/console $ sudo ./PixelControllerRPi.sh 
+    Nov 24, 2013 1:53:27 PM com.neophob.sematrix.cli.PixelControllerCli <init>
+    INFO: 
+    
+    PixelController v2.0.0 - http://www.pixelinvaders.ch
+    
+    Nov 24, 2013 1:53:29 PM com.neophob.sematrix.core.glue.FileUtils <init>
+    INFO: Use root directory: /home/pi/pixelcontroller-distribution-2.0.0.RC1
+    Nov 24, 2013 1:53:29 PM com.neophob.sematrix.core.setup.InitApplication loadConfiguration
+    <...>
+
+   
+Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
 
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
