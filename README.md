@@ -174,10 +174,27 @@ Load image gradient.jpg
 
 
 ### Processing Examples
-I included some [Processing](http://processing.org/) example Sketches. Maybe you can use one or several of those examples for your need. Those file should help you integrate PixelController into your environment. 
-* `OscSendImageData`:
-* `OscSendControllMessages`:
-* `AdapterApp`:
+I included some [Processing](http://processing.org/) example Sketches. Maybe you can use one or several of those examples for your need. Those file should help you integrate PixelController into your environment. You need the [OscP5 Processing library](http://www.sojamo.de/libraries/oscP5/) and [ControlP5 Processing library](http://www.sojamo.de/libraries/controlP5/) to run the examples.
+
+* `OscSendImageData/OscSenderRandom`: Randomize Visual 1 four times per second
+* `OscSendImageData/OscSenderSelectVisual`: Change Generator, Effect and Mixer of Visual 0 
+* `OscSendImageData/PixelControllerRemote`: PixelController remote application to load presets via GUI
+* `OscSendControllMessages/colorAdjust`: Sketch to adjust RGB values for multiple panels
+* `OscSendControllMessages/kinect_MSAFluidDemo`: An example Sketch to use a MS Kinect together with PixelController
+* `OscSendControllMessages/particleexample`: Particlesystem that can be controlled with your mouse
+* `OscSendControllMessages/PixlInvCamAndroid`: Android application, use the camera of your Android phone and send a live video stream to PixelController
+* `OscSendControllMessages/sendImageKreise`: An example of OpenProcessing used in PixelController
+* `OscSendControllMessages/sendImageKreise24bpp`: The same example as above, but use the color settings of the Sketch, use the PixelController **pass through** mode where no effect, mixer and colorsets can be used.
+* `OscSendControllMessages/sendImageSecretLifeOfTuring`: Another great animation of OpenProcessing
+* `AdapterApp`: A more advanced Pixelcontroller example I used for an installation. Select a random preset after a specified time.
+
+### PureData Examples
+
+[PureData](http://puredata.info/) is a visual language, included are some examples.
+
+* `PureData/ledgui5-onePanel.pd`: The old PixelController GUI, use it to create a frontend for your case...
+* `PureData/ledgui5.pd`: The old PixelController GUI, use it to create a frontend for your case...
+* `PureData/Midi2OSC.pd`: MIDI to OSC bridge - control PixelController with a MIDI device
 
 ## MORE HINTS
 
