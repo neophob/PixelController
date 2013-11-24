@@ -16,7 +16,8 @@
 * Fix adjust matrix simulation window for large resolutions
 * Fix effect Rotate90 - works now for non-square resolutions
 * Much faster startup time
-* Removed TCP Server, used by the old PureData frontend and CLI client 
+* Removed TCP Server, used by the old PureData frontend and CLI client
+* Update documentation, see readme.pdf
 
 
 ## Changelog v1.5.0 to v1.5.1 (12. November 2013)
