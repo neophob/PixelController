@@ -2,7 +2,6 @@
 
 ## Version 2.0
 
-* add documentation for pixelinvaders.net
 * add documentation for integration
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
