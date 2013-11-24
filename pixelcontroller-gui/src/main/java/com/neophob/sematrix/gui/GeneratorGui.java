@@ -335,7 +335,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //-------------
         //generator speed slider
         generatorSpeedSlider = cp5.addSlider(GuiElement.GENERATOR_SPEED.guiText(), 
-        		0f, 2.0f, 1f, 38+GENERIC_X_OFS, p5GuiYOffset+92, 140, 14);
+        		0f, 2.0f, 1f, 38+GENERIC_X_OFS, p5GuiYOffset+97, 140, 14);
         generatorSpeedSlider.setSliderMode(Slider.FIX);
         generatorSpeedSlider.setGroup(generatorTab);	
         generatorSpeedSlider.setDecimalPrecision(0);
@@ -344,9 +344,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         //beat animation
         cp5.addTextlabel("beatWorkmode", messages.getString("GeneratorGui.BEAT_WORKMODE"), 
-        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+108+5).moveTo(generatorTab).getValueLabel();
+        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+113+5).moveTo(generatorTab).getValueLabel();
         beatWorkmode = cp5.addDropdownList(GuiElement.BEAT_WORKMODE.guiText(), 
-        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+108, Theme.DROPBOXLIST_LENGTH, 140);
+        		38+GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset+113, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(beatWorkmode);
         for (BeatToAnimation bta: BeatToAnimation.values()) {
             beatWorkmode.addItem(bta.guiText(), bta.getId());        	
@@ -488,7 +488,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //add textfield
         textGenerator = cp5.addTextfield(GuiElement.TEXTFIELD, GuiElement.TEXTFIELD.guiText(), GuiElement.TEXTFIELD.guiText(), genFxXOfs+3+4*Theme.DROPBOX_XOFS, genElYOfs-6, Theme.DROPBOXLIST_LENGTH, 16); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                       
-        passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+55).moveTo(generatorTab).getValueLabel();
+        passThroughMode = cp5.addTextlabel("passThroughMode", "", genFxXOfs, yPosStartDrowdown+50).moveTo(generatorTab).getValueLabel();
         passThroughMode.setColor(0xffff0000);
   
 
