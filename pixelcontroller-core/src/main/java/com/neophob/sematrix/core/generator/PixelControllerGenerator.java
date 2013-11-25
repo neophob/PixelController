@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.generator;
 
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -137,7 +138,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(new Geometrics(matrix, sound));                
         
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
-        if (screenCapureXSize>0) {
+        if (screenCapureXSize>0 && !GraphicsEnvironment.isHeadless()) {
         	allGenerators.add(
         			new ScreenCapture(matrix, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY())
         	);
