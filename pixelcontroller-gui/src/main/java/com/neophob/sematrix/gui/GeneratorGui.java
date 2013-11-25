@@ -21,6 +21,7 @@ package com.neophob.sematrix.gui;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -240,11 +241,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		GENERIC_X_OFS+3*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(generatorListOne);
         Theme.themeDropdownList(generatorListTwo);
-        i=0;
+        
         for (GeneratorName gn: GeneratorName.values()) {
-            generatorListOne.addItem(gn.guiText(), i);
-            generatorListTwo.addItem(gn.guiText(), i);
-            i++;
+            generatorListOne.addItem(gn.guiText(), gn.getId());
+            generatorListTwo.addItem(gn.guiText(), gn.getId());
         }
         
         generatorListOne.setLabel(generatorListOne.getItem(1).getName());
@@ -261,11 +261,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		GENERIC_X_OFS+4*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(effectListOne);
         Theme.themeDropdownList(effectListTwo);
-        i=0;
+
         for (EffectName gn: EffectName.values()) {
-            effectListOne.addItem(gn.guiText(), i);
-            effectListTwo.addItem(gn.guiText(), i);
-            i++;
+            effectListOne.addItem(gn.guiText(), gn.getId());
+            effectListTwo.addItem(gn.guiText(), gn.getId());
         }
         effectListOne.setLabel(effectListOne.getItem(0).getName());
         effectListTwo.setLabel(effectListTwo.getItem(0).getName());
@@ -279,10 +278,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		GENERIC_X_OFS+2*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(mixerList);
 
-        i=0;
         for (MixerName gn: MixerName.values()) {
-            mixerList.addItem(gn.guiText(), i);
-            i++;
+            mixerList.addItem(gn.guiText(), gn.getId());
         }
         mixerList.setLabel(mixerList.getItem(0).getName());
         mixerList.setHeight(Theme.DROPBOXLIST_LARGE_HEIGHT);
