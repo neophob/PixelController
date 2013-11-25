@@ -4,6 +4,7 @@
 
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
+* Add documentation about sending OSC Image data
 
 ## Version 2.1
 
