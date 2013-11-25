@@ -10,7 +10,8 @@
 * Fix Issue#51, CHANGE_PRESENT, LOAD_PRESENT, SAVE_PRESENT -> rename to PRESET
 * Resolution 1x96 is unhealthy for the gui...
 * make sure the screen capture plugin is not initialized in a headless envoirement
-* do not update generator if the linear beat workmode is selected and generator speed is 0
+* do not update generator if the linear beat workmode is selected and generator speed is 
+* Catch All Exceptions
 
 ## Version 2.1
 
