@@ -178,6 +178,10 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return ret;
     }
     
+    /**
+     * 
+     * @return
+     */
     private int getKickValues() {
     	int updateAmount = 0;
     	
@@ -190,6 +194,8 @@ public class PixelControllerGenerator implements PixelControllerElement {
     	
 		return updateAmount;
     }
+    
+    
     /**
      * 
      * @param bta
@@ -232,7 +238,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 			notUpdatedSinceFrames=0;
 		}
 
-		if (notUpdatedSinceFrames>10) {
+		if (bta!= BeatToAnimation.LINEAR && notUpdatedSinceFrames>10) {
 			updateAmount=1;
 			notUpdatedSinceFrames=0;
 		}

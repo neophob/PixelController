@@ -7,7 +7,6 @@
 * Add documentation about sending OSC Image data
 * Sort generator and effect by name
 * Resolution 1x96 is unhealthy for the gui...
-* do not update generator if the linear beat workmode is selected and generator speed is 
 * Catch All Exceptions
 
 ## Version 2.1
