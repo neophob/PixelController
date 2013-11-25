@@ -5,11 +5,8 @@
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
 * Add documentation about sending OSC Image data
-* Update Preset name and selection in GUI, for example in random preset name
 * Sort generator and effect by name
-* Fix Issue#51, CHANGE_PRESENT, LOAD_PRESENT, SAVE_PRESENT -> rename to PRESET
 * Resolution 1x96 is unhealthy for the gui...
-* make sure the screen capture plugin is not initialized in a headless envoirement
 * do not update generator if the linear beat workmode is selected and generator speed is 
 * Catch All Exceptions
 

@@ -409,7 +409,9 @@ public final class MessageProcessor {
 
 			case PRESET_RANDOM:	//one shot randomizer, use a pre-stored present
 				try {
-					loadPreset(Shuffler.getRandomPreset());
+					int currentPreset = Shuffler.getRandomPreset();					
+					loadPreset(currentPreset);
+					col.setSelectedPreset(currentPreset);
 					col.notifyGuiUpdate();
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);

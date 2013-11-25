@@ -1204,7 +1204,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		for (Map.Entry<String, String> s: diff.entrySet()) {
 			try {
 				ValidCommands cmd = ValidCommands.valueOf(s.getKey());
-				
 				switch (cmd) {
 				case CHANGE_GENERATOR_A:					
 					generatorListOne.setLabel(generatorListOne.getItem(Integer.parseInt(s.getValue())).getName());					
@@ -1244,6 +1243,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					
 				case CHANGE_PRESET:
 					presetButtons.activate(Integer.parseInt(s.getValue()));
+					updateCurrentPresetState();
 					break;
 					
 				case CHANGE_THRESHOLD_VALUE:
