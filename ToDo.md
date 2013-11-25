@@ -7,6 +7,7 @@
 * Add documentation about sending OSC Image data
 * Update Preset name and selection in GUI, for example in random preset name
 * Sort generator and effect by name
+* Fix Issue#51, CHANGE_PRESENT, LOAD_PRESENET, SAVE_PRESENT -> rename to PRESET
 
 ## Version 2.1
 
