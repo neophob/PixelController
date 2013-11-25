@@ -5,6 +5,8 @@
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
 * Add documentation about sending OSC Image data
+* Update Preset name and selection in GUI, for example in random preset name
+* Sort generator and effect by name
 
 ## Version 2.1
 
