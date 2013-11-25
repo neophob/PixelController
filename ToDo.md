@@ -8,6 +8,7 @@
 * Update Preset name and selection in GUI, for example in random preset name
 * Sort generator and effect by name
 * Fix Issue#51, CHANGE_PRESENT, LOAD_PRESENET, SAVE_PRESENT -> rename to PRESET
+* Resolution 1x96 is unhealthy for the gui...
 
 ## Version 2.1
 
