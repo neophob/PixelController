@@ -53,8 +53,8 @@ public enum ValidCommands {
 	/** The CHANGE fader. */
 	CHANGE_ALL_OUTPUT_FADER(CommandGroup.OUTPUT, 1, "<INT> change fader for all outputs"),
 
-	/** The CHANGE present. */
-	CHANGE_PRESENT(CommandGroup.MISC, 1, "<INT> select current present id"),
+	/** The CHANGE preset. */
+	CHANGE_PRESET(CommandGroup.MISC, 1, "<INT> select current preset id"),
 	
 	/** The CHANGE shuffler select. */
 	CHANGE_SHUFFLER_SELECT(CommandGroup.MISC, 15, "<INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0"),
@@ -65,11 +65,11 @@ public enum ValidCommands {
 	/** The CHANG e_ rotozoom. */
 	CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
 	
-	/** The SAVE present. */
-	SAVE_PRESENT(CommandGroup.MISC, 0, "<NO PARAM> save current present settings"),
+	/** The SAVE preset. */
+	SAVE_PRESET(CommandGroup.MISC, 0, "<NO PARAM> save current preset settings"),
 	
 	/** The LOAD present. */
-	LOAD_PRESENT(CommandGroup.MISC, 0, "<NO PARAM> load current present settings"),
+	LOAD_PRESET(CommandGroup.MISC, 0, "<NO PARAM> load current preset settings"),
 	
 	/** The BLINKEN. */
 	BLINKEN(CommandGroup.GENERATOR, 1, "<STRING> file to load for the blinkenlights generator"),

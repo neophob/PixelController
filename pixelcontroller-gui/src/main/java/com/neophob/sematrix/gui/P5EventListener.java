@@ -234,13 +234,13 @@ public class P5EventListener implements ControlListener {
             	
             case PRESET_BUTTONS:
                 LOG.log(Level.INFO, selection+" "+intVal);
-                createMessage(ValidCommands.CHANGE_PRESENT, intVal);
+                createMessage(ValidCommands.CHANGE_PRESET, intVal);
                 callback.updateCurrentPresetState();
                 break;
                 
             case LOAD_PRESET:
                 LOG.log(Level.INFO, "LOAD_PRESET");
-                createMessage(ValidCommands.LOAD_PRESENT, "");
+                createMessage(ValidCommands.LOAD_PRESET, "");
                 callback.updateCurrentPresetState();
                 break;
             	
@@ -251,7 +251,7 @@ public class P5EventListener implements ControlListener {
                 if (preset!=null) {
                     preset.setName(callback.getCurrentPresetName());
                 }
-                createMessage(ValidCommands.SAVE_PRESENT, "");
+                createMessage(ValidCommands.SAVE_PRESET, "");
                 break;
               
             case BUTTON_TOGGLE_FREEZE:

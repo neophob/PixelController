@@ -249,7 +249,7 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case SAVE_PRESENT:
+			case SAVE_PRESET:
 				try {
 					int idxs = col.getSelectedPreset();
 					List<String> present = col.getCurrentStatus();
@@ -260,7 +260,7 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case LOAD_PRESENT:
+			case LOAD_PRESET:
 				try {
 					loadPreset(col.getSelectedPreset());
 					col.notifyGuiUpdate();					
@@ -269,7 +269,7 @@ public final class MessageProcessor {
 				}
 				break;
 
-			case CHANGE_PRESENT:
+			case CHANGE_PRESET:
 				try {
 					int a = Integer.parseInt(msg[1]);
 					if (a<Collector.NR_OF_PRESET_SLOTS) {

@@ -261,14 +261,14 @@ Here are all commands PixelController knows.
         CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
         CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
 
-        CHANGE_PRESENT              # of parameters: 1     <INT> select current present id
+        CHANGE_PRESET               # of parameters: 1     <INT> select current preset id
         CHANGE_SHUFFLER_SELECT      # of parameters: 18    <INT>, parameter contains 15 nibbles to enable or disable the shuffler option (gets changed in the random mode), 0=OFF, 1=ON, example: 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 1 1 1
-        SAVE_PRESENT                # of parameters: 0     <NO PARAM> save current present settings
-        LOAD_PRESENT                # of parameters: 0     <NO PARAM> load current present settings
+        SAVE_PRESET                 # of parameters: 0     <NO PARAM> save current preset settings
+        LOAD_PRESET                 # of parameters: 0     <NO PARAM> load current preset settings
         RANDOM                      # of parameters: 1     <ON|OFF> enable/disable random mode
         RANDOM_PRESET_MODE          # of parameters: 1     <ON|OFF> enable/disable random preset mode
         RANDOMIZE                   # of parameters: 0     <NO PARAM> one shot randomizer
-        PRESET_RANDOM               # of parameters: 0     <NO PARAM> one shot randomizer, use a pre-stored present
+        PRESET_RANDOM               # of parameters: 0     <NO PARAM> one shot randomizer, use a pre-stored preset
         JMX_STAT                    # of parameters: 0     <NO PARAM> show JMX runtime statistic, default port: 1337 (use the -p switch)
         SCREENSHOT                  # of parameters: 0     <NO PARAM> save screenhot
         FREEZE                      # of parameters: 0     <NO PARAM> toggle pause mode

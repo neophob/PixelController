@@ -544,7 +544,7 @@ public class Collector extends Observable {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
-		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPreset);						
+		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+selectedPreset);						
 		return ret;
 	}
 
@@ -962,7 +962,7 @@ public class Collector extends Observable {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 		
-		ret.add(ValidCommands.CHANGE_PRESENT +EMPTY_CHAR+selectedPreset);						
+		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+selectedPreset);						
 		
 		return ret;
 	}

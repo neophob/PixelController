@@ -1242,7 +1242,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					colorSetList.setLabel(s.getValue());
 					break;
 					
-				case CHANGE_PRESENT:
+				case CHANGE_PRESET:
 					presetButtons.activate(Integer.parseInt(s.getValue()));
 					break;
 					
