@@ -1267,7 +1267,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					break;
 					
 				case TEXTDEF:						
-					textureDeformOptions.setLabel(textureDeformOptions.getItem(Integer.parseInt(s.getValue())-1).getName());
+					int i = Integer.parseInt(s.getValue());
+					if (i==0) {
+						i=1;
+					}
+					textureDeformOptions.setLabel(textureDeformOptions.getItem(i).getName());
 					break;
 				
 				case CHANGE_BRIGHTNESS:
