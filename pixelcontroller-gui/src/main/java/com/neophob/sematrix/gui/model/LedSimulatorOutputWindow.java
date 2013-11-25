@@ -44,8 +44,9 @@ public class LedSimulatorOutputWindow {
 	 */
 	public void calculateWindowsSize(Layout layout) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int)screenSize.getWidth();
-		int screenHeight = (int)screenSize.getHeight();
+		//maximal 70% of window size
+		int screenWidth = (int)(screenSize.getWidth()*0.7f);
+		int screenHeight = (int)(screenSize.getHeight()*0.7f);
 
 		boolean firstRun = true;
 		int sanityCheck=0;
