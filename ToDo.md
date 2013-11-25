@@ -9,6 +9,7 @@
 * Sort generator and effect by name
 * Fix Issue#51, CHANGE_PRESENT, LOAD_PRESENET, SAVE_PRESENT -> rename to PRESET
 * Resolution 1x96 is unhealthy for the gui...
+* make sure the screen capture plugin is not initialized in a headless envoirement
 
 ## Version 2.1
 
