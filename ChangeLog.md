@@ -15,6 +15,7 @@
 * Fix respect maximal window size defined in the config file
 * Fix adjust matrix simulation window for large resolutions
 * Fix effect Rotate90 - works now for non-square resolutions
+* Fix improve error reporting
 * Much faster startup time
 * Removed TCP Server, used by the old PureData frontend and CLI client
 * Update documentation, see readme.pdf

@@ -82,8 +82,11 @@ public class PixelControllerCli {
 				this.output.logStatistics();
 			}
 
-			// update all generators
-			Collector.getInstance().updateSystem();
+			try {
+				Collector.getInstance().updateSystem();			
+			} catch (Exception e) {
+				LOG.log(Level.SEVERE, "Collector.getInstance().updateSystem() failed!", e);
+			}
 
 			framerate.waitForFps(cnt++); 
 		}

@@ -5,9 +5,8 @@
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
 * Add documentation about sending OSC Image data
-* Sort generator and effect by name
+* Sort generator, effect and mixer by name
 * Resolution 1x96 is unhealthy for the gui...
-* Catch All Exceptions
 
 ## Version 2.1
 
