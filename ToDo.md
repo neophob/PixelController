@@ -48,7 +48,8 @@
 * Game of life generator
 * Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 * Merge code of the output package, alot of duplicate code 
-* Add Passthrough Colorset (for example to display an Image on the LED Matrix)
+* Option to load a 24bpp image in pass through mode
+* new textscroller that displays only a character per time
 * Use google-guice as DI container
 * option to configure strange mapings easy, use a gui? html5 frontend?
 
