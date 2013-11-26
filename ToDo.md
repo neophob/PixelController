@@ -4,8 +4,6 @@
 
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
-* Add documentation about sending OSC Image data
-* Sort generator, effect and mixer by name
 * Resolution 1x96 is unhealthy for the gui...
 
 ## Version 2.1
@@ -48,6 +46,7 @@
 * new textscroller that displays only a character per time
 * Use google-guice as DI container
 * option to configure strange mapings easy, use a gui? html5 frontend?
+* Sort generator, effect and mixer by name, needs an update in the gui logic
 
 
 # Rejected backlog features

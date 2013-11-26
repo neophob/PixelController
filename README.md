@@ -220,12 +220,26 @@ Make sure you configured your LED Matrix (See above), to control PixelController
 
 ### How to use PixelController.net
 
-PixelController.net allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details, here is the quickguide:
+PixelController.net allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details. Here is the quickguide:
 
-* Install ser2net
+* Install ser2net on your RPi
 * configure ser2net: `5333:raw:500:/dev/ttyACM0:115200 8DATABITS NONE 1STOPBIT`
+* connect the Teensy board via USB to the RPi
 * start ser2net daemon
+* configure the pixelinvaders.net IP address in the `config.properties` file
 * have fun
+
+### Send OSC Messages to PixelController
+
+You can control PixelController remotely by sending OSC Messages. But you can also send image data to PixelController via OSC (`/OSC_GENERATOR1` and `/OSC_GENERATOR2`).
+
+First you need to find out the resolution for your Output device. Start PixelController and switch to the INFO tab. Search for the `Internal Buffersize` setting, this is the internal resolution. Now you have two options
+
+* send 8bpp (greyscale) image data to PixelController (Resolution X * Resolution Y * 1bpp). You can use Effects, Mixer and Colorsets.
+* send 24bpp image data to PixelController (Resolution X * Resolution Y * 3bpp). PixelController activates the pass through mode and Effects, Mixer and Colorsets cannot be used.
+
+See the Processing examples, I've included severall examples.
+
 
 ##OSC MESSAGES
 
