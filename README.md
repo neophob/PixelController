@@ -240,6 +240,18 @@ First you need to find out the resolution for your Output device. Start PixelCon
 
 See the Processing examples `OscSendControllMessages/sendImageKreise` and `OscSendControllMessages/sendImageKreise24bpp`.
 
+### Create Blinkenlights movie files
+
+Links that help you create Blinkenlights files:
+
+* [BLIMP - Blinkenlights Interactive Movie Program](http://wiki.blinkenarea.org/index.php/Blimp)
+* [Image to BML Converter](http://www.capybara.org/~dfraser/archives/261)
+* [162 Blinkenlights Movie files](http://www.littlelights.de/downloads/162-blms.zip)
+* [BML to GIF Converter **German**](http://blinkenmini.schuermans.info/software.de.html)
+* [Processing library to create Blinkenlights movie files](http://robinsenior.com/blinkenlights/)
+
+
+
 
 ##OSC MESSAGES
 
