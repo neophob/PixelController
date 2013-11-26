@@ -218,18 +218,18 @@ As the RPi isn't the beefiest CPU (and PixelController doen't use the GPU) it's 
 Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
 
 
-### How to use PixelController.net
+### How to use PixelInvaders.net
 
-PixelController.net allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details. Here is the quickguide:
+PixelController allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details. Here is the quickguide:
 
 * Install ser2net on your RPi
 * configure ser2net: `5333:raw:500:/dev/ttyACM0:115200 8DATABITS NONE 1STOPBIT`
 * connect the Teensy board via USB to the RPi
 * start ser2net daemon
-* configure the pixelinvaders.net IP address in the `config.properties` file
+* configure the PixelInvaders.net IP address in the `config.properties` file
 * have fun
 
-### Send OSC Messages to PixelController
+### Send Image data via OSC to PixelController
 
 You can control PixelController remotely by sending OSC Messages. But you can also send image data to PixelController via OSC (`/OSC_GENERATOR1` and `/OSC_GENERATOR2`).
 
