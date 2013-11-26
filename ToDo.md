@@ -5,6 +5,7 @@
 * fix crash if no sound card is available (NPE: FFTSpectrum.java:52)
 * Update default preset (0)
 * Resolution 1x96 is unhealthy for the gui...
+* More feedback in consolemode / jmx
 
 ## Version 2.1
 
