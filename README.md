@@ -288,13 +288,67 @@ Here are all commands PixelController knows.
         FREEZE                      # of parameters: 0     <NO PARAM> toggle pause mode
         TOGGLE_INTERNAL_VISUAL      # of parameters: 0     <NO PARAM> show/hide internal visual to save CPU
 
+###OSC Parameter
+
+If you want to select another Generator, Effect or Mixer via OSC Message, you need to specify it's ID. Here is the list of all **Generator** ID's:
+
+		PASSTHRU(0)
+		BLINKENLIGHTS(1)
+		IMAGE(2)
+		PLASMA(3)
+		COLOR_SCROLL(4)
+		FIRE(5)
+		METABALLS(6)
+		PIXELIMAGE(7)
+		COLOR_FADE(8)
+		TEXTWRITER(9)
+		DROPS(10)
+		CELL(11)
+		PLASMA_ADVANCED(12)
+		FFT(13)
+		SCREEN_CAPTURE(14)
+		OSC_GEN1(15)
+		OSC_GEN2(16)
+		VISUAL_ZERO(17)
+
+Here is the list of all **Effect** ID's:
+
+		PASSTHRU(0)
+		INVERTER(1)
+		ROTOZOOM(2)
+		BEAT_HORIZONTAL_SHIFT(3)
+		BEAT_VERTICAL_SHIFT(4)
+		VOLUMINIZE(5)
+		THRESHOLD(6)
+		TEXTURE_DEFORMATION(7)
+		ZOOM(8)
+		FLIP_X(9)
+		FLIP_Y(10)
+		STROBO(11)
+		ROTATE90(12)
+		
+Here is the list of all **Mixer** ID's:		
+
+		PASSTHRU(0)
+		ADDSAT(1)
+		MULTIPLY(2)
+		MIX(3)
+		NEGATIVE_MULTIPLY(4)
+		CHECKBOX(5)
+		VOLUMINIZER(6)
+		EITHER(7)
+		SUBSAT(8)
+		HALFHALF(9)
+		HALFHALFVERTICAL(10)
+		MINIMUM(11)
+		MAXIMUM(12)
 
 ## IT DOES NOT WORK!
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
 
 Here are some common errors:
 
-* Is Java installed on your system? Open a terminal Windows (cmd.exe on Windows, terminal on OSX) and enter "java -version".
+* Is Java installed on your system? Open a terminal Windows (cmd.exe on Windows, terminal on OSX) and enter `java -version`.
 * Did you forgot to **edit the configuration file** `config.properties`. Take a look at the config examples files in the `data/config.examples` directory!
 * Did you flash the **correct firmware** to your Arduino/Teensy? 
 * **PixelInvaders panels**: Make sure that the Panel shows an **animated rainbow pattern** when the panels are powered on (make sure 
