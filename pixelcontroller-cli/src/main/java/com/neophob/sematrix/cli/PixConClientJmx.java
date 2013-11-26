@@ -134,5 +134,9 @@ public final class PixConClientJmx {
 				);
 			}
 		}
+		
+		for (String s: mbeanProxy.getCurrentState()) {
+			System.out.println(s);
+		}
 	}
 }

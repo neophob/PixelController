@@ -199,8 +199,8 @@ public class Collector extends Observable {
 				sound = new SoundMinim(ph.getSoundSilenceThreshold());			
 			} catch (Exception e) {
 				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.");				
-			} catch (LinkageError e) {
-				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE (Linkage error). Disable sound input.");			
+			} catch (Error e) {
+				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);			
 			}			
 		} 
 
@@ -264,7 +264,7 @@ public class Collector extends Observable {
 			ioMapping.add(new OutputMapping(pixelControllerFader.getVisualFader(FaderName.SWITCH), n));			
 		}
 
-		pixConStat = new PixelControllerStatus(fps);
+		pixConStat = new PixelControllerStatus(this, fps);
 
 		initialized=true;
 	}

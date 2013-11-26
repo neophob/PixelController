@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.core.jmx;
 
+import java.util.List;
+
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 
 /**
@@ -93,4 +95,6 @@ public interface PixelControllerStatusMBean {
 	 * @return returns the type of the given output instance position
 	 */
 	OutputDeviceEnum getOutputType(int output);
+	
+	List<String> getCurrentState();
 }

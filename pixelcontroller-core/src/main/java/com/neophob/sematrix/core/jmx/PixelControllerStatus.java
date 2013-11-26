@@ -34,6 +34,7 @@ import javax.management.ObjectName;
 
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 
+import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 
@@ -51,7 +52,7 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	public static final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
 	/** The Constant VERSION. */
-	private static final float VERSION = 1.1f;
+	private static final float VERSION = 1.2f;
 	
 	/** The Constant SECONDS. */
 	private static final int SECONDS = 10;
@@ -82,6 +83,8 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	/** The output list. */
 	private List<IOutput> outputList;
 	
+	private Collector col;
+	
 	private PacketAndBytesStatictics oscServerStatistics;
 	
 	/**
@@ -89,10 +92,11 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 	 *
 	 * @param configuredFps the configured fps
 	 */
-	public PixelControllerStatus(int configuredFps) {
+	public PixelControllerStatus(Collector col, int configuredFps) {
 		LOG.log(Level.INFO, "Initialize the PixelControllerStatus JMX Bean");
 		
 		this.configuredFps = configuredFps;
+		this.col = col;
 		
 		// initialize all buffers 
 		this.timeMeasureMapGlobal = new ConcurrentHashMap<TimeMeasureItemGlobal, CircularFifoBuffer>();
@@ -329,6 +333,11 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
         }
         return this.oscServerStatistics.getBytesRecieved();
     }
+
+	@Override
+	public List<String> getCurrentState() {
+		return col.getCurrentStatus(); 
+	}
 	
 	
 }

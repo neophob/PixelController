@@ -250,7 +250,7 @@ Links that help you create Blinkenlights files:
 * [BML to GIF Converter **German**](http://blinkenmini.schuermans.info/software.de.html)
 * [Processing library to create Blinkenlights movie files](http://robinsenior.com/blinkenlights/)
 
-
+A note about BLIMP, if you save a file, make sure to add the ".bml" file extension, else it may fail.
 
 
 ##OSC MESSAGES
