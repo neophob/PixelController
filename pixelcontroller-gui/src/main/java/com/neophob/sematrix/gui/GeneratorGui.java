@@ -113,6 +113,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Textfield textGenerator;
 
     private Slider brightnessControll;
+    private Toggle freeze;
     
     //Effect Tab    
     private Slider thresholdSlider, fxRotoSlider;	
@@ -353,8 +354,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
         
         //freeze update 
-        Toggle t1 = cp5.addToggle(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 730, 2, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
-        t1.setLabelVisible(false);
+        freeze = cp5.addToggle(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(), 730, 2, 15, 15).moveTo(ALWAYS_VISIBLE_TAB);
+        freeze.setLabelVisible(false);
         cp5.addTextlabel("freezeUpdateTxt", messages.getString("GeneratorGui.GUI_TOGGLE_FREEZE"), 745, 5).moveTo(ALWAYS_VISIBLE_TAB);
         cp5.getTooltip().register(GuiElement.BUTTON_TOGGLE_FREEZE.guiText(),messages.getString("GeneratorGui.TOOLTIP_FREEZE")); //$NON-NLS-1$
         
@@ -1292,6 +1293,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 					
 				case BEAT_WORKMODE:
 					beatWorkmode.setLabel(beatWorkmode.getItem(Integer.parseInt(s.getValue())).getName());
+					break;
+					
+				case FREEZE:
+					if (s.getValue().equals("true")) {
+						freeze.setBroadcast(false);
+						freeze.setState(true);
+						freeze.setBroadcast(true);
+					} else {
+						freeze.setBroadcast(false);
+						freeze.setState(false);
+						freeze.setBroadcast(true);
+					}
+					
 					break;
 					
 				default:

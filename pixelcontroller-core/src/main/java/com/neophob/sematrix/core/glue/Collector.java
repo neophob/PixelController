@@ -67,10 +67,10 @@ import com.neophob.sematrix.core.sound.SoundMinim;
 public class Collector extends Observable {
 
 	private static final Logger LOG = Logger.getLogger(Collector.class.getName());
-	
+
 	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";
-	
+
 	/** The Constant NR_OF_PRESENT_SLOTS. */
 	public static final int NR_OF_PRESET_SLOTS = 144;
 
@@ -85,7 +85,7 @@ public class Collector extends Observable {
 
 	/** The initialized. */
 	private boolean initialized;
-	
+
 	/** The matrix. */
 	private MatrixData matrix;
 
@@ -97,10 +97,10 @@ public class Collector extends Observable {
 
 	/** The nr of screens. */
 	private int nrOfScreens;
-	
+
 	/** The fps. */
 	private int fps;
-	
+
 	/** The current visual. */
 	private int currentVisual;
 
@@ -109,54 +109,54 @@ public class Collector extends Observable {
 
 	/** present settings. */
 	private int selectedPreset;
-	
+
 	/** The present. */
 	private List<PresetSettings> presets;
-	
+
 	/** The pixel controller generator. */
 	private PixelControllerGenerator pixelControllerGenerator;
-	
+
 	/** The pixel controller mixer. */
 	private PixelControllerMixer pixelControllerMixer;
-	
+
 	/** The pixel controller effect. */
 	private PixelControllerEffect pixelControllerEffect;
-	
+
 	/** The pixel controller resize. */
 	private PixelControllerResize pixelControllerResize;
-	
+
 	/** The pixel controller output. */
 	private PixelControllerOutput pixelControllerOutput;
-	
+
 	/** The pixel controller shuffler select. */
 	private PixelControllerShufflerSelect pixelControllerShufflerSelect;
-	
+
 	private PixelControllerFader pixelControllerFader;
-	
+
 	private PixelControllerOscServer oscServer;
-	
+
 	private ApplicationConfigurationHelper ph;
-	
+
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
-	
+
 	private PixelControllerStatus pixConStat;
 
 	private List<ColorSet> colorSets;		
-	
+
 	/** The random mode. */
 	private boolean inPauseMode = false;
 
 	private boolean internalVisualsVisible = true;
 
 	private IOutput output;
-	
+
 	private ISound sound;
-	
+
 	private FileUtils fileUtils;
-	
-	
-	
+
+
+
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -169,7 +169,7 @@ public class Collector extends Observable {
 
 		selectedPreset=0;		
 		presets = PresetSettings.initializePresetSettings(NR_OF_PRESET_SLOTS);
-				
+
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
 		pixelControllerShufflerSelect.initAll();		 
 	}
@@ -190,9 +190,9 @@ public class Collector extends Observable {
 		this.nrOfScreens = ph.getNrOfScreens();
 		this.ph = ph;
 		this.fps = ph.parseFps();
-		
+
 		this.colorSets = InitHelper.getColorPalettes(fileUtils);
-		
+
 		//choose sound implementation
 		if (ph.isAudioAware()) {
 			try {		
@@ -203,11 +203,11 @@ public class Collector extends Observable {
 				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE (Linkage error). Disable sound input.");			
 			}			
 		} 
-		
+
 		if (sound==null) {
 			sound = new SoundDummy();
 		}
-		
+
 		//create the device with specific size
 		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
@@ -218,15 +218,15 @@ public class Collector extends Observable {
 		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, this.fps, 
 				sound, pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
 		pixelControllerGenerator.initAll();
-		
+
 		pixelControllerEffect = new PixelControllerEffect(matrix, sound);
 		pixelControllerEffect.initAll();
 
 		pixelControllerMixer = new PixelControllerMixer(matrix, sound);
 		pixelControllerMixer.initAll();
-		
+
 		pixelControllerFader = new PixelControllerFader(ph, matrix, this.fps);
-		
+
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
 		LOG.log(Level.INFO, "Initialize "+(nrOfScreens+additionalVisuals)+" Visuals");
@@ -237,7 +237,7 @@ public class Collector extends Observable {
 			for (int i=1; i<nrOfScreens+additionalVisuals+1; i++) {
 				Generator g = pixelControllerGenerator.getGenerator(
 						GeneratorName.values()[ i%(GeneratorName.values().length) ]
-				);
+						);
 				if (g==null) {
 					//its possible we select an inactive generator, in this case just ignore it...
 					additionalVisuals++;
@@ -246,29 +246,29 @@ public class Collector extends Observable {
 					allVisuals.add(new Visual(g, genPassThru, effPassThru, effPassThru, mixPassThru, colorSets.get(0)));
 				}
 			}
-	        
+
 		} catch (IndexOutOfBoundsException e) {
-		    LOG.log(Level.SEVERE, "Failed to initialize Visual, maybe missing palette files?\n");
-		    throw new IllegalArgumentException("Failed to initialize Visuals, maybe missing palette files?");
+			LOG.log(Level.SEVERE, "Failed to initialize Visual, maybe missing palette files?\n");
+			throw new IllegalArgumentException("Failed to initialize Visuals, maybe missing palette files?");
 		}
-		
+
 		LOG.log(Level.INFO, "Initialize output");
 		pixelControllerOutput = new PixelControllerOutput();
 		pixelControllerOutput.initAll();
-		
+
 		this.presets = fileUtils.loadPresents(NR_OF_PRESET_SLOTS);
-		
+
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
 			ioMapping.add(new OutputMapping(pixelControllerFader.getVisualFader(FaderName.SWITCH), n));			
 		}
-		
+
 		pixConStat = new PixelControllerStatus(fps);
-		
+
 		initialized=true;
 	}
-	
+
 	/**
 	 * start tcp and osc server
 	 * 
@@ -276,16 +276,16 @@ public class Collector extends Observable {
 	 * @param ph
 	 */
 	public synchronized void initDaemons(ApplicationConfigurationHelper ph) {
-        //Start OSC Server (OSC Interface)
-        try {           
-            int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
-            oscServer = new PixelControllerOscServer(listeningOscPort);
-            oscServer.startServer();
-            //register osc server in the statistic class
-            this.pixConStat.setOscServerStatistics(oscServer);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "failed to start OSC Server", e);
-        }          	   
+		//Start OSC Server (OSC Interface)
+		try {           
+			int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
+			oscServer = new PixelControllerOscServer(listeningOscPort);
+			oscServer.startServer();
+			//register osc server in the statistic class
+			this.pixConStat.setOscServerStatistics(oscServer);
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "failed to start OSC Server", e);
+		}          	   
 	}
 
 	/**
@@ -302,9 +302,9 @@ public class Collector extends Observable {
 		if (isLoadingPresent()) {
 			return;
 		}
-				
+
 		//update the current value of frames per second
-/*		if (papplet!=null) {
+		/*		if (papplet!=null) {
 			pixConStat.setCurrentFps(papplet.frameRate);
 			pixConStat.setFrameCount(papplet.frameCount);			
 		}*/
@@ -313,15 +313,15 @@ public class Collector extends Observable {
 		//update generator depending on the input sound
 		pixelControllerGenerator.update();			
 		pixConStat.trackTime(TimeMeasureItemGlobal.GENERATOR, System.currentTimeMillis()-l);
-		
+
 		l = System.currentTimeMillis();
 		pixelControllerEffect.update();
 		pixConStat.trackTime(TimeMeasureItemGlobal.EFFECT, System.currentTimeMillis()-l);
-		
+
 		l = System.currentTimeMillis();
 		pixelControllerOutput.update();
 		pixConStat.trackTime(TimeMeasureItemGlobal.OUTPUT_SCHEDULE, System.currentTimeMillis()-l);
-				
+
 		//cleanup faders
 		l = System.currentTimeMillis();
 		for (OutputMapping om: ioMapping) {
@@ -329,7 +329,7 @@ public class Collector extends Observable {
 			if (fader!=null && fader.isStarted() && fader.isDone()) {
 				//fading is finished, cleanup
 				fader.cleanUp();
-				
+
 				if (fader.getScreenOutput()>=0) {
 					mapInputToScreen(fader.getScreenOutput(), fader.getNewVisual());			
 					LOG.log(Level.INFO, "Cleanup {0}, new visual: {1}, output screen: {2}", 
@@ -341,7 +341,7 @@ public class Collector extends Observable {
 			}
 		}
 		pixConStat.trackTime(TimeMeasureItemGlobal.FADER, System.currentTimeMillis()-l);
-		
+
 		if (randomMode) {
 			Shuffler.shuffleStuff(sound);
 		} else if (randomPresetMode) {
@@ -368,20 +368,20 @@ public class Collector extends Observable {
 		return nrOfScreens;
 	}
 
-	
+
 	private void saveImage(Visual v, String filename, int[] data) {
 		try {
 			int w = v.getGenerator1().getInternalBufferXSize();
 			int h = v.getGenerator1().getInternalBufferYSize();
-		    BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		    bi.setRGB(0, 0, w, h, data, 0, w);
-		    File outputfile = new File(filename);
-		    ImageIO.write(bi, "png", outputfile);
+			BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+			bi.setRGB(0, 0, w, h, data, 0, w);
+			File outputfile = new File(filename);
+			ImageIO.write(bi, "png", outputfile);
 		} catch (IOException e) {
-		    LOG.log(Level.SEVERE, "Failed to save screenshot "+filename, e);
+			LOG.log(Level.SEVERE, "Failed to save screenshot "+filename, e);
 		}
 	}
-	
+
 	/**
 	 * create screenshot
 	 */
@@ -408,7 +408,7 @@ public class Collector extends Observable {
 			ofs++;
 		}
 	}
-	
+
 	/**
 	 * which fx for screenOutput?.
 	 *
@@ -484,7 +484,7 @@ public class Collector extends Observable {
 	public void setRandomPresetMode(boolean randomPresetMode) {
 		this.randomPresetMode = randomPresetMode;
 	}
-	
+
 	public void savePresets() {
 		fileUtils.savePresents(presets);
 	}
@@ -508,7 +508,7 @@ public class Collector extends Observable {
 		long needed=System.currentTimeMillis()-start;
 		LOG.log(Level.INFO, "Preset loaded in "+needed+"ms");
 	}
-	
+
 	/**
 	 * get current state of visuals/outputs
 	 * as string list - used to save current settings.
@@ -517,7 +517,7 @@ public class Collector extends Observable {
 	 */
 	public List<String> getCurrentStatus() {		
 		List<String> ret = new ArrayList<String>();
-		
+
 		//get visual status
 		int n=0;
 		for (Visual v: allVisuals) {
@@ -538,13 +538,16 @@ public class Collector extends Observable {
 			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
 			ofs++;
 		}
-				
+
 		//add element status
 		ret.addAll(pixelControllerEffect.getCurrentState());
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
-		
+
 		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+selectedPreset);						
+		if (inPauseMode) {
+			ret.add(ValidCommands.FREEZE+EMPTY_CHAR);
+		}
 		return ret;
 	}
 
@@ -619,7 +622,7 @@ public class Collector extends Observable {
 	/* 
 	 * PRESENT ======================================================
 	 */
-	
+
 	/**
 	 * Gets the selected present.
 	 *
@@ -655,12 +658,12 @@ public class Collector extends Observable {
 	public void setPresets(List<PresetSettings> preset) {
 		this.presets = preset;
 	}
-	
-	
+
+
 	/*
 	 * OUTPUT MAPPING ======================================================
 	 */
-	
+
 	/**
 	 * Gets the all output mappings.
 	 *
@@ -680,8 +683,8 @@ public class Collector extends Observable {
 		return ioMapping.get(index);
 	}
 
-		
-	
+
+
 	/**
 	 * Gets the current visual.
 	 *
@@ -701,7 +704,7 @@ public class Collector extends Observable {
 			this.currentVisual = currentVisual;			
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -737,7 +740,7 @@ public class Collector extends Observable {
 	public synchronized void setLoadingPresent(boolean isLoadingPresent) {
 		this.isLoadingPresent = isLoadingPresent;
 	}
-	
+
 	/**
 	 * Gets the shuffler select.
 	 *
@@ -747,7 +750,7 @@ public class Collector extends Observable {
 	public boolean getShufflerSelect(ShufflerOffset ofs) {
 		return pixelControllerShufflerSelect.getShufflerSelect(ofs);	
 	}
-	
+
 	/**
 	 * Gets the pixel controller shuffler select.
 	 *
@@ -762,11 +765,11 @@ public class Collector extends Observable {
 	 *
 	 * @return the pixel controller mixer
 	 */
-	
+
 	public PixelControllerMixer getPixelControllerMixer() {
 		return pixelControllerMixer;
 	}
-	
+
 	/**
 	 * Gets the pixel controller effect.
 	 *
@@ -775,7 +778,7 @@ public class Collector extends Observable {
 	public PixelControllerEffect getPixelControllerEffect() {
 		return pixelControllerEffect;
 	}
-	
+
 	/**
 	 * Gets the pixel controller generator.
 	 *
@@ -784,7 +787,7 @@ public class Collector extends Observable {
 	public PixelControllerGenerator getPixelControllerGenerator() {
 		return pixelControllerGenerator;
 	}
-	
+
 	/**
 	 * Gets the pixel controller resize.
 	 *
@@ -807,26 +810,26 @@ public class Collector extends Observable {
 	 * 
 	 * @return
 	 */
-    public PixelControllerFader getPixelControllerFader() {
+	public PixelControllerFader getPixelControllerFader() {
 		return pixelControllerFader;
 	}
 
 	/**
-     * @return the ph
-     */
-    public ApplicationConfigurationHelper getPh() {
-        return ph;
-    }
+	 * @return the ph
+	 */
+	public ApplicationConfigurationHelper getPh() {
+		return ph;
+	}
 
-    /**
-     * 
-     * @return
-     */
+	/**
+	 * 
+	 * @return
+	 */
 	public int getFrames() {
 		return pixelControllerGenerator.getFrames();
 	}
 
-	
+
 	/**
 	 * 
 	 * @return
@@ -835,7 +838,7 @@ public class Collector extends Observable {
 		return pixConStat;
 	}
 
-	
+
 	/**
 	 * 
 	 * @return
@@ -844,8 +847,8 @@ public class Collector extends Observable {
 		return colorSets;
 	}
 
-	
-	
+
+
 	/**
 	 * 
 	 * @param colorSets
@@ -857,89 +860,89 @@ public class Collector extends Observable {
 	/**
 	 * 
 	 */
-    public void togglePauseMode() {
-    	if (inPauseMode) {
-    		inPauseMode=false;
-    	} else {
-    		inPauseMode=true;
-    	}
-    }
+	public void togglePauseMode() {
+		if (inPauseMode) {
+			inPauseMode=false;
+		} else {
+			inPauseMode=true;
+		}
+	}
 
-    /**
-     * 
-     */
-    public void toggleInternalVisual() {
-    	if (internalVisualsVisible) {
-    		internalVisualsVisible=false;
-    	} else {
-    		internalVisualsVisible=true;
-    	}
-    }
-    
-    
-    
-    public boolean isInternalVisualsVisible() {
+	/**
+	 * 
+	 */
+	public void toggleInternalVisual() {
+		if (internalVisualsVisible) {
+			internalVisualsVisible=false;
+		} else {
+			internalVisualsVisible=true;
+		}
+	}
+
+
+
+	public boolean isInternalVisualsVisible() {
 		return internalVisualsVisible;
 	}
 
 	/**
-     * 
-     * @return
-     */
+	 * 
+	 * @return
+	 */
 	public boolean isInPauseMode() {
 		return inPauseMode;
 	}
 
-    /**
-     * @param output the output to set
-     */
-    public void setOutput(IOutput output) {
-        this.output = output;
-    }    
-    	
-    /**
-     * 
-     * @return
-     */
-    public String getOutputDeviceName() {
-        if (this.output==null) {
-            return "";
-        }
-        return output.getType().toString();
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public Boolean isOutputDeviceConnected() {
-        if (this.output==null || !this.output.isSupportConnectionState()) {
-            return null;
-        }
-        
-        return this.output.isSupportConnectionState() && this.output.isConnected();
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public IOutput getOutputDevice() {
-        return this.output;
-    }
+	/**
+	 * @param output the output to set
+	 */
+	public void setOutput(IOutput output) {
+		this.output = output;
+	}    
 
-    /**
-     * sound implementation
-     * @return
-     */
+	/**
+	 * 
+	 * @return
+	 */
+	public String getOutputDeviceName() {
+		if (this.output==null) {
+			return "";
+		}
+		return output.getType().toString();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Boolean isOutputDeviceConnected() {
+		if (this.output==null || !this.output.isSupportConnectionState()) {
+			return null;
+		}
+
+		return this.output.isSupportConnectionState() && this.output.isConnected();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public IOutput getOutputDevice() {
+		return this.output;
+	}
+
+	/**
+	 * sound implementation
+	 * @return
+	 */
 	public ISound getSound() {
 		return sound;
 	}
-    
+
 
 	private List<String> getGuiState() {
 		List<String> ret = new ArrayList<String>();
-		
+
 		Visual v = allVisuals.get(currentVisual);		
 		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
 		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
@@ -961,9 +964,10 @@ public class Collector extends Observable {
 		ret.addAll(pixelControllerEffect.getCurrentState());
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
-		
+
 		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+selectedPreset);						
-		
+		ret.add(ValidCommands.FREEZE+EMPTY_CHAR+inPauseMode);
+
 		return ret;
 	}
 
@@ -972,7 +976,7 @@ public class Collector extends Observable {
 	 */
 	public void notifyGuiUpdate() {
 		setChanged();
-        notifyObservers(getGuiState());
+		notifyObservers(getGuiState());
 	}
-	
+
 }

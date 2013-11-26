@@ -238,7 +238,7 @@ First you need to find out the resolution for your Output device. Start PixelCon
 * send 8bpp (greyscale) image data to PixelController (Resolution X * Resolution Y * 1bpp). You can use Effects, Mixer and Colorsets.
 * send 24bpp image data to PixelController (Resolution X * Resolution Y * 3bpp). PixelController activates the pass through mode and Effects, Mixer and Colorsets cannot be used.
 
-See the Processing examples, I've included severall examples.
+See the Processing examples `OscSendControllMessages/sendImageKreise` and `OscSendControllMessages/sendImageKreise24bpp`.
 
 
 ##OSC MESSAGES

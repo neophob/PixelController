@@ -32,9 +32,13 @@ public class GuiState {
 		newState.putAll(state);
 		
 		for (Object obj: o) {
-			String s = (String)obj;
+			String s = (String)obj;			
 			String[] tmp = s.split(" ");
-			newState.put(tmp[0], tmp[1]);
+			if (tmp.length>1) {
+				newState.put(tmp[0], tmp[1]);	
+			} else {
+				newState.put(tmp[0], "");
+			}
 		}
 		
 		diff = getDifference(newState);
