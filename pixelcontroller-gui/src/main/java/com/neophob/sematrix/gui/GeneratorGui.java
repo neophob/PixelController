@@ -82,7 +82,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private static final long serialVersionUID = 2344499301021L;
 
     private static final int SELECTED_MARKER = 10;
-    
+
+    private static final int MINIMAL_VISUAL_WIDTH = 120;
+
     private static final int GENERIC_X_OFS = 5;
     private static final int GENERIC_Y_OFS = 8;
 
@@ -162,6 +164,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     private Messages messages;
     
+    private long frames=0;
+
+    
     /**
      * Instantiates a new internal buffer.
      *
@@ -210,12 +215,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         Collector col = Collector.getInstance();
         int nrOfVisuals = col.getAllVisuals().size();
       
+        int w = singleVisualXSize < MINIMAL_VISUAL_WIDTH ? MINIMAL_VISUAL_WIDTH-1 : singleVisualXSize-1; 
         selectedVisualList = cp5.addRadioButton(GuiElement.CURRENT_VISUAL.guiText(), getVisualCenter(col), p5GuiYOffset-58);
         selectedVisualList.setItemsPerRow(nrOfVisuals);
         selectedVisualList.setNoneSelectedAllowed(false);		
         for (i=0; i<nrOfVisuals; i++) {
             String s = messages.getString("GeneratorGui.GUI_SELECTED_VISUAL")+(1+i);			 //$NON-NLS-1$
-            Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize-1, 13);
+            Toggle t = cp5.addToggle(s, 0, 0, w, 13);
+            //Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize-1, 13);
             t.setCaptionLabel(s);
             selectedVisualList.addItem(t, i);			
             cp5.getTooltip().register(s, messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_PREFIX")+(1+i)+messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
@@ -845,10 +852,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * @return
      */
     private int getVisualCenter(Collector col) {
+    	if (singleVisualXSize<MINIMAL_VISUAL_WIDTH) {
+        	return (windowWidth - (col.getAllVisuals().size() * MINIMAL_VISUAL_WIDTH))/2;    		
+    	}
     	return (windowWidth - (col.getAllVisuals().size() * singleVisualXSize))/2;
     }
     
-    long frames=0;
     /**
      * draw the whole internal buffer on screen.
      * this method is quite cpu intensive
@@ -907,7 +916,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             	}	
             	rect(localX+5, localY+5, 10, 10);				
 
-                localX += pImage.width;
+            	//make sure the visuals are not too tight
+            	if (pImage.width<MINIMAL_VISUAL_WIDTH) {
+                    localX += MINIMAL_VISUAL_WIDTH;
+            	} else {
+                    localX += pImage.width;
+            	}
                 ofs++;
             }        	
         }        
