@@ -85,6 +85,8 @@ public class OutputGui {
 			this.parent.frame.setAlwaysOnTop(true);			
 		}
 		
+		this.parent.background(0);
+		
 		//try to set large osx icon here...
 		try {
 			String osName = System.getProperties().getProperty("os.name");
@@ -128,18 +130,18 @@ public class OutputGui {
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<this.collector.getNrOfScreens(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, false), currentOutput);
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, true), currentOutput);
 			}
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, false), currentOutput);
+				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, true), currentOutput);
 				ofs++;
 			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen, false), currentOutput);
+				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen, true), currentOutput);
 			}
 			break;
 		}
@@ -167,7 +169,7 @@ public class OutputGui {
 		parent.rect(xOfs, yOfs + LedSimulatorOutputWindow.OFS/2, lsow.getOneMatrixXSize(), lsow.getOneMatrixYSize());
 		
 		int shift = MAX_BPP - this.output.getBpp();
-		
+				
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
 			for (int x=0; x<matrixData.getDeviceXSize(); x++) {
 				tmp = buffer[ofs++];
@@ -186,8 +188,9 @@ public class OutputGui {
 				}
 				parent.fill(r,g,b);
 				parent.rect(xOfs+lsow.getRahmenSize()+x*(lsow.getRahmenSize()+lsow.getLedSize()),
-							yOfs+lsow.getRahmenSize()+y*(lsow.getRahmenSize()+lsow.getLedSize()) + LedSimulatorOutputWindow.OFS/2,
-							lsow.getLedSize(), lsow.getLedSize());
+						yOfs+lsow.getRahmenSize()+y*(lsow.getRahmenSize()+lsow.getLedSize()) + LedSimulatorOutputWindow.OFS/2,
+						lsow.getLedSize(), lsow.getLedSize());
+				
 			}
 		}
 	}
