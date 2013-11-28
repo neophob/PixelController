@@ -222,7 +222,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         for (i=0; i<nrOfVisuals; i++) {
             String s = messages.getString("GeneratorGui.GUI_SELECTED_VISUAL")+(1+i);			 //$NON-NLS-1$
             Toggle t = cp5.addToggle(s, 0, 0, w, 13);
-            //Toggle t = cp5.addToggle(s, 0, 0, singleVisualXSize-1, 13);
             t.setCaptionLabel(s);
             selectedVisualList.addItem(t, i);			
             cp5.getTooltip().register(s, messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_PREFIX")+(1+i)+messages.getString("GeneratorGui.GUI_SELECTED_VISUAL_TOOLTIP_POSTFIX"));			 //$NON-NLS-1$ //$NON-NLS-2$
