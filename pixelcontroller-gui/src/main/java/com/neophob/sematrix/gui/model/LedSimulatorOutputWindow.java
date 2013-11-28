@@ -14,6 +14,7 @@ import com.neophob.sematrix.core.layout.Layout;
  *
  */
 public class LedSimulatorOutputWindow {
+	private static final int MINIMAL_SIZE = 40;
 
 	public static int OFS = 20;
 	
@@ -24,6 +25,9 @@ public class LedSimulatorOutputWindow {
 
 	/** The led size. */
 	private int ledSize;
+	private int ledSizeX;
+	private int ledSizeY;
+	
 	private int rahmenSize;
 
 	private MatrixData matrixData;
@@ -70,6 +74,10 @@ public class LedSimulatorOutputWindow {
 			windowSize = getWindowSize(layout);
 			
 		} while ((windowSize.getX() > screenWidth || windowSize.getY() > screenHeight));
+		
+		ledSizeX = ledSize;//*matrixData.getDeviceXSize() < MINIMAL_SIZE ? MINIMAL_SIZE : ledSize; 
+		ledSizeY = ledSize;//*matrixData.getDeviceYSize() < MINIMAL_SIZE ? MINIMAL_SIZE : ledSize; 
+
 	}
 
 	/**
@@ -92,7 +100,7 @@ public class LedSimulatorOutputWindow {
 			y = getOneMatrixYSize() * 2; // 2 rows
 			break;
 		}
-
+		
 		return new Point(x+rahmenSize,y+2*OFS+2*rahmenSize);
 	}
 
@@ -134,6 +142,22 @@ public class LedSimulatorOutputWindow {
 	 */
 	public int getLedSize() {
 		return ledSize;
+	}
+	
+	
+
+	/**
+	 * @return the ledSizeX
+	 */
+	public int getLedSizeX() {
+		return ledSizeX;
+	}
+
+	/**
+	 * @return the ledSizeY
+	 */
+	public int getLedSizeY() {
+		return ledSizeY;
 	}
 
 	/* (non-Javadoc)
