@@ -15,6 +15,7 @@ public class WindowSizeCalculator {
 	//defined by the gui
 	public static final int MINIMAL_WINDOW_WIDTH = 820;
 	public static final int MINIMAL_WINDOW_HEIGHT = 440;
+	public static final int MINIMAL_VISUAL_WIDTH = 40;
 	public static final int MINIMAL_VISUAL_HEIGHT = 40;
 
 
@@ -57,7 +58,7 @@ public class WindowSizeCalculator {
 		} else {
 			maxWindowHeight = maximalWindowHeight;
 		}		
-
+		
 		calculateWidth();
 		calculateHeight();
 	}
@@ -77,6 +78,12 @@ public class WindowSizeCalculator {
 			singleVisualHeight/=2;
 			singleVisualWidth/=2;
 		}
+		
+		//make sure the visual is visible
+		if (singleVisualWidth < MINIMAL_VISUAL_WIDTH) {
+			singleVisualWidth = MINIMAL_VISUAL_WIDTH;
+		}
+
 
 	}
 
