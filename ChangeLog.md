@@ -17,6 +17,7 @@
 * Fix effect Rotate90 - works now for non-square resolutions
 * Fix improve error reporting
 * Much faster startup time
+* Display gamma correction on output matrix
 * Removed TCP Server, used by the old PureData frontend and CLI client
 * Update documentation, see readme.pdf
 

@@ -3,8 +3,6 @@
 ## Version 2.0
 
 * Update default preset (0)
-* Resolution 1x96 is unhealthy for the gui...
-* More feedback in consolemode / jmx
 
 ## Version 2.1
 
@@ -13,6 +11,7 @@
 * Support Multiple Output devices with different matrix sizes
 * Random-Mode with selectable time-life
 * TouchOSC GUI
+* Resolution 1x96 is unhealthy for the gui...
 
 # Backlog
 
