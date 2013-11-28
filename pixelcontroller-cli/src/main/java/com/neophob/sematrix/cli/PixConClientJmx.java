@@ -135,8 +135,12 @@ public final class PixConClientJmx {
 			}
 		}
 		
+		System.out.println("\nCurrent settings:");
 		for (String s: mbeanProxy.getCurrentState()) {
-			System.out.println(s);
+			if (s.contains("CURRENT_VISUAL") || s.contains("CURRENT_OUTPUT") || s.contains("CHANGE_ROTOZOOM")) {
+				System.out.println();
+			}
+			System.out.println("   "+s);
 		}
 	}
 }
