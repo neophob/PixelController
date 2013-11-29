@@ -46,7 +46,8 @@
 * new textscroller that displays only a character per time
 * Use google-guice as DI container
 * option to configure strange mapings easy, use a gui? html5 frontend?
-* Sort generator, effect and mixer by name, needs an update in the gui logic
+* GUI: Sort generator, effect and mixer dropdown lists by name, needs an update in the gui logic
+* verify all implemented image rotation for the output devices make sense
 
 
 # Rejected backlog features
