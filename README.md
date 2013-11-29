@@ -217,7 +217,34 @@ As the RPi isn't the beefiest CPU (and PixelController doen't use the GPU) it's 
    
 Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
 
+### Non-rectangular LED matrix
 
+If you have a non-rectangular LED matrix you want to use with PixelController you can use the custom mapping feature. For example you wired up this Christmas tree (Resolution 9x12):
+
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 01 -- -- -- -- ( 09)
+    -- -- -- XX XX XX -- -- --         -- -- -- 02 03 04 -- -- -- ( 18)
+    -- -- XX XX XX XX XX -- --         -- -- 09 08 07 06 05 -- -- ( 27)
+    -- -- -- XX XX XX -- -- --         -- -- -- 10 11 12 -- -- -- ( 36)
+    -- -- XX XX XX XX XX -- --         -- -- 17 16 15 14 13 -- -- ( 45)
+    -- XX XX XX XX XX XX XX --         -- 18 19 20 21 22 23 24 -- ( 54)
+    -- -- XX XX XX XX XX -- --         -- -- 29 28 27 26 25 -- -- ( 63)
+    -- XX XX XX XX XX XX XX --         -- 30 31 32 33 34 35 36 -- ( 72)
+    XX XX XX XX XX XX XX XX XX         45 44 43 42 41 40 39 38 37 ( 81)
+    -- -- -- XX XX XX -- -- --         -- -- -- 46 47 48 -- -- -- ( 90)
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 49 -- -- -- -- ( 99)
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 50 -- -- -- -- (108)
+    
+The `output.mapping` option allows the custom mapping. While it's position define the target offset, the nr define the source, example:
+
+    output.mapping=5,8,2,...
+    
+This means the first pixel gets the content of 5th pixel, the second pixel gets the content of the 8th pixel, the third pixel gets the content of the 2nd pixel and so on.
+
+Back to the Christmas tree examples, to create a valid mapping use this config:
+
+    output.mapping=4, 12,13,14, 24,23,22,21,20, 30,31,32, 42,41,40,39,38, 46,47,48,49,50,51,52 ...
+ 
+    
 ### How to use PixelInvaders.net
 
 PixelController allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details. Here is the quickguide:
