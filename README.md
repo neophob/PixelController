@@ -101,7 +101,7 @@ There are a lot of options in the `config.properties` file. I describe some exam
     #=========================
     sound.analyze.enabled=true
 
-There is a Generator called "Screen Caputure" which is disabled by default. If you want to enable this generator, edit the following settings:
+There is a Generator called "**Screen Caputure**" which is disabled by default. If you want to enable this generator, edit the following settings:
 
     #x/y offset for screen capturing generator
     #if you define screen.capture.window.size.x as 0, the screen capture generator will be disabled
@@ -111,7 +111,7 @@ There is a Generator called "Screen Caputure" which is disabled by default. If y
 
 This enables the Screen Caputure Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube videos, other movie players...
 
-Or you can start PixelController in the random mode where PixelController changes the Visuals randomly:
+Or you can start PixelController in the **random mode** where PixelController changes the Visuals randomly:
 
     #=========================
     #start in random mode?
@@ -126,7 +126,7 @@ Or you can save a preset and load that one per default if you start PixelControl
     #=========================
     #startup.load.preset.nr=1
 
-You can define the size of the PixelController GUI, for example the size of the simulated LED Matrix (which is per default 16 pixels):
+You can define the **size of the PixelController GUI**, for example the size of the simulated LED Matrix (which is per default 16 pixels):
 
     #=========================
     #the size of the software output matrix
@@ -141,7 +141,7 @@ Or define the window size, depending on this setting, the Visuals are displayed 
     gui.window.maximal.width=820
     gui.window.maximal.height=600
 
-You can define your own Colorsets, they are defined in the file `data/palette.properties`. A Colorset definition consists of a name and multiple RGB color values. Here is an example:
+You can define **your own Colorsets**, they are defined in the file `data/palette.properties`. A Colorset definition consists of a name and multiple RGB color values. Here is an example:
 
     MiamiVice=0x1be3ff, 0xff82dc, 0xffffff
 
