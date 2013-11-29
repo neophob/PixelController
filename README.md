@@ -79,7 +79,7 @@ You need to know how to install an Arduino Library ([http://arduino.cc/en/Guide/
 
 ### How does it work?
 
-PixelController generates the content for the LED matrixa and sends the data out to the controller. The controller will handle the LED module update. There are two options to send the data to the controller: 
+PixelController generates the content for the LED matrixa and sends the data out to the controller. The controller will handle the LED module update (which depends on the used LED modules). There are two options to send the data to the controller: 
 * sends the data via USB to the Arduino/Teensy board aka. DIY LED controller.
 * sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device.
 
