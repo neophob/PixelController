@@ -12,7 +12,6 @@
 * Support Multiple Output devices with different matrix sizes
 * Random-Mode with selectable time-life
 * TouchOSC GUI
-* Resolution 1x96 is unhealthy for the gui...
 
 # Backlog
 
@@ -29,7 +28,6 @@
      Example: 3/1 Layout defines 2 virtual panels, panel 1 using physical panel a,b,d,e panel 2 using physical panel c and f.
      Example: Fancy Layout defines 3 virtual panels, panel 1 using physical panel a,b,d,e, panel 2 using physical panel c panel 3 using physical panel f
 ```
-
 * Option to invert GUI colors
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
 * Option to modify colorsets of all visuals
@@ -52,6 +50,7 @@
 * verify all implemented image rotation for the output devices make sense
 * Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
 * Merge code of the output package, alot of duplicate code 
+* Resolution 1x96 is unhealthy for the gui...
 
 
 # Rejected backlog features
