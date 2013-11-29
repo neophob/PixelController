@@ -35,6 +35,7 @@
 * option to configure strange mapings easy, use a gui? html5 frontend?
 * GUI: Sort generator, effect and mixer dropdown lists by name, needs an update in the gui logic
 * More layouts (Half/Half, 3/1...). Current layouts are hardware dependent. New layout shouldn't be. 
+
 ```
     +---+---+---+
     | a | b | c |
