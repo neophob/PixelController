@@ -24,12 +24,12 @@ By default PixelController has **no configured** output device (= no configured 
     output.resolution.x=8
     output.resolution.y=8
 
-which defines the resolution of your matrix. And you need to define an Output device, for example for the PixelInvaders panels:
+which defines the resolution of your matrix. Next you need to define one or multiple Output devices, for example for two PixelInvaders panels (while the output for the second panel is rotated by 180 degrees):
 
     pixelinvaders.layout.row1=NO_ROTATE,ROTATE_180
     #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
 
-this defines two PixelInvaders panels while the second panel is rotated by 180 degrees. Take a look at the config file, there are alot of hints how to configure PixelController.
+Take a look at the config file, there are alot of hints how to configure PixelController.
 
 ### Main idea
 A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
@@ -79,7 +79,7 @@ You need to know how to install an Arduino Library ([http://arduino.cc/en/Guide/
 
 ### How does it work?
 
-PixelController generates the content for the LED matrix, sends the data out to the controller, the controller will update the LED modules. There are two options for "sends the data": 
+PixelController generates the content for the LED matrixa and sends the data out to the controller. The controller will handle the LED module update. There are two options to send the data to the controller: 
 * sends the data via USB to the Arduino/Teensy board aka. DIY LED controller.
 * sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device.
 
@@ -147,7 +147,7 @@ You can define your own Colorsets, they are defined in the file `data/palette.pr
 
  
 
-There are more options in the config file, take a look - each option should be documented.
+There are more options in the config file, take a look - each option is documented in the config file.
 
 
 ## FRONTENDS
