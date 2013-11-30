@@ -29,7 +29,7 @@ which defines the resolution of your matrix. Next you need to define one or mult
     pixelinvaders.layout.row1=NO_ROTATE,ROTATE_180
     #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
 
-Take a look at the config file, there are alot of hints how to configure PixelController.
+Take a look at the config file, there are a lot of hints how to configure PixelController.
 
 ### Main idea
 A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
@@ -79,7 +79,7 @@ You need to know how to install an Arduino Library ([http://arduino.cc/en/Guide/
 
 ### How does it work?
 
-PixelController generates the content for the LED matrixa and sends the data out to the controller. The controller will handle the LED module update (which depends on the used LED modules). There are two options to send the data to the controller: 
+PixelController generates the content for the LED matrix and sends the data out to the controller. The controller then handle the LED module update (which depends on the used LED modules). There are two options to send the data to the controller: 
 * sends the data via USB to the Arduino/Teensy board aka. DIY LED controller.
 * sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device.
 
@@ -94,14 +94,14 @@ Here are some primitive schemes:
 
 ### Advanced PixelController configuration
 
-There are a lot of options in the `config.properties` file. I describe some examples, PixelController updates all Visuals depending on the Sound input. If a beat is detected, the Visuals are updated faster. You can disable this behaviour by setting this option:
+There are a lot of options in the `config.properties` file. I describe some examples; PixelController updates all Visuals depending on the Sound input. If a beat is detected, the Visuals are updated faster. You can disable this behavior by setting this option:
 
     #=========================
     #enable pixelcontroller sound analyzer (disable it if you don't have a sound card)
     #=========================
     sound.analyze.enabled=true
 
-There is a Generator called "**Screen Caputure**" which is disabled by default. If you want to enable this generator, edit the following settings:
+There is a Generator called "**Screen Capture**" which is disabled by default. If you want to enable this generator, edit the following settings:
 
     #x/y offset for screen capturing generator
     #if you define screen.capture.window.size.x as 0, the screen capture generator will be disabled
@@ -201,7 +201,7 @@ I included some [Processing](http://processing.org/) example Sketches. Maybe you
 ## MORE HINTS
 
 ### Run PixelController on a RPi
-As the RPi isn't the beefiest CPU (and PixelController doen't use the GPU) it's not really practical to run it with the graphial frontend. But you can run the console version of PixelController. You need to run PixelController **as root user** (or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
+As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphial frontend. But you can run the console version of PixelController. You need to run PixelController **as root user** (or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
 
     pi@raspberrypi ~/pixelcontroller-distribution-2.0.0/console $ sudo ./PixelControllerRPi.sh 
     Nov 24, 2013 1:53:27 PM com.neophob.sematrix.cli.PixelControllerCli <init>
@@ -393,7 +393,7 @@ Here are some common errors:
 * Did you forgot to **edit the configuration file** `config.properties`. Take a look at the config examples files in the `data/config.examples` directory!
 * Did you flash the **correct firmware** to your Arduino/Teensy? 
 * **PixelInvaders panels**: Make sure that the Panel shows an **animated rainbow pattern** when the panels are powered on (make sure 
-  that you also power the Arduino/Teensy board). If you don't see a animated rainbow, make sure the directon of the modules is correct and that
+  that you also power the Arduino/Teensy board). If you don't see a animated rainbow, make sure the direction of the modules is correct and that
   the Arduino/Teensy, LED modules and PSU share common ground. Verify the Arduino IDE don't spit out errors when you upload the firmware to the teensy
 * **PixelInvaders panels**: Multiple users reported that the PixelInvader firmware did not work on a new Arduino UNO r3 board. I think the reason
    for this is the big serial latency. However using a Arduino UNO r1 worked flawlessly. Technically this is not a big
