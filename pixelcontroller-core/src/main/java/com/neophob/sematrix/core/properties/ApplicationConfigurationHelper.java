@@ -57,7 +57,7 @@ public class ApplicationConfigurationHelper {
     		"Multiple cabling options (snake cabling and custom mapping) configured, illegal configuration!";
 
     private static final String ERROR_INVALID_OUTPUT_MAPPING = 
-    		"Invalid output mapping entries, output.mapping != output.resolution.x*output.resolution.y";
+    		"Invalid output mapping entries, output.mapping > output.resolution.x*output.resolution.y";
 
     /** The Constant FAILED_TO_PARSE. */
     private static final String FAILED_TO_PARSE = "Failed to parse {0}";
@@ -232,8 +232,8 @@ public class ApplicationConfigurationHelper {
         }
 
         int entries = this.deviceXResolution * this.deviceYResolution;
-        if (outputMappingSize>0 && outputMappingSize!=entries) {
-        	String s = " ("+entries+"!="+outputMappingSize+")";
+        if (outputMappingSize>0 && outputMappingSize>entries) {
+        	String s = " ("+outputMappingSize+">"+entries+")";
             LOG.log(Level.SEVERE, ERROR_INVALID_OUTPUT_MAPPING+s);
             throw new IllegalArgumentException(ERROR_INVALID_OUTPUT_MAPPING+s);        	
         }

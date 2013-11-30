@@ -479,12 +479,12 @@ public class PropertiesHelperTest {
         new ApplicationConfigurationHelper(config).getLayout();        
     }        
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidMappingCount() {     
+    @Test
+    public void testShortMappingCount() {     
         Properties config = new Properties();
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "2");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "2");
-        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,5,4,2,1,8");
+        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6");
         config.put(ConfigConstant.ARTNET_IP, "1.1.1.1");
         new ApplicationConfigurationHelper(config).getLayout();        
     }    

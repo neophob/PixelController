@@ -71,11 +71,11 @@ public class OutputHelper {
 	 * @return
 	 */
 	public static int[] manualMapping(int src[], int mapping[], int xResolution, int yResolution) {
-		int bufferTwo[] = src.clone();
-		int lenght = src.length;
+		int bufferTwo[] = new int[mapping.length];
+		int length = src.length;
 		int ofs=0;
 		for (int i: mapping) {
-			if (i+1>lenght) {
+			if (i+1>length) {
 				LOG.log(Level.SEVERE, "Your manual mapping is wrong,the first index is 0! Invalid entry index: {0}", i);
 			} else {
 				bufferTwo[ofs++] = src[i]; 				
