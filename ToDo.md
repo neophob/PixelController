@@ -2,7 +2,6 @@
 
 ## Version 2.0
 
-* Key shortcuts do not update GUI
 * Add more presets
 
 ## Version 2.1
