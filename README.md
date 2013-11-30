@@ -219,7 +219,13 @@ Make sure you configured your LED Matrix (See above), to control PixelController
 
 ### Non-rectangular LED matrix
 
-If you have a non-rectangular LED matrix you want to use with PixelController you can use the custom mapping feature. For example you wired up this Christmas tree (Resolution 9x12):
+If you have a non-rectangular LED matrix you want to use with PixelController you can use the custom mapping feature called `output.mapping`. While it's position define the target offset, the nr define the source, example:
+
+    output.mapping=5,8,2,...
+    
+This means the first pixel gets the content of 5th pixel, the second pixel gets the content of the 8th pixel, the third pixel gets the content of the 2nd pixel and so on.
+
+For example you wired up this Christmas tree (Matrix resolution 9x12):
 
     -- -- -- -- XX -- -- -- --         -- -- -- -- 01 -- -- -- -- ( 09)
     -- -- -- XX XX XX -- -- --         -- -- -- 02 03 04 -- -- -- ( 18)
@@ -233,17 +239,13 @@ If you have a non-rectangular LED matrix you want to use with PixelController yo
     -- -- -- XX XX XX -- -- --         -- -- -- 46 47 48 -- -- -- ( 90)
     -- -- -- -- XX -- -- -- --         -- -- -- -- 49 -- -- -- -- ( 99)
     -- -- -- -- XX -- -- -- --         -- -- -- -- 50 -- -- -- -- (108)
+           led position                       wiring order
     
-The `output.mapping` option allows the custom mapping. While it's position define the target offset, the nr define the source, example:
-
-    output.mapping=5,8,2,...
-    
-This means the first pixel gets the content of 5th pixel, the second pixel gets the content of the 8th pixel, the third pixel gets the content of the 2nd pixel and so on.
-
-Back to the Christmas tree examples, to create a valid mapping use this config:
+To create a valid mapping use this config:
 
     output.mapping=4, 12,13,14, 24,23,22,21,20, 30,31,32, 42,41,40,39,38, 46,47,48,49,50,51,52 ...
- 
+
+With this feature you can use all kinds of matrices, for example a circle matrix. 
     
 ### How to use PixelInvaders.net
 
