@@ -489,6 +489,16 @@ public class PropertiesHelperTest {
         new ApplicationConfigurationHelper(config).getLayout();        
     }    
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidMappingCount() {     
+        Properties config = new Properties();
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "2");
+        config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "2");
+        config.put(ConfigConstant.OUTPUT_MAPPING, "4,6,3,1,5");
+        config.put(ConfigConstant.ARTNET_IP, "1.1.1.1");
+        new ApplicationConfigurationHelper(config).getLayout();        
+    }    
+
     @Test
     public void testHorizontalLayout() {     
         Properties config = new Properties();

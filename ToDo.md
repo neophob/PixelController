@@ -4,7 +4,6 @@
 
 * Key shortcuts do not update GUI
 * Add more presets
-* Custom mapping does not need to be equal to resolution
 
 ## Version 2.1
 
