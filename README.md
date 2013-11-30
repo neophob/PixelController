@@ -109,7 +109,7 @@ There is a Generator called "**Screen Capture**" which is disabled by default. I
     screen.capture.window.size.x=500
     screen.capture.window.size.y=300
 
-This enables the Screen Caputure Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube videos, other movie players...
+This enables the Screen Capture Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube videos, other movie players...
 
 Or you can start PixelController in the **random mode** where PixelController changes the Visuals randomly:
 
@@ -151,7 +151,7 @@ There are more options in the config file, take a look - each option is document
 
 
 ## FRONTENDS
-There are different frontends for PixelController (besides the GUI frontend). It dosen't matter how you control PixelController - you have the same functions. See chapter **OSC Messages** to get an overview.
+There are different frontends for PixelController (besides the GUI frontend). It doesn't matter how you control PixelController - you have the same functions. See chapter **OSC Messages** to get an overview.
 
 * **PixConCli**: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX. 
 * **OSC**: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included in the `integration/Processing` directory. You can send messages to control PixelController or you can send image content via OSC to PixelController. Of course you can create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
@@ -201,7 +201,7 @@ I included some [Processing](http://processing.org/) example Sketches. Maybe you
 ## MORE HINTS
 
 ### Run PixelController on a RPi
-As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphial frontend. But you can run the console version of PixelController. You need to run PixelController **as root user** (or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
+As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphical frontend. But you can run the console version of PixelController. You need to run PixelController **as root user** (or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
 
     pi@raspberrypi ~/pixelcontroller-distribution-2.0.0/console $ sudo ./PixelControllerRPi.sh 
     Nov 24, 2013 1:53:27 PM com.neophob.sematrix.cli.PixelControllerCli <init>
@@ -249,7 +249,7 @@ With this feature you can use all kinds of matrices, for example a circle matrix
     
 ### How to use PixelInvaders.net
 
-PixelController allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details. Here is the quickguide:
+PixelController allows you to network enable the PixelInvaders panels. See my [Blog post](http://neophob.com/2013/02/use-a-rpi-to-make-a-network-enabled-pixelcontroller/) for details. Here is the Quick Guide:
 
 * Install ser2net on your RPi
 * configure ser2net: `5333:raw:500:/dev/ttyACM0:115200 8DATABITS NONE 1STOPBIT`
