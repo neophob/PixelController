@@ -54,7 +54,7 @@ public class ApplicationConfigurationHelper {
     		"Multiple devices configured, illegal configuration!";
 
     private static final String ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED = 
-    		"Multiple cabling options configured, illegal configuration!";
+    		"Multiple cabling options (snake cabling and custom mapping) configured, illegal configuration!";
 
     private static final String ERROR_INVALID_OUTPUT_MAPPING = 
     		"Invalid output mapping entries, output.mapping != output.resolution.x*output.resolution.y";
