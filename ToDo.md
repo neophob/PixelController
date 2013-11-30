@@ -16,6 +16,7 @@
 
 ## Features
 
+* Create an API for the core
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * Option to invert GUI colors
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
@@ -31,7 +32,7 @@
 * Option to load a 24bpp image in pass through mode
 * new textscroller that displays only a character per time
 * Use google-guice as DI container
-* option to configure strange mapings easy, use a gui? html5 frontend?
+* option to configure strange mappings easy, use a gui? html5 frontend?
 * GUI: Sort generator, effect and mixer dropdown lists by name, needs an update in the gui logic
 * More layouts (Half/Half, 3/1...). Current layouts are hardware dependent. New layout shouldn't be. 
 
@@ -49,7 +50,7 @@
 * Do not freeze application if output fails (disconnect serial controller)
 * verify all implemented image rotation for the output devices make sense
 * Matrix device specific settings (bpp, cabling, mapping etc) should be inside the MatrixData class.
-* Merge code of the output package, alot of duplicate code 
+* Merge code of the output package, a lot of duplicate code 
 * Resolution 1x96 is unhealthy for the gui...
 
 
