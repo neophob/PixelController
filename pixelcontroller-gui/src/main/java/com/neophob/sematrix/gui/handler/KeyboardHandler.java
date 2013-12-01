@@ -61,6 +61,7 @@ public abstract class KeyboardHandler {
     	
         Collector col = Collector.getInstance();
         Visual v = col.getVisual(col.getCurrentVisual());
+        boolean validKey = false; 
         
         switch (key) {
         
@@ -81,8 +82,8 @@ public abstract class KeyboardHandler {
                 		takeNext = true;
                 	}
                 }
-
                 v.setColorSet(nextColorSet.getName());
+                validKey = true;
             }
             break;
 
@@ -100,7 +101,8 @@ public abstract class KeyboardHandler {
         		}
 
         		if (g!=null && g.getName() != null) {
-        			v.setGenerator1(currentGenerator%nrOfGenerators);          			
+        			v.setGenerator1(currentGenerator%nrOfGenerators);
+        			validKey = true;
         		} else {
         			LOG.log(Level.INFO, "Could not find new Generator!");
         		}
@@ -121,7 +123,8 @@ public abstract class KeyboardHandler {
         		}
 
         		if (g!=null && g.getName() != null) {
-        			v.setGenerator2(currentGenerator%nrOfGenerators);            			
+        			v.setGenerator2(currentGenerator%nrOfGenerators);
+        			validKey = true;
         		} else {
         			LOG.log(Level.INFO, "Could not find new Generator!");
         		}
@@ -135,6 +138,7 @@ public abstract class KeyboardHandler {
                 int nrOfEffects = col.getPixelControllerEffect().getSize();
                 currentEffect++;
                 v.setEffect1(currentEffect%nrOfEffects);
+                validKey = true;
             }
             break;
 
@@ -145,6 +149,7 @@ public abstract class KeyboardHandler {
                 int nrOfEffects = col.getPixelControllerEffect().getSize();
                 currentEffect++;
                 v.setEffect2(currentEffect%nrOfEffects);
+                validKey = true;
             }
             break;
 
@@ -155,6 +160,7 @@ public abstract class KeyboardHandler {
                 int nrOfMixerss = col.getPixelControllerMixer().getSize();
                 currentMixer++;
                 v.setMixer(currentMixer%nrOfMixerss);
+                validKey = true;
             }
             break;
             
@@ -162,7 +168,7 @@ public abstract class KeyboardHandler {
         case 'R':
             String msg[] = new String[1];		
             msg[0] = ""+ValidCommands.RANDOMIZE;
-            MessageProcessor.processMsg(msg, false, null);            
+            MessageProcessor.processMsg(msg, false, null);
             break;
             
         default:
@@ -184,10 +190,13 @@ public abstract class KeyboardHandler {
                 // convert a key-number (48-52) to an int between 0 and 4
                 int currentVisual = (int)key-49;
                 registerGuiClass.activeVisual(currentVisual);
+                validKey = true;
             }
         }
         
-        col.notifyGuiUpdate();
+        if (validKey) {
+            col.notifyGuiUpdate();        	
+        }
 
     }
 
