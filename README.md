@@ -310,8 +310,8 @@ Here are all commands PixelController knows.
         CHANGE_BRIGHTNESS           # of parameters: 1     <INT> output brightness 0 .. 100
         GENERATOR_SPEED             # of parameters: 1     <INT> generator speed 0 .. 200 (default speed is 100)
         BEAT_WORKMODE               # of parameters: 1     <INT> change beat workmode 0-2
-        OSC_GENERATOR1              # of parameters: 1     <BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)
-        OSC_GENERATOR2              # of parameters: 1     <BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)
+        OSC_GENERATOR1              # of parameters: 1     <BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata
+        OSC_GENERATOR2              # of parameters: 1     <BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata
 
         CHANGE_THRESHOLD_VALUE      # of parameters: 1     <INT> select current threshold for the threshold effect, 0-255
         CHANGE_ROTOZOOM             # of parameters: 1     <INT> select angle for the rotozoom effect, -127-127
