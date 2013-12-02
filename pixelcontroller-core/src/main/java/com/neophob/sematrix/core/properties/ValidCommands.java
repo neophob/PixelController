@@ -125,8 +125,8 @@ public enum ValidCommands {
 	
 	BEAT_WORKMODE(CommandGroup.GENERATOR, 1, "<INT> change beat workmode"),
 	
-	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)"),
-	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains 4096 bytes (64x64x8bpp) or 12288 bytes (64x64x24bpp) of image data (depending on internal size)"),
+	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata"),
+	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata"),
 	;
 	
 	/** The nr of params. */
