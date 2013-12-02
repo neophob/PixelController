@@ -186,7 +186,7 @@ public class Cell extends Generator {
                         this.dy=-this.dy;
                 }
                 
-                int rnd = random.nextInt(100);
+                int rnd = random.nextInt(64);
                 if (rnd==3) {
                         this.color=random.nextInt(255);
                 }
