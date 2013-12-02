@@ -437,7 +437,8 @@ Optional, license header check for all source files (http://code.mycila.com/lice
     
 Use the Maven version plugin to update your POM’s versions:
  
-    # mvn versions:set -DnewVersion=1.5.1
+    # mvn versions:set -DnewVersion=2.0.0
+    # mvn versions:commit
 
 
 Rebuild:
