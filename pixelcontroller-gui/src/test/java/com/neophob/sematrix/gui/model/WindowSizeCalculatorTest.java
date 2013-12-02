@@ -1,3 +1,21 @@
+/**
+ * Copyright (C) 2011-2013 Michael Vogt <michu@neophob.com>
+ *
+ * This file is part of PixelController.
+ *
+ * PixelController is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PixelController is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.neophob.sematrix.gui.model;
 
 import org.junit.Assert;
@@ -63,6 +81,24 @@ public class WindowSizeCalculatorTest {
 		int w = 12;
 		int h = 120;
 		int nrOfVisuals = 16;
+		int maximalWindowHeight = 1;
+		int maximalWindowWidth = 1;
+		WindowSizeCalculator wsc = new WindowSizeCalculator(w, h, maximalWindowWidth,
+				maximalWindowHeight, nrOfVisuals);
+		
+		System.out.println(wsc);
+		Assert.assertEquals(WindowSizeCalculator.MINIMAL_WINDOW_WIDTH, wsc.getWindowWidth());
+		Assert.assertEquals(WindowSizeCalculator.MINIMAL_WINDOW_HEIGHT, wsc.getWindowHeight());
+		Assert.assertTrue(wsc.getSingleVisualWidth() > 0);
+		Assert.assertTrue(wsc.getSingleVisualHeight() > 0);
+		Assert.assertTrue(wsc.getSingleVisualWidth() < wsc.getSingleVisualHeight());
+	}
+
+	@Test
+	public void testFancyResolutionHtwo() {
+		int w = 1;
+		int h = 120;
+		int nrOfVisuals = 4;
 		int maximalWindowHeight = 1;
 		int maximalWindowWidth = 1;
 		WindowSizeCalculator wsc = new WindowSizeCalculator(w, h, maximalWindowWidth,
