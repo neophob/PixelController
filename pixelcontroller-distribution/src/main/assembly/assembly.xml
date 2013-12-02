@@ -60,7 +60,7 @@
 			<source>${basedir}/src/main/resources/docs/readme.pdf</source>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
-			<destName>readme.pdf</destName>
+			<destName>Readme.pdf</destName>
 		</file>
 
  		<file>
