@@ -106,7 +106,12 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<version>2.5</version>
 				<configuration>
-					<header>src/main/assembly/header.txt</header>
+					<excludes>
+						<exclude>pom.xml</exclude>
+						<exclude>src/test/resources/**</exclude>
+						<exclude>**/*.txt</exclude>
+						<exclude>**/*.properties</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
