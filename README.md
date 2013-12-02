@@ -431,8 +431,8 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 
 Optional, license header check for all source files (http://code.mycila.com/license-maven-plugin/)
 
-    # mvn license:check -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=src/etc/header.txt (check)
-    # mvn license:format -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=src/etc/header.txt (apply)
+    # mvn license:check -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
+    # mvn license:format -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
 
     
 Use the Maven version plugin to update your POM’s versions:
@@ -447,12 +447,11 @@ Rebuild:
 
 Test application, make sure the `config.properties` file is correct.
 
+Update `readme.pdf` - use `README.md` as source.
+
 Update Changelog, add git status:
 
     # git diff v1.5.0 develop --stat
-
-
-Update `readme.pdf` - use `README.md` as source.
 
 Commit and push new version:
 
