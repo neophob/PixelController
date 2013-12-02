@@ -429,18 +429,10 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 
 ## NEW RELEASE
 
-Update Changelog, add git status:
+Optional, license header check for all source files (http://code.mycila.com/license-maven-plugin/)
 
-    # git diff v1.5.0 develop --stat
-
-
-Update `readme.pdf` - use `README.md` as source.
-
-
-Optional, license header check for all source files (http://code.google.com/p/maven-license-plugin/wiki/HowTo)
-
-    # mvn license:check -Dyear=2013 -Demail=michu@neophob.com (check)
-    # mvn license:format -Dyear=2013 -Demail=michu@neophob.com (apply)
+    # mvn license:check -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=src/etc/header.txt (check)
+    # mvn license:format -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=src/etc/header.txt (apply)
 
     
 Use the Maven version plugin to update your POM’s versions:
@@ -455,6 +447,12 @@ Rebuild:
 
 Test application, make sure the `config.properties` file is correct.
 
+Update Changelog, add git status:
+
+    # git diff v1.5.0 develop --stat
+
+
+Update `readme.pdf` - use `README.md` as source.
 
 Commit and push new version:
 
