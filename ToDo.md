@@ -1,9 +1,5 @@
 # Roadmap PixelController
 
-## Version 2.0
-
-* Add more presets
-
 ## Version 2.1
 
 * PixelInvaders firmware: support Teensy 3
@@ -17,6 +13,7 @@
 ## Features
 
 * Create an API for the core
+* Switch to logback
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * Option to invert GUI colors
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
