@@ -6,7 +6,7 @@
 * PixelInvaders firmware: Support ambient color for the output panel(s)
 * Support Multiple Output devices with different matrix sizes
 * Random-Mode with selectable time-life
-* Create TouchOSC GUI, implement Zeroconf/Bonjour service
+* Create TouchOSC GUI, implement Zeroconf/Bonjour service (http://jmdns.sourceforge.net/)
 
 # Backlog
 
