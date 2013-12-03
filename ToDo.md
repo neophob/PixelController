@@ -41,7 +41,7 @@
 ```
 
 ## Design
-* Create an API for the core
+* Create an API for the core (http://lcsd05.cs.tamu.edu/slides/keynote.pdf)
 * Switch to logback
 * Use google-guice as DI containe
 
