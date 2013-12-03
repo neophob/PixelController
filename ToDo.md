@@ -41,7 +41,7 @@
 ```
 
 ## Design
-* Create an API for the core (http://lcsd05.cs.tamu.edu/slides/keynote.pdf)
+* Create an API for the core (http://lcsd05.cs.tamu.edu/slides/keynote.pdf, http://theamiableapi.com/2012/01/16/java-api-design-checklist/)
 * Switch to logback
 * Use google-guice as DI containe
 
