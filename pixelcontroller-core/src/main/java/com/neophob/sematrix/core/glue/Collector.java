@@ -60,6 +60,8 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
+import com.neophob.sematrix.mdns.server.impl.MDnsServer;
+import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
  * The Class Collector.
@@ -272,6 +274,8 @@ public class Collector extends Observable {
 	/**
 	 * start tcp and osc server
 	 * 
+	 * TODO inject server
+	 * 
 	 * @param papplet
 	 * @param ph
 	 */
@@ -283,6 +287,9 @@ public class Collector extends Observable {
 			oscServer.startServer();
 			//register osc server in the statistic class
 			this.pixConStat.setOscServerStatistics(oscServer);
+			
+			MDnsServer bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
+			bonjour.startServer();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "failed to start OSC Server", e);
 		}          	   
