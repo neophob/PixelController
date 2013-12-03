@@ -447,7 +447,7 @@ Rebuild:
 
 Test application, make sure the `config.properties` file is correct.
 
-Verify the ToDo.md file is updated.
+Verify the `ToDo.md` file is updated.
 
 Update `readme.pdf` - use `README.md` as source.
 
