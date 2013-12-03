@@ -1,22 +1,17 @@
 # Roadmap PixelController
 
-## Version 2.0
-
-* Add more presets
-
 ## Version 2.1
 
 * PixelInvaders firmware: support Teensy 3
 * PixelInvaders firmware: Support ambient color for the output panel(s)
 * Support Multiple Output devices with different matrix sizes
 * Random-Mode with selectable time-life
-* TouchOSC GUI
+* Create TouchOSC GUI, implement Zeroconf/Bonjour service (http://jmdns.sourceforge.net/)
 
 # Backlog
 
 ## Features
 
-* Create an API for the core
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * Option to invert GUI colors
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
@@ -30,8 +25,7 @@
 * OLA (http://www.opendmx.net/index.php/Open_Lighting_Architecture) input plugin see https://github.com/neophob/ola-to-tpm2net
 * Game of life generator
 * Option to load a 24bpp image in pass through mode
-* new textscroller that displays only a character per time
-* Use google-guice as DI container
+* new textscroller that displays only a character per timer
 * option to configure strange mappings easy, use a gui? html5 frontend?
 * GUI: Sort generator, effect and mixer dropdown lists by name, needs an update in the gui logic
 * More layouts (Half/Half, 3/1...). Current layouts are hardware dependent. New layout shouldn't be. 
@@ -45,6 +39,11 @@
      Example: 3/1 Layout defines 2 virtual panels, panel 1 using physical panel a,b,d,e panel 2 using physical panel c and f.
      Example: Fancy Layout defines 3 virtual panels, panel 1 using physical panel a,b,d,e, panel 2 using physical panel c panel 3 using physical panel f
 ```
+
+## Design
+* Create an API for the core (http://lcsd05.cs.tamu.edu/slides/keynote.pdf, http://theamiableapi.com/2012/01/16/java-api-design-checklist/)
+* Switch to logback
+* Use google-guice as DI containe
 
 ## Bugfixes
 * Do not freeze application if output fails (disconnect serial controller)

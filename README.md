@@ -440,13 +440,14 @@ Use the Maven version plugin to update your POM’s versions:
     # mvn versions:set -DnewVersion=2.0.0
     # mvn versions:commit
 
-
 Rebuild:
 
     # mvn clean deploy
 
 
 Test application, make sure the `config.properties` file is correct.
+
+Verify the `ToDo.md` file is updated.
 
 Update `readme.pdf` - use `README.md` as source.
 
