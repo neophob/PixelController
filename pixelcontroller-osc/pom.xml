@@ -11,9 +11,8 @@
         
 	<artifactId>pixelcontroller-osc</artifactId>
 	<name>PixelController OSC Interface</name>
+	<packaging>bundle</packaging>
 	
-	<packaging>jar</packaging>
-
 	<description>Provide OSC Server and callback functions</description>
 	
 	<dependencies>

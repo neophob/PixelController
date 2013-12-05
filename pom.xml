@@ -24,6 +24,7 @@
 		<maven.assembly.plugin.version>2.4</maven.assembly.plugin.version>
 		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
 		<maven.dependency.plugin>2.8</maven.dependency.plugin>
+		<felix.plugin.version>2.4.0</felix.plugin.version>
 	</properties>
 
 	<prerequisites>
@@ -97,6 +98,19 @@
 			</plugin>
 			
 			<plugin>
+			<!-- http://www.lucamasini.net/Home/osgi-with-felix/creating-osgi-bundles-of-your-maven-dependencies -->
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${felix.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>          
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+					</instructions>
+				</configuration>
+			</plugin>
+		
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version><!--$NO-MVN-MAN-VER$ -->
@@ -150,12 +164,41 @@
 			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>	
-			  <dependency>
-    <groupId>com.google.android</groupId>
-    <artifactId>android</artifactId>
-    <version>4.1.1.4</version>
-    <scope>provided</scope>
-  </dependency>
 	</dependencies>
+	
+	<profiles>
+	<!-- mvn -Pcreate-osgi-bundles-from-dependencies bundle:wrap -->
+		<profile>
+                  <id>create-osgi-bundles-from-dependencies</id>      
+                  <build>
+                        <plugins>
+                             <plugin>
+                                   <groupId>org.apache.felix</groupId>
+                                   <artifactId>maven-bundle-plugin</artifactId>
+                                   <version>2.0.1</version>
+                                   <extensions>true</extensions>
+				<configuration>
+					<instructions>          
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+					</instructions>
+				</configuration>
+								   
+                                   <executions>
+                                         <execution>
+                                               <id>wrap-my-dependency</id>
+                                               <goals>
+                                                     <goal>wrap</goal>
+                                               </goals>
+                                               <configuration>
+                                                     <wrapImportPackage>;</wrapImportPackage>
+                                               </configuration>
+                                         </execution>
+                                   </executions>
+                             </plugin>
+                        </plugins>
+                  </build>   
+        </profile>
+	</profiles>
+
 	
 </project>

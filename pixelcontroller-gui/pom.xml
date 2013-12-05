@@ -11,9 +11,8 @@
                 
 	<artifactId>pixelcontroller-gui</artifactId>
 	<name>PixelController Processing Frontend</name>
+	<packaging>bundle</packaging>	
 	
-	<packaging>jar</packaging>
-
 	<build>
 		<plugins>
 			<plugin>

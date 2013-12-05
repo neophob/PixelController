@@ -11,9 +11,8 @@
                 
 	<artifactId>pixelcontroller-core</artifactId>
 	<name>PixelController Core Library</name>
+	<packaging>bundle</packaging>	
 	
-	<packaging>jar</packaging>
-
 	<properties>
 		<minim.version>2.1.0-BETA</minim.version>
 	</properties>
