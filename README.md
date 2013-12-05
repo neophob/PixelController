@@ -228,18 +228,18 @@ This means the first pixel gets the content of 5th pixel, the second pixel gets 
 
 For example you wired up this Christmas tree (Matrix resolution 9x12):
 
-    -- -- -- -- XX -- -- -- --         -- -- -- -- 01 -- -- -- -- ( 09)
-    -- -- -- XX XX XX -- -- --         -- -- -- 02 03 04 -- -- -- ( 18)
-    -- -- XX XX XX XX XX -- --         -- -- 09 08 07 06 05 -- -- ( 27)
-    -- -- -- XX XX XX -- -- --         -- -- -- 10 11 12 -- -- -- ( 36)
-    -- -- XX XX XX XX XX -- --         -- -- 17 16 15 14 13 -- -- ( 45)
-    -- XX XX XX XX XX XX XX --         -- 18 19 20 21 22 23 24 -- ( 54)
-    -- -- XX XX XX XX XX -- --         -- -- 29 28 27 26 25 -- -- ( 63)
-    -- XX XX XX XX XX XX XX --         -- 30 31 32 33 34 35 36 -- ( 72)
-    XX XX XX XX XX XX XX XX XX         45 44 43 42 41 40 39 38 37 ( 81)
-    -- -- -- XX XX XX -- -- --         -- -- -- 46 47 48 -- -- -- ( 90)
-    -- -- -- -- XX -- -- -- --         -- -- -- -- 49 -- -- -- -- ( 99)
-    -- -- -- -- XX -- -- -- --         -- -- -- -- 50 -- -- -- -- (108)
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 01 -- -- -- -- ( 08)
+    -- -- -- XX XX XX -- -- --         -- -- -- 02 03 04 -- -- -- ( 17)
+    -- -- XX XX XX XX XX -- --         -- -- 09 08 07 06 05 -- -- ( 26)
+    -- -- -- XX XX XX -- -- --         -- -- -- 10 11 12 -- -- -- ( 35)
+    -- -- XX XX XX XX XX -- --         -- -- 17 16 15 14 13 -- -- ( 44)
+    -- XX XX XX XX XX XX XX --         -- 18 19 20 21 22 23 24 -- ( 53)
+    -- -- XX XX XX XX XX -- --         -- -- 29 28 27 26 25 -- -- ( 62)
+    -- XX XX XX XX XX XX XX --         -- 30 31 32 33 34 35 36 -- ( 71)
+    XX XX XX XX XX XX XX XX XX         45 44 43 42 41 40 39 38 37 ( 80)
+    -- -- -- XX XX XX -- -- --         -- -- -- 46 47 48 -- -- -- ( 89)
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 49 -- -- -- -- ( 98)
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 50 -- -- -- -- (107)
            led position                       wiring order
     
 To create a valid mapping use this config:
