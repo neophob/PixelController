@@ -282,6 +282,14 @@ Links that help you create Blinkenlights files:
 
 A note about BLIMP, if you save a file, make sure to add the ".bml" file extension, else it may fail.
 
+### Beat Workmode
+The **Beat Workmode** define how the *sound event detection* (beat/hat/snare detection) should influence the Generator speed (=speed of the Visual). Currently three modes are implemented:
+
+* **Linear**: Sound doesn't matter, the Generator speed is just, ermm, linear.
+* **Heavy**: If no sound event was detected, the Visual stands still. 
+* **Moderate**: A mix between Linear and Heavy. There is a minimal Generator  speed that will increase if a sound event was detected. This mode was used for all pre v2.0.0 releases.
+
+
 
 ##OSC MESSAGES
 
