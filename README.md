@@ -270,6 +270,13 @@ First you need to find out the resolution for your Output device. Start PixelCon
 
 See the Processing examples `OscSendControllMessages/sendImageKreise` and `OscSendControllMessages/sendImageKreise24bpp`.
 
+### OSC Clients to control PixelController
+
+If you want to use the console to control PixelController you can use tools like `liblo-tools`. An example to freeze the update would be `/usr/bin/oscsend 192.168.1.1 9876 /FREEZE`.
+
+The included PixelController CLI tools can also send OSC messages, but are slower and require an installed JVM - which is not always feasible.
+
+
 ### Create Blinkenlights movie files
 
 Links that help you create Blinkenlights files:
