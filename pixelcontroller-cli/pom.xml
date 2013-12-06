@@ -11,7 +11,7 @@
 	<artifactId>pixelcontroller-cli</artifactId>
 	<name>PixelController Command Line Interface</name>
 
-	<packaging>bundle</packaging>
+	<packaging>pom</packaging>
 	
 	<build>
 		<plugins>
