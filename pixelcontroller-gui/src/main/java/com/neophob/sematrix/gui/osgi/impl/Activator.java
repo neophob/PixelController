@@ -16,6 +16,10 @@ package com.neophob.sematrix.gui.osgi.impl;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import processing.core.PApplet;
+
+import com.neophob.PixelController;
+
 
 
 public class Activator implements BundleActivator {
@@ -23,6 +27,7 @@ public class Activator implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
     	System.out.println("HELLO GUI START: "+context);
+    	PApplet.main(new String[] { PixelController.class.getName().toString() });
     }
 
     @Override
