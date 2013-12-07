@@ -11,7 +11,7 @@
 
 	<artifactId>pixelcontroller-mdns</artifactId>
 	<name>PixelController MDNS Interface</name>
-	<packaging>pom</packaging>
+	<packaging>bundle</packaging>
 	
 	<description>Provide MDNS/Bonjour Server</description>
 

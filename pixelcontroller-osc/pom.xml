@@ -11,7 +11,7 @@
 
 	<artifactId>pixelcontroller-osc</artifactId>
 	<name>PixelController OSC Interface</name>
-	<packaging>pom</packaging>
+	<packaging>bundle</packaging>
 
 	<description>Provide OSC Server and callback functions</description>
 

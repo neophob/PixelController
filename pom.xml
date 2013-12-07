@@ -104,14 +104,16 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.name}</Bundle-SymbolicName>
-						<Import-Package>org.osgi.framework,*</Import-Package>
-						<Embed-Transitive>true</Embed-Transitive>
 						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Export-Package>${project.exports}</Export-Package>
+						<_exportcontents>${project.exports}</_exportcontents>
+						<Import-Package>org.osgi.*,!*</Import-Package>
+						<!-- <Bundle-Activator>com.neophob.sematrix.core.osgi.impl</Bundle-Activator> -->		
 					</instructions>
 				</configuration>
 			</plugin>
-					
+								
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -172,12 +174,21 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
-			<scope>test</scope>
-		</dependency>	
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<version>4.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+			<version>4.2.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 	
 	<profiles>

@@ -11,10 +11,26 @@
                 
 	<artifactId>pixelcontroller-gui</artifactId>
 	<name>PixelController Processing Frontend</name>
-	<packaging>pom</packaging>	
+	<packaging>bundle</packaging>	
 	
 	<build>
 		<plugins>
+			<plugin>
+				<!-- http://www.lucamasini.net/Home/osgi-with-felix/creating-osgi-bundles-of-your-maven-dependencies -->
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+						<Embed-Transitive>true</Embed-Transitive>
+						<Export-Package>${project.exports}</Export-Package>
+						<_exportcontents>${project.exports}</_exportcontents>
+						<Import-Package>org.osgi.*,!*</Import-Package>
+						<Bundle-Activator>com.neophob.sematrix.gui.osgi.impl.Activator</Bundle-Activator>		
+					</instructions>
+				</configuration>
+			</plugin>		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
