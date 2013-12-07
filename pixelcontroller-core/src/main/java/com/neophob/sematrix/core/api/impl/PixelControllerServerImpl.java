@@ -113,9 +113,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 			}
 			
 			Collector.getInstance().getPixConStat().setCurrentFps(framerate.getFps());
-			Collector.getInstance().getPixConStat().setFrameCount(cnt);
+			Collector.getInstance().getPixConStat().setFrameCount(cnt++);
 
-			framerate.waitForFps(cnt++); 
+			framerate.waitForFps(); 
 		}
 		LOG.log(Level.INFO, "Main loop finished...");
 	}

@@ -315,7 +315,23 @@ public class ApplicationConfigurationHelper {
         }  
         return defaultValue;		
     }
-    
+
+    private float parseFloat(String property, float defaultValue) {
+        String rawConfig = config.getProperty(property);
+        if (StringUtils.isNotBlank(rawConfig)) {
+            try {
+                float val = Float.parseFloat(StringUtils.strip(rawConfig));
+                if (val >= 0) {
+                    return val;
+                } else {
+                    LOG.log(Level.WARNING, "Ignored negative value {0}", rawConfig);
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, FAILED_TO_PARSE, rawConfig);
+            }
+        }  
+        return defaultValue;		
+    }
     /**
      * 
      * @param property
@@ -1036,8 +1052,8 @@ public class ApplicationConfigurationHelper {
      * 
      * @return the int
      */
-    public int parseFps() {
-        return parseInt(ConfigConstant.FPS, 20);        
+    public float parseFps() {
+        return parseFloat(ConfigConstant.FPS, 20);        
     }
 
     /**

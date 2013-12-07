@@ -36,6 +36,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.PixelControllerP5;
+import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.color.ColorSet;
 import com.neophob.sematrix.core.effect.Effect.EffectName;
 import com.neophob.sematrix.core.generator.ColorScroll.ScrollMode;
@@ -167,6 +168,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     private long frames=0;
 
+    private PixelController pixcon;
     
     /**
      * Instantiates a new internal buffer.
@@ -177,8 +179,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * @param singleVisualXSize the target x size
      * @param singleVisualYSize the target y size 
      */
-    public GeneratorGui(WindowSizeCalculator wsc) {
+    public GeneratorGui(PixelController pixcon, WindowSizeCalculator wsc) {
     	super();        
+    	this.pixcon = pixcon;
         this.windowWidth = wsc.getWindowWidth();
         this.windowHeight = wsc.getWindowHeight();
         this.singleVisualXSize = wsc.getSingleVisualWidth();
@@ -476,7 +479,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         colorScrollList.setGroup(generatorTab);		
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
-//        colorScrollList.setLabel(col.getPixelControllerGenerator().getScrollMode().getDisplayName());
                 
         //add textfield options
         cp5.addTextlabel("genTextwriterOpt", messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
@@ -681,7 +683,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int nfoYPos = yPosStartDrowdown+20;
         int nfoXPos = xOfs;
 
-        cp5.addTextlabel("nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS")+col.getFps(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS")+pixcon.getFps(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         currentFps = cp5.addTextlabel("nfoFpsCurrent", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;

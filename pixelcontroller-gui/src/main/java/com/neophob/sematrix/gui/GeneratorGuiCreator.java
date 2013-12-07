@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.gui.handler.WindowHandler;
@@ -50,7 +51,7 @@ public class GeneratorGuiCreator {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGuiCreator(PApplet parentPapplet, int maximalXSize, int maximalYSize, String version) {
+	public GeneratorGuiCreator(PixelController pixcon, PApplet parentPapplet, int maximalXSize, int maximalYSize, String version) {
         int nrOfScreens = Collector.getInstance().getAllVisuals().size();
         LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
                      
@@ -59,7 +60,7 @@ public class GeneratorGuiCreator {
 				g.getInternalBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
         
         //connect the new PApplet to our frame
-        gui = new GeneratorGui(wsc);
+        gui = new GeneratorGui(pixcon, wsc);
         gui.init();
          
         //create new window for child

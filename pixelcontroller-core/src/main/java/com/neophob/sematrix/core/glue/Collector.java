@@ -101,7 +101,7 @@ public class Collector extends Observable {
 	private int nrOfScreens;
 
 	/** The fps. */
-	private int fps;
+	//private int fps;
 
 	/** The current visual. */
 	private int currentVisual;
@@ -191,7 +191,10 @@ public class Collector extends Observable {
 		this.fileUtils = fileUtils;
 		this.nrOfScreens = ph.getNrOfScreens();
 		this.ph = ph;
-		this.fps = ph.parseFps();
+		int fps = (int)(ph.parseFps());
+		if (fps<1) {
+			fps = 1;
+		}
 
 		this.colorSets = InitHelper.getColorPalettes(fileUtils);
 
@@ -217,7 +220,7 @@ public class Collector extends Observable {
 		pixelControllerResize.initAll();
 
 		//create generators
-		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, this.fps, 
+		pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, fps, 
 				sound, pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
 		pixelControllerGenerator.initAll();
 
@@ -227,7 +230,7 @@ public class Collector extends Observable {
 		pixelControllerMixer = new PixelControllerMixer(matrix, sound);
 		pixelControllerMixer.initAll();
 
-		pixelControllerFader = new PixelControllerFader(ph, matrix, this.fps);
+		pixelControllerFader = new PixelControllerFader(ph, matrix, fps);
 
 		//create visuals
 		int additionalVisuals = 1+ph.getNrOfAdditionalVisuals();
@@ -455,15 +458,6 @@ public class Collector extends Observable {
 			ofs++;
 		}
 		return ret;
-	}
-
-	/**
-	 * Gets the fps.
-	 *
-	 * @return the fps
-	 */
-	public int getFps() {
-		return fps;
 	}
 
 	/**

@@ -21,7 +21,7 @@ package com.neophob.sematrix.core.api.impl;
 import java.util.logging.Logger;
 
 /**
- * 
+ * blocking framerate limiter
  * @author michu
  *
  */
@@ -33,20 +33,18 @@ public class Framerate {
 	private long startTime;
 	private long delay;
 	private long count = 1;
-	private int targetFps;
 
-	public Framerate(int targetFps) {
+	public Framerate(float targetFps) {
 		LOG.info("Target fps: "+targetFps);
-		this.delay = 1000/targetFps;		
+		this.delay = (long)(1000f/targetFps);		
 		this.startTime = System.currentTimeMillis();
-		this.targetFps = targetFps;
 	}
 
 	public float getFps() {
 		return count / (float)((System.currentTimeMillis() - startTime)/1000);
 	}
 	
-	public void waitForFps(long cnt) {
+	public void waitForFps() {
 		long now = System.currentTimeMillis();
 		if (nextRepaintDue > now) {
 			// too soon to repaint, wait...
@@ -57,14 +55,6 @@ public class Framerate {
 			}
 		}
 		nextRepaintDue = System.currentTimeMillis() + delay;
-		count++;
-		
-		if (cnt % (targetFps*5) == 0) {
-			long tdiff = (System.currentTimeMillis() - startTime) / 1000;
-			if (tdiff>0) {
-				LOG.info("FPS: "+ (cnt/tdiff));						
-			}
-		}
-		
+		count++;				
 	}
 }

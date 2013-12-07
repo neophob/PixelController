@@ -29,6 +29,8 @@ import processing.core.PApplet;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.gui.OutputGui;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
@@ -106,7 +108,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 			pixelController = PixelControllerFactory.initialize(this);
 			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
 			pixelController.start();
-System.out.println("aa");
+
 		    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
 		    background(0);
 		    noStroke();
@@ -127,7 +129,6 @@ System.out.println("aa");
 		    text("Loading...", 10, 120);
 		    drawProgressBar(0.0f);
 		    frameRate(FPS);
-//		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);		    		    		   
 
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Setup() call failed!", e);
@@ -140,7 +141,7 @@ System.out.println("aa");
 
 		int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();
 		int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
-		GeneratorGuiCreator ggc = new GeneratorGuiCreator(this, maxWidth, maxHeight, pixelController.getVersion());
+		GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth, maxHeight, pixelController.getVersion());
 		//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
 		KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
 	    
@@ -303,7 +304,7 @@ System.out.println("aa");
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
-//		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
+		Collector.getInstance().getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
 //		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
 //			this.output.logStatistics();
 //		}
