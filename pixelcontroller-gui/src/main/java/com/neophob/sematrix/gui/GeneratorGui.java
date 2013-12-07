@@ -35,6 +35,7 @@ import org.apache.commons.lang3.time.DurationFormatUtils;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import com.neophob.PixelControllerP5;
 import com.neophob.sematrix.core.color.ColorSet;
 import com.neophob.sematrix.core.effect.Effect.EffectName;
 import com.neophob.sematrix.core.generator.ColorScroll.ScrollMode;
@@ -194,7 +195,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         size(windowWidth, windowHeight);         
     	LOG.log(Level.INFO, "Create GUI Window with size "+this.getWidth()+"/"+this.getHeight()); //$NON-NLS-1$ //$NON-NLS-2$
 
-        frameRate(Collector.getInstance().getFps());
+        frameRate(PixelControllerP5.FPS);
         smooth();
         background(0,0,0);		
         int i=0;
@@ -475,7 +476,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
         colorScrollList.setGroup(generatorTab);		
         colorScrollList.setHeight(Theme.DROPBOXLIST_HEIGHT);
-        colorScrollList.setLabel(col.getPixelControllerGenerator().getScrollMode().getDisplayName());
+//        colorScrollList.setLabel(col.getPixelControllerGenerator().getScrollMode().getDisplayName());
                 
         //add textfield options
         cp5.addTextlabel("genTextwriterOpt", messages.getString("GeneratorGui.TEXTWRITER_OPTION"), genFxXOfs+3+3*Theme.DROPBOX_XOFS, genElYOfs+16).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        
@@ -510,7 +511,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         brightnessControll.setRange(0, 100);
         brightnessControll.setLabelVisible(false);        
 
-        int nrOfOutputs = Collector.getInstance().getAllOutputMappings().size();
+        int nrOfOutputs = col.getAllOutputMappings().size();
         selectedOutputs = cp5.addRadioButton(GuiElement.CURRENT_OUTPUT.guiText(), GENERIC_X_OFS, yPosStartDrowdown);
         selectedOutputs.setItemsPerRow(nrOfOutputs);
         selectedOutputs.setNoneSelectedAllowed(false);		
@@ -564,7 +565,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         		GENERIC_X_OFS+5*Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorSetList);		
         i=0;
-        for (ColorSet cs: Collector.getInstance().getColorSets()) {
+        for (ColorSet cs: col.getColorSets()) {
             colorSetList.addItem(cs.getName(), i);
             i++;
         }		
@@ -686,9 +687,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         runtime = cp5.addTextlabel("nfoRuntime", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+Collector.getInstance().getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+col.getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        float volNorm = Collector.getInstance().getSound().getVolumeNormalized();
+        float volNorm = col.getSound().getVolumeNormalized();
         currentVolume = cp5.addTextlabel("nfoVolumeCurrent", messages.getString("GeneratorGui.CURRENT_VOLUME")+volNorm, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         cp5.addTextlabel("nfoWindowHeight", messages.getString("GeneratorGui.INFO_WINDOW_HEIGHT")+this.getHeight(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -936,7 +937,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
-            int snd1000 = (int)(1000f*Collector.getInstance().getSound().getVolumeNormalized());
+            int snd1000 = (int)(1000f*col.getSound().getVolumeNormalized());
             currentVolume.setText(messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
             IOutput output = col.getOutputDevice();

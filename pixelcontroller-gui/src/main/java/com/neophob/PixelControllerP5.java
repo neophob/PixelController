@@ -29,7 +29,6 @@ import processing.core.PApplet;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.gui.OutputGui;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
@@ -127,6 +126,7 @@ System.out.println("aa");
 		    
 		    text("Loading...", 10, 120);
 		    drawProgressBar(0.0f);
+		    frameRate(FPS);
 //		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);		    		    		   
 
 		} catch (Exception e) {
