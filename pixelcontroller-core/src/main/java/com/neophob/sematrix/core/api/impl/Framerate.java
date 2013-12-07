@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.cli;
+package com.neophob.sematrix.core.api.impl;
 
 import java.util.logging.Logger;
 
@@ -32,6 +32,7 @@ public class Framerate {
 	private long nextRepaintDue = 0;
 	private long startTime;
 	private long delay;
+	private long count = 1;
 	private int targetFps;
 
 	public Framerate(int targetFps) {
@@ -41,6 +42,10 @@ public class Framerate {
 		this.targetFps = targetFps;
 	}
 
+	public float getFps() {
+		return count / (float)((System.currentTimeMillis() - startTime)/1000);
+	}
+	
 	public void waitForFps(long cnt) {
 		long now = System.currentTimeMillis();
 		if (nextRepaintDue > now) {
@@ -52,6 +57,7 @@ public class Framerate {
 			}
 		}
 		nextRepaintDue = System.currentTimeMillis() + delay;
+		count++;
 		
 		if (cnt % (targetFps*5) == 0) {
 			long tdiff = (System.currentTimeMillis() - startTime) / 1000;

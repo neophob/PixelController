@@ -105,6 +105,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 				LOG.log(Level.SEVERE, "waiting for all outputs to finish their prepare() method got interrupted!", e);
 			}
 		}
+		
 		Collector.getInstance().getPixConStat().trackTime(TimeMeasureItemGlobal.OUTPUT_PREPARE_WAIT, System.currentTimeMillis() - startTime);
 		
 		// wait for the outputs to finish their update() methods from the previous call of this method

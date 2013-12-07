@@ -20,21 +20,16 @@ package com.neophob;
 
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.StringUtils;
-
 import processing.core.PApplet;
 
+import com.neophob.sematrix.core.api.CallbackMessageInterface;
+import com.neophob.sematrix.core.api.PixelController;
+import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
 import com.neophob.sematrix.core.glue.Collector;
-import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.core.output.ArduinoOutput;
-import com.neophob.sematrix.core.output.Output;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
-import com.neophob.sematrix.core.setup.InitApplication;
 import com.neophob.sematrix.gui.GeneratorGuiCreator;
 import com.neophob.sematrix.gui.OutputGui;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
@@ -46,10 +41,10 @@ import com.neophob.sematrix.gui.handler.WindowHandler;
  *
  * @author michu
  */
-public class PixelController extends PApplet {  
+public class PixelControllerP5 extends PApplet implements CallbackMessageInterface<String> {  
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PixelController.class.getName());
+	private static final Logger LOG = Logger.getLogger(PixelControllerP5.class.getName());
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -1336765543826338205L;
@@ -67,22 +62,14 @@ public class PixelController extends PApplet {
 	private static final int SETUP_WINDOW_WIDTH = 600;
 	private static final int SETUP_WINDOW_HEIGHT = 500;
 
-    private Collector collector;
-
-    /** The output. */
-    private Output output;
-    
-    private OutputGui matrixEmulator;
-
-    /** more setup stuff */
-	private boolean initialized = false;
-	private boolean initializationFailed = false;
 		
 	private int setupStep=0;
 	private float steps = 1f/7f;
-    private ApplicationConfigurationHelper applicationConfig;
-    private FileUtils fileUtils;
 
+	private boolean postInitDone = false;
+	
+	private PixelController pixelController;
+	private OutputGui matrixEmulator;
 	
 	/**
 	 * 
@@ -116,8 +103,11 @@ public class PixelController extends PApplet {
 	 */
 	public void setup() {
 		try {
-	        LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");	        
-
+			LOG.log(Level.INFO, "Initialize...");
+			pixelController = PixelControllerFactory.initialize(this);
+			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
+			pixelController.start();
+System.out.println("aa");
 		    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
 		    background(0);
 		    noStroke();
@@ -133,21 +123,46 @@ public class PixelController extends PApplet {
 		    //write pixelcontroller text
 		    textSize(SETUP_FONT_BIG);
 		    fill(227, 122, 182);
-		    text("PixelController "+getVersion(), 10, 29);
+		    text("PixelController "+pixelController.getVersion(), 10, 29);
 		    
 		    text("Loading...", 10, 120);
 		    drawProgressBar(0.0f);
-		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+//		    drawSetupText("Load Configuration", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);		    		    		   
+
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Setup() call failed!", e);
 		}
 	}
 	
+	
+	private void postStartInitialisation() {
+		this.matrixEmulator = new OutputGui(pixelController.getConfig(), pixelController.getOutput(), this);
+
+		int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();
+		int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
+		GeneratorGuiCreator ggc = new GeneratorGuiCreator(this, maxWidth, maxHeight, pixelController.getVersion());
+		//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
+		KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
+	    
+		try {
+    		//now start a little hack, remove all window listeners, so we can control
+			//the closing behavior ourselves.
+    		for (WindowListener wl: frame.getWindowListeners()) {            			
+    			frame.removeWindowListener(wl);
+    		}
+    		
+    	    //add our own window listener
+    	    frame.addWindowListener( new WindowHandler(this) );        			
+		} catch (Exception e) {
+			LOG.log(Level.INFO, "failed to remove/add window listeners", e);
+		}
+		postInitDone = true;
+	}
 	    
     /**
      * Asynchronous initialize PixelController and display progress in GUI
      */
-    public void asyncInitApplication() {
+/*    public void asyncInitApplication() {
         try {
         	
         	switch (setupStep) {
@@ -174,7 +189,7 @@ public class PixelController extends PApplet {
 
         	case 2:
         		this.collector.init(fileUtils, applicationConfig);     
-        		frameRate(applicationConfig.parseFps());
+        		//frameRate(applicationConfig.parseFps());
         		noSmooth();
         		setupStep++;
         		drawProgressBar(steps*setupStep);
@@ -260,44 +275,38 @@ public class PixelController extends PApplet {
             initializationFailed = true;            
         }
     }
-
+*/
 
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
 	public void draw() {
 	    
-	    if (initializationFailed) {
-	        throw new IllegalArgumentException("PixelController failed to start...");
-	    }
+//	    if (initializationFailed) {
+//	        throw new IllegalArgumentException("PixelController failed to start...");
+//	    }
 
-	    if (!initialized) {
-	        asyncInitApplication();
+	    if (!pixelController.isInitialized()) {
 	        return;
+	    } else if (!postInitDone) {
+	    	postStartInitialisation();
+	    	return;
 	    }
 	    		
-		if (Collector.getInstance().isInPauseMode()) {
-			//no update here, we're in pause mode
-			return;
-		}
-
-		// update all generators
-		try {
-			Collector.getInstance().updateSystem();			
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Collector.getInstance().updateSystem() failed!", e);
+		if (frameCount %25==24) {
+			System.out.println(pixelController.getFps() + " --- " + frameRate);			
 		}
 		
 		//TODO calculate fps in pixelcontroller-core
-		this.collector.getPixConStat().setCurrentFps(frameRate);
+//		this.collector.getPixConStat().setCurrentFps(frameRate);
 		
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
-		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
-		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
-			this.output.logStatistics();
-		}
+//		this.collector.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
+//		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
+//			this.output.logStatistics();
+//		}
 	}
 	
 	/**
@@ -311,25 +320,25 @@ public class PixelController extends PApplet {
     	}
     }
     
-    /**
-     * 
-     * @return
-     */
-    public String getVersion() {
-        String version = this.getClass().getPackage().getImplementationVersion();
-        if (StringUtils.isNotBlank(version)) {
-            return "v"+version;
-        }
-        return "Developer Snapshot"; 
-    }
     
-    /**
-     * Is PixelController finished initializing?
-     * 
-     * @return
-     */
-	public boolean isInitialized() {
-		return initialized;
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg instanceof String) {
+			String msg = (String) arg;
+			handleMessage(msg);
+        } else {
+        	LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
+        }
+	}
+
+	@Override
+	public void handleMessage(String msg) {
+		if (!pixelController.isInitialized()) {
+			setupStep++;
+			drawProgressBar(steps*setupStep);
+			drawSetupText(msg, TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);			
+		}
 	}
 
 	/**
@@ -338,7 +347,7 @@ public class PixelController extends PApplet {
 	 * @param args the arguments
 	 */
 	public static void main(String args[]) {
-		PApplet.main(new String[] { PixelController.class.getName().toString() });
+		PApplet.main(new String[] { PixelControllerP5.class.getName().toString() });
 	}
 
 
