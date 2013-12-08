@@ -63,10 +63,8 @@ public final class Shuffler {
 			return;
 		}
 
-		int fps = Collector.getInstance().getFps();
-
 		Random rand = new Random();
-		if (rand.nextInt(fps*3)==1) {
+		if (rand.nextInt(10)==1) {
 			
 			LOG.log(Level.INFO, "Load random Preset");
 			
