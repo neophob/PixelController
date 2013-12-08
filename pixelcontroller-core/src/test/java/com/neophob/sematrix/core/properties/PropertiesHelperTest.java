@@ -36,6 +36,7 @@ import com.neophob.sematrix.core.output.NullDevice;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.UdpDevice;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.ConfigConstant;
@@ -523,18 +524,18 @@ public class PropertiesHelperTest {
     public void testLoadPresetOnStartup() {
         Properties config = new Properties();
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
-        int presetNr = ph.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
+        int presetNr = ph.loadPresetOnStart();
         assertEquals(-1, presetNr);
         
         config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "22");
         ph = new ApplicationConfigurationHelper(config);
-        presetNr = ph.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
+        presetNr = ph.loadPresetOnStart();
         assertEquals(22, presetNr);
         
         config = new Properties();
         config.put(ConfigConstant.STARTUP_LOAD_PRESET_NR, "2222");
         ph = new ApplicationConfigurationHelper(config);
-        presetNr = ph.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
+        presetNr = ph.loadPresetOnStart();
         assertEquals(-1, presetNr);
     }
     

@@ -51,12 +51,12 @@ public class FileUtilsTest {
     	
     	assertFalse(fu.getRootDirectory().isEmpty());
 
-    	List<PresetSettings> presets = fu.loadPresents(128);
+/*    	List<PresetSettings> presets = fu.loadPresents(128);
     	assertNotNull(presets);
     	assertTrue(presets.size()>2);
     	
     	fu.savePresents(presets);
-    	
+*/    	
     }
 
 
