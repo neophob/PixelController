@@ -31,6 +31,7 @@ import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.OutputMapping;
 import com.neophob.sematrix.core.glue.Shuffler;
+import com.neophob.sematrix.core.glue.helper.ScreenshotHelper;
 import com.neophob.sematrix.core.mixer.Mixer;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
@@ -472,7 +473,7 @@ public final class MessageProcessor {
 				
 			//create a screenshot of all current buffers
 			case SCREENSHOT:
-				col.saveScreenshot();
+				ScreenshotHelper.saveScreenshot(col.getFrames(), col.getAllVisuals());				
 				LOG.log(Level.INFO, "Saved some screenshots");
 				break;
 				

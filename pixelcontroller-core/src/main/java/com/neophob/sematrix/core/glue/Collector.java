@@ -18,17 +18,12 @@
  */
 package com.neophob.sematrix.core.glue;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -67,6 +62,11 @@ import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
  * The Class Collector.
+ * 
+ * TODO: collector should caputre the current STATE of the application
+ * REMOVE service initialisation (mdns, osc...), remove matrix data
+ * 
+ * 
  */
 public class Collector extends Observable {
 
@@ -145,6 +145,8 @@ public class Collector extends Observable {
 
 	private PresetServiceImpl presetService;
 
+	private MDnsServer bonjour;
+	
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -256,7 +258,7 @@ public class Collector extends Observable {
 	}
 
 	/**
-	 * start tcp and osc server
+	 * start osc server
 	 * 
 	 * TODO inject server
 	 * 
@@ -272,7 +274,8 @@ public class Collector extends Observable {
 			//register osc server in the statistic class
 			this.pixConStat.setOscServerStatistics(oscServer);
 			
-			MDnsServer bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
+			//TODO ASYNC START!
+			bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
 			bonjour.startServer();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "failed to start OSC Server", e);
@@ -293,12 +296,6 @@ public class Collector extends Observable {
 		if (isLoadingPresent()) {
 			return;
 		}
-
-		//update the current value of frames per second
-		/*		if (papplet!=null) {
-			pixConStat.setCurrentFps(papplet.frameRate);
-			pixConStat.setFrameCount(papplet.frameCount);			
-		}*/
 
 		long l = System.currentTimeMillis();
 		//update generator depending on the input sound
@@ -359,46 +356,6 @@ public class Collector extends Observable {
 		return nrOfScreens;
 	}
 
-
-	private void saveImage(Visual v, String filename, int[] data) {
-		try {
-			int w = v.getGenerator1().getInternalBufferXSize();
-			int h = v.getGenerator1().getInternalBufferYSize();
-			BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-			bi.setRGB(0, 0, w, h, data, 0, w);
-			File outputfile = new File(filename);
-			ImageIO.write(bi, "png", outputfile);
-		} catch (IOException e) {
-			LOG.log(Level.SEVERE, "Failed to save screenshot "+filename, e);
-		}
-	}
-
-	/**
-	 * create screenshot
-	 */
-	public void saveScreenshot() {
-		int ofs=0;		
-		int frames = pixelControllerGenerator.getFrames();
-		String suffix = ".png";
-		File f = new File("screenshot"+File.separator);
-		if (!f.exists()) {
-			LOG.log(Level.INFO, "Create directory "+f.getAbsolutePath());
-			boolean result = f.mkdir();
-			LOG.log(Level.INFO, "Result: "+result);
-		}
-		for (Visual v: allVisuals) {
-			String prefix = "screenshot"+File.separator+frames+"-"+ofs+"-";
-			ColorSet cs = v.getColorSet();			
-			saveImage(v, prefix+"gen1"+suffix, cs.convertToColorSetImage(v.getGenerator1().internalBuffer));
-			saveImage(v, prefix+"gen2"+suffix, cs.convertToColorSetImage(v.getGenerator2().internalBuffer));
-
-			saveImage(v, prefix+"fx1"+suffix, cs.convertToColorSetImage(v.getEffect1Buffer()));
-			saveImage(v, prefix+"fx2"+suffix, cs.convertToColorSetImage(v.getEffect2Buffer()));
-
-			saveImage(v, prefix+"mix"+suffix, v.getMixerBuffer());
-			ofs++;
-		}
-	}
 
 	/**
 	 * which fx for screenOutput?.
