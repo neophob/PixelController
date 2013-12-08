@@ -52,6 +52,8 @@ import com.neophob.sematrix.core.mixer.PixelControllerMixer;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
@@ -72,9 +74,6 @@ public class Collector extends Observable {
 
 	/** The Constant EMPTY_CHAR. */
 	private static final String EMPTY_CHAR = " ";
-
-	/** The Constant NR_OF_PRESENT_SLOTS. */
-	public static final int NR_OF_PRESET_SLOTS = 144;
 
 	/** The singleton instance. */
 	private static Collector instance = new Collector();
@@ -100,20 +99,11 @@ public class Collector extends Observable {
 	/** The nr of screens. */
 	private int nrOfScreens;
 
-	/** The fps. */
-	//private int fps;
-
 	/** The current visual. */
 	private int currentVisual;
 
 	/** The current output. */
 	private int currentOutput;
-
-	/** present settings. */
-	private int selectedPreset;
-
-	/** The present. */
-	private List<PresetSettings> presets;
 
 	/** The pixel controller generator. */
 	private PixelControllerGenerator pixelControllerGenerator;
@@ -153,9 +143,7 @@ public class Collector extends Observable {
 
 	private ISound sound;
 
-	private FileUtils fileUtils;
-
-
+	private PresetServiceImpl presetService;
 
 	/**
 	 * Instantiates a new collector.
@@ -166,9 +154,6 @@ public class Collector extends Observable {
 		this.nrOfScreens = 0;
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
 		initialized=false;
-
-		selectedPreset=0;		
-		presets = PresetSettings.initializePresetSettings(NR_OF_PRESET_SLOTS);
 
 		pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
 		pixelControllerShufflerSelect.initAll();		 
@@ -186,7 +171,8 @@ public class Collector extends Observable {
 			return;
 		}
 
-		this.fileUtils = fileUtils;
+		presetService = new PresetServiceImpl(fileUtils);		
+		
 		this.nrOfScreens = ph.getNrOfScreens();
 		int fps = (int)(ph.parseFps());
 		if (fps<1) {
@@ -257,8 +243,6 @@ public class Collector extends Observable {
 		LOG.log(Level.INFO, "Initialize output");
 		pixelControllerOutput = new PixelControllerOutput();
 		pixelControllerOutput.initAll();
-
-		this.presets = fileUtils.loadPresents(NR_OF_PRESET_SLOTS);
 
 		//create an empty mapping
 		ioMapping.clear();
@@ -484,7 +468,7 @@ public class Collector extends Observable {
 	}
 
 	public void savePresets() {
-		fileUtils.savePresents(presets);
+		presetService.savePresents();
 	}
 
 	/**
@@ -542,7 +526,7 @@ public class Collector extends Observable {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 
-		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+selectedPreset);						
+		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+presetService.getSelectedPreset());						
 		if (inPauseMode) {
 			ret.add(ValidCommands.FREEZE+EMPTY_CHAR);
 		}
@@ -627,7 +611,7 @@ public class Collector extends Observable {
 	 * @return the selected present
 	 */
 	public int getSelectedPreset() {
-		return selectedPreset;
+		return presetService.getSelectedPreset();
 	}
 
 	/**
@@ -636,7 +620,7 @@ public class Collector extends Observable {
 	 * @param selectedPresent the new selected present
 	 */
 	public void setSelectedPreset(int selectedPreset) {
-		this.selectedPreset = selectedPreset;
+		presetService.setSelectedPreset(selectedPreset);
 	}
 
 	/**
@@ -645,17 +629,9 @@ public class Collector extends Observable {
 	 * @return the present
 	 */
 	public List<PresetSettings> getPresets() {
-		return presets;
+		return presetService.getPresets();
 	}
 
-	/**
-	 * Sets the present.
-	 *
-	 * @param present the new present
-	 */
-	public void setPresets(List<PresetSettings> preset) {
-		this.presets = preset;
-	}
 
 
 	/*
@@ -956,7 +932,7 @@ public class Collector extends Observable {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 
-		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+selectedPreset);						
+		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+presetService.getSelectedPreset());						
 		ret.add(ValidCommands.FREEZE+EMPTY_CHAR+inPauseMode);
 
 		return ret;

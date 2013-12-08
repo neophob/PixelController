@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.core.glue;
+package com.neophob.sematrix.core.preset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,8 @@ import org.apache.commons.lang3.StringUtils;
 public class PresetSettings {
 	
     private static final String NAME_MARKER = "presetname=";
+    
+    private static final char DELIM = ';';
     	
 	/** The present. */
 	private List<String> present;
@@ -89,14 +91,14 @@ public class PresetSettings {
 		
 		for (String s: present) {
 			ret.append(s);
-			ret.append(';');
+			ret.append(DELIM);
 		}
 		
 		//add name
 		if (StringUtils.isNotBlank(name)) {		    
 		    ret.append(NAME_MARKER);
 		    ret.append(name);
-		    ret.append(';');
+		    ret.append(DELIM);
 		}
 		
 		return ret.toString();
@@ -129,18 +131,5 @@ public class PresetSettings {
         return true;
     }
     
-    /**
-     * 
-     * @return
-     */
-    public static List<PresetSettings> initializePresetSettings(int nrOfSlots) {
-    	List<PresetSettings> presets = new CopyOnWriteArrayList<PresetSettings>();
-    	for (int n=0; n<nrOfSlots; n++) {
-    		presets.add(new PresetSettings());
-    	}
-    	
-    	return presets;
-    }
-
 	
 }

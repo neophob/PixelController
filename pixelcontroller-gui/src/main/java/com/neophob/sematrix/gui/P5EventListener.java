@@ -24,8 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //import com.neophob.sematrix.core.glue.Collector;
-import com.neophob.sematrix.core.glue.PresetSettings;
 import com.neophob.sematrix.core.listener.MessageProcessor;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ValidCommands;
 
 import controlP5.ControlEvent;

@@ -1084,12 +1084,8 @@ public class ApplicationConfigurationHelper {
      * 
      * @return
      */
-    public int loadPresetOnStart(int maxEntry) {
-        int val = parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
-        if (val < maxEntry) {
-            return val;
-        }
-        return -1;
+    public int loadPresetOnStart() {
+        return parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
     }
     
     /**

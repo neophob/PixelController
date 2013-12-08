@@ -44,6 +44,7 @@ import com.neophob.sematrix.core.output.StealthDevice;
 import com.neophob.sematrix.core.output.Tpm2;
 import com.neophob.sematrix.core.output.Tpm2Net;
 import com.neophob.sematrix.core.output.UdpDevice;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
 /**
@@ -169,15 +170,16 @@ public abstract class InitApplication {
 		}
 
 		//load saves presets
-		int presetNr = applicationConfig.loadPresetOnStart(Collector.NR_OF_PRESET_SLOTS);
-		if (presetNr < 0 || presetNr >= Collector.NR_OF_PRESET_SLOTS) {
+		int presetNr = applicationConfig.loadPresetOnStart();
+		if (presetNr < 0 || presetNr >= PresetServiceImpl.NR_OF_PRESET_SLOTS) {
 			presetNr=0;
 		}
 		LOG.log(Level.INFO,"Load preset "+presetNr);
-		List<String> present = collector.getPresets().get(presetNr).getPresent();
+		//TODO fixme
+		List<String> preset = collector.getPresets().get(presetNr).getPresent();
 		collector.setSelectedPreset(presetNr);
-		if (present!=null) { 
-			collector.setCurrentStatus(present);
+		if (preset!=null) { 
+			collector.setCurrentStatus(preset);
 		} else {
 			LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
 		}

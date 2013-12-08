@@ -273,9 +273,7 @@ public final class MessageProcessor {
 			case CHANGE_PRESET:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					if (a<Collector.NR_OF_PRESET_SLOTS) {
-					    col.setSelectedPreset(a);					    
-					}					
+					col.setSelectedPreset(a);					    
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}

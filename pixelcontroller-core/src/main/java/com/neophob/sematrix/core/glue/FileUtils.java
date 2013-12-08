@@ -19,21 +19,13 @@
 package com.neophob.sematrix.core.glue;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Helper Class to find some files
@@ -49,9 +41,6 @@ public class FileUtils {
 	private static final String BML_DIR = DATA_DIR+File.separator+"blinken"+File.separator;
 	private static final String IMAGE_DIR = DATA_DIR+File.separator+"pics";
 	
-    /** The Constant PRESENTS_FILENAME. */
-    private static final String PRESETS_FILENAME = "presets.led";
-
 	private String rootDirectory;
 	
 	/**
@@ -148,78 +137,7 @@ public class FileUtils {
 		return rootDirectory+IMAGE_DIR;
 	}
 
-    /**
-     * Load presents.
-     */
-    public List<PresetSettings> loadPresents(int nrOfElements) {
-        Properties props = new Properties();
-        List<PresetSettings> presets = new ArrayList<PresetSettings>(nrOfElements);
-        for (int i=0; i<nrOfElements; i++) {
-        	presets.add(new PresetSettings());
-        }
-        
-        InputStream input = null;
-        try {
-        	String filename = this.getDataDir()+File.separator+PRESETS_FILENAME;
-        	input = new FileInputStream(filename);
-            props.load(input);                        
-            String s;
-            int count=0;
-            for (int i=0; i<nrOfElements; i++) {
-                s=props.getProperty(""+i);
-                if (StringUtils.isNotBlank(s)) {
-                	presets.get(i).setPresent(s.split(";"));
-                    count++;
-                }
-            }
-            LOG.log(Level.INFO, "Loaded {0} presets from file {1}", new Object[] { count, PRESETS_FILENAME });
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] { PRESETS_FILENAME, e });
-        } finally {
-            try {
-                if (input!=null) {
-                    input.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close input stream", e);
-            }        
-        }
-        
-        return presets;
-    }
-
-    /**
-     * Save presents.
-     */
-    public void savePresents(List<PresetSettings> presets) {
-        Properties props = new Properties();
-        int idx=0;
-        for (PresetSettings p: presets) {
-            props.setProperty( ""+idx, p.getSettingsAsString() );
-            idx++;
-        }
-
-        OutputStream output = null;
-        try {
-        	String filename = this.getDataDir()+File.separator+PRESETS_FILENAME;
-        	output = new FileOutputStream(filename);
-            props.store(output, "Visual Daemon presets file");
-            LOG.log(Level.INFO, "Presets saved as {0}", PRESETS_FILENAME );
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESETS_FILENAME, e });
-        } finally {
-            try {
-                if (output!=null) {
-                    output.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close output stream", e);
-            }        
-        }
-    }
-
-
-	/**
+ 	/**
 	 * 
 	 * @author michu
 	 *
