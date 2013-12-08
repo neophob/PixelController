@@ -38,27 +38,23 @@ import com.neophob.sematrix.core.generator.Generator;
 import com.neophob.sematrix.core.generator.Generator.GeneratorName;
 import com.neophob.sematrix.core.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.glue.helper.InitHelper;
-import com.neophob.sematrix.core.jmx.PixelControllerStatus;
+import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.mixer.Mixer;
 import com.neophob.sematrix.core.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.mixer.PixelControllerMixer;
-import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
-import com.neophob.sematrix.mdns.server.impl.MDnsServer;
-import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
  * The Class Collector.
@@ -125,12 +121,8 @@ public class Collector extends Observable {
 
 	private PixelControllerFader pixelControllerFader;
 
-	private PixelControllerOscServer oscServer;
-
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
-
-	private PixelControllerStatus pixConStat;
 
 	private List<ColorSet> colorSets;		
 
@@ -144,8 +136,6 @@ public class Collector extends Observable {
 	private ISound sound;
 
 	private PresetServiceImpl presetService;
-
-	private MDnsServer bonjour;
 	
 	/**
 	 * Instantiates a new collector.
@@ -167,7 +157,7 @@ public class Collector extends Observable {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph) {
+	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph, PixelControllerStatusMBean statistic) {
 		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
@@ -243,7 +233,7 @@ public class Collector extends Observable {
 		}
 
 		LOG.log(Level.INFO, "Initialize output");
-		pixelControllerOutput = new PixelControllerOutput();
+		pixelControllerOutput = new PixelControllerOutput(statistic);
 		pixelControllerOutput.initAll();
 
 		//create an empty mapping
@@ -252,34 +242,7 @@ public class Collector extends Observable {
 			ioMapping.add(new OutputMapping(pixelControllerFader.getVisualFader(FaderName.SWITCH), n));			
 		}
 
-		pixConStat = new PixelControllerStatus(this, fps);
-
 		initialized=true;
-	}
-
-	/**
-	 * start osc server
-	 * 
-	 * TODO inject server
-	 * 
-	 * @param papplet
-	 * @param ph
-	 */
-	public synchronized void initDaemons(ApplicationConfigurationHelper ph) {
-		//Start OSC Server (OSC Interface)
-		try {           
-			int listeningOscPort = Integer.parseInt(ph.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
-			oscServer = new PixelControllerOscServer(listeningOscPort);
-			oscServer.startServer();
-			//register osc server in the statistic class
-			this.pixConStat.setOscServerStatistics(oscServer);
-			
-			//TODO ASYNC START!
-			bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
-			bonjour.startServer();
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "failed to start OSC Server", e);
-		}          	   
 	}
 
 	/**
@@ -291,7 +254,7 @@ public class Collector extends Observable {
 	 * update the generators, if the sound is
 	 * louder, update faster.
 	 */
-	public void updateSystem() {
+	public void updateSystem(PixelControllerStatusMBean pixConStat) {
 		//do not update system if presents are loading
 		if (isLoadingPresent()) {
 			return;
@@ -753,16 +716,6 @@ public class Collector extends Observable {
 		return pixelControllerGenerator.getFrames();
 	}
 
-
-	/**
-	 * 
-	 * @return
-	 */
-	public PixelControllerStatus getPixConStat() {
-		return pixConStat;
-	}
-
-
 	/**
 	 * 
 	 * @return
@@ -770,8 +723,6 @@ public class Collector extends Observable {
 	public List<ColorSet> getColorSets() {
 		return colorSets;
 	}
-
-
 
 	/**
 	 * 

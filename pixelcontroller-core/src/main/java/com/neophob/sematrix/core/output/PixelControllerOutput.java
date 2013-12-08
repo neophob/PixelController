@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.PixelControllerElement;
-import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
 
@@ -52,12 +52,15 @@ public class PixelControllerOutput implements PixelControllerElement {
 	/** The prepare end gate. */
 	private CountDownLatch prepareEndGate;
 	
+	private PixelControllerStatusMBean statistic;
+	
 	/**
 	 * Instantiates a new pixel controller output.
 	 */
-	public PixelControllerOutput() {
+	public PixelControllerOutput(PixelControllerStatusMBean statistic) {
 		this.allOutputs = new CopyOnWriteArrayList<Output>();
-		this.executorService = Executors.newCachedThreadPool();
+		this.statistic = statistic;
+		this.executorService = Executors.newCachedThreadPool();		
 	}
 	
 	/* (non-Javadoc)
@@ -106,7 +109,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 			}
 		}
 		
-		Collector.getInstance().getPixConStat().trackTime(TimeMeasureItemGlobal.OUTPUT_PREPARE_WAIT, System.currentTimeMillis() - startTime);
+		statistic.trackTime(TimeMeasureItemGlobal.OUTPUT_PREPARE_WAIT, System.currentTimeMillis() - startTime);
 		
 		// wait for the outputs to finish their update() methods from the previous call of this method
 		startTime = System.currentTimeMillis();
@@ -117,7 +120,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 				LOG.log(Level.SEVERE, "waiting for all outputs to finish their update() method got interrupted!", e);
 			}
 		}
-		Collector.getInstance().getPixConStat().trackTime(TimeMeasureItemGlobal.OUTPUT_UPDATE_WAIT, System.currentTimeMillis() - startTime);
+		statistic.trackTime(TimeMeasureItemGlobal.OUTPUT_UPDATE_WAIT, System.currentTimeMillis() - startTime);
 		
 		// after the prepare() and update() methods call of all outputs are done we have in every
 		// output the currentBufferMap instance that contains all int[] buffer that just have been
@@ -146,7 +149,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 						try {
 							long startTime = System.currentTimeMillis();
 							output.prepareOutputBuffer();
-							Collector.getInstance().getPixConStat().trackOutputTime(output, TimeMeasureItemOutput.PREPARE, System.currentTimeMillis() - startTime);
+							statistic.trackOutputTime(output, TimeMeasureItemOutput.PREPARE, System.currentTimeMillis() - startTime);
 						} finally {
 							prepareEndGate.countDown();
 						}
@@ -169,7 +172,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 						try {
 							long startTime = System.currentTimeMillis();
 							output.update();
-							Collector.getInstance().getPixConStat().trackOutputTime(output, TimeMeasureItemOutput.UPDATE, System.currentTimeMillis() - startTime);
+							statistic.trackOutputTime(output, TimeMeasureItemOutput.UPDATE, System.currentTimeMillis() - startTime);
 						} finally {
 							updateEndGate.countDown();
 						}

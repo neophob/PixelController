@@ -1,5 +1,6 @@
 package com.neophob.sematrix.core.api;
 
+import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.Output;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
@@ -38,6 +39,12 @@ public interface PixelController {
 	 * @return configuration of pixelcontroller
 	 */
 	ApplicationConfigurationHelper getConfig();
+	
+	/**
+	 * 
+	 * @return pixelcontroller jmx statistics
+	 */
+	PixelControllerStatusMBean getPixConStat();
 	
 	/**
 	 * 

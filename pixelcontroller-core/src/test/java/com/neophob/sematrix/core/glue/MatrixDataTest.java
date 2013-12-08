@@ -37,6 +37,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.MatrixData;
 import com.neophob.sematrix.core.glue.OutputMapping;
 import com.neophob.sematrix.core.glue.Visual;
+import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.layout.LayoutModel;
 import com.neophob.sematrix.core.mixer.Mixer;
 import com.neophob.sematrix.core.mixer.PassThruMixer;
@@ -88,7 +89,7 @@ public class MatrixDataTest {
         Output output = new NullDevice(ph);
     	
     	FileUtils fileUtils = new FileUtils();
-    	Collector.getInstance().init(fileUtils, ph);
+    	Collector.getInstance().init(fileUtils, ph, new PixelControllerStatus(20));
 
     	Mixer m = new PassThruMixer();
     	ColorSet c = new ColorSet("JUNIT", new int[]{123233,232323,100,200});

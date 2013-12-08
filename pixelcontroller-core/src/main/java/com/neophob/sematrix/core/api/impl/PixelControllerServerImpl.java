@@ -6,10 +6,16 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.jmx.PixelControllerStatus;
+import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
+import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.ArduinoOutput;
 import com.neophob.sematrix.core.output.Output;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.setup.InitApplication;
+import com.neophob.sematrix.mdns.server.impl.MDnsServer;
+import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
  * 
@@ -33,13 +39,20 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 	private boolean initialized = false;
 	
+	private PixelControllerOscServer oscServer;
+
+	private PixelControllerStatusMBean pixConStat;
+
+	private MDnsServer bonjour;
+
+
 	/**
 	 * 
 	 * @param handler
 	 */
 	public PixelControllerServerImpl(CallbackMessageInterface<String> handler) {
 		super(handler);
-		
+
 		this.runner = new Thread(this);
 		this.runner.setName("PixelController Core");
 		this.runner.setDaemon(true);
@@ -60,7 +73,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	@Override
 	public void run() {
 		long cnt=0;
-		
+
 		clientNotification("Load Configuration");
 		LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");                
 		fileUtils = new FileUtils();
@@ -72,12 +85,40 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		clientNotification("Initialize System");
 		LOG.log(Level.INFO, "Initialize System");
-		this.collector.init(fileUtils, applicationConfig);     
+		this.pixConStat = new PixelControllerStatus((int)applicationConfig.parseFps());
+		this.collector.init(fileUtils, applicationConfig, pixConStat);     
 		framerate = new Framerate(applicationConfig.parseFps());
 
 		clientNotification("Initialize OSC Server");
 		LOG.log(Level.INFO, "Initialize OSC Server");
-		this.collector.initDaemons(applicationConfig);     
+
+		int listeningOscPort = Integer.parseInt(applicationConfig.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
+		try {           
+			if (listeningOscPort>0) {
+				oscServer = new PixelControllerOscServer(listeningOscPort);
+				oscServer.startServer();
+				//register osc server in the statistic class
+				//this.pixConStat.setOscServerStatistics(oscServer);				
+			} else {
+				LOG.log(Level.INFO, "OSC Server disabled, port: "+listeningOscPort);
+			}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "failed to start OSC Server", e);
+		}          	   
+
+		try {
+			if (listeningOscPort>0) {
+				bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
+				bonjour.startServer();
+			} else {
+				LOG.log(Level.INFO, "MDNS Server disabled, OSC port: "+listeningOscPort);
+			}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "failed to start MDns Server", e);			
+		}
+
+
+
 
 		clientNotification("Initialize Output device");
 		LOG.log(Level.INFO, "Initialize Output device");
@@ -88,11 +129,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		this.collector.setOutput(output);
 
 		InitApplication.setupInitialConfig(collector, applicationConfig);
-		
+
 		LOG.log(Level.INFO, "--- PixelController Setup END ---");
 		LOG.log(Level.INFO, "---------------------------------");
 		LOG.log(Level.INFO, "");		
-		
+
 		initialized = true;
 
 		LOG.log(Level.INFO, "Enter main loop");
@@ -107,20 +148,20 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 			}
 
 			try {
-				Collector.getInstance().updateSystem();			
+				Collector.getInstance().updateSystem(pixConStat);			
 			} catch (Exception e) {
 				LOG.log(Level.SEVERE, "Collector.getInstance().updateSystem() failed!", e);
 			}
-			
-			Collector.getInstance().getPixConStat().setCurrentFps(framerate.getFps());
-			Collector.getInstance().getPixConStat().setFrameCount(cnt++);
+
+			pixConStat.setCurrentFps(framerate.getFps());
+			pixConStat.setFrameCount(cnt++);
 
 			framerate.waitForFps(); 
 		}
 		LOG.log(Level.INFO, "Main loop finished...");
 	}
-	
-	
+
+
 	public String getVersion() {
 		String version = this.getClass().getPackage().getImplementationVersion();
 		if (version != null && !version.isEmpty()) {
@@ -147,6 +188,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	@Override
 	public float getFps() {
 		return framerate.getFps();
+	}
+
+	@Override
+	public PixelControllerStatusMBean getPixConStat() {
+		return pixConStat;
 	}
 
 

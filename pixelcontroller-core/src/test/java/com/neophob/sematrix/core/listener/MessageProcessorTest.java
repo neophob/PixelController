@@ -20,13 +20,6 @@ package com.neophob.sematrix.core.listener;
 
 import static org.junit.Assert.assertEquals;
 
-import com.neophob.sematrix.core.glue.Collector;
-import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
-import com.neophob.sematrix.core.properties.ValidCommands;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Properties;
@@ -34,6 +27,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+
+import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.jmx.PixelControllerStatus;
+import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.ConfigConstant;
 
 /**
  * verify the rotate buffer code
@@ -100,7 +99,7 @@ public class MessageProcessorTest {
 		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
-		Collector.getInstance().init(new FileUtils(), ph);
+		Collector.getInstance().init(new FileUtils(), ph, new PixelControllerStatus(20));
 
 		String[] str = null;
 		MessageProcessor.processMsg(str, false, null);

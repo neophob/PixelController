@@ -690,7 +690,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoYPos+=yposAdd;
         runtime = cp5.addTextlabel("nfoRuntime", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+col.getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+pixcon.getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         float volNorm = col.getSound().getVolumeNormalized();
         currentVolume = cp5.addTextlabel("nfoVolumeCurrent", messages.getString("GeneratorGui.CURRENT_VOLUME")+volNorm, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -936,9 +936,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //update more details, mostly info tab
         if (frames%10==1) {
             //INFO TAB
-            int fps10 = (int)(col.getPixConStat().getCurrentFps()*10);
+            int fps10 = (int)(pixcon.getPixConStat().getCurrentFps()*10);
             currentFps.setText(messages.getString("GeneratorGui.CURRENT_FPS")+fps10/10f); //$NON-NLS-1$
-            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - col.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
+            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - pixcon.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
             int snd1000 = (int)(1000f*col.getSound().getVolumeNormalized());
@@ -950,8 +950,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 outputState.setText(outputStateStr);
                 outputErrorCounter.setText(messages.getString("GeneratorGui.IO_ERRORS")+output.getErrorCounter());             //$NON-NLS-1$            	
             }
-            long recievedMB = col.getPixConStat().getRecievedOscBytes()/1024/1024;
-            String oscStat  = messages.getString("GeneratorGui.OSC_STATISTIC")+col.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
+            long recievedMB = pixcon.getPixConStat().getRecievedOscBytes()/1024/1024;
+            String oscStat  = messages.getString("GeneratorGui.OSC_STATISTIC")+pixcon.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
             oscStatistic.setText(oscStat);
             
             Visual v = col.getVisual(col.getCurrentVisual());
@@ -969,7 +969,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.draw(); 
 
         //track used time
-        col.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
+        pixcon.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
     }
 
     
