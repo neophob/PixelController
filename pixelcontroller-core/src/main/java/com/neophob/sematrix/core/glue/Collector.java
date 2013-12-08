@@ -137,8 +137,6 @@ public class Collector extends Observable {
 
 	private PixelControllerOscServer oscServer;
 
-	private ApplicationConfigurationHelper ph;
-
 	/** The is loading present. */
 	private boolean isLoadingPresent=false;
 
@@ -190,7 +188,6 @@ public class Collector extends Observable {
 
 		this.fileUtils = fileUtils;
 		this.nrOfScreens = ph.getNrOfScreens();
-		this.ph = ph;
 		int fps = (int)(ph.parseFps());
 		if (fps<1) {
 			fps = 1;
@@ -813,13 +810,6 @@ public class Collector extends Observable {
 	 */
 	public PixelControllerFader getPixelControllerFader() {
 		return pixelControllerFader;
-	}
-
-	/**
-	 * @return the ph
-	 */
-	public ApplicationConfigurationHelper getPh() {
-		return ph;
 	}
 
 	/**
