@@ -66,7 +66,7 @@ public enum ValidCommands {
 	CHANGE_ROTOZOOM(CommandGroup.EFFECT, 1, "<INT> select angle for the rotozoom effect, -127-127"),
 	
 	/** The SAVE preset. */
-	SAVE_PRESET(CommandGroup.MISC, 0, "<NO PARAM> save current preset settings"),
+	SAVE_PRESET(CommandGroup.MISC, 1, "<NAME> save current preset settings with name NAME"),
 	
 	/** The LOAD present. */
 	LOAD_PRESET(CommandGroup.MISC, 0, "<NO PARAM> load current preset settings"),

@@ -254,6 +254,7 @@ public final class MessageProcessor {
 					int idxs = col.getSelectedPreset();
 					List<String> present = col.getCurrentStatus();
 					col.getPresets().get(idxs).setPresent(present);
+					col.getPresets().get(idxs).setName(msg[1]);
 					col.savePresets();					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);

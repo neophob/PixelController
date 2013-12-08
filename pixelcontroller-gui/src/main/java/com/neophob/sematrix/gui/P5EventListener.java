@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.glue.Collector;
+//import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.PresetSettings;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.ValidCommands;
@@ -246,12 +246,7 @@ public class P5EventListener implements ControlListener {
             	
             case SAVE_PRESET:
                 LOG.log(Level.INFO, "SAVE_PRESET");
-                Collector col = Collector.getInstance();
-                PresetSettings preset = col.getPresets().get(col.getSelectedPreset());
-                if (preset!=null) {
-                    preset.setName(callback.getCurrentPresetName());
-                }
-                createMessage(ValidCommands.SAVE_PRESET, "");
+                createMessage(ValidCommands.SAVE_PRESET, callback.getCurrentPresetName());
                 break;
               
             case BUTTON_TOGGLE_FREEZE:

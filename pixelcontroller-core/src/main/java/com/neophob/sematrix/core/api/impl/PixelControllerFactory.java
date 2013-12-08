@@ -22,7 +22,7 @@ import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
 
 /**
- * OSC Server Factory class
+ * PixelController Factory class
  * 
  * @author michu
  *

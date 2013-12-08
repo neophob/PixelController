@@ -135,10 +135,13 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 		}
 	}
 	
-	
+	/**
+	 * initialize gui after the core has been initialized
+	 */
 	private void postStartInitialisation() {
 		this.matrixEmulator = new OutputGui(pixelController.getConfig(), pixelController.getOutput(), this);
-
+		background(0);
+		
 		int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();
 		int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
 		GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth, maxHeight, pixelController.getVersion());
@@ -160,123 +163,6 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 		postInitDone = true;
 	}
 	    
-    /**
-     * Asynchronous initialize PixelController and display progress in GUI
-     */
-/*    public void asyncInitApplication() {
-        try {
-        	
-        	switch (setupStep) {
-        	case 0:
-        		fileUtils = new FileUtils();
-        		applicationConfig = InitApplication.loadConfiguration(fileUtils);
-        		String rootPath = applicationConfig.getResourcePath();
-        		if (StringUtils.isEmpty(rootPath)) {
-        			//use processing root path
-        			rootPath = this.sketchPath;
-        		}		
-        		
-        		setupStep++;
-        		drawProgressBar(steps);
-        		drawSetupText("Create Collector", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 1:
-        		this.collector = Collector.getInstance();
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
-        		drawSetupText("Initialize System", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 2:
-        		this.collector.init(fileUtils, applicationConfig);     
-        		//frameRate(applicationConfig.parseFps());
-        		noSmooth();
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
-        		drawSetupText("Initialize OSC Server", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 3:
-        		this.collector.initDaemons(applicationConfig);     
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
-        		drawSetupText("Initialize Output device", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 4:
-        		this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
-        		if (this.output==null) {
-        			throw new IllegalArgumentException("No output device found!");
-        		}
-        		this.collector.setOutput(output);
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
-        		drawSetupText("Apply Settings", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 5:
-        		InitApplication.setupInitialConfig(collector, applicationConfig);
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
-        		drawSetupText("Initialize GUI", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		return;
-
-        	case 6:
-        		this.matrixEmulator = new OutputGui(applicationConfig, this.output, this);
-
-        		//create gui window
-        		if (applicationConfig.getProperty(ConfigConstant.SHOW_DEBUG_WINDOW, "true").equalsIgnoreCase("true")) {
-        			//create GUI Window
-        			GeneratorGuiCreator ggc = new GeneratorGuiCreator(this, applicationConfig.getDebugWindowMaximalXSize(), applicationConfig.getDebugWindowMaximalYSize(), getVersion());
-        			//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
-        			KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
-        		}  
-        		setupStep++;
-        		drawProgressBar(steps*setupStep);
-        		drawSetupText("Finished", TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
-        		
-        		try {
-            		//now start a little hack, remove all window listeners, so we can control
-        			//the closing behavior ourselves.
-            		for (WindowListener wl: frame.getWindowListeners()) {            			
-            			frame.removeWindowListener(wl);
-            		}
-            		
-            	    //add our own window listener
-            	    frame.addWindowListener( new WindowHandler(this) );        			
-        		} catch (Exception e) {
-        			LOG.log(Level.INFO, "failed to remove/add window listeners", e);
-				}
-        		return;
-
-        	default:
-        		break;
-        	}
-        	
-
-            LOG.log(Level.INFO, "--- PixelController Setup END ---");
-            LOG.log(Level.INFO, "---------------------------------");
-            LOG.log(Level.INFO, "");
-
-            background(0);
-            initialized = true;
-            
-        } catch (Exception e) {
-            LOG.log(Level.INFO, "Failed to init PixelController!", e);
-            textSize(SETUP_FONT_BIG);
-            fill(227, 122, 182);
-            
-            int errorYPos = 370;
-            text("PixelController Error", 10, errorYPos);
-            
-            drawSetupText("Failed to initialize PixelController! See log/pixelcontroller.log for more detail!s", errorYPos+20);
-            drawSetupText("Error message:", errorYPos+40);
-            drawSetupText("     "+e.getMessage(), errorYPos+60);
-            initializationFailed = true;            
-        }
-    }
-*/
 
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
@@ -297,17 +183,11 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 		if (frameCount %25==24) {
 			System.out.println(pixelController.getFps() + " --- " + frameRate);			
 		}
-		
-		//TODO calculate fps in pixelcontroller-core
-//		this.collector.getPixConStat().setCurrentFps(frameRate);
-		
+				
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 		this.matrixEmulator.update();
 		Collector.getInstance().getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
-//		if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
-//			this.output.logStatistics();
-//		}
 	}
 	
 	/**

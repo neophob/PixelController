@@ -683,7 +683,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int nfoYPos = yPosStartDrowdown+20;
         int nfoXPos = xOfs;
 
-        cp5.addTextlabel("nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS")+pixcon.getFps(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        int coreFps = (int)(pixcon.getConfig().parseFps()+0.5);
+        cp5.addTextlabel("nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS")+coreFps, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         currentFps = cp5.addTextlabel("nfoFpsCurrent", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
