@@ -65,7 +65,27 @@ public interface IOutput {
 	int getBpp();
 
 	/**
-	 * @return how many errors occured (if supported)
+	 * @return how many errors occurred (if supported)
 	 */
 	long getErrorCounter();
+	
+	/**
+	 * get buffer for a output, this method respect the mapping and brightness
+	 *
+	 * @param screenNr the screen nr
+	 * @return the buffer for screen
+	 */
+	int[] getBufferForScreen(int screenNr, boolean applyGamma);
+	
+	/**
+	 * Update the output device
+	 */
+	void update();
+	
+	/**
+	 * fill the the preparedBufferMap instance with int[] buffers for all screens
+	 */
+	void prepareOutputBuffer();
+	
+	void switchBuffers();
 }

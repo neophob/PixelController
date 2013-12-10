@@ -26,9 +26,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.color.ColorSet;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.setup.InitApplication;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 
 /**
  * helper class to initialize color palettes
@@ -37,7 +36,7 @@ import com.neophob.sematrix.core.setup.InitApplication;
  */
 public abstract class InitHelper {
 
-    private static final Logger LOG = Logger.getLogger(InitApplication.class.getName());
+    private static final Logger LOG = Logger.getLogger(InitHelper.class.getName());
 
     private static final String PALETTE_CONFIG_FILENAME = "palette.properties";
 

@@ -25,19 +25,19 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.effect.Effect;
-import com.neophob.sematrix.core.effect.PassThru;
-import com.neophob.sematrix.core.fader.IFader;
-import com.neophob.sematrix.core.fader.PixelControllerFader;
-import com.neophob.sematrix.core.generator.Generator;
-import com.neophob.sematrix.core.generator.PassThruGen;
-import com.neophob.sematrix.core.glue.Collector;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.mixer.Mixer;
-import com.neophob.sematrix.core.mixer.PassThruMixer;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.effect.Effect;
+import com.neophob.sematrix.core.visual.effect.PassThru;
+import com.neophob.sematrix.core.visual.fader.IFader;
+import com.neophob.sematrix.core.visual.fader.PixelControllerFader;
+import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.core.visual.generator.PassThruGen;
+import com.neophob.sematrix.core.visual.mixer.Mixer;
+import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 
 public class GenerateAllFaderTest {
 
@@ -73,7 +73,7 @@ public class GenerateAllFaderTest {
     	List<Visual> vlist = new ArrayList<Visual>();
     	Visual v = createVisual(matrix, col);
     	vlist.add(v);
-    	Collector.getInstance().setAllVisuals(vlist);
+    	VisualState.getInstance().setAllVisuals(vlist);
     	    	
     	PixelControllerFader pcf = new PixelControllerFader(ph, matrix, fps);    	
     	for (int i=0; i<4; i++) {

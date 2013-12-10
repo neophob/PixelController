@@ -24,11 +24,11 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.core.glue.Collector;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.layout.Layout;
-import com.neophob.sematrix.core.output.Output;
+import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.layout.Layout;
 import com.neophob.sematrix.gui.model.LedSimulatorOutputWindow;
 import com.neophob.sematrix.gui.model.Point;
 
@@ -55,9 +55,9 @@ public class OutputGui {
 	/** The layout. */
 	private Layout layout;
 	
-	private Collector collector;
+	private VisualState collector;
 	
-	private Output output;
+	private IOutput output;
 	
 	private LedSimulatorOutputWindow lsow;
 	
@@ -66,9 +66,9 @@ public class OutputGui {
 	 *
 	 * @param controller the controller
 	 */
-	public OutputGui(ApplicationConfigurationHelper ph, Output output, PApplet papplet) {
+	public OutputGui(ApplicationConfigurationHelper ph, IOutput output, PApplet papplet) {
 		this.output = output;
-		this.collector = Collector.getInstance();
+		this.collector = VisualState.getInstance();
 		this.matrixData = this.collector.getMatrix();
 		this.layout = ph.getLayout();
 		
@@ -111,7 +111,7 @@ public class OutputGui {
 	 */
 	public void update() {
 		frame++;
-		
+
 		//a little hack to place this window on top of the gui window
 		if (frame==20) {
 			if (this.parent.frame.isAlwaysOnTopSupported()) {
@@ -155,6 +155,10 @@ public class OutputGui {
 	 * @param buffer - the buffer to draw
 	 */
 	private void drawOutput(int nr, int nrX, int nrY, int buffer[], int currentOutput) {
+		if (buffer == null) {
+			return;
+		}
+		
 		int xOfs = nrX*lsow.getOneMatrixXSize();
 		int yOfs = nrY*lsow.getOneMatrixYSize();
 		int ofs=0;

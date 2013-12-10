@@ -25,23 +25,27 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.effect.Effect;
-import com.neophob.sematrix.core.effect.PassThru;
-import com.neophob.sematrix.core.generator.ColorScroll.ScrollMode;
-import com.neophob.sematrix.core.generator.Generator.GeneratorName;
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.mixer.Mixer;
-import com.neophob.sematrix.core.mixer.PassThruMixer;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.resize.PixelResize;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.effect.Effect;
+import com.neophob.sematrix.core.visual.effect.PassThru;
+import com.neophob.sematrix.core.visual.generator.ColorScroll;
+import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.core.visual.generator.PassThruGen;
+import com.neophob.sematrix.core.visual.generator.PixelControllerGenerator;
+import com.neophob.sematrix.core.visual.generator.ColorScroll.ScrollMode;
+import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
+import com.neophob.sematrix.core.visual.mixer.Mixer;
+import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 
 public class GenerateAllResolutionTest {
 
@@ -88,7 +92,7 @@ public class GenerateAllResolutionTest {
     	
     	List<Visual> vlist = new ArrayList<Visual>();
     	vlist.add(createVisual(matrix, col));
-    	Collector.getInstance().setAllVisuals(vlist);
+    	VisualState.getInstance().setAllVisuals(vlist);
     	
     	PixelControllerGenerator pcGen = new PixelControllerGenerator(ph, fileUtils, matrix, fps, sound, resize);
     	pcGen.initAll();

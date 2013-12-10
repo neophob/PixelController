@@ -21,8 +21,8 @@ package com.neophob.sematrix.core.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * this class will transform a buffer.
@@ -137,7 +137,7 @@ public final class RotateBuffer {
 	public static int[] transformImage(int[] buffer, DeviceConfig deviceConfig, int deviceXSize, int deviceYSize) {
 
 		if (deviceXSize==0) {
-			deviceXSize = Collector.getInstance().getMatrix().getDeviceXSize();
+			deviceXSize = VisualState.getInstance().getMatrix().getDeviceXSize();
 		}
 
 		switch (deviceConfig) {

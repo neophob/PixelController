@@ -25,26 +25,26 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.effect.Effect;
-import com.neophob.sematrix.core.effect.PassThru;
-import com.neophob.sematrix.core.fader.IFader;
-import com.neophob.sematrix.core.fader.Switch;
-import com.neophob.sematrix.core.generator.Fire;
-import com.neophob.sematrix.core.generator.Generator;
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.glue.OutputMapping;
-import com.neophob.sematrix.core.glue.Visual;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
-import com.neophob.sematrix.core.layout.LayoutModel;
-import com.neophob.sematrix.core.mixer.Mixer;
-import com.neophob.sematrix.core.mixer.PassThruMixer;
 import com.neophob.sematrix.core.output.NullDevice;
 import com.neophob.sematrix.core.output.Output;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.effect.Effect;
+import com.neophob.sematrix.core.visual.effect.PassThru;
+import com.neophob.sematrix.core.visual.fader.IFader;
+import com.neophob.sematrix.core.visual.fader.Switch;
+import com.neophob.sematrix.core.visual.generator.Fire;
+import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.core.visual.layout.LayoutModel;
+import com.neophob.sematrix.core.visual.mixer.Mixer;
+import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 
 /**
  * test internal buffer size
@@ -89,7 +89,7 @@ public class MatrixDataTest {
         Output output = new NullDevice(ph);
     	
     	FileUtils fileUtils = new FileUtils();
-    	Collector.getInstance().init(fileUtils, ph, new PixelControllerStatus(20));
+    	VisualState.getInstance().init(fileUtils, ph, new PixelControllerStatus(20));
 
     	Mixer m = new PassThruMixer();
     	ColorSet c = new ColorSet("JUNIT", new int[]{123233,232323,100,200});

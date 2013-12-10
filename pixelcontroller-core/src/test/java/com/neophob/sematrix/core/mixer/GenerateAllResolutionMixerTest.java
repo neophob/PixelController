@@ -20,18 +20,18 @@ package com.neophob.sematrix.core.mixer;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.effect.Effect;
-import com.neophob.sematrix.core.effect.PassThru;
-import com.neophob.sematrix.core.generator.Generator;
-import com.neophob.sematrix.core.generator.PassThruGen;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.mixer.Checkbox;
-import com.neophob.sematrix.core.mixer.Mixer;
-import com.neophob.sematrix.core.mixer.PixelControllerMixer;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.effect.Effect;
+import com.neophob.sematrix.core.visual.effect.PassThru;
+import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.core.visual.generator.PassThruGen;
+import com.neophob.sematrix.core.visual.mixer.Checkbox;
+import com.neophob.sematrix.core.visual.mixer.Mixer;
+import com.neophob.sematrix.core.visual.mixer.PixelControllerMixer;
 
 public class GenerateAllResolutionMixerTest {
 

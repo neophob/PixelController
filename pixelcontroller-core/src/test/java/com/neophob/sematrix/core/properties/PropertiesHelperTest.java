@@ -29,13 +29,13 @@ import java.util.Properties;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.neophob.sematrix.core.layout.Layout.LayoutName;
 import com.neophob.sematrix.core.output.ArtnetDevice;
 import com.neophob.sematrix.core.output.E1_31Device;
 import com.neophob.sematrix.core.output.NullDevice;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.UdpDevice;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.visual.layout.Layout.LayoutName;
 
 /**
  * test start

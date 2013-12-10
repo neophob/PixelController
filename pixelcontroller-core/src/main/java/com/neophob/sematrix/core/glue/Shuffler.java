@@ -25,15 +25,18 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.effect.Effect;
-import com.neophob.sematrix.core.effect.Effect.EffectName;
-import com.neophob.sematrix.core.fader.IFader;
-import com.neophob.sematrix.core.generator.Generator;
-import com.neophob.sematrix.core.generator.Generator.GeneratorName;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.effect.Effect;
+import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
+import com.neophob.sematrix.core.visual.fader.IFader;
+import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 
 /**
  * create random settings.
@@ -79,7 +82,7 @@ public final class Shuffler {
 	 * get a random and valid preset
 	 */
 	public static int getRandomPreset() {
-		Collector col = Collector.getInstance();
+		VisualState col = VisualState.getInstance();
 		Random rand = new Random();
 
 		LOG.log(Level.INFO, "Present Shuffler");
@@ -105,7 +108,7 @@ public final class Shuffler {
 	public static void manualShuffleStuff() {	
 		long start = System.currentTimeMillis();
 
-		Collector col = Collector.getInstance(); 		
+		VisualState col = VisualState.getInstance(); 		
 		int currentVisual = col.getCurrentVisual();
 		Visual visual = col.getVisual(currentVisual);
 		Random rand = new Random();
@@ -245,7 +248,7 @@ public final class Shuffler {
 			return;
 		}
 
-		Collector col = Collector.getInstance(); 
+		VisualState col = VisualState.getInstance(); 
 
 		Random rand = new Random();
 		int blah = rand.nextInt(18);

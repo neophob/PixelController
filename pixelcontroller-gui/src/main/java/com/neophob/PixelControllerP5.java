@@ -73,33 +73,6 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	
 	/**
 	 * 
-	 * @param text
-	 * @param textYOffset
-	 */
-	public void drawSetupText(String text, int textYOffset) {
-	    fill(240);
-	    textSize(SETUP_FONT_SMALL);
-	    text(text, 40, textYOffset);
-	}
-
-	/**
-	 * 
-	 * @param val
-	 */
-	public void drawProgressBar(float val) {
-	    fill(64);
-	    rect(10, 40, 580, 50);
-
-	    if (val>1.0) {
-	        val = 1.0f;
-	    }
-
-	    fill(227, 122, 182);
-	    rect(10, 40, 580*val, 50);                
-	}
-
-	/**
-	 * 
 	 */
 	public void setup() {
 		try {
@@ -167,12 +140,11 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	 * @see processing.core.PApplet#draw()
 	 */
 	public void draw() {
-	    
 //	    if (initializationFailed) {
 //	        throw new IllegalArgumentException("PixelController failed to start...");
 //	    }
 
-	    if (!pixelController.isInitialized()) {
+	    if (!pixelController.isInitialized()) {	    	
 	        return;
 	    } else if (!postInitDone) {
 	    	postStartInitialisation();
@@ -185,6 +157,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 				
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
+
 		this.matrixEmulator.update();
 		pixelController.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
 	}
@@ -219,6 +192,33 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 			drawProgressBar(steps*setupStep);
 			drawSetupText(msg, TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);			
 		}
+	}
+
+	/**
+	 * 
+	 * @param text
+	 * @param textYOffset
+	 */
+	private void drawSetupText(String text, int textYOffset) {
+	    fill(240);
+	    textSize(SETUP_FONT_SMALL);
+	    text(text, 40, textYOffset);
+	}
+
+	/**
+	 * 
+	 * @param val
+	 */
+	private void drawProgressBar(float val) {
+	    fill(64);
+	    rect(10, 40, 580, 50);
+
+	    if (val>1.0) {
+	        val = 1.0f;
+	    }
+
+	    fill(227, 122, 182);
+	    rect(10, 40, 580*val, 50);                
 	}
 
 	/**

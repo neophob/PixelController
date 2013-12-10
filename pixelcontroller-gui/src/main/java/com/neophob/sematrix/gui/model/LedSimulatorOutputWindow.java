@@ -23,8 +23,8 @@ import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.layout.Layout;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.layout.Layout;
 
 /**
  * calculate the size of the matrix simulation window

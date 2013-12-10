@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.glue.Visual;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 
 public class ScreenshotHelper {
 

@@ -29,12 +29,12 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.core.layout.BoxLayout;
-import com.neophob.sematrix.core.layout.HorizontalLayout;
-import com.neophob.sematrix.core.layout.Layout;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.visual.layout.BoxLayout;
+import com.neophob.sematrix.core.visual.layout.HorizontalLayout;
+import com.neophob.sematrix.core.visual.layout.Layout;
 
 /**
  * load and save properties files.

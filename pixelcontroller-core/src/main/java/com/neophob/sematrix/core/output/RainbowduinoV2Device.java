@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.output.neorainbowduino.Rainbowduino;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * Send data to Rainbowduino.
@@ -99,7 +99,7 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 	public void update() {
 		if (initialized) {
 			int size=allI2cAddress.size();
-			int totalScreens = Collector.getInstance().getNrOfScreens();
+			int totalScreens = VisualState.getInstance().getNrOfScreens();
 			for (int screen=0; screen<totalScreens; screen++) {
 				//draw only on available screens!
 				if (screen<size) {

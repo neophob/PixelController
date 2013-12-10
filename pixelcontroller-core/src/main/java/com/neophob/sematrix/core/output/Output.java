@@ -23,15 +23,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.glue.Collector;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.glue.OutputMapping;
-import com.neophob.sematrix.core.glue.Visual;
-import com.neophob.sematrix.core.layout.Layout;
-import com.neophob.sematrix.core.layout.LayoutModel;
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.Gammatab;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.layout.Layout;
+import com.neophob.sematrix.core.visual.layout.LayoutModel;
 
 /**
  * parent output class.
@@ -53,7 +53,7 @@ public abstract class Output implements IOutput {
 	protected Layout layout;
 	
 	/** The collector. */
-	protected Collector collector;
+	protected VisualState collector;
 	
 	/** bit per pixel. */
 	protected int bpp;
@@ -87,7 +87,7 @@ public abstract class Output implements IOutput {
 	public Output(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
 		this.outputDeviceEnum = outputDeviceEnum;
 		
-		this.collector = Collector.getInstance();
+		this.collector = VisualState.getInstance();
 		this.matrixData = this.collector.getMatrix();
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
@@ -119,6 +119,10 @@ public abstract class Output implements IOutput {
 	 */
 	public int[] getBufferForScreen(int screenNr, boolean applyGamma) {
 		int[] buffer = this.bufferMap.get(switchBuffer+screenNr);
+if (buffer==null) {
+	LOG.log(Level.SEVERE, "Failed to get entry for entry: "+(switchBuffer+screenNr));
+	return null;
+}
 		float brightness = this.collector.getPixelControllerGenerator().getBrightness();		
 		
 		if (!applyGamma) {
@@ -145,7 +149,7 @@ public abstract class Output implements IOutput {
 		Visual v;
 		
 		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
-			LayoutModel lm = this.layout.getDataForScreen(screen, Collector.getInstance().getAllOutputMappings());
+			LayoutModel lm = this.layout.getDataForScreen(screen, VisualState.getInstance().getAllOutputMappings());
 			OutputMapping map = this.collector.getOutputMappings(screen);
 			v = this.collector.getVisual(lm.getVisualId());
 			
@@ -189,13 +193,6 @@ public abstract class Output implements IOutput {
 	 */
 	public String toString() {
 		return this.outputDeviceEnum.toString();
-	}
-
-	/**
-	 * debug output if possible.
-	 */
-	public void logStatistics() {
-		//nothing to do per default
 	}
 	
 	/**

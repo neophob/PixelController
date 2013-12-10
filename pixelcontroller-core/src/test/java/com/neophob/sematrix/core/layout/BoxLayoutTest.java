@@ -25,13 +25,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.fader.IFader;
-import com.neophob.sematrix.core.fader.Switch;
-import com.neophob.sematrix.core.glue.MatrixData;
-import com.neophob.sematrix.core.glue.OutputMapping;
-import com.neophob.sematrix.core.layout.BoxLayout;
-import com.neophob.sematrix.core.layout.Layout;
-import com.neophob.sematrix.core.layout.LayoutModel;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.fader.IFader;
+import com.neophob.sematrix.core.visual.fader.Switch;
+import com.neophob.sematrix.core.visual.layout.BoxLayout;
+import com.neophob.sematrix.core.visual.layout.Layout;
+import com.neophob.sematrix.core.visual.layout.LayoutModel;
 
 public class BoxLayoutTest {
 

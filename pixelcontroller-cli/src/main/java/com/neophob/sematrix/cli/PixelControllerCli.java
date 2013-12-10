@@ -58,14 +58,18 @@ public class PixelControllerCli extends CallbackMessage<String> {
 	 * @param args the arguments
 	 */
 	public static void main(String args[]) {
-		new PixelControllerCli();                
+		new PixelControllerCli();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
 	}
 
 
 
 	@Override
 	public void handleMessage(String msg) {
-		LOG.info(msg);		
+//		LOG.info(msg);	
 	}
 
 }

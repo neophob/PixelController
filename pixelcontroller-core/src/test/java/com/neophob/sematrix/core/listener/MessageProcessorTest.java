@@ -28,11 +28,11 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * verify the rotate buffer code
@@ -99,7 +99,7 @@ public class MessageProcessorTest {
 		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
-		Collector.getInstance().init(new FileUtils(), ph, new PixelControllerStatus(20));
+		VisualState.getInstance().init(new FileUtils(), ph, new PixelControllerStatus(20));
 
 		String[] str = null;
 		MessageProcessor.processMsg(str, false, null);
@@ -147,9 +147,9 @@ public class MessageProcessorTest {
 		str[1] = "1";    	
 		MessageProcessor.processMsg(str, false, null);
 
-		assertEquals(2, Collector.getInstance().getVisual(0).getGenerator1Idx());
-		assertEquals(5, Collector.getInstance().getVisual(0).getEffect2Idx());
-		assertEquals(1, Collector.getInstance().getVisual(0).getMixerIdx());
+		assertEquals(2, VisualState.getInstance().getVisual(0).getGenerator1Idx());
+		assertEquals(5, VisualState.getInstance().getVisual(0).getEffect2Idx());
+		assertEquals(1, VisualState.getInstance().getVisual(0).getMixerIdx());
 	}
 
 

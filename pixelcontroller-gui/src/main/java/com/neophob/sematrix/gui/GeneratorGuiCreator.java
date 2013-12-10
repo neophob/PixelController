@@ -28,8 +28,8 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.generator.Generator;
-import com.neophob.sematrix.core.glue.Collector;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.generator.Generator;
 import com.neophob.sematrix.gui.handler.WindowHandler;
 import com.neophob.sematrix.gui.model.WindowSizeCalculator;
 
@@ -52,10 +52,10 @@ public class GeneratorGuiCreator {
 	 * @param the maximal x size of the window
 	 */
 	public GeneratorGuiCreator(PixelController pixcon, PApplet parentPapplet, int maximalXSize, int maximalYSize, String version) {
-        int nrOfScreens = Collector.getInstance().getAllVisuals().size();
+        int nrOfScreens = VisualState.getInstance().getAllVisuals().size();
         LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
                      
-        Generator g = Collector.getInstance().getPixelControllerGenerator().getGenerator(0);
+        Generator g = VisualState.getInstance().getPixelControllerGenerator().getGenerator(0);
 		WindowSizeCalculator wsc = new WindowSizeCalculator(g.getInternalBufferXSize(), 
 				g.getInternalBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
         

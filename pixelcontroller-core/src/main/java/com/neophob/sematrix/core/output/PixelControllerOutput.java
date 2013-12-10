@@ -31,6 +31,8 @@ import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
+import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * The Class PixelControllerOutput.
@@ -41,7 +43,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	private static final Logger LOG = Logger.getLogger(PixelControllerOutput.class.getName());
 
 	/** The all outputs. */
-	private List<Output> allOutputs;
+	private List<IOutput> allOutputs;
 	
 	/** The executor service. */
 	private ExecutorService executorService;
@@ -54,11 +56,70 @@ public class PixelControllerOutput implements PixelControllerElement {
 	
 	private PixelControllerStatusMBean statistic;
 	
+	
+	/**
+	 * 
+	 * @param applicationConfig
+	 * @throws IllegalArgumentException
+	 */
+	public static IOutput getOutputDevice(VisualState visualState, ApplicationConfigurationHelper applicationConfig) throws IllegalArgumentException {
+		OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
+		IOutput output = null;
+		try {
+			switch (outputDeviceEnum) {
+			case PIXELINVADERS:
+				output = new PixelInvadersSerialDevice(applicationConfig, visualState.getNrOfScreens());
+				break;
+			case PIXELINVADERS_NET:
+				output = new PixelInvadersNetDevice(applicationConfig, visualState.getNrOfScreens());
+				break;            	
+			case STEALTH:
+				output = new StealthDevice(applicationConfig, visualState.getNrOfScreens());
+				break;
+			case RAINBOWDUINO_V2:
+				output = new RainbowduinoV2Device(applicationConfig);
+				break;
+			case RAINBOWDUINO_V3:
+				output = new RainbowduinoV3Device(applicationConfig);
+				break;
+			case ARTNET:
+				output = new ArtnetDevice(applicationConfig, visualState.getNrOfScreens());
+				break;
+			case E1_31:
+				output = new E1_31Device(applicationConfig, visualState.getNrOfScreens());
+				break;            	
+			case MINIDMX:
+				output = new MiniDmxDevice(applicationConfig);
+				break;
+			case NULL:
+				output = new NullDevice(applicationConfig);
+				break;
+			case UDP:
+				output = new UdpDevice(applicationConfig);
+				break;
+			case TPM2:
+				output = new Tpm2(applicationConfig);
+				break;
+			case TPM2NET:
+				output = new Tpm2Net(applicationConfig);                
+				break;
+			default:
+				throw new IllegalArgumentException("Unable to initialize unknown output device: " + outputDeviceEnum);
+			}
+			
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE,"\n\nERROR: Unable to initialize output device: " + outputDeviceEnum, e);
+		}
+
+		return output;
+	}
+	
+	
 	/**
 	 * Instantiates a new pixel controller output.
 	 */
 	public PixelControllerOutput(PixelControllerStatusMBean statistic) {
-		this.allOutputs = new CopyOnWriteArrayList<Output>();
+		this.allOutputs = new CopyOnWriteArrayList<IOutput>();
 		this.statistic = statistic;
 		this.executorService = Executors.newCachedThreadPool();		
 	}
@@ -94,7 +155,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 			// even more the prepare() methods will be called directly without any additional threading
 			// overhead. for the first frame it shouldn't really matter that the outputs have to wait 
 			// until the int[] buffers preparation is done.
-			for (Output output : this.allOutputs) {
+			for (IOutput output : this.allOutputs) {
 				output.prepareOutputBuffer();
 			}
 		}
@@ -127,7 +188,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 		// written to the output instances and can therefore be cleaned. also we have the preparedBufferMap
 		// instance containing the new set of int[] buffers to be written to the output. therefore we have
 		// switch both map instances to be ready for the next call of this method
-		for (Output output : this.allOutputs) {
+		for (IOutput output : this.allOutputs) {
 			output.switchBuffers();
 		}
 		
@@ -139,7 +200,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 		this.prepareEndGate = new CountDownLatch(this.allOutputs.size());
 		
 		// construct two runnable instance for each output and schedule them
-		for (final Output output: this.allOutputs) {
+		for (final IOutput output: this.allOutputs) {
 			// create runnable instance for preparing an output instance
 			Runnable prepareRunnable = new Runnable() {
 				@Override
@@ -197,7 +258,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 * Gets the all outputs.
 	 * @return the all outputs
 	 */
-	public List<Output> getAllOutputs() {
+	public List<IOutput> getAllOutputs() {
 		return allOutputs;
 	}
 
@@ -205,7 +266,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 * Adds the output.
 	 * @param output the output
 	 */
-	public void addOutput(Output output) {
+	public void addOutput(IOutput output) {
 		allOutputs.add(output);
 	}
 	
@@ -216,7 +277,7 @@ public class PixelControllerOutput implements PixelControllerElement {
 	 */
 	private int getNumberOfPhysicalOutputs() {
 		int outputs = 0;
-		for (Output output : this.allOutputs) {
+		for (IOutput output : this.allOutputs) {
 			if (output.getType().isPhysical()) {
 				outputs++;
 			}

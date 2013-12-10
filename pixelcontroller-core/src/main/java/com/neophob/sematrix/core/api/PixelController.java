@@ -1,7 +1,7 @@
 package com.neophob.sematrix.core.api;
 
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
-import com.neophob.sematrix.core.output.Output;
+import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
 /**
@@ -50,7 +50,7 @@ public interface PixelController {
 	 * 
 	 * @return selected output
 	 */
-	Output getOutput();
+	IOutput getOutput();
 	
 	/**
 	 * 

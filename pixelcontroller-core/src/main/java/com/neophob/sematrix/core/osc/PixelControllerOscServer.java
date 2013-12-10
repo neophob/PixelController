@@ -23,10 +23,10 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.jmx.PacketAndBytesStatictics;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
@@ -112,7 +112,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		MessageProcessor.processMsg(msg, true, oscIn.getBlob());
 		
 		//notfiy gui if an osc message arrives
-		Collector.getInstance().notifyGuiUpdate();
+		VisualState.getInstance().notifyGuiUpdate();
 	}
 
 

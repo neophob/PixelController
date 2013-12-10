@@ -24,10 +24,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.fader.Crossfader;
-import com.neophob.sematrix.core.fader.Fader;
-import com.neophob.sematrix.core.fader.IFader;
-import com.neophob.sematrix.core.glue.MatrixData;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.fader.Crossfader;
+import com.neophob.sematrix.core.visual.fader.Fader;
+import com.neophob.sematrix.core.visual.fader.IFader;
 
 public class CrossfaderTest {
 

@@ -28,11 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * 
@@ -188,7 +188,7 @@ public class Tpm2Net extends Output {
 	public void update() {
 
 		if (initialized) {
-			int nrOfScreens = Collector.getInstance().getNrOfScreens();
+			int nrOfScreens = VisualState.getInstance().getNrOfScreens();
 			for (int ofs=0; ofs<nrOfScreens; ofs++) {
 				//get the effective panel buffer
 				int panelNr = this.panelOrder.get(ofs);

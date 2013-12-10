@@ -1,19 +1,21 @@
 package com.neophob.sematrix.core.api.impl;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
-import com.neophob.sematrix.core.output.ArduinoOutput;
-import com.neophob.sematrix.core.output.Output;
+import com.neophob.sematrix.core.output.IOutput;
+import com.neophob.sematrix.core.output.PixelControllerOutput;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
-import com.neophob.sematrix.core.setup.InitApplication;
+import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.mdns.server.impl.MDnsServer;
 import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
@@ -26,10 +28,10 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 	private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
 
-	private Collector collector;
+	private VisualState collector;
 
 	/** The output. */
-	private Output output;
+	private IOutput output;
 
 	private ApplicationConfigurationHelper applicationConfig;
 	private FileUtils fileUtils;
@@ -77,11 +79,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		clientNotification("Load Configuration");
 		LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");                
 		fileUtils = new FileUtils();
-		applicationConfig = InitApplication.loadConfiguration(fileUtils);
+		applicationConfig = loadConfiguration(fileUtils);
 
 		clientNotification("Create Collector");
 		LOG.log(Level.INFO, "Create Collector");
-		this.collector = Collector.getInstance();
+		this.collector = VisualState.getInstance();
 
 		clientNotification("Initialize System");
 		LOG.log(Level.INFO, "Initialize System");
@@ -109,7 +111,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		try {
 			if (listeningOscPort>0) {
 				bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
-				bonjour.startServer();
+		//		bonjour.startServer();
 			} else {
 				LOG.log(Level.INFO, "MDNS Server disabled, OSC port: "+listeningOscPort);
 			}
@@ -122,13 +124,15 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		clientNotification("Initialize Output device");
 		LOG.log(Level.INFO, "Initialize Output device");
-		this.output = InitApplication.getOutputDevice(this.collector, applicationConfig);
+		this.output = PixelControllerOutput.getOutputDevice(this.collector, applicationConfig);
 		if (this.output==null) {
 			throw new IllegalArgumentException("No output device found!");
 		}
+		//TODO
+		collector.getPixelControllerOutput().addOutput(output);
 		this.collector.setOutput(output);
 
-		InitApplication.setupInitialConfig(collector, applicationConfig);
+		this.setupInitialConfig();
 
 		LOG.log(Level.INFO, "--- PixelController Setup END ---");
 		LOG.log(Level.INFO, "---------------------------------");
@@ -138,19 +142,15 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		LOG.log(Level.INFO, "Enter main loop");
 		while (Thread.currentThread() == runner) {
-			if (Collector.getInstance().isInPauseMode()) {
+			if (VisualState.getInstance().isInPauseMode()) {
 				//no update here, we're in pause mode
 				return;
 			}
 
-			if (this.output != null && this.output.getClass().isAssignableFrom(ArduinoOutput.class)) {
-				this.output.logStatistics();
-			}
-
 			try {
-				Collector.getInstance().updateSystem(pixConStat);			
+				VisualState.getInstance().updateSystem(pixConStat);			
 			} catch (Exception e) {
-				LOG.log(Level.SEVERE, "Collector.getInstance().updateSystem() failed!", e);
+				LOG.log(Level.SEVERE, "VisualState.getInstance().updateSystem() failed!", e);
 			}
 
 			pixConStat.setCurrentFps(framerate.getFps());
@@ -161,7 +161,38 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		LOG.log(Level.INFO, "Main loop finished...");
 	}
 
+	/**
+	 * 
+	 * @param collector
+	 * @param applicationConfig
+	 */
+	private void setupInitialConfig() {
+		//start in random mode?
+		if (applicationConfig.startRandommode()) {
+			LOG.log(Level.INFO, "Random Mode enabled");
+			Shuffler.manualShuffleStuff();
+			collector.setRandomMode(true);
+		}
 
+		//load saves presets
+		int presetNr = applicationConfig.loadPresetOnStart();
+		if (presetNr < 0 || presetNr >= PresetServiceImpl.NR_OF_PRESET_SLOTS) {
+			presetNr=0;
+		}
+		LOG.log(Level.INFO,"Load preset "+presetNr);
+		//TODO fixme
+		List<String> preset = collector.getPresets().get(presetNr).getPresent();
+		collector.setSelectedPreset(presetNr);
+		if (preset!=null) { 
+			collector.setCurrentStatus(preset);
+		} else {
+			LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
+		}
+	}
+	
+	/**
+	 * 
+	 */
 	public String getVersion() {
 		String version = this.getClass().getPackage().getImplementationVersion();
 		if (version != null && !version.isEmpty()) {
@@ -181,7 +212,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	}
 
 	@Override
-	public Output getOutput() {
+	public IOutput getOutput() {
 		return output;
 	}
 

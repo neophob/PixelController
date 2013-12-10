@@ -37,17 +37,9 @@ import processing.core.PImage;
 
 import com.neophob.PixelControllerP5;
 import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.color.ColorSet;
-import com.neophob.sematrix.core.effect.Effect.EffectName;
-import com.neophob.sematrix.core.generator.ColorScroll.ScrollMode;
-import com.neophob.sematrix.core.generator.Generator.GeneratorName;
-import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.glue.OutputMapping;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
-import com.neophob.sematrix.core.glue.Visual;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.core.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ConfigConstant;
@@ -55,6 +47,14 @@ import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
+import com.neophob.sematrix.core.visual.generator.ColorScroll.ScrollMode;
+import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
+import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
 import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
 import com.neophob.sematrix.gui.model.WindowSizeCalculator;
@@ -216,7 +216,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         P5EventListener listener = new P5EventListener(this);
 
         //selected visual
-        Collector col = Collector.getInstance();
+        VisualState col = VisualState.getInstance();
         int nrOfVisuals = col.getAllVisuals().size();
       
         int w = singleVisualXSize < MINIMAL_VISUAL_WIDTH ? MINIMAL_VISUAL_WIDTH-1 : singleVisualXSize-1; 
@@ -855,7 +855,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * @param col
      * @return
      */
-    private int getVisualCenter(Collector col) {
+    private int getVisualCenter(VisualState col) {
     	if (singleVisualXSize<MINIMAL_VISUAL_WIDTH) {
         	return (windowWidth - (col.getAllVisuals().size() * MINIMAL_VISUAL_WIDTH))/2;    		
     	}
@@ -869,7 +869,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     public void draw() {
     	//background(0);
         long l = System.currentTimeMillis();
-        Collector col = Collector.getInstance();
+        VisualState col = VisualState.getInstance();
         int localX = getVisualCenter(col);
         int localY=40;
 
@@ -977,7 +977,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * update preset stuff
      */
     public void updateCurrentPresetState() {
-        Collector col = Collector.getInstance();
+        VisualState col = VisualState.getInstance();
         PresetSettings preset = col.getPresets().get(col.getSelectedPreset());
         if (preset!=null) {
             String presetState;
@@ -1004,14 +1004,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int xSizeForEachWidget = (windowWidth-2*GENERIC_X_OFS)/NR_OF_WIDGETS;
         
         //display frame progress
-        int frames = Collector.getInstance().getFrames() % (xSizeForEachWidget-WIDGET_BOARDER);        
+        int frames = VisualState.getInstance().getFrames() % (xSizeForEachWidget-WIDGET_BOARDER);        
         fill(0, 180, 234);
         rect(GENERIC_X_OFS, localY+SELECTED_MARKER+4, frames, WIDGET_BAR_SIZE);
         fill(2, 52, 77);
         rect(GENERIC_X_OFS+frames, localY+SELECTED_MARKER+4, xSizeForEachWidget-frames-WIDGET_BOARDER, WIDGET_BAR_SIZE);
 
         //draw sound stats
-        ISound snd = Collector.getInstance().getSound();
+        ISound snd = VisualState.getInstance().getSound();
         int xofs = GENERIC_X_OFS+xSizeForEachWidget;
         int xx = (xSizeForEachWidget-WIDGET_BOARDER*2)/3;
 
@@ -1034,7 +1034,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         rect(GENERIC_X_OFS+2*xSizeForEachWidget+vol, localY+SELECTED_MARKER+4, xSizeForEachWidget-WIDGET_BOARDER-vol, WIDGET_BAR_SIZE);
         
         //draw output device
-        Boolean isConnected = Collector.getInstance().isOutputDeviceConnected();
+        Boolean isConnected = VisualState.getInstance().isOutputDeviceConnected();
         if (isConnected!=null) {
             //highlight current output
             if (isConnected) {
