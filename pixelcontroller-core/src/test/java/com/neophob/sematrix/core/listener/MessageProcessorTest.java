@@ -99,7 +99,7 @@ public class MessageProcessorTest {
 		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
-		VisualState.getInstance().init(new FileUtils(), ph, new PixelControllerStatus(20));
+		VisualState.getInstance().init(new FileUtils(), ph);
 
 		String[] str = null;
 		MessageProcessor.processMsg(str, false, null);

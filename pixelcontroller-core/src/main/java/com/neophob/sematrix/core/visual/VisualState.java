@@ -35,7 +35,6 @@ import com.neophob.sematrix.core.glue.helper.InitHelper;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.output.PixelControllerOutput;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
@@ -116,10 +115,6 @@ public class VisualState extends Observable {
 	/** The pixel controller resize. */
 	private PixelControllerResize pixelControllerResize;
 
-	/** The pixel controller output. */
-	//TODO REMOVE ME
-	private PixelControllerOutput pixelControllerOutput;
-
 	/** The pixel controller shuffler select. */
 	private PixelControllerShufflerSelect pixelControllerShufflerSelect;
 
@@ -160,7 +155,7 @@ public class VisualState extends Observable {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph, PixelControllerStatusMBean statistic) {
+	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph) {
 		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
@@ -235,10 +230,6 @@ public class VisualState extends Observable {
 			throw new IllegalArgumentException("Failed to initialize Visuals, maybe missing palette files?");
 		}
 
-		LOG.log(Level.INFO, "Initialize output");
-		pixelControllerOutput = new PixelControllerOutput(statistic);
-		pixelControllerOutput.initAll();
-
 		//create an empty mapping
 		ioMapping.clear();
 		for (int n=0; n<nrOfScreens; n++) {
@@ -271,10 +262,6 @@ public class VisualState extends Observable {
 		l = System.currentTimeMillis();
 		pixelControllerEffect.update();
 		pixConStat.trackTime(TimeMeasureItemGlobal.EFFECT, System.currentTimeMillis()-l);
-
-		l = System.currentTimeMillis();
-		pixelControllerOutput.update();
-		pixConStat.trackTime(TimeMeasureItemGlobal.OUTPUT_SCHEDULE, System.currentTimeMillis()-l);
 
 		//cleanup faders
 		l = System.currentTimeMillis();
@@ -692,15 +679,6 @@ public class VisualState extends Observable {
 	 */
 	public PixelControllerResize getPixelControllerResize() {
 		return pixelControllerResize;
-	}
-
-	/**
-	 * Gets the pixel controller output.
-	 *
-	 * @return the pixel controller output
-	 */
-	public PixelControllerOutput getPixelControllerOutput() {
-		return pixelControllerOutput;
 	}
 
 	/**

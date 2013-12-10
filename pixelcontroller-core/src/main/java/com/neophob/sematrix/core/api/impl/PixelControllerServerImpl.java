@@ -9,6 +9,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
+import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
@@ -44,6 +45,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	private PixelControllerOscServer oscServer;
 
 	private PixelControllerStatusMBean pixConStat;
+
+	private PixelControllerOutput pixelControllerOutput;
 
 	private MDnsServer bonjour;
 
@@ -88,7 +91,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		clientNotification("Initialize System");
 		LOG.log(Level.INFO, "Initialize System");
 		this.pixConStat = new PixelControllerStatus((int)applicationConfig.parseFps());
-		this.collector.init(fileUtils, applicationConfig, pixConStat);     
+		this.collector.init(fileUtils, applicationConfig);     
 		framerate = new Framerate(applicationConfig.parseFps());
 
 		clientNotification("Initialize OSC Server");
@@ -119,18 +122,16 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 			LOG.log(Level.SEVERE, "failed to start MDns Server", e);			
 		}
 
-
-
-
 		clientNotification("Initialize Output device");
 		LOG.log(Level.INFO, "Initialize Output device");
 		this.output = PixelControllerOutput.getOutputDevice(this.collector, applicationConfig);
 		if (this.output==null) {
 			throw new IllegalArgumentException("No output device found!");
 		}
-		//TODO
-		collector.getPixelControllerOutput().addOutput(output);
-
+		pixelControllerOutput = new PixelControllerOutput(pixConStat);
+		pixelControllerOutput.initAll();
+		pixelControllerOutput.addOutput(this.output);
+		
 		this.setupInitialConfig();
 
 		LOG.log(Level.INFO, "--- PixelController Setup END ---");
@@ -151,6 +152,10 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 			} catch (Exception e) {
 				LOG.log(Level.SEVERE, "VisualState.getInstance().updateSystem() failed!", e);
 			}
+
+			long l = System.currentTimeMillis();
+			pixelControllerOutput.update();
+			pixConStat.trackTime(TimeMeasureItemGlobal.OUTPUT_SCHEDULE, System.currentTimeMillis()-l);
 
 			pixConStat.setCurrentFps(framerate.getFps());
 			pixConStat.setFrameCount(cnt++);
@@ -187,6 +192,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		} else {
 			LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
 		}
+		
 	}
 	
 	/**
