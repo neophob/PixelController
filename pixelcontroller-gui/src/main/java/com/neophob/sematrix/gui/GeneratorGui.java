@@ -711,7 +711,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
-        IOutput output = col.getOutputDevice();
+        IOutput output = pixcon.getOutput();
         if (output!=null) {
             String gammaText = WordUtils.capitalizeFully(StringUtils.replace(output.getGammaType().toString(), "_", " "));
             cp5.addTextlabel("nfoGamma", messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
@@ -803,7 +803,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.addTextlabel("sndDesc", messages.getString("GeneratorGui.SOUND_DESC"), GENERIC_X_OFS+xSizeForEachWidget, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("sndVol", messages.getString("GeneratorGui.INPUT_VOLUME"), GENERIC_X_OFS+xSizeForEachWidget*2, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("outputDevice", messages.getString("GeneratorGui.OUTPUT_DEVICE"), GENERIC_X_OFS+xSizeForEachWidget*3, GENERIC_Y_OFS).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
-        cp5.addTextlabel("outputDeviceName", col.getOutputDeviceName(), 15+GENERIC_X_OFS+xSizeForEachWidget*3, 2+GENERIC_Y_OFS+10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$
+        cp5.addTextlabel("outputDeviceName", getOutputDeviceName(), 15+GENERIC_X_OFS+xSizeForEachWidget*3, 2+GENERIC_Y_OFS+10).moveTo(ALWAYS_VISIBLE_TAB).getValueLabel(); //$NON-NLS-1$
         
         //register event listener
         cp5.addListener(listener);
@@ -944,7 +944,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             int snd1000 = (int)(1000f*col.getSound().getVolumeNormalized());
             currentVolume.setText(messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
-            IOutput output = col.getOutputDevice();
+            IOutput output = pixcon.getOutput();
             if (output!=null) {
                 String outputStateStr = WordUtils.capitalizeFully(output.getConnectionStatus());
                 outputState.setText(outputStateStr);
@@ -1034,7 +1034,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         rect(GENERIC_X_OFS+2*xSizeForEachWidget+vol, localY+SELECTED_MARKER+4, xSizeForEachWidget-WIDGET_BOARDER-vol, WIDGET_BAR_SIZE);
         
         //draw output device
-        Boolean isConnected = VisualState.getInstance().isOutputDeviceConnected();
+        Boolean isConnected = isOutputDeviceConnected();
         if (isConnected!=null) {
             //highlight current output
             if (isConnected) {
@@ -1213,6 +1213,25 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		}
 	}
 	
+	
+	private String getOutputDeviceName() {
+		if (pixcon.getOutput()==null) {
+			return "";
+		}
+		return pixcon.getOutput().getType().toString();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private Boolean isOutputDeviceConnected() {
+		if (pixcon.getOutput()==null || !pixcon.getOutput().isSupportConnectionState()) {
+			return null;
+		}
+
+		return pixcon.getOutput().isSupportConnectionState() && pixcon.getOutput().isConnected();
+	}
 
 	@Override
 	public void updateGuiElements(Map<String, String> diff) {

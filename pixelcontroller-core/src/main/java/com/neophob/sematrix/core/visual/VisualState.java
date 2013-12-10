@@ -35,7 +35,6 @@ import com.neophob.sematrix.core.glue.helper.InitHelper;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
@@ -48,17 +47,17 @@ import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
-import com.neophob.sematrix.core.visual.effect.PixelControllerEffect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
+import com.neophob.sematrix.core.visual.effect.PixelControllerEffect;
+import com.neophob.sematrix.core.visual.fader.Fader.FaderName;
 import com.neophob.sematrix.core.visual.fader.IFader;
 import com.neophob.sematrix.core.visual.fader.PixelControllerFader;
-import com.neophob.sematrix.core.visual.fader.Fader.FaderName;
 import com.neophob.sematrix.core.visual.generator.Generator;
-import com.neophob.sematrix.core.visual.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
+import com.neophob.sematrix.core.visual.generator.PixelControllerGenerator;
 import com.neophob.sematrix.core.visual.mixer.Mixer;
-import com.neophob.sematrix.core.visual.mixer.PixelControllerMixer;
 import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
+import com.neophob.sematrix.core.visual.mixer.PixelControllerMixer;
 
 /**
  * The Class Collector.
@@ -135,8 +134,6 @@ public class VisualState extends Observable {
 	private boolean inPauseMode = false;
 
 	private boolean internalVisualsVisible = true;
-
-	private IOutput output;
 
 	private ISound sound;
 
@@ -774,43 +771,6 @@ public class VisualState extends Observable {
 		return inPauseMode;
 	}
 
-	/**
-	 * @param output the output to set
-	 */
-	public void setOutput(IOutput output) {
-		this.output = output;
-	}    
-
-	/**
-	 * 
-	 * @return
-	 */
-	public String getOutputDeviceName() {
-		if (this.output==null) {
-			return "";
-		}
-		return output.getType().toString();
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public Boolean isOutputDeviceConnected() {
-		if (this.output==null || !this.output.isSupportConnectionState()) {
-			return null;
-		}
-
-		return this.output.isSupportConnectionState() && this.output.isConnected();
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public IOutput getOutputDevice() {
-		return this.output;
-	}
 
 	/**
 	 * sound implementation

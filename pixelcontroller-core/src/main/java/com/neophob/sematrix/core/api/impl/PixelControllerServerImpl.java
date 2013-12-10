@@ -130,7 +130,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		}
 		//TODO
 		collector.getPixelControllerOutput().addOutput(output);
-		this.collector.setOutput(output);
 
 		this.setupInitialConfig();
 
