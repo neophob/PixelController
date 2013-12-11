@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.core.glue.FileUtils;
-
 /**
  * 
  * @author michu
@@ -28,7 +26,7 @@ public class PresetServiceImpl {
 
 	public static final int NR_OF_PRESET_SLOTS = 144;
 
-	private FileUtils fileUtils;
+	private String filename;
 	
 	private List<PresetSettings> presets;
 
@@ -38,8 +36,8 @@ public class PresetServiceImpl {
 	 * 
 	 * @param fileUtils
 	 */
-	public PresetServiceImpl(FileUtils fileUtils) {
-		this.fileUtils = fileUtils;
+	public PresetServiceImpl(String filePath) {
+		this.filename = filePath+File.separator+PRESETS_FILENAME;
 		selectedPreset=0;		
 		loadPresents();
 	}
@@ -86,7 +84,6 @@ public class PresetServiceImpl {
         
         InputStream input = null;
         try {
-        	String filename = this.fileUtils.getDataDir()+File.separator+PRESETS_FILENAME;
         	input = new FileInputStream(filename);
             props.load(input);                        
             String s;
@@ -127,7 +124,6 @@ public class PresetServiceImpl {
 
         OutputStream output = null;
         try {
-        	String filename = this.fileUtils.getDataDir()+File.separator+PRESETS_FILENAME;
         	output = new FileOutputStream(filename);
             props.store(output, "Visual Daemon presets file");
             LOG.log(Level.INFO, "Presets saved as {0}", PRESETS_FILENAME );

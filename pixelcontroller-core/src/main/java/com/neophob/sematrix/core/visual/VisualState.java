@@ -161,7 +161,7 @@ public class VisualState extends Observable {
 			return;
 		}
 
-		presetService = new PresetServiceImpl(fileUtils);		
+		presetService = new PresetServiceImpl(fileUtils.getDataDir());		
 		
 		this.nrOfScreens = ph.getNrOfScreens();
 		int fps = (int)(ph.parseFps());
