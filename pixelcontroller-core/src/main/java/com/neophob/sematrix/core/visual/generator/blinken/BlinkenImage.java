@@ -40,7 +40,7 @@ public class BlinkenImage {
 				width, height, pointer);
 	}
 
-	public void addData(int fragment[]) {
+	public void addData(int[] fragment) {
 		if (pointer + fragment.length > data.length) {
 			return;
 		}

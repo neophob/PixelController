@@ -96,7 +96,7 @@ public abstract class Gammatab {
      * @return
      */
     public static int[] applyBrightnessAndGammaTab(int[] buffer, GammaType type, float brightness) {
-    	int ret[] = new int[buffer.length];
+    	int[] ret = new int[buffer.length];
     	int ofs=0;
     	int r,g,b;
     	

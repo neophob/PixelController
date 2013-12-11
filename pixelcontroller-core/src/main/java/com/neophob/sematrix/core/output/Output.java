@@ -233,7 +233,7 @@ public abstract class Output implements IOutput {
         int yStart=lm.getyStart(bufferHeight);
         int yWidth=lm.getyWidth(bufferHeight);
                 
-        int resizedBuffer[] = new int[bufferWidth*bufferHeight];
+        int[] resizedBuffer = new int[bufferWidth*bufferHeight];
         
         //resize image (strech), example source image is 64x64 which gets resized to
         // panel 1: X:0, 32  Y:0, 64    

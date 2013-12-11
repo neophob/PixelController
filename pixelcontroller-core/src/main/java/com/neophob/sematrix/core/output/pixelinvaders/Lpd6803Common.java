@@ -115,7 +115,7 @@ public abstract class Lpd6803Common {
 	 * @return nr of sended bytes or -1 if an error occurred
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public int sendFrame(byte ofs, byte data[], int totalPanels) throws IllegalArgumentException {		
+	public int sendFrame(byte ofs, byte[] data, int totalPanels) throws IllegalArgumentException {		
 		byte[] imagePayload = Tpm2NetProtocol.createImagePayload(ofs, totalPanels, data);
 
 		if (sendData(imagePayload)) {
@@ -149,7 +149,7 @@ public abstract class Lpd6803Common {
 	 * @param cmdfull the cmdfull
 	 * @return true, if successful
 	 */
-	public boolean sendData(byte cmdfull[]) {
+	public boolean sendData(byte[] cmdfull) {
 		try {
 			writeData(cmdfull);
 
@@ -205,7 +205,7 @@ public abstract class Lpd6803Common {
 	 * @param data the data
 	 * @return true if send was successful
 	 */
-	private boolean didFrameChange(byte ofs, byte data[]) {
+	private boolean didFrameChange(byte ofs, byte[] data) {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();
@@ -233,7 +233,7 @@ public abstract class Lpd6803Common {
 	 * @param data
 	 * @return
 	 */
-	public boolean didFrameChange(byte ofs, int data[]) {
+	public boolean didFrameChange(byte ofs, int[] data) {
 		ByteBuffer b = ByteBuffer.allocate(data.length*4);
 		for (int i: data) {
 			b.putInt(i);			

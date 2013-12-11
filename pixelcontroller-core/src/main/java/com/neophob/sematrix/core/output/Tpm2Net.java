@@ -141,7 +141,7 @@ public class Tpm2Net extends Output {
 	 * @param data
 	 * @return
 	 */
-	private boolean didFrameChange(int ofs, byte data[]) {
+	private boolean didFrameChange(int ofs, byte[] data) {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();

@@ -48,8 +48,8 @@ public class OutputHelper {
 	 * @param cmdfull the cmdfull
 	 * @param frameData the frame data
 	 */
-	public static int[] flipSecondScanline(int buffer[], int xResolution, int yResolution) {
-		int bufferTwo[] = buffer.clone();
+	public static int[] flipSecondScanline(int[] buffer, int xResolution, int yResolution) {
+		int[] bufferTwo = buffer.clone();
 
 		for (int y=0; y<yResolution; y++) {
 			if (y%2==1) {
@@ -70,8 +70,8 @@ public class OutputHelper {
 	 * @param yResolution
 	 * @return
 	 */
-	public static int[] manualMapping(int src[], int mapping[], int xResolution, int yResolution) {
-		int bufferTwo[] = new int[mapping.length];
+	public static int[] manualMapping(int[] src, int[] mapping, int xResolution, int yResolution) {
+		int[] bufferTwo = new int[mapping.length];
 		int length = src.length;
 		int ofs=0;
 		for (int i: mapping) {

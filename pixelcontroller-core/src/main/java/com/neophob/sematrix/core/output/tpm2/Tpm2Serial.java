@@ -197,7 +197,7 @@ public class Tpm2Serial {
 	 * @param data the data
 	 * @return true if send was successful
 	 */
-	private boolean didFrameChange(byte data[]) {
+	private boolean didFrameChange(byte[] data) {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();
@@ -216,7 +216,7 @@ public class Tpm2Serial {
 	 * @return true if send was successful
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public boolean sendFrame(byte data[]) throws IllegalArgumentException {
+	public boolean sendFrame(byte[] data) throws IllegalArgumentException {
 		if (didFrameChange(data)) {
 			writeSerialData(data);
 		}

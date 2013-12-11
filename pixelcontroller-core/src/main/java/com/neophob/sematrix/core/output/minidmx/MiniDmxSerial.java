@@ -350,7 +350,7 @@ public class MiniDmxSerial {
 	public boolean ping() {
 	    
 	    //the data is not really needed
-		byte data[] = new byte[this.miniDmxPayload.payloadSize];
+		byte[] data = new byte[this.miniDmxPayload.payloadSize];
 
 	    //just make sure its initialized with RANDOM data, so it pass the "didFrameChange" method
 		Random r = new Random();
@@ -382,7 +382,7 @@ public class MiniDmxSerial {
 	 * @param data the data
 	 * @return true if send was successful
 	 */
-	private boolean didFrameChange(byte data[]) {
+	private boolean didFrameChange(byte[] data) {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();
@@ -413,7 +413,7 @@ public class MiniDmxSerial {
 	 * @return true if send was successful
 	 * @throws IllegalArgumentException the illegal argument exception
 	 */
-	public int sendFrame(byte data[]) throws IllegalArgumentException {
+	public int sendFrame(byte[] data) throws IllegalArgumentException {
 	    //respect the padding!
         int sourceDataLength = miniDmxPayload.getPayloadSize()-miniDmxPayload.paddingBytes;
 
@@ -422,7 +422,7 @@ public class MiniDmxSerial {
 		}	
         
 		//add header to data
-		byte cmdfull[] = new byte[miniDmxPayload.getPayloadSize()+3];		
+		byte[] cmdfull = new byte[miniDmxPayload.getPayloadSize()+3];		
 		cmdfull[0] = START_OF_BLOCK;
 		cmdfull[1] = miniDmxPayload.getPayload();		
 		System.arraycopy(data, 0, cmdfull, 2, sourceDataLength);
@@ -449,7 +449,7 @@ public class MiniDmxSerial {
 	 * @param cmdfull the cmdfull
 	 * @return true, if successful
 	 */
-	private boolean sendSerialData(byte cmdfull[]) {
+	private boolean sendSerialData(byte[] cmdfull) {
 		try {
 			writeSerialData(cmdfull);
 			if (waitForAck()) {

@@ -321,7 +321,7 @@ public class Visual {
 		}
 
 		//get gryscale buffer
-		int buffer[] = mixer.getBuffer(this);
+		int[] buffer = mixer.getBuffer(this);
 
 		return colorSet.convertToColorSetImage(buffer);
 	}
