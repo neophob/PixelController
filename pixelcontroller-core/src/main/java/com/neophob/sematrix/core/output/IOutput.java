@@ -19,6 +19,7 @@
 package com.neophob.sematrix.core.output;
 
 import com.neophob.sematrix.core.output.gamma.GammaType;
+import com.neophob.sematrix.core.resize.Resize.ResizeName;
 
 /**
  * Output device interface
@@ -88,4 +89,6 @@ public interface IOutput {
 	void prepareOutputBuffer();
 	
 	void switchBuffers();
+	
+	int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize);
 }

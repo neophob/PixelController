@@ -19,32 +19,10 @@
 package com.neophob.sematrix.core.glue;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Properties;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.jmx.PixelControllerStatus;
-import com.neophob.sematrix.core.output.NullDevice;
-import com.neophob.sematrix.core.output.Output;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.OutputMapping;
-import com.neophob.sematrix.core.visual.Visual;
-import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.color.ColorSet;
-import com.neophob.sematrix.core.visual.effect.Effect;
-import com.neophob.sematrix.core.visual.effect.PassThru;
-import com.neophob.sematrix.core.visual.fader.IFader;
-import com.neophob.sematrix.core.visual.fader.Switch;
-import com.neophob.sematrix.core.visual.generator.Fire;
-import com.neophob.sematrix.core.visual.generator.Generator;
-import com.neophob.sematrix.core.visual.layout.LayoutModel;
-import com.neophob.sematrix.core.visual.mixer.Mixer;
-import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 
 /**
  * test internal buffer size
@@ -79,7 +57,9 @@ public class MatrixDataTest {
     	
     	matrix = new MatrixData(24,18);
     }
-
+    
+/*
+ 	//TODO moved to output
     @Test
     public void testMatrixStretch() {
         Properties config = new Properties();
@@ -117,6 +97,6 @@ public class MatrixDataTest {
                 assertNotNull(matrix.getScreenBufferForDevice(visual, lmBox4, map, output));
         	}    		
     	}
-    }
+    }*/
 
 }

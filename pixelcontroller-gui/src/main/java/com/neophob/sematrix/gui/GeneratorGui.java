@@ -903,7 +903,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             for (Visual v: col.getAllVisuals()) {
 
                 //use always the pixel resize option to reduce cpu load
-            	buffer = col.getMatrix().resizeBufferForDevice(v.getBuffer(), ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
+            	buffer = pixcon.getOutput().resizeBufferForDevice(v.getBuffer(), ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
             	
             	pImage.loadPixels();
             	System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
