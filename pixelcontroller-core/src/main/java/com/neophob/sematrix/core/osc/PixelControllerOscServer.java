@@ -112,6 +112,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		MessageProcessor.processMsg(msg, true, oscIn.getBlob());
 		
 		//notfiy gui if an osc message arrives
+		//TODO, maybe trigger it in message processor
 		VisualState.getInstance().notifyGuiUpdate();
 	}
 

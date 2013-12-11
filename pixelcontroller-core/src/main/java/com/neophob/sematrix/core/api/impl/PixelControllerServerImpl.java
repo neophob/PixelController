@@ -142,13 +142,13 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		LOG.log(Level.INFO, "Enter main loop");
 		while (Thread.currentThread() == runner) {
-			if (VisualState.getInstance().isInPauseMode()) {
+			if (this.collector.isInPauseMode()) {
 				//no update here, we're in pause mode
 				return;
 			}
 
 			try {
-				VisualState.getInstance().updateSystem(pixConStat);			
+				this.collector.updateSystem(pixConStat);			
 			} catch (Exception e) {
 				LOG.log(Level.SEVERE, "VisualState.getInstance().updateSystem() failed!", e);
 			}
