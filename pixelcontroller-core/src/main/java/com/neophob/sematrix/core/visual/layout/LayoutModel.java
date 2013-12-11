@@ -95,7 +95,7 @@ public class LayoutModel {
 	 * @return true, if successful
 	 */
 	public boolean screenDoesNotNeedStretching() {
-		return (sameFxOnX==1 && sameFxOnY==1);
+		return sameFxOnX==1 && sameFxOnY==1;
 	}
 	
 	

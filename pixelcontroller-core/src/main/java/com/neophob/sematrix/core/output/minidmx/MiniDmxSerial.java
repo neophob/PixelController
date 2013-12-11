@@ -300,7 +300,7 @@ public class MiniDmxSerial {
 	 * @return wheter rainbowudino is connected
 	 */
 	public boolean connected() {
-		return (port != null);
+		return port != null;
 	}	
 
 	

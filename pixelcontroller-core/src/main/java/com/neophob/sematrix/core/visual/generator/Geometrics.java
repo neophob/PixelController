@@ -87,7 +87,7 @@ public class Geometrics extends Generator {
 	@Override
 	public void update() {
 		//maximal 3 active drops
-		if ( (sound.isHat() || sound.isKick() || drops.size()==0) && drops.size()<3) {			
+		if ( (sound.isHat() || sound.isKick() || drops.isEmpty()) && drops.size()<3) {			
 			drops.add(
 					new Drop(
 							random(THICKNESS, internalBufferXSize), 

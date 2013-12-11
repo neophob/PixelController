@@ -216,7 +216,7 @@ public abstract class Output implements IOutput {
      * @param output the output
      * @return the screen buffer for device
      */
-    private int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map, IOutput output) {
+    private int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map) {
         int[] buffer = visual.getBuffer();
 
         //apply output specific effect
@@ -276,7 +276,7 @@ public abstract class Output implements IOutput {
 			if (lm.screenDoesNotNeedStretching()) {
 				buffer = this.getScreenBufferForDevice(v, map);
 			} else {
-				buffer = this.getScreenBufferForDevice(v, lm, map, this);
+				buffer = this.getScreenBufferForDevice(v, lm, map);
 			}
 
 			// the prepare method has to write to the currently not used range of the bufferMap

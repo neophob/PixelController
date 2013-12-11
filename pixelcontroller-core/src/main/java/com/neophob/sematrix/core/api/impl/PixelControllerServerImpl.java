@@ -80,7 +80,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		long cnt=0;
 
 		clientNotification("Load Configuration");
-		LOG.log(Level.INFO, "\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");                
 		fileUtils = new FileUtils();
 		applicationConfig = loadConfiguration(fileUtils);
 

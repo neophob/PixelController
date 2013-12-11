@@ -130,7 +130,7 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 	public void printAvailableI2cAdr() {
 		if (initialized) {
 			List<Integer> list = rainbowduino.scanI2cBus();
-			StringBuffer foundDevices = new StringBuffer();
+			StringBuilder foundDevices = new StringBuilder();
 			for (int i: list) {
 			    foundDevices.append(i);
 			    foundDevices.append(" ");

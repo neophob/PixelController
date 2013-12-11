@@ -135,7 +135,9 @@ public abstract class PixelInvadersDevice extends Output {
 			float f = sentFrames+ignoredFrames;
 			float result = (100.0f/f)*sentFrames;
 			LOG.log(Level.INFO, "sent frames: {0}% ({1}/{2}, total {3}kb), errors: {4}", 
-					new Object[] {result, sentFrames, ignoredFrames, (sentBytes/1024), (errorFrames+lpd6803.getConnectionErrorCounter())});				
+					new Object[] {result, sentFrames, ignoredFrames, sentBytes/1024, 
+					errorFrames+lpd6803.getConnectionErrorCounter() 
+			});				
 		}		
 	}
 	

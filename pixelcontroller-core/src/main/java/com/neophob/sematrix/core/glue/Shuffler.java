@@ -93,7 +93,7 @@ public final class Shuffler {
 		while (!done || sanityCheck--<1) {
 			idx = rand.nextInt(col.getPresets().size());
 			List<String> present = col.getPresets().get(idx).getPresent();
-			if (present!=null && present.size()>0) { 
+			if (present!=null && !present.isEmpty()) { 
 				done = true;				
 			}
 		}
@@ -233,7 +233,7 @@ public final class Shuffler {
 			col.getPixelControllerGenerator().setFpsAdjustment(new Random().nextFloat()*2.0f);
 		}
 
-		LOG.log(Level.INFO, "Shuffle finished in {0}ms", (System.currentTimeMillis()-start));
+		LOG.log(Level.INFO, "Shuffle finished in {0}ms", System.currentTimeMillis()-start);
 	}
 
 	/**

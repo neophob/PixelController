@@ -86,7 +86,7 @@ public class PresetSettings {
 			return "";
 		}
 		
-		StringBuffer ret=new StringBuffer();
+		StringBuilder ret=new StringBuilder();
 		
 		for (String s: present) {
 			ret.append(s);
@@ -124,7 +124,7 @@ public class PresetSettings {
      * @return
      */
     public boolean isSlotUsed() {
-        if (present==null || present.size()==0) {
+        if (present==null || present.isEmpty()) {
             return false;
         }
         return true;

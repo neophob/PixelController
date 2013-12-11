@@ -31,7 +31,7 @@ import java.util.UUID;
  */
 public class E1_31DataPacket {
 
-    private static final UUID PIXELCONTROLLER_UUID = new UUID(0x31337babel, 0x0caffebeefl);
+    private static final UUID PIXELCONTROLLER_UUID = new UUID(0x31337babeL, 0x0caffebeefL);
     
     public static final int E131_PORT = 5568;
 

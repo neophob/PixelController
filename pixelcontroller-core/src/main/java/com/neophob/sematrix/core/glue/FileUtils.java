@@ -144,7 +144,7 @@ public class FileUtils {
 	 */
 	private class BlinkenlightsFilter implements FilenameFilter {		
 		public boolean accept(File dir, String name) {
-	        return (name.toLowerCase().endsWith(".bml"));
+	        return name.toLowerCase().endsWith(".bml");
 	    }
 	}
 

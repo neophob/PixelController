@@ -149,7 +149,7 @@ public class Tpm2Serial {
 	 * @return wheter rainbowudino is connected
 	 */
 	public boolean connected() {
-		return (port != null);
+		return port != null;
 	}	
 
 	

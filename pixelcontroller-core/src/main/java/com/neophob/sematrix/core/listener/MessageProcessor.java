@@ -534,7 +534,7 @@ public final class MessageProcessor {
 				
 			//unkown message
 			default:
-				StringBuffer sb = new StringBuffer();
+				StringBuilder sb = new StringBuilder();
 				for (int i=0; i<msg.length;i++) {
 					sb.append(msg[i]);
 					sb.append("; ");
