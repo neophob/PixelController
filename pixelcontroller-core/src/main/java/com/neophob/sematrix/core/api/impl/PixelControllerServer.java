@@ -3,6 +3,7 @@ package com.neophob.sematrix.core.api.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Observable;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -10,8 +11,8 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 
 /**
  * abstract class, implements observer class
@@ -24,6 +25,7 @@ public abstract class PixelControllerServer extends Observable implements PixelC
 	private static final Logger LOG = Logger.getLogger(PixelControllerServer.class.getName());
 
 	private static final String APPLICATION_CONFIG_FILENAME = "config.properties";
+    private static final String PALETTE_CONFIG_FILENAME = "palette.properties";
 
 	/**
 	 * 
@@ -46,10 +48,10 @@ public abstract class PixelControllerServer extends Observable implements PixelC
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	static ApplicationConfigurationHelper loadConfiguration(FileUtils fileUtils) throws IllegalArgumentException {
+	static ApplicationConfigurationHelper loadConfiguration(String dataDir) throws IllegalArgumentException {
 		Properties config = new Properties();
 		InputStream is = null;
-		String fileToLoad = fileUtils.getDataDir()+File.separator+APPLICATION_CONFIG_FILENAME;
+		String fileToLoad = dataDir+File.separator+APPLICATION_CONFIG_FILENAME;
 		try {
 			is = new FileInputStream(fileToLoad);
 			config.load(is);            
@@ -75,4 +77,39 @@ public abstract class PixelControllerServer extends Observable implements PixelC
 			throw new IllegalArgumentException(e);
 		}
 	}
+	
+	
+	/**
+	 * 
+	 * @param dataDir
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+    static List<ColorSet> loadColorPalettes(String dataDir) throws IllegalArgumentException {
+        //load palette
+        Properties palette = new Properties();
+        String filename = dataDir+File.separator+PALETTE_CONFIG_FILENAME;
+        InputStream is = null;
+        try {
+        	is = new FileInputStream(filename);
+            palette.load(is);
+            List<ColorSet> colorSets = ColorSet.loadAllEntries(palette);
+
+            LOG.log(Level.INFO, "ColorSets loaded, {0} entries", colorSets.size());
+            return colorSets;
+        } catch (Exception e) {
+            String error = "Failed to load the palette config file "+filename;
+            LOG.log(Level.SEVERE, error, e);
+            throw new IllegalArgumentException(error, e);
+        } finally {
+        	try {
+        		if (is!=null) {
+        			is.close();        	
+        		}
+        	} catch (Exception e) {
+        		//ignored
+        	}
+        }
+
+    }
 }

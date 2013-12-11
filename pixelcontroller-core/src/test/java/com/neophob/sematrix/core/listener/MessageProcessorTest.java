@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,10 +31,11 @@ import java.util.logging.Logger;
 import org.junit.Test;
 
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 
 /**
  * verify the rotate buffer code
@@ -99,7 +102,11 @@ public class MessageProcessorTest {
 		config.put(ConfigConstant.RESOURCE_PATH, rootDir);
 		ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
-		VisualState.getInstance().init(new FileUtils(), ph);
+		List<ColorSet> colorsets = new LinkedList<ColorSet>();
+		colorsets.add(new ColorSet("aa", new int[] {1,100,1000}));
+		colorsets.add(new ColorSet("bb", new int[] {999,555,0xffffff}));
+		
+		VisualState.getInstance().init(new FileUtils(), ph, new SoundDummy(), colorsets);
 
 		String[] str = null;
 		MessageProcessor.processMsg(str, false, null);

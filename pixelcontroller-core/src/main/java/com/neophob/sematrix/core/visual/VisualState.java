@@ -31,7 +31,6 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.PixelControllerShufflerSelect;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
-import com.neophob.sematrix.core.glue.helper.InitHelper;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
@@ -42,8 +41,6 @@ import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
-import com.neophob.sematrix.core.sound.SoundDummy;
-import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
@@ -155,7 +152,7 @@ public class VisualState extends Observable {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph) {
+	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph, ISound sound, List<ColorSet> colorSets) {
 		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
@@ -169,22 +166,8 @@ public class VisualState extends Observable {
 			fps = 1;
 		}
 
-		this.colorSets = InitHelper.getColorPalettes(fileUtils);
-
-		//choose sound implementation
-		if (ph.isAudioAware()) {
-			try {		
-				sound = new SoundMinim(ph.getSoundSilenceThreshold());			
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.");				
-			} catch (Error e) {
-				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);			
-			}			
-		} 
-
-		if (sound==null) {
-			sound = new SoundDummy();
-		}
+		this.colorSets = colorSets;
+		this.sound = sound;
 
 		//create the device with specific size
 		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());

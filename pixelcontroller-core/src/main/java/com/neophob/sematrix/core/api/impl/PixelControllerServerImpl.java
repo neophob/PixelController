@@ -16,7 +16,11 @@ import com.neophob.sematrix.core.output.PixelControllerOutput;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.sound.SoundDummy;
+import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.mdns.server.impl.MDnsServer;
 import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
@@ -31,21 +35,18 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 	private VisualState collector;
 
-	/** The output. */
 	private IOutput output;
+	private ISound sound;
 
 	private ApplicationConfigurationHelper applicationConfig;
 	private FileUtils fileUtils;
 	private Framerate framerate;
 
 	private Thread runner;
-
 	private boolean initialized = false;
 	
 	private PixelControllerOscServer oscServer;
-
 	private PixelControllerStatusMBean pixConStat;
-
 	private PixelControllerOutput pixelControllerOutput;
 
 	private MDnsServer bonjour;
@@ -81,8 +82,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		clientNotification("Load Configuration");
 		fileUtils = new FileUtils();
-		applicationConfig = loadConfiguration(fileUtils);
-
+		applicationConfig = loadConfiguration(fileUtils.getDataDir());
+		List<ColorSet> colorSets = loadColorPalettes(fileUtils.getDataDir());
+		
 		clientNotification("Create Collector");
 		LOG.log(Level.INFO, "Create Collector");
 		this.collector = VisualState.getInstance();
@@ -90,7 +92,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		clientNotification("Initialize System");
 		LOG.log(Level.INFO, "Initialize System");
 		this.pixConStat = new PixelControllerStatus((int)applicationConfig.parseFps());
-		this.collector.init(fileUtils, applicationConfig);     
+		this.sound = initSound();
+		
+		this.collector.init(fileUtils, applicationConfig, sound, colorSets);     
 		framerate = new Framerate(applicationConfig.parseFps());
 
 		clientNotification("Initialize OSC Server");
@@ -190,8 +194,29 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 			collector.setCurrentStatus(preset);
 		} else {
 			LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
-		}
-		
+		}		
+	}
+	
+	/**
+	 * Initialize sound
+	 * @return
+	 */
+	private ISound initSound() {
+		ISound sound;
+		//choose sound implementation
+		if (applicationConfig.isAudioAware()) {
+			try {		
+				sound = new SoundMinim(applicationConfig.getSoundSilenceThreshold());
+				return sound;
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.");				
+			} catch (Error e) {
+				LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);			
+			}			
+		} 
+
+		LOG.log(Level.INFO, "Initialize dummy sound.");
+		return new SoundDummy();
 	}
 	
 	/**
