@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author michu
  *
  */
-public class PresetServiceImpl {
+public class PresetServiceImpl implements PresetService {
 
 	private static final Logger LOG = Logger.getLogger(PresetServiceImpl.class.getName());
 
@@ -43,17 +43,19 @@ public class PresetServiceImpl {
 	}
 	
 	
-    /**
-	 * @return the selectedPreset
+    /* (non-Javadoc)
+	 * @see com.neophob.sematrix.core.preset.PresetService#getSelectedPreset()
 	 */
+	@Override
 	public int getSelectedPreset() {
 		return selectedPreset;
 	}
 
 
-	/**
-	 * @param selectedPreset the selectedPreset to set
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.core.preset.PresetService#setSelectedPreset(int)
 	 */
+	@Override
 	public void setSelectedPreset(int selectedPreset) {
 		if (selectedPreset<0 || selectedPreset>NR_OF_PRESET_SLOTS) {
 			LOG.log(Level.WARNING, "Ignore invalid selected preset: "+selectedPreset);
@@ -63,9 +65,10 @@ public class PresetServiceImpl {
 	}
 
 
-	/**
-	 * @return the presets
+	/* (non-Javadoc)
+	 * @see com.neophob.sematrix.core.preset.PresetService#getPresets()
 	 */
+	@Override
 	public List<PresetSettings> getPresets() {
 		return presets;
 	}
@@ -111,10 +114,11 @@ public class PresetServiceImpl {
         return presets;
     }
 
-    /**
-     * Save presents.
-     */
-    public void savePresents() {
+    /* (non-Javadoc)
+	 * @see com.neophob.sematrix.core.preset.PresetService#savePresents()
+	 */
+    @Override
+	public void savePresents() {
         Properties props = new Properties();
         int idx=0;
         for (PresetSettings p: presets) {

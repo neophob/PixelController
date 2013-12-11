@@ -30,31 +30,31 @@ import com.neophob.sematrix.core.visual.VisualState;
 public class TransitionManager {
 
 	private int[][] savedVisuals;
-	private VisualState col;
+	private VisualState visualState;
 	
 	/**
 	 * save current visual output, used for preset fading
 	 * 
 	 * @param col
 	 */
-	public TransitionManager(VisualState col) {
-		this.col = col;
-		savedVisuals = new int[col.getAllVisuals().size()][];
+	public TransitionManager(VisualState visualState) {
+		this.visualState = visualState;
+		savedVisuals = new int[visualState.getAllVisuals().size()][];
 		int i = 0;
-		for (OutputMapping om: col.getAllOutputMappings()) {
-			savedVisuals[i++] = col.getVisual(om.getVisualId()).getBuffer().clone();
+		for (OutputMapping om: visualState.getAllOutputMappings()) {
+			savedVisuals[i++] = visualState.getVisual(om.getVisualId()).getBuffer().clone();
 		}		
 	}
 	
 	/**
 	 * start crossfading
 	 * 
-	 * @param col
+	 * @param visualState
 	 */
 	public void startCrossfader() {
 		int i=0;
-		for (OutputMapping om: col.getAllOutputMappings()) {				
-			om.setFader(col.getPixelControllerFader().getPresetFader(1));
+		for (OutputMapping om: visualState.getAllOutputMappings()) {				
+			om.setFader(visualState.getPixelControllerFader().getPresetFader(1));
 			om.getFader().startFade(om.getVisualId(), savedVisuals[i++]);
 		}		
 	}

@@ -34,7 +34,7 @@ import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommands;
@@ -130,7 +130,7 @@ public class VisualState extends Observable {
 	private ISound sound;
 
 	//TODO Remove me
-	private PresetServiceImpl presetService;
+	private PresetService presetService;
 	
 	/**
 	 * Instantiates a new collector.
@@ -152,22 +152,23 @@ public class VisualState extends Observable {
 	 * @param papplet the PApplet
 	 * @param ph the PropertiesHelper
 	 */
-	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph, ISound sound, List<ColorSet> colorSets) {
+	public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph, ISound sound, 
+			List<ColorSet> colorSets, PresetService presetService) {
+		
 		LOG.log(Level.INFO, "Initialize collector");
 		if (initialized) {
 			return;
 		}
 
-		presetService = new PresetServiceImpl(fileUtils.getDataDir());		
+		this.colorSets = colorSets;
+		this.sound = sound;
+		this.presetService = presetService;
 		
 		this.nrOfScreens = ph.getNrOfScreens();
 		int fps = (int)(ph.parseFps());
 		if (fps<1) {
 			fps = 1;
 		}
-
-		this.colorSets = colorSets;
-		this.sound = sound;
 
 		//create the device with specific size
 		this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());

@@ -13,6 +13,7 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
@@ -34,6 +35,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
 
 	private VisualState collector;
+	private PresetService presetService;
 
 	private IOutput output;
 	private ISound sound;
@@ -93,8 +95,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		LOG.log(Level.INFO, "Initialize System");
 		this.pixConStat = new PixelControllerStatus((int)applicationConfig.parseFps());
 		this.sound = initSound();
+		this.presetService = new PresetServiceImpl(fileUtils.getDataDir());
 		
-		this.collector.init(fileUtils, applicationConfig, sound, colorSets);     
+		this.collector.init(fileUtils, applicationConfig, sound, colorSets, presetService);     
 		framerate = new Framerate(applicationConfig.parseFps());
 
 		clientNotification("Initialize OSC Server");
