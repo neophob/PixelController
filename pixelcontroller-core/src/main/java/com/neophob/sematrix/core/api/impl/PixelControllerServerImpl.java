@@ -10,6 +10,7 @@ import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
+import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
@@ -96,6 +97,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		this.pixConStat = new PixelControllerStatus((int)applicationConfig.parseFps());
 		this.sound = initSound();
 		this.presetService = new PresetServiceImpl(fileUtils.getDataDir());
+		MessageProcessor.INSTANCE.init(presetService);
 		
 		this.collector.init(fileUtils, applicationConfig, sound, colorSets, presetService);     
 		framerate = new Framerate(applicationConfig.parseFps());
@@ -172,6 +174,14 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	}
 
 	/**
+	 * @return the presetService
+	 */
+	@Override
+	public PresetService getPresetService() {
+		return presetService;
+	}
+
+	/**
 	 * 
 	 * @param collector
 	 * @param applicationConfig
@@ -190,9 +200,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 			presetNr=0;
 		}
 		LOG.log(Level.INFO,"Load preset "+presetNr);
-		//TODO fixme
-		List<String> preset = collector.getPresets().get(presetNr).getPresent();
-		collector.setSelectedPreset(presetNr);
+
+		List<String> preset = presetService.getPresets().get(presetNr).getPresent();
+		presetService.setSelectedPreset(presetNr);
 		if (preset!=null) { 
 			collector.setCurrentStatus(preset);
 		} else {

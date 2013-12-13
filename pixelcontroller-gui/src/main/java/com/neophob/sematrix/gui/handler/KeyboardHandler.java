@@ -168,7 +168,7 @@ public abstract class KeyboardHandler {
         case 'R':
             String msg[] = new String[1];		
             msg[0] = ""+ValidCommands.RANDOMIZE;
-            MessageProcessor.processMsg(msg, false, null);
+            MessageProcessor.INSTANCE.processMsg(msg, false, null);
             break;
             
         default:

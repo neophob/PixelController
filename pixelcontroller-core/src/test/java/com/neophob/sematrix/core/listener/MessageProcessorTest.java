@@ -109,50 +109,50 @@ public class MessageProcessorTest {
 		VisualState.getInstance().init(new FileUtils(), ph, new SoundDummy(), colorsets, new PresetServiceDummy());
 
 		String[] str = null;
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str = new String[2];
 		str[0] = "AAAAAAAAAA";
 		str[1] = "ALSOINVALID";
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "CURRENT_VISUAL";
 		str[1] = "23323223";
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "CURRENT_OUTPUT";
 		str[1] = "99999";
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "COLOR_FADE_LENGTH";
 		str[1] = "0";
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "CHANGE_GENERATOR_A";
 		str[1] = "9999990";    	
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str = new String[1];
 		str[0] = "CHANGE_GENERATOR_A";
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		//test real life use case
 		str = new String[2];
 		str[0] = "CURRENT_VISUAL";
 		str[1] = "0";    	
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "CHANGE_GENERATOR_A";
 		str[1] = "2";    	
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "CHANGE_EFFECT_B";
 		str[1] = "5";    	
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		str[0] = "CHANGE_MIXER";
 		str[1] = "1";    	
-		MessageProcessor.processMsg(str, false, null);
+		MessageProcessor.INSTANCE.processMsg(str, false, null);
 
 		assertEquals(2, VisualState.getInstance().getVisual(0).getGenerator1Idx());
 		assertEquals(5, VisualState.getInstance().getVisual(0).getEffect2Idx());

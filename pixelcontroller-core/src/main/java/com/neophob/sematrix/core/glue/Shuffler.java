@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.listener.MessageProcessor;
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
@@ -40,6 +41,8 @@ import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 
 /**
  * create random settings.
+ * 
+ * TODO USE MESSAGE PROCESSOR
  *
  * @author michu
  */
@@ -58,31 +61,27 @@ public final class Shuffler {
 	/**
 	 * used for randomized preset mode, rarely change stuff.
 	 */
-	public static void randomPresentModeShuffler(ISound sound) {
+	public static boolean randomPresentModeShuffler(ISound sound) {
 		boolean kick = sound.isKick();
 		boolean hat = sound.isHat();
 
 		if (!kick && !hat) {
-			return;
+			return false;
 		}
 
 		Random rand = new Random();
 		if (rand.nextInt(10)==1) {
-			
-			LOG.log(Level.INFO, "Load random Preset");
-			
-			String[] msg = new String[1];
-			msg[0] = ""+ValidCommands.PRESET_RANDOM;
-			MessageProcessor.processMsg(msg, true, null);
+			return true;
 		}
+		
+		return false;
 	}
 
 
 	/**
 	 * get a random and valid preset
 	 */
-	public static int getRandomPreset() {
-		VisualState col = VisualState.getInstance();
+	public static int getRandomPreset(PresetService presetService) {		
 		Random rand = new Random();
 
 		LOG.log(Level.INFO, "Present Shuffler");
@@ -91,8 +90,8 @@ public final class Shuffler {
 		boolean done=false;
 		int idx = 0;
 		while (!done || sanityCheck--<1) {
-			idx = rand.nextInt(col.getPresets().size());
-			List<String> present = col.getPresets().get(idx).getPresent();
+			idx = rand.nextInt(presetService.getPresets().size());
+			List<String> present = presetService.getPresets().get(idx).getPresent();
 			if (present!=null && !present.isEmpty()) { 
 				done = true;				
 			}

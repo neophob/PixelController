@@ -24,37 +24,52 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.helper.ScreenshotHelper;
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.effect.Effect;
-import com.neophob.sematrix.core.visual.effect.RotoZoom;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
+import com.neophob.sematrix.core.visual.effect.RotoZoom;
 import com.neophob.sematrix.core.visual.fader.IFader;
 import com.neophob.sematrix.core.visual.fader.TransitionManager;
 import com.neophob.sematrix.core.visual.generator.Generator;
 import com.neophob.sematrix.core.visual.mixer.Mixer;
 
 /**
- * The Class MessageProcessor.
+ * Messagebus of the application
+ * 
+ * reason to use a singleton here:
+ * - there exist ONE message processor
+ * - processing the messages should be done synchronized
  */
-public final class MessageProcessor {
-
-
+public enum MessageProcessor {
+	INSTANCE;
+	
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(MessageProcessor.class.getName());
 
 	/** The Constant IGNORE_COMMAND. */
 	private static final String IGNORE_COMMAND = "Ignored command";
 
+	private PresetService presetService;
+	
 	/**
 	 * Instantiates a new message processor.
 	 */
 	private MessageProcessor() {
-		//no instance
+
 	}
 
+	/**
+	 * 
+	 * @param presetService
+	 */
+	public void init(PresetService presetService) {
+		this.presetService = presetService;
+	}
+	
 	/**
 	 * process message from gui.
 	 *
@@ -62,7 +77,7 @@ public final class MessageProcessor {
 	 * @param startFader the start fader
 	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
 	 */
-	public static synchronized void processMsg(String[] msg, boolean startFader, byte[] blob) {
+	public synchronized void processMsg(String[] msg, boolean startFader, byte[] blob) {
 		if (msg==null || msg.length<1) {
 			return;
 		}
@@ -252,11 +267,11 @@ public final class MessageProcessor {
 
 			case SAVE_PRESET:
 				try {
-					int idxs = col.getSelectedPreset();
+					int idxs = presetService.getSelectedPreset();
 					List<String> present = col.getCurrentStatus();
-					col.getPresets().get(idxs).setPresent(present);
-					col.getPresets().get(idxs).setName(msg[1]);
-					col.savePresets();					
+					presetService.getPresets().get(idxs).setPresent(present);
+					presetService.getPresets().get(idxs).setName(msg[1]);
+					presetService.savePresents();					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -264,7 +279,7 @@ public final class MessageProcessor {
 
 			case LOAD_PRESET:
 				try {
-					loadPreset(col.getSelectedPreset());
+					loadPreset(presetService.getSelectedPreset());
 					col.notifyGuiUpdate();					
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
@@ -274,7 +289,7 @@ public final class MessageProcessor {
 			case CHANGE_PRESET:
 				try {
 					int a = Integer.parseInt(msg[1]);
-					col.setSelectedPreset(a);					    
+					presetService.setSelectedPreset(a);		    
 				} catch (Exception e) {
 					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
 				}
@@ -409,9 +424,9 @@ public final class MessageProcessor {
 
 			case PRESET_RANDOM:	//one shot randomizer, use a pre-stored present
 				try {
-					int currentPreset = Shuffler.getRandomPreset();					
+					int currentPreset = Shuffler.getRandomPreset(presetService);					
 					loadPreset(currentPreset);
-					col.setSelectedPreset(currentPreset);
+					presetService.setSelectedPreset(currentPreset);
 					col.notifyGuiUpdate();
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -552,14 +567,14 @@ public final class MessageProcessor {
 	 * 
 	 * @param nr
 	 */
-	private static void loadPreset(int nr) {
+	private void loadPreset(int nr) {
 		VisualState col = VisualState.getInstance();
 		
 		//save current selections
 		int currentVisual = col.getCurrentVisual();
 		int currentOutput = col.getCurrentOutput();
 							
-		List<String> present = col.getPresets().get(nr).getPresent();					
+		List<String> present = presetService.getPresets().get(nr).getPresent();					
 		if (present!=null) {	
 			//save current visual buffer
 			TransitionManager transition = new TransitionManager(col);

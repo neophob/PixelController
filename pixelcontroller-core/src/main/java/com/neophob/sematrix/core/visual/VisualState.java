@@ -35,7 +35,6 @@ import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.preset.PresetService;
-import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
@@ -129,9 +128,8 @@ public class VisualState extends Observable {
 
 	private ISound sound;
 
-	//TODO Remove me
 	private PresetService presetService;
-	
+
 	/**
 	 * Instantiates a new collector.
 	 */
@@ -270,7 +268,11 @@ public class VisualState extends Observable {
 		if (randomMode) {
 			Shuffler.shuffleStuff(sound);
 		} else if (randomPresetMode) {
-			Shuffler.randomPresentModeShuffler(sound);
+			if (Shuffler.randomPresentModeShuffler(sound)) {
+				String[] msg = new String[1];
+				msg[0] = ""+ValidCommands.PRESET_RANDOM;
+				MessageProcessor.INSTANCE.processMsg(msg, true, null);
+			}
 		}
 	}
 
@@ -361,10 +363,6 @@ public class VisualState extends Observable {
 		this.randomPresetMode = randomPresetMode;
 	}
 
-	public void savePresets() {
-		presetService.savePresents();
-	}
-
 	/**
 	 * load a saved preset.
 	 *
@@ -378,7 +376,7 @@ public class VisualState extends Observable {
 			s = StringUtils.trim(s);
 			s = StringUtils.removeEnd(s, ";");
 			LOG.log(Level.FINEST, "LOAD PRESET: "+s);
-			MessageProcessor.processMsg(StringUtils.split(s, ' '), false, null);
+			MessageProcessor.INSTANCE.processMsg(StringUtils.split(s, ' '), false, null);
 		}
 		setLoadingPresent(false);
 		long needed=System.currentTimeMillis()-start;
@@ -492,38 +490,6 @@ public class VisualState extends Observable {
 	 */
 	public void setAllVisuals(List<Visual> allVisuals) {
 		this.allVisuals = allVisuals;
-	}
-
-
-	/* 
-	 * PRESENT ======================================================
-	 */
-
-	/**
-	 * Gets the selected present.
-	 *
-	 * @return the selected present
-	 */
-	public int getSelectedPreset() {
-		return presetService.getSelectedPreset();
-	}
-
-	/**
-	 * Sets the selected present.
-	 *
-	 * @param selectedPresent the new selected present
-	 */
-	public void setSelectedPreset(int selectedPreset) {
-		presetService.setSelectedPreset(selectedPreset);
-	}
-
-	/**
-	 * Gets the present.
-	 *
-	 * @return the present
-	 */
-	public List<PresetSettings> getPresets() {
-		return presetService.getPresets();
 	}
 
 

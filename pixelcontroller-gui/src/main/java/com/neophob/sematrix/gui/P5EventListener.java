@@ -23,13 +23,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//import com.neophob.sematrix.core.glue.Collector;
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ValidCommands;
 
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
+//import com.neophob.sematrix.core.glue.Collector;
 
 /**
  * GUI Listener
@@ -291,7 +290,7 @@ public class P5EventListener implements ControlListener {
     		return;
     	}
     	
-        MessageProcessor.processMsg(msg, true, null);
+        MessageProcessor.INSTANCE.processMsg(msg, true, null);
         lastCallbackEvent = System.currentTimeMillis();
     }
 

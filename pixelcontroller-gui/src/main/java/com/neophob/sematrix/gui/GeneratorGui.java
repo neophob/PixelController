@@ -41,6 +41,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.output.IOutput;
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
@@ -651,7 +652,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
             presetButtons.addItem(label, i);
         }
-        presetButtons.activate(col.getSelectedPreset());
+        presetButtons.activate(pixcon.getPresetService().getSelectedPreset());
         presetButtons.moveTo(presetTab);                
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.guiText(), 0,
@@ -977,8 +978,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * update preset stuff
      */
     public void updateCurrentPresetState() {
-        VisualState col = VisualState.getInstance();
-        PresetSettings preset = col.getPresets().get(col.getSelectedPreset());
+        PresetService presetService = pixcon.getPresetService(); 
+        PresetSettings preset = presetService.getPresets().get(presetService.getSelectedPreset());
         if (preset!=null) {
             String presetState;
             if (preset.isSlotUsed()) {
