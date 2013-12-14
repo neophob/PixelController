@@ -26,7 +26,7 @@ import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
 
 /**
- * PixelController CLI Daemon
+ * PixelController (local) CLI Daemon
  * 
  * @author michu
  *
@@ -35,9 +35,6 @@ public class PixelControllerCli extends CallbackMessage<String> {
 	
 	/** The log. */
 	private static final Logger LOG = Logger.getLogger(PixelControllerCli.class.getName());
-
-	/** The Constant FPS. */
-	public static final int FPS = 25;
 
 	private PixelController pixelController;
 	
