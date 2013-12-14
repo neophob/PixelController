@@ -143,4 +143,10 @@ public class PresetServiceImpl implements PresetService {
             }        
         }
     }
+
+
+	@Override
+	public PresetSettings getSelectedPresetSettings() {		
+		return presets.get(selectedPreset);
+	}
 }

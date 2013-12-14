@@ -24,10 +24,8 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.core.output.IOutput;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.layout.Layout;
 import com.neophob.sematrix.gui.model.LedSimulatorOutputWindow;
 import com.neophob.sematrix.gui.model.Point;
@@ -55,9 +53,7 @@ public class OutputGui {
 	/** The layout. */
 	private Layout layout;
 	
-	private VisualState collector;
-	
-	private IOutput output;
+	private PixConServer pixelController;
 	
 	private LedSimulatorOutputWindow lsow;
 	
@@ -66,13 +62,13 @@ public class OutputGui {
 	 *
 	 * @param controller the controller
 	 */
-	public OutputGui(ApplicationConfigurationHelper ph, IOutput output, PApplet papplet) {
-		this.output = output;
-		this.collector = VisualState.getInstance();
-		this.matrixData = this.collector.getMatrix();
-		this.layout = ph.getLayout();
+	public OutputGui(PixConServer pixelController, PApplet papplet) {
+		this.pixelController = pixelController;
+		this.matrixData = pixelController.getMatrixData();
+		this.layout = pixelController.getConfig().getLayout();
 		
-		lsow = new LedSimulatorOutputWindow(matrixData, ph.getLedPixelSize(), layout);
+		int pixelSize = pixelController.getConfig().getLedPixelSize();
+		lsow = new LedSimulatorOutputWindow(matrixData, pixelSize, layout);
 		LOG.log(Level.INFO, "Create LED Matrix simulator window: "+lsow);
 		Point p = lsow.getWindowSize();
 		
@@ -120,28 +116,29 @@ public class OutputGui {
 		}
 		
 		//show only each 2nd frame to reduce cpu load
-		if (frame%2==1 || this.output==null) {
+		if (frame%2==1 || this.pixelController.getVisualBuffer(0)==null) {
 			return;
 		}
 		
 		int cnt=0;
-		int currentOutput = this.collector.getCurrentOutput();
+		//TODO maybe remove?
+		int currentOutput = 0;//this.collector.getCurrentOutput();
 		
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
-			for (int screen=0; screen<this.collector.getNrOfScreens(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, true), currentOutput);
+			for (int screen=0; screen<layout.getRow1Size(); screen++) {
+				drawOutput(cnt++, screen, 0, this.pixelController.getVisualBuffer(screen), currentOutput);
 			}
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, this.output.getBufferForScreen(screen, true), currentOutput);
+				drawOutput(cnt++, screen, 0, this.pixelController.getVisualBuffer(screen), currentOutput);
 				ofs++;
 			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, this.output.getBufferForScreen(ofs+screen, true), currentOutput);
+				drawOutput(cnt++, screen, 1, this.pixelController.getVisualBuffer(ofs+screen), currentOutput);
 			}
 			break;
 		}
@@ -172,7 +169,7 @@ public class OutputGui {
 		}
 		parent.rect(xOfs, yOfs + LedSimulatorOutputWindow.OFS/2, lsow.getOneMatrixXSize(), lsow.getOneMatrixYSize());
 		
-		int shift = MAX_BPP - this.output.getBpp();
+		int shift = MAX_BPP - this.pixelController.getOutput().getBpp();
 				
 		for (int y=0; y<matrixData.getDeviceYSize(); y++) {
 			for (int x=0; x<matrixData.getDeviceXSize(); x++) {

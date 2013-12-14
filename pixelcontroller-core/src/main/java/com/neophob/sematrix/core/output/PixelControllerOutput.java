@@ -65,16 +65,18 @@ public class PixelControllerOutput implements PixelControllerElement {
 	public static IOutput getOutputDevice(VisualState visualState, ApplicationConfigurationHelper applicationConfig) throws IllegalArgumentException {
 		OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
 		IOutput output = null;
+		int nrOfOutputScreens = applicationConfig.getNrOfScreens();
+		
 		try {
 			switch (outputDeviceEnum) {
 			case PIXELINVADERS:
-				output = new PixelInvadersSerialDevice(applicationConfig, visualState.getNrOfScreens());
+				output = new PixelInvadersSerialDevice(applicationConfig, nrOfOutputScreens);
 				break;
 			case PIXELINVADERS_NET:
-				output = new PixelInvadersNetDevice(applicationConfig, visualState.getNrOfScreens());
+				output = new PixelInvadersNetDevice(applicationConfig, nrOfOutputScreens);
 				break;            	
 			case STEALTH:
-				output = new StealthDevice(applicationConfig, visualState.getNrOfScreens());
+				output = new StealthDevice(applicationConfig, nrOfOutputScreens);
 				break;
 			case RAINBOWDUINO_V2:
 				output = new RainbowduinoV2Device(applicationConfig);
@@ -83,10 +85,10 @@ public class PixelControllerOutput implements PixelControllerElement {
 				output = new RainbowduinoV3Device(applicationConfig);
 				break;
 			case ARTNET:
-				output = new ArtnetDevice(applicationConfig, visualState.getNrOfScreens());
+				output = new ArtnetDevice(applicationConfig, nrOfOutputScreens);
 				break;
 			case E1_31:
-				output = new E1_31Device(applicationConfig, visualState.getNrOfScreens());
+				output = new E1_31Device(applicationConfig, nrOfOutputScreens);
 				break;            	
 			case MINIDMX:
 				output = new MiniDmxDevice(applicationConfig);

@@ -97,7 +97,7 @@ public abstract class Output implements IOutput {
 		this.gammaType = ph.getGammaType();
 
 		this.bufferMap = new HashMap<Integer, int[]>();		
-		this.totalNrOfOutputBuffers = this.collector.getNrOfScreens();
+		this.totalNrOfOutputBuffers = ph.getNrOfScreens();
 		this.switchBuffer=0;
 
 		LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}, Gamma Correction: {3}"
@@ -268,7 +268,7 @@ public abstract class Output implements IOutput {
 		int[] buffer;
 		Visual v;
 
-		for (int screen = 0; screen < this.collector.getNrOfScreens(); screen++) {
+		for (int screen = 0; screen < this.totalNrOfOutputBuffers; screen++) {
 			LayoutModel lm = this.layout.getDataForScreen(screen, VisualState.getInstance().getAllOutputMappings());
 			OutputMapping map = this.collector.getOutputMappings(screen);
 			v = this.collector.getVisual(lm.getVisualId());

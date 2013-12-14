@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.neorainbowduino.Rainbowduino;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * Send data to Rainbowduino.
@@ -41,6 +40,8 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 	
 	/** The rainbowduino. */
 	private Rainbowduino rainbowduino = null;
+	
+	private int nrOfScreens;
 
 	/**
 	 * init the rainbowduino devices.
@@ -51,6 +52,7 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 	public RainbowduinoV2Device(ApplicationConfigurationHelper ph) {
 		super(OutputDeviceEnum.RAINBOWDUINO_V2, ph, 4);
 		
+		this.nrOfScreens = ph.getNrOfScreens(); 
 		this.allI2cAddress = ph.getI2cAddr();		
 		this.initialized = false;		
 		try {
@@ -99,8 +101,7 @@ public class RainbowduinoV2Device extends ArduinoOutput {
 	public void update() {
 		if (initialized) {
 			int size=allI2cAddress.size();
-			int totalScreens = VisualState.getInstance().getNrOfScreens();
-			for (int screen=0; screen<totalScreens; screen++) {
+			for (int screen=0; screen<nrOfScreens; screen++) {
 				//draw only on available screens!
 				if (screen<size) {
 					int i2cAddr = allI2cAddress.get(screen);

@@ -90,9 +90,6 @@ public class VisualState extends Observable {
 	/** fx to screen mapping. */
 	private List<OutputMapping> ioMapping;
 
-	/** The nr of screens. */
-	private int nrOfScreens;
-
 	/** The current visual. */
 	private int currentVisual;
 
@@ -136,7 +133,6 @@ public class VisualState extends Observable {
 	private VisualState() {	
 		allVisuals = new CopyOnWriteArrayList<Visual>();
 
-		this.nrOfScreens = 0;
 		ioMapping = new CopyOnWriteArrayList<OutputMapping>();
 		initialized=false;
 
@@ -162,7 +158,7 @@ public class VisualState extends Observable {
 		this.sound = sound;
 		this.presetService = presetService;
 		
-		this.nrOfScreens = ph.getNrOfScreens();
+		int nrOfScreens = ph.getNrOfScreens();
 		int fps = (int)(ph.parseFps());
 		if (fps<1) {
 			fps = 1;
@@ -283,16 +279,6 @@ public class VisualState extends Observable {
 	 */
 	public static VisualState getInstance() {
 		return instance;
-	}
-
-
-	/**
-	 * Gets the nr of screens.
-	 *
-	 * @return the nr of screens
-	 */
-	public int getNrOfScreens() {
-		return nrOfScreens;
 	}
 
 

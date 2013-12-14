@@ -4,6 +4,7 @@ import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * the pixelcontroller API
@@ -59,5 +60,15 @@ public interface PixelController {
 	 */
 	String getVersion();
 	
+	/**
+	 * preset service
+	 * @return
+	 */
 	PresetService getPresetService();
+	
+	/**
+	 * return internal and device size
+	 * @return
+	 */
+	MatrixData getMatrix();
 }

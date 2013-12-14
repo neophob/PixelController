@@ -15,6 +15,12 @@ public interface PresetService {
 	void setSelectedPreset(int selectedPreset);
 
 	/**
+	 * 
+	 * @return the selected preset settings
+	 */
+	PresetSettings getSelectedPresetSettings();
+	
+	/**
 	 * @return the presets
 	 */
 	List<PresetSettings> getPresets();

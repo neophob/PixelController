@@ -32,7 +32,6 @@ import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
-import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * 
@@ -100,6 +99,8 @@ public class Tpm2Net extends Output {
     
     /** Manual mapping */
 	private int[] mapping;
+	
+	private int nrOfScreens;
 
 	/**
 	 * 
@@ -114,7 +115,8 @@ public class Tpm2Net extends Output {
 		this.panelOrder = ph.getPanelOrder();
 		this.snakeCabeling = ph.isOutputSnakeCabeling();
 		this.mapping = ph.getOutputMappingValues();
-		 
+		this.nrOfScreens = ph.getNrOfScreens();
+		
 		targetAddrStr = ph.getTpm2NetIpAddress();
 		this.initialized = false;		
 		this.lastDataMap = new HashMap<Integer, Long>();
@@ -188,7 +190,6 @@ public class Tpm2Net extends Output {
 	public void update() {
 
 		if (initialized) {
-			int nrOfScreens = VisualState.getInstance().getNrOfScreens();
 			for (int ofs=0; ofs<nrOfScreens; ofs++) {
 				//get the effective panel buffer
 				int panelNr = this.panelOrder.get(ofs);

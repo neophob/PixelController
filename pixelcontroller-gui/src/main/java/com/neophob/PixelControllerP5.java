@@ -26,11 +26,10 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
+import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
-import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
-import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.gui.GeneratorGuiCreator;
+import com.neophob.sematrix.gui.LocalDaemon;
 import com.neophob.sematrix.gui.OutputGui;
 import com.neophob.sematrix.gui.handler.KeyboardHandler;
 import com.neophob.sematrix.gui.handler.WindowHandler;
@@ -68,7 +67,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 
 	private boolean postInitDone = false;
 	
-	private PixelController pixelController;
+	private PixConServer pixelController;
 	private OutputGui matrixEmulator;
 	
 	/**
@@ -77,9 +76,9 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	public void setup() {
 		try {
 			LOG.log(Level.INFO, "Initialize...");
-			pixelController = PixelControllerFactory.initialize(this);
+			pixelController = new LocalDaemon(this);
 			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
-			pixelController.start();
+			pixelController.startCore();
 
 		    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
 		    background(0);
@@ -111,12 +110,12 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	 * initialize gui after the core has been initialized
 	 */
 	private void postStartInitialisation() {
-		this.matrixEmulator = new OutputGui(pixelController.getConfig(), pixelController.getOutput(), this);
+		this.matrixEmulator = new OutputGui(pixelController, this);
 		background(0);
 		
 		int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();
 		int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
-		GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth, maxHeight, pixelController.getVersion());
+		GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth, maxHeight);
 		//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
 		KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
 	    
@@ -155,7 +154,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 		long startTime = System.currentTimeMillis();
 
 		this.matrixEmulator.update();
-		pixelController.getPixConStat().trackTime(TimeMeasureItemGlobal.MATRIX_EMULATOR_WINDOW, System.currentTimeMillis() - startTime);		
+		pixelController.updateNeededTimeForMatrixEmulator(System.currentTimeMillis() - startTime);
 	}
 	
 	/**

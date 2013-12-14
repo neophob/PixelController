@@ -36,18 +36,18 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.PixelControllerP5;
-import com.neophob.sematrix.core.api.PixelController;
+import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
-import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.output.IOutput;
-import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
-import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.resize.PixelResize;
+import com.neophob.sematrix.core.resize.Resize;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -169,7 +169,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     
     private long frames=0;
 
-    private PixelController pixcon;
+    private PixConServer pixConServer;
+    Resize resize;
     
     /**
      * Instantiates a new internal buffer.
@@ -180,15 +181,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * @param singleVisualXSize the target x size
      * @param singleVisualYSize the target y size 
      */
-    public GeneratorGui(PixelController pixcon, WindowSizeCalculator wsc) {
+    public GeneratorGui(PixConServer pixelController, WindowSizeCalculator wsc) {
     	super();        
-    	this.pixcon = pixcon;
+    	this.pixConServer = pixelController;
         this.windowWidth = wsc.getWindowWidth();
         this.windowHeight = wsc.getWindowHeight();
         this.singleVisualXSize = wsc.getSingleVisualWidth();
         this.singleVisualYSize = wsc.getSingleVisualHeight();
         this.p5GuiYOffset = this.singleVisualYSize + 110;
         
+        resize = new PixelResize();
         messages = new Messages();
     }
 
@@ -214,7 +216,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.disableShortcuts();
         
         cp5.getTooltip().setDelay(200);
-        P5EventListener listener = new P5EventListener(this);
+        P5EventListener listener = new P5EventListener(pixConServer, this);
 
         //selected visual
         VisualState col = VisualState.getInstance();
@@ -652,7 +654,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             }
             presetButtons.addItem(label, i);
         }
-        presetButtons.activate(pixcon.getPresetService().getSelectedPreset());
+        presetButtons.activate(pixConServer.getCurrentPreset());
         presetButtons.moveTo(presetTab);                
         
         loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.guiText(), 0,
@@ -684,14 +686,14 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int nfoYPos = yPosStartDrowdown+20;
         int nfoXPos = xOfs;
 
-        int coreFps = (int)(pixcon.getConfig().parseFps()+0.5);
+        int coreFps = (int)(pixConServer.getConfig().parseFps()+0.5);
         cp5.addTextlabel("nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS")+coreFps, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         currentFps = cp5.addTextlabel("nfoFpsCurrent", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         runtime = cp5.addTextlabel("nfoRuntime", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
-        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+pixcon.getPixConStat().getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        cp5.addTextlabel("nfoSrvVersion", messages.getString("GeneratorGui.SERVER_VERSION")+pixConServer.getVersion(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         float volNorm = col.getSound().getVolumeNormalized();
         currentVolume = cp5.addTextlabel("nfoVolumeCurrent", messages.getString("GeneratorGui.CURRENT_VOLUME")+volNorm, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -712,11 +714,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
-        IOutput output = pixcon.getOutput();
+        IOutput output = pixConServer.getOutput();
         if (output!=null) {
             String gammaText = WordUtils.capitalizeFully(StringUtils.replace(output.getGammaType().toString(), "_", " "));
             cp5.addTextlabel("nfoGamma", messages.getString("GeneratorGui.GAMMA_CORRECTION")+gammaText, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$        	
-            nfoYPos+=yposAdd;
+            nfoYPos+=yposAdd;            
             cp5.addTextlabel("nfoBps", messages.getString("GeneratorGui.OUTPUT_BPP")+output.getBpp(), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
             nfoYPos+=yposAdd;
         }
@@ -730,7 +732,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         nfoXPos += xposAdd;
         nfoYPos = yPosStartDrowdown+20;
         
-        String oscPort = pixcon.getConfig().getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, ""); //$NON-NLS-1$ //$NON-NLS-2$
+        String oscPort = pixConServer.getConfig().getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, ""); //$NON-NLS-1$ //$NON-NLS-2$
         cp5.addTextlabel("nfoOscPort", messages.getString("GeneratorGui.OSC_PORT")+oscPort, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos+=yposAdd;
         oscStatistic = cp5.addTextlabel("nfoOscStatistic", messages.getString("GeneratorGui.OSC_STATISTIC"), nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); 
@@ -901,10 +903,13 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             
             //draw output buffer and marker
             int ofs=0;
+//TODO!            
             for (Visual v: col.getAllVisuals()) {
 
                 //use always the pixel resize option to reduce cpu load
-            	buffer = pixcon.getOutput().resizeBufferForDevice(v.getBuffer(), ResizeName.PIXEL_RESIZE, singleVisualXSize, singleVisualYSize);
+            	MatrixData matrixData = pixConServer.getMatrixData();
+            	buffer = resize.resizeImage(v.getBuffer(), matrixData.getBufferXSize(), matrixData.getBufferYSize(),
+            			singleVisualXSize, singleVisualYSize);
             	
             	pImage.loadPixels();
             	System.arraycopy(buffer, 0, pImage.pixels, 0, singleVisualXSize*singleVisualYSize);
@@ -937,22 +942,22 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         //update more details, mostly info tab
         if (frames%10==1) {
             //INFO TAB
-            int fps10 = (int)(pixcon.getPixConStat().getCurrentFps()*10);
+            int fps10 = (int)(pixConServer.getCurrentFps()*10);
             currentFps.setText(messages.getString("GeneratorGui.CURRENT_FPS")+fps10/10f); //$NON-NLS-1$
-            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - pixcon.getPixConStat().getStartTime(), "H:mm:ss");             //$NON-NLS-1$
+            String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis() - pixConServer.getServerStartTime(), "H:mm:ss");             //$NON-NLS-1$
             runtime.setText(messages.getString("GeneratorGui.RUNNING_SINCE")+runningSince);          //$NON-NLS-1$
             sentFrames.setText(messages.getString("GeneratorGui.SENT_FRAMES")+frames); //$NON-NLS-1$
             int snd1000 = (int)(1000f*col.getSound().getVolumeNormalized());
             currentVolume.setText(messages.getString("GeneratorGui.CURRENT_VOLUME")+(snd1000/1000f));
             
-            IOutput output = pixcon.getOutput();
+            IOutput output = pixConServer.getOutput();
             if (output!=null) {
                 String outputStateStr = WordUtils.capitalizeFully(output.getConnectionStatus());
                 outputState.setText(outputStateStr);
                 outputErrorCounter.setText(messages.getString("GeneratorGui.IO_ERRORS")+output.getErrorCounter());             //$NON-NLS-1$            	
             }
-            long recievedMB = pixcon.getPixConStat().getRecievedOscBytes()/1024/1024;
-            String oscStat  = messages.getString("GeneratorGui.OSC_STATISTIC")+pixcon.getPixConStat().getRecievedOscPakets()+"/"+recievedMB;
+            long recievedMB = pixConServer.getRecievedOscBytes()/1024/1024;
+            String oscStat  = messages.getString("GeneratorGui.OSC_STATISTIC")+pixConServer.getRecievedOscPackets()+"/"+recievedMB;
             oscStatistic.setText(oscStat);
             
             Visual v = col.getVisual(col.getCurrentVisual());
@@ -970,7 +975,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         cp5.draw(); 
 
         //track used time
-        pixcon.getPixConStat().trackTime(TimeMeasureItemGlobal.DEBUG_WINDOW, System.currentTimeMillis()-l);
+        pixConServer.updateNeededTimeForInternalWindow(System.currentTimeMillis()-l);
     }
 
     
@@ -978,8 +983,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
      * update preset stuff
      */
     public void updateCurrentPresetState() {
-        PresetService presetService = pixcon.getPresetService(); 
-        PresetSettings preset = presetService.getPresets().get(presetService.getSelectedPreset());
+        PresetSettings preset = pixConServer.getCurrentPresetSettings();
         if (preset!=null) {
             String presetState;
             if (preset.isSlotUsed()) {
@@ -1216,10 +1220,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 	
 	
 	private String getOutputDeviceName() {
-		if (pixcon.getOutput()==null) {
+		IOutput output = pixConServer.getOutput();
+		if (output==null) {
 			return "";
 		}
-		return pixcon.getOutput().getType().toString();
+		return output.getType().toString();
 	}
 
 	/**
@@ -1227,11 +1232,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 	 * @return
 	 */
 	private Boolean isOutputDeviceConnected() {
-		if (pixcon.getOutput()==null || !pixcon.getOutput().isSupportConnectionState()) {
+		IOutput output = pixConServer.getOutput();
+		if (output==null || !output.isSupportConnectionState()) {
 			return null;
 		}
 
-		return pixcon.getOutput().isSupportConnectionState() && pixcon.getOutput().isConnected();
+		return output.isSupportConnectionState() && output.isConnected();
 	}
 
 	@Override

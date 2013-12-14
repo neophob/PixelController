@@ -21,6 +21,7 @@ import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.mdns.server.impl.MDnsServer;
@@ -267,6 +268,12 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	@Override
 	public PixelControllerStatusMBean getPixConStat() {
 		return pixConStat;
+	}
+
+	@Override
+	public MatrixData getMatrix() {
+		// TODO inject matrix to visual state!
+		return VisualState.getInstance().getMatrix();
 	}
 
 

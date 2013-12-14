@@ -23,12 +23,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.listener.MessageProcessor;
+import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.properties.ValidCommands;
 
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
-//import com.neophob.sematrix.core.glue.Collector;
 
 /**
  * GUI Listener
@@ -48,14 +47,17 @@ public class P5EventListener implements ControlListener {
 
     private long lastCallbackEvent;
     
+    private PixConServer pixConSrv;
+    
     private GeneratorGui callback;
 
     /**
      * 
      * @param callback
      */
-    public P5EventListener(GeneratorGui callback) {
+    public P5EventListener(PixConServer pixConSrv, GeneratorGui callback) {
         this.callback = callback;
+        this.pixConSrv = pixConSrv;
     }
 
     /**
@@ -290,7 +292,7 @@ public class P5EventListener implements ControlListener {
     		return;
     	}
     	
-        MessageProcessor.INSTANCE.processMsg(msg, true, null);
+    	pixConSrv.sendMessage(msg);
         lastCallbackEvent = System.currentTimeMillis();
     }
 

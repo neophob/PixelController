@@ -27,9 +27,8 @@ import javax.swing.JFrame;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.PixConServer;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.gui.handler.WindowHandler;
 import com.neophob.sematrix.gui.model.WindowSizeCalculator;
 
@@ -51,21 +50,21 @@ public class GeneratorGuiCreator {
 	 * @param displayHoriz the display horiz
 	 * @param the maximal x size of the window
 	 */
-	public GeneratorGuiCreator(PixelController pixcon, PApplet parentPapplet, int maximalXSize, int maximalYSize, String version) {
-        int nrOfScreens = VisualState.getInstance().getAllVisuals().size();
+	public GeneratorGuiCreator(PixConServer pixelController, PApplet parentPapplet, int maximalXSize, int maximalYSize) {
+        int nrOfScreens = pixelController.getConfig().getNrOfScreens();
         LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
-                     
-        Generator g = VisualState.getInstance().getPixelControllerGenerator().getGenerator(0);
-		WindowSizeCalculator wsc = new WindowSizeCalculator(g.getInternalBufferXSize(), 
-				g.getInternalBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
+                           
+        MatrixData md = pixelController.getMatrixData();
+		WindowSizeCalculator wsc = new WindowSizeCalculator(md.getBufferXSize(), 
+				md.getBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
         
         //connect the new PApplet to our frame
-        gui = new GeneratorGui(pixcon, wsc);
+        gui = new GeneratorGui(pixelController, wsc);
         gui.init();
          
         //create new window for child
         LOG.log(Level.INFO, "Create new window: "+wsc);
-        JFrame childFrame = new JFrame("PixelController Generator Window "+version);        
+        JFrame childFrame = new JFrame("PixelController Generator Window "+pixelController.getVersion());        
         childFrame.setResizable(false);
         childFrame.setIconImage(createLargeIcon(gui));
         
