@@ -125,7 +125,14 @@ public enum ValidCommands {
 	
 	OSC_GENERATOR1(CommandGroup.GENERATOR, 1, "<BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata"),
 	OSC_GENERATOR2(CommandGroup.GENERATOR, 1, "<BLOB> contains Xres*Yres*8bpp bytes or Xres*Yres*24bpp bytes raw imagedata"),
-	;
+
+	ROTATE_COLORSET(CommandGroup.VISUAL, 0, "Select next Colorset"),
+	ROTATE_GENERATOR_A(CommandGroup.VISUAL, 0, "Select next Generator A"),
+	ROTATE_GENERATOR_B(CommandGroup.VISUAL, 0, "Select next Generator B"),	
+	ROTATE_EFFECT_A(CommandGroup.VISUAL, 0, "Select next Effect A"),
+	ROTATE_EFFECT_B(CommandGroup.VISUAL, 0, "Select next Effect A"),
+	ROTATE_MIXER(CommandGroup.VISUAL, 0, "Select next Mixer"),
+	;	
 	
 	/** The nr of params. */
 	private int nrOfParams;

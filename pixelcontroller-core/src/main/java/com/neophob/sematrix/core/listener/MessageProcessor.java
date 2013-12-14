@@ -28,7 +28,9 @@ import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
 import com.neophob.sematrix.core.visual.effect.RotoZoom;
@@ -84,9 +86,11 @@ public enum MessageProcessor {
                 
 		int msgLength = msg.length-1;
 		int tmp;		
+		VisualState col = VisualState.getInstance();
+		
 		try {
-			ValidCommands cmd = ValidCommands.valueOf(msg[0]);
-			VisualState col = VisualState.getInstance();
+			ValidCommands cmd = ValidCommands.valueOf(msg[0]);			
+			Visual v;
 			switch (cmd) {
 			case CHANGE_GENERATOR_A:
 				try {
@@ -526,6 +530,78 @@ public enum MessageProcessor {
 				col.getPixelControllerGenerator().getOscListener2().updateBuffer(blob);
 				break;
 
+			case ROTATE_COLORSET:
+				v = col.getVisual(col.getCurrentVisual());
+            	String colorSetName = v.getColorSet().getName();
+            	
+                boolean takeNext = false;
+                ColorSet nextColorSet = col.getColorSets().get(0);
+                for (ColorSet cs : col.getColorSets()) {
+                	if (takeNext) {
+                		nextColorSet = cs;
+                		break;
+                	}                	
+                	if (cs.getName().equals(colorSetName)) {
+                		takeNext = true;
+                	}
+                }
+                v.setColorSet(nextColorSet.getName());				
+				break;
+
+			case ROTATE_GENERATOR_A:
+				v = col.getVisual(col.getCurrentVisual());
+        		int currentGenerator = v.getGenerator1Idx();
+        		int nrOfGenerators = 1+col.getPixelControllerGenerator().getSize();
+        		int count=nrOfGenerators;
+        		Generator g=null;
+        		while (count>=0 && g==null) {
+        			currentGenerator++;
+        			g = col.getPixelControllerGenerator().getGenerator(currentGenerator%nrOfGenerators);
+        		}
+        		if (g!=null && g.getName() != null) {
+        			v.setGenerator1(currentGenerator%nrOfGenerators);
+        		}				
+				break;
+
+			case ROTATE_GENERATOR_B:
+				v = col.getVisual(col.getCurrentVisual());
+        		currentGenerator = v.getGenerator2Idx();
+        		nrOfGenerators = 1+col.getPixelControllerGenerator().getSize();
+        		count=nrOfGenerators;
+        		g=null;
+        		while (count>=0 && g==null) {
+        			currentGenerator++;
+        			g = col.getPixelControllerGenerator().getGenerator(currentGenerator%nrOfGenerators);
+        		}
+        		if (g!=null && g.getName() != null) {
+        			v.setGenerator2(currentGenerator%nrOfGenerators);
+        		}				
+				break;
+
+			case ROTATE_EFFECT_A:
+				v = col.getVisual(col.getCurrentVisual());
+                int currentEffect = v.getEffect1Idx();
+                int nrOfEffects = col.getPixelControllerEffect().getSize();
+                currentEffect++;
+                v.setEffect1(currentEffect%nrOfEffects);				
+				break;
+
+			case ROTATE_EFFECT_B:
+				v = col.getVisual(col.getCurrentVisual());
+                currentEffect = v.getEffect2Idx();
+                nrOfEffects = col.getPixelControllerEffect().getSize();
+                currentEffect++;
+                v.setEffect2(currentEffect%nrOfEffects);
+				break;
+
+			case ROTATE_MIXER:
+				v = col.getVisual(col.getCurrentVisual());
+                int currentMixer = v.getMixerIdx();
+                int nrOfMixerss = col.getPixelControllerMixer().getSize();
+                currentMixer++;
+                v.setMixer(currentMixer%nrOfMixerss);				
+				break;
+				
 			case BEAT_WORKMODE:
 				try {
 					int workmodeId = Integer.parseInt(msg[1]);
@@ -552,9 +628,13 @@ public enum MessageProcessor {
 				LOG.log(Level.INFO,	"Ignored command <{0}>", sb);
 				break;
 			}
+			
+			col.notifyGuiUpdate();
+			
 		} catch (IllegalArgumentException e) {
 			LOG.log(Level.INFO,	"Unknown attribute ignored <{0}>", new Object[] { msg[0] });			
-		}		
+		}
+		
 	}
 	
 	

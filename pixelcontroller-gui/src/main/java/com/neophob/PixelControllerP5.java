@@ -117,7 +117,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 		int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
 		GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth, maxHeight);
 		//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
-		KeyboardHandler.setRegisterGuiClass(ggc.getGuiCallbackAction());
+		KeyboardHandler.init(ggc.getGuiCallbackAction(), pixelController);
 	    
 		try {
     		//now start a little hack, remove all window listeners, so we can control
