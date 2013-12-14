@@ -85,7 +85,6 @@ class MDnsServerImpl extends MDnsServer implements Runnable {
 		startThread.setName("Bonjour async started thread");
 		startThread.setDaemon(true);
 		startThread.start();
-
 	}
 
 
@@ -110,9 +109,10 @@ class MDnsServerImpl extends MDnsServer implements Runnable {
 	 */
 	@Override
 	public void run() {
+		long t1 = System.currentTimeMillis();
 		LOG.log(Level.INFO, "[ASYNC] Start mDNS Server thread");
 		this.startServer();		
-		LOG.log(Level.INFO, "[ASYNC] finished mDNS Server thread");
+		LOG.log(Level.INFO, "[ASYNC] finished mDNS Server thread after "+(System.currentTimeMillis()-t1)+"ms");
 	}
 
 
