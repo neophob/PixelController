@@ -1,10 +1,8 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* Decouple the fps setting (=output framerate) from the GUI framerate. A `fps=1` make the GUI unusable. Make sure that fractions of fps is supported, for example a `fps=0.1` would update the output once each 10s (Issue #59 and #61).
-* Add console to GUI
 * Decouple GUI from Code
-* implement Zeroconf/Bonjour service (http://jmdns.sourceforge.net/)
+* Add console to GUI
 
 ## Version 2.2
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
