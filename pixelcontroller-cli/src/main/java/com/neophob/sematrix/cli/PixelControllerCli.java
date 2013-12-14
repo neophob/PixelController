@@ -56,9 +56,12 @@ public class PixelControllerCli extends CallbackMessage<String> {
 	 */
 	public static void main(String args[]) {
 		new PixelControllerCli();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+		while (true) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				//ignore it
+			}			
 		}
 	}
 
