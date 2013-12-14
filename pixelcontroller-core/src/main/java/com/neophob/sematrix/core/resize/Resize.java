@@ -149,5 +149,11 @@ public abstract class Resize implements IResize {
 
 		return bi;
 	}
+	
+	@Override
+	public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
+		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
+		return getBuffer(bi, newX, newY);
+	}
 
 }

@@ -59,7 +59,7 @@ public enum MessageProcessor {
 	 * Instantiates a new message processor.
 	 */
 	private MessageProcessor() {
-
+		//no instance allowed
 	}
 
 	/**

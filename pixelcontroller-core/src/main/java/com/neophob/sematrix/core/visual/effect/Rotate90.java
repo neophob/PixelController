@@ -18,11 +18,10 @@
  */
 package com.neophob.sematrix.core.visual.effect;
 
-import com.neophob.sematrix.core.resize.*;
+import com.neophob.sematrix.core.resize.PixelResize;
+import com.neophob.sematrix.core.resize.Resize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
-
-import java.awt.image.*;
 
 /**
  * rotate 90 degree effect.
@@ -62,8 +61,7 @@ public class Rotate90 extends Effect {
 		int[] t1 = rotateNm(buffer);
 		
 		//resize output
-		BufferedImage bi = r.createImage(t1, internalBufferYSize, internalBufferXSize);
-		return r.getBuffer(bi, internalBufferXSize, internalBufferYSize); 
+		return r.resizeImage(t1, internalBufferYSize, internalBufferXSize, internalBufferXSize, internalBufferYSize);
     }
         	
         //src: http://www.geeksforgeeks.org/turn-an-image-by-90-degree/

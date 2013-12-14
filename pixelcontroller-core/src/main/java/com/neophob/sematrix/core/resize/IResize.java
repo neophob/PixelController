@@ -67,4 +67,6 @@ public interface IResize {
 	 * @return
 	 */
 	BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize);
+	
+	int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY);
 }

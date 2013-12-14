@@ -2,12 +2,13 @@
 
 ## Version 2.1
 
-* PixelInvaders firmware: support Teensy 3
+* PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
 * PixelInvaders firmware: Support ambient color for the output panel(s)
 * Support Multiple Output devices with different matrix sizes
 * Random-Mode with selectable time-life
 * Create TouchOSC GUI, implement Zeroconf/Bonjour service (http://jmdns.sourceforge.net/)
 * Decouple the fps setting (=output framerate) from the GUI framerate. A `fps=1` make the GUI unusable. Make sure that fractions of fps is supported, for example a `fps=0.1` would update the output once each 10s (Issue #59 and #61).
+* Add console to GUI
 
 # Backlog
 

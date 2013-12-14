@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.core.visual.generator;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -148,8 +147,8 @@ public class Blinkenlights extends Generator {
             }
         }
 
-        BufferedImage bi = resize.createImage(img.getData(), img.getWidth(), img.getHeight());
-		this.internalBuffer = resize.getBuffer(bi, internalBufferXSize, internalBufferYSize);
+		this.internalBuffer = resize.resizeImage(img.getData(), img.getWidth(), img.getHeight(), 
+				internalBufferXSize, internalBufferYSize);
         frameNr++;
     }
 
