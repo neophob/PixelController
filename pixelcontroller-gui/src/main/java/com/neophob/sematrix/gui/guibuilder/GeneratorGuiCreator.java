@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.gui;
+package com.neophob.sematrix.gui.guibuilder;
 
 import java.awt.Image;
 import java.util.logging.Level;
@@ -27,10 +27,10 @@ import javax.swing.JFrame;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.visual.MatrixData;
-import com.neophob.sematrix.gui.handler.WindowHandler;
+import com.neophob.sematrix.gui.guibuilder.eventhandler.WindowHandler;
 import com.neophob.sematrix.gui.model.WindowSizeCalculator;
+import com.neophob.sematrix.gui.service.PixConServer;
 
 /**
  * Helper class to create a new window

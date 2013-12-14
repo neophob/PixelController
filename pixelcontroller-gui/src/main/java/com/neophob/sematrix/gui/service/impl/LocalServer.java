@@ -1,9 +1,8 @@
-package com.neophob.sematrix.gui;
+package com.neophob.sematrix.gui.service.impl;
 
 import java.util.List;
 import java.util.Observer;
 
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
@@ -16,12 +15,13 @@ import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.gui.service.PixConServer;
 
-public class LocalDaemon implements PixConServer {
+public class LocalServer implements PixConServer {
 
 	private PixelController pixelController;
 	
-	public LocalDaemon(CallbackMessageInterface<String> msgHandler) {
+	public LocalServer(CallbackMessageInterface<String> msgHandler) {
 		pixelController = PixelControllerFactory.initialize(msgHandler);
 	}
 

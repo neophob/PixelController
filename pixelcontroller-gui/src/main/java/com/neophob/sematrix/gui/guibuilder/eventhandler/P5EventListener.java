@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.gui;
+package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
+import com.neophob.sematrix.gui.model.GuiElement;
+import com.neophob.sematrix.gui.service.PixConServer;
 
 import controlP5.ControlEvent;
 import controlP5.ControlListener;
@@ -38,7 +40,7 @@ import controlP5.ControlListener;
  * @author michu
  *
  */
-public class P5EventListener implements ControlListener {
+public final class P5EventListener implements ControlListener {
 
     /** The log. */
     private static final Logger LOG = Logger.getLogger(P5EventListener.class.getName());

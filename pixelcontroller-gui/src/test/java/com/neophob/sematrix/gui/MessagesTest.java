@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.neophob.sematrix.gui.i18n.Messages;
+
 
 public class MessagesTest {
 

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.gui.handler;
+package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -34,7 +34,7 @@ import processing.core.PApplet;
  * @author mvogt
  *
  */
-public class WindowHandler extends WindowAdapter {
+public final class WindowHandler extends WindowAdapter {
 
 	private static final Logger LOG = Logger.getLogger(WindowHandler.class.getName());
 	

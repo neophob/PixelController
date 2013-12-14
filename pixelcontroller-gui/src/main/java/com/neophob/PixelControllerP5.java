@@ -26,13 +26,13 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
-import com.neophob.sematrix.gui.GeneratorGuiCreator;
-import com.neophob.sematrix.gui.LocalDaemon;
-import com.neophob.sematrix.gui.OutputGui;
-import com.neophob.sematrix.gui.handler.KeyboardHandler;
-import com.neophob.sematrix.gui.handler.WindowHandler;
+import com.neophob.sematrix.gui.guibuilder.GeneratorGuiCreator;
+import com.neophob.sematrix.gui.guibuilder.OutputGui;
+import com.neophob.sematrix.gui.guibuilder.eventhandler.KeyboardHandler;
+import com.neophob.sematrix.gui.guibuilder.eventhandler.WindowHandler;
+import com.neophob.sematrix.gui.service.PixConServer;
+import com.neophob.sematrix.gui.service.impl.LocalServer;
 
 
 /**
@@ -76,7 +76,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	public void setup() {
 		try {
 			LOG.log(Level.INFO, "Initialize...");
-			pixelController = new LocalDaemon(this);
+			pixelController = new LocalServer(this);
 			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
 			pixelController.startCore();
 

@@ -1,4 +1,4 @@
-package com.neophob.sematrix;
+package com.neophob.sematrix.gui.service;
 
 import java.util.List;
 import java.util.Observer;

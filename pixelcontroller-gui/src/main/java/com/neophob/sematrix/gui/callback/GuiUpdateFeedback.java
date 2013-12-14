@@ -25,7 +25,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.gui.GuiCallbackAction;
+import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
 
 /**
  * observer pattern implementation for client callback

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.gui;
+package com.neophob.sematrix.gui.guibuilder;
 
 import java.lang.reflect.Method;
 import java.util.logging.Level;
@@ -24,11 +24,11 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.layout.Layout;
 import com.neophob.sematrix.gui.model.LedSimulatorOutputWindow;
 import com.neophob.sematrix.gui.model.Point;
+import com.neophob.sematrix.gui.service.PixConServer;
 
 /**
  * The low resolution software matrix 

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.gui;
+package com.neophob.sematrix.gui.guibuilder;
 
 
 import java.io.File;
@@ -36,7 +36,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import com.neophob.PixelControllerP5;
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.output.IOutput;
@@ -55,8 +54,12 @@ import com.neophob.sematrix.core.visual.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
 import com.neophob.sematrix.gui.callback.GuiUpdateFeedback;
-import com.neophob.sematrix.gui.handler.KeyboardHandler;
+import com.neophob.sematrix.gui.guibuilder.eventhandler.KeyboardHandler;
+import com.neophob.sematrix.gui.guibuilder.eventhandler.P5EventListener;
+import com.neophob.sematrix.gui.i18n.Messages;
+import com.neophob.sematrix.gui.model.GuiElement;
 import com.neophob.sematrix.gui.model.WindowSizeCalculator;
+import com.neophob.sematrix.gui.service.PixConServer;
 
 import controlP5.Button;
 import controlP5.CheckBox;

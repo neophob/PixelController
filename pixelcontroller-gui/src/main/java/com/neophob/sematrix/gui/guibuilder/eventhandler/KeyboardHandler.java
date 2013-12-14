@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.gui.handler;
+package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import java.awt.event.KeyEvent;
 
-import com.neophob.sematrix.PixConServer;
 import com.neophob.sematrix.core.properties.ValidCommands;
-import com.neophob.sematrix.gui.GuiCallbackAction;
+import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
+import com.neophob.sematrix.gui.service.PixConServer;
 
 /**
  * 
@@ -31,10 +31,14 @@ import com.neophob.sematrix.gui.GuiCallbackAction;
  * @author mvogt
  *
  */
-public abstract class KeyboardHandler {
+public final class KeyboardHandler {
 
 	private static GuiCallbackAction registerGuiClass;
     private static PixConServer pixConServer;
+    
+    private KeyboardHandler() {
+    	//no instance
+    }
     
     /**
      * 
