@@ -36,8 +36,8 @@ class MDnsServerImpl extends MDnsServer implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(MDnsServerImpl.class.getName());
 	
-	public final static String REMOTE_TYPE_TCP = "_pixelcontroller._tcp.local.";
-	public final static String REMOTE_TYPE_UDP = "_pixelcontroller._udp.local.";
+	public final static String REMOTE_TYPE_TCP = "._tcp.local.";
+	public final static String REMOTE_TYPE_UDP = "._udp.local.";
 	
 	private JmDNS jmdns;
 	
@@ -66,13 +66,14 @@ class MDnsServerImpl extends MDnsServer implements Runnable {
 	@Override
 	public void startServer() {
 		try {
-            String type = super.isUsingTcp() ? REMOTE_TYPE_TCP : REMOTE_TYPE_UDP;
+            String type = super.isUsingTcp() ? jmdns.getName()+REMOTE_TYPE_TCP : jmdns.getName()+REMOTE_TYPE_UDP;
             LOG.log(Level.INFO, "mDNS Server: Requesting pairing for " + type);
-            ServiceInfo pairservice = ServiceInfo.create(type, /*toHex(name)*/"PXLCNT", super.getListeningPort(), 0, 0, "PixelController OSC Server");
+            ServiceInfo pairservice = ServiceInfo.create(type, /*toHex(name)*/"PXLCNT", 
+            		super.getListeningPort(), 0, 0, "PixelController OSC Server");
          
             jmdns.registerService(pairservice);
             
-			LOG.log(Level.INFO, "mDNS Server started and registered as "+jmdns.getName());
+			LOG.log(Level.INFO, "mDNS Server started and registered as "+jmdns.getHostName());
 			started = true;
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE, "Failed to start mDNS Server!", e);
