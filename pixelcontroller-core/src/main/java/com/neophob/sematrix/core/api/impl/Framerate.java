@@ -32,14 +32,19 @@ public class Framerate {
 	private long nextRepaintDue = 0;
 	private long startTime;
 	private long delay;
-	private long count = 1;
+	private long count;
 
-	public Framerate(float targetFps) {
-		LOG.info("Target fps: "+targetFps);
-		this.delay = (long)(1000f/targetFps);		
-		this.startTime = System.currentTimeMillis();
+	public Framerate(float targetFps) {		
+		this.setFps(targetFps);		
 	}
 
+	public void setFps(float targetFps) {
+		LOG.info("Target fps: "+targetFps);
+		this.delay = (long)(1000f/targetFps);
+		this.startTime = System.currentTimeMillis();
+		this.count = 1;
+	}
+	
 	public float getFps() {
 		return count / (float)((System.currentTimeMillis() - startTime)/1000);
 	}

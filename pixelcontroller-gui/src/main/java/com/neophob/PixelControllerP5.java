@@ -151,10 +151,6 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	    	return;
 	    }
 	    		
-		if (frameCount %25==24) {
-			System.out.println(pixelController.getFps() + " --- " + frameRate);			
-		}
-				
 		// update matrixEmulator instance
 		long startTime = System.currentTimeMillis();
 
