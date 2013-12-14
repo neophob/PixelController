@@ -1,6 +1,8 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
+    246 files changed, 13740 insertions(+), 13058 deletions(-)
+    
 * More Code cleanup
 * The framerate configuraiton can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
@@ -9,6 +11,7 @@
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
     877 files changed, 230934 insertions(+), 227347 deletions(-)
+    
 * Modularize Project, rewrote large parts
 * Add new command line version of PixelController - run on a headless server (like an RPi)
 * Add make speed of generators configurable via GUI and save it as part of the preset (Issue #46)
@@ -168,8 +171,8 @@
 ## Changelog v1.1 to v1.2 (29. November 2011)
     30 files changed, 840 insertions(+), 268 deletions(-)
 
--PixelInvaders Firmware, fixed strip.doSwapBuffersAsap(0)
--Support AdaVision
+* PixelInvaders Firmware, fixed strip.doSwapBuffersAsap(0)
+* Support AdaVision
 
 
 ## Changelog v1.0.3 to v1.1 (8. November 2011)
