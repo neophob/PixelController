@@ -114,4 +114,6 @@ public interface PixelControllerStatusMBean {
 	
 	void setFrameCount(long frameCount);
 	//List<String> getCurrentState();
+	
+	void setOscServerStatistics(PacketAndBytesStatictics oscServerStatistics);
 }

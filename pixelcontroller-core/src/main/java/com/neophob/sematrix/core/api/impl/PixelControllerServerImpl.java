@@ -112,7 +112,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 				oscServer = new PixelControllerOscServer(listeningOscPort);
 				oscServer.startServer();
 				//register osc server in the statistic class
-				//this.pixConStat.setOscServerStatistics(oscServer);				
+				this.pixConStat.setOscServerStatistics(oscServer);				
 			} else {
 				LOG.log(Level.INFO, "OSC Server disabled, port: "+listeningOscPort);
 			}

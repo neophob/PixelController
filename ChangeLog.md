@@ -4,9 +4,9 @@
     246 files changed, 13740 insertions(+), 13058 deletions(-)
     
 * More Code cleanup
-* The framerate configuraiton can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
 * Fix decouple fps setting of PixelController from the GUI update speed
+* Fix The framerate configuraiton can be a float number (ex. fps=0.1) if you need a really slow update rate
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
