@@ -34,7 +34,8 @@ import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 final class PixelControllerServerImpl extends PixelControllerServer implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
-
+	private static final String ZEROCONF_NAME = "PixelController";
+	
 	private VisualState collector;
 	private PresetService presetService;
 
@@ -121,8 +122,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		try {
 			if (listeningOscPort>0) {
-				bonjour = MDnsServerFactory.createServer(listeningOscPort, "PixelController");
-		//		bonjour.startServer();
+				bonjour = MDnsServerFactory.createServer(listeningOscPort, ZEROCONF_NAME);
+				bonjour.startServerAsync();
 			} else {
 				LOG.log(Level.INFO, "MDNS Server disabled, OSC port: "+listeningOscPort);
 			}

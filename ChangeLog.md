@@ -1,5 +1,11 @@
 # PixelController ChangeLog
 
+## Changelog v2.0.0 to v2.x.y
+* More Code cleanup
+* The framerate configuraiton can be a float number (ex. fps=0.1) if you need a really slow update rate
+* Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
+
+
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
     877 files changed, 230934 insertions(+), 227347 deletions(-)
 * Modularize Project, rewrote large parts

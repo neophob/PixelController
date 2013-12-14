@@ -93,7 +93,9 @@ public class PixelControllerStatus implements PixelControllerStatusMBean {
 		LOG.log(Level.INFO, "Initialize the PixelControllerStatus JMX Bean");
 		
 		this.configuredFps = configuredFps;
-		
+		if (this.configuredFps < 1) {
+			this.configuredFps = 1;
+		}
 		// initialize all buffers 
 		this.timeMeasureMapGlobal = new ConcurrentHashMap<TimeMeasureItemGlobal, CircularFifoBuffer>();
 		for (TimeMeasureItemGlobal timeMeasureItem : TimeMeasureItemGlobal.values()) {

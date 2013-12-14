@@ -28,9 +28,14 @@ package com.neophob.sematrix.mdns.server;
 public interface IServer {
 
 	/**
-	 * start the OSC server
+	 * start the OSC server, blocks until registered
 	 */
 	void startServer();
+
+	/**
+	 * start the OSC server async
+	 */
+	void startServerAsync();
 
 	/**
 	 * start the OSC server

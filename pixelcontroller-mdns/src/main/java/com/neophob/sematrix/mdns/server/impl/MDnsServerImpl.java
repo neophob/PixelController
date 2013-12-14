@@ -32,7 +32,7 @@ import com.neophob.sematrix.mdns.server.MDnsServerException;
  * @author michu
  *
  */
-class MDnsServerImpl extends MDnsServer {
+class MDnsServerImpl extends MDnsServer implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(MDnsServerImpl.class.getName());
 	
@@ -40,6 +40,8 @@ class MDnsServerImpl extends MDnsServer {
 	public final static String REMOTE_TYPE_UDP = "_pixelcontroller._udp.local.";
 	
 	private JmDNS jmdns;
+	
+	private boolean started = false;
 	
 	/**
 	 * 
@@ -69,15 +71,31 @@ class MDnsServerImpl extends MDnsServer {
             ServiceInfo pairservice = ServiceInfo.create(type, /*toHex(name)*/"PXLCNT", super.getListeningPort(), 0, 0, "PixelController OSC Server");
          
             jmdns.registerService(pairservice);
-
-			LOG.log(Level.INFO, "mDNS Server started");
+            
+			LOG.log(Level.INFO, "mDNS Server started and registered as "+jmdns.getName());
+			started = true;
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE, "Failed to start mDNS Server!", e);
 		}
 	}
+	
+	@Override
+	public void startServerAsync() {
+		Thread startThread = new Thread(this);
+		startThread.setName("Bonjour async started thread");
+		startThread.setDaemon(true);
+		startThread.start();
+
+	}
+
 
 	@Override
 	public void stopServer() {
+		if (!started) {
+			LOG.log(Level.INFO, "mDNS Server was not started yet..");
+			return;
+		}
+		
 		try {
 			jmdns.unregisterAllServices();
 			jmdns.close();
@@ -85,6 +103,16 @@ class MDnsServerImpl extends MDnsServer {
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to stop mDNS Server!", e);
 		}		
+	}
+
+	/**
+	 * start mdns server async
+	 */
+	@Override
+	public void run() {
+		LOG.log(Level.INFO, "[ASYNC] Start mDNS Server thread");
+		this.startServer();		
+		LOG.log(Level.INFO, "[ASYNC] finished mDNS Server thread");
 	}
 
 
