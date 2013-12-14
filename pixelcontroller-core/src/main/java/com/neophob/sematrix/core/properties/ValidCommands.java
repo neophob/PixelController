@@ -116,8 +116,6 @@ public enum ValidCommands {
 	SCREENSHOT(CommandGroup.MISC, 0, "<NO PARAM> save screenhot"),
 	
 	FREEZE(CommandGroup.MISC, 0, "<NO PARAM> toggle pause mode"),
-
-	TOGGLE_INTERNAL_VISUAL(CommandGroup.MISC, 0, "<NO PARAM> show/hide internal visual to save CPU"),
 	
 	CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
 	

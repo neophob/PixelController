@@ -31,4 +31,10 @@ public class PresetServiceDummy implements PresetService {
 		
 	}
 
+	@Override
+	public PresetSettings getSelectedPresetSettings() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

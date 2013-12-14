@@ -1,10 +1,16 @@
 package com.neophob.sematrix.core.api;
 
+import java.util.List;
+import java.util.Observer;
+
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.color.ColorSet;
 
 /**
  * the pixelcontroller API
@@ -35,12 +41,16 @@ public interface PixelController {
 	 * @return current framerate
 	 */
 	float getFps();
-	
+
+	long getProcessedFrames();
+
 	/**
 	 * 
 	 * @return configuration of pixelcontroller
 	 */
 	ApplicationConfigurationHelper getConfig();
+	
+	List<ColorSet> getColorSets();
 	
 	/**
 	 * 
@@ -53,6 +63,7 @@ public interface PixelController {
 	 * @return selected output
 	 */
 	IOutput getOutput();
+	List<OutputMapping> getAllOutputMappings();
 	
 	/**
 	 * 
@@ -71,4 +82,10 @@ public interface PixelController {
 	 * @return
 	 */
 	MatrixData getMatrix();
+	
+	ISound getSoundImplementation();
+	
+	void refreshGuiState();
+	void registerObserver(Observer o);
+
 }

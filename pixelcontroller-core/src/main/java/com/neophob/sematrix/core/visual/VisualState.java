@@ -121,8 +121,6 @@ public class VisualState extends Observable {
 	/** The random mode. */
 	private boolean inPauseMode = false;
 
-	private boolean internalVisualsVisible = true;
-
 	private ISound sound;
 
 	private PresetService presetService;
@@ -658,23 +656,6 @@ public class VisualState extends Observable {
 		} else {
 			inPauseMode=true;
 		}
-	}
-
-	/**
-	 * 
-	 */
-	public void toggleInternalVisual() {
-		if (internalVisualsVisible) {
-			internalVisualsVisible=false;
-		} else {
-			internalVisualsVisible=true;
-		}
-	}
-
-
-
-	public boolean isInternalVisualsVisible() {
-		return internalVisualsVisible;
 	}
 
 	/**

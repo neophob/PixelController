@@ -518,11 +518,6 @@ public enum MessageProcessor {
 				col.togglePauseMode();
 				break;
 			
-			//show/hide internal visuals to save cpu power
-			case TOGGLE_INTERNAL_VISUAL:
-				col.toggleInternalVisual();
-				break;
-				
 			case OSC_GENERATOR1:
 				col.getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
 				break;

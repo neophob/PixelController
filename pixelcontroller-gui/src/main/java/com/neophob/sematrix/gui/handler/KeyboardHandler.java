@@ -34,6 +34,8 @@ import com.neophob.sematrix.gui.GuiCallbackAction;
  * 
  * PixelController Keyboard handler
  * 
+ * TODO remove direct dep to VisualState and MessageProcessor
+ * 
  * @author mvogt
  *
  */

@@ -45,6 +45,8 @@ public class P5EventListener implements ControlListener {
     
     private static final int CALLBACK_TIMEOUT = 100;
 
+    private boolean internalVisualVisible = true;
+    
     private long lastCallbackEvent;
     
     private PixConServer pixConSrv;
@@ -255,7 +257,7 @@ public class P5EventListener implements ControlListener {
             	break;
             	
             case BUTTON_TOGGLE_INTERNAL_VISUALS:
-            	createMessage(ValidCommands.TOGGLE_INTERNAL_VISUAL, "");
+            	toggleInternalVisuals();
             	break;
             	
             case BRIGHTNESS:
@@ -296,7 +298,6 @@ public class P5EventListener implements ControlListener {
         lastCallbackEvent = System.currentTimeMillis();
     }
 
-
     /**
      * 
      * @param newValue
@@ -309,7 +310,22 @@ public class P5EventListener implements ControlListener {
         singleSendMessageOut(msg);
     }
 
+    private void toggleInternalVisuals() {
+    	if (internalVisualVisible) {
+    		internalVisualVisible = false;
+    	} else {
+    		internalVisualVisible = true;
+    	}
+    }
+    
     /**
+	 * @return the internalVisualVisible
+	 */
+	public boolean isInternalVisualVisible() {
+		return internalVisualVisible;
+	}
+
+	/**
      * 
      * @param validCommand
      * @param newValue

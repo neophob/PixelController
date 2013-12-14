@@ -1,6 +1,7 @@
 package com.neophob.sematrix.core.api.impl;
 
 import java.util.List;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +23,7 @@ import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.mdns.server.impl.MDnsServer;
@@ -37,13 +39,14 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
 	private static final String ZEROCONF_NAME = "PixelController";
 	
-	private VisualState collector;
+	private VisualState visualState;
 	private PresetService presetService;
 
 	private IOutput output;
 	private ISound sound;
 
 	private ApplicationConfigurationHelper applicationConfig;
+	private List<ColorSet> colorSets;
 	private FileUtils fileUtils;
 	private Framerate framerate;
 
@@ -88,11 +91,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		clientNotification("Load Configuration");
 		fileUtils = new FileUtils();
 		applicationConfig = loadConfiguration(fileUtils.getDataDir());
-		List<ColorSet> colorSets = loadColorPalettes(fileUtils.getDataDir());
+		this.colorSets = loadColorPalettes(fileUtils.getDataDir());
 		
 		clientNotification("Create Collector");
 		LOG.log(Level.INFO, "Create Collector");
-		this.collector = VisualState.getInstance();
+		this.visualState = VisualState.getInstance();
 
 		clientNotification("Initialize System");
 		LOG.log(Level.INFO, "Initialize System");
@@ -101,7 +104,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		this.presetService = new PresetServiceImpl(fileUtils.getDataDir());
 		MessageProcessor.INSTANCE.init(presetService);
 		
-		this.collector.init(fileUtils, applicationConfig, sound, colorSets, presetService);     
+		this.visualState.init(fileUtils, applicationConfig, sound, colorSets, presetService);     
 		framerate = new Framerate(applicationConfig.parseFps());
 
 		clientNotification("Initialize OSC Server");
@@ -134,7 +137,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		clientNotification("Initialize Output device");
 		LOG.log(Level.INFO, "Initialize Output device");
-		this.output = PixelControllerOutput.getOutputDevice(this.collector, applicationConfig);
+		this.output = PixelControllerOutput.getOutputDevice(this.visualState, applicationConfig);
 		if (this.output==null) {
 			throw new IllegalArgumentException("No output device found!");
 		}
@@ -152,13 +155,13 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 		LOG.log(Level.INFO, "Enter main loop");
 		while (Thread.currentThread() == runner) {
-			if (this.collector.isInPauseMode()) {
+			if (this.visualState.isInPauseMode()) {
 				//no update here, we're in pause mode
 				return;
 			}
 
 			try {
-				this.collector.updateSystem(pixConStat);			
+				this.visualState.updateSystem(pixConStat);			
 			} catch (Exception e) {
 				LOG.log(Level.SEVERE, "VisualState.getInstance().updateSystem() failed!", e);
 			}
@@ -193,7 +196,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		if (applicationConfig.startRandommode()) {
 			LOG.log(Level.INFO, "Random Mode enabled");
 			Shuffler.manualShuffleStuff();
-			collector.setRandomMode(true);
+			visualState.setRandomMode(true);
 		}
 
 		//load saves presets
@@ -206,7 +209,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		List<String> preset = presetService.getPresets().get(presetNr).getPresent();
 		presetService.setSelectedPreset(presetNr);
 		if (preset!=null) { 
-			collector.setCurrentStatus(preset);
+			visualState.setCurrentStatus(preset);
 		} else {
 			LOG.log(Level.WARNING,"Invalid preset load on start value ignored!");
 		}		
@@ -262,7 +265,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 	@Override
 	public float getFps() {
-		return framerate.getFps();
+		return framerate.getFps();		
 	}
 
 	@Override
@@ -276,5 +279,34 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		return VisualState.getInstance().getMatrix();
 	}
 
+	@Override
+	public ISound getSoundImplementation() {
+		return this.sound;
+	}
+
+	@Override
+	public long getProcessedFrames() {
+		return this.framerate.getFrameCount();
+	}
+
+	@Override
+	public void refreshGuiState() {
+		VisualState.getInstance().notifyGuiUpdate();		
+	}
+
+	@Override
+	public void registerObserver(Observer o) {
+		VisualState.getInstance().addObserver(o);		
+	}
+
+	@Override
+	public List<ColorSet> getColorSets() {
+		return colorSets;
+	}
+
+	@Override
+	public List<OutputMapping> getAllOutputMappings() {
+		return VisualState.getInstance().getAllOutputMappings();
+	}
 
 }
