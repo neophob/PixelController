@@ -35,6 +35,9 @@ public class OscMessage {
 	}
 
 	public OscMessage(String[] msg) {
+		if (msg == null || msg.length<1) {
+			throw new IllegalArgumentException("parameter null or empty");
+		}
 		this.pattern = msg[0];		
 		this.args = Arrays.copyOfRange(msg, 1, msg.length);
 		this.blob = null;
