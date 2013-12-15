@@ -275,8 +275,15 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 	@Override
 	public MatrixData getMatrix() {
-		// TODO inject matrix to visual state!
-		return VisualState.getInstance().getMatrix();
+		// TODO inject matrix to visual state!		
+		return visualState.getMatrix();
+	}
+
+	/**
+	 * @return the visualState
+	 */
+	public VisualState getVisualState() {
+		return visualState;
 	}
 
 	@Override

@@ -18,33 +18,15 @@ import com.neophob.sematrix.core.visual.color.ColorSet;
  */
 public interface PixConServer {
 
-	/**
-	 * start pixelcontroller core
-	 * 
-	 * @param handler
-	 */
-	void startCore();
-	
-	/**
-	 * 
-	 * @return pixelcontroller core version
-	 */
+	void start();
+	boolean isInitialized();
 	String getVersion();
 	
-	/**
-	 * 
-	 * @return PixelController configuration
-	 */
 	ApplicationConfigurationHelper getConfig();
 	List<ColorSet> getColorSets();
-	
-	/**
-	 * 
-	 * @return true if pixelcontroller is started, false if pixelcontroller is starting up
-	 */
-	boolean isInitialized();
-	
+		
 	int[] getVisualBuffer(int nr);
+	int[] getOutputBuffer(int nr);
 	IOutput getOutput();
 	List<OutputMapping> getAllOutputMappings();
 	

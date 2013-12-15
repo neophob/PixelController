@@ -10,6 +10,7 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 
 /**
@@ -82,6 +83,7 @@ public interface PixelController {
 	 * @return
 	 */
 	MatrixData getMatrix();
+	VisualState getVisualState();
 	
 	ISound getSoundImplementation();
 	

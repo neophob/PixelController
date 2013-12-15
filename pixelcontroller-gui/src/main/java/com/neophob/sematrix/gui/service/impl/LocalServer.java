@@ -26,7 +26,7 @@ public class LocalServer implements PixConServer {
 	}
 
 	@Override
-	public void startCore() {
+	public void start() {
 		pixelController.start();
 	}
 
@@ -47,6 +47,11 @@ public class LocalServer implements PixConServer {
 
 	@Override
 	public int[] getVisualBuffer(int nr) {
+		return pixelController.getVisualState().getVisual(nr).getBuffer();
+	}
+
+	@Override
+	public int[] getOutputBuffer(int nr) {
 		return pixelController.getOutput().getBufferForScreen(nr, true);
 	}
 
@@ -112,7 +117,7 @@ public class LocalServer implements PixConServer {
 
 	@Override
 	public int getNrOfVisuals() {
-		return pixelController.getConfig().getNrOfScreens()+pixelController.getConfig().getNrOfAdditionalVisuals();
+		return pixelController.getConfig().getNrOfScreens()+1+pixelController.getConfig().getNrOfAdditionalVisuals();
 	}
 
 	@Override

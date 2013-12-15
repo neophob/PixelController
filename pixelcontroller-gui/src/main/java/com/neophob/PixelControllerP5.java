@@ -28,7 +28,7 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.gui.guibuilder.GeneratorGuiCreator;
-import com.neophob.sematrix.gui.guibuilder.OutputGui;
+import com.neophob.sematrix.gui.guibuilder.MatrixSimulatorGui;
 import com.neophob.sematrix.gui.guibuilder.eventhandler.KeyboardHandler;
 import com.neophob.sematrix.gui.guibuilder.eventhandler.WindowHandler;
 import com.neophob.sematrix.gui.service.PixConServer;
@@ -68,7 +68,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	private boolean postInitDone = false;
 	
 	private PixConServer pixelController;
-	private OutputGui matrixEmulator;
+	private MatrixSimulatorGui matrixEmulator;
 	
 	/**
 	 * 
@@ -78,7 +78,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 			LOG.log(Level.INFO, "Initialize...");
 			pixelController = new LocalServer(this);
 			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
-			pixelController.startCore();
+			pixelController.start();
 
 		    size(SETUP_WINDOW_WIDTH, SETUP_WINDOW_HEIGHT);
 		    background(0);
@@ -110,7 +110,7 @@ public class PixelControllerP5 extends PApplet implements CallbackMessageInterfa
 	 * initialize gui after the core has been initialized
 	 */
 	private void postStartInitialisation() {
-		this.matrixEmulator = new OutputGui(pixelController, this);
+		this.matrixEmulator = new MatrixSimulatorGui(pixelController, this);
 		background(0);
 		
 		int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();

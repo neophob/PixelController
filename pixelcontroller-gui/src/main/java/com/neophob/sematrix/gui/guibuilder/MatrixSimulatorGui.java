@@ -36,9 +36,9 @@ import com.neophob.sematrix.gui.service.PixConServer;
  * @author michu
  * 
  */
-public class OutputGui {
+public class MatrixSimulatorGui {
 
-	private static final Logger LOG = Logger.getLogger(OutputGui.class.getName());
+	private static final Logger LOG = Logger.getLogger(MatrixSimulatorGui.class.getName());
 
 	private static final int MAX_BPP = 8;
 			
@@ -62,7 +62,7 @@ public class OutputGui {
 	 *
 	 * @param controller the controller
 	 */
-	public OutputGui(PixConServer pixelController, PApplet papplet) {
+	public MatrixSimulatorGui(PixConServer pixelController, PApplet papplet) {
 		this.pixelController = pixelController;
 		this.matrixData = pixelController.getMatrixData();
 		this.layout = pixelController.getConfig().getLayout();
@@ -127,18 +127,18 @@ public class OutputGui {
 		switch (layout.getLayoutName()) {
 		case HORIZONTAL:
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, this.pixelController.getVisualBuffer(screen), currentOutput);
+				drawOutput(cnt++, screen, 0, this.pixelController.getOutputBuffer(screen), currentOutput);
 			}
 			break;
 
 		case BOX:
 			int ofs=0;
 			for (int screen=0; screen<layout.getRow1Size(); screen++) {
-				drawOutput(cnt++, screen, 0, this.pixelController.getVisualBuffer(screen), currentOutput);
+				drawOutput(cnt++, screen, 0, this.pixelController.getOutputBuffer(screen), currentOutput);
 				ofs++;
 			}
 			for (int screen=0; screen<layout.getRow2Size(); screen++) {
-				drawOutput(cnt++, screen, 1, this.pixelController.getVisualBuffer(ofs+screen), currentOutput);
+				drawOutput(cnt++, screen, 1, this.pixelController.getOutputBuffer(ofs+screen), currentOutput);
 			}
 			break;
 		}

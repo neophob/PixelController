@@ -21,6 +21,8 @@ package com.neophob.sematrix.core.resize;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * resize a larger buffer for a smaller buffer.
@@ -29,6 +31,8 @@ import java.awt.image.WritableRaster;
  */
 public abstract class Resize implements IResize {
 	
+	private static final Logger LOG = Logger.getLogger(Resize.class.getName());
+
 	/**
 	 * The Enum ResizeName.
 	 *
@@ -75,21 +79,6 @@ public abstract class Resize implements IResize {
 	 */
 	public Resize(ResizeName resizeName) {
 		this.resizeName = resizeName;
-	}
-	
-	/**
-	 * Gets the buffer.
-	 *
-	 * @param buffer the buffer
-	 * @param deviceXSize the device x size
-	 * @param deviceYSize the device y size
-	 * @param currentXSize the current x size
-	 * @param currentYSize the current y size
-	 * @return the buffer
-	 */
-	public int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize) {
-		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
-		return getBuffer(bi, newX, newY);
 	}
 
 	/**
@@ -152,8 +141,27 @@ public abstract class Resize implements IResize {
 	
 	@Override
 	public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
+		if (buffer.length != currentXSize*currentYSize) {
+			LOG.log(Level.WARNING, "Invalid currentSize defined, buffersize: {0}, calculated: {1}", 
+					new Object[] {buffer.length, currentXSize*currentYSize});
+		}
 		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
 		return getBuffer(bi, newX, newY);
 	}
+	
+	/**
+	 * Gets the buffer.
+	 *
+	 * @param buffer the buffer
+	 * @param deviceXSize the device x size
+	 * @param deviceYSize the device y size
+	 * @param currentXSize the current x size
+	 * @param currentYSize the current y size
+	 * @return the buffer
+	 */
+	public int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize) {
+		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
+		return getBuffer(bi, newX, newY);
+	}	
 
 }
