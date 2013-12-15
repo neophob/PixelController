@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.osc.model;
 
+import java.net.SocketAddress;
 import java.util.Arrays;
 
 public class OscMessage {
@@ -25,6 +26,7 @@ public class OscMessage {
 	private final String pattern; 
 	private final String[] args;
 	private final byte[] blob;
+	private SocketAddress socketAddress;
 	
 	public OscMessage(String pattern) {
 		this.pattern = pattern;
@@ -99,14 +101,30 @@ public class OscMessage {
 		return l;
 	}
 	
+	/**
+	 * @return the socketAddress
+	 */
+	public SocketAddress getSocketAddress() {
+		return socketAddress;
+	}
+
+	/**
+	 * @param socketAddress the socketAddress to set
+	 */
+	public void setSocketAddress(SocketAddress socketAddress) {
+		this.socketAddress = socketAddress;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return String.format("OscMessage [pattern=%s, args=%s]", pattern,
-				Arrays.toString(args));
+		return String.format(
+				"OscMessage [pattern=%s, args=%s, socketAddress=%s]", pattern,
+				Arrays.toString(args), socketAddress);
 	}
+
 
 	
 }

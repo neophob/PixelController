@@ -25,7 +25,7 @@ package com.neophob.sematrix.osc.server;
  * @author michu
  *
  */
-public interface IServer {
+public interface PixOscServer {
 
 	/**
 	 * start the OSC server

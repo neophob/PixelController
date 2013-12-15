@@ -113,7 +113,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		int listeningOscPort = Integer.parseInt(applicationConfig.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
 		try {           
 			if (listeningOscPort>0) {
-				oscServer = new PixelControllerOscServer(listeningOscPort);
+				oscServer = new PixelControllerOscServer(this, listeningOscPort);
 				oscServer.startServer();
 				//register osc server in the statistic class
 				this.pixConStat.setOscServerStatistics(oscServer);				

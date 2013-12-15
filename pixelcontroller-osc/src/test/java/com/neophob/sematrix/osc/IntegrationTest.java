@@ -21,13 +21,13 @@ package com.neophob.sematrix.osc;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
-import com.neophob.sematrix.osc.server.impl.OscServer;
+import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 
 public class IntegrationTest extends OscMessageHandler {
 
-	OscServer srv;
+	PixOscServer srv;
 	
 	public IntegrationTest() throws OscServerException {
 		System.out.println("create server");

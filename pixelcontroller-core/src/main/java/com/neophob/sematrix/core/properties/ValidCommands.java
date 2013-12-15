@@ -132,6 +132,9 @@ public enum ValidCommands {
 	ROTATE_EFFECT_A(CommandGroup.VISUAL, 0, "Select next Effect A"),
 	ROTATE_EFFECT_B(CommandGroup.VISUAL, 0, "Select next Effect A"),
 	ROTATE_MIXER(CommandGroup.VISUAL, 0, "Select next Mixer"),
+	
+	GET_CONFIGURATION(CommandGroup.INTERNAL, 0, "Return the application configuration"),
+	GET_VERSION(CommandGroup.INTERNAL, 0, "Return the Version"),
 	;	
 	
 	/** The nr of params. */

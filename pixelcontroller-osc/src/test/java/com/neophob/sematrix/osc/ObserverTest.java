@@ -25,7 +25,7 @@ import org.junit.Test;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.TestOscServer;
-import com.neophob.sematrix.osc.server.impl.OscServer;
+import com.neophob.sematrix.osc.server.impl.AbstractOscServer;
 
 public class ObserverTest extends OscMessageHandler {
 
@@ -33,7 +33,7 @@ public class ObserverTest extends OscMessageHandler {
 	
 	@Test
 	public void TestObserver() {
-		OscServer srv = new TestOscServer(this);				
+		AbstractOscServer srv = new TestOscServer(this);				
 		srv.startServer();
 		//initial / removed
 		assertEquals("HELLO", msg.getPattern());

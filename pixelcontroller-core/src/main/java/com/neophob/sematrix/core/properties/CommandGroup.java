@@ -39,5 +39,8 @@ public enum CommandGroup {
 	EFFECT,
 	
 	/** The MISC. */
-	MISC;
+	MISC,
+	
+	INTERNAL
+	;
 }

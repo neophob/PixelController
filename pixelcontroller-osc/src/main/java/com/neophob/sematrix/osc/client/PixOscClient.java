@@ -20,11 +20,14 @@ package com.neophob.sematrix.osc.client;
 
 import com.neophob.sematrix.osc.model.OscMessage;
 
-public interface IClient {
+public interface PixOscClient {
 
-	void sendMessage(String targetIp, int targetPort, OscMessage msg) throws OscClientException;
+	void sendMessage(OscMessage msg) throws OscClientException;
 	
 	void disconnect() throws OscClientException;
 	
 	boolean isConnected();
+	
+	String getTargetIp();
+	int getTargetPort();
 }

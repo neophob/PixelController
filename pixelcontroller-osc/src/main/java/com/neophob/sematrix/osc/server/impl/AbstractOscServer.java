@@ -21,7 +21,7 @@ package com.neophob.sematrix.osc.server.impl;
 import java.util.Observable;
 
 import com.neophob.sematrix.osc.model.OscMessage;
-import com.neophob.sematrix.osc.server.IServer;
+import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
 
 /**
@@ -31,7 +31,7 @@ import com.neophob.sematrix.osc.server.OscMessageHandler;
  * @author michu
  *
  */
-public abstract class OscServer extends Observable implements IServer {
+public abstract class AbstractOscServer extends Observable implements PixOscServer {
 
 	private final String host;
 	private final int port;
@@ -46,7 +46,7 @@ public abstract class OscServer extends Observable implements IServer {
 	 * @param port
 	 * @param bufferSize
 	 */
-	public OscServer(OscMessageHandler handler, String host, int port, int bufferSize) {
+	public AbstractOscServer(OscMessageHandler handler, String host, int port, int bufferSize) {
 		this.host = host;
 		this.port = port;
 		this.bufferSize = bufferSize;

@@ -38,9 +38,9 @@ import de.sciss.net.OSCServer;
  * @author michu
  *
  */
-class OscServerImpl extends OscServer implements OSCListener {
+class OscServerImpl extends AbstractOscServer implements OSCListener {
 
-	private static final Logger LOG = Logger.getLogger(OscServer.class.getName());
+	private static final Logger LOG = Logger.getLogger(AbstractOscServer.class.getName());
 	
 	private OSCServer oscServer;
 	
@@ -108,7 +108,9 @@ class OscServerImpl extends OscServer implements OSCListener {
 			args = tmp.toArray(args);
 			
 		}
+		
 		OscMessage msg = new OscMessage(m.getName(), args, blob);
+		msg.setSocketAddress(addr);
 		this.notifyOscClients(msg);		
 	}
 
