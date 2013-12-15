@@ -18,9 +18,10 @@
  */
 package com.neophob.sematrix.core.visual.color;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -33,15 +34,15 @@ import java.util.logging.Logger;
  * @author michu
  *
  */
-public class ColorSet implements Comparable<ColorSet> {
+public class ColorSet implements Comparable<ColorSet>, Serializable {
 
-	private static final Logger LOG = Logger.getLogger(ColorSet.class.getName());
+	private transient static final Logger LOG = Logger.getLogger(ColorSet.class.getName());
+
+	private transient int[] precalc;
 
 	private String name;
 
 	private int[] colors;
-
-	private int[] precalc;
 
 	/**
 	 * 
@@ -120,7 +121,7 @@ public class ColorSet implements Comparable<ColorSet> {
 	 * @return
 	 */
 	public static List<ColorSet> loadAllEntries(Properties palette) {
-		List<ColorSet> ret = new LinkedList<ColorSet>();
+		List<ColorSet> ret = new ArrayList<ColorSet>();
 
 		for (Entry<Object, Object> entry : palette.entrySet()) {
 			try {

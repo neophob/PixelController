@@ -67,11 +67,11 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
 public class Tpm2Net extends Output {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
 
-	private static Adler32 adler = new Adler32();
+	private static transient Adler32 adler = new Adler32();
 
-	private DatagramSocket outputSocket;
+	private transient DatagramSocket outputSocket;
 
 	/** The initialized. */
 	protected boolean initialized;
@@ -85,14 +85,14 @@ public class Tpm2Net extends Output {
 	/** define how the panels are arranged */
 	private List<Integer> panelOrder;
 
-	private DatagramPacket tpm2UdpPacket;
+	private transient DatagramPacket tpm2UdpPacket;
 
 	private String targetAddrStr;
 
 	private long errorCounter = 0;
 
 	/** map to store checksum of image. */
-	private Map<Integer, Long> lastDataMap;
+	private transient Map<Integer, Long> lastDataMap;
 
     /** flip each 2nd scanline? */
 	private boolean snakeCabeling;

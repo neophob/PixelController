@@ -51,7 +51,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class Crossfader extends Fader {
 
-	private static final Logger LOG = Logger.getLogger(Crossfader.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(Crossfader.class.getName());
 
 	/**
 	 * Instantiates a new crossfader.

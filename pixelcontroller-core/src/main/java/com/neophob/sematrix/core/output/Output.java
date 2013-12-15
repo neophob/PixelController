@@ -44,19 +44,16 @@ import com.neophob.sematrix.core.visual.layout.LayoutModel;
 public abstract class Output implements IOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Output.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(Output.class.getName());
 
 	/** The outputDeviceEnum. */
 	private OutputDeviceEnum outputDeviceEnum;
 
 	/** The matrix data. */
-	protected MatrixData matrixData;
+	protected transient MatrixData matrixData;
 
 	/** The layout. */
 	protected Layout layout;
-
-	/** The collector. */
-	protected VisualState collector;
 
 	/** bit per pixel. */
 	protected int bpp;
@@ -90,8 +87,7 @@ public abstract class Output implements IOutput {
 	public Output(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
 		this.outputDeviceEnum = outputDeviceEnum;
 
-		this.collector = VisualState.getInstance();
-		this.matrixData = this.collector.getMatrix();
+		this.matrixData = VisualState.getInstance().getMatrix();
 		this.layout = ph.getLayout();
 		this.bpp = bpp;
 		this.gammaType = ph.getGammaType();
@@ -126,7 +122,7 @@ public abstract class Output implements IOutput {
 			LOG.log(Level.SEVERE, "Failed to get entry for entry: "+(switchBuffer+screenNr));
 			return null;
 		}
-		float brightness = this.collector.getPixelControllerGenerator().getBrightness();		
+		float brightness = VisualState.getInstance().getBrightness();
 
 		if (!applyGamma) {
 			return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);
@@ -270,8 +266,8 @@ public abstract class Output implements IOutput {
 
 		for (int screen = 0; screen < this.totalNrOfOutputBuffers; screen++) {
 			LayoutModel lm = this.layout.getDataForScreen(screen, VisualState.getInstance().getAllOutputMappings());
-			OutputMapping map = this.collector.getOutputMappings(screen);
-			v = this.collector.getVisual(lm.getVisualId());
+			OutputMapping map = VisualState.getInstance().getOutputMappings(screen);
+			v = VisualState.getInstance().getVisual(lm.getVisualId());
 
 			if (lm.screenDoesNotNeedStretching()) {
 				buffer = this.getScreenBufferForDevice(v, map);

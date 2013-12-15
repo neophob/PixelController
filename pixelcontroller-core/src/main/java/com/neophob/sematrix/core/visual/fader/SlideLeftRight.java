@@ -29,7 +29,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class SlideLeftRight extends Fader {
 
-	private static final Logger LOG = Logger.getLogger(SlideLeftRight.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(SlideLeftRight.class.getName());
 
 	/**
 	 * Instantiates a new slide left right.

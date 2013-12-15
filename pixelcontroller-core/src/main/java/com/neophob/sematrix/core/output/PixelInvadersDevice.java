@@ -37,7 +37,7 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
  */
 public abstract class PixelInvadersDevice extends Output {
 
-	private static final Logger LOG = Logger.getLogger(PixelInvadersDevice.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(PixelInvadersDevice.class.getName());
 	
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	protected List<DeviceConfig> displayOptions;
@@ -49,7 +49,7 @@ public abstract class PixelInvadersDevice extends Output {
 	protected List<Integer> panelOrder;
 
 	//primitive arrays can not added to a map, and autoboxing do not work
-	protected Map<Integer, Object> transformedBuffer = new HashMap<Integer, Object>(); 
+	protected transient Map<Integer, Object> transformedBuffer = new HashMap<Integer, Object>(); 
 
 	protected boolean initialized = false;
 
@@ -58,7 +58,7 @@ public abstract class PixelInvadersDevice extends Output {
 	protected long ignoredFrames = 0;
 	protected long errorFrames = 0;
 	
-	private Lpd6803Common lpd6803;
+	private transient Lpd6803Common lpd6803;
 	
 	private int nrOfScreens;
 	/**

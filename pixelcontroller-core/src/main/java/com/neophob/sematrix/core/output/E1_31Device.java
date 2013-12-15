@@ -41,12 +41,12 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class E1_31Device extends AbstractDmxDevice {
 
-	private static final Logger LOG = Logger.getLogger(E1_31Device.class.getName());
-	private static final String MULTICAST_START = "239.255.";
+	private static transient final Logger LOG = Logger.getLogger(E1_31Device.class.getName());
+	private static transient final String MULTICAST_START = "239.255.";
 
-	private E1_31DataPacket dataPacket = new E1_31DataPacket();
-	private DatagramPacket packet;
-	private DatagramSocket dsocket;
+	private transient E1_31DataPacket dataPacket = new E1_31DataPacket();
+	private transient DatagramPacket packet;
+	private transient DatagramSocket dsocket;
 	
 	//multicast or unicast?
 	private boolean sendMulticast = false;

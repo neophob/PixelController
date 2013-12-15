@@ -37,7 +37,7 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
 public class StealthDevice extends ArduinoOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(StealthDevice.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(StealthDevice.class.getName());
 		
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	private List<DeviceConfig> displayOptions;
@@ -46,7 +46,7 @@ public class StealthDevice extends ArduinoOutput {
 	private List<ColorFormat> colorFormat;
 	
 	/** The Stealth. */
-	private Stealth stealth = null;
+	private transient Stealth stealth = null;
 	
 	private int nrOfScreens;
 

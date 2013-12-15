@@ -76,10 +76,14 @@ class OscClientImpl implements PixOscClient {
 		}
 		//TODO type check
 		OSCPacket oscPacket = null;
-		if (msg.getArgs()==null) {
+		if (msg.getArgs()==null && msg.getBlob() == null) {
+			//message only
 			oscPacket = new OSCMessage(msg.getOscPattern());
+		} else if (msg.getArgs()==null && msg.getBlob() != null) {
+			//message and blob
+			oscPacket = new OSCMessage(msg.getOscPattern(), new Object[] {msg.getBlob()});
 		} else {
-			oscPacket = new OSCMessage(msg.getOscPattern(), (Object[])msg.getArgs());	
+			oscPacket = new OSCMessage(msg.getOscPattern(), (Object[])msg.getArgs());
 		}
 		 
 		try {

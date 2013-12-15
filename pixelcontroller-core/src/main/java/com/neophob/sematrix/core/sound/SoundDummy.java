@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class SoundDummy implements ISound {
 	
-	private static final Logger LOG = Logger.getLogger(SoundDummy.class.getName());
+	private transient static final Logger LOG = Logger.getLogger(SoundDummy.class.getName());
 
 	/**
 	 * Instantiates a new sound dummy.

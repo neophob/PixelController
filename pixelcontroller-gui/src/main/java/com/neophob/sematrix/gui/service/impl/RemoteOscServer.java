@@ -1,5 +1,10 @@
 package com.neophob.sematrix.gui.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 import java.util.logging.Level;
@@ -7,11 +12,15 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.resize.PixelResize;
 import com.neophob.sematrix.core.sound.ISound;
+import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.ColorSet;
@@ -38,21 +47,33 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
+	
 	private String version;
+	private ApplicationConfigurationHelper config;
+	private MatrixData matrix;
+	private List<ColorSet> colorSets;
+	private ISound sound;
+	private List<OutputMapping> outputMapping;
+	private IOutput output;
 	
 	public RemoteOscServer() throws OscServerException, OscClientException {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
 		oscServer = OscServerFactory.createServer(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
-		oscClient = OscClientFactory.createClient(TARGET_HOST, REMOTE_OSC_SERVER_PORT, 50000);
+		oscClient = OscClientFactory.createClient(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
 	}
 
 	@Override
 	public void start() {
-		oscServer.startServer();
+		this.oscServer.startServer();
+		this.sound = new SoundDummy();
 		
-		//request static valies
+		//request static values
 		sendOscMessage(ValidCommands.GET_VERSION);
 		sendOscMessage(ValidCommands.GET_CONFIGURATION);
+		sendOscMessage(ValidCommands.GET_MATRIXDATA);
+		sendOscMessage(ValidCommands.GET_COLORSETS);
+		sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
+		sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
 	}
 
 	@Override
@@ -61,15 +82,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 	}
 
 	@Override
-	public ApplicationConfigurationHelper getConfig() {
-		sendOscMessage(ValidCommands.GET_CONFIGURATION);
-		return null;
+	public ApplicationConfigurationHelper getConfig() {		
+		return config;
 	}
 
 	@Override
 	public List<ColorSet> getColorSets() {
-		// TODO Auto-generated method stub
-		return null;
+		return colorSets;
 	}
 
 	@Override
@@ -79,20 +98,17 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	@Override
 	public int[] getOutputBuffer(int nr) {
-		// TODO Auto-generated method stub
-		return null;
+		return output.getBufferForScreen(nr, true);
 	}
 
 	@Override
 	public IOutput getOutput() {
-		// TODO Auto-generated method stub
-		return null;
+		return output;
 	}
 
 	@Override
 	public List<OutputMapping> getAllOutputMappings() {
-		// TODO Auto-generated method stub
-		return null;
+		return outputMapping;
 	}
 
 	@Override
@@ -127,20 +143,17 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	@Override
 	public ISound getSoundImplementation() {
-		// TODO Auto-generated method stub
-		return null;
+		return sound;
 	}
 
 	@Override
 	public MatrixData getMatrixData() {
-		// TODO Auto-generated method stub
-		return null;
+		return matrix;
 	}
 
 	@Override
 	public int getNrOfVisuals() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.config.getNrOfScreens()+1+this.config.getNrOfAdditionalVisuals();
 	}
 
 	@Override
@@ -169,14 +182,12 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	@Override
 	public void sendMessage(String[] msg) {
-		// TODO Auto-generated method stub
-
+		sendOscMessage(msg);
 	}
 
 	@Override
 	public void refreshGuiState() {
-		// TODO Auto-generated method stub
-
+		//pixelController.refreshGuiState();
 	}
 
 	@Override
@@ -184,12 +195,28 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public int[] getVisualBuffer(int nr) {
+		//cannot use output buffer - one visual is missing
+		return new int[matrix.getBufferXSize()*matrix.getBufferYSize()];
+	}
+
 
 	private void sendOscMessage(ValidCommands cmd) {
 		sendOscMessage(cmd.toString());
 	}
 	
 	private void sendOscMessage(String s) {
+		OscMessage msg = new OscMessage(s);
+		try {
+			oscClient.sendMessage(msg);
+		} catch (OscClientException e) {
+			LOG.log(Level.SEVERE, "failed to send osc message!", e);
+		}	
+	}
+
+	private void sendOscMessage(String[] s) {
 		OscMessage msg = new OscMessage(s);
 		try {
 			oscClient.sendMessage(msg);
@@ -206,9 +233,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 			LOG.log(Level.INFO,	"Ignore empty OSC message...");
 			return;
 		}
-
+		
 		String pattern = oscIn.getPattern();
-
 		ValidCommands command;		
 		try {
 			command = ValidCommands.valueOf(pattern);
@@ -217,24 +243,63 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 			return;			
 		}
 		
-		switch (command) {
-		case GET_VERSION:
-			System.out.println("version: "+command);
-			break;
+		try {
+			switch (command) {
+			case GET_VERSION:
+				this.version = oscIn.getArgs()[0];
+				System.out.println("version: "+this.version);
+				break;
 
-		case GET_CONFIGURATION:
-			System.out.println("cfg: "+command);
-			break;
+			case GET_CONFIGURATION:
+				System.out.println("cfg: "+command+", size: "+oscIn.getBlob().length);
+				config = convertToObject(oscIn.getBlob(), ApplicationConfigurationHelper.class);
+				break;
 
-		default:
-			break;
+			case GET_MATRIXDATA:
+				matrix = convertToObject(oscIn.getBlob(), MatrixData.class);
+				break;
+				
+			case GET_COLORSETS:
+				colorSets = convertToObject(oscIn.getBlob(), ArrayList.class);
+				break;
+			
+			case GET_OUTPUTMAPPING:
+				outputMapping = convertToObject(oscIn.getBlob(), ArrayList.class);
+				break;
+				
+			case GET_OUTPUTBUFFER:
+				output = convertToObject(oscIn.getBlob(), IOutput.class);
+				break;
+
+			default:
+				break;
+			}			
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "Failed to convert input data!", e);
 		}
 	}
 
-	@Override
-	public int[] getVisualBuffer(int nr) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	private <T> T convertToObject(byte[] input, Class<T> type) throws IOException, ClassNotFoundException {
+		ByteArrayInputStream bis = new ByteArrayInputStream(input);
+		ObjectInput in = null;
+		try {
+		  in = new ObjectInputStream(bis);
+		  return (T) in.readObject(); 
+		} finally {
+		  try {
+		    bis.close();
+		  } catch (IOException ex) {
+		    // ignore close exception
+		  }
+		  try {
+		    if (in != null) {
+		      in.close();
+		    }
+		  } catch (IOException ex) {
+		    // ignore close exception
+		  }
+		}		
 	}
 	
 }

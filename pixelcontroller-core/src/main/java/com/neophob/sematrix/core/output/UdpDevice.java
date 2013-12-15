@@ -35,10 +35,10 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class UdpDevice extends OnePanelResolutionAwareOutput {
 
-	private static final Logger LOG = Logger.getLogger(UdpDevice.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(UdpDevice.class.getName());
 
-	private DatagramPacket packet;
-	private DatagramSocket dsocket;
+	private transient DatagramPacket packet;
+	private transient DatagramSocket dsocket;
 	
 	private String targetHost;
 	private int targetPort;

@@ -120,6 +120,8 @@ public class VisualState extends Observable {
 
 	/** The random mode. */
 	private boolean inPauseMode = false;
+	
+	private float brightness = 1.0f;	
 
 	private ISound sound;
 
@@ -676,6 +678,20 @@ public class VisualState extends Observable {
 	}
 
 
+	/**
+	 * @return the brightness
+	 */
+	public float getBrightness() {
+		return brightness;
+	}
+
+	/**
+	 * @param brightness the brightness to set
+	 */
+	public void setBrightness(float brightness) {
+		this.brightness = brightness;
+	}
+
 	private List<String> getGuiState() {
 		List<String> ret = new ArrayList<String>();
 
@@ -687,6 +703,8 @@ public class VisualState extends Observable {
 		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
 		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
 		ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
+        int brightnessInt = (int)(this.brightness*100f);
+        ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
 
 		//get output status
 		int ofs=0;

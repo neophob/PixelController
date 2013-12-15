@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.visual.fader;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,12 +36,12 @@ import com.neophob.sematrix.core.visual.MatrixData;
  * @author mvogt
  *
  */
-public abstract class Fader implements IFader {
+public abstract class Fader implements IFader, Serializable {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Fader.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(Fader.class.getName());
 
-	protected static final int DEFAULT_FADER_DURATION = 1500;
+	protected static transient final int DEFAULT_FADER_DURATION = 1500;
 	
 	/**
 	 * The Enum FaderName.

@@ -34,10 +34,10 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(MiniDmxDevice.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(MiniDmxDevice.class.getName());
 	
 	/** The mini dmx. */
-	private MiniDmxSerial miniDmx;
+	private transient MiniDmxSerial miniDmx;
 		
 	/**
 	 * init the mini dmx devices.

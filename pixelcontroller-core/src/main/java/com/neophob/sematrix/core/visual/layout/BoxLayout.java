@@ -33,7 +33,7 @@ import com.neophob.sematrix.core.visual.OutputMapping;
  */
 public class BoxLayout extends Layout {
 
-	private static final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
 	
 	private static final int YSIZE = 2;
 	private static final int MAXVAL = 1000;

@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.visual.layout;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ import com.neophob.sematrix.core.visual.OutputMapping;
  *
  * @author michu
  */
-public abstract class Layout {
+public abstract class Layout implements Serializable {
 
 	/**
 	 * The Enum LayoutName.
@@ -65,7 +66,7 @@ public abstract class Layout {
 	}
 	
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Layout.class.getName());
+	private transient static final Logger LOG = Logger.getLogger(Layout.class.getName());
 	
 	/** The layout name. */
 	private LayoutName layoutName;

@@ -71,7 +71,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /** The textwriter. */
     private Textwriter textwriter;
     
-	private float brightness = 1.0f;	
 	private float fpsAdjustment = 1.0f;
 	BeatToAnimation bta = BeatToAnimation.MODERATE; 
     
@@ -170,8 +169,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
         ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
         ret.add(ValidCommands.TEXTWR_OPTION+" "+textwriter.getTextscroller());
         ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
-        int brightnessInt = (int)(this.brightness*100f);
-        ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
         int generatorSpeed = (int)(this.fpsAdjustment*100f);
         ret.add(ValidCommands.GENERATOR_SPEED+" "+generatorSpeed);
         ret.add(ValidCommands.BEAT_WORKMODE+" "+bta.getId());
@@ -415,22 +412,6 @@ public class PixelControllerGenerator implements PixelControllerElement {
     	return textwriter.getTextscroller();
     }
 
-    
-	/**
-	 * @return the brightness
-	 */
-	public float getBrightness() {
-		return brightness;
-	}
-
-	/**
-	 * @param brightness the brightness to set
-	 */
-	public void setBrightness(float brightness) {
-		this.brightness = brightness;
-	}
-
-	
 	
 	/**
 	 * @return the fpsAdjustment

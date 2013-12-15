@@ -29,7 +29,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class SlideUpsideDown extends Fader {
 
-	private static final Logger LOG = Logger.getLogger(SlideUpsideDown.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(SlideUpsideDown.class.getName());
 
 	/**
 	 * 

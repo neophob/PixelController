@@ -33,7 +33,7 @@ import com.neophob.sematrix.core.visual.OutputMapping;
  */
 public class HorizontalLayout extends Layout {
 
-	private static final Logger LOG = Logger.getLogger(HorizontalLayout.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(HorizontalLayout.class.getName());
 	
 	/**
 	 * Instantiates a new horizontal layout.

@@ -62,8 +62,9 @@ public class PixelControllerP5Remote extends PApplet implements CallbackMessageI
 			pixelController = new RemoteOscServer();
 			pixelController.start();
 			System.out.println("--------");
+			Thread.sleep(5000);
+			
 			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
-
 		    frameRate(FPS);
 
 			this.matrixEmulator = new MatrixSimulatorGui(pixelController, this);

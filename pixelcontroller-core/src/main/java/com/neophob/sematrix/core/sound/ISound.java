@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.sound;
 
+
 /**
  * The Interface SeSound.
  *

@@ -34,30 +34,30 @@ public final class SoundMinim implements ISound, Runnable {
 
 	//samples per 1/4s
 	/** The Constant SOUND_BUFFER_RESOLUTION. */
-	private static final int SOUND_BUFFER_RESOLUTION = 8;
+	private transient static final int SOUND_BUFFER_RESOLUTION = 8;
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(SoundMinim.class.getName());
+	private transient static final Logger LOG = Logger.getLogger(SoundMinim.class.getName());
 
 	/** The minim. */
-	private Minim minim;
+	private transient Minim minim;
 	
 	/** The in. */
-	private AudioInput in;
+	private transient AudioInput in;
 	
 	/** The beat. */
-	private BeatDetect beat;
+	private transient BeatDetect beat;
 	
 	/** The bl. */
 	@SuppressWarnings("unused")
-	private BeatListener bl;
+	private transient BeatListener bl;
 
 	/** The fft. */
-	private FFT fft;
+	private transient FFT fft;
 
 	/* thread to collect volume information */
 	/** The runner. */
-	private Thread runner;
+	private transient Thread runner;
 
 	/** The snd volume max. */
 	private float sndVolumeMax=0;

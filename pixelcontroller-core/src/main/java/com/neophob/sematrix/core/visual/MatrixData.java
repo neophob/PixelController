@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.visual;
 
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,10 +32,10 @@ import java.util.logging.Logger;
  * @author mvogt
  *
  */
-public class MatrixData {
+public class MatrixData implements Serializable{
 
     /** The log. */
-    private static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
+    private transient static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
     /** The device x size. */
     private final int deviceXSize;

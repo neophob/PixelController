@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.core.visual;
 
+import java.io.Serializable;
+
 import com.neophob.sematrix.core.visual.fader.IFader;
 
 /**
@@ -27,7 +29,7 @@ import com.neophob.sematrix.core.visual.fader.IFader;
  *
  * @author michu
  */
-public class OutputMapping {
+public class OutputMapping implements Serializable {
 
 	/** the visual number (offset) */
 	private int visualNumber;

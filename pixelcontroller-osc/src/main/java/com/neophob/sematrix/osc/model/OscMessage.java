@@ -34,6 +34,12 @@ public class OscMessage {
 		this.blob = null;
 	}
 
+	public OscMessage(String[] msg) {
+		this.pattern = msg[0];		
+		this.args = Arrays.copyOfRange(msg, 1, msg.length);
+		this.blob = null;
+	}
+
 	public OscMessage(String pattern, String parameter) {
 		this.pattern = pattern;
 		this.args = new String[] {parameter};

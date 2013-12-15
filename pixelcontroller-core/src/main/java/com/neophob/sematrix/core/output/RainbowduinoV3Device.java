@@ -37,9 +37,10 @@ import de.programmerspain.rv3sf.api.RainbowduinoV3;
  */
 public class RainbowduinoV3Device extends Output {
     
-    private static final Logger LOG = Logger.getLogger(RainbowduinoV3Device.class.getName());
+    private static transient final Logger LOG = Logger.getLogger(RainbowduinoV3Device.class.getName());
     
-	private RainbowduinoV3[] rainbowduinoV3Devices;
+	private transient RainbowduinoV3[] rainbowduinoV3Devices;
+	
 	private boolean initialized =  false;
 
 	public RainbowduinoV3Device(ApplicationConfigurationHelper ph) {

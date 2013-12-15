@@ -36,11 +36,11 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 public class Tpm2 extends OnePanelResolutionAwareOutput {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Tpm2.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(Tpm2.class.getName());
 			
-	private static final String VERSION = "1.1";
+	private static transient final String VERSION = "1.1";
 
-	private Tpm2Serial tpm2;
+	private transient Tpm2Serial tpm2;
 	
 	/**
 	 * init the mini dmx devices.

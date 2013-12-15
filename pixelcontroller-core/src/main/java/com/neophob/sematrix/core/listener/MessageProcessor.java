@@ -468,7 +468,7 @@ public enum MessageProcessor {
 						break;
 					} else {
 						float f = a/100f;
-						col.getPixelControllerGenerator().setBrightness(f);
+						col.setBrightness(f);
 					}
 				} catch (Exception e) {
 					LOG.log(Level.WARNING, IGNORE_COMMAND, e);

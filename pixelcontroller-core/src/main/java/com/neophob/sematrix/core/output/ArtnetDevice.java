@@ -45,9 +45,9 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryListener {
 
-	private static final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
-	private ArtNet artnet;
+	private transient ArtNet artnet;
 	
 	/**
 	 * 

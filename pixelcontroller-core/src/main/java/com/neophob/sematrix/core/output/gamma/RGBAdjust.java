@@ -18,13 +18,15 @@
  */
 package com.neophob.sematrix.core.output.gamma;
 
+import java.io.Serializable;
+
 /**
  * fine tune color resolution of multiple pixelinvaders panels
  * 
  * @author michu
  *
  */
-public class RGBAdjust {
+public class RGBAdjust implements Serializable {
 
 	private int r,g,b;
 	

@@ -34,7 +34,7 @@ import com.neophob.sematrix.core.properties.DeviceConfig;
  */
 public abstract class AbstractDmxDevice extends Output {
 
-	private static final Logger LOG = Logger.getLogger(AbstractDmxDevice.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(AbstractDmxDevice.class.getName());
 
 	/** The display options, does the buffer needs to be flipped? rotated? */
 	protected List<DeviceConfig> displayOptions;

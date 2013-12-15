@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.core.output;
 
+import java.io.Serializable;
+
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 
@@ -27,7 +29,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  * @author michu
  *
  */
-public interface IOutput {
+public interface IOutput extends Serializable{
 
 	/**
 	 * 
