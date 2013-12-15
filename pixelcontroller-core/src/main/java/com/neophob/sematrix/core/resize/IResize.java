@@ -28,17 +28,6 @@ import java.awt.image.BufferedImage;
 public interface IResize {
 
 	/**
-	 * resize an array of images
-	 * @param buffer
-	 * @param newX
-	 * @param newY
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
-	 */
-	int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize);
-	
-	/**
 	 * resize an image type
 	 * @param bi
 	 * @param newX

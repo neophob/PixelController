@@ -95,7 +95,7 @@ public class PixelControllerResize implements PixelControllerElement {
 			return null;
 		}
 		
-		return r.getBuffer(inputBuffer, newX, newY, currentX, currentY);		
+		return r.resizeImage(inputBuffer, currentX, currentY, newX, newY);		
 	}
 
 	

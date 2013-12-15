@@ -203,8 +203,8 @@ public abstract class Output implements IOutput {
         //return new int[deviceXSize* deviceYSize];	
 
         IResize r = VisualState.getInstance().getPixelControllerResize().getResize(resizeName);
-        return r.getBuffer(buffer, deviceXSize, deviceYSize, 
-        		matrixData.getBufferXSize(), matrixData.getBufferYSize());
+        return r.resizeImage(buffer, matrixData.getBufferXSize(), matrixData.getBufferYSize(),
+        		deviceXSize, deviceYSize);
     }
     
     /**

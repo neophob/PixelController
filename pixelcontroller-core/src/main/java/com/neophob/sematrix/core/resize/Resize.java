@@ -149,19 +149,5 @@ public abstract class Resize implements IResize {
 		return getBuffer(bi, newX, newY);
 	}
 	
-	/**
-	 * Gets the buffer.
-	 *
-	 * @param buffer the buffer
-	 * @param deviceXSize the device x size
-	 * @param deviceYSize the device y size
-	 * @param currentXSize the current x size
-	 * @param currentYSize the current y size
-	 * @return the buffer
-	 */
-	public int[] getBuffer(int[] buffer, int newX, int newY, int currentXSize, int currentYSize) {
-		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
-		return getBuffer(bi, newX, newY);
-	}	
 
 }

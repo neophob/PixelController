@@ -121,7 +121,7 @@ public class Image extends Generator {
 			int[] dataBuffInt = img.getRGB(0, 0, w, h, null, 0, w); 
 			
 	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize+" using "+resize.getName());
-			this.internalBuffer = resize.getBuffer(dataBuffInt, internalBufferXSize, internalBufferYSize, w, h);
+			this.internalBuffer = resize.resizeImage(dataBuffInt, w, h, internalBufferXSize, internalBufferYSize);
 			this.filename = filename;
 			
 	        short r,g,b;

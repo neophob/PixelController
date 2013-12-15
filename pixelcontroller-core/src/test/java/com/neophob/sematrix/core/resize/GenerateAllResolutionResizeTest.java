@@ -64,8 +64,8 @@ public class GenerateAllResolutionResizeTest {
     	for (IResize rsz: pcr.getAllResizers()) {
     		BufferedImage bi = rsz.createImage(v.getBuffer(), matrix.getBufferXSize(), matrix.getBufferYSize());
     		int[] b1 = rsz.getBuffer(bi, matrix.getDeviceXSize(), matrix.getDeviceYSize());
-    		int[] b2 = rsz.getBuffer(v.getBuffer(), matrix.getDeviceXSize(), matrix.getDeviceYSize(), 
-    				matrix.getBufferXSize(), matrix.getBufferYSize());
+    		int[] b2 = rsz.resizeImage(v.getBuffer(), matrix.getBufferXSize(), matrix.getBufferYSize(), 
+    				matrix.getDeviceXSize(), matrix.getDeviceYSize());
     		assertArrayEquals(b1, b2);
     	}
     	
