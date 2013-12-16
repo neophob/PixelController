@@ -27,19 +27,18 @@ import com.neophob.sematrix.osc.client.PixOscClient;
  * @author michu
  *
  */
-public abstract class OscClientFactory {
+public final class OscClientFactory {
 
-	private static final boolean USE_TCP = false;
+	private OscClientFactory() {
+		//no instance
+	}
+	
+	public static PixOscClient createClientTcp(String targetIp, int targetPort, int bufferSize) throws OscClientException {		
+		return new OscClientImpl(true, targetIp, targetPort, bufferSize);
+	}
 
-	/**
-	 * 
-	 * @param targetIp
-	 * @param targetPort
-	 * @param msg
-	 * @throws OscClientException
-	 */
-	public static PixOscClient createClient(String targetIp, int targetPort, int bufferSize) throws OscClientException {		
-		return new OscClientImpl(USE_TCP, targetIp, targetPort, bufferSize);
+	public static PixOscClient createClientUdp(String targetIp, int targetPort, int bufferSize) throws OscClientException {		
+		return new OscClientImpl(false, targetIp, targetPort, bufferSize);
 	}
 
 }

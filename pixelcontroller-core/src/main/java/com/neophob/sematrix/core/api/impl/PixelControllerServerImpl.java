@@ -316,4 +316,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		return VisualState.getInstance().getAllOutputMappings();
 	}
 
+	@Override
+	public List<String> getGuiState() {
+		return VisualState.getInstance().getGuiState();
+	}
+
 }

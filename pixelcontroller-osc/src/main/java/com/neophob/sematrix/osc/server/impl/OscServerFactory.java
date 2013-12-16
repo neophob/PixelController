@@ -28,12 +28,18 @@ import com.neophob.sematrix.osc.server.PixOscServer;
  * @author michu
  *
  */
-public abstract class OscServerFactory {
+public final class OscServerFactory {
 
-	private static final boolean USE_TCP = false;
+	private OscServerFactory() {
+		//no instance
+	}
 	
-	public static PixOscServer createServer(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
-		return new OscServerImpl(USE_TCP, handler, "", port, bufferSize);				
+	public static PixOscServer createServerTCP(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
+		return new OscServerImpl(true, handler, "", port, bufferSize);				
+	}
+
+	public static PixOscServer createServerUdp(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
+		return new OscServerImpl(false, handler, "", port, bufferSize);				
 	}
 
 }

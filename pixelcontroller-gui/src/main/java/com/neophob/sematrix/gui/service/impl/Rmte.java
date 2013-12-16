@@ -22,9 +22,9 @@ public class Rmte extends OscMessageHandler implements Runnable{
 
 	public Rmte() throws Exception {
 		System.out.println("init srv");
-		oscServer = OscServerFactory.createServer(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
+		oscServer = OscServerFactory.createServerUdp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
 		System.out.println("init client");
-		oscClient = OscClientFactory.createClient(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
+		oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
 		System.out.println("init done");
 		oscServer.startServer();
 		System.out.println("started");

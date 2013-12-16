@@ -87,7 +87,7 @@ class OscClientImpl implements PixOscClient {
 		}
 		 
 		try {
-			//LOG.log(Level.INFO, "Send OSC Package "+oscPacket+" to "+targetPort);
+			LOG.log(Level.INFO, "Send OSC Package "+oscPacket+" to "+targetPort+", size: "+oscPacket.getSize());
 			client.send(oscPacket);
 		} catch (IOException e) {
 			throw new OscClientException("Failed to send OSC Message", e);

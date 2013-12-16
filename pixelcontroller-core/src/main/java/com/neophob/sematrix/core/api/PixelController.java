@@ -87,6 +87,7 @@ public interface PixelController {
 	
 	ISound getSoundImplementation();
 	
+	List<String> getGuiState();
 	void refreshGuiState();
 	void registerObserver(Observer o);
 

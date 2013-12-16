@@ -39,10 +39,10 @@ public class ClientServerTest extends OscMessageHandler {
 		final String msgName3 = "/PILLEPALLE-3";
 		final String param = "param234";
 		
-		PixOscServer srv1 = OscServerFactory.createServer(this, 8888, 4096);
+		PixOscServer srv1 = OscServerFactory.createServerUdp(this, 8888, 4096);
 		srv1.startServer();
 
-		PixOscClient c = OscClientFactory.createClient("127.0.0.1", 8888, 4096);
+		PixOscClient c = OscClientFactory.createClientUdp("127.0.0.1", 8888, 4096);
 		OscMessage msg = new OscMessage(msgName); 
 		c.sendMessage(msg);
 		Thread.sleep(100);
@@ -60,9 +60,9 @@ public class ClientServerTest extends OscMessageHandler {
 		srv1.stopServer();
 
 		//recreate a new server on a new port, test osc client
-		srv1 = OscServerFactory.createServer(this, 8889, 4096);
+		srv1 = OscServerFactory.createServerUdp(this, 8889, 4096);
 		srv1.startServer();
-		c = OscClientFactory.createClient("127.0.0.1", 8889, 4096);
+		c = OscClientFactory.createClientUdp("127.0.0.1", 8889, 4096);
 		
 		msg = new OscMessage(msgName3, param);
 		c.sendMessage(msg);

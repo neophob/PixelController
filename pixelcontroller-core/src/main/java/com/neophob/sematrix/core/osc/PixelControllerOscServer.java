@@ -69,7 +69,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		}
 
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });		
-		this.oscServer = OscServerFactory.createServer(this, listeningPort, BUFFER_SIZE);
+		this.oscServer = OscServerFactory.createServerUdp(this, listeningPort, BUFFER_SIZE);
 		this.pixelController = pixelController;
 	}
 
@@ -142,7 +142,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		}
 
 		if (initNeeded) {			
-			oscClient = OscClientFactory.createClient(remote.getAddress().getHostName(), 9875, 50000);			
+			oscClient = OscClientFactory.createClientUdp(remote.getAddress().getHostName(), 9875, 50000);			
 		}
 	}
 

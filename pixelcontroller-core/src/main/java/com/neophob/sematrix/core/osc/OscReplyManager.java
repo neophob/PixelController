@@ -60,6 +60,10 @@ public class OscReplyManager {
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getOutput()));
 			break;
 			
+		case GET_GUISTATE:
+			reply = new OscMessage(cmd.toString(), convertFromObject((ArrayList<String>)pixelController.getGuiState()));
+			break;
+			
 		}
 		
 		if (reply!=null) {

@@ -31,7 +31,7 @@ public class IntegrationTest extends OscMessageHandler {
 	
 	public IntegrationTest() throws OscServerException {
 		System.out.println("create server");
-		srv = OscServerFactory.createServer(this, 9876, 1500);
+		srv = OscServerFactory.createServerUdp(this, 9876, 1500);
 		srv.startServer();
 		System.out.println("done");
 	}

@@ -139,6 +139,7 @@ public enum ValidCommands {
 	GET_COLORSETS(CommandGroup.INTERNAL, 0, "Return the loaded colorsets"),
 	GET_OUTPUTMAPPING(CommandGroup.INTERNAL, 0, "Return the output mapping"),
 	GET_OUTPUTBUFFER(CommandGroup.INTERNAL, 0, "Return the output buffer"),
+	GET_GUISTATE(CommandGroup.INTERNAL, 0, "Return the gui state"),
 	;	
 	
 	/** The nr of params. */

@@ -12,13 +12,10 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommands;
-import com.neophob.sematrix.core.resize.IResize;
-import com.neophob.sematrix.core.resize.PixelResize;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -47,6 +44,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
+		
+	private RemoteOscObservable remoteObserver;
 	
 	private String version;
 	private ApplicationConfigurationHelper config;
@@ -55,11 +54,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 	private ISound sound;
 	private List<OutputMapping> outputMapping;
 	private IOutput output;
+	private List<String> guiState;
 	
 	public RemoteOscServer() throws OscServerException, OscClientException {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
-		oscServer = OscServerFactory.createServer(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
-		oscClient = OscClientFactory.createClient(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
+		oscServer = OscServerFactory.createServerUdp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
+		oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
+		remoteObserver = new RemoteOscObservable(); 
 	}
 
 	@Override
@@ -71,9 +72,10 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 		sendOscMessage(ValidCommands.GET_VERSION);
 		sendOscMessage(ValidCommands.GET_CONFIGURATION);
 		sendOscMessage(ValidCommands.GET_MATRIXDATA);
-		sendOscMessage(ValidCommands.GET_COLORSETS);
 		sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
+		sendOscMessage(ValidCommands.GET_COLORSETS);
 		sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
+		sendOscMessage(ValidCommands.GET_GUISTATE);
 	}
 
 	@Override
@@ -187,13 +189,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	@Override
 	public void refreshGuiState() {
-		//pixelController.refreshGuiState();
+//TODO 		
+//		sendOscMessage(ValidCommands.GET_GUISTATE);
 	}
 
 	@Override
 	public void registerObserver(Observer o) {
-		// TODO Auto-generated method stub
-
+		remoteObserver.addObserver(o);
 	}
 	
 	@Override
@@ -271,6 +273,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 				output = convertToObject(oscIn.getBlob(), IOutput.class);
 				break;
 
+			case GET_GUISTATE:
+				guiState = convertToObject(oscIn.getBlob(), ArrayList.class);
+				remoteObserver.notifyGuiUpdate(guiState);
+				break;
+				
 			default:
 				break;
 			}			

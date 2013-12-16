@@ -187,7 +187,7 @@ public class PixConClient {
         } else {
         	//send osc payload
         	System.out.println(cmd.getPayload());
-        	PixOscClient c = OscClientFactory.createClient(cmd.getHostname(), cmd.getPort(), 4096);
+        	PixOscClient c = OscClientFactory.createClientUdp(cmd.getHostname(), cmd.getPort(), 4096);
         	c.sendMessage(cmd.getPayload());            
             System.out.println("Close connection, Bye!");
         }

@@ -692,7 +692,7 @@ public class VisualState extends Observable {
 		this.brightness = brightness;
 	}
 
-	private List<String> getGuiState() {
+	public List<String> getGuiState() {
 		List<String> ret = new ArrayList<String>();
 
 		Visual v = allVisuals.get(currentVisual);		
