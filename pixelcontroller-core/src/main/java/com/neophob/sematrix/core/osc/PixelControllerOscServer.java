@@ -48,14 +48,14 @@ import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 public class PixelControllerOscServer extends OscMessageHandler implements PacketAndBytesStatictics {
 
 	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
 
 	//size of recieving buffer, should fit a whole image buffer
-	private static final int BUFFER_SIZE = 50000;
+	private static transient final int BUFFER_SIZE = 50000;
 
-	private PixelController pixelController;
+	private transient PixelController pixelController;
 	private PixOscServer oscServer;
-	private PixOscClient oscClient;
+	private transient PixOscClient oscClient;
 
 	/**
 	 * 

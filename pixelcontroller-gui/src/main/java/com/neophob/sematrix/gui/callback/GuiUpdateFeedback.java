@@ -56,9 +56,10 @@ public class GuiUpdateFeedback implements Observer {
 			
 			state.updateState((List<?>)arg);
 			Map<String, String> diff = state.getDiff();
-			callBackAction.updateGuiElements(diff);
-			LOG.log(Level.INFO, "{0} settings updated.", diff.size());
-			
+			if (diff.size()>0) {
+				callBackAction.updateGuiElements(diff);
+				LOG.log(Level.INFO, "{0} settings updated.", diff.size());				
+			}			
         } else {
         	LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
         }

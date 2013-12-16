@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.osc.server;
 
+import java.io.Serializable;
+
 
 /**
  * OSC Server interface exposed to PixelController Core
@@ -25,7 +27,7 @@ package com.neophob.sematrix.osc.server;
  * @author michu
  *
  */
-public interface PixOscServer {
+public interface PixOscServer extends Serializable {
 
 	/**
 	 * start the OSC server

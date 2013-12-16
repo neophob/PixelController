@@ -40,9 +40,9 @@ import de.sciss.net.OSCServer;
  */
 class OscServerImpl extends AbstractOscServer implements OSCListener {
 
-	private static final Logger LOG = Logger.getLogger(AbstractOscServer.class.getName());
+	private static transient final Logger LOG = Logger.getLogger(AbstractOscServer.class.getName());
 	
-	private OSCServer oscServer;
+	private transient OSCServer oscServer;
 	
 	/**
 	 * 
