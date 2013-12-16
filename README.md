@@ -228,19 +228,19 @@ This means the first pixel gets the content of 5th pixel, the second pixel gets 
 
 For example you wired up this Christmas tree (Matrix resolution 9x12):
 
-    -- -- -- -- XX -- -- -- --         -- -- -- -- 01 -- -- -- -- ( 08)
-    -- -- -- XX XX XX -- -- --         -- -- -- 02 03 04 -- -- -- ( 17)
-    -- -- XX XX XX XX XX -- --         -- -- 09 08 07 06 05 -- -- ( 26)
-    -- -- -- XX XX XX -- -- --         -- -- -- 10 11 12 -- -- -- ( 35)
-    -- -- XX XX XX XX XX -- --         -- -- 17 16 15 14 13 -- -- ( 44)
-    -- XX XX XX XX XX XX XX --         -- 18 19 20 21 22 23 24 -- ( 53)
-    -- -- XX XX XX XX XX -- --         -- -- 29 28 27 26 25 -- -- ( 62)
-    -- XX XX XX XX XX XX XX --         -- 30 31 32 33 34 35 36 -- ( 71)
-    XX XX XX XX XX XX XX XX XX         45 44 43 42 41 40 39 38 37 ( 80)
-    -- -- -- XX XX XX -- -- --         -- -- -- 46 47 48 -- -- -- ( 89)
-    -- -- -- -- XX -- -- -- --         -- -- -- -- 49 -- -- -- -- ( 98)
-    -- -- -- -- XX -- -- -- --         -- -- -- -- 50 -- -- -- -- (107)
-           led position                       wiring order
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 01 -- -- -- --         -- -- -- -- 04 -- -- -- -- 
+    -- -- -- XX XX XX -- -- --         -- -- -- 02 03 04 -- -- --         -- -- -- 12 13 14 -- -- -- >> (direction)
+    -- -- XX XX XX XX XX -- --         -- -- 09 08 07 06 05 -- --         -- -- 20 21 22 23 24 -- -- <<
+    -- -- -- XX XX XX -- -- --         -- -- -- 10 11 12 -- -- --         -- -- -- 30 31 32 -- -- -- >>
+    -- -- XX XX XX XX XX -- --         -- -- 17 16 15 14 13 -- --         -- -- 38 39 40 41 42 -- -- <<
+    -- XX XX XX XX XX XX XX --         -- 18 19 20 21 22 23 24 --         -- 46 47 48 49 50 51 52 -- >>
+    -- -- XX XX XX XX XX -- --         -- -- 29 28 27 26 25 -- --         -- -- XX XX XX XX .. -- -- <<
+    -- XX XX XX XX XX XX XX --         -- 30 31 32 33 34 35 36 --         -- XX XX XX XX XX XX XX --
+    XX XX XX XX XX XX XX XX XX         45 44 43 42 41 40 39 38 37         XX XX XX XX XX XX XX XX XX
+    -- -- -- XX XX XX -- -- --         -- -- -- 46 47 48 -- -- --         -- -- -- XX XX XX -- -- --
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 49 -- -- -- --         -- -- -- -- XX -- -- -- --
+    -- -- -- -- XX -- -- -- --         -- -- -- -- 50 -- -- -- --         -- -- -- -- XX -- -- -- --
+         1) led position                    2) wiring order                    3) output.mapping
     
 To create a valid mapping use this config:
 
