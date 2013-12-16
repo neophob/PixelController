@@ -71,6 +71,14 @@ public class OscReplyManager {
 			reply = new OscMessage(cmd.toString(), convertFromObject((ArrayList<String>)pixelController.getGuiState()));
 			break;
 			
+		case GET_PRESETSETTINGS:
+			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPresetService().getSelectedPresetSettings()));
+			break;
+			
+		case GET_JMXSTATISTICS:
+			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPixConStat()));
+			break;
+			
 		}
 		
 		if (reply!=null) {

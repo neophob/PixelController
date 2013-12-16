@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
@@ -57,6 +58,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private List<OutputMapping> outputMapping;
 	private IOutput output;
 	private List<String> guiState;
+	private PresetSettings presetSettings;
+	private PixelControllerStatusMBean jmxStatistics;
 	
 	public RemoteOscServer() throws OscServerException, OscClientException {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
@@ -119,32 +122,27 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public float getCurrentFps() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jmxStatistics.getCurrentFps();
 	}
 
 	@Override
-	public long getFrameCount() {
-		// TODO Auto-generated method stub
-		return 0;
+	public long getFrameCount() {		
+		return jmxStatistics.getFrameCount();
 	}
 
 	@Override
 	public long getServerStartTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jmxStatistics.getStartTime();
 	}
 
 	@Override
 	public long getRecievedOscPackets() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jmxStatistics.getRecievedOscPakets();		
 	}
 
 	@Override
 	public long getRecievedOscBytes() {
-		// TODO Auto-generated method stub
-		return 0;
+		return jmxStatistics.getRecievedOscBytes();
 	}
 
 	@Override
@@ -169,21 +167,18 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	}
 
 	@Override
-	public PresetSettings getCurrentPresetSettings() {
-		// TODO Auto-generated method stub
-		return null;
+	public PresetSettings getCurrentPresetSettings() {		
+		return presetSettings;
 	}
 
 	@Override
 	public void updateNeededTimeForMatrixEmulator(long t) {
-		// TODO Auto-generated method stub
-
+		//ignored, as not relevant
 	}
 
 	@Override
 	public void updateNeededTimeForInternalWindow(long t) {
-		// TODO Auto-generated method stub
-
+		//ignored, as not relevant
 	}
 
 	@Override
@@ -193,8 +188,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void refreshGuiState() {
-//TODO is this called regulary?
-//		sendOscMessage(ValidCommands.GET_GUISTATE);
+		//ignored, the gui is refreshed async
 	}
 
 	@Override
@@ -233,7 +227,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void handleOscMessage(OscMessage oscIn) {
-		LOG.log(Level.INFO, "got message: "+oscIn);
+		//LOG.log(Level.INFO, "got message: "+oscIn);
 		
 		if (StringUtils.isBlank(oscIn.getPattern())) {
 			LOG.log(Level.INFO,	"Ignore empty OSC message...");
@@ -280,6 +274,14 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				remoteObserver.notifyGuiUpdate(guiState);
 				break;
 				
+			case GET_PRESETSETTINGS:
+				presetSettings = convertToObject(oscIn.getBlob(), PresetSettings.class);
+				break;
+				
+			case GET_JMXSTATISTICS:
+				jmxStatistics = convertToObject(oscIn.getBlob(), PixelControllerStatusMBean.class);
+				break;
+								
 			default:
 				break;
 			}			
@@ -319,15 +321,24 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			//ignored
 		}
 		
+		long l = 0;
 		while (true) {
-			sendOscMessage(ValidCommands.GET_GUISTATE);
 			sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
-			sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
+		
+			if (l%5==0) {
+				sendOscMessage(ValidCommands.GET_GUISTATE);			
+				sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
+				sendOscMessage(ValidCommands.GET_PRESETSETTINGS);
+				sendOscMessage(ValidCommands.GET_JMXSTATISTICS);				
+			}			
+			
 			try {
 				Thread.sleep(GUISTATE_POLL_SLEEP);
 			} catch (InterruptedException e) {
 				//ignore
 			}
+			
+			l++;
 		}
 	}
 	

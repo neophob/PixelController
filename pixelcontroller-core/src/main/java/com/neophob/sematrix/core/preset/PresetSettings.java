@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.preset;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,11 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author michu
  */
-public class PresetSettings {
+public class PresetSettings implements Serializable {
 	
-    private static final String NAME_MARKER = "presetname=";
+    private transient static final String NAME_MARKER = "presetname=";
     
-    private static final char DELIM = ';';
+    private transient static final char DELIM = ';';
     	
 	/** The present. */
 	private List<String> present;

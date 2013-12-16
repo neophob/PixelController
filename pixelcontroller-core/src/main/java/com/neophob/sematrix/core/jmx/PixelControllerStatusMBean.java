@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.core.jmx;
 
+import java.io.Serializable;
+
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 
@@ -26,7 +28,7 @@ import com.neophob.sematrix.core.output.OutputDeviceEnum;
  * @author michu
  *
  */
-public interface PixelControllerStatusMBean {
+public interface PixelControllerStatusMBean extends Serializable {
 
 	/**
 	 * 

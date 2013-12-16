@@ -19,13 +19,15 @@
 
 package com.neophob.sematrix.core.jmx;
 
+import java.io.Serializable;
+
 /**
  * interface to get some statistic information about a server
  * 
  * @author mvogt
  *
  */
-public interface PacketAndBytesStatictics {
+public interface PacketAndBytesStatictics extends Serializable{
 
     int getPacketCounter();
 
