@@ -296,7 +296,26 @@ The **Beat Workmode** define how the *sound event detection* (beat/hat/snare det
 * **Heavy**: If no sound event was detected, the Visual stands still. 
 * **Moderate**: A mix between Linear and Heavy. There is a minimal Generator  speed that will increase if a sound event was detected. This mode was used for all pre v2.0.0 releases.
 
+### Colorsets
 
+The Colorsets is responsible to colorize the Visual:
+
+    [MIXER OUTPUT // 8bpp] --> [COLORSET] --> [VISUAL OUTPUT // 24 pp]
+
+Each pixel before the transformation has a value from 0..255 (8 bit or greyscale) that will mapped to a color in the Colorset. The Colorset is also responsible to create a smooth transition between two colors (fade). Let's use a simple example to illustrate this: 
+
+    BlackWhite=0x000000,0xffffff
+
+The mapping looks like this:
+
+* Pixel value 0 is mapped to color 0x000000
+* Pixel value 1 is mapped to color 0x020202
+* ...
+* Pixel value 127 is mapped to color 0xffffff
+* ...
+* Pixel value 255 is mapped to color 0x000000
+
+The more colors a Colorset has, the faster it changes the color.
 
 ##OSC MESSAGES
 
