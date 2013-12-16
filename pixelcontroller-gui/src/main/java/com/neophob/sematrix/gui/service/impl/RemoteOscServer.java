@@ -31,7 +31,7 @@ import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
-public class RemoteOscServer extends OscMessageHandler implements PixConServer {
+public class RemoteOscServer extends OscMessageHandler implements PixConServer, Runnable {
 
 	private static final Logger LOG = Logger.getLogger(RemoteOscServer.class.getName());
 
@@ -41,6 +41,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	//size of recieving buffer, should fit a whole image buffer
 	private static final int BUFFER_SIZE = 50000;
+	
+	private static final long GUISTATE_POLL_SLEEP = 1000;
 
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
@@ -58,7 +60,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 	
 	public RemoteOscServer() throws OscServerException, OscClientException {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
-		oscServer = OscServerFactory.createServerUdp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
+		oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
 		oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
 		remoteObserver = new RemoteOscObservable(); 
 	}
@@ -75,7 +77,12 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 		sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
 		sendOscMessage(ValidCommands.GET_COLORSETS);
 		sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
-		sendOscMessage(ValidCommands.GET_GUISTATE);
+		
+		
+		Thread startThread = new Thread(this);
+		startThread.setName("GUI Poller");
+		startThread.setDaemon(true);
+		startThread.start();
 	}
 
 	@Override
@@ -189,7 +196,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 
 	@Override
 	public void refreshGuiState() {
-//TODO 		
+//TODO is this called regulary?
 //		sendOscMessage(ValidCommands.GET_GUISTATE);
 	}
 
@@ -249,11 +256,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 			switch (command) {
 			case GET_VERSION:
 				this.version = oscIn.getArgs()[0];
-				System.out.println("version: "+this.version);
 				break;
 
 			case GET_CONFIGURATION:
-				System.out.println("cfg: "+command+", size: "+oscIn.getBlob().length);
 				config = convertToObject(oscIn.getBlob(), ApplicationConfigurationHelper.class);
 				break;
 
@@ -307,6 +312,25 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer {
 		    // ignore close exception
 		  }
 		}		
+	}
+
+	@Override
+	public void run() {
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e1) {
+			//ignored
+		}
+		
+		while (true) {
+			sendOscMessage(ValidCommands.GET_GUISTATE);
+			sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
+			try {
+				Thread.sleep(GUISTATE_POLL_SLEEP);
+			} catch (InterruptedException e) {
+				//ignore
+			}
+		}
 	}
 	
 }

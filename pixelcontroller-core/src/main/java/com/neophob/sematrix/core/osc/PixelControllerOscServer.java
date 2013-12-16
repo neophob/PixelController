@@ -142,7 +142,8 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		}
 
 		if (initNeeded) {			
-			oscClient = OscClientFactory.createClientUdp(remote.getAddress().getHostName(), 9875, 50000);			
+			//TODO make configurable
+			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 9875, 50000);			
 		}
 	}
 

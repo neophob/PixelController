@@ -34,7 +34,7 @@ public final class OscServerFactory {
 		//no instance
 	}
 	
-	public static PixOscServer createServerTCP(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
+	public static PixOscServer createServerTcp(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
 		return new OscServerImpl(true, handler, "", port, bufferSize);				
 	}
 

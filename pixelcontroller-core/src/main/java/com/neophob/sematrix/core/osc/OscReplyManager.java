@@ -18,6 +18,13 @@ import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.model.OscMessage;
 
+/**
+ * the osc reply manager sends back gui information, encoded
+ * as osc package.
+ * 
+ * @author michu
+ *
+ */
 public class OscReplyManager {
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
