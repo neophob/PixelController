@@ -27,7 +27,8 @@ import com.neophob.sematrix.osc.model.OscMessage;
 
 /**
  * observer pattern implementation for client callback
- * 
+ * client must implement handleOscMessage(OscMessage oscIn) that gets
+ * called if an OSC event occurs
  * 
  * @author michu
  *

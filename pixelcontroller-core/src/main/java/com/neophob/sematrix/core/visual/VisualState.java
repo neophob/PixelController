@@ -55,11 +55,11 @@ import com.neophob.sematrix.core.visual.mixer.Mixer.MixerName;
 import com.neophob.sematrix.core.visual.mixer.PixelControllerMixer;
 
 /**
- * The Class Collector.
+ * Visual State of PixelController
  * 
- * TODO: collector should caputre the current STATE of the application
- * REMOVE service initialisation (mdns, osc...), remove matrix data
- * 
+ * implements observable, other objects can register itself to
+ * receive update if this state changes - concrete if notifyGuiUpdate() 
+ * is called.
  * 
  */
 public class VisualState extends Observable {
