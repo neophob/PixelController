@@ -106,7 +106,7 @@ public abstract class Fader implements IFader, Serializable {
 	/** The internal buffer y size. */
 	protected int internalBufferYSize;
 
-	protected int[] oldBuffer;
+	protected transient int[] oldBuffer;
 	
 	//the preset fader do not animate but fade from a static buffer to the new visual
 	protected boolean presetFader;

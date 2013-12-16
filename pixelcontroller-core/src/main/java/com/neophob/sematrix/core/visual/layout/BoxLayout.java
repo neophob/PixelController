@@ -35,8 +35,8 @@ public class BoxLayout extends Layout {
 
 	private static transient final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
 	
-	private static final int YSIZE = 2;
-	private static final int MAXVAL = 1000;
+	private static transient final int YSIZE = 2;
+	private static transient final int MAXVAL = 1000;
 	
 	/**
 	 * Instantiates a new box layout.

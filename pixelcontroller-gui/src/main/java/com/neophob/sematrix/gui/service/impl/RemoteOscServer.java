@@ -42,7 +42,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	//size of recieving buffer, should fit a whole image buffer
 	private static final int BUFFER_SIZE = 50000;
 	
-	private static final long GUISTATE_POLL_SLEEP = 1000;
+	private static final long GUISTATE_POLL_SLEEP = 100;
 
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
@@ -73,11 +73,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		//request static values
 		sendOscMessage(ValidCommands.GET_VERSION);
 		sendOscMessage(ValidCommands.GET_CONFIGURATION);
-		sendOscMessage(ValidCommands.GET_MATRIXDATA);
-		sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
-		sendOscMessage(ValidCommands.GET_COLORSETS);
-		sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
-		
+		sendOscMessage(ValidCommands.GET_MATRIXDATA);		
+		sendOscMessage(ValidCommands.GET_COLORSETS);		
 		
 		Thread startThread = new Thread(this);
 		startThread.setName("GUI Poller");
@@ -325,6 +322,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		while (true) {
 			sendOscMessage(ValidCommands.GET_GUISTATE);
 			sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
+			sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
 			try {
 				Thread.sleep(GUISTATE_POLL_SLEEP);
 			} catch (InterruptedException e) {
