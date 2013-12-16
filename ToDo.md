@@ -1,7 +1,8 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* Decouple GUI from Code
+* Decouple GUI from Code - use TCP to transmit data from client to server, UDP is not a very good idea if
+  we're sending a large message (>MTU) - i a packet is lost, UDP need to retransmit the whole packet.
 * Add console to GUI
 
 ## Version 2.2
