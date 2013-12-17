@@ -46,6 +46,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -60,6 +61,7 @@ import com.neophob.sematrix.core.visual.generator.blinken.jaxb.Header;
  */
 public class BlinkenLibrary {
 
+	public static final String GZIP_FILE_SUFFIX = ".gz";
 	private static final Logger LOG = Logger.getLogger(BlinkenLibrary.class.getName());
 
 	// the marshalled .blm file
@@ -96,8 +98,12 @@ public class BlinkenLibrary {
 		InputStream input = null;
 
 		try {
+		    if (filename.toLowerCase().endsWith(GZIP_FILE_SUFFIX)) {
+		    	input = new GZIPInputStream(new FileInputStream(filename));
+		    } else {
+		    	input = new FileInputStream(filename);
+		    }
 			//make sure input file exist
-			input = new FileInputStream(filename);
 			blm = (Blm) unmarshaller.unmarshal(input);
 			this.frames = extractFrames(128);			
 	

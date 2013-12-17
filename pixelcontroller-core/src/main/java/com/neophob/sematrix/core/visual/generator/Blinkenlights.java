@@ -118,16 +118,26 @@ public class Blinkenlights extends Generator {
         if (!StringUtils.equals(file, this.filename)) {
         	String fileToLoad = fileUtils.getBmlDir()+file;
             LOG.log(Level.INFO, "Load blinkenlights file {0}.", fileToLoad);
-            if (blinken.loadFile(fileToLoad)) {
-                this.filename = file;
-                LOG.log(Level.INFO, "DONE");
-                currentFrame=0;            	
-            } else {
-            	LOG.log(Level.INFO, "NOT DONE");
+            
+            //if file load fails, try to add/remove the .gz file extension 
+            if (!loadBlinken(fileToLoad)) {
+            	if (fileToLoad.toLowerCase().endsWith(BlinkenLibrary.GZIP_FILE_SUFFIX)) {
+            		loadBlinken(fileToLoad.substring(0, fileToLoad.length()-BlinkenLibrary.GZIP_FILE_SUFFIX.length())); 
+            	} else {
+            		loadBlinken(fileToLoad+BlinkenLibrary.GZIP_FILE_SUFFIX);
+            	}
             }
         }
     }
 
+    private boolean loadBlinken(String file) {
+    	if (blinken.loadFile(file)) {
+            this.filename = file;
+            currentFrame=0;            	
+            return true;
+    	}
+    	return false;
+    }
 
     /* (non-Javadoc)
      * @see com.neophob.sematrix.core.generator.Generator#update()
