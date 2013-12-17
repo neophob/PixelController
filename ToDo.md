@@ -1,9 +1,14 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* Decouple GUI from Code - use TCP to transmit data from client to server, UDP is not a very good idea if
-  we're sending a large message (>MTU) - i a packet is lost, UDP need to retransmit the whole packet.
+* Decouple GUI from Code
+    -make sure code is initialized
+    -show splash screen
+    -startscript
+    -config options
 * Add console to GUI
+* Support compressed bml files
+* Documentation for bonjour, client/server
 
 ## Version 2.2
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)

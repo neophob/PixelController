@@ -119,6 +119,7 @@ public class PresetServiceImpl implements PresetService {
 	 */
     @Override
 	public void savePresents() {
+    	long t1 = System.currentTimeMillis();
         Properties props = new Properties();
         int idx=0;
         for (PresetSettings p: presets) {
@@ -130,7 +131,8 @@ public class PresetServiceImpl implements PresetService {
         try {
         	output = new FileOutputStream(filename);
             props.store(output, "Visual Daemon presets file");
-            LOG.log(Level.INFO, "Presets saved as {0}", PRESETS_FILENAME );
+            LOG.log(Level.INFO, "Presets saved as {0}, time needed: {1}ms", 
+            		new Object[] {PRESETS_FILENAME, (System.currentTimeMillis()-t1)});
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] { PRESETS_FILENAME, e });
         } finally {
