@@ -19,6 +19,7 @@
 
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * Option to invert GUI colors
+* Add OpenGL Shader Generator/Effects, using JOGL
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
 * Option to modify colorsets of all visuals
 * Add Perlin Noise generator
