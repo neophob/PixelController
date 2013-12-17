@@ -20,10 +20,12 @@ import com.neophob.sematrix.gui.service.PixConServer;
 public class LocalServer implements PixConServer {
 
 	private PixelController pixelController;
+	private float steps;
 	
 	//add observer
 	public LocalServer(CallbackMessageInterface<String> msgHandler) {
 		pixelController = PixelControllerFactory.initialize(msgHandler);
+		steps = 1f/7f;
 	}
 
 	@Override
@@ -144,6 +146,11 @@ public class LocalServer implements PixConServer {
 	@Override
 	public List<OutputMapping> getAllOutputMappings() {
 		return pixelController.getAllOutputMappings();
+	}
+
+	@Override
+	public float getSetupSteps() {
+		return steps;
 	}
 
 }

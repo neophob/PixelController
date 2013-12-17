@@ -34,6 +34,13 @@ import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
+/**
+ * communicate service with remote pixelcontroller instance
+ * send and recieve data via osc
+ * 
+ * @author michu
+ *
+ */
 public class RemoteOscServer extends OscMessageHandler implements PixConServer, Runnable {
 
 	private static final Logger LOG = Logger.getLogger(RemoteOscServer.class.getName());
@@ -43,12 +50,14 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private static final int LOCAL_OSC_SERVER_PORT = 9875;
 
 	//size of recieving buffer, should fit a whole image buffer
-	private static final int BUFFER_SIZE = 50000;
+	private static final int BUFFER_SIZE = 8192;
 	
-	private static final long GUISTATE_POLL_SLEEP = 100;
+	private static final long GUISTATE_POLL_SLEEP = 400;
 
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
+	
+	private float steps;
 		
 	private Set<String> recievedMessages;
 	private RemoteOscObservable remoteObserver;
@@ -74,6 +83,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	public void start() {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
 		this.sound = new SoundDummy();
+		this.steps = 1/9f;
 
 		Thread startThread = new Thread(this);
 		startThread.setName("GUI Poller");
@@ -353,7 +363,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				}
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				//ignored
 			}
@@ -379,6 +389,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			
 			l++;
 		}
+	}
+
+	@Override
+	public float getSetupSteps() {
+		return steps;
 	}
 	
 }

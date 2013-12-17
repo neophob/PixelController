@@ -38,24 +38,6 @@ public class PixelControllerP5 extends AbstractPixelControllerP5 {
 		LOG.log(Level.INFO, "LocalServer created");
 	}
 
-	/* (non-Javadoc)
-	 * @see processing.core.PApplet#draw()
-	 */
-	public void draw() {
-	    if (!pixelController.isInitialized()) {	    	
-	        return;
-	    } else if (!postInitDone) {
-	    	postSetupInitialisation();
-	    	return;
-	    }
-	    		
-		// update matrixEmulator instance
-		long startTime = System.currentTimeMillis();
-
-		this.matrixEmulator.update();
-		pixelController.updateNeededTimeForMatrixEmulator(System.currentTimeMillis() - startTime);
-	}
-
 	public static void main(String args[]) {
 		PApplet.main(new String[] { PixelControllerP5.class.getName().toString() });
 	}

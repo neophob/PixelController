@@ -42,20 +42,6 @@ public class PixelControllerP5Remote extends AbstractPixelControllerP5 {
 			e.printStackTrace();
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see processing.core.PApplet#draw()
-	 */
-	public void draw() {
-	    if (pixelController==null || !pixelController.isInitialized()) {	    	
-	        return;
-	    } else if (!postInitDone) {
-	    	postSetupInitialisation();
-	    	return;
-	    }
-	    
-		this.matrixEmulator.update();
-	}
 	
 	/**
 	 * The main method.

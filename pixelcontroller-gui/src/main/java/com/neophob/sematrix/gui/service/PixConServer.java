@@ -51,4 +51,5 @@ public interface PixConServer {
 	
 	void refreshGuiState();
 	void registerObserver(Observer o);
+	float getSetupSteps();
 }

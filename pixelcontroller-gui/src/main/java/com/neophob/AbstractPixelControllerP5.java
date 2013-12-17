@@ -65,7 +65,7 @@ abstract class AbstractPixelControllerP5 extends PApplet implements CallbackMess
 
 		
 	protected int setupStep=0;
-	protected float steps = 1f/7f;
+	//
 
 	protected boolean postInitDone = false;
 	
@@ -134,8 +134,20 @@ abstract class AbstractPixelControllerP5 extends PApplet implements CallbackMess
 		postInitDone = true;
 	}
 
-	public abstract void draw();
-	
+	public void draw() {
+	    if (!pixelController.isInitialized()) {	    	
+	        return;
+	    } else if (!postInitDone) {
+	    	postSetupInitialisation();
+	    	return;
+	    }
+	    		
+		// update matrixEmulator instance
+		long startTime = System.currentTimeMillis();
+
+		this.matrixEmulator.update();
+		pixelController.updateNeededTimeForMatrixEmulator(System.currentTimeMillis() - startTime);
+	}	
 	public abstract void initPixelController();
 	
 	/**
@@ -163,15 +175,9 @@ abstract class AbstractPixelControllerP5 extends PApplet implements CallbackMess
 
 	@Override
 	public void handleMessage(String msg) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		if (!pixelController.isInitialized()) {
 			setupStep++;
-			drawProgressBar(steps*setupStep);
+			drawProgressBar(pixelController.getSetupSteps()*setupStep);
 			drawSetupText(msg, TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);			
 		}
 	}
@@ -182,7 +188,6 @@ abstract class AbstractPixelControllerP5 extends PApplet implements CallbackMess
 	 * @param textYOffset
 	 */
 	protected void drawSetupText(String text, int textYOffset) {
-		System.out.println(text+":"+textYOffset);
 	    fill(240);
 	    textSize(SETUP_FONT_SMALL);
 	    text(text, 40, textYOffset);
