@@ -5,13 +5,16 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Observer;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
@@ -28,7 +31,6 @@ import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
-import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
@@ -48,8 +50,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
 		
+	private Set<String> recievedMessages;
 	private RemoteOscObservable remoteObserver;
+	private CallbackMessageInterface<String> setupFeedback;
 	
+	private boolean initialized;
 	private String version;
 	private ApplicationConfigurationHelper config;
 	private MatrixData matrix;
@@ -61,24 +66,15 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private PresetSettings presetSettings;
 	private PixelControllerStatusMBean jmxStatistics;
 	
-	public RemoteOscServer() throws OscServerException, OscClientException {
-		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
-		oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
-		oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
-		remoteObserver = new RemoteOscObservable(); 
+	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
+		setupFeedback = msgHandler;
 	}
 
 	@Override
 	public void start() {
-		this.oscServer.startServer();
+		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
 		this.sound = new SoundDummy();
-		
-		//request static values
-		sendOscMessage(ValidCommands.GET_VERSION);
-		sendOscMessage(ValidCommands.GET_CONFIGURATION);
-		sendOscMessage(ValidCommands.GET_MATRIXDATA);		
-		sendOscMessage(ValidCommands.GET_COLORSETS);		
-		
+
 		Thread startThread = new Thread(this);
 		startThread.setName("GUI Poller");
 		startThread.setDaemon(true);
@@ -102,7 +98,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public boolean isInitialized() {
-		return true;
+		return initialized;
 	}
 
 	@Override
@@ -162,7 +158,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public int getCurrentPreset() {
-		// TODO Auto-generated method stub
+		//TODO
 		return 0;
 	}
 
@@ -202,7 +198,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		return new int[matrix.getBufferXSize()*matrix.getBufferYSize()];
 	}
 
-
 	private void sendOscMessage(ValidCommands cmd) {
 		sendOscMessage(cmd.toString());
 	}
@@ -227,8 +222,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void handleOscMessage(OscMessage oscIn) {
-		//LOG.log(Level.INFO, "got message: "+oscIn);
-		
 		if (StringUtils.isBlank(oscIn.getPattern())) {
 			LOG.log(Level.INFO,	"Ignore empty OSC message...");
 			return;
@@ -243,26 +236,33 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			return;			
 		}
 		
+		recievedMessages.add(command.toString());
+		
 		try {
 			switch (command) {
 			case GET_VERSION:
 				this.version = oscIn.getArgs()[0];
+				setupFeedback.handleMessage("Found PixelController Version "+this.version);
 				break;
 
 			case GET_CONFIGURATION:
 				config = convertToObject(oscIn.getBlob(), ApplicationConfigurationHelper.class);
+				setupFeedback.handleMessage("Recieved Configuration");
 				break;
 
 			case GET_MATRIXDATA:
 				matrix = convertToObject(oscIn.getBlob(), MatrixData.class);
+				setupFeedback.handleMessage("Recieved Matrixdata");
 				break;
 				
 			case GET_COLORSETS:
 				colorSets = convertToObject(oscIn.getBlob(), ArrayList.class);
+				setupFeedback.handleMessage("Recieved Colorsets");
 				break;
 			
 			case GET_OUTPUTMAPPING:
 				outputMapping = convertToObject(oscIn.getBlob(), ArrayList.class);
+				setupFeedback.handleMessage("Recieved Output mapping");
 				break;
 				
 			case GET_OUTPUTBUFFER:
@@ -275,7 +275,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				break;
 				
 			case GET_PRESETSETTINGS:
-				presetSettings = convertToObject(oscIn.getBlob(), PresetSettings.class);
+				presetSettings = convertToObject(oscIn.getBlob(), PresetSettings.class);				
 				break;
 				
 			case GET_JMXSTATISTICS:
@@ -315,12 +315,51 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void run() {
+		System.out.println("thread started");
 		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			//ignored
+			setupFeedback.handleMessage("Start OSC Server");
+			this.oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
+			this.oscServer.startServer();
+			setupFeedback.handleMessage(" ... started");
+			setupFeedback.handleMessage("Start OSC Client");
+			this.oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
+			setupFeedback.handleMessage(" ... started");			
+			this.remoteObserver = new RemoteOscObservable(); 
+			this.initialized = false;
+			this.recievedMessages = new HashSet<String>();			
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Failed to start Remote OSC Server!", e);
+			return;
 		}
 		
+		//first step, get static values
+		Set<String> initCommands = new HashSet<String>();
+		initCommands.add(ValidCommands.GET_VERSION.toString());
+		initCommands.add(ValidCommands.GET_CONFIGURATION.toString());
+		initCommands.add(ValidCommands.GET_MATRIXDATA.toString());
+		initCommands.add(ValidCommands.GET_COLORSETS.toString());
+		initCommands.add(ValidCommands.GET_OUTPUTBUFFER.toString());
+		initCommands.add(ValidCommands.GET_GUISTATE.toString());			
+		initCommands.add(ValidCommands.GET_OUTPUTMAPPING.toString());
+		initCommands.add(ValidCommands.GET_PRESETSETTINGS.toString());
+		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());				
+
+
+		while(!recievedMessages.containsAll(initCommands)) {			
+			for (String s: initCommands) {
+				if (!recievedMessages.contains(s)) {
+					LOG.log(Level.INFO, "Request "+s+" from OSC Server");
+					sendOscMessage(s);					
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				//ignored
+			}
+		}
+		initialized = true;
+				
 		long l = 0;
 		while (true) {
 			sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);

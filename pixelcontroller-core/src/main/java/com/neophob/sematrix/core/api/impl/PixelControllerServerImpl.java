@@ -74,8 +74,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
 	@Override
 	public void start() {
-		clientNotification("\n\nPixelController "+getVersion()+" - http://www.pixelinvaders.ch\n\n");
-
+		LOG.log(Level.INFO, "Start PixelController v"+getVersion());
 		this.runner.start();
 	}
 

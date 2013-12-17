@@ -21,6 +21,7 @@ public class LocalServer implements PixConServer {
 
 	private PixelController pixelController;
 	
+	//add observer
 	public LocalServer(CallbackMessageInterface<String> msgHandler) {
 		pixelController = PixelControllerFactory.initialize(msgHandler);
 	}

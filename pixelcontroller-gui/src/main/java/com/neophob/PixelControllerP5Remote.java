@@ -18,19 +18,10 @@
  */
 package com.neophob;
 
-import java.awt.event.WindowListener;
-import java.util.Observable;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import processing.core.PApplet;
 
-import com.neophob.sematrix.core.api.CallbackMessageInterface;
-import com.neophob.sematrix.gui.guibuilder.GeneratorGuiCreator;
-import com.neophob.sematrix.gui.guibuilder.MatrixSimulatorGui;
-import com.neophob.sematrix.gui.guibuilder.eventhandler.KeyboardHandler;
-import com.neophob.sematrix.gui.guibuilder.eventhandler.WindowHandler;
-import com.neophob.sematrix.gui.service.PixConServer;
 import com.neophob.sematrix.gui.service.impl.RemoteOscServer;
 
 
@@ -39,102 +30,33 @@ import com.neophob.sematrix.gui.service.impl.RemoteOscServer;
  *
  * @author michu
  */
-public class PixelControllerP5Remote extends PApplet implements CallbackMessageInterface<String> {  
+public class PixelControllerP5Remote extends AbstractPixelControllerP5 {  
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(PixelControllerP5Remote.class.getName());
-
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = -1336765543826338205L;
-	
-	/** The Constant FPS. */
-	public static final int FPS = 25;
-
-	private PixConServer pixelController;
-	private MatrixSimulatorGui matrixEmulator;
-	
-	/**
-	 * 
-	 */
-	public void setup() {
+	public void initPixelController() {
 		try {
-			LOG.log(Level.INFO, "Initialize...");
-			pixelController = new RemoteOscServer();
+			pixelController = new RemoteOscServer(this);			
 			pixelController.start();
-			System.out.println("--------");
-			Thread.sleep(5000);
-			
-			LOG.log(Level.INFO, "\n\nPixelController "+pixelController.getVersion()+" - http://www.pixelinvaders.ch\n\n");                
-		    frameRate(FPS);
-
-			this.matrixEmulator = new MatrixSimulatorGui(pixelController, this);
-			background(0);
-			
-			int maxWidth = pixelController.getConfig().getDebugWindowMaximalXSize();
-			int maxHeight = pixelController.getConfig().getDebugWindowMaximalYSize();
-			GeneratorGuiCreator ggc = new GeneratorGuiCreator(pixelController, this, maxWidth, maxHeight);
-			//register GUI Window in the Keyhandler class, needed to do some specific actions (select a visual...)
-			KeyboardHandler.init(ggc.getGuiCallbackAction(), pixelController);
-		    
-			try {
-	    		//now start a little hack, remove all window listeners, so we can control
-				//the closing behavior ourselves.
-	    		for (WindowListener wl: frame.getWindowListeners()) {            			
-	    			frame.removeWindowListener(wl);
-	    		}
-	    		
-	    	    //add our own window listener
-	    	    frame.addWindowListener( new WindowHandler(this) );        			
-			} catch (Exception e) {
-				LOG.log(Level.INFO, "failed to remove/add window listeners", e);
-			}
+			LOG.log(Level.INFO, "RemoteOscServer created");
 
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Setup() call failed!", e);
+			e.printStackTrace();
 		}
 	}
-	    
 
 	/* (non-Javadoc)
 	 * @see processing.core.PApplet#draw()
 	 */
 	public void draw() {
-	    if (!pixelController.isInitialized()) {	    	
+	    if (pixelController==null || !pixelController.isInitialized()) {	    	
 	        return;
-	    } 
-	    		
-		// update matrixEmulator instance
-		long startTime = System.currentTimeMillis();
-
+	    } else if (!postInitDone) {
+	    	postSetupInitialisation();
+	    	return;
+	    }
+	    
 		this.matrixEmulator.update();
-		pixelController.updateNeededTimeForMatrixEmulator(System.currentTimeMillis() - startTime);
 	}
 	
-	/**
-	 * register single keyboard handler
-	 */
-    public void keyPressed() {
-    	if (keyCode==ESC) {		//ignored
-    		key=0;
-    	} else {
-            KeyboardHandler.keyboardHandler(key, keyCode);    		
-    	}
-    }
-    
-    
-
-	@Override
-	public void update(Observable o, Object arg) {
-		if (arg instanceof String) {
-			String msg = (String) arg;
-			handleMessage(msg);
-        } else {
-        	LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
-        }
-	}
-
-
-
 	/**
 	 * The main method.
 	 *
@@ -143,12 +65,5 @@ public class PixelControllerP5Remote extends PApplet implements CallbackMessageI
 	public static void main(String args[]) {
 		PApplet.main(new String[] { PixelControllerP5Remote.class.getName().toString() });
 	}
-
-
-	@Override
-	public void handleMessage(String msg) {
-		System.out.println("got msg: "+msg);		
-	}
-
 
 }
