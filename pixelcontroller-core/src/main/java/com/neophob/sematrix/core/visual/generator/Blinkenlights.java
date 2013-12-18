@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.visual.generator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -67,11 +68,11 @@ public class Blinkenlights extends Generator {
     
     private int frameNr;
     
-    private FileUtils fileUtils;
-
     private IResize resize;
     
     private BlinkenImage img;
+    
+    private FileUtils fu;
     
     /**
      * Instantiates a new blinkenlights.
@@ -82,9 +83,9 @@ public class Blinkenlights extends Generator {
     public Blinkenlights(MatrixData matrix, FileUtils fu, IResize resize) {
         super(matrix, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
         this.filename = null;
-        this.fileUtils = fu;
         this.resize = resize;
         this.random=false;
+        this.fu = fu;
 
         //find movie files		
         movieFiles = new ArrayList<String>();
@@ -117,24 +118,27 @@ public class Blinkenlights extends Generator {
         
         //only load if needed
         if (!StringUtils.equals(file, this.filename)) {
-        	String fileToLoad = fileUtils.getBmlDir()+file;
-            LOG.log(Level.INFO, "Load blinkenlights file {0}.", fileToLoad);
-            
+
+        	String fileToLoad = file;
+            boolean canReadFile = new File(fu.getBmlDir()+fileToLoad).exists();
+
             //if file load fails, try to add/remove the .gz file extension 
-            if (!loadBlinken(fileToLoad, file)) {
-            	if (fileToLoad.toLowerCase().endsWith(BlinkenLibrary.GZIP_FILE_SUFFIX)) {
-            		loadBlinken(fileToLoad.substring(0, fileToLoad.length()-BlinkenLibrary.GZIP_FILE_SUFFIX.length()), file); 
+            if (!canReadFile) {
+            	if (file.toLowerCase().endsWith(BlinkenLibrary.GZIP_FILE_SUFFIX)) {
+            		fileToLoad = fileToLoad.substring(0, fileToLoad.length()-BlinkenLibrary.GZIP_FILE_SUFFIX.length());            		 
             	} else {
-            		loadBlinken(fileToLoad+BlinkenLibrary.GZIP_FILE_SUFFIX, file);
+            		fileToLoad = fileToLoad +BlinkenLibrary.GZIP_FILE_SUFFIX;
             	}
             }
+            
+            LOG.log(Level.INFO, "Load blinkenlights file {0} (input {1}).", new String[] {fileToLoad, file});
+            loadBlinken(fileToLoad);
         }
     }
 
-    private boolean loadBlinken(String fullFilePath, String filename) {
-    	if (blinken.loadFile(fullFilePath)) {
-    		this.filenameWithoutPath = filename;
-            this.filename = fullFilePath;
+    private boolean loadBlinken(String filename) {      	
+    	if (blinken.loadFile(fu.getBmlDir()+filename)) {
+            this.filename = filename;
             currentFrame=0;            	
             return true;
     	}
