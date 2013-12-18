@@ -26,7 +26,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
-import com.neophob.sematrix.mdns.server.impl.MDnsServer;
+import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
@@ -37,8 +37,7 @@ import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 final class PixelControllerServerImpl extends PixelControllerServer implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
-	private static final String ZEROCONF_NAME = "PixelController";
-	
+		
 	private VisualState visualState;
 	private PresetService presetService;
 
@@ -57,7 +56,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	private PixelControllerStatusMBean pixConStat;
 	private PixelControllerOutput pixelControllerOutput;
 
-	private MDnsServer bonjour;
+	private PixMDnsServer bonjour;
 
 
 	/**

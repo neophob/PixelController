@@ -16,27 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.mdns.server.impl;
-
-import com.neophob.sematrix.mdns.server.MDnsServerException;
-import com.neophob.sematrix.mdns.server.PixMDnsServer;
+package com.neophob.sematrix.mdns.client;
 
 /**
- * mDNS / Bonjour Server Factory class
+ * Used if the OSC server cannot start or fail during operation
  * 
  * @author michu
  *
  */
-public final class MDnsServerFactory {
-	
-	private static final boolean USE_TCP = false;
-	
-	private MDnsServerFactory() {
-		//no instance
+public class MDnsClientException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6537225123097457528L;
+
+	public MDnsClientException(String message, Throwable cause) {
+		super(message, cause);
 	}
-	
-	public static PixMDnsServer createServer(int port, String registerName) throws MDnsServerException {
-		return new MDnsServerImpl(port, USE_TCP, registerName);				
+
+	public MDnsClientException(String message) {
+		super(message);
+	}
+
+	public MDnsClientException(Throwable cause) {
+		super(cause);
 	}
 
 }

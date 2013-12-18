@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.mdns.server.impl;
 
-import com.neophob.sematrix.mdns.server.IServer;
+import com.neophob.sematrix.mdns.server.PixMDnsServer;
 
 /**
  * this abstract osc server register the caller (which must extend the abstract class OscMessageHandler)
@@ -27,7 +27,7 @@ import com.neophob.sematrix.mdns.server.IServer;
  * @author michu
  *
  */
-public abstract class MDnsServer implements IServer {
+public abstract class MDnsServer implements PixMDnsServer {
 
 	private final int port;
 	private final boolean useTcp;

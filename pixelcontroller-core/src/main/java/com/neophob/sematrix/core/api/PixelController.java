@@ -21,6 +21,8 @@ import com.neophob.sematrix.core.visual.color.ColorSet;
  */
 public interface PixelController {
 
+	static final String ZEROCONF_NAME = "PixelController";
+
 	/**
 	 * start pixelcontroller, initialize application and start thread
 	 */

@@ -2,12 +2,9 @@
 
 ## Version 2.1
 * Decouple GUI from Code
-    -make sure code is initialized
-    -show splash screen
     -startscript
     -config options
 * Add console to GUI
-* Support compressed bml files
 * Documentation for bonjour, client/server
 
 ## Version 2.2

@@ -16,27 +16,49 @@
  * You should have received a copy of the GNU General Public License
  * along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.neophob.sematrix.mdns.server.impl;
+package com.neophob.sematrix.mdns.server;
 
-import com.neophob.sematrix.mdns.server.MDnsServerException;
-import com.neophob.sematrix.mdns.server.PixMDnsServer;
 
 /**
- * mDNS / Bonjour Server Factory class
+ * OSC Server interface exposed to PixelController Core
  * 
  * @author michu
  *
  */
-public final class MDnsServerFactory {
-	
-	private static final boolean USE_TCP = false;
-	
-	private MDnsServerFactory() {
-		//no instance
-	}
-	
-	public static PixMDnsServer createServer(int port, String registerName) throws MDnsServerException {
-		return new MDnsServerImpl(port, USE_TCP, registerName);				
-	}
+public interface PixMDnsServer {
 
+	final static String REMOTE_TYPE_TCP = "_pixconosc._tcp.local.";
+	final static String REMOTE_TYPE_UDP = "_pixconosc._udp.local.";
+	
+	/**
+	 * start the OSC server, blocks until registered
+	 */
+	void startServer();
+
+	/**
+	 * start the OSC server async
+	 */
+	void startServerAsync();
+
+	/**
+	 * start the OSC server
+	 */
+	void stopServer();
+
+	/**
+	 * @return listening port of the osc server
+	 */
+	int getListeningPort();
+
+	/**
+	 * 
+	 * @return registered name
+	 */
+	String getRegisterName();
+
+	/**
+	 * 
+	 * @return
+	 */
+	boolean isUsingTcp();
 }

@@ -25,8 +25,11 @@ import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.ColorSet;
-import com.neophob.sematrix.core.visual.fader.Crossfader;
 import com.neophob.sematrix.gui.service.PixConServer;
+import com.neophob.sematrix.mdns.client.MDnsClientException;
+import com.neophob.sematrix.mdns.client.PixMDnsClient;
+import com.neophob.sematrix.mdns.client.impl.MDnsClientFactory;
+import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.client.impl.OscClientFactory;
@@ -63,6 +66,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private Set<String> recievedMessages;
 	private RemoteOscObservable remoteObserver;
 	private CallbackMessageInterface<String> setupFeedback;
+	private int serverPort;
 	
 	private boolean initialized;
 	private String version;
@@ -83,8 +87,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	@Override
 	public void start() {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
+		
 		this.sound = new SoundDummy();
-		this.steps = 1/10f;
+		this.steps = 1/12f;
 
 		Thread startThread = new Thread(this);
 		startThread.setName("GUI Poller");
@@ -326,14 +331,30 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void run() {
-		System.out.println("thread started");
 		try {
+			setupFeedback.handleMessage("Looking for PixelController");
+			try {
+				PixMDnsClient client = MDnsClientFactory.queryService(PixMDnsServer.REMOTE_TYPE_UDP, 6000);
+				client.start();
+				if (client.mdnsServerFound()) {
+					serverPort = client.getPort();
+					setupFeedback.handleMessage("... found on port "+client.getPort()+", name: "+client.getServerName());
+				} else {
+					setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
+					serverPort = REMOTE_OSC_SERVER_PORT;
+				}
+			} catch (MDnsClientException e) {
+				LOG.log(Level.WARNING, "Service discover failed.", e);
+				serverPort = REMOTE_OSC_SERVER_PORT;
+				setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
+			}
+			
 			setupFeedback.handleMessage("Start OSC Server");
 			this.oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
 			this.oscServer.startServer();
 			setupFeedback.handleMessage(" ... started");
 			setupFeedback.handleMessage("Connect to PixelController OSC Server");
-			this.oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
+			this.oscClient = OscClientFactory.createClientUdp(TARGET_HOST, serverPort, BUFFER_SIZE);
 			setupFeedback.handleMessage(" ... done");			
 			this.remoteObserver = new RemoteOscObservable(); 
 			this.initialized = false;
