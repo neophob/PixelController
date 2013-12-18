@@ -332,7 +332,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	@Override
 	public void run() {
 		try {
-			setupFeedback.handleMessage("Looking for PixelController");
+			setupFeedback.handleMessage("Detect PixelController OSC Port");
 			try {
 				PixMDnsClient client = MDnsClientFactory.queryService(PixMDnsServer.REMOTE_TYPE_UDP, 6000);
 				client.start();
