@@ -148,6 +148,8 @@ abstract class AbstractPixelControllerP5 extends PApplet implements CallbackMess
 		this.matrixEmulator.update();
 		pixelController.updateNeededTimeForMatrixEmulator(System.currentTimeMillis() - startTime);
 	}	
+	
+	
 	public abstract void initPixelController();
 	
 	/**
@@ -178,7 +180,8 @@ abstract class AbstractPixelControllerP5 extends PApplet implements CallbackMess
 		if (!pixelController.isInitialized()) {
 			setupStep++;
 			drawProgressBar(pixelController.getSetupSteps()*setupStep);
-			drawSetupText(msg, TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);			
+			drawSetupText(msg, TEXT_Y_OFFSET+TEXT_Y_HEIGHT*setupStep);
+			return;
 		}
 	}
 

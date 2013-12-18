@@ -60,7 +60,7 @@ public abstract class Output implements IOutput {
 
 	/** counter used for buffer switching */
 	private int totalNrOfOutputBuffers;
-	private int switchBuffer;
+	private transient int switchBuffer;
 
 	/** 
 	 * this map contains twice as much entries as outputs exists

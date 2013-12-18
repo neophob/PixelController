@@ -458,7 +458,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 				genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(blinkenLightsList);
 		blinkenLightsList.addItems(fu.findBlinkenFiles());
-		blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());
+		if (fu.findBlinkenFiles().length>0) {
+			blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());			
+		}
 		blinkenLightsList.setGroup(generatorTab);
 		blinkenLightsList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 

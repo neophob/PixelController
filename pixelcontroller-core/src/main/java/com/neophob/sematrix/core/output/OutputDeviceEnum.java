@@ -59,7 +59,7 @@ public enum OutputDeviceEnum {
 	NULL(NullDevice.class, true);
 	
 	/** The implementing class. */
-	private Class<? extends Output> implementingClass;
+	private transient Class<? extends Output> implementingClass;
 	
 	/** The physical. */
 	private boolean physical;

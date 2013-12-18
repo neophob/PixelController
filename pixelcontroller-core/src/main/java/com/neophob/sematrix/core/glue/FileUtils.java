@@ -79,7 +79,7 @@ public class FileUtils {
 		File f = new File(path);
 		if (!f.isDirectory()) {
 			LOG.log(Level.WARNING, f+" is not a directoy");
-			return null;
+			return new String[0];
 		}
 		
 		List<String> tmp = Arrays.asList(f.list(ff));

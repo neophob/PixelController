@@ -61,6 +61,7 @@ public class Blinkenlights extends Generator {
 
     /** The filename. */
     private String filename="";
+    private String filenameWithoutPath="";
 
     private int currentFrame;
     
@@ -120,19 +121,20 @@ public class Blinkenlights extends Generator {
             LOG.log(Level.INFO, "Load blinkenlights file {0}.", fileToLoad);
             
             //if file load fails, try to add/remove the .gz file extension 
-            if (!loadBlinken(fileToLoad)) {
+            if (!loadBlinken(fileToLoad, file)) {
             	if (fileToLoad.toLowerCase().endsWith(BlinkenLibrary.GZIP_FILE_SUFFIX)) {
-            		loadBlinken(fileToLoad.substring(0, fileToLoad.length()-BlinkenLibrary.GZIP_FILE_SUFFIX.length())); 
+            		loadBlinken(fileToLoad.substring(0, fileToLoad.length()-BlinkenLibrary.GZIP_FILE_SUFFIX.length()), file); 
             	} else {
-            		loadBlinken(fileToLoad+BlinkenLibrary.GZIP_FILE_SUFFIX);
+            		loadBlinken(fileToLoad+BlinkenLibrary.GZIP_FILE_SUFFIX, file);
             	}
             }
         }
     }
 
-    private boolean loadBlinken(String file) {
-    	if (blinken.loadFile(file)) {
-            this.filename = file;
+    private boolean loadBlinken(String fullFilePath, String filename) {
+    	if (blinken.loadFile(fullFilePath)) {
+    		this.filenameWithoutPath = filename;
+            this.filename = fullFilePath;
             currentFrame=0;            	
             return true;
     	}
@@ -188,7 +190,7 @@ public class Blinkenlights extends Generator {
      * @return the filename
      */
     public String getFilename() {
-        return filename;
+        return filenameWithoutPath;
     }
 
     /* (non-Javadoc)

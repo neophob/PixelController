@@ -25,6 +25,7 @@ import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.fader.Crossfader;
 import com.neophob.sematrix.gui.service.PixConServer;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.client.PixOscClient;
@@ -83,7 +84,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	public void start() {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
 		this.sound = new SoundDummy();
-		this.steps = 1/9f;
+		this.steps = 1/10f;
 
 		Thread startThread = new Thread(this);
 		startThread.setName("GUI Poller");
@@ -132,7 +133,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	}
 
 	@Override
-	public long getFrameCount() {		
+	public long getFrameCount() {
 		return jmxStatistics.getFrameCount();
 	}
 
@@ -331,9 +332,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			this.oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
 			this.oscServer.startServer();
 			setupFeedback.handleMessage(" ... started");
-			setupFeedback.handleMessage("Start OSC Client");
+			setupFeedback.handleMessage("Connect to PixelController OSC Server");
 			this.oscClient = OscClientFactory.createClientUdp(TARGET_HOST, REMOTE_OSC_SERVER_PORT, BUFFER_SIZE);
-			setupFeedback.handleMessage(" ... started");			
+			setupFeedback.handleMessage(" ... done");			
 			this.remoteObserver = new RemoteOscObservable(); 
 			this.initialized = false;
 			this.recievedMessages = new HashSet<String>();			
