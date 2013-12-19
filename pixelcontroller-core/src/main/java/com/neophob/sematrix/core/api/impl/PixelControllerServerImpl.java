@@ -305,6 +305,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	}
 
 	@Override
+	public void stopObserveVisualState(Observer o) {
+		VisualState.getInstance().deleteObserver(o);		
+	}
+
+	@Override
 	public List<ColorSet> getColorSets() {
 		return colorSets;
 	}

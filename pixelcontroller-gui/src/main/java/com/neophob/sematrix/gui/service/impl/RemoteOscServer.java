@@ -374,7 +374,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initCommands.add(ValidCommands.GET_GUISTATE.toString());			
 		initCommands.add(ValidCommands.GET_OUTPUTMAPPING.toString());
 		initCommands.add(ValidCommands.GET_PRESETSETTINGS.toString());
-		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());				
+		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());
+		initCommands.add(ValidCommands.REGISTER_VISUALOBSERVER.toString());
 
 
 		while(!recievedMessages.containsAll(initCommands)) {			
@@ -396,8 +397,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		while (true) {
 			sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
 		
-			if (l%5==0) {
-				sendOscMessage(ValidCommands.GET_GUISTATE);			
+			if (l%20==0) {						
 				sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
 				sendOscMessage(ValidCommands.GET_PRESETSETTINGS);
 				sendOscMessage(ValidCommands.GET_JMXSTATISTICS);				

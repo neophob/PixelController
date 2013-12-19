@@ -101,5 +101,6 @@ public interface PixelController {
 	 * @param o
 	 */
 	void observeVisualState(Observer o);
+	void stopObserveVisualState(Observer o);
 
 }

@@ -20,6 +20,9 @@ package com.neophob.sematrix.core.osc;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,28 +37,31 @@ import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 import com.neophob.sematrix.osc.model.OscMessage;
-import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 /**
- * OSC Interface 
+ * OSC Server, implements Observer which is used for two use cases:
+ * 
+ *  1) OSC Message Received - dispatch it
+ *  2) VisualState changed - send to remote client
  * 
  * @author michu
  *
  */
-public class PixelControllerOscServer extends OscMessageHandler implements PacketAndBytesStatictics {
+public class PixelControllerOscServer implements Observer, PacketAndBytesStatictics {
 
 	/** The log. */
 	private static transient final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
 
 	//size of recieving buffer, should fit a whole image buffer
-	private static transient final int BUFFER_SIZE = 50000;
+	private transient static final int REPLY_PACKET_BUFFERSIZE = 32*1024;
 
-	private transient PixelController pixelController;
 	private PixOscServer oscServer;
 	private transient PixOscClient oscClient;
+
+	private transient OscReplyManager replyManager;
 
 	/**
 	 * 
@@ -69,8 +75,8 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		}
 
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });		
-		this.oscServer = OscServerFactory.createServerUdp(this, listeningPort, BUFFER_SIZE);
-		this.pixelController = pixelController;
+		this.oscServer = OscServerFactory.createServerUdp(this, listeningPort, REPLY_PACKET_BUFFERSIZE);
+		this.replyManager = new OscReplyManager(pixelController, this);
 	}
 
 	/**
@@ -80,7 +86,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		oscServer.startServer();
 	}
 
-	@Override
+
 	public void handleOscMessage(OscMessage oscIn) {
 		//sanity check
 		if (StringUtils.isBlank(oscIn.getPattern())) {
@@ -104,8 +110,8 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		if (oscIn.getBlob()==null && command.getNrOfParams()>0 &&
 				command.getNrOfParams()!=oscIn.getArgs().length) {
 			String args = oscIn.getArgs()==null ? "null" : ""+oscIn.getArgs().length; 
-			LOG.log(Level.WARNING, "Parameter cound missmatch, expected: {0} available: {1} ",
-					new String[]{""+command.getNrOfParams(), ""+args});
+			LOG.log(Level.WARNING, "Parameter count missmatch, expected: {0} available: {1}. Command: {2}.",
+					new String[]{""+command.getNrOfParams(), ""+args, command.toString()});
 			return;
 		}
 
@@ -123,14 +129,39 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 			LOG.log(Level.FINE, "Recieved internal OSC message: {0}", msg);
 			try {
 				this.verifyOscClient(oscIn.getSocketAddress());
-				new OscReplyManager(pixelController, oscClient, oscIn).sendReply(msg);
+				this.replyManager.sendReply(oscClient, msg);
 			} catch (OscClientException e) {
 				LOG.log(Level.WARNING, "Failed to send OSC Message!", e);
 			}
 		}
 	}
 
-	private void verifyOscClient(SocketAddress socket) throws OscClientException {
+	/**
+	 * message from visual state, something changed. if a remote client is registered
+	 * we send the update to the remote client
+	 * 
+	 * @param guiState
+	 */
+	public void handleRemoteObserverMessage(ArrayList<String> guiState) {
+		System.out.println("SEND TO REMOTE: "+guiState);
+		if (oscClient!=null) {
+			String[] msg = new String[1+guiState.size()];
+			int ofs=0;
+			msg[ofs] = ValidCommands.GET_GUISTATE.toString();			
+			for (String s: guiState){
+				msg[ofs++] = s;
+			}
+
+			try {
+				this.replyManager.sendReply(oscClient, msg);
+			} catch (OscClientException e) {
+				LOG.log(Level.SEVERE, "Failed to send observer message!", e);
+			}			
+		}
+	}
+
+
+	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
 		InetSocketAddress remote = (InetSocketAddress)socket;
 		boolean initNeeded = false;
 
@@ -143,10 +174,26 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 
 		if (initNeeded) {			
 			//TODO make configurable
-			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 9875, 50000);			
+			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 9875, REPLY_PACKET_BUFFERSIZE);			
 		}
 	}
 
+	@Override
+	public void update(Observable o, Object arg) {
+		try {
+			if (arg instanceof OscMessage) {
+				OscMessage msg = (OscMessage) arg;
+				handleOscMessage(msg);
+			} else if (arg instanceof ArrayList) {
+				ArrayList<String> msg = (ArrayList) arg;
+				handleRemoteObserverMessage(msg);
+			} else {
+				LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
+			}			
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Failed to parse observer message!", e);
+		}
+	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.core.jmx.PacketAndBytesStatictics#getPacketCounter()
@@ -163,6 +210,5 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 	public long getBytesRecieved() {
 		return oscServer.getBytesRecieved();
 	}	
-
 
 }

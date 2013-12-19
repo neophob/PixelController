@@ -18,7 +18,8 @@
  */
 package com.neophob.sematrix.osc.server.impl;
 
-import com.neophob.sematrix.osc.server.OscMessageHandler;
+import java.util.Observer;
+
 import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 
@@ -34,11 +35,11 @@ public final class OscServerFactory {
 		//no instance
 	}
 	
-	public static PixOscServer createServerTcp(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
+	public static PixOscServer createServerTcp(Observer handler, int port, int bufferSize) throws OscServerException {
 		return new OscServerImpl(true, handler, "", port, bufferSize);				
 	}
 
-	public static PixOscServer createServerUdp(OscMessageHandler handler, int port, int bufferSize) throws OscServerException {
+	public static PixOscServer createServerUdp(Observer handler, int port, int bufferSize) throws OscServerException {
 		return new OscServerImpl(false, handler, "", port, bufferSize);				
 	}
 

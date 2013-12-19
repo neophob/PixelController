@@ -19,10 +19,10 @@
 package com.neophob.sematrix.osc.server.impl;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.PixOscServer;
-import com.neophob.sematrix.osc.server.OscMessageHandler;
 
 /**
  * this abstract osc server register the caller (which must extend the abstract class OscMessageHandler)
@@ -46,7 +46,7 @@ public abstract class AbstractOscServer extends Observable implements PixOscServ
 	 * @param port
 	 * @param bufferSize
 	 */
-	public AbstractOscServer(OscMessageHandler handler, String host, int port, int bufferSize) {
+	public AbstractOscServer(Observer handler, String host, int port, int bufferSize) {
 		this.host = host;
 		this.port = port;
 		this.bufferSize = bufferSize;

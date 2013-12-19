@@ -32,17 +32,20 @@ import java.util.logging.Logger;
 public abstract class CallbackMessage<T> implements CallbackMessageInterface<T> {
 
 	private static final Logger LOG = Logger.getLogger(CallbackMessage.class.getName());
-	
+
 	public abstract void handleMessage(T msg);
-		
+	
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg instanceof String) {
+		//hint the generics type T is only available during compile time (not during runtime)
+		//thats why an instanceof will not work, make it simple here, cast or fail.
+		try {
 			T msg = (T) arg;
-			handleMessage(msg);
-        } else {
-        	LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
-        }
+			handleMessage(msg);			
+		} catch (Exception e) {
+			String className = arg==null ? "" : ""+arg.getClass();
+			LOG.log(Level.WARNING, "Ignored notification of unknown class: "+className+", content: "+arg);			
+		}
 	}
 
 }

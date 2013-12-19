@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.osc.model.OscMessage;
-import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
 
 import de.sciss.net.OSCListener;
@@ -53,7 +53,7 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
 	 * @param bufferSize
 	 * @throws OscServerException
 	 */
-	public OscServerImpl(boolean useTcp, OscMessageHandler handler, String host, int port, int bufferSize) throws OscServerException {
+	public OscServerImpl(boolean useTcp, Observer handler, String host, int port, int bufferSize) throws OscServerException {
 		super(handler, host, port, bufferSize);
 		try {
 			if (useTcp) {

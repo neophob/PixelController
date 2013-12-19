@@ -142,6 +142,9 @@ public enum ValidCommands {
 	GET_GUISTATE(CommandGroup.INTERNAL, 0, "Return the gui state"),
 	GET_PRESETSETTINGS(CommandGroup.INTERNAL, 0, "Return data about current preset"),
 	GET_JMXSTATISTICS(CommandGroup.INTERNAL, 0, "Return JMX statistics"),
+	REGISTER_VISUALOBSERVER(CommandGroup.INTERNAL, 0, "register a remote visual observer"),
+	UNREGISTER_VISUALOBSERVER(CommandGroup.INTERNAL, 0, "unregister a remote visual observer"),
+	
 	;	
 	
 	/** The nr of params. */

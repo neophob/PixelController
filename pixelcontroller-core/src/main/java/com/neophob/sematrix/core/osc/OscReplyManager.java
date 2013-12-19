@@ -6,6 +6,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,17 +29,17 @@ import com.neophob.sematrix.osc.model.OscMessage;
 public class OscReplyManager {
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
-	
-	private PixOscClient oscClient;
+
 	private PixelController pixelController;
-	
-	public OscReplyManager(PixelController pixelController, PixOscClient oscClient, OscMessage oscIn) throws OscClientException {
+	private Observer visualStateObserver;
+
+	public OscReplyManager(PixelController pixelController, Observer visualStateObserver) {
 		this.pixelController = pixelController;
-		this.oscClient = oscClient;
+		this.visualStateObserver = visualStateObserver;
 	}
 
-	public void sendReply(String[] msg) throws OscClientException {
-				
+	public void sendReply(PixOscClient oscClient, String[] msg) throws OscClientException {
+
 		ValidCommands cmd = ValidCommands.valueOf(msg[0]);
 		OscMessage reply = null;
 
@@ -46,7 +47,7 @@ public class OscReplyManager {
 		case GET_CONFIGURATION:				
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getConfig()));						
 			break;
-			
+
 		case GET_MATRIXDATA:				
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getMatrix()));			
 			break;
@@ -54,63 +55,77 @@ public class OscReplyManager {
 		case GET_VERSION:
 			reply = new OscMessage(cmd.toString(), pixelController.getVersion());
 			break;
-			
+
 		case GET_COLORSETS:
 			reply = new OscMessage(cmd.toString(), convertFromObject((ArrayList<ColorSet>)pixelController.getColorSets()));
 			break;
-		
+
 		case GET_OUTPUTMAPPING:
 			reply = new OscMessage(cmd.toString(), convertFromObject((CopyOnWriteArrayList<OutputMapping>)pixelController.getAllOutputMappings()));
 			break;
-			
+
 		case GET_OUTPUTBUFFER:
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getOutput()));
 			break;
-			
+
 		case GET_GUISTATE:
 			reply = new OscMessage(cmd.toString(), convertFromObject((ArrayList<String>)pixelController.getGuiState()));
 			break;
-			
+
 		case GET_PRESETSETTINGS:
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPresetService().getSelectedPresetSettings()));
 			break;
-			
+
 		case GET_JMXSTATISTICS:
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPixConStat()));
 			break;
-			
+
+		case REGISTER_VISUALOBSERVER:
+			pixelController.observeVisualState(visualStateObserver);
+			//send back ack
+			reply = new OscMessage(cmd.toString(), new byte[0]);
+			break;
+
+		case UNREGISTER_VISUALOBSERVER:
+			pixelController.stopObserveVisualState(visualStateObserver);
+			reply = new OscMessage(cmd.toString(), new byte[0]);
+			break;
+
+		default:
+			LOG.log(Level.INFO, cmd.toString()+" unknown command ignored");
+			break;
 		}
-		
+
 		if (reply!=null) {
 			oscClient.sendMessage(reply);
 			LOG.log(Level.INFO, cmd.toString()+" reply size: "+reply.getMessageSize());			
 		}
 	}
-	
+
 	private byte[] convertFromObject(Serializable s) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = null;
 		try {
-		  out = new ObjectOutputStream(bos);   
-		  out.writeObject(s);
-		  return bos.toByteArray();
+			out = new ObjectOutputStream(bos);   
+			out.writeObject(s);
+			return bos.toByteArray();
 		} catch (IOException e) {
 			LOG.log(Level.WARNING, "Failed to serializable object", e);
 			return new byte[0];
 		} finally {
-		  try {
-		    if (out != null) {
-		      out.close();
-		    }
-		  } catch (IOException ex) {
-		    // ignore close exception
-		  }
-		  try {
-		    bos.close();
-		  } catch (IOException ex) {
-		    // ignore close exception
-		  }
+			try {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException ex) {
+				// ignore close exception
+			}
+			try {
+				bos.close();
+			} catch (IOException ex) {
+				// ignore close exception
+			}
 		}
-		
+
 	}
 }
