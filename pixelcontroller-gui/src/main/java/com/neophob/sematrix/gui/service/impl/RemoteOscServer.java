@@ -332,7 +332,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				client.start();
 				if (client.mdnsServerFound()) {
 					serverPort = client.getPort();
-					setupFeedback.handleMessage("... found on port "+client.getPort()+", name: "+client.getServerName());
+					
+					setupFeedback.handleMessage("... found on port "+client.getPort()+", ip: "+client.getFirstIp());
 				} else {
 					setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
 					serverPort = REMOTE_OSC_SERVER_PORT;
@@ -371,7 +372,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());
 		initCommands.add(ValidCommands.REGISTER_VISUALOBSERVER.toString());
 
-
+		int waitLoop = 0;
 		while(!recievedMessages.containsAll(initCommands)) {			
 			for (String s: initCommands) {
 				if (!recievedMessages.contains(s)) {
@@ -380,9 +381,17 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				}
 			}
 			try {
+				waitLoop++;
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				//ignored
+			}
+			
+			if (waitLoop>1) {
+				setupFeedback.handleMessage("");
+				setupFeedback.handleMessage("ERROR: No answer from PixelController received!");
+				setupFeedback.handleMessage("Start aborted, make sure PixelController is running and restart client");				
+				return;
 			}
 		}
 		initialized = true;

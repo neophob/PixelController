@@ -35,7 +35,7 @@ public final class MDnsClientFactory {
 	}
 	
 	public static PixMDnsClient queryService(String type, int timeout) throws MDnsClientException {
-		return new MDnsClient(type, timeout);				
+		return new MDnsClientImpl(type, timeout);				
 	}
 
 }

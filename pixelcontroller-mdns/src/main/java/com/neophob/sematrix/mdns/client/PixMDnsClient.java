@@ -9,4 +9,6 @@ public interface PixMDnsClient {
 	int getPort();
 	
 	String getServerName();
+	
+	String getFirstIp();
 }

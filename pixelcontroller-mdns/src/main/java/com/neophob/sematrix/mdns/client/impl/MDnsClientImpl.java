@@ -1,19 +1,21 @@
 package com.neophob.sematrix.mdns.client.impl;
 
+import java.net.InetAddress;
+
 import javax.jmdns.JmDNS;
 import javax.jmdns.ServiceInfo;
 
 import com.neophob.sematrix.mdns.client.MDnsClientException;
 import com.neophob.sematrix.mdns.client.PixMDnsClient;
 
-class MDnsClient implements PixMDnsClient {
+class MDnsClientImpl implements PixMDnsClient {
 
 	private JmDNS mdnsQuery;
 	private ServiceInfo[] services;
 	private String type;
 	private int timeout;
 	
-	public MDnsClient(String type, int timeout) {
+	public MDnsClientImpl(String type, int timeout) {
 		this.type = type;
 		this.timeout = timeout;
 	}
@@ -57,4 +59,17 @@ class MDnsClient implements PixMDnsClient {
 		}
 		return services[0].getServer();
 	}
+	
+	public String getFirstIp() {
+		if (!mdnsServerFound()) {
+			return "";
+		}
+		
+		InetAddress[] addr = services[0].getInetAddresses();
+		if (addr.length<1) {
+			return "";
+		}
+		return addr[0].getHostAddress();
+	}
+
 }
