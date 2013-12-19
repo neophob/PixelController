@@ -61,8 +61,7 @@ public class Blinkenlights extends Generator {
     private Random rand = new Random();
 
     /** The filename. */
-    private String filename="";
-    private String filenameWithoutPath="";
+    private String filename;
 
     private int currentFrame;
     
@@ -194,7 +193,7 @@ public class Blinkenlights extends Generator {
      * @return the filename
      */
     public String getFilename() {
-        return filenameWithoutPath;
+        return filename;
     }
 
     /* (non-Javadoc)

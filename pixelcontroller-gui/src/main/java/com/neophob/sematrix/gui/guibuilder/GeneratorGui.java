@@ -39,6 +39,7 @@ import com.neophob.PixelControllerP5;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.output.IOutput;
+import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommands;
@@ -658,7 +659,12 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 			}
 			presetButtons.addItem(label, i);
 		}
-		presetButtons.activate(pixConServer.getCurrentPreset());
+		
+		int defaultPreset = pixConServer.getConfig().loadPresetOnStart();
+		if (defaultPreset<0 || defaultPreset>PresetService.NR_OF_PRESET_SLOTS) {
+			defaultPreset = 0;
+		}
+		presetButtons.activate(defaultPreset);
 		presetButtons.moveTo(presetTab);                
 
 		loadPreset = cp5.addButton(GuiElement.LOAD_PRESET.guiText(), 0,

@@ -5,18 +5,21 @@ import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.ArrayList;
-import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.api.CallbackMessage;
 import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.client.PixOscClient;
+import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 import com.neophob.sematrix.osc.model.OscMessage;
 
 /**
@@ -26,19 +29,20 @@ import com.neophob.sematrix.osc.model.OscMessage;
  * @author michu
  *
  */
-public class OscReplyManager {
+public class OscReplyManager extends CallbackMessage<ArrayList>{
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
 
 	private PixelController pixelController;
-	private Observer visualStateObserver;
 
-	public OscReplyManager(PixelController pixelController, Observer visualStateObserver) {
+	private PixOscClient oscClient;
+
+	
+	public OscReplyManager(PixelController pixelController) {
 		this.pixelController = pixelController;
-		this.visualStateObserver = visualStateObserver;
 	}
 
-	public void sendReply(PixOscClient oscClient, String[] msg) throws OscClientException {
+	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
 
 		ValidCommands cmd = ValidCommands.valueOf(msg[0]);
 		OscMessage reply = null;
@@ -81,13 +85,13 @@ public class OscReplyManager {
 			break;
 
 		case REGISTER_VISUALOBSERVER:
-			pixelController.observeVisualState(visualStateObserver);
+			pixelController.observeVisualState(this);
 			//send back ack
 			reply = new OscMessage(cmd.toString(), new byte[0]);
 			break;
 
 		case UNREGISTER_VISUALOBSERVER:
-			pixelController.stopObserveVisualState(visualStateObserver);
+			pixelController.stopObserveVisualState(this);
 			reply = new OscMessage(cmd.toString(), new byte[0]);
 			break;
 
@@ -97,11 +101,52 @@ public class OscReplyManager {
 		}
 
 		if (reply!=null) {
-			oscClient.sendMessage(reply);
+			this.verifyOscClient(oscIn.getSocketAddress());
+			this.oscClient.sendMessage(reply);
 			LOG.log(Level.INFO, cmd.toString()+" reply size: "+reply.getMessageSize());			
 		}
 	}
+	
+	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
+		InetSocketAddress remote = (InetSocketAddress)socket;
+		boolean initNeeded = false;
 
+		if (oscClient == null) {
+			initNeeded = true;
+		} else if (oscClient.getTargetIp() != remote.getAddress().getHostName()) {
+			//TODO Verify port nr
+			initNeeded = true;
+		}
+
+		if (initNeeded) {			
+			//TODO make port configurable
+			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 
+					9875, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);			
+		}
+	}
+
+	/**
+	 * message from visual state, something changed. if a remote client is registered
+	 * we send the update to the remote client
+	 * 
+	 * @param guiState
+	 */
+	@Override
+	public void handleMessage(ArrayList guiState) {
+		if (oscClient!=null) {
+			
+			OscMessage reply = new OscMessage(ValidCommands.GET_GUISTATE.toString(),
+					convertFromObject((ArrayList<String>)pixelController.getGuiState()));
+			
+			try {
+				LOG.log(Level.INFO, reply.getPattern()+" reply size: "+reply.getMessageSize());			
+				this.oscClient.sendMessage(reply);
+			} catch (OscClientException e) {
+				LOG.log(Level.SEVERE, "Failed to send observer message!", e);
+			}			
+		}
+	}
+	
 	private byte[] convertFromObject(Serializable s) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = null;
@@ -126,6 +171,5 @@ public class OscReplyManager {
 				// ignore close exception
 			}
 		}
-
-	}
+	}	
 }

@@ -65,11 +65,4 @@ public class GuiUpdateFeedback implements Observer {
         }
 	}
 
-/*
-	private void updateGuiElements() {
-		for (Map.Entry<String, String> s: state.getDiff().entrySet()) {
-			System.out.println("UPDATE GUI ELEMENT>> "+s.getKey()+": "+s.getValue());
-		}
-	}
-*/
 }

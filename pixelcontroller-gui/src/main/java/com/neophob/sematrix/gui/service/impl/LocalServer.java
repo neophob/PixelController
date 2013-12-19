@@ -64,11 +64,6 @@ public class LocalServer implements PixConServer {
 	}
 
 	@Override
-	public int getCurrentPreset() {
-		return pixelController.getPresetService().getSelectedPreset();
-	}
-
-	@Override
 	public PresetSettings getCurrentPresetSettings() {
 		return pixelController.getPresetService().getSelectedPresetSettings();
 	}

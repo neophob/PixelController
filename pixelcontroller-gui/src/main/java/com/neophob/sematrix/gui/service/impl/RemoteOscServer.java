@@ -173,12 +173,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	}
 
 	@Override
-	public int getCurrentPreset() {
-		//TODO
-		return 0;
-	}
-
-	@Override
 	public PresetSettings getCurrentPresetSettings() {		
 		return presetSettings;
 	}

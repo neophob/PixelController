@@ -24,8 +24,6 @@ public class PresetServiceImpl implements PresetService {
 
     private static final String PRESETS_FILENAME = "presets.led";
 
-	public static final int NR_OF_PRESET_SLOTS = 144;
-
 	private String filename;
 	
 	private List<PresetSettings> presets;

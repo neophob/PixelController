@@ -41,7 +41,6 @@ public interface PixConServer {
 	
 	int getNrOfVisuals();
 	
-	int getCurrentPreset();
 	PresetSettings getCurrentPresetSettings();
 		
 	void updateNeededTimeForMatrixEmulator(long t);

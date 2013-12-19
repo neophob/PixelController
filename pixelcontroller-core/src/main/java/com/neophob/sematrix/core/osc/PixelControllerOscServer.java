@@ -18,11 +18,6 @@
  */
 package com.neophob.sematrix.core.osc;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,9 +29,8 @@ import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.CommandGroup;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.osc.client.OscClientException;
-import com.neophob.sematrix.osc.client.PixOscClient;
-import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 import com.neophob.sematrix.osc.model.OscMessage;
+import com.neophob.sematrix.osc.server.OscMessageHandler;
 import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
@@ -50,16 +44,15 @@ import com.neophob.sematrix.osc.server.impl.OscServerFactory;
  * @author michu
  *
  */
-public class PixelControllerOscServer implements Observer, PacketAndBytesStatictics {
+public class PixelControllerOscServer extends OscMessageHandler implements PacketAndBytesStatictics {
 
 	/** The log. */
 	private static transient final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
 
 	//size of recieving buffer, should fit a whole image buffer
-	private transient static final int REPLY_PACKET_BUFFERSIZE = 32*1024;
+	public transient static final int REPLY_PACKET_BUFFERSIZE = 32*1024;
 
 	private PixOscServer oscServer;
-	private transient PixOscClient oscClient;
 
 	private transient OscReplyManager replyManager;
 
@@ -76,7 +69,7 @@ public class PixelControllerOscServer implements Observer, PacketAndBytesStatict
 
 		LOG.log(Level.INFO,	"Start OSC Server at port {0}", new Object[] { listeningPort });		
 		this.oscServer = OscServerFactory.createServerUdp(this, listeningPort, REPLY_PACKET_BUFFERSIZE);
-		this.replyManager = new OscReplyManager(pixelController, this);
+		this.replyManager = new OscReplyManager(pixelController);
 	}
 
 	/**
@@ -128,72 +121,15 @@ public class PixelControllerOscServer implements Observer, PacketAndBytesStatict
 		} else {
 			LOG.log(Level.FINE, "Recieved internal OSC message: {0}", msg);
 			try {
-				this.verifyOscClient(oscIn.getSocketAddress());
-				this.replyManager.sendReply(oscClient, msg);
+				this.replyManager.handleClientResponse(oscIn, msg);
 			} catch (OscClientException e) {
 				LOG.log(Level.WARNING, "Failed to send OSC Message!", e);
 			}
 		}
 	}
 
-	/**
-	 * message from visual state, something changed. if a remote client is registered
-	 * we send the update to the remote client
-	 * 
-	 * @param guiState
-	 */
-	public void handleRemoteObserverMessage(ArrayList<String> guiState) {
-		System.out.println("SEND TO REMOTE: "+guiState);
-		if (oscClient!=null) {
-			String[] msg = new String[1+guiState.size()];
-			int ofs=0;
-			msg[ofs] = ValidCommands.GET_GUISTATE.toString();			
-			for (String s: guiState){
-				msg[ofs++] = s;
-			}
-
-			try {
-				this.replyManager.sendReply(oscClient, msg);
-			} catch (OscClientException e) {
-				LOG.log(Level.SEVERE, "Failed to send observer message!", e);
-			}			
-		}
-	}
 
 
-	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
-		InetSocketAddress remote = (InetSocketAddress)socket;
-		boolean initNeeded = false;
-
-		if (oscClient == null) {
-			initNeeded = true;
-		} else if (oscClient.getTargetIp() != remote.getAddress().getHostName()) {
-			//TODO Verify port nr
-			initNeeded = true;
-		}
-
-		if (initNeeded) {			
-			//TODO make configurable
-			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 9875, REPLY_PACKET_BUFFERSIZE);			
-		}
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		try {
-			if (arg instanceof OscMessage) {
-				OscMessage msg = (OscMessage) arg;
-				handleOscMessage(msg);
-			} else if (arg instanceof ArrayList) {
-				ArrayList<String> msg = (ArrayList) arg;
-				handleRemoteObserverMessage(msg);
-			} else {
-				LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
-			}			
-		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to parse observer message!", e);
-		}
-	}
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.core.jmx.PacketAndBytesStatictics#getPacketCounter()
