@@ -90,7 +90,16 @@ public interface PixelController {
 	ISound getSoundImplementation();
 	
 	List<String> getGuiState();
+	
+	/**
+	 * request a gui refresh, the whole visual state will be sent
+	 */
 	void refreshGuiState();
-	void registerObserver(Observer o);
+	
+	/**
+	 * register observer, get informed if the visual state changes
+	 * @param o
+	 */
+	void observeVisualState(Observer o);
 
 }

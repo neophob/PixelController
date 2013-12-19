@@ -300,7 +300,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	}
 
 	@Override
-	public void registerObserver(Observer o) {
+	public void observeVisualState(Observer o) {
 		VisualState.getInstance().addObserver(o);		
 	}
 
