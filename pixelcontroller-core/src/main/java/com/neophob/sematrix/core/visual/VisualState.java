@@ -262,12 +262,15 @@ public class VisualState extends Observable {
 		pixConStat.trackTime(TimeMeasureItemGlobal.FADER, System.currentTimeMillis()-l);
 
 		if (randomMode) {
-			Shuffler.shuffleStuff(sound);
+			if (Shuffler.shuffleStuff(sound)) {
+				this.notifyGuiUpdate();				
+			}
 		} else if (randomPresetMode) {
 			if (Shuffler.randomPresentModeShuffler(sound)) {
 				String[] msg = new String[1];
 				msg[0] = ""+ValidCommands.PRESET_RANDOM;
 				MessageProcessor.INSTANCE.processMsg(msg, true, null);
+				this.notifyGuiUpdate();
 			}
 		}
 	}
@@ -729,6 +732,7 @@ public class VisualState extends Observable {
 	 * 
 	 */
 	public void notifyGuiUpdate() {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>> UPDATE");
 		setChanged();
 		notifyObservers(getGuiState());
 	}
