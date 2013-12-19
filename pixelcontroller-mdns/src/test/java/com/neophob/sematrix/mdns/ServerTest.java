@@ -27,7 +27,7 @@ public class ServerTest {
 
 	@Test
 	public void startBonjourServer() throws Exception {
-		MDnsServer bonjour = MDnsServerFactory.createServer(2222, "PixelController");
+		PixMDnsServer bonjour = MDnsServerFactory.createServer(2222, "PixelController");
 		bonjour.startServer();
 
 		bonjour.stopServer();
