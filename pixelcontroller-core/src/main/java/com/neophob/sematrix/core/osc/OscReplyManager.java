@@ -32,10 +32,13 @@ import com.neophob.sematrix.osc.model.OscMessage;
 public class OscReplyManager extends CallbackMessage<ArrayList>{
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
-
+	private static final int SEND_ERROR_THRESHOLD = 4;
+	
 	private PixelController pixelController;
 
 	private PixOscClient oscClient;
+	
+	private int sendError;
 
 	
 	public OscReplyManager(PixelController pixelController) {
@@ -88,6 +91,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 			pixelController.observeVisualState(this);
 			//send back ack
 			reply = new OscMessage(cmd.toString(), new byte[0]);
+			sendError = 0;
 			break;
 
 		case UNREGISTER_VISUALOBSERVER:
@@ -136,13 +140,18 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 		if (oscClient!=null) {
 			
 			OscMessage reply = new OscMessage(ValidCommands.GET_GUISTATE.toString(),
-					convertFromObject((ArrayList<String>)pixelController.getGuiState()));
-			
+					convertFromObject((ArrayList<String>)pixelController.getGuiState()));			
 			try {
 				LOG.log(Level.INFO, reply.getPattern()+" reply size: "+reply.getMessageSize());			
 				this.oscClient.sendMessage(reply);
+				sendError = 0;
 			} catch (OscClientException e) {
-				LOG.log(Level.SEVERE, "Failed to send observer message!", e);
+				LOG.log(Level.SEVERE, "Failed to send observer message, error no: "+sendError, e);
+				if (sendError++ > SEND_ERROR_THRESHOLD) {
+					//disable remote observer after some errors
+					pixelController.stopObserveVisualState(this);
+					LOG.log(Level.SEVERE, "Disable remote observer");
+				}
 			}			
 		}
 	}

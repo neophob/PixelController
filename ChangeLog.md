@@ -1,14 +1,16 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    348 files changed, 18053 insertions(+), 188480 deletions(-)
+    354 files changed, 18393 insertions(+), 188635 deletions(-)
     
 * More Code cleanup
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
+* Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
+* Add support for (optional) GZipped Blinkenlight files
+* Add client/server architecture, supports remote server 
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
-* Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
-* Add support for (optional) GZipped Blinkenlight files 
+* Fix update gui in random mode
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
