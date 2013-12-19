@@ -19,6 +19,7 @@
 
 ## Features
 
+* Support multiple panels for tpm2serial output
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * Option to invert GUI colors
 * Add OpenGL Shader Generator/Effects, using JOGL
