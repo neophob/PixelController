@@ -732,7 +732,6 @@ public class VisualState extends Observable {
 	 * 
 	 */
 	public void notifyGuiUpdate() {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>> UPDATE");
 		setChanged();
 		notifyObservers(getGuiState());
 	}
