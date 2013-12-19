@@ -50,6 +50,6 @@ public interface PixConServer {
 	void sendMessage(String[] msg);	
 	
 	void refreshGuiState();
-	void registerObserver(Observer o);
+	void observeVisualState(Observer o);
 	float getSetupSteps();
 }

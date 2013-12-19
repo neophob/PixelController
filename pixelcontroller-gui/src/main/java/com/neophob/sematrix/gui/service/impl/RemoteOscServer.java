@@ -204,7 +204,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	}
 
 	@Override
-	public void registerObserver(Observer o) {
+	public void observeVisualState(Observer o) {
 		remoteObserver.addObserver(o);
 	}
 	

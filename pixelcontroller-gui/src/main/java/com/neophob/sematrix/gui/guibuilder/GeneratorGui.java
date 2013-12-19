@@ -821,7 +821,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
 		//register callback function
 		GuiUpdateFeedback guf = new GuiUpdateFeedback(this);
-		pixConServer.registerObserver(guf);
+		pixConServer.observeVisualState(guf);
 		pixConServer.refreshGuiState();
 
 		initialized = true;

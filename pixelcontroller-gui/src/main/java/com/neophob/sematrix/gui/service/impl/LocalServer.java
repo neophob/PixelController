@@ -134,7 +134,7 @@ public class LocalServer implements PixConServer {
 	}
 
 	@Override
-	public void registerObserver(Observer o) {
+	public void observeVisualState(Observer o) {
 		pixelController.observeVisualState(o);		
 	}
 
