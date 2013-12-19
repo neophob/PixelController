@@ -20,7 +20,7 @@ package com.neophob.sematrix.mdns;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.mdns.server.impl.MDnsServer;
+import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 public class ServerTest {
