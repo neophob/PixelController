@@ -85,6 +85,9 @@ public class PixConClient {
         System.out.println("Valid commands:");
  
         for (CommandGroup cg: CommandGroup.values()) {
+        	if (cg.name().equals(CommandGroup.INTERNAL)) {
+        		continue;
+        	}
             for (ValidCommands vc: ValidCommands.getCommandsByGroup(cg)) {
             	System.out.println("\t"
             	            +pretifyString(vc.toString(),28)
