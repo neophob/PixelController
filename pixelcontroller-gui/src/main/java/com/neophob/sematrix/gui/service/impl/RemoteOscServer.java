@@ -325,6 +325,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void run() {
+		String targetHost = TARGET_HOST;
 		try {
 			setupFeedback.handleMessage("Detect PixelController OSC Port");
 			try {
@@ -332,8 +333,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				client.start();
 				if (client.mdnsServerFound()) {
 					serverPort = client.getPort();
-					
 					setupFeedback.handleMessage("... found on port "+client.getPort()+", ip: "+client.getFirstIp());
+					targetHost = client.getFirstIp();
 				} else {
 					setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
 					serverPort = REMOTE_OSC_SERVER_PORT;
@@ -349,7 +350,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			this.oscServer.startServer();
 			setupFeedback.handleMessage(" ... started");
 			setupFeedback.handleMessage("Connect to PixelController OSC Server");
-			this.oscClient = OscClientFactory.createClientUdp(TARGET_HOST, serverPort, BUFFER_SIZE);
+			this.oscClient = OscClientFactory.createClientUdp(targetHost, serverPort, BUFFER_SIZE);
 			setupFeedback.handleMessage(" ... done");			
 			this.remoteObserver = new RemoteOscObservable(); 
 			this.initialized = false;
