@@ -3,7 +3,8 @@
 ## Version 2.1
 * Decouple GUI from Code
     -startscript
-    -config options
+    -config options (client port = server port -1)
+    -transer file related stuff (blinken and image files)
 * Add console to GUI
 * Documentation for bonjour, client/server
 * Remote client, add shutdown hook, disconnect from server

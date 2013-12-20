@@ -446,7 +446,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		//GENERATOR OPTIONS
 		//-----------------
 
-		FileUtils fu = new FileUtils();
+		FileUtils fux = new FileUtils();
 
 		genElYOfs = p5GuiYOffset+35;
 		cp5.addTextlabel("genOptionsGen", messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$

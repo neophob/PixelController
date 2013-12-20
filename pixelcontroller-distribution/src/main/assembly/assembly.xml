@@ -36,12 +36,18 @@
 		</fileSet>
 
 		<fileSet>
+			<directory>${basedir}/src/main/resources/sys</directory>
+			<outputDirectory>/sys</outputDirectory>
+			<filtered>false</filtered>
+		</fileSet>
+
+		<fileSet>
 			<directory>${basedir}/src/main/resources/startscript</directory>
 			<outputDirectory>/</outputDirectory>
 			<filtered>false</filtered>
 			<fileMode>0755</fileMode>
 		</fileSet>
-
+		
 		<!-- Small hack to create a log folder:
 		Copy a existing folder without subfolders, 
 		rename it, but do not copy files. -->
