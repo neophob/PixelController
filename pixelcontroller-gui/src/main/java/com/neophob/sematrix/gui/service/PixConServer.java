@@ -3,6 +3,7 @@ package com.neophob.sematrix.gui.service;
 import java.util.List;
 import java.util.Observer;
 
+import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
@@ -42,6 +43,8 @@ public interface PixConServer {
 	int getNrOfVisuals();
 	
 	PresetSettings getCurrentPresetSettings();
+	
+	FileUtils getFileUtils();
 		
 	void updateNeededTimeForMatrixEmulator(long t);
 	void updateNeededTimeForInternalWindow(long t);

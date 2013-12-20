@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessage;
 import com.neophob.sematrix.core.api.PixelController;
+import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.ColorSet;
@@ -37,12 +39,13 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 	private PixelController pixelController;
 
 	private PixOscClient oscClient;
+	private FileUtils fileUtilRemote;
 	
 	private int sendError;
 
 	
 	public OscReplyManager(PixelController pixelController) {
-		this.pixelController = pixelController;
+		this.pixelController = pixelController;		
 	}
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
@@ -85,6 +88,10 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 
 		case GET_JMXSTATISTICS:
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPixConStat()));
+			break;
+			
+		case GET_FILELOCATION:
+			reply = new OscMessage(cmd.toString(), convertFromObject(getLazyfileUtilsRemote()));
 			break;
 
 		case REGISTER_VISUALOBSERVER:
@@ -131,7 +138,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 
 	/**
 	 * message from visual state, something changed. if a remote client is registered
-	 * we send the update to the remote client
+	 * we send the update to the remote client.
 	 * 
 	 * @param guiState
 	 */
@@ -154,6 +161,16 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 				}
 			}			
 		}
+	}
+	
+	private synchronized FileUtils getLazyfileUtilsRemote() {
+		if (this.fileUtilRemote == null) {			
+			this.fileUtilRemote = new FileUtilsRemoteImpl(
+						this.pixelController.getFileUtils().findBlinkenFiles(),
+						this.pixelController.getFileUtils().findImagesFiles()
+					);
+		}
+		return this.fileUtilRemote;
 	}
 	
 	private byte[] convertFromObject(Serializable s) {

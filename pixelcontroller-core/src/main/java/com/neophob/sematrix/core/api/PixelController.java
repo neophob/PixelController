@@ -3,6 +3,7 @@ package com.neophob.sematrix.core.api;
 import java.util.List;
 import java.util.Observer;
 
+import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetService;
@@ -79,6 +80,8 @@ public interface PixelController {
 	 * @return
 	 */
 	PresetService getPresetService();
+	
+	FileUtils getFileUtils();
 	
 	/**
 	 * return internal and device size

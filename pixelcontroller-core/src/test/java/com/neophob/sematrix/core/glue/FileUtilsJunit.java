@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.core.glue;
 
-import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 
 
 /**
@@ -26,7 +26,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
  * @author michu
  *
  */
-public class FileUtilsJunit extends FileUtils {
+public class FileUtilsJunit extends FileUtilsLocalImpl {
 
 	public FileUtilsJunit() {
 		super(System.getProperty("user.dir")+"/../pixelcontroller-distribution/src/main/resources");

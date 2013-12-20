@@ -6,6 +6,7 @@ import java.util.Observer;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.api.impl.PixelControllerFactory;
+import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.output.IOutput;
@@ -146,6 +147,11 @@ public class LocalServer implements PixConServer {
 	@Override
 	public float getSetupSteps() {
 		return steps;
+	}
+
+	@Override
+	public FileUtils getFileUtils() {
+		return pixelController.getFileUtils();
 	}
 
 }

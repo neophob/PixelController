@@ -38,6 +38,7 @@ import processing.core.PImage;
 import com.neophob.PixelControllerP5;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
+import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetSettings;
@@ -446,8 +447,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		//GENERATOR OPTIONS
 		//-----------------
 
-		FileUtils fux = new FileUtils();
-
 		genElYOfs = p5GuiYOffset+35;
 		cp5.addTextlabel("genOptionsGen", messages.getString("GeneratorGui.GENERATOR_OPTIONS"), GENERIC_X_OFS, genElYOfs).moveTo(generatorTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -458,6 +457,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		blinkenLightsList = cp5.addDropdownList(GuiElement.BLINKENLIGHTS_DROPDOWN.guiText(), 
 				genFxXOfs, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(blinkenLightsList);
+		FileUtils fu = pixConServer.getFileUtils();
 		blinkenLightsList.addItems(fu.findBlinkenFiles());
 		if (fu.findBlinkenFiles().length>0) {
 			blinkenLightsList.setLabel(blinkenLightsList.getItem(1).getName());			
@@ -472,7 +472,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 				genFxXOfs+Theme.DROPBOX_XOFS, genElYOfs+11, Theme.DROPBOXLIST_LENGTH, 140);
 		Theme.themeDropdownList(imageList);		
 		imageList.addItems(fu.findImagesFiles());
-		imageList.setLabel(imageList.getItem(1).getName());
+		if (fu.findImagesFiles().length>0) {
+			imageList.setLabel(imageList.getItem(1).getName());
+		}
 		imageList.setGroup(generatorTab);		
 		imageList.setHeight(Theme.DROPBOXLIST_HEIGHT);
 
@@ -799,7 +801,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 		//----------    
 
 		try {
-			logo = loadImage(fu.getDataDir()+File.separator+"gui"+File.separatorChar+"guilogo.jpg");   
+			logo = loadImage(new FileUtilsLocalImpl().getDataDir()+File.separator+"gui"+File.separatorChar+"guilogo.jpg");   
 			LOG.log(Level.INFO, "GUI logo loaded");
 		} catch (Exception e) {
 			LOG.log(Level.INFO, "Failed to load gui logo!",e);

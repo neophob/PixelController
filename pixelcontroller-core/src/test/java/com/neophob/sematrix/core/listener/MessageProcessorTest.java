@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.sound.SoundDummy;
@@ -106,7 +106,7 @@ public class MessageProcessorTest {
 		colorsets.add(new ColorSet("aa", new int[] {1,100,1000}));
 		colorsets.add(new ColorSet("bb", new int[] {999,555,0xffffff}));
 		
-		VisualState.getInstance().init(new FileUtils(), ph, new SoundDummy(), colorsets, new PresetServiceDummy());
+		VisualState.getInstance().init(new FileUtilsLocalImpl(), ph, new SoundDummy(), colorsets, new PresetServiceDummy());
 
 		String[] str = null;
 		MessageProcessor.INSTANCE.processMsg(str, false, null);

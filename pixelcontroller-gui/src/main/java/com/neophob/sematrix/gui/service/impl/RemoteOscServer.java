@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
+import com.neophob.sematrix.core.glue.FileUtils;
+import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
@@ -78,6 +80,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private IOutput output;
 	private List<String> guiState;
 	private PresetSettings presetSettings;
+	private FileUtils fileUtilsRemote;
 	private PixelControllerStatusMBean jmxStatistics;
 	
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
@@ -207,6 +210,12 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		//cannot use output buffer - one visual is missing
 		return new int[matrix.getBufferXSize()*matrix.getBufferYSize()];
 	}
+	
+	@Override
+	public FileUtils getFileUtils() {
+		return fileUtilsRemote;
+	}
+
 
 	private void sendOscMessage(ValidCommands cmd) {
 		sendOscMessage(cmd.toString());
@@ -291,6 +300,10 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			case GET_JMXSTATISTICS:
 				jmxStatistics = convertToObject(oscIn.getBlob(), PixelControllerStatusMBean.class);
 				break;
+				
+			case GET_FILELOCATION:
+				fileUtilsRemote = convertToObject(oscIn.getBlob(), FileUtilsRemoteImpl.class);
+				break;
 								
 			default:
 				break;
@@ -371,6 +384,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initCommands.add(ValidCommands.GET_OUTPUTMAPPING.toString());
 		initCommands.add(ValidCommands.GET_PRESETSETTINGS.toString());
 		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());
+		initCommands.add(ValidCommands.GET_FILELOCATION.toString());
 		initCommands.add(ValidCommands.REGISTER_VISUALOBSERVER.toString());
 
 		int waitLoop = 0;

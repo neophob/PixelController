@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.Shuffler;
+import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
@@ -87,7 +88,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		long cnt=0;
 
 		clientNotification("Load Configuration");
-		fileUtils = new FileUtils();
+		fileUtils = new FileUtilsLocalImpl();
 		applicationConfig = loadConfiguration(fileUtils.getDataDir());
 		this.colorSets = loadColorPalettes(fileUtils.getDataDir());
 		
@@ -322,6 +323,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	@Override
 	public List<String> getGuiState() {
 		return VisualState.getInstance().getGuiState();
+	}
+
+	@Override
+	public FileUtils getFileUtils() {
+		return fileUtils;
 	}
 
 }
