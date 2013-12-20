@@ -62,7 +62,7 @@ class OscClientImpl implements PixOscClient {
 			
 			LOG.log(Level.INFO, "OSC Client Factory initialized and started, buffersize: "+client.getBufferSize()
 					+" in "+(System.currentTimeMillis()-t1)+"ms");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new OscClientException("Failed to initialize OSC Client", e);
 		}
 	}	
@@ -89,7 +89,7 @@ class OscClientImpl implements PixOscClient {
 		try {
 			//LOG.log(Level.INFO, "Send OSC Package "+oscPacket+" to "+targetPort+", size: "+oscPacket.getSize());
 			client.send(oscPacket);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new OscClientException("Failed to send OSC Message", e);
 		}
 	}
