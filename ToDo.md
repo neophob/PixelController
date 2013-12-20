@@ -6,13 +6,14 @@
     -config options
 * Add console to GUI
 * Documentation for bonjour, client/server
+* Remote client, add shutdown hook, disconnect from server
+* Random-Mode with selectable time-life
 
 ## Version 2.2
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
 * PixelInvaders firmware: Support ambient color for the output panel(s)
 * Support Multiple Output devices with different matrix sizes
 * Simplyify output configuration
-* Random-Mode with selectable time-life
 * Create TouchOSC GUI
 
 # Backlog
