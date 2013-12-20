@@ -217,7 +217,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		try {
 			oscClient.sendMessage(msg);
 		} catch (OscClientException e) {
-			LOG.log(Level.SEVERE, "failed to send osc message!", e);
+			LOG.log(Level.SEVERE, "failed to send osc message, "+oscClient, e);
 		}	
 	}
 
@@ -226,7 +226,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		try {
 			oscClient.sendMessage(msg);
 		} catch (OscClientException e) {
-			LOG.log(Level.SEVERE, "failed to send osc message!", e);
+			LOG.log(Level.SEVERE, "failed to send osc message, "+oscClient, e);
 		}	
 	}
 
