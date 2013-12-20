@@ -116,7 +116,6 @@ class OscClientImpl implements PixOscClient {
 		return targetPort;
 	}
 
-
 	@Override
 	public void disconnect() throws OscClientException {
 		if (client==null) {
@@ -134,4 +133,8 @@ class OscClientImpl implements PixOscClient {
 		}		
 	}
 
+	@Override
+	public String toString() {
+		return "OSC Server Address: "+targetIp+":"+targetPort;
+	}
 }
