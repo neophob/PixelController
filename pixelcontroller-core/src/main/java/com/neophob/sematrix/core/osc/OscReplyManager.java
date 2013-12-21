@@ -84,7 +84,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 			reply = new OscMessage(cmd.toString(), convertFromObject((CopyOnWriteArrayList<OutputMapping>)pixelController.getAllOutputMappings()));
 			break;
 
-		case GET_OUTPUTBUFFER:
+		case GET_OUTPUT:
 			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getOutput()));
 			break;
 

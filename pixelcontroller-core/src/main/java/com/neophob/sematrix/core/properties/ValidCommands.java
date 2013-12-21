@@ -138,7 +138,7 @@ public enum ValidCommands {
 	GET_MATRIXDATA(CommandGroup.INTERNAL, 0, "Return the MatrixData"),
 	GET_COLORSETS(CommandGroup.INTERNAL, 0, "Return the loaded colorsets"),
 	GET_OUTPUTMAPPING(CommandGroup.INTERNAL, 0, "Return the output mapping"),
-	GET_OUTPUTBUFFER(CommandGroup.INTERNAL, 0, "Return the output buffer"),
+	GET_OUTPUT(CommandGroup.INTERNAL, 0, "Return the output buffer"),
 	GET_GUISTATE(CommandGroup.INTERNAL, 0, "Return the gui state"),
 	GET_PRESETSETTINGS(CommandGroup.INTERNAL, 0, "Return data about current preset"),
 	GET_JMXSTATISTICS(CommandGroup.INTERNAL, 0, "Return JMX statistics"),

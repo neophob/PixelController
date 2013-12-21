@@ -296,7 +296,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				setupFeedback.handleMessage("Recieved Output mapping");
 				break;
 				
-			case GET_OUTPUTBUFFER:
+			case GET_OUTPUT:
 				output = convertToObject(oscIn.getBlob(), IOutput.class);
 				break;
 
@@ -405,7 +405,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initCommands.add(ValidCommands.GET_CONFIGURATION.toString());
 		initCommands.add(ValidCommands.GET_MATRIXDATA.toString());
 		initCommands.add(ValidCommands.GET_COLORSETS.toString());
-		initCommands.add(ValidCommands.GET_OUTPUTBUFFER.toString());
+		initCommands.add(ValidCommands.GET_OUTPUT.toString());
 		initCommands.add(ValidCommands.GET_GUISTATE.toString());			
 		initCommands.add(ValidCommands.GET_OUTPUTMAPPING.toString());
 		initCommands.add(ValidCommands.GET_PRESETSETTINGS.toString());
