@@ -10,7 +10,7 @@ import com.neophob.sematrix.core.compression.impl.CompressFactory;
 public class CompressApiTest {
 
 	@Test
-	public void testCompressApi() {
+	public void testCompressApi() throws Exception {
 		CompressApi compressApi = CompressFactory.getCompressApi();
 		String rawData = "hello, please compress this string!                            "; 
 		byte[] in = rawData.getBytes();

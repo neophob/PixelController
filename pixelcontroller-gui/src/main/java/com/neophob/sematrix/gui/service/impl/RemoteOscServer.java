@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.compression.CompressApi;
+import com.neophob.sematrix.core.compression.DecompressException;
 import com.neophob.sematrix.core.compression.impl.CompressFactory;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
@@ -334,7 +335,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		if (!useCompression) {
 			bis = new ByteArrayInputStream(input);
 		} else {
-			bis = new ByteArrayInputStream(decompressor.decompress(input, BUFFER_SIZE));
+			try {
+				bis = new ByteArrayInputStream(decompressor.decompress(input, BUFFER_SIZE));
+			} catch (DecompressException e) {
+				LOG.log(Level.INFO, "Failed to decompress data, disable compression");
+				useCompression = false;
+				bis = new ByteArrayInputStream(input);
+			}
 		}
 		ObjectInput in = null;
 		try {
