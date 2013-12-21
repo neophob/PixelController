@@ -12,12 +12,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jpountz.lz4.LZ4Factory;
-import net.jpountz.lz4.LZ4SafeDecompressor;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
+import com.neophob.sematrix.core.compression.CompressApi;
+import com.neophob.sematrix.core.compression.impl.CompressFactory;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
@@ -62,8 +61,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	//size of recieving buffer, should fit a whole image buffer
 	private static final int BUFFER_SIZE = 60*1024;
 	
-	private static final long GUISTATE_POLL_SLEEP = 400;
-
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
 	
@@ -89,13 +86,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private PixelControllerStatusMBean jmxStatistics;
 
 	private boolean useCompression;
-	private LZ4SafeDecompressor decompressor; 
+	private CompressApi decompressor; 
 
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
 		setupFeedback = msgHandler;
 		//TODO add logic to verify if we should use compression... (try)
 		useCompression = true;
-		decompressor = LZ4Factory.fastestJavaInstance().safeDecompressor();
+		decompressor = CompressFactory.getCompressApi();
 	}
 
 	@Override
@@ -337,9 +334,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		if (!useCompression) {
 			bis = new ByteArrayInputStream(input);
 		} else {
-			byte decompressedData[] = new byte[BUFFER_SIZE];		
-			int decompressedLength = decompressor.decompress(input, decompressedData);			
-			bis = new ByteArrayInputStream(decompressedData);
+			bis = new ByteArrayInputStream(decompressor.decompress(input, BUFFER_SIZE));
 		}
 		ObjectInput in = null;
 		try {

@@ -13,11 +13,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.jpountz.lz4.LZ4Compressor;
-import net.jpountz.lz4.LZ4Factory;
-
 import com.neophob.sematrix.core.api.CallbackMessage;
 import com.neophob.sematrix.core.api.PixelController;
+import com.neophob.sematrix.core.compression.CompressApi;
+import com.neophob.sematrix.core.compression.impl.CompressFactory;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
@@ -49,7 +48,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	
 	private int sendError;
 	private boolean useCompression;
-	private LZ4Compressor compressor; 
+	private CompressApi compressor; 
 	
 	private Thread oscSendThread;
 	private boolean startSendImageThread = false;
@@ -58,7 +57,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	public OscReplyManager(PixelController pixelController) {
 		this.pixelController = pixelController;
 		if (pixelController.getConfig().parseRemoteConnectionUseCompression()) {
-			this.compressor = LZ4Factory.fastestJavaInstance().fastCompressor();
+			this.compressor = CompressFactory.getCompressApi();
 			this.useCompression = true;
 		} else {
 			this.useCompression = false;
