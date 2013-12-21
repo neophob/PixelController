@@ -361,7 +361,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		LOG.log(Level.INFO, "Start PixelController Client thread, use compression: "+this.useCompression);
 		String targetHost = TARGET_HOST;
 		try {
-			setupFeedback.handleMessage("Detect PixelController OSC Port");
+			setupFeedback.handleMessage("Detect PixelController OSC Server");
 			try {
 				PixMDnsClient client = MDnsClientFactory.queryService(PixMDnsServer.REMOTE_TYPE_UDP, 6000);
 				client.start();

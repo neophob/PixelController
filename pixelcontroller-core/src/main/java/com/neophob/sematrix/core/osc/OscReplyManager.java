@@ -62,10 +62,6 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		} else {
 			this.useCompression = false;
 		}
-		
-		oscSendThread = new Thread(this);
-		oscSendThread.setName("OSC Send Image Worker");
-		oscSendThread.setDaemon(true);		
 	}
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
@@ -124,7 +120,10 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 			reply = new OscMessage(cmd.toString(), new byte[0]);
 			sendError = 0;
 			startSendImageThread = true;
-			oscSendThread.start();
+			oscSendThread = new Thread(this);
+			oscSendThread.setName("OSC Send Image Worker");
+			oscSendThread.setDaemon(true);					
+			oscSendThread.start();			
 			break;
 
 		case UNREGISTER_VISUALOBSERVER:
