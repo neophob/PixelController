@@ -96,7 +96,7 @@ public class ApplicationConfigurationHelper implements Serializable {
 
     private List<String> pixelInvadersBlacklist;
     
-    private Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
+    private transient Map<Integer, RGBAdjust> pixelInvadersCorrectionMap = new HashMap<Integer, RGBAdjust>();
     
     //how many output screens are used? needed to define layouts
     /** The devices in row1. */
@@ -1056,6 +1056,14 @@ public class ApplicationConfigurationHelper implements Serializable {
      */
     public float parseFps() {
         return parseFloat(ConfigConstant.FPS, 20);        
+    }
+
+    public float parseRemoteFps() {
+        return parseFloat(ConfigConstant.REMOTE_CLIENT_FPS, 10);        
+    }
+
+    public boolean parseRemoteConnectionUseCompression() {
+        return parseBoolean(ConfigConstant.REMOTE_CLIENT_USE_COMPRESSION);        
     }
 
     /**

@@ -672,4 +672,14 @@ public class PropertiesHelperTest {
         ph = new ApplicationConfigurationHelper(config);
         assertEquals(0.0005f, ph.getSoundSilenceThreshold(), 0.001);
     }
+    
+    @Test
+    public void testRemote() {	    
+        Properties config = new Properties();     
+        config.put(ConfigConstant.REMOTE_CLIENT_FPS, "1.23f");
+        config.put(ConfigConstant.REMOTE_CLIENT_USE_COMPRESSION, "true");
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        assertEquals(1.23f, ph.parseRemoteFps(), 0.001f);
+        assertTrue(ph.parseRemoteConnectionUseCompression());
+    }
 }

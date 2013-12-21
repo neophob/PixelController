@@ -150,4 +150,7 @@ public final class ConfigConstant {
 	public static final String VISUAL_FADE_TIME = "visual.fade.time";
 	
 	public static final String RESOURCE_PATH = "resource.root.path";
+	
+	public static final String REMOTE_CLIENT_FPS = "remote.client.fps";
+	public static final String REMOTE_CLIENT_USE_COMPRESSION = "remote.client.use.compression";
 }

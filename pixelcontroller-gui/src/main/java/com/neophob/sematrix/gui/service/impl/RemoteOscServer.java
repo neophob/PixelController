@@ -55,8 +55,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	private static final Logger LOG = Logger.getLogger(RemoteOscServer.class.getName());
 
-	private static final boolean LZ4_DECOMPRESS = true;
-	
 	private static final String TARGET_HOST = "pixelcontroller.local";
 	private static final int REMOTE_OSC_SERVER_PORT = 9876;
 	private static final int LOCAL_OSC_SERVER_PORT = 9875;
@@ -89,11 +87,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private PresetSettings presetSettings;
 	private FileUtils fileUtilsRemote;
 	private PixelControllerStatusMBean jmxStatistics;
-	
+
+	private boolean useCompression;
 	private LZ4SafeDecompressor decompressor; 
 
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
 		setupFeedback = msgHandler;
+		useCompression = false;
 		decompressor = LZ4Factory.fastestJavaInstance().safeDecompressor();
 	}
 
@@ -278,6 +278,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 			case GET_CONFIGURATION:
 				config = convertToObject(oscIn.getBlob(), ApplicationConfigurationHelper.class);
+				useCompression = config.parseRemoteConnectionUseCompression();
 				setupFeedback.handleMessage("Recieved Configuration");
 				break;
 
@@ -333,7 +334,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private <T> T convertToObject(byte[] input, Class<T> type) throws IOException, ClassNotFoundException {
 		
 		ByteArrayInputStream bis;
-		if (!LZ4_DECOMPRESS) {
+		if (!useCompression) {
 			bis = new ByteArrayInputStream(input);
 		} else {
 			byte decompressedData[] = new byte[BUFFER_SIZE];		
@@ -429,7 +430,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				//ignored
 			}
 			
-			if (waitLoop>1) {
+			if (waitLoop>4) {
 				setupFeedback.handleMessage("");
 				setupFeedback.handleMessage("ERROR: No answer from PixelController received!");
 				setupFeedback.handleMessage("Start aborted, make sure PixelController is running and restart client");				

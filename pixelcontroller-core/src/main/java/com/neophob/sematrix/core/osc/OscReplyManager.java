@@ -42,20 +42,24 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
 	private static final int SEND_ERROR_THRESHOLD = 4;
 	
-	private static final boolean LZ4_COMPRESS = true;
-	
 	private PixelController pixelController;
 
 	private PixOscClient oscClient;
 	private FileUtils fileUtilRemote;
 	
 	private int sendError;
+	private boolean useCompression;
 	private LZ4Compressor compressor; 
 
 	
 	public OscReplyManager(PixelController pixelController) {
 		this.pixelController = pixelController;
-		this.compressor = LZ4Factory.fastestJavaInstance().fastCompressor();
+		if (pixelController.getConfig().parseRemoteConnectionUseCompression()) {
+			this.compressor = LZ4Factory.fastestJavaInstance().fastCompressor();
+			this.useCompression = true;
+		} else {
+			this.useCompression = false;
+		}
 	}
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
@@ -213,7 +217,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 		try {
 			out = new ObjectOutputStream(bos);   
 			out.writeObject(s);
-			if (!LZ4_COMPRESS) {
+			if (!useCompression) {
 				return bos.toByteArray();	
 			}
 			
