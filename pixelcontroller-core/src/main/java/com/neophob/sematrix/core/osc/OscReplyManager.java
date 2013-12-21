@@ -37,7 +37,7 @@ import com.neophob.sematrix.osc.model.OscMessage;
  * @author michu
  *
  */
-public class OscReplyManager extends CallbackMessage<ArrayList>{
+public class OscReplyManager extends CallbackMessage<ArrayList> implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
 	private static final int SEND_ERROR_THRESHOLD = 4;
@@ -50,6 +50,9 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 	private int sendError;
 	private boolean useCompression;
 	private LZ4Compressor compressor; 
+	
+	private Thread oscSendThread;
+	private boolean startSendImageThread = false;
 
 	
 	public OscReplyManager(PixelController pixelController) {
@@ -60,6 +63,10 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 		} else {
 			this.useCompression = false;
 		}
+		
+		oscSendThread = new Thread(this);
+		oscSendThread.setName("OSC Send Image Worker");
+		oscSendThread.setDaemon(true);		
 	}
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
@@ -109,7 +116,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 			break;
 			
 		case GET_IMAGEBUFFER:
-			reply = new OscMessage(cmd.toString(), convertFromObject(getVisualBuffer()));
+			reply = new OscMessage(cmd.toString(), convertFromObject(getVisualBuffer()));			
 			break;
 
 		case REGISTER_VISUALOBSERVER:
@@ -117,11 +124,14 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 			//send back ack
 			reply = new OscMessage(cmd.toString(), new byte[0]);
 			sendError = 0;
+			startSendImageThread = true;
+			oscSendThread.start();
 			break;
 
 		case UNREGISTER_VISUALOBSERVER:
 			pixelController.stopObserveVisualState(this);
 			reply = new OscMessage(cmd.toString(), new byte[0]);
+			startSendImageThread = false;
 			break;
 
 		default:
@@ -240,5 +250,26 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 				// ignore close exception
 			}
 		}
+	}
+
+	@Override
+	public void run() {
+		long sleepTime = (long)(1000f/pixelController.getConfig().parseRemoteFps());
+		LOG.log(Level.INFO, "OSC Sender thread started, sleeptime: "+sleepTime+", use compression: "+this.useCompression);
+		
+		try {
+			while (startSendImageThread) {
+				OscMessage imgData = new OscMessage(ValidCommands.GET_IMAGEBUFFER.toString(), convertFromObject(getVisualBuffer()));
+				LOG.log(Level.INFO, ValidCommands.GET_IMAGEBUFFER.toString()+" reply size: "+imgData.getMessageSize());			
+				this.oscClient.sendMessage(imgData);	
+				
+				Thread.sleep(sleepTime);
+			}			
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "OSC Sender thread failed", e);
+		}
+		
+		LOG.log(Level.INFO, "OSC Sender thread ended");
+		
 	}	
 }

@@ -93,7 +93,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
 		setupFeedback = msgHandler;
-		useCompression = false;
+		//TODO add logic to verify if we should use compression... (try)
+		useCompression = true;
 		decompressor = LZ4Factory.fastestJavaInstance().safeDecompressor();
 	}
 
@@ -132,7 +133,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public int[] getOutputBuffer(int nr) {
-		//return output.getBufferForScreen(nr, true);
 		return imageBuffer.getOutputBuffer()[nr];
 	}
 
@@ -363,6 +363,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void run() {
+		LOG.log(Level.INFO, "Start PixelController Client thread, use compression: "+this.useCompression);
 		String targetHost = TARGET_HOST;
 		try {
 			setupFeedback.handleMessage("Detect PixelController OSC Port");
@@ -382,6 +383,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				serverPort = REMOTE_OSC_SERVER_PORT;
 				setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
 			}
+			LOG.log(Level.INFO, "Remote target, IP: "+targetHost+", port: "+serverPort);
 			
 			setupFeedback.handleMessage("Start OSC Server");
 			this.oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
@@ -413,7 +415,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());
 		initCommands.add(ValidCommands.GET_FILELOCATION.toString());
 		initCommands.add(ValidCommands.GET_IMAGEBUFFER.toString());		
-		initCommands.add(ValidCommands.REGISTER_VISUALOBSERVER.toString());
+		//initCommands.add(ValidCommands.REGISTER_VISUALOBSERVER.toString());
 
 		int waitLoop = 0;
 		while(!recievedMessages.containsAll(initCommands)) {			
@@ -431,6 +433,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			}
 			
 			if (waitLoop>4) {
+				LOG.log(Level.SEVERE, "Failed to get answer from PixelController Server!");
+
 				setupFeedback.handleMessage("");
 				setupFeedback.handleMessage("ERROR: No answer from PixelController received!");
 				setupFeedback.handleMessage("Start aborted, make sure PixelController is running and restart client");				
@@ -438,7 +442,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			}
 		}
 		initialized = true;
-				
+		sendOscMessage(ValidCommands.REGISTER_VISUALOBSERVER.toString());
+/*				
 		long l = 0;
 		while (true) {
 			sendOscMessage(ValidCommands.GET_IMAGEBUFFER);
@@ -456,7 +461,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			}
 			
 			l++;
-		}
+		}*/
 	}
 
 	@Override
