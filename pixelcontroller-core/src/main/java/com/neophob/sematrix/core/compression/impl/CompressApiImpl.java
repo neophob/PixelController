@@ -5,6 +5,7 @@ import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4SafeDecompressor;
 
 import com.neophob.sematrix.core.compression.CompressApi;
+import com.neophob.sematrix.core.compression.DecompressException;
 
 class CompressApiImpl implements CompressApi {
 
@@ -22,10 +23,14 @@ class CompressApiImpl implements CompressApi {
 	}
 
 	@Override
-	public byte[] decompress(byte[] in, int buffersize) {
-		byte decompressedData[] = new byte[buffersize];		
-		int decompressedLength = decompressor.decompress(in, decompressedData);			
-		return decompressedData;
+	public byte[] decompress(byte[] in, int buffersize) throws DecompressException {
+		byte decompressedData[] = new byte[buffersize];	
+		try {
+			int decompressedLength = decompressor.decompress(in, decompressedData);			
+			return decompressedData;			
+		} catch (Exception e) {
+			throw new DecompressException(e);
+		}
 	}
 
 }

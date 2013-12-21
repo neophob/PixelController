@@ -15,6 +15,6 @@ public interface CompressApi {
 	 * @param bufferSize, should have enough space to keep the uncompressed data
 	 * @return
 	 */
-	byte[] decompress(byte[] in, int bufferSize);
+	byte[] decompress(byte[] in, int bufferSize) throws DecompressException;
 	
 }
