@@ -67,7 +67,7 @@ public abstract class Output implements IOutput {
 	 * for each output device two buffers exists, one to display and
 	 * one to work with 
 	 */
-	private Map<Integer, int[]> bufferMap;
+	private transient Map<Integer, int[]> bufferMap;
 
 	private GammaType gammaType;	
 

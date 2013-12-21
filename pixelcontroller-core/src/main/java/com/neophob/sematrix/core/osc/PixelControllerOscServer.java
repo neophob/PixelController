@@ -50,7 +50,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 	private static transient final Logger LOG = Logger.getLogger(PixelControllerOscServer.class.getName());
 
 	//size of recieving buffer, should fit a whole image buffer
-	public transient static final int REPLY_PACKET_BUFFERSIZE = 32*1024;
+	public transient static final int REPLY_PACKET_BUFFERSIZE = 60*1024;
 
 	private PixOscServer oscServer;
 

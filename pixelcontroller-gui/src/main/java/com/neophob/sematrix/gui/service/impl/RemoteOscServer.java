@@ -12,12 +12,16 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.jpountz.lz4.LZ4Factory;
+import net.jpountz.lz4.LZ4SafeDecompressor;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
+import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
@@ -51,12 +55,14 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	private static final Logger LOG = Logger.getLogger(RemoteOscServer.class.getName());
 
+	private static final boolean LZ4_DECOMPRESS = true;
+	
 	private static final String TARGET_HOST = "pixelcontroller.local";
 	private static final int REMOTE_OSC_SERVER_PORT = 9876;
 	private static final int LOCAL_OSC_SERVER_PORT = 9875;
 
 	//size of recieving buffer, should fit a whole image buffer
-	private static final int BUFFER_SIZE = 8192;
+	private static final int BUFFER_SIZE = 60*1024;
 	
 	private static final long GUISTATE_POLL_SLEEP = 400;
 
@@ -78,13 +84,17 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private ISound sound;
 	private List<OutputMapping> outputMapping;
 	private IOutput output;
+	private ImageBuffer imageBuffer;
 	private List<String> guiState;
 	private PresetSettings presetSettings;
 	private FileUtils fileUtilsRemote;
 	private PixelControllerStatusMBean jmxStatistics;
 	
+	private LZ4SafeDecompressor decompressor; 
+
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
 		setupFeedback = msgHandler;
+		decompressor = LZ4Factory.fastestJavaInstance().safeDecompressor();
 	}
 
 	@Override
@@ -122,7 +132,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public int[] getOutputBuffer(int nr) {
-		return output.getBufferForScreen(nr, true);
+		//return output.getBufferForScreen(nr, true);
+		return imageBuffer.getOutputBuffer()[nr];
 	}
 
 	@Override
@@ -208,7 +219,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	@Override
 	public int[] getVisualBuffer(int nr) {
 		//cannot use output buffer - one visual is missing
-		return new int[matrix.getBufferXSize()*matrix.getBufferYSize()];
+		//return new int[matrix.getBufferXSize()*matrix.getBufferYSize()];
+		return imageBuffer.getVisualBuffer()[nr];
 	}
 	
 	@Override
@@ -304,6 +316,10 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			case GET_FILELOCATION:
 				fileUtilsRemote = convertToObject(oscIn.getBlob(), FileUtilsRemoteImpl.class);
 				break;
+				
+			case GET_IMAGEBUFFER:
+				imageBuffer = convertToObject(oscIn.getBlob(), ImageBuffer.class);
+				break;
 								
 			default:
 				break;
@@ -315,7 +331,15 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@SuppressWarnings("unchecked")
 	private <T> T convertToObject(byte[] input, Class<T> type) throws IOException, ClassNotFoundException {
-		ByteArrayInputStream bis = new ByteArrayInputStream(input);
+		
+		ByteArrayInputStream bis;
+		if (!LZ4_DECOMPRESS) {
+			bis = new ByteArrayInputStream(input);
+		} else {
+			byte decompressedData[] = new byte[BUFFER_SIZE];		
+			int decompressedLength = decompressor.decompress(input, decompressedData);			
+			bis = new ByteArrayInputStream(decompressedData);
+		}
 		ObjectInput in = null;
 		try {
 		  in = new ObjectInputStream(bis);
@@ -362,9 +386,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			this.oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
 			this.oscServer.startServer();
 			setupFeedback.handleMessage(" ... started");
+			
 			setupFeedback.handleMessage("Connect to PixelController OSC Server");
 			this.oscClient = OscClientFactory.createClientUdp(targetHost, serverPort, BUFFER_SIZE);
 			setupFeedback.handleMessage(" ... done");			
+			
 			this.remoteObserver = new RemoteOscObservable(); 
 			this.initialized = false;
 			this.recievedMessages = new HashSet<String>();			
@@ -385,6 +411,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initCommands.add(ValidCommands.GET_PRESETSETTINGS.toString());
 		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());
 		initCommands.add(ValidCommands.GET_FILELOCATION.toString());
+		initCommands.add(ValidCommands.GET_IMAGEBUFFER.toString());		
 		initCommands.add(ValidCommands.REGISTER_VISUALOBSERVER.toString());
 
 		int waitLoop = 0;
@@ -413,7 +440,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				
 		long l = 0;
 		while (true) {
-			sendOscMessage(ValidCommands.GET_OUTPUTBUFFER);
+			sendOscMessage(ValidCommands.GET_IMAGEBUFFER);
 		
 			if (l%20==0) {						
 				sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);

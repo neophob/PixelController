@@ -8,16 +8,22 @@ import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.jpountz.lz4.LZ4Compressor;
+import net.jpountz.lz4.LZ4Factory;
 
 import com.neophob.sematrix.core.api.CallbackMessage;
 import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
+import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
 import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.visual.OutputMapping;
+import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.client.PixOscClient;
@@ -36,16 +42,20 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
 	private static final int SEND_ERROR_THRESHOLD = 4;
 	
+	private static final boolean LZ4_COMPRESS = true;
+	
 	private PixelController pixelController;
 
 	private PixOscClient oscClient;
 	private FileUtils fileUtilRemote;
 	
 	private int sendError;
+	private LZ4Compressor compressor; 
 
 	
 	public OscReplyManager(PixelController pixelController) {
-		this.pixelController = pixelController;		
+		this.pixelController = pixelController;
+		this.compressor = LZ4Factory.fastestJavaInstance().fastCompressor();
 	}
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
@@ -93,6 +103,10 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 		case GET_FILELOCATION:
 			reply = new OscMessage(cmd.toString(), convertFromObject(getLazyfileUtilsRemote()));
 			break;
+			
+		case GET_IMAGEBUFFER:
+			reply = new OscMessage(cmd.toString(), convertFromObject(getVisualBuffer()));
+			break;
 
 		case REGISTER_VISUALOBSERVER:
 			pixelController.observeVisualState(this);
@@ -113,8 +127,8 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 
 		if (reply!=null) {
 			this.verifyOscClient(oscIn.getSocketAddress());
-			this.oscClient.sendMessage(reply);
 			LOG.log(Level.INFO, cmd.toString()+" reply size: "+reply.getMessageSize());			
+			this.oscClient.sendMessage(reply);
 		}
 	}
 	
@@ -149,7 +163,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 			OscMessage reply = new OscMessage(ValidCommands.GET_GUISTATE.toString(),
 					convertFromObject((ArrayList<String>)pixelController.getGuiState()));			
 			try {
-				LOG.log(Level.INFO, reply.getPattern()+" reply size: "+reply.getMessageSize());			
+				LOG.log(Level.INFO, reply.getPattern()+" reply size: "+reply.getMessageSize());				
 				this.oscClient.sendMessage(reply);
 				sendError = 0;
 			} catch (OscClientException e) {
@@ -172,14 +186,35 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 		}
 		return this.fileUtilRemote;
 	}
-	
+
+	private ImageBuffer getVisualBuffer() {
+		int nrOfOutputs = pixelController.getConfig().getNrOfScreens();		
+		int[][] outputBuffer = new int[nrOfOutputs][];
+		for (int i=0; i<nrOfOutputs; i++) {
+			outputBuffer[i] = pixelController.getOutput().getBufferForScreen(i, true);
+		}
+				
+		List<Visual> allVisuals = pixelController.getVisualState().getAllVisuals();
+		int[][] visualBuffer = new int[allVisuals.size()][];
+		for (int i=0; i<allVisuals.size(); i++) {
+			visualBuffer[i] = allVisuals.get(i).getBuffer();
+		}
+		
+		return new ImageBuffer(outputBuffer, visualBuffer);
+	}
+
 	private byte[] convertFromObject(Serializable s) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutput out = null;
 		try {
 			out = new ObjectOutputStream(bos);   
 			out.writeObject(s);
-			return bos.toByteArray();
+			if (!LZ4_COMPRESS) {
+				return bos.toByteArray();	
+			}
+			
+			return compressor.compress(bos.toByteArray());
+			
 		} catch (IOException e) {
 			LOG.log(Level.WARNING, "Failed to serializable object", e);
 			return new byte[0];

@@ -2,7 +2,8 @@
 
 ## Version 2.1
 * Decouple GUI from Code
-    -config options (client port = server port -1)
+    -config options (remote.client.fps and remote.connection.use.compression)
+    -client port = server port -1
 * Add console to GUI
 * Documentation for bonjour, client/server
 * Remote client, add shutdown hook, disconnect from server
