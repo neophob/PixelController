@@ -36,10 +36,8 @@ import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 /**
- * OSC Server, implements Observer which is used for two use cases:
- * 
- *  1) OSC Message Received - dispatch it
- *  2) VisualState changed - send to remote client
+ * OSC Server, implements Observer which is used for:
+ *  -OSC Message Received - verify and dispatch it
  * 
  * @author michu
  *
@@ -92,7 +90,6 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		}
 
 		String pattern = oscIn.getPattern();
-
 		ValidCommand command;		
 		try {
 			command = ValidCommand.valueOf(pattern);
@@ -131,9 +128,6 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 			}
 		}
 	}
-
-
-
 
 	/* (non-Javadoc)
 	 * @see com.neophob.sematrix.core.jmx.PacketAndBytesStatictics#getPacketCounter()

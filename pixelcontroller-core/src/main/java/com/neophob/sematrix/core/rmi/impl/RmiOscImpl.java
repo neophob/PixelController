@@ -70,6 +70,47 @@ public class RmiOscImpl implements RmiApi {
 		}
 	}
 	
+
+	@Override
+	public void sendPayload(SocketAddress socket, Command cmd, Serializable data) throws OscClientException {
+		OscMessage reply = new OscMessage(cmd.getValidCommand().toString(), cmd.getParameter(), convertFromObject(data));
+		if (socket!=null) {
+			this.verifyOscClient(socket);				
+		}
+		LOG.log(Level.INFO, cmd.getValidCommand()+" reply size: "+reply.getMessageSize());			
+		this.oscClient.sendMessage(reply);
+	}
+	
+	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
+		InetSocketAddress remote = (InetSocketAddress)socket;
+		boolean initNeeded = false;
+
+		if (oscClient == null) {
+			initNeeded = true;
+		} else if (oscClient.getTargetIp() != remote.getAddress().getHostName()) {
+			//TODO Verify port nr
+			initNeeded = true;
+		}
+
+		if (initNeeded) {			
+			//TODO make port configurable
+			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 
+					9875, bufferSize);			
+		}
+	}
+
+
+	@Override
+	public <T> T reassembleObject(byte[] data, Class<T> type) {
+		try {
+			return convertToObject(data, type);
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "Failed to convert object", e);
+		}
+		return null;
+	}
+	
+
 	private byte[] convertFromObject(Serializable s) {
 		if (s==null) {
 			return null;
@@ -138,45 +179,4 @@ public class RmiOscImpl implements RmiApi {
 			}
 		}		
 	}
-
-	@Override
-	public void sendPayload(SocketAddress socket, Command cmd, Serializable data) throws OscClientException {
-		OscMessage reply = new OscMessage(cmd.getValidCommand().toString(), cmd.getParameter(), convertFromObject(data));
-		if (socket!=null) {
-			this.verifyOscClient(socket);				
-		}
-		LOG.log(Level.INFO, cmd.getValidCommand()+" reply size: "+reply.getMessageSize());			
-		this.oscClient.sendMessage(reply);
-	}
-	
-	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
-		InetSocketAddress remote = (InetSocketAddress)socket;
-		boolean initNeeded = false;
-
-		if (oscClient == null) {
-			initNeeded = true;
-		} else if (oscClient.getTargetIp() != remote.getAddress().getHostName()) {
-			//TODO Verify port nr
-			initNeeded = true;
-		}
-
-		if (initNeeded) {			
-			//TODO make port configurable
-			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 
-					9875, bufferSize);			
-		}
-	}
-
-
-	@Override
-	public <T> T reassembleObject(byte[] data, Class<T> type) {
-		try {
-			return convertToObject(data, type);
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to convert object", e);
-		}
-		return null;
-	}
-
-
 }

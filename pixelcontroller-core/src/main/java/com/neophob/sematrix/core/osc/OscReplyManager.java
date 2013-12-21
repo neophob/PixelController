@@ -26,6 +26,8 @@ import com.neophob.sematrix.osc.model.OscMessage;
  * the osc reply manager sends back gui information, encoded
  * as osc package.
  * 
+ * implement observer, needed if a remote observer is registered
+ * 
  * @author michu
  *
  */
@@ -37,15 +39,12 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	private static final int SEND_STATISTICS_TO_REMOTEOBSERVER = 5000;
 
 	private PixelController pixelController;
-
 	private FileUtils fileUtilRemote;
 
-	private int sendError;
-
 	private Thread oscSendThread;
-	private boolean startSendImageThread = false;
-
 	private RmiApi remoteServer;
+	private int sendError;
+	private boolean startSendImageThread = false;
 
 
 	public OscReplyManager(PixelController pixelController) {
@@ -55,8 +54,13 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		LOG.log(Level.INFO, "OscReplyManager started, use compression: "+useCompression);
 	}
 
-	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
+	private void sendOscMessage(ValidCommand cmd) throws OscClientException {
+		String[] msg = new String[] {cmd.toString()};
+		handleClientResponse(null, msg);
+	}
 
+	//handle all "INTERNAL" commands, eg. API calls
+	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
 		ValidCommand cmd = ValidCommand.valueOf(msg[0]);
 		SocketAddress target = null;
 		if (oscIn!=null) {
@@ -150,6 +154,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 			if (sendError++ > SEND_ERROR_THRESHOLD) {
 				//disable remote observer after some errors
 				pixelController.stopObserveVisualState(this);
+				startSendImageThread = false;
 				LOG.log(Level.SEVERE, "Disable remote observer");
 			}
 		}			
@@ -184,11 +189,6 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		} catch (Exception e) {
 			return new ImageBuffer(new int[0][0], new int[0][0]);
 		}
-	}
-
-	private void sendOscMessage(ValidCommand cmd) throws OscClientException {
-		String[] msg = new String[] {cmd.toString()};
-		handleClientResponse(null, msg);
 	}
 
 	@Override

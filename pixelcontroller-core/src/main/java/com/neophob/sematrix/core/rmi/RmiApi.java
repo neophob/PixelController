@@ -8,12 +8,35 @@ import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.server.OscServerException;
 
+/**
+ * simple api to abstract the transport of data/objects between a server and a client
+ * 
+ * @author michu
+ *
+ */
 public interface RmiApi {
 	
+	/**
+	 * starts a RMI server
+	 * @param handler notification if a client send data
+	 * @param port
+	 * @param bufferSize
+	 * @throws OscServerException
+	 */
 	void startServer(Observer handler, int port, int bufferSize) throws OscServerException;
 	
+	/**
+	 * starts a RMI client that connect to an RMI server
+	 * @param targetIp
+	 * @param targetPort
+	 * @param bufferSize
+	 * @throws OscClientException
+	 */
 	void startClient(String targetIp, int targetPort, int bufferSize) throws OscClientException;
 	
+	/**
+	 * shutdown
+	 */
 	void shutdown();
 	
 	/**
@@ -25,5 +48,12 @@ public interface RmiApi {
 	 */
 	void sendPayload(SocketAddress socket, Command cmd, Serializable data) throws OscClientException;
 	
+	/**
+	 * recreate an object from binary data
+	 *  
+	 * @param data
+	 * @param type
+	 * @return
+	 */
 	<T> T reassembleObject(byte[] data, Class<T> type);
 }
