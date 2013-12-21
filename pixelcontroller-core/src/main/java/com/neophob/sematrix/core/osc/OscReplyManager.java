@@ -188,19 +188,23 @@ public class OscReplyManager extends CallbackMessage<ArrayList>{
 	}
 
 	private ImageBuffer getVisualBuffer() {
-		int nrOfOutputs = pixelController.getConfig().getNrOfScreens();		
-		int[][] outputBuffer = new int[nrOfOutputs][];
-		for (int i=0; i<nrOfOutputs; i++) {
-			outputBuffer[i] = pixelController.getOutput().getBufferForScreen(i, true);
+		try {
+			int nrOfOutputs = pixelController.getConfig().getNrOfScreens();		
+			int[][] outputBuffer = new int[nrOfOutputs][];
+			for (int i=0; i<nrOfOutputs; i++) {
+				outputBuffer[i] = pixelController.getOutput().getBufferForScreen(i, true);
+			}
+					
+			List<Visual> allVisuals = pixelController.getVisualState().getAllVisuals();
+			int[][] visualBuffer = new int[allVisuals.size()][];
+			for (int i=0; i<allVisuals.size(); i++) {
+				visualBuffer[i] = allVisuals.get(i).getBuffer();
+			}
+			
+			return new ImageBuffer(outputBuffer, visualBuffer);			
+		} catch (Exception e) {
+			return new ImageBuffer(new int[0][0], new int[0][0]);
 		}
-				
-		List<Visual> allVisuals = pixelController.getVisualState().getAllVisuals();
-		int[][] visualBuffer = new int[allVisuals.size()][];
-		for (int i=0; i<allVisuals.size(); i++) {
-			visualBuffer[i] = allVisuals.get(i).getBuffer();
-		}
-		
-		return new ImageBuffer(outputBuffer, visualBuffer);
 	}
 
 	private byte[] convertFromObject(Serializable s) {
