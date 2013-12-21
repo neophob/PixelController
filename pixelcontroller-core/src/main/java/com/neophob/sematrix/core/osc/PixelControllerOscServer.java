@@ -79,6 +79,10 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		oscServer.startServer();
 	}
 
+	public void stopServer() {
+		oscServer.stopServer();
+	}
+
 
 	public void handleOscMessage(OscMessage oscIn) {
 		//sanity check

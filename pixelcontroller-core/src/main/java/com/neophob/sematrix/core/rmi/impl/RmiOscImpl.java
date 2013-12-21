@@ -42,6 +42,7 @@ public class RmiOscImpl implements RmiApi {
 		this.compressor = CompressFactory.getCompressApi();
 		this.useCompression = useCompression;
 		this.bufferSize = bufferSize;
+		LOG.log(Level.INFO, "Start new OSC RMI Object, use compression: "+useCompression);
 	}
 	
 	@Override

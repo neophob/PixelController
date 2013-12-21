@@ -66,7 +66,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 	 */
 	public PixelControllerServerImpl(CallbackMessageInterface<String> handler) {
 		super(handler);
-
 		this.runner = new Thread(this);
 		this.runner.setName("PixelController Core");
 		this.runner.setDaemon(true);

@@ -82,6 +82,7 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
 	@Override
 	public void stopServer() {
 		try {
+			oscServer.stop();
 			oscServer.dispose();
 			LOG.log(Level.INFO, "OSC Server stopped");
 		} catch (Exception e) {
