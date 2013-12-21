@@ -39,7 +39,9 @@ import com.neophob.sematrix.osc.model.OscMessage;
 public class OscReplyManager extends CallbackMessage<ArrayList> implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
-	private static final int SEND_ERROR_THRESHOLD = 4;
+	
+	private static final int SEND_ERROR_THRESHOLD = 4;	
+	private static final int SEND_STATISTICS_TO_REMOTEOBSERVER = 5000;
 	
 	private PixelController pixelController;
 
@@ -138,7 +140,9 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		}
 
 		if (reply!=null) {
-			this.verifyOscClient(oscIn.getSocketAddress());
+			if (oscIn!=null) {
+				this.verifyOscClient(oscIn.getSocketAddress());				
+			}
 			LOG.log(Level.INFO, cmd.toString()+" reply size: "+reply.getMessageSize());			
 			this.oscClient.sendMessage(reply);
 		}
@@ -250,18 +254,29 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		}
 	}
 
+	private void sendOscMessage(ValidCommands cmd) throws OscClientException {
+		String[] msg = new String[] {cmd.toString()};
+		handleClientResponse(null, msg);
+	}
+
 	@Override
 	public void run() {
 		long sleepTime = (long)(1000f/pixelController.getConfig().parseRemoteFps());
 		LOG.log(Level.INFO, "OSC Sender thread started, sleeptime: "+sleepTime+", use compression: "+this.useCompression);
 		
+		long waitTime = 0;
 		try {
 			while (startSendImageThread) {
-				OscMessage imgData = new OscMessage(ValidCommands.GET_IMAGEBUFFER.toString(), convertFromObject(getVisualBuffer()));
-				LOG.log(Level.INFO, ValidCommands.GET_IMAGEBUFFER.toString()+" reply size: "+imgData.getMessageSize());			
-				this.oscClient.sendMessage(imgData);	
-				
+				sendOscMessage(ValidCommands.GET_IMAGEBUFFER);
 				Thread.sleep(sleepTime);
+				waitTime += sleepTime;
+				
+				if (waitTime > SEND_STATISTICS_TO_REMOTEOBSERVER) {
+					waitTime = 0;
+					sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
+					sendOscMessage(ValidCommands.GET_PRESETSETTINGS);
+					sendOscMessage(ValidCommands.GET_JMXSTATISTICS);									
+				}
 			}			
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "OSC Sender thread failed", e);
