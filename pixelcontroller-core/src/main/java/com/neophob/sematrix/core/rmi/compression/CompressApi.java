@@ -1,4 +1,4 @@
-package com.neophob.sematrix.core.compression;
+package com.neophob.sematrix.core.rmi.compression;
 
 public interface CompressApi {
 

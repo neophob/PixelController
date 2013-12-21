@@ -1,11 +1,5 @@
 package com.neophob.sematrix.core.osc;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +9,17 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessage;
 import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.compression.CompressApi;
-import com.neophob.sematrix.core.compression.impl.CompressFactory;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
+import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.rmi.RmiApi;
+import com.neophob.sematrix.core.rmi.impl.RmiOscImpl;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.osc.client.OscClientException;
-import com.neophob.sematrix.osc.client.PixOscClient;
-import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 import com.neophob.sematrix.osc.model.OscMessage;
 
 /**
@@ -39,87 +32,87 @@ import com.neophob.sematrix.osc.model.OscMessage;
 public class OscReplyManager extends CallbackMessage<ArrayList> implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(OscReplyManager.class.getName());
-	
+
 	private static final int SEND_ERROR_THRESHOLD = 4;	
 	private static final int SEND_STATISTICS_TO_REMOTEOBSERVER = 5000;
-	
+
 	private PixelController pixelController;
 
-	private PixOscClient oscClient;
 	private FileUtils fileUtilRemote;
-	
+
 	private int sendError;
-	private boolean useCompression;
-	private CompressApi compressor; 
-	
+
 	private Thread oscSendThread;
 	private boolean startSendImageThread = false;
 
-	
+	private RmiApi remoteServer;
+
+
 	public OscReplyManager(PixelController pixelController) {
 		this.pixelController = pixelController;
-		if (pixelController.getConfig().parseRemoteConnectionUseCompression()) {
-			this.compressor = CompressFactory.getCompressApi();
-			this.useCompression = true;
-		} else {
-			this.useCompression = false;
-		}
+		boolean useCompression = pixelController.getConfig().parseRemoteConnectionUseCompression();
+		this.remoteServer = new RmiOscImpl(useCompression, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
+		LOG.log(Level.INFO, "OscReplyManager started, use compression: "+useCompression);
 	}
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
 
 		ValidCommands cmd = ValidCommands.valueOf(msg[0]);
-		OscMessage reply = null;
+		SocketAddress target = null;
+		if (oscIn!=null) {
+			target = oscIn.getSocketAddress();			
+		}
+		Command command = new Command(cmd);
 
 		switch (cmd) {
-		case GET_CONFIGURATION:				
-			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getConfig()));						
+		case GET_CONFIGURATION:	
+			remoteServer.sendPayload(target, command, pixelController.getConfig());
 			break;
 
 		case GET_MATRIXDATA:				
-			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getMatrix()));			
+			remoteServer.sendPayload(target, command, pixelController.getMatrix());
 			break;
 
 		case GET_VERSION:
-			reply = new OscMessage(cmd.toString(), pixelController.getVersion());
+			remoteServer.sendPayload(target, command, pixelController.getVersion());
 			break;
 
 		case GET_COLORSETS:
-			reply = new OscMessage(cmd.toString(), convertFromObject((ArrayList<ColorSet>)pixelController.getColorSets()));
+			remoteServer.sendPayload(target, command, (ArrayList<ColorSet>)pixelController.getColorSets());
 			break;
 
 		case GET_OUTPUTMAPPING:
-			reply = new OscMessage(cmd.toString(), convertFromObject((CopyOnWriteArrayList<OutputMapping>)pixelController.getAllOutputMappings()));
+			remoteServer.sendPayload(target, command, (CopyOnWriteArrayList<OutputMapping>)pixelController.getAllOutputMappings());
 			break;
 
 		case GET_OUTPUT:
-			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getOutput()));
+			remoteServer.sendPayload(target, command, pixelController.getOutput());
 			break;
 
 		case GET_GUISTATE:
-			reply = new OscMessage(cmd.toString(), convertFromObject((ArrayList<String>)pixelController.getGuiState()));
+			remoteServer.sendPayload(target, command, (ArrayList<String>)pixelController.getGuiState());
 			break;
 
 		case GET_PRESETSETTINGS:
-			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPresetService().getSelectedPresetSettings()));
+			remoteServer.sendPayload(target, command, pixelController.getPresetService().getSelectedPresetSettings());
 			break;
 
 		case GET_JMXSTATISTICS:
-			reply = new OscMessage(cmd.toString(), convertFromObject(pixelController.getPixConStat()));
+			remoteServer.sendPayload(target, command, pixelController.getPixConStat());			
 			break;
-			
+
 		case GET_FILELOCATION:
-			reply = new OscMessage(cmd.toString(), convertFromObject(getLazyfileUtilsRemote()));
+			remoteServer.sendPayload(target, command, getLazyfileUtilsRemote());
 			break;
-			
+
 		case GET_IMAGEBUFFER:
-			reply = new OscMessage(cmd.toString(), convertFromObject(getVisualBuffer()));			
+			remoteServer.sendPayload(target, command, getVisualBuffer());
 			break;
 
 		case REGISTER_VISUALOBSERVER:
 			pixelController.observeVisualState(this);
 			//send back ack
-			reply = new OscMessage(cmd.toString(), new byte[0]);
+			remoteServer.sendPayload(target, command, new byte[0]);
 			sendError = 0;
 			startSendImageThread = true;
 			oscSendThread = new Thread(this);
@@ -130,7 +123,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 
 		case UNREGISTER_VISUALOBSERVER:
 			pixelController.stopObserveVisualState(this);
-			reply = new OscMessage(cmd.toString(), new byte[0]);
+			remoteServer.sendPayload(target, command, new byte[0]);
 			startSendImageThread = false;
 			break;
 
@@ -139,31 +132,6 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 			break;
 		}
 
-		if (reply!=null) {
-			if (oscIn!=null) {
-				this.verifyOscClient(oscIn.getSocketAddress());				
-			}
-			LOG.log(Level.INFO, cmd.toString()+" reply size: "+reply.getMessageSize());			
-			this.oscClient.sendMessage(reply);
-		}
-	}
-	
-	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
-		InetSocketAddress remote = (InetSocketAddress)socket;
-		boolean initNeeded = false;
-
-		if (oscClient == null) {
-			initNeeded = true;
-		} else if (oscClient.getTargetIp() != remote.getAddress().getHostName()) {
-			//TODO Verify port nr
-			initNeeded = true;
-		}
-
-		if (initNeeded) {			
-			//TODO make port configurable
-			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 
-					9875, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);			
-		}
 	}
 
 	/**
@@ -174,30 +142,25 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	 */
 	@Override
 	public void handleMessage(ArrayList guiState) {
-		if (oscClient!=null) {
-			
-			OscMessage reply = new OscMessage(ValidCommands.GET_GUISTATE.toString(),
-					convertFromObject((ArrayList<String>)pixelController.getGuiState()));			
-			try {
-				LOG.log(Level.INFO, reply.getPattern()+" reply size: "+reply.getMessageSize());				
-				this.oscClient.sendMessage(reply);
-				sendError = 0;
-			} catch (OscClientException e) {
-				LOG.log(Level.SEVERE, "Failed to send observer message, error no: "+sendError, e);
-				if (sendError++ > SEND_ERROR_THRESHOLD) {
-					//disable remote observer after some errors
-					pixelController.stopObserveVisualState(this);
-					LOG.log(Level.SEVERE, "Disable remote observer");
-				}
-			}			
-		}
+		try {
+			sendOscMessage(ValidCommands.GET_GUISTATE);
+			sendError = 0;
+		} catch (OscClientException e) {
+			LOG.log(Level.SEVERE, "Failed to send observer message, error no: "+sendError, e);
+			if (sendError++ > SEND_ERROR_THRESHOLD) {
+				//disable remote observer after some errors
+				pixelController.stopObserveVisualState(this);
+				LOG.log(Level.SEVERE, "Disable remote observer");
+			}
+		}			
+
 	}
-	
+
 	private synchronized FileUtils getLazyfileUtilsRemote() {
 		if (this.fileUtilRemote == null) {			
 			this.fileUtilRemote = new FileUtilsRemoteImpl(
-						this.pixelController.getFileUtils().findBlinkenFiles(),
-						this.pixelController.getFileUtils().findImagesFiles()
+					this.pixelController.getFileUtils().findBlinkenFiles(),
+					this.pixelController.getFileUtils().findImagesFiles()
 					);
 		}
 		return this.fileUtilRemote;
@@ -210,47 +173,16 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 			for (int i=0; i<nrOfOutputs; i++) {
 				outputBuffer[i] = pixelController.getOutput().getBufferForScreen(i, true);
 			}
-					
+
 			List<Visual> allVisuals = pixelController.getVisualState().getAllVisuals();
 			int[][] visualBuffer = new int[allVisuals.size()][];
 			for (int i=0; i<allVisuals.size(); i++) {
 				visualBuffer[i] = allVisuals.get(i).getBuffer();
 			}
-			
+
 			return new ImageBuffer(outputBuffer, visualBuffer);			
 		} catch (Exception e) {
 			return new ImageBuffer(new int[0][0], new int[0][0]);
-		}
-	}
-
-	private byte[] convertFromObject(Serializable s) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
-		try {
-			out = new ObjectOutputStream(bos);   
-			out.writeObject(s);
-			if (!useCompression) {
-				return bos.toByteArray();	
-			}
-			
-			return compressor.compress(bos.toByteArray());
-			
-		} catch (IOException e) {
-			LOG.log(Level.WARNING, "Failed to serializable object", e);
-			return new byte[0];
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-			try {
-				bos.close();
-			} catch (IOException ex) {
-				// ignore close exception
-			}
 		}
 	}
 
@@ -262,15 +194,15 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	@Override
 	public void run() {
 		long sleepTime = (long)(1000f/pixelController.getConfig().parseRemoteFps());
-		LOG.log(Level.INFO, "OSC Sender thread started, sleeptime: "+sleepTime+", use compression: "+this.useCompression);
-		
+		LOG.log(Level.INFO, "OSC Sender thread started, sleeptime: "+sleepTime);
+
 		long waitTime = 0;
 		try {
 			while (startSendImageThread) {
 				sendOscMessage(ValidCommands.GET_IMAGEBUFFER);
 				Thread.sleep(sleepTime);
 				waitTime += sleepTime;
-				
+
 				if (waitTime > SEND_STATISTICS_TO_REMOTEOBSERVER) {
 					waitTime = 0;
 					sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
@@ -281,8 +213,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "OSC Sender thread failed", e);
 		}
-		
+
 		LOG.log(Level.INFO, "OSC Sender thread ended");
-		
 	}	
 }

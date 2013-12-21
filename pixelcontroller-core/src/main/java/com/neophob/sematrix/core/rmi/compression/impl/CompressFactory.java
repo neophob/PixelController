@@ -1,6 +1,6 @@
-package com.neophob.sematrix.core.compression.impl;
+package com.neophob.sematrix.core.rmi.compression.impl;
 
-import com.neophob.sematrix.core.compression.CompressApi;
+import com.neophob.sematrix.core.rmi.compression.CompressApi;
 
 public final class CompressFactory {
 

@@ -1,9 +1,5 @@
 package com.neophob.sematrix.gui.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,17 +11,18 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
-import com.neophob.sematrix.core.compression.CompressApi;
-import com.neophob.sematrix.core.compression.DecompressException;
-import com.neophob.sematrix.core.compression.impl.CompressFactory;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
+import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.rmi.RmiApi;
+import com.neophob.sematrix.core.rmi.impl.RmiOscImpl;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -37,12 +34,8 @@ import com.neophob.sematrix.mdns.client.PixMDnsClient;
 import com.neophob.sematrix.mdns.client.impl.MDnsClientFactory;
 import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.osc.client.OscClientException;
-import com.neophob.sematrix.osc.client.PixOscClient;
-import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
-import com.neophob.sematrix.osc.server.PixOscServer;
-import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 /**
  * communicate service with remote pixelcontroller instance
@@ -59,18 +52,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private static final int REMOTE_OSC_SERVER_PORT = 9876;
 	private static final int LOCAL_OSC_SERVER_PORT = 9875;
 
-	//size of recieving buffer, should fit a whole image buffer
-	private static final int BUFFER_SIZE = 60*1024;
-
-	private PixOscServer oscServer;
-	private PixOscClient oscClient;
-
 	private float steps;
 
-	private Set<String> recievedMessages;
+	private Set<ValidCommands> recievedMessages;
 	private RemoteOscObservable remoteObserver;
 	private CallbackMessageInterface<String> setupFeedback;
-	private int serverPort;
 
 	private boolean initialized;
 	private String version;
@@ -86,32 +72,33 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private FileUtils fileUtilsRemote;
 	private PixelControllerStatusMBean jmxStatistics;
 
-	private boolean useCompression;
-	private CompressApi decompressor; 
+	private RmiApi remoteServer;
+
 
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
-		setupFeedback = msgHandler;
-		useCompression = true;
-		decompressor = CompressFactory.getCompressApi();
+		this.setupFeedback = msgHandler;	
+		this.remoteServer = new RmiOscImpl(true, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
 				if (initialized) {
 					LOG.log(Level.INFO,	"Shutdown: Unregister Observer");
-					sendOscMessage(ValidCommands.UNREGISTER_VISUALOBSERVER.toString());
+					try {
+						remoteServer.sendPayload(null, new Command(ValidCommands.UNREGISTER_VISUALOBSERVER), null);
+					} catch (OscClientException e) {
+						//ignored
+					}
 					LOG.log(Level.INFO,	"Shutdown: Stop OSC Server");					
-					oscServer.stopServer();
+					remoteServer.shutdown();
 				}
 			}
 		});
-
 	}
 
 	@Override
 	public void start() {
 		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
-
 		this.sound = new SoundDummy();
 		this.steps = 1/12f;
 
@@ -213,7 +200,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void sendMessage(String[] msg) {
-		sendOscMessage(msg);
+		try {
+			remoteServer.sendPayload(null, new Command(msg), null);
+		} catch (OscClientException e) {
+			LOG.log(Level.WARNING, "Failed to parse Message!", e);
+		}
 	}
 
 	@Override
@@ -237,28 +228,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	}
 
 
-	private void sendOscMessage(ValidCommands cmd) {
-		sendOscMessage(cmd.toString());
-	}
-
-	private void sendOscMessage(String s) {
-		OscMessage msg = new OscMessage(s);
-		try {
-			oscClient.sendMessage(msg);
-		} catch (OscClientException e) {
-			LOG.log(Level.SEVERE, "failed to send osc message, "+oscClient, e);
-		}	
-	}
-
-	private void sendOscMessage(String[] s) {
-		OscMessage msg = new OscMessage(s);
-		try {
-			oscClient.sendMessage(msg);
-		} catch (OscClientException e) {
-			LOG.log(Level.SEVERE, "failed to send osc message, "+oscClient, e);
-		}	
-	}
-
+	/**
+	 * Incoming OSC Commands 
+	 */
 	@Override
 	public void handleOscMessage(OscMessage oscIn) {
 		if (StringUtils.isBlank(oscIn.getPattern())) {
@@ -275,59 +247,61 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			return;			
 		}
 
-		recievedMessages.add(command.toString());
-
+		recievedMessages.add(command);
+		processMessage(command, oscIn.getBlob());
+	}
+	
+	private void processMessage(ValidCommands command, byte[] data) {
 		try {
 			switch (command) {
 			case GET_VERSION:
-				this.version = oscIn.getArgs()[0];
+				this.version = remoteServer.reassembleObject(data, String.class);
 				setupFeedback.handleMessage("Found PixelController Version "+this.version);
 				break;
 
 			case GET_CONFIGURATION:
-				config = convertToObject(oscIn.getBlob(), ApplicationConfigurationHelper.class);
-				useCompression = config.parseRemoteConnectionUseCompression();
+				config = remoteServer.reassembleObject(data, ApplicationConfigurationHelper.class);
 				setupFeedback.handleMessage("Recieved Configuration");
 				break;
 
 			case GET_MATRIXDATA:
-				matrix = convertToObject(oscIn.getBlob(), MatrixData.class);
+				matrix = remoteServer.reassembleObject(data, MatrixData.class);
 				setupFeedback.handleMessage("Recieved Matrixdata");
 				break;
 
 			case GET_COLORSETS:
-				colorSets = convertToObject(oscIn.getBlob(), ArrayList.class);
+				colorSets = remoteServer.reassembleObject(data, ArrayList.class);
 				setupFeedback.handleMessage("Recieved Colorsets");
 				break;
 
 			case GET_OUTPUTMAPPING:
-				outputMapping = convertToObject(oscIn.getBlob(), ArrayList.class);
+				outputMapping = remoteServer.reassembleObject(data, ArrayList.class);
 				setupFeedback.handleMessage("Recieved Output mapping");
 				break;
 
 			case GET_OUTPUT:
-				output = convertToObject(oscIn.getBlob(), IOutput.class);
+				output = remoteServer.reassembleObject(data, IOutput.class);
 				break;
 
 			case GET_GUISTATE:
-				guiState = convertToObject(oscIn.getBlob(), ArrayList.class);
+				guiState = remoteServer.reassembleObject(data, ArrayList.class);
 				remoteObserver.notifyGuiUpdate(guiState);
 				break;
 
 			case GET_PRESETSETTINGS:
-				presetSettings = convertToObject(oscIn.getBlob(), PresetSettings.class);				
+				presetSettings = remoteServer.reassembleObject(data, PresetSettings.class);				
 				break;
 
 			case GET_JMXSTATISTICS:
-				jmxStatistics = convertToObject(oscIn.getBlob(), PixelControllerStatusMBean.class);
+				jmxStatistics = remoteServer.reassembleObject(data, PixelControllerStatusMBean.class);
 				break;
 
 			case GET_FILELOCATION:
-				fileUtilsRemote = convertToObject(oscIn.getBlob(), FileUtilsRemoteImpl.class);
+				fileUtilsRemote = remoteServer.reassembleObject(data, FileUtilsRemoteImpl.class);
 				break;
 
 			case GET_IMAGEBUFFER:
-				imageBuffer = convertToObject(oscIn.getBlob(), ImageBuffer.class);
+				imageBuffer = remoteServer.reassembleObject(data, ImageBuffer.class);
 				break;
 
 			default:
@@ -338,45 +312,12 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private <T> T convertToObject(byte[] input, Class<T> type) throws IOException, ClassNotFoundException {
-
-		ByteArrayInputStream bis;
-		if (!useCompression) {
-			bis = new ByteArrayInputStream(input);
-		} else {
-			try {
-				bis = new ByteArrayInputStream(decompressor.decompress(input, BUFFER_SIZE));
-			} catch (DecompressException e) {
-				LOG.log(Level.INFO, "Failed to decompress data, disable compression");
-				useCompression = false;
-				bis = new ByteArrayInputStream(input);
-			}
-		}
-		ObjectInput in = null;
-		try {
-			in = new ObjectInputStream(bis);
-			return (T) in.readObject(); 
-		} finally {
-			try {
-				bis.close();
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-			try {
-				if (in != null) {
-					in.close();
-				}
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-		}		
-	}
 
 	@Override
 	public void run() {
-		LOG.log(Level.INFO, "Start PixelController Client thread, use compression: "+this.useCompression);
+		LOG.log(Level.INFO, "Start PixelController Client thread");
 		String targetHost = TARGET_HOST;
+		int serverPort;
 		try {
 			setupFeedback.handleMessage("Detect PixelController OSC Server");
 			try {
@@ -398,42 +339,45 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			LOG.log(Level.INFO, "Remote target, IP: "+targetHost+", port: "+serverPort);
 
 			setupFeedback.handleMessage("Start OSC Server");
-			this.oscServer = OscServerFactory.createServerTcp(this, LOCAL_OSC_SERVER_PORT, BUFFER_SIZE);
-			this.oscServer.startServer();
+			remoteServer.startServer(this, LOCAL_OSC_SERVER_PORT, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
 			setupFeedback.handleMessage(" ... started");
 
 			setupFeedback.handleMessage("Connect to PixelController OSC Server");
-			this.oscClient = OscClientFactory.createClientUdp(targetHost, serverPort, BUFFER_SIZE);
+			remoteServer.startClient(targetHost, serverPort, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
 			setupFeedback.handleMessage(" ... done");			
 
 			this.remoteObserver = new RemoteOscObservable(); 
 			this.initialized = false;
-			this.recievedMessages = new HashSet<String>();			
+			this.recievedMessages = new HashSet<ValidCommands>();			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to start Remote OSC Server!", e);
 			return;
 		}
 
 		//first step, get static values
-		Set<String> initCommands = new HashSet<String>();
-		initCommands.add(ValidCommands.GET_VERSION.toString());
-		initCommands.add(ValidCommands.GET_CONFIGURATION.toString());
-		initCommands.add(ValidCommands.GET_MATRIXDATA.toString());
-		initCommands.add(ValidCommands.GET_COLORSETS.toString());
-		initCommands.add(ValidCommands.GET_OUTPUT.toString());
-		initCommands.add(ValidCommands.GET_GUISTATE.toString());			
-		initCommands.add(ValidCommands.GET_OUTPUTMAPPING.toString());
-		initCommands.add(ValidCommands.GET_PRESETSETTINGS.toString());
-		initCommands.add(ValidCommands.GET_JMXSTATISTICS.toString());
-		initCommands.add(ValidCommands.GET_FILELOCATION.toString());
-		initCommands.add(ValidCommands.GET_IMAGEBUFFER.toString());		
+		Set<ValidCommands> initCommands = new HashSet<ValidCommands>();
+		initCommands.add(ValidCommands.GET_VERSION);
+		initCommands.add(ValidCommands.GET_CONFIGURATION);
+		initCommands.add(ValidCommands.GET_MATRIXDATA);
+		initCommands.add(ValidCommands.GET_COLORSETS);
+		initCommands.add(ValidCommands.GET_OUTPUT);
+		initCommands.add(ValidCommands.GET_GUISTATE);			
+		initCommands.add(ValidCommands.GET_OUTPUTMAPPING);
+		initCommands.add(ValidCommands.GET_PRESETSETTINGS);
+		initCommands.add(ValidCommands.GET_JMXSTATISTICS);
+		initCommands.add(ValidCommands.GET_FILELOCATION);
+		initCommands.add(ValidCommands.GET_IMAGEBUFFER);		
 
 		int waitLoop = 0;
 		while(!recievedMessages.containsAll(initCommands)) {			
-			for (String s: initCommands) {
-				if (!recievedMessages.contains(s)) {
-					LOG.log(Level.INFO, "Request "+s+" from OSC Server");
-					sendOscMessage(s);					
+			for (ValidCommands cmd: initCommands) {
+				if (!recievedMessages.contains(cmd)) {
+					LOG.log(Level.INFO, "Request "+cmd+" from OSC Server");
+					try {
+						remoteServer.sendPayload(null, new Command(cmd), null);
+					} catch (OscClientException e) {
+						LOG.log(Level.SEVERE, "failed to send osc message, "+cmd, e);
+					}
 				}
 			}
 			try {
@@ -445,7 +389,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 			if (waitLoop>4) {
 				LOG.log(Level.SEVERE, "Failed to get answer from PixelController Server!");
-
 				setupFeedback.handleMessage("");
 				setupFeedback.handleMessage("ERROR: No answer from PixelController received!");
 				setupFeedback.handleMessage("Start aborted, make sure PixelController is running and restart client");				
@@ -454,8 +397,11 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		}
 		initialized = true;
 		//now register remote observer
-		sendOscMessage(ValidCommands.REGISTER_VISUALOBSERVER.toString());
-
+		try {
+			remoteServer.sendPayload(null, new Command(ValidCommands.REGISTER_VISUALOBSERVER), null);
+		} catch (OscClientException e) {
+			LOG.log(Level.SEVERE, "failed to send osc message, "+ValidCommands.REGISTER_VISUALOBSERVER, e);
+		}
 	}
 
 	@Override

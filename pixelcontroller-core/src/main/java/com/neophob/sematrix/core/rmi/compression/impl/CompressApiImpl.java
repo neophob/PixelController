@@ -1,11 +1,11 @@
-package com.neophob.sematrix.core.compression.impl;
+package com.neophob.sematrix.core.rmi.compression.impl;
 
 import net.jpountz.lz4.LZ4Compressor;
 import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4SafeDecompressor;
 
-import com.neophob.sematrix.core.compression.CompressApi;
-import com.neophob.sematrix.core.compression.DecompressException;
+import com.neophob.sematrix.core.rmi.compression.CompressApi;
+import com.neophob.sematrix.core.rmi.compression.DecompressException;
 
 class CompressApiImpl implements CompressApi {
 
