@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.helper.ScreenshotHelper;
 import com.neophob.sematrix.core.preset.PresetService;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.Visual;
@@ -89,7 +89,7 @@ public enum MessageProcessor {
 		VisualState col = VisualState.getInstance();
 		
 		try {
-			ValidCommands cmd = ValidCommands.valueOf(msg[0]);			
+			ValidCommand cmd = ValidCommand.valueOf(msg[0]);			
 			Visual v;
 			switch (cmd) {
 			case CHANGE_GENERATOR_A:

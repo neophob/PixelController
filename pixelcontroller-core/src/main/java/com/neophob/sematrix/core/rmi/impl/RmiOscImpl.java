@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.Command;
-import com.neophob.sematrix.core.properties.ValidCommands;
 import com.neophob.sematrix.core.rmi.RmiApi;
 import com.neophob.sematrix.core.rmi.compression.CompressApi;
 import com.neophob.sematrix.core.rmi.compression.DecompressException;
@@ -177,7 +176,6 @@ public class RmiOscImpl implements RmiApi {
 		}
 		return null;
 	}
-
 
 
 }

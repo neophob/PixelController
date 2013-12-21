@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * The Enum ValidCommands.
  */
-public enum ValidCommands {
+public enum ValidCommand {
 	
 	/** The CHANGE generator a. */
 	CHANGE_GENERATOR_A(CommandGroup.VISUAL, 1, "<INT> change first generator for current visual"),
@@ -165,7 +165,7 @@ public enum ValidCommands {
 	 * @param nrOfParams the nr of params
 	 * @param desc the desc
 	 */
-	ValidCommands(CommandGroup group, int nrOfParams, String desc) {
+	ValidCommand(CommandGroup group, int nrOfParams, String desc) {
 		this.group = group;
 		this.nrOfParams = nrOfParams;
 		this.desc = desc;
@@ -205,9 +205,9 @@ public enum ValidCommands {
 	 * @param group the group
 	 * @return the list
 	 */
-	public static List<ValidCommands> getCommandsByGroup(CommandGroup group) {
-		List<ValidCommands> list = new ArrayList<ValidCommands>();
-		for (ValidCommands vc: ValidCommands.values()) {
+	public static List<ValidCommand> getCommandsByGroup(CommandGroup group) {
+		List<ValidCommand> list = new ArrayList<ValidCommand>();
+		for (ValidCommand vc: ValidCommand.values()) {
 			if (vc.getGroup() == group) {
 				list.add(vc);
 			}

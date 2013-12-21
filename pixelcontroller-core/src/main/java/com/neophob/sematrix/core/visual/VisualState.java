@@ -36,7 +36,7 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
@@ -268,7 +268,7 @@ public class VisualState extends Observable {
 		} else if (randomPresetMode) {
 			if (Shuffler.randomPresentModeShuffler(sound)) {
 				String[] msg = new String[1];
-				msg[0] = ""+ValidCommands.PRESET_RANDOM;
+				msg[0] = ""+ValidCommand.PRESET_RANDOM;
 				MessageProcessor.INSTANCE.processMsg(msg, true, null);
 				this.notifyGuiUpdate();
 			}
@@ -384,21 +384,21 @@ public class VisualState extends Observable {
 		//get visual status
 		int n=0;
 		for (Visual v: allVisuals) {
-			ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+n++);
-			ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
-			ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
-			ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
-			ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
-			ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
-			ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
+			ret.add(ValidCommand.CURRENT_VISUAL +EMPTY_CHAR+n++);
+			ret.add(ValidCommand.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
+			ret.add(ValidCommand.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
+			ret.add(ValidCommand.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
+			ret.add(ValidCommand.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
+			ret.add(ValidCommand.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
+			ret.add(ValidCommand.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
 		}
 
 		//get output status
 		int ofs=0;
 		for (OutputMapping om: ioMapping) {
-			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+ofs);
-			ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+			ret.add(ValidCommand.CURRENT_OUTPUT +EMPTY_CHAR+ofs);
+			ret.add(ValidCommand.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
+			ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
 			ofs++;
 		}
 
@@ -407,9 +407,9 @@ public class VisualState extends Observable {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 
-		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+presetService.getSelectedPreset());						
+		ret.add(ValidCommand.CHANGE_PRESET +EMPTY_CHAR+presetService.getSelectedPreset());						
 		if (inPauseMode) {
-			ret.add(ValidCommands.FREEZE+EMPTY_CHAR);
+			ret.add(ValidCommand.FREEZE+EMPTY_CHAR);
 		}
 		return ret;
 	}
@@ -699,22 +699,22 @@ public class VisualState extends Observable {
 		List<String> ret = new ArrayList<String>();
 
 		Visual v = allVisuals.get(currentVisual);		
-		ret.add(ValidCommands.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
-		ret.add(ValidCommands.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
-		ret.add(ValidCommands.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
-		ret.add(ValidCommands.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
-		ret.add(ValidCommands.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
-		ret.add(ValidCommands.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
-		ret.add(ValidCommands.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
+		ret.add(ValidCommand.CURRENT_VISUAL +EMPTY_CHAR+currentVisual);
+		ret.add(ValidCommand.CHANGE_GENERATOR_A+EMPTY_CHAR+v.getGenerator1Idx());
+		ret.add(ValidCommand.CHANGE_GENERATOR_B+EMPTY_CHAR+v.getGenerator2Idx());
+		ret.add(ValidCommand.CHANGE_EFFECT_A+EMPTY_CHAR+v.getEffect1Idx());
+		ret.add(ValidCommand.CHANGE_EFFECT_B+EMPTY_CHAR+v.getEffect2Idx());
+		ret.add(ValidCommand.CHANGE_MIXER+EMPTY_CHAR+v.getMixerIdx());
+		ret.add(ValidCommand.CURRENT_COLORSET+EMPTY_CHAR+v.getColorSet().getName());
         int brightnessInt = (int)(this.brightness*100f);
-        ret.add(ValidCommands.CHANGE_BRIGHTNESS+" "+brightnessInt);
+        ret.add(ValidCommand.CHANGE_BRIGHTNESS+" "+brightnessInt);
 
 		//get output status
 		int ofs=0;
 		for (OutputMapping om: ioMapping) {
-			ret.add(ValidCommands.CURRENT_OUTPUT +EMPTY_CHAR+ofs);
-			ret.add(ValidCommands.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
-			ret.add(ValidCommands.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
+			ret.add(ValidCommand.CURRENT_OUTPUT +EMPTY_CHAR+ofs);
+			ret.add(ValidCommand.CHANGE_OUTPUT_FADER+EMPTY_CHAR+om.getFader().getId());
+			ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL+EMPTY_CHAR+om.getVisualId());
 			ofs++;
 		}
 
@@ -722,8 +722,8 @@ public class VisualState extends Observable {
 		ret.addAll(pixelControllerGenerator.getCurrentState());
 		ret.addAll(pixelControllerShufflerSelect.getCurrentState());
 
-		ret.add(ValidCommands.CHANGE_PRESET +EMPTY_CHAR+presetService.getSelectedPreset());						
-		ret.add(ValidCommands.FREEZE+EMPTY_CHAR+inPauseMode);
+		ret.add(ValidCommand.CHANGE_PRESET +EMPTY_CHAR+presetService.getSelectedPreset());						
+		ret.add(ValidCommand.FREEZE+EMPTY_CHAR+inPauseMode);
 
 		return ret;
 	}

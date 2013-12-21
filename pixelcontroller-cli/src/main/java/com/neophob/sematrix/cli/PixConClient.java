@@ -28,7 +28,7 @@ import java.text.ParseException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.neophob.sematrix.core.properties.CommandGroup;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 
@@ -88,7 +88,7 @@ public class PixConClient {
         	if (cg.name().equals(CommandGroup.INTERNAL)) {
         		continue;
         	}
-            for (ValidCommands vc: ValidCommands.getCommandsByGroup(cg)) {
+            for (ValidCommand vc: ValidCommand.getCommandsByGroup(cg)) {
             	System.out.println("\t"
             	            +pretifyString(vc.toString(),28)
             	            +pretifyString("# of parameters: "+vc.getNrOfParams(), 23)
@@ -130,7 +130,7 @@ public class PixConClient {
                 throw new IllegalArgumentException("no ValidCommand specified!");
             }
             
-            ValidCommands parsedCommand = ValidCommands.valueOf(pCmd.toUpperCase());
+            ValidCommand parsedCommand = ValidCommand.valueOf(pCmd.toUpperCase());
             String[] otherArgs = parser.getRemainingArgs();
             
             if (parsedCommand.getNrOfParams() < otherArgs.length) {
@@ -179,7 +179,7 @@ public class PixConClient {
         
         System.out.println(cmd);
         
-        if (cmd.getCommand() == ValidCommands.JMX_STAT) {
+        if (cmd.getCommand() == ValidCommand.JMX_STAT) {
         	//send jmx request
             int port = cmd.getPort();
             if (port==DEFAULT_PORT) {

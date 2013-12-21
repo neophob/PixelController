@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.PixelControllerElement;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
@@ -105,10 +105,10 @@ public class PixelControllerEffect implements PixelControllerElement {
 	public List<String> getCurrentState() {
 		List<String> ret = new ArrayList<String>();
 				
-		ret.add(ValidCommands.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
-		ret.add(ValidCommands.CHANGE_THRESHOLD_VALUE +" "+threshold.getThreshold());
-        ret.add(ValidCommands.TEXTDEF+" "+textureDeformation.getLut());
-        ret.add(ValidCommands.ZOOMOPT+" "+zoom.getZoomMode());
+		ret.add(ValidCommand.CHANGE_ROTOZOOM+" "+((RotoZoom)getEffect(EffectName.ROTOZOOM)).getAngle());
+		ret.add(ValidCommand.CHANGE_THRESHOLD_VALUE +" "+threshold.getThreshold());
+        ret.add(ValidCommand.TEXTDEF+" "+textureDeformation.getLut());
+        ret.add(ValidCommand.ZOOMOPT+" "+zoom.getZoomMode());
 
 		return ret;
 	}

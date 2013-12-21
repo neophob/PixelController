@@ -43,7 +43,7 @@ import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ConfigConstant;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelResize;
 import com.neophob.sematrix.core.resize.Resize;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
@@ -1254,7 +1254,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 	public void updateGuiElements(Map<String, String> diff) {
 		for (Map.Entry<String, String> s: diff.entrySet()) {
 			try {
-				ValidCommands cmd = ValidCommands.valueOf(s.getKey());
+				ValidCommand cmd = ValidCommand.valueOf(s.getKey());
 				switch (cmd) {
 				case CHANGE_GENERATOR_A:					
 					generatorListOne.setLabel(generatorListOne.getItem(Integer.parseInt(s.getValue())).getName());					

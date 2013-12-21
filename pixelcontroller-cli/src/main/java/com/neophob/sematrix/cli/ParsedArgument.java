@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.cli;
 
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.osc.model.OscMessage;
 
 /**
@@ -33,7 +33,7 @@ public class ParsedArgument {
 	private int port;
 	
 	/** The command. */
-	private ValidCommands command;
+	private ValidCommand command;
 	
 	/** The parameter. */
 	private String parameter;
@@ -46,7 +46,7 @@ public class ParsedArgument {
 	 * @param command the command
 	 * @param parameter the parameter
 	 */
-	public ParsedArgument(String hostname, int port, ValidCommands command, String parameter) {
+	public ParsedArgument(String hostname, int port, ValidCommand command, String parameter) {
 		this.hostname = hostname;
 		this.port = port;
 		this.command = command;
@@ -76,7 +76,7 @@ public class ParsedArgument {
 	 *
 	 * @return the command
 	 */
-	public ValidCommands getCommand() {
+	public ValidCommand getCommand() {
 		return command;
 	}
 

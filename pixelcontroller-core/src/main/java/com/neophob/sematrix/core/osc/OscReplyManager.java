@@ -13,7 +13,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsRemoteImpl;
 import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
 import com.neophob.sematrix.core.properties.Command;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
 import com.neophob.sematrix.core.rmi.impl.RmiOscImpl;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -57,7 +57,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
 
-		ValidCommands cmd = ValidCommands.valueOf(msg[0]);
+		ValidCommand cmd = ValidCommand.valueOf(msg[0]);
 		SocketAddress target = null;
 		if (oscIn!=null) {
 			target = oscIn.getSocketAddress();			
@@ -143,7 +143,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	@Override
 	public void handleMessage(ArrayList guiState) {
 		try {
-			sendOscMessage(ValidCommands.GET_GUISTATE);
+			sendOscMessage(ValidCommand.GET_GUISTATE);
 			sendError = 0;
 		} catch (OscClientException e) {
 			LOG.log(Level.SEVERE, "Failed to send observer message, error no: "+sendError, e);
@@ -186,7 +186,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		}
 	}
 
-	private void sendOscMessage(ValidCommands cmd) throws OscClientException {
+	private void sendOscMessage(ValidCommand cmd) throws OscClientException {
 		String[] msg = new String[] {cmd.toString()};
 		handleClientResponse(null, msg);
 	}
@@ -199,15 +199,15 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 		long waitTime = 0;
 		try {
 			while (startSendImageThread) {
-				sendOscMessage(ValidCommands.GET_IMAGEBUFFER);
+				sendOscMessage(ValidCommand.GET_IMAGEBUFFER);
 				Thread.sleep(sleepTime);
 				waitTime += sleepTime;
 
 				if (waitTime > SEND_STATISTICS_TO_REMOTEOBSERVER) {
 					waitTime = 0;
-					sendOscMessage(ValidCommands.GET_OUTPUTMAPPING);
-					sendOscMessage(ValidCommands.GET_PRESETSETTINGS);
-					sendOscMessage(ValidCommands.GET_JMXSTATISTICS);									
+					sendOscMessage(ValidCommand.GET_OUTPUTMAPPING);
+					sendOscMessage(ValidCommand.GET_PRESETSETTINGS);
+					sendOscMessage(ValidCommand.GET_JMXSTATISTICS);									
 				}
 			}			
 		} catch (Exception e) {

@@ -27,7 +27,7 @@ import com.neophob.sematrix.core.api.PixelController;
 import com.neophob.sematrix.core.jmx.PacketAndBytesStatictics;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.properties.CommandGroup;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
@@ -89,9 +89,9 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 
 		String pattern = oscIn.getPattern();
 
-		ValidCommands command;		
+		ValidCommand command;		
 		try {
-			command = ValidCommands.valueOf(pattern);
+			command = ValidCommand.valueOf(pattern);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Unknown message: "+pattern, e);
 			return;			
@@ -109,7 +109,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 		}
 
 		//ignore nr of parameter for osc generator
-		if (command != ValidCommands.OSC_GENERATOR1 && command != ValidCommands.OSC_GENERATOR2) {			
+		if (command != ValidCommand.OSC_GENERATOR1 && command != ValidCommand.OSC_GENERATOR2) {			
 			for (int i=0; i<command.getNrOfParams(); i++) {
 				msg[1+i] = oscIn.getArgs()[i];
 			}			

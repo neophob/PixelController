@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.neophob.sematrix.core.PixelControllerElement;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 
 /**
  * The Class PixelControllerShufflerSelect.
@@ -57,7 +57,7 @@ public class PixelControllerShufflerSelect implements PixelControllerElement {
 	public List<String> getCurrentState() {
 		List<String> ret = new ArrayList<String>();
 		
-		ret.add(ValidCommands.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
+		ret.add(ValidCommand.CHANGE_SHUFFLER_SELECT+" "+getShufflerStatus());
 
 		return ret;
 	}

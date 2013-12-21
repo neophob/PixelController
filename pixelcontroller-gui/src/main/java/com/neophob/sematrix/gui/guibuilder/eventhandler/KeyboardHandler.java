@@ -20,7 +20,7 @@ package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import java.awt.event.KeyEvent;
 
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
 import com.neophob.sematrix.gui.service.PixConServer;
 
@@ -60,37 +60,37 @@ public final class KeyboardHandler {
         
         //change current Colorset
         case 'C':  
-        	sendMsg(ValidCommands.ROTATE_COLORSET);
+        	sendMsg(ValidCommand.ROTATE_COLORSET);
             break;
 
         //change current generator 1
         case 'F':
-        	sendMsg(ValidCommands.ROTATE_GENERATOR_A);
+        	sendMsg(ValidCommand.ROTATE_GENERATOR_A);
         	break;
 
         //change current generator 2
         case 'G':
-        	sendMsg(ValidCommands.ROTATE_GENERATOR_B);
+        	sendMsg(ValidCommand.ROTATE_GENERATOR_B);
             break;
 
         //change current effect 1
         case 'W':
-        	sendMsg(ValidCommands.ROTATE_EFFECT_A);
+        	sendMsg(ValidCommand.ROTATE_EFFECT_A);
             break;
 
         //change current effect 2
         case 'E':        	
-        	sendMsg(ValidCommands.ROTATE_EFFECT_B);
+        	sendMsg(ValidCommand.ROTATE_EFFECT_B);
             break;
 
         //change current mixer
         case 'M':
-        	sendMsg(ValidCommands.ROTATE_MIXER);
+        	sendMsg(ValidCommand.ROTATE_MIXER);
             break;
             
         //randomize
         case 'R':
-        	sendMsg(ValidCommands.RANDOMIZE);
+        	sendMsg(ValidCommand.RANDOMIZE);
             break;
             
         default:
@@ -118,7 +118,7 @@ public final class KeyboardHandler {
         
     }
 
-    private static void sendMsg(ValidCommands command) {
+    private static void sendMsg(ValidCommand command) {
         String msg[] = new String[1];		
         msg[0] = ""+command;
     	pixConServer.sendMessage(msg);

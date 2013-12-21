@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
 import com.neophob.sematrix.gui.model.GuiElement;
 import com.neophob.sematrix.gui.service.PixConServer;
@@ -119,12 +119,12 @@ public final class P5EventListener implements ControlListener {
 
             case MIXER_DROPDOWN:
                 LOG.log(Level.INFO, selection+" Value: "+value);
-                createMessage(ValidCommands.CHANGE_MIXER, value);
+                createMessage(ValidCommand.CHANGE_MIXER, value);
                 break;
 
             case BUTTON_RANDOM_CONFIGURATION:
                 LOG.log(Level.INFO, selection+" Value: "+value);
-                createMessage(ValidCommands.RANDOMIZE, value);
+                createMessage(ValidCommand.RANDOMIZE, value);
                 break;
 
             case BUTTONS_RANDOM_MODE:
@@ -134,12 +134,12 @@ public final class P5EventListener implements ControlListener {
             	
             case BUTTON_RANDOM_PRESET:
                 LOG.log(Level.INFO, selection+" Value: "+value);
-                createMessage(ValidCommands.PRESET_RANDOM, value);
+                createMessage(ValidCommand.PRESET_RANDOM, value);
                 break;
 
             case CURRENT_VISUAL:
                 LOG.log(Level.INFO, selection+" Value: "+value);
-                createMessage(ValidCommands.CURRENT_VISUAL, value);
+                createMessage(ValidCommand.CURRENT_VISUAL, value);
                 break;
 
             case CURRENT_OUTPUT:
@@ -148,75 +148,75 @@ public final class P5EventListener implements ControlListener {
                     if (f==0 ? outputs.add(Boolean.FALSE) : outputs.add(Boolean.TRUE));
                 }
                 LOG.log(Level.INFO, selection+": "+value);
-                createMessage(ValidCommands.CURRENT_OUTPUT, value);
+                createMessage(ValidCommand.CURRENT_OUTPUT, value);
                 break;
 
             case THRESHOLD: 
                 LOG.log(Level.INFO, selection+": "+intVal);
-                createMessage(ValidCommands.CHANGE_THRESHOLD_VALUE, intVal);		    
+                createMessage(ValidCommand.CHANGE_THRESHOLD_VALUE, intVal);		    
                 break;
 
             case FX_ROTOZOOMER:
                 LOG.log(Level.INFO, selection+": "+intVal);
-                createMessage(ValidCommands.CHANGE_ROTOZOOM, intVal);		    
+                createMessage(ValidCommand.CHANGE_ROTOZOOM, intVal);		    
                 break;
 
             case BLINKENLIGHTS_DROPDOWN:
             	name = theEvent.getGroup().getCaptionLabel().getText();
             	LOG.log(Level.INFO, selection+" "+name);
-            	createMessage(ValidCommands.BLINKEN, name);
+            	createMessage(ValidCommand.BLINKEN, name);
             	break;
             	
             case IMAGE_DROPDOWN:
             	name = theEvent.getGroup().getCaptionLabel().getText();
             	LOG.log(Level.INFO, selection+" "+name);
-            	createMessage(ValidCommands.IMAGE, name);
+            	createMessage(ValidCommand.IMAGE, name);
             	break;
             	
             case OUTPUT_FADER_DROPDOWN:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CHANGE_OUTPUT_FADER, value);
+            	createMessage(ValidCommand.CHANGE_OUTPUT_FADER, value);
             	break;
 
             case OUTPUT_SELECTED_VISUAL_DROPDOWN:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CHANGE_OUTPUT_VISUAL, value);
+            	createMessage(ValidCommand.CHANGE_OUTPUT_VISUAL, value);
             	break;
 
             case OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_VISUAL, value);
+            	createMessage(ValidCommand.CHANGE_ALL_OUTPUT_VISUAL, value);
             	break;
             	            	
             case OUTPUT_ALL_FADER_DROPDOWN:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CHANGE_ALL_OUTPUT_FADER, value);
+            	createMessage(ValidCommand.CHANGE_ALL_OUTPUT_FADER, value);
             	break;
             	
             case TEXTUREDEFORM_OPTIONS:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.TEXTDEF, value);            	
+            	createMessage(ValidCommand.TEXTDEF, value);            	
             	break;
             	
             case ZOOM_OPTIONS:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.ZOOMOPT, value);
+            	createMessage(ValidCommand.ZOOMOPT, value);
             	break;
             	
             case COLORSCROLL_OPTIONS:
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.COLOR_SCROLL_OPT, value);            	
+            	createMessage(ValidCommand.COLOR_SCROLL_OPT, value);            	
             	break;
             	
             case TEXTFIELD:
             	name = theEvent.getStringValue();
             	LOG.log(Level.INFO, selection+" "+name);
-            	createMessage(ValidCommands.TEXTWR, name);            	
+            	createMessage(ValidCommand.TEXTWR, name);            	
             	break;
             
             case TEXTWR_OPTION:            	
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.TEXTWR_OPTION, value);            	
+            	createMessage(ValidCommand.TEXTWR_OPTION, value);            	
             	break;
             	
             case RANDOM_ELEMENT:            	
@@ -234,28 +234,28 @@ public final class P5EventListener implements ControlListener {
             
             case COLOR_SET_DROPDOWN:            	
             	LOG.log(Level.INFO, selection+" "+value);
-            	createMessage(ValidCommands.CURRENT_COLORSET, value);
+            	createMessage(ValidCommand.CURRENT_COLORSET, value);
             	break;
             	
             case PRESET_BUTTONS:
                 LOG.log(Level.INFO, selection+" "+intVal);
-                createMessage(ValidCommands.CHANGE_PRESET, intVal);
+                createMessage(ValidCommand.CHANGE_PRESET, intVal);
                 callback.updateCurrentPresetState();
                 break;
                 
             case LOAD_PRESET:
                 LOG.log(Level.INFO, "LOAD_PRESET");
-                createMessage(ValidCommands.LOAD_PRESET, "");
+                createMessage(ValidCommand.LOAD_PRESET, "");
                 callback.updateCurrentPresetState();
                 break;
             	
             case SAVE_PRESET:
                 LOG.log(Level.INFO, "SAVE_PRESET");
-                createMessage(ValidCommands.SAVE_PRESET, callback.getCurrentPresetName());
+                createMessage(ValidCommand.SAVE_PRESET, callback.getCurrentPresetName());
                 break;
               
             case BUTTON_TOGGLE_FREEZE:
-            	createMessage(ValidCommands.FREEZE, "");
+            	createMessage(ValidCommand.FREEZE, "");
             	break;
             	
             case BUTTON_TOGGLE_INTERNAL_VISUALS:
@@ -264,19 +264,19 @@ public final class P5EventListener implements ControlListener {
             	
             case BRIGHTNESS:
             	float brightness = value;
-            	createMessage(ValidCommands.CHANGE_BRIGHTNESS, brightness);
+            	createMessage(ValidCommand.CHANGE_BRIGHTNESS, brightness);
             	break;
             	
             case SAVE_SCREENSHOT:
-            	createMessage(ValidCommands.SCREENSHOT, "");
+            	createMessage(ValidCommand.SCREENSHOT, "");
             	break;
             	
             case GENERATOR_SPEED:
-            	createMessage(ValidCommands.GENERATOR_SPEED, value);
+            	createMessage(ValidCommand.GENERATOR_SPEED, value);
             	break;
             	
             case BEAT_WORKMODE:
-            	createMessage(ValidCommands.BEAT_WORKMODE, value);
+            	createMessage(ValidCommand.BEAT_WORKMODE, value);
             	break;
             	
             default:
@@ -305,7 +305,7 @@ public final class P5EventListener implements ControlListener {
      * @param newValue
      * @param source
      */
-    private void createMessage(ValidCommands validCommand, float newValue) {
+    private void createMessage(ValidCommand validCommand, float newValue) {
         String msg[] = new String[2];		
         msg[0] = ""+validCommand;
         msg[1] = ""+(int)newValue;
@@ -332,7 +332,7 @@ public final class P5EventListener implements ControlListener {
      * @param validCommand
      * @param newValue
      */
-    private void createMessage(ValidCommands validCommand, String newValue) {
+    private void createMessage(ValidCommand validCommand, String newValue) {
         String msg[] = new String[2];		
         msg[0] = ""+validCommand;
         msg[1] = newValue;
@@ -345,7 +345,7 @@ public final class P5EventListener implements ControlListener {
      */
     private void createShufflerMessage(String param) {
         String msg[] = new String[param.length()+1];		
-        msg[0] = ""+ValidCommands.CHANGE_SHUFFLER_SELECT;
+        msg[0] = ""+ValidCommand.CHANGE_SHUFFLER_SELECT;
         String tmp[] = param.split(" ");
         System.arraycopy(tmp, 0, msg, 1, tmp.length);
         singleSendMessageOut(msg);
@@ -359,13 +359,13 @@ public final class P5EventListener implements ControlListener {
         String msg[] = new String[2];
         
         if (newValue==0.0) {
-            msg[0] = ""+ValidCommands.RANDOM;        	
+            msg[0] = ""+ValidCommand.RANDOM;        	
         	msg[1] = "ON";
         } else if (newValue==1.0) {
-            msg[0] = ""+ValidCommands.RANDOM_PRESET_MODE;
+            msg[0] = ""+ValidCommand.RANDOM_PRESET_MODE;
         	msg[1] = "ON";
         } else if (newValue==-1.0) {
-            msg[0] = ""+ValidCommands.RANDOM;
+            msg[0] = ""+ValidCommand.RANDOM;
         	msg[1] = "OFF";
         }
 
@@ -382,9 +382,9 @@ public final class P5EventListener implements ControlListener {
         String msg[] = new String[2];
 
         if (source == GuiElement.EFFECT_ONE_DROPDOWN) {
-            msg[0] = ""+ValidCommands.CHANGE_EFFECT_A;
+            msg[0] = ""+ValidCommand.CHANGE_EFFECT_A;
         } else {
-            msg[0] = ""+ValidCommands.CHANGE_EFFECT_B;
+            msg[0] = ""+ValidCommand.CHANGE_EFFECT_B;
         }
         msg[1] = ""+(int)newValue;
         singleSendMessageOut(msg);
@@ -399,9 +399,9 @@ public final class P5EventListener implements ControlListener {
         String msg[] = new String[2];
 
         if (source == GuiElement.GENERATOR_ONE_DROPDOWN) {
-            msg[0] = ""+ValidCommands.CHANGE_GENERATOR_A;
+            msg[0] = ""+ValidCommand.CHANGE_GENERATOR_A;
         } else {
-            msg[0] = ""+ValidCommands.CHANGE_GENERATOR_B;
+            msg[0] = ""+ValidCommand.CHANGE_GENERATOR_B;
         }
         msg[1] = ""+(int)newValue;
         singleSendMessageOut(msg);

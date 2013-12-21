@@ -20,7 +20,7 @@ import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.Command;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
 import com.neophob.sematrix.core.rmi.impl.RmiOscImpl;
 import com.neophob.sematrix.core.sound.ISound;
@@ -54,7 +54,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	private float steps;
 
-	private Set<ValidCommands> recievedMessages;
+	private Set<ValidCommand> recievedMessages;
 	private RemoteOscObservable remoteObserver;
 	private CallbackMessageInterface<String> setupFeedback;
 
@@ -85,7 +85,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				if (initialized) {
 					LOG.log(Level.INFO,	"Shutdown: Unregister Observer");
 					try {
-						remoteServer.sendPayload(null, new Command(ValidCommands.UNREGISTER_VISUALOBSERVER), null);
+						remoteServer.sendPayload(null, new Command(ValidCommand.UNREGISTER_VISUALOBSERVER), null);
 					} catch (OscClientException e) {
 						//ignored
 					}
@@ -239,9 +239,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		}
 
 		String pattern = oscIn.getPattern();
-		ValidCommands command;		
+		ValidCommand command;		
 		try {
-			command = ValidCommands.valueOf(pattern);
+			command = ValidCommand.valueOf(pattern);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, "Unknown message: "+pattern, e);
 			return;			
@@ -251,7 +251,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		processMessage(command, oscIn.getBlob());
 	}
 	
-	private void processMessage(ValidCommands command, byte[] data) {
+	private void processMessage(ValidCommand command, byte[] data) {
 		try {
 			switch (command) {
 			case GET_VERSION:
@@ -348,29 +348,29 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 			this.remoteObserver = new RemoteOscObservable(); 
 			this.initialized = false;
-			this.recievedMessages = new HashSet<ValidCommands>();			
+			this.recievedMessages = new HashSet<ValidCommand>();			
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Failed to start Remote OSC Server!", e);
 			return;
 		}
 
 		//first step, get static values
-		Set<ValidCommands> initCommands = new HashSet<ValidCommands>();
-		initCommands.add(ValidCommands.GET_VERSION);
-		initCommands.add(ValidCommands.GET_CONFIGURATION);
-		initCommands.add(ValidCommands.GET_MATRIXDATA);
-		initCommands.add(ValidCommands.GET_COLORSETS);
-		initCommands.add(ValidCommands.GET_OUTPUT);
-		initCommands.add(ValidCommands.GET_GUISTATE);			
-		initCommands.add(ValidCommands.GET_OUTPUTMAPPING);
-		initCommands.add(ValidCommands.GET_PRESETSETTINGS);
-		initCommands.add(ValidCommands.GET_JMXSTATISTICS);
-		initCommands.add(ValidCommands.GET_FILELOCATION);
-		initCommands.add(ValidCommands.GET_IMAGEBUFFER);		
+		Set<ValidCommand> initCommands = new HashSet<ValidCommand>();
+		initCommands.add(ValidCommand.GET_VERSION);
+		initCommands.add(ValidCommand.GET_CONFIGURATION);
+		initCommands.add(ValidCommand.GET_MATRIXDATA);
+		initCommands.add(ValidCommand.GET_COLORSETS);
+		initCommands.add(ValidCommand.GET_OUTPUT);
+		initCommands.add(ValidCommand.GET_GUISTATE);			
+		initCommands.add(ValidCommand.GET_OUTPUTMAPPING);
+		initCommands.add(ValidCommand.GET_PRESETSETTINGS);
+		initCommands.add(ValidCommand.GET_JMXSTATISTICS);
+		initCommands.add(ValidCommand.GET_FILELOCATION);
+		initCommands.add(ValidCommand.GET_IMAGEBUFFER);		
 
 		int waitLoop = 0;
 		while(!recievedMessages.containsAll(initCommands)) {			
-			for (ValidCommands cmd: initCommands) {
+			for (ValidCommand cmd: initCommands) {
 				if (!recievedMessages.contains(cmd)) {
 					LOG.log(Level.INFO, "Request "+cmd+" from OSC Server");
 					try {
@@ -398,9 +398,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initialized = true;
 		//now register remote observer
 		try {
-			remoteServer.sendPayload(null, new Command(ValidCommands.REGISTER_VISUALOBSERVER), null);
+			remoteServer.sendPayload(null, new Command(ValidCommand.REGISTER_VISUALOBSERVER), null);
 		} catch (OscClientException e) {
-			LOG.log(Level.SEVERE, "failed to send osc message, "+ValidCommands.REGISTER_VISUALOBSERVER, e);
+			LOG.log(Level.SEVERE, "failed to send osc message, "+ValidCommand.REGISTER_VISUALOBSERVER, e);
 		}
 	}
 

@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ValidCommands;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
@@ -164,14 +164,14 @@ public class PixelControllerGenerator implements PixelControllerElement {
     public List<String> getCurrentState() {
         List<String> ret = new ArrayList<String>();
 
-        ret.add(ValidCommands.BLINKEN+" "+blinkenlights.getFilename());
-        ret.add(ValidCommands.IMAGE+" "+image.getFilename());
-        ret.add(ValidCommands.TEXTWR+" "+textwriter.getText());
-        ret.add(ValidCommands.TEXTWR_OPTION+" "+textwriter.getTextscroller());
-        ret.add(ValidCommands.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
+        ret.add(ValidCommand.BLINKEN+" "+blinkenlights.getFilename());
+        ret.add(ValidCommand.IMAGE+" "+image.getFilename());
+        ret.add(ValidCommand.TEXTWR+" "+textwriter.getText());
+        ret.add(ValidCommand.TEXTWR_OPTION+" "+textwriter.getTextscroller());
+        ret.add(ValidCommand.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
         int generatorSpeed = (int)(this.fpsAdjustment*100f);
-        ret.add(ValidCommands.GENERATOR_SPEED+" "+generatorSpeed);
-        ret.add(ValidCommands.BEAT_WORKMODE+" "+bta.getId());
+        ret.add(ValidCommand.GENERATOR_SPEED+" "+generatorSpeed);
+        ret.add(ValidCommand.BEAT_WORKMODE+" "+bta.getId());
         return ret;
     }
     
