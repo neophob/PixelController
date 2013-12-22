@@ -22,6 +22,7 @@
 CURRENT=$(dirname "$0")/../
 cd "$CURRENT"
 
-export JAVA_OPT="-Djava.awt.headless=true -Djava.util.logging.config.file=./sys/logging.properties -Djava.library.path=./lib -Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote -Djava.security.policy=./sys/client.policy" 
-java $JAVA_OPT -classpath .:./lib/* -XX:ErrorFile=./log/hs_err_pid%p.log com.neophob.sematrix.cli.PixelControllerCli
+# do not start jmx server on RPI
+export JAVA_OPT="-Djava.awt.headless=true -Djava.util.logging.config.file=./sys/logging.properties -Djava.library.path=./lib -Djava.security.policy=./sys/client.policy" 
+java $JAVA_OPT -classpath .:./lib/* -XX:ErrorFile=./log/hs_err_pid%p.log com.neophob.sematrix.cli.PixelControllerCli "$@"
 
