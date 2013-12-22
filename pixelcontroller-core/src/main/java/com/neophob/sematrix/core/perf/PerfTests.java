@@ -8,6 +8,15 @@ import net.jpountz.xxhash.XXHash32;
 import net.jpountz.xxhash.XXHashFactory;
 
 import com.neophob.sematrix.core.resize.PixelResize;
+import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.Visual;
+import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.effect.Effect;
+import com.neophob.sematrix.core.visual.effect.Rotate90;
+import com.neophob.sematrix.core.visual.generator.Generator;
+import com.neophob.sematrix.core.visual.generator.Plasma2;
+import com.neophob.sematrix.core.visual.mixer.AddSat;
+import com.neophob.sematrix.core.visual.mixer.Mixer;
 
 public class PerfTests {
 
@@ -15,11 +24,16 @@ public class PerfTests {
 
     private int pixelSize;
     private int rounds;
+    private int smallRound;
     private byte[] data;
     private long t1;
 
     public PerfTests(int rounds, int pixelSize) {
         this.rounds = rounds;
+        this.smallRound = rounds / 200;
+        if (smallRound == 0) {
+            smallRound = 1;
+        }
         this.pixelSize = pixelSize;
         this.data = new byte[pixelSize * pixelSize * 2];
         for (int i = 0; i < this.data.length; i++) {
@@ -54,28 +68,35 @@ public class PerfTests {
     private long measureVisual() {
         preTest();
 
+        MatrixData matrix = new MatrixData(pixelSize, pixelSize);
+        Generator g = new Plasma2(matrix);
+        Effect e = new Rotate90(matrix);
+        Mixer m = new AddSat();
+        ColorSet c = new ColorSet("pillepalle", new int[] { 0, 0x0000ff, 0x00ff00, 0xff0000,
+                0xffffff });
+        Visual v = new Visual(g, e, m, c);
+        for (int i = 0; i < smallRound; i++) {
+            v.getBuffer();
+        }
+
         return postTest();
     }
 
     private void measureResize() {
-        int cnt = rounds / 200;
         int largeSize = pixelSize * 8;
         int smallSize = pixelSize;
         LOG.log(Level.INFO,
                 "Pixel Resize: {0} rounds, output buffer: {1} bytes, visual buffer: {2} bytes",
-                new Object[] { cnt, smallSize * smallSize, largeSize * largeSize });
+                new Object[] { smallRound, smallSize * smallSize, largeSize * largeSize });
 
         preTest();
         PixelResize res = new PixelResize();
         int[] buffer = new int[largeSize * largeSize];
-        for (int i = 0; i < cnt; i++) {
+        for (int i = 0; i < smallRound; i++) {
             res.resizeImage(buffer, largeSize, largeSize, smallSize, smallSize);
         }
         long time = postTest();
-        if (cnt == 0) {
-            cnt = 1;
-        }
-        long timePerResize = time * 1000L / cnt;
+        long timePerResize = time * 1000L / smallRound;
         LOG.log(Level.INFO, ">>> PixelResize needed {0}ms - {1}ns per resize", new Object[] { time,
                 timePerResize });
     }
@@ -98,7 +119,11 @@ public class PerfTests {
         timePerHash = t * 1000L / rounds;
         LOG.log(Level.INFO, ">>> XXHash: {0}ms - {1}ns per hash", new Object[] { t, timePerHash });
 
-        measureVisual();
+        t = measureVisual();
+        long timePerResize = t * 1000L / smallRound;
+        LOG.log(Level.INFO, ">>> Visual needed {0}ms - {1}ns per getBuffer call", new Object[] { t,
+                timePerResize });
+
         measureResize();
 
     }
