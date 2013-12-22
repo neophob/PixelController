@@ -22,40 +22,33 @@ import java.awt.image.BufferedImage;
 
 /**
  * This interface is used to create different resizer (speed vs. quality)
+ * 
  * @author michu
- *
+ * 
  */
 public interface IResize {
 
-	/**
-	 * resize an image type
-	 * @param bi
-	 * @param newX
-	 * @param newY
-	 * @return
-	 */
-	int[] getBuffer(BufferedImage bi, int newX, int newY);
+    /**
+     * 
+     * @return id of the resizer
+     */
+    int getId();
 
-	/**
-	 * 
-	 * @return id of the resizer
-	 */
-	int getId();
+    /**
+     * 
+     * @return name of the resizer
+     */
+    String getName();
 
-	/**
-	 * 
-	 * @return name of the resizer
-	 */
-	String getName();
-	
-	/**
-	 * create a buffered image
-	 * @param buffer
-	 * @param currentXSize
-	 * @param currentYSize
-	 * @return
-	 */
-	BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize);
-	
-	int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY);
+    /**
+     * create a buffered image
+     * 
+     * @param buffer
+     * @param currentXSize
+     * @param currentYSize
+     * @return
+     */
+    BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize);
+
+    int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY);
 }

@@ -37,7 +37,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
             .getName());
 
     /** The lpd6803. */
-    private transient Lpd6803Serial lpd6803 = null;
+    private Lpd6803Serial lpd6803 = null;
 
     /**
      * init the lpd6803 devices.

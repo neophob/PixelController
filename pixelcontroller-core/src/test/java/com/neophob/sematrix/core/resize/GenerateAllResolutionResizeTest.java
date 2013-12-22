@@ -18,14 +18,11 @@
  */
 package com.neophob.sematrix.core.resize;
 
-import java.awt.image.BufferedImage;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.resize.IResize;
-import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
@@ -40,39 +37,34 @@ public class GenerateAllResolutionResizeTest {
 
     @Test
     public void verifyResizersDoNotCrash() throws Exception {
-    	final int maxResolution = 17;
-    	
-    	for (int x=1; x<maxResolution; x++) {
-    		for (int y=1; y<maxResolution; y++) {
-    			testWithResolution(x,y);
-    			testWithResolution(y,x);
-    		}
-    	}
+        final int maxResolution = 17;
+
+        for (int x = 1; x < maxResolution; x++) {
+            for (int y = 1; y < maxResolution; y++) {
+                testWithResolution(x, y);
+                testWithResolution(y, x);
+            }
+        }
     }
-    
+
     private void testWithResolution(int x, int y) {
-    	MatrixData matrix = new MatrixData(x,y);
-    	PixelControllerResize pcr = new PixelControllerResize();
-    	pcr.initAll();
+        MatrixData matrix = new MatrixData(x, y);
+        PixelControllerResize pcr = new PixelControllerResize();
+        pcr.initAll();
 
-    	Generator g = new PassThruGen(matrix);
-    	Effect e = new PassThru(matrix);
-    	Mixer m = new Checkbox(matrix);
-    	ColorSet c = new ColorSet("test", new int[]{1,2,3});
-    	Visual v = new Visual(g,e,m,c);    	
+        Generator g = new PassThruGen(matrix);
+        Effect e = new PassThru(matrix);
+        Mixer m = new Checkbox(matrix);
+        ColorSet c = new ColorSet("test", new int[] { 1, 2, 3 });
+        Visual v = new Visual(g, e, m, c);
 
-    	for (IResize rsz: pcr.getAllResizers()) {
-    		BufferedImage bi = rsz.createImage(v.getBuffer(), matrix.getBufferXSize(), matrix.getBufferYSize());
-    		int[] b1 = rsz.getBuffer(bi, matrix.getDeviceXSize(), matrix.getDeviceYSize());
-    		int[] b2 = rsz.resizeImage(v.getBuffer(), matrix.getBufferXSize(), matrix.getBufferYSize(), 
-    				matrix.getDeviceXSize(), matrix.getDeviceYSize());
-    		assertArrayEquals(b1, b2);
-    	}
-    	
+        for (IResize rsz : pcr.getAllResizers()) {
+            int[] bfr = rsz.resizeImage(v.getBuffer(), g.getInternalBufferXSize(),
+                    g.getInternalBufferYSize(), 8, 8);
+            assertNotNull(bfr);
+            assertEquals(64, bfr.length);
+            ;
+        }
+
     }
-    	
-    	
-
-    
-    
 }
