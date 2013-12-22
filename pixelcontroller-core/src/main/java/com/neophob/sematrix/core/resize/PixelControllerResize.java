@@ -32,100 +32,112 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
  * collector class which holds a reference to different resizer.
  * 
  * @author michu
- *
+ * 
  */
 public class PixelControllerResize implements PixelControllerElement {
 
-	/** The Constant LOG. */
-	private static final Logger LOG = Logger.getLogger(PixelControllerResize.class.getName());
-	
-	/** The all resizers. */
-	private List<IResize> allResizers;
-	
-	/**
-	 * Instantiates a new pixel controller resize.
-	 */
-	public PixelControllerResize() {
-		allResizers = new CopyOnWriteArrayList<IResize>();
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()
-	 */
-	@Override
-	public void update() {
-	}
-	
-	/**
-	 * initialize all effects.
-	 */
-	@Override
-	public void initAll() {
-		allResizers.add(new PixelResize());
-		allResizers.add(new QualityResize());
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.glue.PixelControllerElement#getCurrentState()
-	 */
-	@Override
-	public List<String> getCurrentState() {
-		List<String> ret = new ArrayList<String>();
-				
-		return ret;
-	}
-	
-	/**
-	 * Resize image.
-	 *
-	 * @param resizeTyp the resize typ
-	 * @param inputBuffer the input buffer
-	 * @param currentX the current x
-	 * @param currentY the current y
-	 * @param newX the new x
-	 * @param newY the new y
-	 * @return the int[]
-	 */
-	public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY, int newX, int newY) {		
-		IResize r=null;
-		r = getResize(resizeTyp);
+    /** The Constant LOG. */
+    private static final Logger LOG = Logger.getLogger(PixelControllerResize.class.getName());
 
-		if (r==null) {
-			LOG.log(Level.WARNING, "invalid resize typ selected: "+resizeTyp);
-			return null;
-		}
-		
-		return r.resizeImage(inputBuffer, currentX, currentY, newX, newY);		
-	}
+    /** The all resizers. */
+    private List<IResize> allResizers;
 
-	
-	/*
-	 * RESIZER ======================================================
-	 */
-	
-	/**
-	 * Gets the all resizers.
-	 *
-	 * @return the all resizers
-	 */
-	public List<IResize> getAllResizers() {
-		return allResizers;
-	}
-	
-	/**
-	 * Gets the resize.
-	 *
-	 * @param name the name
-	 * @return the resize
-	 */
-	public IResize getResize(ResizeName name) {
-		for (IResize r: allResizers) {
-			if (r.getId() == name.getId()) {
-				return r;
-			}
-		}
-		return null;
-	}
+    /**
+     * Instantiates a new pixel controller resize.
+     */
+    public PixelControllerResize() {
+        allResizers = new CopyOnWriteArrayList<IResize>();
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()
+     */
+    @Override
+    public void update() {
+    }
+
+    /**
+     * initialize all effects.
+     */
+    @Override
+    public void initAll() {
+        // allResizers.add(new PixelResize());
+        // allResizers.add(new QualityResize());
+        allResizers.add(new SimpleResize());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.glue.PixelControllerElement#getCurrentState()
+     */
+    @Override
+    public List<String> getCurrentState() {
+        List<String> ret = new ArrayList<String>();
+
+        return ret;
+    }
+
+    /**
+     * Resize image.
+     * 
+     * @param resizeTyp
+     *            the resize typ
+     * @param inputBuffer
+     *            the input buffer
+     * @param currentX
+     *            the current x
+     * @param currentY
+     *            the current y
+     * @param newX
+     *            the new x
+     * @param newY
+     *            the new y
+     * @return the int[]
+     */
+    public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY,
+            int newX, int newY) {
+        IResize r = null;
+        // r = getResize(resizeTyp);
+        r = getResize(ResizeName.SIMPLE_RESIZE);
+        if (r == null) {
+            LOG.log(Level.WARNING, "invalid resize typ selected: " + resizeTyp);
+            return null;
+        }
+
+        return r.resizeImage(inputBuffer, currentX, currentY, newX, newY);
+    }
+
+    /*
+     * RESIZER ======================================================
+     */
+
+    /**
+     * Gets the all resizers.
+     * 
+     * @return the all resizers
+     */
+    public List<IResize> getAllResizers() {
+        return allResizers;
+    }
+
+    /**
+     * Gets the resize.
+     * 
+     * @param name
+     *            the name
+     * @return the resize
+     */
+    public IResize getResize(ResizeName name) {
+        for (IResize r : allResizers) {
+            if (r.getId() == name.getId()) {
+                return r;
+            }
+        }
+        return allResizers.get(0);
+    }
 
 }

@@ -28,181 +28,185 @@ import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 class RmiOscImpl implements RmiApi, PacketAndBytesStatictics {
 
-	private static final Logger LOG = Logger.getLogger(RmiOscImpl.class.getName());
-	
-	private PixOscServer oscServer;
-	private PixOscClient oscClient;
-	private int clientTargetPort = 0;
-	private String clientTargetIp = "";
+    private static final Logger LOG = Logger.getLogger(RmiOscImpl.class.getName());
 
-	private CompressApi compressor; 
-	private boolean useCompression;
-	private int bufferSize;
+    private PixOscServer oscServer;
+    private PixOscClient oscClient;
+    private int clientTargetPort = 0;
+    private String clientTargetIp = "";
 
-	private int packetCount;
-	private long packetBytesRecieved;
+    private CompressApi compressor;
+    private boolean useCompression;
+    private int bufferSize;
 
-	public RmiOscImpl(boolean useCompression, int bufferSize) {
-		this.compressor = CompressFactory.getCompressApi();
-		this.useCompression = useCompression;
-		this.bufferSize = bufferSize;
-		LOG.log(Level.INFO, "Start new OSC RMI Object, use compression: "+useCompression);
-	}
-	
-	@Override
-	public void startServer(Protocol protocol, Observer handler, int port) throws OscServerException {
-		if (protocol==Protocol.TCP) {
-			this.oscServer = OscServerFactory.createServerTcp(handler, port, bufferSize);			
-		} else {
-			this.oscServer = OscServerFactory.createServerUdp(handler, port, bufferSize);
-		}
-		this.oscServer.startServer();
-	}
+    private int packetCount;
+    private long packetBytesRecieved;
 
-	@Override
-	public void startClient(Protocol protocol, String targetIp, int targetPort) throws OscClientException {
-		if (this.oscClient != null && oscClient.isConnected()) {
-			LOG.log(Level.INFO, "Disconnect current client...");
-			this.oscClient.disconnect();
-		}
-		if (protocol==Protocol.TCP) {
-			this.oscClient = OscClientFactory.createClientTcp(targetIp, targetPort, bufferSize);		
-		} else {
-			this.oscClient = OscClientFactory.createClientUdp(targetIp, targetPort, bufferSize);					
-		}
-	}
-	
-	
-	@Override
-	public void shutdown() {
-		if (oscServer!=null) {
-			oscServer.stopServer();
-		}
-		if (oscClient!=null) {
-			try {
-				oscClient.disconnect();
-			} catch (OscClientException e) {
-				//ignored
-			}
-		}
-	}
-	
+    public RmiOscImpl(boolean useCompression, int bufferSize) {
+        this.compressor = CompressFactory.getCompressApi();
+        this.useCompression = useCompression;
+        this.bufferSize = bufferSize;
+        LOG.log(Level.INFO, "Start new OSC RMI Object, use compression: " + useCompression);
+    }
 
-	@Override
-	public void sendPayload(Command cmd, Serializable data) throws OscClientException {
-		if (this.oscClient == null) {
-			throw new OscClientException("client not initialized");
-		}
-		OscMessage reply = new OscMessage(cmd.getValidCommand().toString(), cmd.getParameter(), convertFromObject(data));
-		//LOG.log(Level.INFO, "send "+cmd.getValidCommand()+" reply size: "+reply.getMessageSize());
-		packetCount++;
-		packetBytesRecieved+=reply.getMessageSize();
-		
-		if (packetCount % 1000 == 0) {
-			LOG.log(Level.INFO, "OSC Send statistics, sent packages: "+packetCount+" ("+packetBytesRecieved/1024+"kb)");
-		}
+    @Override
+    public void startServer(Protocol protocol, Observer handler, int port)
+            throws OscServerException {
+        if (protocol == Protocol.TCP) {
+            this.oscServer = OscServerFactory.createServerTcp(handler, port, bufferSize);
+        } else {
+            this.oscServer = OscServerFactory.createServerUdp(handler, port, bufferSize);
+        }
+        this.oscServer.startServer();
+    }
 
-		this.oscClient.sendMessage(reply);
-	}
+    @Override
+    public void startClient(Protocol protocol, String targetIp, int targetPort)
+            throws OscClientException {
+        if (this.oscClient != null && oscClient.isConnected()) {
+            LOG.log(Level.INFO, "Disconnect current client: " + oscClient);
+            this.oscClient.disconnect();
+        }
+        if (protocol == Protocol.TCP) {
+            this.oscClient = OscClientFactory.createClientTcp(targetIp, targetPort, bufferSize);
+        } else {
+            this.oscClient = OscClientFactory.createClientUdp(targetIp, targetPort, bufferSize);
+        }
+        this.clientTargetIp = targetIp;
+        this.clientTargetPort = targetPort;
+    }
 
+    @Override
+    public void shutdown() {
+        if (oscServer != null) {
+            oscServer.stopServer();
+        }
+        if (oscClient != null) {
+            try {
+                oscClient.disconnect();
+            } catch (OscClientException e) {
+                // ignored
+            }
+        }
+    }
 
-	@Override
-	public <T> T reassembleObject(byte[] data, Class<T> type) {
-		try {
-			return convertToObject(data, type);
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to convert object", e);
-		}
-		return null;
-	}
-	
+    @Override
+    public void sendPayload(Command cmd, Serializable data) throws OscClientException {
+        if (this.oscClient == null) {
+            throw new OscClientException("client not initialized");
+        }
+        OscMessage reply = new OscMessage(cmd.getValidCommand().toString(), cmd.getParameter(),
+                convertFromObject(data));
+        // LOG.log(Level.INFO,
+        // "send "+cmd.getValidCommand()+" reply size: "+reply.getMessageSize());
+        packetCount++;
+        packetBytesRecieved += reply.getMessageSize();
 
-	private byte[] convertFromObject(Serializable s) {
-		if (s==null) {
-			return null;
-		}
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutput out = null;
-		try {
-			out = new ObjectOutputStream(bos);   
-			out.writeObject(s);
-			if (!useCompression) {
-				return bos.toByteArray();	
-			}
-			
-			return compressor.compress(bos.toByteArray());
-			
-		} catch (IOException e) {
-			LOG.log(Level.WARNING, "Failed to serializable object", e);
-			return new byte[0];
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-			try {
-				bos.close();
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private <T> T convertToObject(byte[] input, Class<T> type) throws IOException, ClassNotFoundException {
+        if (packetCount % 1000 == 0) {
+            LOG.log(Level.INFO, "OSC Send statistics, sent packages: " + packetCount + " ("
+                    + packetBytesRecieved / 1024 + "kb)");
+        }
 
-		ByteArrayInputStream bis;
-		if (!useCompression) {
-			bis = new ByteArrayInputStream(input);
-		} else {
-			try {
-				bis = new ByteArrayInputStream(compressor.decompress(input, bufferSize));
-			} catch (DecompressException e) {
-				LOG.log(Level.INFO, "Failed to decompress data, disable compression");
-				useCompression = false;
-				bis = new ByteArrayInputStream(input);
-			}
-		}
-		ObjectInput in = null;
-		try {
-			in = new ObjectInputStream(bis);
-			return (T) in.readObject(); 
-		} finally {
-			try {
-				bis.close();
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-			try {
-				if (in != null) {
-					in.close();
-				}
-			} catch (IOException ex) {
-				// ignore close exception
-			}
-		}		
-	}
+        this.oscClient.sendMessage(reply);
+    }
 
-	@Override
-	public String getClientTargetIp() {
-		return clientTargetIp;
-	}
+    @Override
+    public <T> T reassembleObject(byte[] data, Class<T> type) {
+        try {
+            return convertToObject(data, type);
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to convert object", e);
+        }
+        return null;
+    }
 
-	@Override
-	public int getClientTargetPort() {
-		return clientTargetPort;
-	}
+    private byte[] convertFromObject(Serializable s) {
+        if (s == null) {
+            return null;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutput out = null;
+        try {
+            out = new ObjectOutputStream(bos);
+            out.writeObject(s);
+            if (!useCompression) {
+                return bos.toByteArray();
+            }
 
-	@Override
-	public int getPacketCounter() {
-		return packetCount;
-	}
+            return compressor.compress(bos.toByteArray());
 
-	@Override
-	public long getBytesRecieved() {
-		return packetBytesRecieved;
-	}
+        } catch (IOException e) {
+            LOG.log(Level.WARNING, "Failed to serializable object", e);
+            return new byte[0];
+        } finally {
+            try {
+                if (out != null) {
+                    out.close();
+                }
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+            try {
+                bos.close();
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T convertToObject(byte[] input, Class<T> type) throws IOException,
+            ClassNotFoundException {
+
+        ByteArrayInputStream bis;
+        if (!useCompression) {
+            bis = new ByteArrayInputStream(input);
+        } else {
+            try {
+                bis = new ByteArrayInputStream(compressor.decompress(input, bufferSize));
+            } catch (DecompressException e) {
+                LOG.log(Level.INFO, "Failed to decompress data, disable compression");
+                useCompression = false;
+                bis = new ByteArrayInputStream(input);
+            }
+        }
+        ObjectInput in = null;
+        try {
+            in = new ObjectInputStream(bis);
+            return (T) in.readObject();
+        } finally {
+            try {
+                bis.close();
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ex) {
+                // ignore close exception
+            }
+        }
+    }
+
+    @Override
+    public String getClientTargetIp() {
+        return clientTargetIp;
+    }
+
+    @Override
+    public int getClientTargetPort() {
+        return clientTargetPort;
+    }
+
+    @Override
+    public int getPacketCounter() {
+        return packetCount;
+    }
+
+    @Override
+    public long getBytesRecieved() {
+        return packetBytesRecieved;
+    }
 }

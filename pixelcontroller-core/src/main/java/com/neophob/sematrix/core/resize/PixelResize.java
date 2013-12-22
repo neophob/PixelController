@@ -24,30 +24,30 @@ import com.neophob.sematrix.core.resize.util.ScalrOld;
 
 /**
  * This filter is optimized for pixel oriented images.
- *
+ * 
  * @author michu
  */
-public class PixelResize extends Resize {
+class PixelResize extends Resize {
 
-	/**
-	 * Instantiates a new pixel resize.
-	 *
-	 * @param controller the controller
-	 */
-	public PixelResize() {
-		super(ResizeName.PIXEL_RESIZE);
-	}
-	
-	
-	@Override
-	public int[] getBuffer(BufferedImage bi, int newX, int newY) {
-		bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, newX, newY);
-		int[] ret = getPixelsFromImage(bi, newX, newY);
-		
-		//destroy image
-		bi.flush();
-		
-		return ret;
-	}
-	
+    /**
+     * Instantiates a new pixel resize.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public PixelResize() {
+        super(ResizeName.PIXEL_RESIZE);
+    }
+
+    @Override
+    public int[] getBuffer(BufferedImage bi, int newX, int newY) {
+        bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, newX, newY);
+        int[] ret = getPixelsFromImage(bi, newX, newY);
+
+        // destroy image
+        bi.flush();
+
+        return ret;
+    }
+
 }

@@ -26,128 +26,141 @@ import java.util.logging.Logger;
 
 /**
  * resize a larger buffer for a smaller buffer.
- *
+ * 
  * @author michu
  */
 public abstract class Resize implements IResize {
-	
-	private static final Logger LOG = Logger.getLogger(Resize.class.getName());
 
-	/**
-	 * The Enum ResizeName.
-	 *
-	 * @author michu
-	 */
-	public enum ResizeName {
-		
-		/** The PIXE l_ resize. */
-		PIXEL_RESIZE(0),
-		
-		/** The QUALIT y_ resize. */
-		QUALITY_RESIZE(1);
-		
-		/** The id. */
-		private int id;
-		
-		/**
-		 * Instantiates a new resize name.
-		 *
-		 * @param id the id
-		 */
-		ResizeName(int id) {
-			this.id = id;
-		}
-		
-		/**
-		 * Gets the id.
-		 *
-		 * @return the id
-		 */
-		public int getId() {
-			return id;
-		}
-	}
-	
-	/** The resize name. */
-	private ResizeName resizeName;
-	
-	/**
-	 * Instantiates a new resize.
-	 *
-	 * @param controller the controller
-	 * @param resizeName the resize name
-	 */
-	public Resize(ResizeName resizeName) {
-		this.resizeName = resizeName;
-	}
+    private static final Logger LOG = Logger.getLogger(Resize.class.getName());
 
-	/**
-	 * subclass needs to implement it
-	 */
-	public abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
-	
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.resizeName.getId();
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public String getName() {
-		return this.resizeName.toString();
-	}
-	
-	/**
-	 * internal use - get buffer from image.
-	 *
-	 * @param scaledImage the scaled image, must the
-	 * @param deviceXSize the device x size
-	 * @param deviceYSize the device y size
-	 * @return the pixels from image
-	 */
-	public static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
-		//painfull slow!
-		//return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0, deviceXSize);
+    /**
+     * The Enum ResizeName.
+     * 
+     * @author michu
+     */
+    public enum ResizeName {
 
-		//must be DataBuffer.TYPE_INT, or it will crash here. processing use only RGB images so this
-		//should work
-		DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();
-		return buf.getData();			
-	}
+        /** The PIXE l_ resize. */
+        PIXEL_RESIZE(0),
 
-	/**
-	 * Creates the image.
-	 *
-	 * @param buffer the buffer
-	 * @param currentXSize the current x size
-	 * @param currentYSize the current y size
-	 * @return the buffered image
-	 */
-	public BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize) {
-		BufferedImage bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
-		//bi.setRGB(0, 0, currentXSize, currentYSize, buffer, 0, currentXSize);
-		WritableRaster newRaster = bi.getRaster();
-		newRaster.setDataElements(0, 0, currentXSize, currentYSize, buffer);
-		bi.setData(newRaster);
+        /** The QUALIT y_ resize. */
+        QUALITY_RESIZE(1),
 
-		return bi;
-	}
-	
-	@Override
-	public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
-		if (buffer.length != currentXSize*currentYSize) {
-			LOG.log(Level.WARNING, "Invalid currentSize defined, buffersize: {0}, calculated: {1}", 
-					new Object[] {buffer.length, currentXSize*currentYSize});
-		}
-		BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
-		return getBuffer(bi, newX, newY);
-	}
-	
+        SIMPLE_RESIZE(2);
+
+        /** The id. */
+        private int id;
+
+        /**
+         * Instantiates a new resize name.
+         * 
+         * @param id
+         *            the id
+         */
+        ResizeName(int id) {
+            this.id = id;
+        }
+
+        /**
+         * Gets the id.
+         * 
+         * @return the id
+         */
+        public int getId() {
+            return id;
+        }
+    }
+
+    /** The resize name. */
+    private ResizeName resizeName;
+
+    /**
+     * Instantiates a new resize.
+     * 
+     * @param controller
+     *            the controller
+     * @param resizeName
+     *            the resize name
+     */
+    public Resize(ResizeName resizeName) {
+        this.resizeName = resizeName;
+    }
+
+    /**
+     * subclass needs to implement it
+     */
+    public abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
+
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public int getId() {
+        return this.resizeName.getId();
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String getName() {
+        return this.resizeName.toString();
+    }
+
+    /**
+     * internal use - get buffer from image.
+     * 
+     * @param scaledImage
+     *            the scaled image, must the
+     * @param deviceXSize
+     *            the device x size
+     * @param deviceYSize
+     *            the device y size
+     * @return the pixels from image
+     */
+    public static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize,
+            int deviceYSize) {
+        // painfull slow!
+        // return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0,
+        // deviceXSize);
+
+        // must be DataBuffer.TYPE_INT, or it will crash here. processing use
+        // only RGB images so this
+        // should work
+        DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();
+        return buf.getData();
+    }
+
+    /**
+     * Creates the image.
+     * 
+     * @param buffer
+     *            the buffer
+     * @param currentXSize
+     *            the current x size
+     * @param currentYSize
+     *            the current y size
+     * @return the buffered image
+     */
+    public BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize) {
+        BufferedImage bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
+        // bi.setRGB(0, 0, currentXSize, currentYSize, buffer, 0, currentXSize);
+        WritableRaster newRaster = bi.getRaster();
+        newRaster.setDataElements(0, 0, currentXSize, currentYSize, buffer);
+        bi.setData(newRaster);
+
+        return bi;
+    }
+
+    @Override
+    public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
+        if (buffer.length != currentXSize * currentYSize) {
+            LOG.log(Level.WARNING, "Invalid currentSize defined, buffersize: {0}, calculated: {1}",
+                    new Object[] { buffer.length, currentXSize * currentYSize });
+        }
+        BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
+        return getBuffer(bi, newX, newY);
+    }
 
 }

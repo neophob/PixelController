@@ -28,365 +28,379 @@ import com.neophob.sematrix.core.visual.mixer.Mixer;
 
 /**
  * this model holds 2 generators, 2 effects and a mixer instance.
- *
+ * 
  * @author mvogt
  */
 public class Visual {
 
-	/** The generator1. */
-	private Generator generator1;
-	
-	/** The generator2. */
-	private Generator generator2;
-	
-	/** The effect1. */
-	private Effect effect1;
-	
-	/** The effect2. */
-	private Effect effect2;
-	
-	/** The mixer. */
-	private Mixer mixer;
-	
-	private ColorSet colorSet;
-	
-	/**
-	 * 
-	 * @param generator1
-	 * @param generator2
-	 * @param effect1
-	 * @param effect2
-	 * @param mixer
-	 * @param colorSet
-	 */
-	public Visual(Generator generator1, Generator generator2, Effect effect1,
-			Effect effect2, Mixer mixer, ColorSet colorSet) {
-		this.generator1 = generator1;
-		this.generator2 = generator2;
-		this.effect1 = effect1;
-		this.effect2 = effect2;
-		this.mixer = mixer;
-		this.colorSet = colorSet;
-	}
+    /** The generator1. */
+    private Generator generator1;
 
-	/**
-	 * 
-	 * @param g
-	 * @param e
-	 * @param m
-	 * @param c
-	 */
-	public Visual(Generator g, Effect e, Mixer m, ColorSet c) {
-		this.generator1 = g;
-		this.generator2 = g;		
-		this.effect1 = e;
-		this.effect2 = e;
-		this.mixer = m;
-		this.colorSet = c;
-	}
-		
-	/**
-	 * Gets the buffer.
-	 *
-	 * @return the buffer
-	 */
-	public int[] getBuffer() {
-		return this.getMixerBuffer();
-	}
+    /** The generator2. */
+    private Generator generator2;
 
-	/**
-	 * Checks if is visual on screen.
-	 *
-	 * @param screenNr the screen nr
-	 * @return true, if is visual on screen
-	 */
-	public boolean isVisualOnScreen(int screenNr) {
-		int fxInput = VisualState.getInstance().getFxInputForScreen(screenNr);
-		if (fxInput == getGenerator1Idx()) {
-			return true;
-		}
-		return false;
-	}
+    /** The effect1. */
+    private Effect effect1;
 
-	//check the resize option to return
-	/**
-	 * Gets the resize option.
-	 *
-	 * @return the resize option
-	 */
-	public ResizeName getResizeOption() {
-		if (this.generator1.getResizeOption() == ResizeName.PIXEL_RESIZE || this.generator2.getResizeOption() == ResizeName.PIXEL_RESIZE ||
-				this.effect1.getResizeOption() == ResizeName.PIXEL_RESIZE || this.effect2.getResizeOption() == ResizeName.PIXEL_RESIZE ||
-				this.mixer.getResizeOption() == ResizeName.PIXEL_RESIZE) {
-			return ResizeName.PIXEL_RESIZE;
-		}
-		
-		return ResizeName.QUALITY_RESIZE;
-	}
-	
-	/**
-	 * Gets the generator1.
-	 *
-	 * @return the generator1
-	 */
-	public Generator getGenerator1() {
-		return generator1;
-	}
+    /** The effect2. */
+    private Effect effect2;
 
-	/**
-	 * Gets the generator1 idx.
-	 *
-	 * @return the generator1 idx
-	 */
-	public int getGenerator1Idx() {
-		return generator1.getId();
-	}
+    /** The mixer. */
+    private Mixer mixer;
 
-	/**
-	 * Sets the generator1.
-	 *
-	 * @param generator1 the new generator1
-	 */
-	public void setGenerator1(Generator generator1) {
-		this.generator1 = generator1;
-	}
+    private ColorSet colorSet;
 
-	/**
-	 * Sets the generator1.
-	 *
-	 * @param index the new generator1
-	 */
-	public void setGenerator1(int index) {
-		Generator g = VisualState.getInstance().getPixelControllerGenerator().getGenerator(index);
-		if (g!=null) {
-			this.generator1 = g;			
-		}
-	}
+    /**
+     * 
+     * @param generator1
+     * @param generator2
+     * @param effect1
+     * @param effect2
+     * @param mixer
+     * @param colorSet
+     */
+    public Visual(Generator generator1, Generator generator2, Effect effect1, Effect effect2,
+            Mixer mixer, ColorSet colorSet) {
+        this.generator1 = generator1;
+        this.generator2 = generator2;
+        this.effect1 = effect1;
+        this.effect2 = effect2;
+        this.mixer = mixer;
+        this.colorSet = colorSet;
+    }
 
-	/**
-	 * Gets the generator2.
-	 *
-	 * @return the generator2
-	 */
-	public Generator getGenerator2() {
-		return generator2;
-	}
+    /**
+     * 
+     * @param g
+     * @param e
+     * @param m
+     * @param c
+     */
+    public Visual(Generator g, Effect e, Mixer m, ColorSet c) {
+        this.generator1 = g;
+        this.generator2 = g;
+        this.effect1 = e;
+        this.effect2 = e;
+        this.mixer = m;
+        this.colorSet = c;
+    }
 
-	/**
-	 * Gets the generator2 idx.
-	 *
-	 * @return the generator2 idx
-	 */
-	public int getGenerator2Idx() {
-		return generator2.getId();
-	}
+    /**
+     * Gets the buffer.
+     * 
+     * @return the buffer
+     */
+    public int[] getBuffer() {
+        return this.getMixerBuffer();
+    }
 
-	/**
-	 * Sets the generator2.
-	 *
-	 * @param generator2 the new generator2
-	 */
-	public void setGenerator2(Generator generator2) {
-		this.generator2 = generator2;
-	}
+    /**
+     * Checks if is visual on screen.
+     * 
+     * @param screenNr
+     *            the screen nr
+     * @return true, if is visual on screen
+     */
+    public boolean isVisualOnScreen(int screenNr) {
+        int fxInput = VisualState.getInstance().getFxInputForScreen(screenNr);
+        if (fxInput == getGenerator1Idx()) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Sets the generator2.
-	 *
-	 * @param index the new generator2
-	 */
-	public void setGenerator2(int index) {
-		Generator g = VisualState.getInstance().getPixelControllerGenerator().getGenerator(index);
-		if (g!=null) {
-			this.generator2 = g;
-		}
-	}
+    // check the resize option to return
+    /**
+     * Gets the resize option.
+     * 
+     * @return the resize option
+     */
+    public ResizeName getResizeOption() {
+        if (this.generator1.getResizeOption() == ResizeName.PIXEL_RESIZE
+                || this.generator2.getResizeOption() == ResizeName.PIXEL_RESIZE
+                || this.effect1.getResizeOption() == ResizeName.PIXEL_RESIZE
+                || this.effect2.getResizeOption() == ResizeName.PIXEL_RESIZE
+                || this.mixer.getResizeOption() == ResizeName.PIXEL_RESIZE) {
+            return ResizeName.PIXEL_RESIZE;
+        }
 
-	/**
-	 * Gets the effect1.
-	 *
-	 * @return the effect1
-	 */
-	public Effect getEffect1() {
-		return effect1;
-	}
+        return ResizeName.QUALITY_RESIZE;
+    }
 
-	/**
-	 * Gets the effect1 idx.
-	 *
-	 * @return the effect1 idx
-	 */
-	public int getEffect1Idx() {
-		return effect1.getId();
-	}
+    /**
+     * Gets the generator1.
+     * 
+     * @return the generator1
+     */
+    public Generator getGenerator1() {
+        return generator1;
+    }
 
-	/**
-	 * Gets the effect1 buffer.
-	 *
-	 * @return the effect1 buffer
-	 */
-	public int[] getEffect1Buffer() {
-		return effect1.getBuffer(generator1.getBuffer());
-	}
+    /**
+     * Gets the generator1 idx.
+     * 
+     * @return the generator1 idx
+     */
+    public int getGenerator1Idx() {
+        return generator1.getId();
+    }
 
-	/**
-	 * Sets the effect1.
-	 *
-	 * @param effect1 the new effect1
-	 */
-	public void setEffect1(Effect effect1) {
-		this.effect1 = effect1;
-	}
+    /**
+     * Sets the generator1.
+     * 
+     * @param generator1
+     *            the new generator1
+     */
+    public void setGenerator1(Generator generator1) {
+        this.generator1 = generator1;
+    }
 
-	/**
-	 * Sets the effect1.
-	 *
-	 * @param index the new effect1
-	 */
-	public void setEffect1(int index) {
-		Effect e = VisualState.getInstance().getPixelControllerEffect().getEffect(index);
-		if (e!=null) {
-			this.effect1 = e;			
-		}
-	}
+    /**
+     * Sets the generator1.
+     * 
+     * @param index
+     *            the new generator1
+     */
+    public void setGenerator1(int index) {
+        Generator g = VisualState.getInstance().getPixelControllerGenerator().getGenerator(index);
+        if (g != null) {
+            this.generator1 = g;
+        }
+    }
 
-	/**
-	 * Gets the effect2.
-	 *
-	 * @return the effect2
-	 */
-	public Effect getEffect2() {
-		return effect2;
-	}
+    /**
+     * Gets the generator2.
+     * 
+     * @return the generator2
+     */
+    public Generator getGenerator2() {
+        return generator2;
+    }
 
-	/**
-	 * Gets the effect2 idx.
-	 *
-	 * @return the effect2 idx
-	 */
-	public int getEffect2Idx() {
-		return effect2.getId();
-	}
+    /**
+     * Gets the generator2 idx.
+     * 
+     * @return the generator2 idx
+     */
+    public int getGenerator2Idx() {
+        return generator2.getId();
+    }
 
-	/**
-	 * Gets the effect2 buffer.
-	 *
-	 * @return the effect2 buffer
-	 */
-	public int[] getEffect2Buffer() {
-		return effect2.getBuffer(generator2.getBuffer());
-	}
+    /**
+     * Sets the generator2.
+     * 
+     * @param generator2
+     *            the new generator2
+     */
+    public void setGenerator2(Generator generator2) {
+        this.generator2 = generator2;
+    }
 
-	/**
-	 * Sets the effect2.
-	 *
-	 * @param effect2 the new effect2
-	 */
-	public void setEffect2(Effect effect2) {
-		this.effect2 = effect2;
-	}
+    /**
+     * Sets the generator2.
+     * 
+     * @param index
+     *            the new generator2
+     */
+    public void setGenerator2(int index) {
+        Generator g = VisualState.getInstance().getPixelControllerGenerator().getGenerator(index);
+        if (g != null) {
+            this.generator2 = g;
+        }
+    }
 
-	/**
-	 * Sets the effect2.
-	 *
-	 * @param index the new effect2
-	 */
-	public void setEffect2(int index) {
-		Effect e = VisualState.getInstance().getPixelControllerEffect().getEffect(index);
-		if (e!=null) {
-			this.effect2 = e;			
-		}
-	}
+    /**
+     * Gets the effect1.
+     * 
+     * @return the effect1
+     */
+    public Effect getEffect1() {
+        return effect1;
+    }
 
-	/**
-	 * Gets the mixer.
-	 *
-	 * @return the mixer
-	 */
-	public Mixer getMixer() {
-		return mixer;
-	}
+    /**
+     * Gets the effect1 idx.
+     * 
+     * @return the effect1 idx
+     */
+    public int getEffect1Idx() {
+        return effect1.getId();
+    }
 
-	/**
-	 * Gets the mixer buffer.
-	 *
-	 * @return the mixer buffer
-	 */
-	public int[] getMixerBuffer() {
-		if (generator1.isPassThoughModeActive()) {
-			return generator1.getBuffer();
-		}
-		if (generator2.isPassThoughModeActive()) {
-			return generator2.getBuffer();
-		}
+    /**
+     * Gets the effect1 buffer.
+     * 
+     * @return the effect1 buffer
+     */
+    public int[] getEffect1Buffer() {
+        return effect1.getBuffer(generator1.getBuffer());
+    }
 
-		//get gryscale buffer
-		int[] buffer = mixer.getBuffer(this);
+    /**
+     * Sets the effect1.
+     * 
+     * @param effect1
+     *            the new effect1
+     */
+    public void setEffect1(Effect effect1) {
+        this.effect1 = effect1;
+    }
 
-		return colorSet.convertToColorSetImage(buffer);
-	}
-	
-	/**
-	 * Gets the mixer idx.
-	 *
-	 * @return the mixer idx
-	 */
-	public int getMixerIdx() {
-		return mixer.getId();
-	}
+    /**
+     * Sets the effect1.
+     * 
+     * @param index
+     *            the new effect1
+     */
+    public void setEffect1(int index) {
+        Effect e = VisualState.getInstance().getPixelControllerEffect().getEffect(index);
+        if (e != null) {
+            this.effect1 = e;
+        }
+    }
 
-	/**
-	 * Sets the mixer.
-	 *
-	 * @param mixer1 the new mixer
-	 */
-	public void setMixer(Mixer mixer) {
-		this.mixer = mixer;
-	}
+    /**
+     * Gets the effect2.
+     * 
+     * @return the effect2
+     */
+    public Effect getEffect2() {
+        return effect2;
+    }
 
-	/**
-	 * Sets the mixer.
-	 *
-	 * @param index the new mixer
-	 */
-	public void setMixer(int index) {
-		Mixer m = VisualState.getInstance().getPixelControllerMixer().getMixer(index);
-		if (m!=null) {
-			this.mixer = m;			
-		}
-	}
-	
-	/**
-	 * set color set by index
-	 * @param index
-	 */
-	public void setColorSet(int index) {
-	    List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
-	    if (index > allColorSets.size()) {
-	        index = 0;
-	    }
-	    this.colorSet = allColorSets.get(index);
-	}
+    /**
+     * Gets the effect2 idx.
+     * 
+     * @return the effect2 idx
+     */
+    public int getEffect2Idx() {
+        return effect2.getId();
+    }
 
-	/**
-	 * set color set by name
-	 * @param index
-	 */
-	public void setColorSet(String name) {
-	    List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
-	    for (ColorSet cs: allColorSets) {
-	    	if (cs.getName().equalsIgnoreCase(name)) {
-	    	    this.colorSet = cs;
-	    	}
-	    }
-	}
+    /**
+     * Gets the effect2 buffer.
+     * 
+     * @return the effect2 buffer
+     */
+    public int[] getEffect2Buffer() {
+        return effect2.getBuffer(generator2.getBuffer());
+    }
 
-	
-	/**
+    /**
+     * Sets the effect2.
+     * 
+     * @param effect2
+     *            the new effect2
+     */
+    public void setEffect2(Effect effect2) {
+        this.effect2 = effect2;
+    }
+
+    /**
+     * Sets the effect2.
+     * 
+     * @param index
+     *            the new effect2
+     */
+    public void setEffect2(int index) {
+        Effect e = VisualState.getInstance().getPixelControllerEffect().getEffect(index);
+        if (e != null) {
+            this.effect2 = e;
+        }
+    }
+
+    /**
+     * Gets the mixer.
+     * 
+     * @return the mixer
+     */
+    public Mixer getMixer() {
+        return mixer;
+    }
+
+    /**
+     * Gets the mixer buffer.
+     * 
+     * @return the mixer buffer
+     */
+    public int[] getMixerBuffer() {
+        if (generator1.isPassThoughModeActive()) {
+            return generator1.getBuffer();
+        }
+        if (generator2.isPassThoughModeActive()) {
+            return generator2.getBuffer();
+        }
+
+        // get greyscale buffer
+        int[] buffer = mixer.getBuffer(this);
+
+        return colorSet.convertToColorSetImage(buffer);
+    }
+
+    /**
+     * Gets the mixer idx.
+     * 
+     * @return the mixer idx
+     */
+    public int getMixerIdx() {
+        return mixer.getId();
+    }
+
+    /**
+     * Sets the mixer.
+     * 
+     * @param mixer1
+     *            the new mixer
+     */
+    public void setMixer(Mixer mixer) {
+        this.mixer = mixer;
+    }
+
+    /**
+     * Sets the mixer.
+     * 
+     * @param index
+     *            the new mixer
+     */
+    public void setMixer(int index) {
+        Mixer m = VisualState.getInstance().getPixelControllerMixer().getMixer(index);
+        if (m != null) {
+            this.mixer = m;
+        }
+    }
+
+    /**
+     * set color set by index
+     * 
+     * @param index
+     */
+    public void setColorSet(int index) {
+        List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
+        if (index > allColorSets.size()) {
+            index = 0;
+        }
+        this.colorSet = allColorSets.get(index);
+    }
+
+    /**
+     * set color set by name
+     * 
+     * @param index
+     */
+    public void setColorSet(String name) {
+        List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
+        for (ColorSet cs : allColorSets) {
+            if (cs.getName().equalsIgnoreCase(name)) {
+                this.colorSet = cs;
+            }
+        }
+    }
+
+    /**
      * @return the colorSet
      */
     public ColorSet getColorSet() {
         return colorSet;
     }
-	
+
 }

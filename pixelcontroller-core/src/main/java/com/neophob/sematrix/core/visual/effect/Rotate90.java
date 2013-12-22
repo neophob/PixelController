@@ -18,8 +18,7 @@
  */
 package com.neophob.sematrix.core.visual.effect;
 
-import com.neophob.sematrix.core.resize.PixelResize;
-import com.neophob.sematrix.core.resize.Resize;
+import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -28,51 +27,55 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class Rotate90 extends Effect {
 
-	Resize r = new PixelResize();
-	
-	/**
-	 * Instantiates a new inverter.
-	 *
-	 * @param controller the controller
-	 */
-	public Rotate90(MatrixData matrix) {
-		super(matrix, EffectName.ROTATE90, ResizeName.QUALITY_RESIZE);
-	}
-	
+    private IResize r;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
-	 */
-	public int[] getBuffer(int[] buffer) {
-		//easy rotating, if x and y has the same size
-		if (internalBufferXSize==internalBufferYSize) {
-			int[] ret = new int[buffer.length];
-			int ofs=0;
-			
-			for (int x=0; x<internalBufferXSize; x++) {			
-				for (int y=0; y<internalBufferYSize; y++) {
-					ret[internalBufferXSize*y+internalBufferXSize-1-x] = buffer[ofs++];
-				}
-			}
-			return ret;			
-		}
-		
-		//rotate image
-		int[] t1 = rotateNm(buffer);
-		
-		//resize output
-		return r.resizeImage(t1, internalBufferYSize, internalBufferXSize, internalBufferXSize, internalBufferYSize);
+    /**
+     * Instantiates a new inverter.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Rotate90(MatrixData matrix, IResize r) {
+        super(matrix, EffectName.ROTATE90, ResizeName.QUALITY_RESIZE);
+        this.r = r;
     }
-        	
-        //src: http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
-        int[] rotateNm(int[] src) {
-			int[] ret = new int[src.length];
-			for (int y = 0; y < internalBufferYSize; y++) {
-                for (int x = 0; x < internalBufferXSize; x++) {					
-					ret[x * internalBufferYSize +(internalBufferYSize - y - 1)] = src[y * internalBufferXSize + x];
-				}
-			}
-			return ret;
-        }
-}
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
+     */
+    public int[] getBuffer(int[] buffer) {
+        // easy rotating, if x and y has the same size
+        if (internalBufferXSize == internalBufferYSize) {
+            int[] ret = new int[buffer.length];
+            int ofs = 0;
+
+            for (int x = 0; x < internalBufferXSize; x++) {
+                for (int y = 0; y < internalBufferYSize; y++) {
+                    ret[internalBufferXSize * y + internalBufferXSize - 1 - x] = buffer[ofs++];
+                }
+            }
+            return ret;
+        }
+
+        // rotate image
+        int[] t1 = rotateNm(buffer);
+
+        // resize output
+        return r.resizeImage(t1, internalBufferYSize, internalBufferXSize, internalBufferXSize,
+                internalBufferYSize);
+    }
+
+    // src: http://www.geeksforgeeks.org/turn-an-image-by-90-degree/
+    int[] rotateNm(int[] src) {
+        int[] ret = new int[src.length];
+        for (int y = 0; y < internalBufferYSize; y++) {
+            for (int x = 0; x < internalBufferXSize; x++) {
+                ret[x * internalBufferYSize + (internalBufferYSize - y - 1)] = src[y
+                        * internalBufferXSize + x];
+            }
+        }
+        return ret;
+    }
+}

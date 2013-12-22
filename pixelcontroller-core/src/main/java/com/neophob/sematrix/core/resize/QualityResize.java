@@ -24,29 +24,29 @@ import com.neophob.sematrix.core.resize.util.ScalrOld;
 
 /**
  * This filter is more like an area average filter.
- *
+ * 
  * @author michu
  */
-public class QualityResize extends Resize {
+class QualityResize extends Resize {
 
-	/**
-	 * Instantiates a new quality resize.
-	 *
-	 * @param controller the controller
-	 */
-	public QualityResize() {
-		super(ResizeName.QUALITY_RESIZE);
-	}
-	
+    /**
+     * Instantiates a new quality resize.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public QualityResize() {
+        super(ResizeName.QUALITY_RESIZE);
+    }
 
-	@Override
-	public int[] getBuffer(BufferedImage bi, int newX, int newY) {
-		bi = ScalrOld.resize(bi, ScalrOld.Method.QUALITY, newX, newY);
-		int[] ret = getPixelsFromImage(bi, newX, newY);
-		
-		//destroy image
-		bi.flush();
-		
-		return ret;
-	}
+    @Override
+    public int[] getBuffer(BufferedImage bi, int newX, int newY) {
+        bi = ScalrOld.resize(bi, ScalrOld.Method.QUALITY, newX, newY);
+        int[] ret = getPixelsFromImage(bi, newX, newY);
+
+        // destroy image
+        bi.flush();
+
+        return ret;
+    }
 }

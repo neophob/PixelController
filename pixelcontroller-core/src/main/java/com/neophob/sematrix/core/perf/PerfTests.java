@@ -7,12 +7,14 @@ import java.util.zip.Adler32;
 import net.jpountz.xxhash.XXHash32;
 import net.jpountz.xxhash.XXHashFactory;
 
-import com.neophob.sematrix.core.resize.PixelResize;
+import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
-import com.neophob.sematrix.core.visual.effect.Rotate90;
+import com.neophob.sematrix.core.visual.effect.Inverter;
 import com.neophob.sematrix.core.visual.generator.Generator;
 import com.neophob.sematrix.core.visual.generator.Plasma2;
 import com.neophob.sematrix.core.visual.mixer.AddSat;
@@ -70,7 +72,7 @@ public class PerfTests {
 
         MatrixData matrix = new MatrixData(pixelSize, pixelSize);
         Generator g = new Plasma2(matrix);
-        Effect e = new Rotate90(matrix);
+        Effect e = new Inverter(matrix);
         Mixer m = new AddSat();
         ColorSet c = new ColorSet("pillepalle", new int[] { 0, 0x0000ff, 0x00ff00, 0xff0000,
                 0xffffff });
@@ -89,8 +91,10 @@ public class PerfTests {
                 "Pixel Resize: {0} rounds, output buffer: {1} bytes, visual buffer: {2} bytes",
                 new Object[] { smallRound, smallSize * smallSize, largeSize * largeSize });
 
+        PixelControllerResize pcr = new PixelControllerResize();
+        pcr.initAll();
+        IResize res = pcr.getResize(ResizeName.SIMPLE_RESIZE);
         preTest();
-        PixelResize res = new PixelResize();
         int[] buffer = new int[largeSize * largeSize];
         for (int i = 0; i < smallRound; i++) {
             res.resizeImage(buffer, largeSize, largeSize, smallSize, smallSize);
