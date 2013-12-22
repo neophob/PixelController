@@ -26,7 +26,7 @@ class CompressApiImpl implements CompressApi {
 	public byte[] decompress(byte[] in, int buffersize) throws DecompressException {
 		byte decompressedData[] = new byte[buffersize];	
 		try {
-			int decompressedLength = decompressor.decompress(in, decompressedData);			
+			decompressor.decompress(in, decompressedData);			
 			return decompressedData;			
 		} catch (Exception e) {
 			throw new DecompressException(e);

@@ -1,6 +1,6 @@
 package com.neophob.sematrix.core.osc;
 
-import java.net.SocketAddress;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,7 +15,8 @@ import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
 import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
-import com.neophob.sematrix.core.rmi.impl.RmiOscImpl;
+import com.neophob.sematrix.core.rmi.RmiApi.Protocol;
+import com.neophob.sematrix.core.rmi.impl.RmiFactory;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
@@ -46,11 +47,10 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	private int sendError;
 	private boolean startSendImageThread = false;
 
-
 	public OscReplyManager(PixelController pixelController) {
 		this.pixelController = pixelController;
 		boolean useCompression = pixelController.getConfig().parseRemoteConnectionUseCompression();
-		this.remoteServer = new RmiOscImpl(useCompression, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
+		this.remoteServer = RmiFactory.getRmiApi(useCompression, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
 		LOG.log(Level.INFO, "OscReplyManager started, use compression: "+useCompression);
 	}
 
@@ -62,61 +62,68 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 	//handle all "INTERNAL" commands, eg. API calls
 	public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
 		ValidCommand cmd = ValidCommand.valueOf(msg[0]);
-		SocketAddress target = null;
-		if (oscIn!=null) {
-			target = oscIn.getSocketAddress();			
-		}
 		Command command = new Command(cmd);
+		
+		if (oscIn!=null) {
+			//the client port is defined as SERVER port - 1
+			int clientPort = pixelController.getConfig().getOscListeningPort()-1;
+			InetSocketAddress remote = (InetSocketAddress)oscIn.getSocketAddress();
+			if (!remoteServer.getClientTargetIp().equalsIgnoreCase(remote.getHostName())) {
+				LOG.log(Level.INFO, "New Client connection, IP: {0}/{1}, Port: {2}", 
+						new Object[] {remoteServer.getClientTargetIp(), remote.getHostName(), clientPort});
+				remoteServer.startClient(Protocol.TCP, remote.getHostName(), clientPort);
+			}
+		}
 
 		switch (cmd) {
 		case GET_CONFIGURATION:	
-			remoteServer.sendPayload(target, command, pixelController.getConfig());
+			remoteServer.sendPayload(command, pixelController.getConfig());
 			break;
 
 		case GET_MATRIXDATA:				
-			remoteServer.sendPayload(target, command, pixelController.getMatrix());
+			remoteServer.sendPayload(command, pixelController.getMatrix());
 			break;
 
 		case GET_VERSION:
-			remoteServer.sendPayload(target, command, pixelController.getVersion());
+			remoteServer.sendPayload(command, pixelController.getVersion());
 			break;
 
 		case GET_COLORSETS:
-			remoteServer.sendPayload(target, command, (ArrayList<ColorSet>)pixelController.getColorSets());
+			remoteServer.sendPayload(command, (ArrayList<ColorSet>)pixelController.getColorSets());
 			break;
 
 		case GET_OUTPUTMAPPING:
-			remoteServer.sendPayload(target, command, (CopyOnWriteArrayList<OutputMapping>)pixelController.getAllOutputMappings());
+			remoteServer.sendPayload(command, (CopyOnWriteArrayList<OutputMapping>)pixelController.getAllOutputMappings());
 			break;
 
 		case GET_OUTPUT:
-			remoteServer.sendPayload(target, command, pixelController.getOutput());
+			remoteServer.sendPayload(command, pixelController.getOutput());
 			break;
 
 		case GET_GUISTATE:
-			remoteServer.sendPayload(target, command, (ArrayList<String>)pixelController.getGuiState());
+			remoteServer.sendPayload(command, (ArrayList<String>)pixelController.getGuiState());
 			break;
 
 		case GET_PRESETSETTINGS:
-			remoteServer.sendPayload(target, command, pixelController.getPresetService().getSelectedPresetSettings());
+			remoteServer.sendPayload(command, pixelController.getPresetService().getSelectedPresetSettings());
 			break;
 
 		case GET_JMXSTATISTICS:
-			remoteServer.sendPayload(target, command, pixelController.getPixConStat());			
+			remoteServer.sendPayload(command, pixelController.getPixConStat());			
 			break;
 
 		case GET_FILELOCATION:
-			remoteServer.sendPayload(target, command, getLazyfileUtilsRemote());
+			remoteServer.sendPayload(command, getLazyfileUtilsRemote());
 			break;
 
 		case GET_IMAGEBUFFER:
-			remoteServer.sendPayload(target, command, getVisualBuffer());
+			remoteServer.sendPayload(command, getVisualBuffer());
 			break;
 
 		case REGISTER_VISUALOBSERVER:
 			pixelController.observeVisualState(this);
 			//send back ack
-			remoteServer.sendPayload(target, command, new byte[0]);
+			remoteServer.sendPayload(command, new byte[0]);
 			sendError = 0;
 			startSendImageThread = true;
 			oscSendThread = new Thread(this);
@@ -127,7 +134,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 
 		case UNREGISTER_VISUALOBSERVER:
 			pixelController.stopObserveVisualState(this);
-			remoteServer.sendPayload(target, command, new byte[0]);
+			remoteServer.sendPayload(command, new byte[0]);
 			startSendImageThread = false;
 			break;
 

@@ -22,7 +22,8 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
-import com.neophob.sematrix.core.rmi.impl.RmiOscImpl;
+import com.neophob.sematrix.core.rmi.RmiApi.Protocol;
+import com.neophob.sematrix.core.rmi.impl.RmiFactory;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -50,7 +51,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	private static final String TARGET_HOST = "pixelcontroller.local";
 	private static final int REMOTE_OSC_SERVER_PORT = 9876;
-	private static final int LOCAL_OSC_SERVER_PORT = 9875;
+	//private static final int LOCAL_OSC_SERVER_PORT = 9875;
 
 	private float steps;
 
@@ -77,7 +78,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	public RemoteOscServer(CallbackMessageInterface<String> msgHandler) {
 		this.setupFeedback = msgHandler;	
-		this.remoteServer = new RmiOscImpl(true, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
+		this.remoteServer = RmiFactory.getRmiApi(true, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
@@ -85,7 +86,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				if (initialized) {
 					LOG.log(Level.INFO,	"Shutdown: Unregister Observer");
 					try {
-						remoteServer.sendPayload(null, new Command(ValidCommand.UNREGISTER_VISUALOBSERVER), null);
+						remoteServer.sendPayload(new Command(ValidCommand.UNREGISTER_VISUALOBSERVER), null);
 					} catch (OscClientException e) {
 						//ignored
 					}
@@ -98,7 +99,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	@Override
 	public void start() {
-		LOG.log(Level.INFO,	"Start Frontend OSC Server at port {0}", new Object[] { LOCAL_OSC_SERVER_PORT });
 		this.sound = new SoundDummy();
 		this.steps = 1/12f;
 
@@ -201,7 +201,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	@Override
 	public void sendMessage(String[] msg) {
 		try {
-			remoteServer.sendPayload(null, new Command(msg), null);
+			remoteServer.sendPayload(new Command(msg), null);
 		} catch (OscClientException e) {
 			LOG.log(Level.WARNING, "Failed to parse Message!", e);
 		}
@@ -325,7 +325,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				client.start();
 				if (client.mdnsServerFound()) {
 					serverPort = client.getPort();
-					setupFeedback.handleMessage("... found on port "+client.getPort()+", ip: "+client.getFirstIp());
+					setupFeedback.handleMessage("... found on port "+serverPort+", ip: "+client.getFirstIp());
 					targetHost = client.getFirstIp();
 				} else {
 					setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
@@ -339,11 +339,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 			LOG.log(Level.INFO, "Remote target, IP: "+targetHost+", port: "+serverPort);
 
 			setupFeedback.handleMessage("Start OSC Server");
-			remoteServer.startServer(this, LOCAL_OSC_SERVER_PORT, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
+			//create a tcp server, expected large messages (> then MTU)
+			remoteServer.startServer(Protocol.TCP, this, serverPort-1);
 			setupFeedback.handleMessage(" ... started");
 
 			setupFeedback.handleMessage("Connect to PixelController OSC Server");
-			remoteServer.startClient(targetHost, serverPort, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
+			//use udp to communicate with the pixelcontroller OSC server
+			remoteServer.startClient(Protocol.UDP, targetHost, serverPort);
 			setupFeedback.handleMessage(" ... done");			
 
 			this.remoteObserver = new RemoteOscObservable(); 
@@ -374,7 +376,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				if (!recievedMessages.contains(cmd)) {
 					LOG.log(Level.INFO, "Request "+cmd+" from OSC Server");
 					try {
-						remoteServer.sendPayload(null, new Command(cmd), null);
+						remoteServer.sendPayload(new Command(cmd), null);
 					} catch (OscClientException e) {
 						LOG.log(Level.SEVERE, "failed to send osc message, "+cmd, e);
 					}
@@ -398,7 +400,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 		initialized = true;
 		//now register remote observer
 		try {
-			remoteServer.sendPayload(null, new Command(ValidCommand.REGISTER_VISUALOBSERVER), null);
+			remoteServer.sendPayload(new Command(ValidCommand.REGISTER_VISUALOBSERVER), null);
 		} catch (OscClientException e) {
 			LOG.log(Level.SEVERE, "failed to send osc message, "+ValidCommand.REGISTER_VISUALOBSERVER, e);
 		}

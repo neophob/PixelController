@@ -55,6 +55,7 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
 	 */
 	public OscServerImpl(boolean useTcp, Observer handler, String host, int port, int bufferSize) throws OscServerException {
 		super(handler, host, port, bufferSize);
+		long t1 = System.currentTimeMillis();
 		try {
 			if (useTcp) {
 				oscServer = OSCServer.newUsing(OSCServer.TCP, port);				
@@ -63,7 +64,8 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
 			}
 			oscServer.addOSCListener(this);
 			oscServer.setBufferSize(bufferSize);
-			LOG.log(Level.INFO, "OSC Server initialized on port "+port+", buffersize: "+bufferSize);
+			LOG.log(Level.INFO, "OSC Server initialized on port "+port+" (buffersize: "+bufferSize+" bytes) in "
+			+(System.currentTimeMillis()-t1)+"ms");
 		} catch (Exception e) {
 			throw new OscServerException("Failed to start OSC Server", e);			
 		}		
@@ -86,7 +88,7 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
 			oscServer.dispose();
 			LOG.log(Level.INFO, "OSC Server stopped");
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "Failed to stop OSC Server!", e);
+			//LOG.log(Level.SEVERE, "Failed to stop OSC Server!", e);
 		}		
 	}
 

@@ -8,8 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,12 +25,14 @@ import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
-public class RmiOscImpl implements RmiApi {
+class RmiOscImpl implements RmiApi {
 
 	private static final Logger LOG = Logger.getLogger(RmiOscImpl.class.getName());
 	
 	private PixOscServer oscServer;
 	private PixOscClient oscClient;
+	private int clientTargetPort = 0;
+	private String clientTargetIp = "";
 
 	private CompressApi compressor; 
 	private boolean useCompression;
@@ -46,15 +46,28 @@ public class RmiOscImpl implements RmiApi {
 	}
 	
 	@Override
-	public void startServer(Observer handler, int port, int bufferSize) throws OscServerException {
-		this.oscServer = OscServerFactory.createServerTcp(handler, port, bufferSize);
+	public void startServer(Protocol protocol, Observer handler, int port) throws OscServerException {
+		if (protocol==Protocol.TCP) {
+			this.oscServer = OscServerFactory.createServerTcp(handler, port, bufferSize);			
+		} else {
+			this.oscServer = OscServerFactory.createServerUdp(handler, port, bufferSize);
+		}
 		this.oscServer.startServer();
 	}
 
 	@Override
-	public void startClient(String targetIp, int targetPort, int bufferSize) throws OscClientException {
-		this.oscClient = OscClientFactory.createClientUdp(targetIp, targetPort, bufferSize);		
+	public void startClient(Protocol protocol, String targetIp, int targetPort) throws OscClientException {
+		if (this.oscClient != null && oscClient.isConnected()) {
+			LOG.log(Level.INFO, "Disconnect current client...");
+			this.oscClient.disconnect();
+		}
+		if (protocol==Protocol.TCP) {
+			this.oscClient = OscClientFactory.createClientTcp(targetIp, targetPort, bufferSize);		
+		} else {
+			this.oscClient = OscClientFactory.createClientUdp(targetIp, targetPort, bufferSize);					
+		}
 	}
+	
 	
 	@Override
 	public void shutdown() {
@@ -72,31 +85,13 @@ public class RmiOscImpl implements RmiApi {
 	
 
 	@Override
-	public void sendPayload(SocketAddress socket, Command cmd, Serializable data) throws OscClientException {
+	public void sendPayload(Command cmd, Serializable data) throws OscClientException {
+		if (this.oscClient == null) {
+			throw new OscClientException("client not initialized");
+		}
 		OscMessage reply = new OscMessage(cmd.getValidCommand().toString(), cmd.getParameter(), convertFromObject(data));
-		if (socket!=null) {
-			this.verifyOscClient(socket);				
-		}
-		LOG.log(Level.INFO, cmd.getValidCommand()+" reply size: "+reply.getMessageSize());			
+		LOG.log(Level.INFO, "send "+cmd.getValidCommand()+" reply size: "+reply.getMessageSize());			
 		this.oscClient.sendMessage(reply);
-	}
-	
-	private synchronized void verifyOscClient(SocketAddress socket) throws OscClientException {
-		InetSocketAddress remote = (InetSocketAddress)socket;
-		boolean initNeeded = false;
-
-		if (oscClient == null) {
-			initNeeded = true;
-		} else if (oscClient.getTargetIp() != remote.getAddress().getHostName()) {
-			//TODO Verify port nr
-			initNeeded = true;
-		}
-
-		if (initNeeded) {			
-			//TODO make port configurable
-			oscClient = OscClientFactory.createClientTcp(remote.getAddress().getHostName(), 
-					9875, bufferSize);			
-		}
 	}
 
 
@@ -178,5 +173,15 @@ public class RmiOscImpl implements RmiApi {
 				// ignore close exception
 			}
 		}		
+	}
+
+	@Override
+	public String getClientTargetIp() {
+		return clientTargetIp;
+	}
+
+	@Override
+	public int getClientTargetPort() {
+		return clientTargetPort;
 	}
 }

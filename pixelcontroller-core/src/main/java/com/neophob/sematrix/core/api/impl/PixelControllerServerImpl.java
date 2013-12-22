@@ -19,7 +19,6 @@ import com.neophob.sematrix.core.output.PixelControllerOutput;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
@@ -108,7 +107,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 		clientNotification("Initialize OSC Server");
 		LOG.log(Level.INFO, "Initialize OSC Server");
 
-		int listeningOscPort = Integer.parseInt(applicationConfig.getProperty(ConfigConstant.NET_OSC_LISTENING_PORT, "9876") );
+		int listeningOscPort = applicationConfig.getOscListeningPort();
 		try {           
 			if (listeningOscPort>0) {
 				oscServer = new PixelControllerOscServer(this, listeningOscPort);

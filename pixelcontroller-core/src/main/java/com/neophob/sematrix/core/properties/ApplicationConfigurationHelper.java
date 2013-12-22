@@ -1372,4 +1372,8 @@ public class ApplicationConfigurationHelper implements Serializable {
     	return parseInt(ConfigConstant.VISUAL_FADE_TIME, 1500);
     }
 
+    public int getOscListeningPort() {
+    	return parseInt(ConfigConstant.NET_OSC_LISTENING_PORT, 9876);
+    }
+
 }

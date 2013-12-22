@@ -128,7 +128,7 @@ class OscClientImpl implements PixOscClient {
 				client.stop();
 				client.dispose();
 			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Ignored Exception while stopping OSC Client", e);
+				//LOG.log(Level.WARNING, "Ignored Exception while stopping OSC Client", e);
 			}
 		}		
 	}

@@ -1,7 +1,6 @@
 package com.neophob.sematrix.core.rmi;
 
 import java.io.Serializable;
-import java.net.SocketAddress;
 import java.util.Observer;
 
 import com.neophob.sematrix.core.properties.Command;
@@ -16,6 +15,9 @@ import com.neophob.sematrix.osc.server.OscServerException;
  */
 public interface RmiApi {
 	
+	public enum Protocol {
+		TCP, UDP
+	}
 	/**
 	 * starts a RMI server
 	 * @param handler notification if a client send data
@@ -23,7 +25,7 @@ public interface RmiApi {
 	 * @param bufferSize
 	 * @throws OscServerException
 	 */
-	void startServer(Observer handler, int port, int bufferSize) throws OscServerException;
+	void startServer(Protocol protocol, Observer handler, int port) throws OscServerException;
 	
 	/**
 	 * starts a RMI client that connect to an RMI server
@@ -32,7 +34,9 @@ public interface RmiApi {
 	 * @param bufferSize
 	 * @throws OscClientException
 	 */
-	void startClient(String targetIp, int targetPort, int bufferSize) throws OscClientException;
+	void startClient(Protocol protocol, String targetIp, int targetPort) throws OscClientException;
+	String getClientTargetIp();
+	int getClientTargetPort();
 	
 	/**
 	 * shutdown
@@ -46,7 +50,7 @@ public interface RmiApi {
 	 * @param data optional parameter to send an object
 	 * @throws OscClientException
 	 */
-	void sendPayload(SocketAddress socket, Command cmd, Serializable data) throws OscClientException;
+	void sendPayload(Command cmd, Serializable data) throws OscClientException;
 	
 	/**
 	 * recreate an object from binary data
