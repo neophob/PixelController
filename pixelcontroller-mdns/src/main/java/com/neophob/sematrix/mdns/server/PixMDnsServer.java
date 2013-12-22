@@ -27,8 +27,8 @@ package com.neophob.sematrix.mdns.server;
  */
 public interface PixMDnsServer {
 
-	final static String REMOTE_TYPE_TCP = "_pixconosc._tcp.local.";
-	final static String REMOTE_TYPE_UDP = "_pixconosc._udp.local.";
+	final String REMOTE_TYPE_TCP = "_pixconosc._tcp.local.";
+	final String REMOTE_TYPE_UDP = "_pixconosc._udp.local.";
 	
 	/**
 	 * start the OSC server, blocks until registered

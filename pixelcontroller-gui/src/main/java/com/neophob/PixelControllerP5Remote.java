@@ -48,7 +48,7 @@ public class PixelControllerP5Remote extends AbstractPixelControllerP5 {
 	 *
 	 * @param args the arguments
 	 */
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		PApplet.main(new String[] { PixelControllerP5Remote.class.getName().toString() });
 	}
 

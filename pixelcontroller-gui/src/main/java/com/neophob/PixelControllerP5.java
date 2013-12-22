@@ -38,7 +38,7 @@ public class PixelControllerP5 extends AbstractPixelControllerP5 {
 		LOG.log(Level.INFO, "LocalServer created");
 	}
 
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		PApplet.main(new String[] { PixelControllerP5.class.getName().toString() });
 	}
 

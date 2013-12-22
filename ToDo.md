@@ -1,12 +1,8 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* Decouple GUI from Code
-    -client port = server port -1
-    -add shutdown hook
 * Add console to GUI
 * Documentation for bonjour, client/server
-* Remote client, add shutdown hook, disconnect from server
 * Random-Mode with selectable time-life
 * Generator Speed, adjust fps instead of fancy multiplications
 
@@ -21,6 +17,7 @@
 
 ## Features
 
+* Remove Adler32 hash code, replace with something faster (xxhash, murmur2)
 * Support multiple panels for tpm2serial output
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
 * Option to invert GUI colors

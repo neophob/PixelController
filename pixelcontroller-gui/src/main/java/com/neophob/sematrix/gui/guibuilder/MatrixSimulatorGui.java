@@ -151,7 +151,7 @@ public class MatrixSimulatorGui {
 	 * @param nrY the nr y
 	 * @param buffer - the buffer to draw
 	 */
-	private void drawOutput(int nr, int nrX, int nrY, int buffer[], int currentOutput) {
+	private void drawOutput(int nr, int nrX, int nrY, int[] buffer, int currentOutput) {
 		if (buffer == null) {
 			return;
 		}

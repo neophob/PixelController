@@ -45,19 +45,19 @@ import com.neophob.sematrix.core.output.OutputDeviceEnum;
 public class PixelControllerStatus implements PixelControllerStatusMBean {
 
 	/** The log. */
-	private static transient final Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
+	private static final transient Logger LOG = Logger.getLogger(PixelControllerStatus.class.getName());
 	
 	/** The Constant JMX_BEAN_NAME. */
-	public static transient final String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
+	public static final transient String JMX_BEAN_NAME = PixelControllerStatus.class.getCanonicalName()+":type=PixelControllerStatusMBean";
 	
 	/** The Constant VERSION. */
 	private static final float VERSION = 1.2f;
 	
 	/** The Constant SECONDS. */
-	private static transient final int SECONDS = 10;
+	private static final transient int SECONDS = 10;
 		
 	/** The Constant COOL_DOWN_MILLISECONDS. */
-	private static transient final int COOL_DOWN_MILLISECONDS = 3000;
+	private static final transient int COOL_DOWN_MILLISECONDS = 3000;
 	
 	private static transient long coolDownTimestamp = System.currentTimeMillis();
 

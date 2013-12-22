@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    354 files changed, 18393 insertions(+), 188635 deletions(-)
+    397 files changed, 20044 insertions(+), 189250 deletions(-)
     
 * More Code cleanup
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
@@ -10,7 +10,7 @@
 * Add client/server architecture, supports remote server 
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
-* Fix update gui in random mode
+* Fix refresh GUI in random mode
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  

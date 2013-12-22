@@ -28,128 +28,141 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 
 /**
- * Send data to the Element Stealth Device.
- * An Element Stealth Panel is 16x16 at 24bit
- *
- * @author steven noreyko
- * based on pixelinvaders by michu
+ * Send data to the Element Stealth Device. An Element Stealth Panel is 16x16 at
+ * 24bit
+ * 
+ * @author steven noreyko based on pixelinvaders by michu
  */
 public class StealthDevice extends ArduinoOutput {
 
-	/** The log. */
-	private static transient final Logger LOG = Logger.getLogger(StealthDevice.class.getName());
-		
-	/** The display options, does the buffer needs to be flipped? rotated? */
-	private List<DeviceConfig> displayOptions;
-	
-	/** The output color format. */
-	private List<ColorFormat> colorFormat;
-	
-	/** The Stealth. */
-	private transient Stealth stealth = null;
-	
-	private int nrOfScreens;
+    /** The log. */
+    private static final transient Logger LOG = Logger.getLogger(StealthDevice.class.getName());
 
-	/**
-	 * init the Stealth devices.
-	 *
-	 * @param controller the controller
-	 * @param displayOptions the display options
-	 * @param colorFormat the color format
-	 */
-	public StealthDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
-		super(OutputDeviceEnum.STEALTH, ph, 5);
-		
-		this.nrOfScreens = nrOfScreens;
-		this.displayOptions = ph.getStealthDevice();
-		this.colorFormat = ph.getColorFormat();
-		this.initialized = false;		
-		try {
-			stealth = new Stealth();			
-			this.initialized = stealth.ping();
-			LOG.log(Level.INFO, "ping result: "+ this.initialized);			
-		} catch (NoSerialPortFoundException e) {
-			LOG.log(Level.WARNING, "failed to initialize serial port!");
-		} catch (Throwable e) {
-			//catch really ALL excetions here!
-			LOG.log(Level.SEVERE, "\n\n\n\nSERIOUS ERROR, check your RXTX installation!", e);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e1) {}
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.ArduinoOutput#getLatestHeartbeat()
-	 */
-	public long getLatestHeartbeat() {
-		if (initialized) {
-			return stealth.getArduinoHeartbeat();			
-		}
-		return -1;
-	}
+    /** The display options, does the buffer needs to be flipped? rotated? */
+    private List<DeviceConfig> displayOptions;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.ArduinoOutput#getArduinoBufferSize()
-	 */
-	public int getArduinoBufferSize() {
-		if (initialized) {
-			return stealth.getArduinoBufferSize();			
-		}
-		return -1;
-	}
+    /** The output color format. */
+    private List<ColorFormat> colorFormat;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.ArduinoOutput#getArduinoErrorCounter()
-	 */
-	public long getArduinoErrorCounter() {
-		if (initialized) {
-			return stealth.getAckErrors();			
-		}
-		return -1;
-	}
+    /** The Stealth. */
+    private transient Stealth stealth = null;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#update()
-	 */
-	public void update() {
-		
-		if (initialized) {			
-			for (int ofs=0; ofs<nrOfScreens; ofs++) {
-				//draw only on available screens!
-				int[] transformedBuffer = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(ofs),
-							Stealth.NR_OF_LED_HORIZONTAL, Stealth.NR_OF_LED_VERTICAL);
-				
-				if (stealth.sendRgbFrame((byte)ofs, transformedBuffer, colorFormat.get(ofs))) {
-					needUpdate++;
-				} else {
-					noUpdate++;
-				}
-			}
-			
-			if ((noUpdate+needUpdate)%100==0) {
-				float f = noUpdate+needUpdate;
-				float result = (100.0f/f)*needUpdate;
-				LOG.log(Level.INFO, "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}", 
-						new Object[] {result, needUpdate, noUpdate, stealth.getAckErrors(), 
-						stealth.getArduinoErrorCounter(), stealth.getArduinoBufferSize()});				
-			}
-			
-		}
-	}
+    private int nrOfScreens;
 
+    /**
+     * init the Stealth devices.
+     * 
+     * @param controller
+     *            the controller
+     * @param displayOptions
+     *            the display options
+     * @param colorFormat
+     *            the color format
+     */
+    public StealthDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
+        super(OutputDeviceEnum.STEALTH, ph, 5);
 
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#close()
-	 */
-	@Override
-	public void close() {
-		if (initialized) {
-			stealth.dispose();			
-		}
-	}
+        this.nrOfScreens = nrOfScreens;
+        this.displayOptions = ph.getStealthDevice();
+        this.colorFormat = ph.getColorFormat();
+        this.initialized = false;
+        try {
+            stealth = new Stealth();
+            this.initialized = stealth.ping();
+            LOG.log(Level.INFO, "ping result: " + this.initialized);
+        } catch (NoSerialPortFoundException e) {
+            LOG.log(Level.WARNING, "failed to initialize serial port!");
+        } catch (Throwable e) {
+            // catch really ALL excetions here!
+            LOG.log(Level.SEVERE, "\n\n\n\nSERIOUS ERROR, check your RXTX installation!", e);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+            }
+        }
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.ArduinoOutput#getLatestHeartbeat()
+     */
+    public long getLatestHeartbeat() {
+        if (initialized) {
+            return stealth.getArduinoHeartbeat();
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.output.ArduinoOutput#getArduinoBufferSize()
+     */
+    public int getArduinoBufferSize() {
+        if (initialized) {
+            return stealth.getArduinoBufferSize();
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.output.ArduinoOutput#getArduinoErrorCounter()
+     */
+    public long getArduinoErrorCounter() {
+        if (initialized) {
+            return stealth.getAckErrors();
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#update()
+     */
+    public void update() {
+
+        if (initialized) {
+            for (int ofs = 0; ofs < nrOfScreens; ofs++) {
+                // draw only on available screens!
+                int[] transformedBuffer = RotateBuffer.transformImage(
+                        super.getBufferForScreen(ofs), displayOptions.get(ofs),
+                        Stealth.NR_OF_LED_HORIZONTAL, Stealth.NR_OF_LED_VERTICAL);
+
+                if (stealth.sendRgbFrame((byte) ofs, transformedBuffer, colorFormat.get(ofs))) {
+                    needUpdate++;
+                } else {
+                    noUpdate++;
+                }
+            }
+
+            if ((noUpdate + needUpdate) % 100 == 0) {
+                float f = noUpdate + needUpdate;
+                float result = (100.0f / f) * needUpdate;
+                LOG.log(Level.INFO,
+                        "sended frames: {0}% {1}/{2}, ack Errors: {3} last Error: {4}, arduino buffer size: {5}",
+                        new Object[] { result, needUpdate, noUpdate, stealth.getAckErrors(),
+                                stealth.getArduinoErrorCounter(), stealth.getArduinoBufferSize() });
+            }
+
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#close()
+     */
+    @Override
+    public void close() {
+        if (initialized) {
+            stealth.dispose();
+        }
+    }
 
 }

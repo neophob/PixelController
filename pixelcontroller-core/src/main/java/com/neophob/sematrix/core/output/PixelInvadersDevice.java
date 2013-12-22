@@ -30,122 +30,122 @@ import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 
 /**
- * Send data to the PixelInvaders Device.
- * A PixelInvaders Panel is always 8x8 but supports multiple panels
- *
+ * Send data to the PixelInvaders Device. A PixelInvaders Panel is always 8x8
+ * but supports multiple panels
+ * 
  * @author michu
  */
 public abstract class PixelInvadersDevice extends Output {
 
-	private static transient final Logger LOG = Logger.getLogger(PixelInvadersDevice.class.getName());
-	
-	/** The display options, does the buffer needs to be flipped? rotated? */
-	protected List<DeviceConfig> displayOptions;
+    private static final transient Logger LOG = Logger.getLogger(PixelInvadersDevice.class
+            .getName());
 
-	/** The output color format. */
-	protected List<ColorFormat> colorFormat;
+    /** The display options, does the buffer needs to be flipped? rotated? */
+    protected List<DeviceConfig> displayOptions;
 
-	/** define how the panels are arranged */
-	protected List<Integer> panelOrder;
+    /** The output color format. */
+    protected List<ColorFormat> colorFormat;
 
-	//primitive arrays can not added to a map, and autoboxing do not work
-	protected transient Map<Integer, Object> transformedBuffer = new HashMap<Integer, Object>(); 
+    /** define how the panels are arranged */
+    protected List<Integer> panelOrder;
 
-	protected boolean initialized = false;
+    // primitive arrays can not added to a map, and autoboxing do not work
+    protected transient Map<Integer, Object> transformedBuffer = new HashMap<Integer, Object>();
 
-	protected long sentFrames = 0;
-	protected long sentBytes = 0;
-	protected long ignoredFrames = 0;
-	protected long errorFrames = 0;
-	
-	private transient Lpd6803Common lpd6803;
-	
-	private int nrOfScreens;
-	/**
-	 * 
-	 * @param outputDeviceEnum
-	 * @param ph
-	 * @param controller
-	 * @param bpp
-	 */
-	public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp, int nrOfScreens) {
-		super(outputDeviceEnum, ph, bpp);
-		
-		this.nrOfScreens = nrOfScreens;
-		this.displayOptions = ph.getLpdDevice();
-		this.colorFormat = ph.getColorFormat();
-		this.panelOrder = ph.getPanelOrder();
-		
-		this.initialized = false;
-		this.lpd6803 = null;
-	}
+    protected boolean initialized = false;
 
-	
-	
-	public void setLpd6803(Lpd6803Common lpd6803) {
-		this.lpd6803 = lpd6803;
-	}
+    protected long sentFrames = 0;
+    protected long sentBytes = 0;
+    protected long ignoredFrames = 0;
+    protected long errorFrames = 0;
 
+    private transient Lpd6803Common lpd6803;
 
+    private int nrOfScreens;
 
-	/**
-	 * 
-	 * @param lpd6803
-	 * @param o
-	 */
-	public void sendPayload() {
-		this.transformedBuffer.clear();
+    /**
+     * 
+     * @param outputDeviceEnum
+     * @param ph
+     * @param controller
+     * @param bpp
+     */
+    public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum,
+            ApplicationConfigurationHelper ph, int bpp, int nrOfScreens) {
+        super(outputDeviceEnum, ph, bpp);
 
-		int totalFrames = 0;
-		//step 1, check how many data packages need to send
-		for (int ofs=0; ofs<nrOfScreens; ofs++) {
-			//draw only on available screens!
+        this.nrOfScreens = nrOfScreens;
+        this.displayOptions = ph.getLpdDevice();
+        this.colorFormat = ph.getColorFormat();
+        this.panelOrder = ph.getPanelOrder();
 
-			//get the effective panel buffer
-			int panelNr = this.panelOrder.get(ofs);
+        this.initialized = false;
+        this.lpd6803 = null;
+    }
 
-			int[] bfr = 
-					RotateBuffer.transformImage(super.getBufferForScreen(ofs), displayOptions.get(panelNr),
-							lpd6803.getNrOfLedHorizontal(), lpd6803.getNrOfLedVertical());
+    public void setLpd6803(Lpd6803Common lpd6803) {
+        this.lpd6803 = lpd6803;
+    }
 
-			bfr = OutputHelper.flipSecondScanline(bfr, lpd6803.getNrOfLedHorizontal(), lpd6803.getNrOfLedVertical());
+    /**
+     * 
+     * @param lpd6803
+     * @param o
+     */
+    public void sendPayload() {
+        this.transformedBuffer.clear();
 
-			if (lpd6803.didFrameChange((byte)ofs, bfr)) {
-				this.transformedBuffer.put(panelNr, bfr);
-				totalFrames++;
-			} else {
-				ignoredFrames++;
-			}
-		}
+        int totalFrames = 0;
+        // step 1, check how many data packages need to send
+        for (int ofs = 0; ofs < nrOfScreens; ofs++) {
+            // draw only on available screens!
 
-		//step 2, send data out
-		for (Map.Entry<Integer, Object> entry: this.transformedBuffer.entrySet()) {
-			int panelNr = entry.getKey();
-			int[] data = (int[])entry.getValue();
-			int sendedBytes = lpd6803.sendRgbFrame((byte)panelNr, data, colorFormat.get(panelNr), totalFrames);
-			if (sendedBytes>0) {
-				sentBytes += sendedBytes;
-				sentFrames++;
-			} else {
-				errorFrames++;
-			}								
-		}
-		
-		if ((sentFrames+ignoredFrames)%2000==0) {
-			float f = sentFrames+ignoredFrames;
-			float result = (100.0f/f)*sentFrames;
-			LOG.log(Level.INFO, "sent frames: {0}% ({1}/{2}, total {3}kb), errors: {4}", 
-					new Object[] {result, sentFrames, ignoredFrames, sentBytes/1024, 
-					errorFrames+lpd6803.getConnectionErrorCounter() 
-			});				
-		}		
-	}
-	
-	@Override
-	public long getErrorCounter() {
-		if (this.lpd6803==null) {
-			return errorFrames;
-		}
-	    return errorFrames+lpd6803.getConnectionErrorCounter();
-	}
+            // get the effective panel buffer
+            int panelNr = this.panelOrder.get(ofs);
+
+            int[] bfr = RotateBuffer.transformImage(super.getBufferForScreen(ofs),
+                    displayOptions.get(panelNr), lpd6803.getNrOfLedHorizontal(),
+                    lpd6803.getNrOfLedVertical());
+
+            bfr = OutputHelper.flipSecondScanline(bfr, lpd6803.getNrOfLedHorizontal(),
+                    lpd6803.getNrOfLedVertical());
+
+            if (lpd6803.didFrameChange((byte) ofs, bfr)) {
+                this.transformedBuffer.put(panelNr, bfr);
+                totalFrames++;
+            } else {
+                ignoredFrames++;
+            }
+        }
+
+        // step 2, send data out
+        for (Map.Entry<Integer, Object> entry : this.transformedBuffer.entrySet()) {
+            int panelNr = entry.getKey();
+            int[] data = (int[]) entry.getValue();
+            int sendedBytes = lpd6803.sendRgbFrame((byte) panelNr, data, colorFormat.get(panelNr),
+                    totalFrames);
+            if (sendedBytes > 0) {
+                sentBytes += sendedBytes;
+                sentFrames++;
+            } else {
+                errorFrames++;
+            }
+        }
+
+        if ((sentFrames + ignoredFrames) % 2000 == 0) {
+            float f = sentFrames + ignoredFrames;
+            float result = (100.0f / f) * sentFrames;
+            LOG.log(Level.INFO, "sent frames: {0}% ({1}/{2}, total {3}kb), errors: {4}",
+                    new Object[] { result, sentFrames, ignoredFrames, sentBytes / 1024,
+                            errorFrames + lpd6803.getConnectionErrorCounter() });
+        }
+    }
+
+    @Override
+    public long getErrorCounter() {
+        if (this.lpd6803 == null) {
+            return errorFrames;
+        }
+        return errorFrames + lpd6803.getConnectionErrorCounter();
+    }
 }

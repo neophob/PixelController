@@ -46,25 +46,25 @@ import com.neophob.sematrix.core.visual.layout.Layout;
 public class ApplicationConfigurationHelper implements Serializable {
 
     /** The log. */
-    private transient static final Logger LOG = Logger.getLogger(ApplicationConfigurationHelper.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(ApplicationConfigurationHelper.class.getName());
 
-    private transient static final int DEFAULT_RESOLUTION = 8;
-    private transient static final float DEFAULT_SOUND_THRESHOLD = 0.0005f;
+    private static final transient int DEFAULT_RESOLUTION = 8;
+    private static final transient float DEFAULT_SOUND_THRESHOLD = 0.0005f;
     
     /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
-    private transient static final String ERROR_MULTIPLE_DEVICES_CONFIGURATED = 
+    private static final transient String ERROR_MULTIPLE_DEVICES_CONFIGURATED = 
     		"Multiple devices configured, illegal configuration!";
 
-    private transient static final String ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED = 
+    private static final transient String ERROR_MULTIPLE_CABLING_METHOD_CONFIGURATED = 
     		"Multiple cabling options (snake cabling and custom mapping) configured, illegal configuration!";
 
-    private transient static final String ERROR_INVALID_OUTPUT_MAPPING = 
+    private static final transient String ERROR_INVALID_OUTPUT_MAPPING = 
     		"Invalid output mapping entries, output.mapping > output.resolution.x*output.resolution.y";
 
     /** The Constant FAILED_TO_PARSE. */
-    private transient static final String FAILED_TO_PARSE = "Failed to parse {0}";
+    private static final transient String FAILED_TO_PARSE = "Failed to parse {0}";
     
-    private transient static final int MAXIMAL_PIXELS_PER_UNIVERSE = 170;
+    private static final transient int MAXIMAL_PIXELS_PER_UNIVERSE = 170;
 
     /** The config. */
     protected Properties config=null;

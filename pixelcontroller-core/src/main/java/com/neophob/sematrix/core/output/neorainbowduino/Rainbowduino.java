@@ -291,7 +291,7 @@ public class Rainbowduino {
 		 *  5   ... data
 		 *  n   end of data
 		 */
-		byte cmdfull[] = new byte[7];
+		byte[] cmdfull = new byte[7];
 		cmdfull[0] = START_OF_CMD;
 		cmdfull[1] = 0; //unused here!
 		cmdfull[2] = 0x01;
@@ -315,7 +315,7 @@ public class Rainbowduino {
 	 *       check the result.
 	 */
 	private boolean i2cBusScan() {		
-		byte cmdfull[] = new byte[7];
+		byte[] cmdfull = new byte[7];
 		cmdfull[0] = START_OF_CMD;
 		cmdfull[1] = 0;
 		cmdfull[2] = 1;
@@ -354,7 +354,7 @@ public class Rainbowduino {
 	 * @param data
 	 * @return true if send was successful
 	 */
-	private boolean didFrameChange(byte ofs, byte data[]) {
+	private boolean didFrameChange(byte ofs, byte[] data) {
 		adler.reset();
 		adler.update(data);
 		long l = adler.getValue();
@@ -383,7 +383,7 @@ public class Rainbowduino {
 	 * @param data byte[3*8*4]
 	 * @return true if send was successful
 	 */
-	public boolean sendFrame(byte addr, byte data[]) {
+	public boolean sendFrame(byte addr, byte[] data) {
 		//TODO stop if connection counter > n
 		//if (connectionErrorCounter>10000) {}
 		
@@ -393,7 +393,7 @@ public class Rainbowduino {
 		
 		//log.log(Level.INFO, "Send data to device {0}", addr);
 		
-		byte cmdfull[] = new byte[6+data.length];
+		byte[] cmdfull = new byte[6+data.length];
 		cmdfull[0] = START_OF_CMD;
 		cmdfull[1] = addr;
 		cmdfull[2] = (byte)data.length;
@@ -432,7 +432,7 @@ public class Rainbowduino {
 		//TODO stop if connection counter > n
 		//if (connectionErrorCounter>10000) {}
 		
-		byte cmdfull[] = new byte[7];
+		byte[] cmdfull = new byte[7];
 		cmdfull[0] = START_OF_CMD;
 		cmdfull[1] = addr;
 		cmdfull[2] = 1;

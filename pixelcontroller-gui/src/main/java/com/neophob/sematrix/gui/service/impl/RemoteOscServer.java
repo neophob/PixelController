@@ -51,7 +51,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	private static final String TARGET_HOST = "pixelcontroller.local";
 	private static final int REMOTE_OSC_SERVER_PORT = 9876;
-	//private static final int LOCAL_OSC_SERVER_PORT = 9875;
 
 	private float steps;
 
@@ -68,7 +67,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	private List<OutputMapping> outputMapping;
 	private IOutput output;
 	private ImageBuffer imageBuffer;
-	private List<String> guiState;
 	private PresetSettings presetSettings;
 	private FileUtils fileUtilsRemote;
 	private PixelControllerStatusMBean jmxStatistics;
@@ -284,8 +282,9 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 				break;
 
 			case GET_GUISTATE:
-				guiState = remoteServer.reassembleObject(data, ArrayList.class);
-				remoteObserver.notifyGuiUpdate(guiState);
+				remoteObserver.notifyGuiUpdate(
+						remoteServer.reassembleObject(data, ArrayList.class)
+				);
 				break;
 
 			case GET_PRESETSETTINGS:

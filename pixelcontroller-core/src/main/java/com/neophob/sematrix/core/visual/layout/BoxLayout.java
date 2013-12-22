@@ -25,173 +25,177 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.visual.OutputMapping;
 
 /**
- * Box Layout, features:
- * -"unlimited" width
- * -exact two panels height.
- *
+ * Box Layout, features: -"unlimited" width -exact two panels height.
+ * 
  * @author michu
  */
 public class BoxLayout extends Layout {
 
-	private static transient final Logger LOG = Logger.getLogger(BoxLayout.class.getName());
-	
-	private static transient final int YSIZE = 2;
-	private static transient final int MAXVAL = 1000;
-	
-	/**
-	 * Instantiates a new box layout.
-	 *
-	 * @param row1Size the row1 size
-	 * @param row2Size the row2 size
-	 */
-	public BoxLayout(int row1Size, int row2Size) {
-		super(LayoutName.BOX, row1Size, row2Size);
-		
-		LOG.log(Level.INFO,	"BoxLayout created, size row1: {0}, row 2: {1}", new Object[] {row1Size, row2Size});
-	}
+    private static final transient Logger LOG = Logger.getLogger(BoxLayout.class.getName());
 
+    private static final transient int YSIZE = 2;
+    private static final transient int MAXVAL = 1000;
 
-	/**
-	 * How many screens share this fx on the x axis.
-	 *
-	 * @param fxInput the fx input
-	 * @return the int
-	 */
-	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, List<OutputMapping> ioMapping) {
-		int max=0;
-		int min=MAXVAL;
-		OutputMapping o;
+    /**
+     * Instantiates a new box layout.
+     * 
+     * @param row1Size
+     *            the row1 size
+     * @param row2Size
+     *            the row2 size
+     */
+    public BoxLayout(int row1Size, int row2Size) {
+        super(LayoutName.BOX, row1Size, row2Size);
 
-		//we only have 2 rows
-		for (int y=0; y<YSIZE; y++) {	
-			for (int x=0; x<row1Size; x++) {
-				o = ioMapping.get(row1Size*y+x);
-				if (o.getVisualId()==fxInput) {
-					if (x<min) {
-						min=x;
-					}
-					//save the maximal x position
-					//if there are multiple fx'es, store the max position
-					if (x+1>max) {
-						max=x+1;
-					}
-				}
-			}
-		}
-		return max-min;
-	}
+        LOG.log(Level.INFO, "BoxLayout created, size row1: {0}, row 2: {1}", new Object[] {
+                row1Size, row2Size });
+    }
 
-	/**
-	 * How many screens share this fx on the y axis.
-	 *
-	 * @param fxInput the fx input
-	 * @return the int
-	 */
-	private int howManyScreensShareThisFxOnTheYAxis(int fxInput, List<OutputMapping> ioMapping) {
-		int max=0;
-		int min=MAXVAL;
-		OutputMapping o;
+    /**
+     * How many screens share this fx on the x axis.
+     * 
+     * @param fxInput
+     *            the fx input
+     * @return the int
+     */
+    private int howManyScreensShareThisFxOnTheXAxis(int fxInput, List<OutputMapping> ioMapping) {
+        int max = 0;
+        int min = MAXVAL;
+        OutputMapping o;
 
-		//we only have 2 rows
-		for (int x=0; x<row1Size; x++) {
-			for (int y=0; y<YSIZE; y++) {
-				o = ioMapping.get(row1Size*y+x);
+        // we only have 2 rows
+        for (int y = 0; y < YSIZE; y++) {
+            for (int x = 0; x < row1Size; x++) {
+                o = ioMapping.get(row1Size * y + x);
+                if (o.getVisualId() == fxInput) {
+                    if (x < min) {
+                        min = x;
+                    }
+                    // save the maximal x position
+                    // if there are multiple fx'es, store the max position
+                    if (x + 1 > max) {
+                        max = x + 1;
+                    }
+                }
+            }
+        }
+        return max - min;
+    }
 
-				if (o.getVisualId()==fxInput) {
-					if (y<min) {
-						min=y;
-					}
-					//save the maximal x position
-					//if there are multiple fx'es, store the max position
-					if (y+1>max) {
-						max=y+1;
-					}
-				}
-			}
-		}
-		return max-min;
-	}
+    /**
+     * How many screens share this fx on the y axis.
+     * 
+     * @param fxInput
+     *            the fx input
+     * @return the int
+     */
+    private int howManyScreensShareThisFxOnTheYAxis(int fxInput, List<OutputMapping> ioMapping) {
+        int max = 0;
+        int min = MAXVAL;
+        OutputMapping o;
 
+        // we only have 2 rows
+        for (int x = 0; x < row1Size; x++) {
+            for (int y = 0; y < YSIZE; y++) {
+                o = ioMapping.get(row1Size * y + x);
 
-	/**
-	 * return x offset of screen position
-	 * (0=first row, 1=second row...)
-	 *
-	 * @param screenNr the screen nr
-	 * @param fxOnHowMayScreens the fx on how may screens
-	 * @return the x offset for screen
-	 */
-	private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens, int visualId, List<OutputMapping> ioMapping) {
-		int ret = screenNr;
-		if (ret>=row1Size) {
-			ret-=row1Size;
-		}
+                if (o.getVisualId() == fxInput) {
+                    if (y < min) {
+                        min = y;
+                    }
+                    // save the maximal x position
+                    // if there are multiple fx'es, store the max position
+                    if (y + 1 > max) {
+                        max = y + 1;
+                    }
+                }
+            }
+        }
+        return max - min;
+    }
 
-		if (fxOnHowMayScreens==1 || ret==0) {
-			return 0;
-		}
+    /**
+     * return x offset of screen position (0=first row, 1=second row...)
+     * 
+     * @param screenNr
+     *            the screen nr
+     * @param fxOnHowMayScreens
+     *            the fx on how may screens
+     * @return the x offset for screen
+     */
+    private int getXOffsetForScreen(int screenNr, int fxOnHowMayScreens, int visualId,
+            List<OutputMapping> ioMapping) {
+        int ret = screenNr;
+        if (ret >= row1Size) {
+            ret -= row1Size;
+        }
 
-		//Get start X offset, example:
-		//
-		// O X X
-		// O X X
-		//
-		// O = Visual 1
-		// X = Visual 2
-		//
-		int xOfs = ret;
-		for (int i=0; i<ret; i++) {
-			OutputMapping o1 = ioMapping.get(0+i);
-			OutputMapping o2 = ioMapping.get(row1Size+i);
-			if ((o1.getVisualId()!=visualId) && (o2.getVisualId()!=visualId)) {				
-				if (xOfs>0) {
-					xOfs--;
-				}
-			}			
-		}
-		return xOfs;
-		
-	}
+        if (fxOnHowMayScreens == 1 || ret == 0) {
+            return 0;
+        }
 
-	/**
-	 * return y offset of screen position if a visual is spread
-	 * acros MULTIPLE outputs.
-	 * 
-	 * return 0 if the visuial is only shown on one screen
-	 * 
-	 * (0=first row, 1=second row...)
-	 *
-	 * @param screenNr the screen nr
-	 * @param fxOnHowMayScreens the fx on how may screens
-	 * @return the y offset for screen
-	 */
-	private int getYOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
-		if (fxOnHowMayScreens==1 || screenNr==0) {
-			return 0;
-		}
+        // Get start X offset, example:
+        //
+        // O X X
+        // O X X
+        //
+        // O = Visual 1
+        // X = Visual 2
+        //
+        int xOfs = ret;
+        for (int i = 0; i < ret; i++) {
+            OutputMapping o1 = ioMapping.get(0 + i);
+            OutputMapping o2 = ioMapping.get(row1Size + i);
+            if ((o1.getVisualId() != visualId) && (o2.getVisualId() != visualId)) {
+                if (xOfs > 0) {
+                    xOfs--;
+                }
+            }
+        }
+        return xOfs;
 
-		if (screenNr>=row1Size) {
-			return 1;
-		}
+    }
 
-		return 0;
-	}
+    /**
+     * return y offset of screen position if a visual is spread acros MULTIPLE
+     * outputs.
+     * 
+     * return 0 if the visuial is only shown on one screen
+     * 
+     * (0=first row, 1=second row...)
+     * 
+     * @param screenNr
+     *            the screen nr
+     * @param fxOnHowMayScreens
+     *            the fx on how may screens
+     * @return the y offset for screen
+     */
+    private int getYOffsetForScreen(int screenNr, int fxOnHowMayScreens) {
+        if (fxOnHowMayScreens == 1 || screenNr == 0) {
+            return 0;
+        }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.layout.Layout#getDataForScreen(int)
-	 */
-	public LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping) {
-		int visualId = ioMapping.get(screenNr).getVisualId();
+        if (screenNr >= row1Size) {
+            return 1;
+        }
 
-		int fxOnHowMayScreensX=this.howManyScreensShareThisFxOnTheXAxis(visualId, ioMapping);
-		int fxOnHowMayScreensY=this.howManyScreensShareThisFxOnTheYAxis(visualId, ioMapping);
+        return 0;
+    }
 
-		return new LayoutModel(
-				fxOnHowMayScreensX, 
-				fxOnHowMayScreensY,
-				this.getXOffsetForScreen(screenNr, fxOnHowMayScreensX, visualId, ioMapping),
-				this.getYOffsetForScreen(screenNr, fxOnHowMayScreensY),
-				visualId);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.layout.Layout#getDataForScreen(int)
+     */
+    public LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping) {
+        int visualId = ioMapping.get(screenNr).getVisualId();
+
+        int fxOnHowMayScreensX = this.howManyScreensShareThisFxOnTheXAxis(visualId, ioMapping);
+        int fxOnHowMayScreensY = this.howManyScreensShareThisFxOnTheYAxis(visualId, ioMapping);
+
+        return new LayoutModel(fxOnHowMayScreensX, fxOnHowMayScreensY, this.getXOffsetForScreen(
+                screenNr, fxOnHowMayScreensX, visualId, ioMapping), this.getYOffsetForScreen(
+                screenNr, fxOnHowMayScreensY), visualId);
+    }
 
 }

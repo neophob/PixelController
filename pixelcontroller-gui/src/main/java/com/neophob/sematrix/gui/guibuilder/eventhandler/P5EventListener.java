@@ -290,7 +290,7 @@ public final class P5EventListener implements ControlListener {
      * 
      * @param msg
      */
-    private void singleSendMessageOut(String msg[]) {
+    private void singleSendMessageOut(String[] msg) {
     	if (System.currentTimeMillis()-lastCallbackEvent<CALLBACK_TIMEOUT) {
     		//do not flood the gui
     		return;
@@ -306,7 +306,7 @@ public final class P5EventListener implements ControlListener {
      * @param source
      */
     private void createMessage(ValidCommand validCommand, float newValue) {
-        String msg[] = new String[2];		
+        String[] msg = new String[2];		
         msg[0] = ""+validCommand;
         msg[1] = ""+(int)newValue;
         singleSendMessageOut(msg);
@@ -333,7 +333,7 @@ public final class P5EventListener implements ControlListener {
      * @param newValue
      */
     private void createMessage(ValidCommand validCommand, String newValue) {
-        String msg[] = new String[2];		
+        String[] msg = new String[2];		
         msg[0] = ""+validCommand;
         msg[1] = newValue;
         singleSendMessageOut(msg);
@@ -344,7 +344,7 @@ public final class P5EventListener implements ControlListener {
      * @param param
      */
     private void createShufflerMessage(String param) {
-        String msg[] = new String[param.length()+1];		
+        String[] msg = new String[param.length()+1];		
         msg[0] = ""+ValidCommand.CHANGE_SHUFFLER_SELECT;
         String tmp[] = param.split(" ");
         System.arraycopy(tmp, 0, msg, 1, tmp.length);
@@ -356,7 +356,7 @@ public final class P5EventListener implements ControlListener {
      * @param newValue
      */
     private void handleRandomMode(float newValue) {
-        String msg[] = new String[2];
+        String[] msg = new String[2];
         
         if (newValue==0.0) {
             msg[0] = ""+ValidCommand.RANDOM;        	
@@ -379,7 +379,7 @@ public final class P5EventListener implements ControlListener {
      * @param source
      */
     private void handleEffect(float newValue, GuiElement source) {
-        String msg[] = new String[2];
+        String[] msg = new String[2];
 
         if (source == GuiElement.EFFECT_ONE_DROPDOWN) {
             msg[0] = ""+ValidCommand.CHANGE_EFFECT_A;
@@ -396,7 +396,7 @@ public final class P5EventListener implements ControlListener {
      * @param source
      */	
     private void handleGenerator(float newValue, GuiElement source) {
-        String msg[] = new String[2];
+        String[] msg = new String[2];
 
         if (source == GuiElement.GENERATOR_ONE_DROPDOWN) {
             msg[0] = ""+ValidCommand.CHANGE_GENERATOR_A;

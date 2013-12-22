@@ -9,34 +9,34 @@ public interface FileUtils extends Serializable{
 	 * @param path
 	 * @return
 	 */
-	public abstract String[] findBlinkenFiles();
+	String[] findBlinkenFiles();
 
 	/**
 	 * 
 	 * @param path
 	 * @return
 	 */
-	public abstract String[] findImagesFiles();
+	String[] findImagesFiles();
 
 	/**
 	 * 
 	 * @return
 	 */
-	public abstract String getRootDirectory();
+	String getRootDirectory();
 
 	/**
 	 * @return the dataDir
 	 */
-	public abstract String getDataDir();
+	String getDataDir();
 
 	/**
 	 * @return the bmlDir
 	 */
-	public abstract String getBmlDir();
+	String getBmlDir();
 
 	/**
 	 * @return the imageDir
 	 */
-	public abstract String getImageDir();
+	String getImageDir();
 
 }

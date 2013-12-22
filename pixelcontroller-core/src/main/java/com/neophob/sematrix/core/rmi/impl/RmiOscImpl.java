@@ -12,6 +12,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.jmx.PacketAndBytesStatictics;
 import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.rmi.RmiApi;
 import com.neophob.sematrix.core.rmi.compression.CompressApi;
@@ -25,7 +26,7 @@ import com.neophob.sematrix.osc.server.OscServerException;
 import com.neophob.sematrix.osc.server.PixOscServer;
 import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
-class RmiOscImpl implements RmiApi {
+class RmiOscImpl implements RmiApi, PacketAndBytesStatictics {
 
 	private static final Logger LOG = Logger.getLogger(RmiOscImpl.class.getName());
 	
@@ -37,6 +38,9 @@ class RmiOscImpl implements RmiApi {
 	private CompressApi compressor; 
 	private boolean useCompression;
 	private int bufferSize;
+
+	private int packetCount;
+	private long packetBytesRecieved;
 
 	public RmiOscImpl(boolean useCompression, int bufferSize) {
 		this.compressor = CompressFactory.getCompressApi();
@@ -90,7 +94,14 @@ class RmiOscImpl implements RmiApi {
 			throw new OscClientException("client not initialized");
 		}
 		OscMessage reply = new OscMessage(cmd.getValidCommand().toString(), cmd.getParameter(), convertFromObject(data));
-		LOG.log(Level.INFO, "send "+cmd.getValidCommand()+" reply size: "+reply.getMessageSize());			
+		//LOG.log(Level.INFO, "send "+cmd.getValidCommand()+" reply size: "+reply.getMessageSize());
+		packetCount++;
+		packetBytesRecieved+=reply.getMessageSize();
+		
+		if (packetCount % 1000 == 0) {
+			LOG.log(Level.INFO, "OSC Send statistics, sent packages: "+packetCount+" ("+packetBytesRecieved/1024+"kb)");
+		}
+
 		this.oscClient.sendMessage(reply);
 	}
 
@@ -183,5 +194,15 @@ class RmiOscImpl implements RmiApi {
 	@Override
 	public int getClientTargetPort() {
 		return clientTargetPort;
+	}
+
+	@Override
+	public int getPacketCounter() {
+		return packetCount;
+	}
+
+	@Override
+	public long getBytesRecieved() {
+		return packetBytesRecieved;
 	}
 }

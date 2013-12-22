@@ -29,63 +29,64 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
 /**
  * Send frames out via UDP
- *
+ * 
  * @author michu
  * 
  */
 public class UdpDevice extends OnePanelResolutionAwareOutput {
 
-	private static transient final Logger LOG = Logger.getLogger(UdpDevice.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(UdpDevice.class.getName());
 
-	private transient DatagramPacket packet;
-	private transient DatagramSocket dsocket;
-	
-	private String targetHost;
-	private int targetPort;
-	private int errorCounter=0;
+    private transient DatagramPacket packet;
+    private transient DatagramSocket dsocket;
 
-	/**
-	 * 
-	 * @param controller
-	 */
-	public UdpDevice(ApplicationConfigurationHelper ph) {
-		super(OutputDeviceEnum.UDP, ph, 8);
+    private String targetHost;
+    private int targetPort;
+    private int errorCounter = 0;
 
-		targetHost = ph.getUdpIp();
-		targetPort = ph.getUdpPort();
-		
-		try {
-			InetAddress address = InetAddress.getByName(targetHost);
-			packet = new DatagramPacket(new byte[0], 0, address, targetPort);
-			dsocket = new DatagramSocket();
-			
-			this.initialized = true;
-			LOG.log(Level.INFO, "UDP device initialized, send data to {0}:{1}", 
-					new String[] {this.targetHost, ""+this.targetPort});
+    /**
+     * 
+     * @param controller
+     */
+    public UdpDevice(ApplicationConfigurationHelper ph) {
+        super(OutputDeviceEnum.UDP, ph, 8);
 
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "failed to initialize UDP device", e);
-		}
-	}
+        targetHost = ph.getUdpIp();
+        targetPort = ph.getUdpPort();
 
+        try {
+            InetAddress address = InetAddress.getByName(targetHost);
+            packet = new DatagramPacket(new byte[0], 0, address, targetPort);
+            dsocket = new DatagramSocket();
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.output.Output#update()
-	 */
-	@Override
-	public void update() {
-		if (this.initialized) {			
-			byte[] buffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
-			packet.setData(buffer);
-			packet.setLength(buffer.length);
-			try {
-				dsocket.send(packet);
-			} catch (IOException e) {
-			    errorCounter++;
-				LOG.log(Level.WARNING, "failed to send UDP data.", e);				
-			}
-		}
-	}
+            this.initialized = true;
+            LOG.log(Level.INFO, "UDP device initialized, send data to {0}:{1}", new String[] {
+                    this.targetHost, "" + this.targetPort });
+
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "failed to initialize UDP device", e);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.output.Output#update()
+     */
+    @Override
+    public void update() {
+        if (this.initialized) {
+            byte[] buffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
+            packet.setData(buffer);
+            packet.setLength(buffer.length);
+            try {
+                dsocket.send(packet);
+            } catch (IOException e) {
+                errorCounter++;
+                LOG.log(Level.WARNING, "failed to send UDP data.", e);
+            }
+        }
+    }
 
     @Override
     public boolean isSupportConnectionState() {
@@ -98,25 +99,23 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
     }
 
     @Override
-    public String getConnectionStatus(){
+    public String getConnectionStatus() {
         if (initialized) {
-            return "Target IP "+targetHost+":"+targetPort;            
+            return "Target IP " + targetHost + ":" + targetPort;
         }
         return "Not connected!";
     }
-    
-	@Override
-	public void close()	{
-		if (initialized) {
-			dsocket.close();   
-		}	    
-	}
-	
 
-	@Override
-	public long getErrorCounter() {
-	    return errorCounter;
-	}
+    @Override
+    public void close() {
+        if (initialized) {
+            dsocket.close();
+        }
+    }
+
+    @Override
+    public long getErrorCounter() {
+        return errorCounter;
+    }
 
 }
-

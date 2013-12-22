@@ -25,77 +25,78 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.visual.OutputMapping;
 
 /**
- * Horizontal Layout, features:
- * -"unlimited" width
- * -exact one panels height.
- *
+ * Horizontal Layout, features: -"unlimited" width -exact one panels height.
+ * 
  * @author michu
  */
 public class HorizontalLayout extends Layout {
 
-	private static transient final Logger LOG = Logger.getLogger(HorizontalLayout.class.getName());
-	
-	/**
-	 * Instantiates a new horizontal layout.
-	 *
-	 * @param row1Size the row1 size
-	 * @param row2Size the row2 size
-	 */
-	public HorizontalLayout(int row1Size) {
-		super(LayoutName.HORIZONTAL, row1Size, 0);
-		
-		LOG.log(Level.INFO,	"HorizontalLayout created, size row1: {0}, row2:{1}", new Object[] {row1Size, row2Size});
+    private static final transient Logger LOG = Logger.getLogger(HorizontalLayout.class.getName());
 
-	}
+    /**
+     * Instantiates a new horizontal layout.
+     * 
+     * @param row1Size
+     *            the row1 size
+     * @param row2Size
+     *            the row2 size
+     */
+    public HorizontalLayout(int row1Size) {
+        super(LayoutName.HORIZONTAL, row1Size, 0);
 
-	/**
-	 * How many screens share this fx on the x axis.
-	 *
-	 * @param fxInput the fx input
-	 * @return the int
-	 */
-	private int howManyScreensShareThisFxOnTheXAxis(int fxInput, List<OutputMapping> ioMapping) {
-		int ret=0;
-		for (OutputMapping o: ioMapping) {
-			if (o.getVisualId()==fxInput) {
-				ret++;
-			}
-		}
-		return ret;			
-	}
-	
-	/**
-	 * check which offset position the fx at this screen is.
-	 *
-	 * @param fxInput the fx input
-	 * @param screenNr the screen nr
-	 * @return the x offset for screen
-	 */
-	private int getXOffsetForScreen(int fxInput, int screenNr, List<OutputMapping> ioMapping) {
-		int ret=0;
+        LOG.log(Level.INFO, "HorizontalLayout created, size row1: {0}, row2:{1}", new Object[] {
+                row1Size, row2Size });
 
-		for (int i=0; i<screenNr; i++) {
-			if (ioMapping.get(i).getVisualId()==fxInput) {
-				ret++;
-			}
-		}
+    }
 
-		return ret;
-	}
-	
+    /**
+     * How many screens share this fx on the x axis.
+     * 
+     * @param fxInput
+     *            the fx input
+     * @return the int
+     */
+    private int howManyScreensShareThisFxOnTheXAxis(int fxInput, List<OutputMapping> ioMapping) {
+        int ret = 0;
+        for (OutputMapping o : ioMapping) {
+            if (o.getVisualId() == fxInput) {
+                ret++;
+            }
+        }
+        return ret;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.layout.Layout#getDataForScreen(int)
-	 */
-	public LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping) {
-		int fxInput = ioMapping.get(screenNr).getVisualId();
+    /**
+     * check which offset position the fx at this screen is.
+     * 
+     * @param fxInput
+     *            the fx input
+     * @param screenNr
+     *            the screen nr
+     * @return the x offset for screen
+     */
+    private int getXOffsetForScreen(int fxInput, int screenNr, List<OutputMapping> ioMapping) {
+        int ret = 0;
 
-		return new LayoutModel(
-				this.howManyScreensShareThisFxOnTheXAxis(fxInput, ioMapping), 
-				1,
-				this.getXOffsetForScreen(fxInput, screenNr, ioMapping),
-				0,
-				fxInput);
-	}
+        for (int i = 0; i < screenNr; i++) {
+            if (ioMapping.get(i).getVisualId() == fxInput) {
+                ret++;
+            }
+        }
+
+        return ret;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.layout.Layout#getDataForScreen(int)
+     */
+    public LayoutModel getDataForScreen(int screenNr, List<OutputMapping> ioMapping) {
+        int fxInput = ioMapping.get(screenNr).getVisualId();
+
+        return new LayoutModel(this.howManyScreensShareThisFxOnTheXAxis(fxInput, ioMapping), 1,
+                this.getXOffsetForScreen(fxInput, screenNr, ioMapping), 0, fxInput);
+    }
 
 }

@@ -54,7 +54,7 @@ public class PixelControllerCli extends CallbackMessage<String> {
 	 *
 	 * @param args the arguments
 	 */
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		new PixelControllerCli();
 		while (true) {
 			try {

@@ -24,7 +24,7 @@ class CompressApiImpl implements CompressApi {
 
 	@Override
 	public byte[] decompress(byte[] in, int buffersize) throws DecompressException {
-		byte decompressedData[] = new byte[buffersize];	
+		byte[] decompressedData = new byte[buffersize];	
 		try {
 			decompressor.decompress(in, decompressedData);			
 			return decompressedData;			

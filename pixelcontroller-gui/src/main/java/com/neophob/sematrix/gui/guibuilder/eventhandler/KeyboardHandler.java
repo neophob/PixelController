@@ -119,7 +119,7 @@ public final class KeyboardHandler {
     }
 
     private static void sendMsg(ValidCommand command) {
-        String msg[] = new String[1];		
+        String[] msg = new String[1];		
         msg[0] = ""+command;
     	pixConServer.sendMessage(msg);
     }

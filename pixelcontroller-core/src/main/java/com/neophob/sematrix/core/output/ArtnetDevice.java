@@ -36,132 +36,141 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
 /**
  * The Class ArtnetDevice.
- *
+ * 
  * @author michu
  * @author Rainer Ostendorf <mail@linlab.de>
  * 
- * TODO:
- *  -automatic updating of node configurations ?
+ *         TODO: -automatic updating of node configurations ?
  */
 public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryListener {
 
-	private static transient final Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
-	private transient ArtNet artnet;
-	
-	/**
-	 * 
-	 * @param controller
-	 */
-	public ArtnetDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
-		super(OutputDeviceEnum.ARTNET, ph, 8, nrOfScreens);
-		
-		this.displayOptions = ph.getArtNetDevice();
-		
-        //Get dmx specific config
-		this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
-	    try {
-			this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
-		    this.firstUniverseId = ph.getArtNetStartUniverseId();
-		    calculateNrOfUniverse();
-		    
-			this.artnet = new ArtNet();				
-		    String broadcastAddr = ph.getArtNetBroadcastAddr();	    
-		    if (StringUtils.isBlank(broadcastAddr)) {
-		        broadcastAddr = ArtNetServer.DEFAULT_BROADCAST_IP;
-		    }
-		    
-			LOG.log(Level.INFO, "Initialize ArtNet device IP: {0}, broadcast IP: {1}, Port: {2}",  
-					new Object[] { this.targetAdress.toString(), broadcastAddr, ArtNetServer.DEFAULT_PORT}
-			);
+    private transient ArtNet artnet;
 
-		    this.artnet.init();
-		    this.artnet.setBroadCastAddress(broadcastAddr);
-		    this.artnet.start();
-		    this.artnet.getNodeDiscovery().addListener(this);
-		    this.artnet.startNodeDiscovery();
-		    		    
-		    this.initialized = true;
-			LOG.log(Level.INFO, "ArtNet device initialized, use "+this.displayOptions.size()+" panels");
-			
-		} catch (BindException e) {
-			LOG.log(Level.WARNING, "\nFailed to initialize ArtNet device:", e);
-			LOG.log(Level.WARNING, "Make sure no ArtNet Tools like DMX-Workshop are running!\n\n");
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to initialize ArtNet device:", e);
-		}
-	}
-		
+    /**
+     * 
+     * @param controller
+     */
+    public ArtnetDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
+        super(OutputDeviceEnum.ARTNET, ph, 8, nrOfScreens);
 
-	/**
-	 * send buffer to a dmx universe
-	 * a DMX universe can address up to 512 channels - this means up to
-	 * 170 RGB LED (510 Channels)
-	 * 
-	 * Just for myself:
-	 * ArtNet packets are made up of the Ethernet data (source and destination IP addresses), followed by
-	 * the ArtNet Subnet (0 to 15) and the ArtNet universe (0 to 15), and finally the DMX data for that
-	 * universe).
-	 *
-	 * @param artnetReceiver
-	 * @param frameBuf
-	 */
-	protected void sendBufferToReceiver(int universeId, byte[] buffer) {
-		ArtDmxPacket dmx = new ArtDmxPacket();
-		
-		//parameter: int subnetID, int universeID
-		//TODO: make subnet Id configurable?
-		dmx.setUniverse(0, universeId);
-		dmx.setSequenceID(sequenceID % 255);
-		
-		//byte[] dmxData, int numChannels
-		dmx.setDMX(buffer, buffer.length);
-		this.artnet.unicastPacket(dmx, this.targetAdress);		
-		this.sequenceID++;
-	}
+        this.displayOptions = ph.getArtNetDevice();
 
-	@Override
-	public void close()	{
-	    if (initialized) {
-	        this.artnet.stop();   
-	    }	    
-	}
+        // Get dmx specific config
+        this.pixelsPerUniverse = ph.getArtNetPixelsPerUniverse();
+        try {
+            this.targetAdress = InetAddress.getByName(ph.getArtNetIp());
+            this.firstUniverseId = ph.getArtNetStartUniverseId();
+            calculateNrOfUniverse();
 
+            this.artnet = new ArtNet();
+            String broadcastAddr = ph.getArtNetBroadcastAddr();
+            if (StringUtils.isBlank(broadcastAddr)) {
+                broadcastAddr = ArtNetServer.DEFAULT_BROADCAST_IP;
+            }
 
+            LOG.log(Level.INFO, "Initialize ArtNet device IP: {0}, broadcast IP: {1}, Port: {2}",
+                    new Object[] { this.targetAdress.toString(), broadcastAddr,
+                            ArtNetServer.DEFAULT_PORT });
 
-    /* (non-Javadoc)
-     * @see artnet4j.events.ArtNetDiscoveryListener#discoveredNewNode(artnet4j.ArtNetNode)
+            this.artnet.init();
+            this.artnet.setBroadCastAddress(broadcastAddr);
+            this.artnet.start();
+            this.artnet.getNodeDiscovery().addListener(this);
+            this.artnet.startNodeDiscovery();
+
+            this.initialized = true;
+            LOG.log(Level.INFO, "ArtNet device initialized, use " + this.displayOptions.size()
+                    + " panels");
+
+        } catch (BindException e) {
+            LOG.log(Level.WARNING, "\nFailed to initialize ArtNet device:", e);
+            LOG.log(Level.WARNING, "Make sure no ArtNet Tools like DMX-Workshop are running!\n\n");
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to initialize ArtNet device:", e);
+        }
+    }
+
+    /**
+     * send buffer to a dmx universe a DMX universe can address up to 512
+     * channels - this means up to 170 RGB LED (510 Channels)
+     * 
+     * Just for myself: ArtNet packets are made up of the Ethernet data (source
+     * and destination IP addresses), followed by the ArtNet Subnet (0 to 15)
+     * and the ArtNet universe (0 to 15), and finally the DMX data for that
+     * universe).
+     * 
+     * @param artnetReceiver
+     * @param frameBuf
+     */
+    protected void sendBufferToReceiver(int universeId, byte[] buffer) {
+        ArtDmxPacket dmx = new ArtDmxPacket();
+
+        // parameter: int subnetID, int universeID
+        // TODO: make subnet Id configurable?
+        dmx.setUniverse(0, universeId);
+        dmx.setSequenceID(sequenceID % 255);
+
+        // byte[] dmxData, int numChannels
+        dmx.setDMX(buffer, buffer.length);
+        this.artnet.unicastPacket(dmx, this.targetAdress);
+        this.sequenceID++;
+    }
+
+    @Override
+    public void close() {
+        if (initialized) {
+            this.artnet.stop();
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * artnet4j.events.ArtNetDiscoveryListener#discoveredNewNode(artnet4j.ArtNetNode
+     * )
      */
     @Override
     public void discoveredNewNode(ArtNetNode arg0) {
-        LOG.log(Level.INFO, "ArtNet discovery: new node found: "+arg0);        
+        LOG.log(Level.INFO, "ArtNet discovery: new node found: " + arg0);
     }
 
-
-    /* (non-Javadoc)
-     * @see artnet4j.events.ArtNetDiscoveryListener#discoveredNodeDisconnected(artnet4j.ArtNetNode)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * artnet4j.events.ArtNetDiscoveryListener#discoveredNodeDisconnected(artnet4j
+     * .ArtNetNode)
      */
     @Override
     public void discoveredNodeDisconnected(ArtNetNode arg0) {
-        LOG.log(Level.INFO, "ArtNet discovery: discovered node disconnected: "+arg0);
+        LOG.log(Level.INFO, "ArtNet discovery: discovered node disconnected: " + arg0);
     }
 
-
-    /* (non-Javadoc)
-     * @see artnet4j.events.ArtNetDiscoveryListener#discoveryCompleted(java.util.List)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * artnet4j.events.ArtNetDiscoveryListener#discoveryCompleted(java.util.
+     * List)
      */
     @Override
     public void discoveryCompleted(List<ArtNetNode> arg0) {
-        int nr=0;
-        if (arg0!=null) {
+        int nr = 0;
+        if (arg0 != null) {
             nr = arg0.size();
         }
-        LOG.log(Level.INFO, "ArtNet discovery complete, found "+nr+" devices");
+        LOG.log(Level.INFO, "ArtNet discovery complete, found " + nr + " devices");
     }
 
-
-    /* (non-Javadoc)
-     * @see artnet4j.events.ArtNetDiscoveryListener#discoveryFailed(java.lang.Throwable)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * artnet4j.events.ArtNetDiscoveryListener#discoveryFailed(java.lang.Throwable
+     * )
      */
     @Override
     public void discoveryFailed(Throwable arg0) {
@@ -169,4 +178,3 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
     }
 
 }
-

@@ -36,12 +36,12 @@ import com.neophob.sematrix.core.glue.FileUtils;
  */
 public class FileUtilsLocalImpl implements FileUtils {
 
-	private static transient final Logger LOG = Logger.getLogger(FileUtils.class.getName());
+	private static final transient Logger LOG = Logger.getLogger(FileUtils.class.getName());
 
-	private static transient final String DATA_DIR = File.separator+"data";
+	private static final transient String DATA_DIR = File.separator+"data";
 
-	private static transient final String BML_DIR = DATA_DIR+File.separator+"blinken"+File.separator;
-	private static transient final String IMAGE_DIR = DATA_DIR+File.separator+"pics";
+	private static final transient String BML_DIR = DATA_DIR+File.separator+"blinken"+File.separator;
+	private static final transient String IMAGE_DIR = DATA_DIR+File.separator+"pics";
 	
 	private String rootDirectory;
 	
