@@ -32,17 +32,16 @@ import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.osc.client.PixOscClient;
 import com.neophob.sematrix.osc.client.impl.OscClientFactory;
 
-
 /**
  * PixelController OSC Client
  * 
  * @author michu
- *
+ * 
  */
 public class PixConClient {
 
-	private static final float VERSION = 0.6f; 
-	
+    private static final float VERSION = 0.6f;
+
     /** The Constant DEFAULT_PORT. */
     private static final int DEFAULT_PORT = 9876;
     private static final int DEFAULT_JMX_PORT = 1337;
@@ -55,9 +54,9 @@ public class PixConClient {
     private static final String PARAM_HOST = "hostname";
 
     protected PixConClient() {
-    	//Util class
+        // Util class
     }
-    
+
     /**
      * 
      * @param s
@@ -65,50 +64,50 @@ public class PixConClient {
      * @return
      */
     private static String pretifyString(String s, int length) {
-        StringBuffer sb = new StringBuffer();
-        
+        StringBuilder sb = new StringBuilder();
+
         sb.append(s);
-        while (sb.length()<length) {
+        while (sb.length() < length) {
             sb.append(' ');
         }
-        
+
         return sb.toString();
     }
-    
+
     /**
      * Usage.
-     *
-     * @param options the options
+     * 
+     * @param options
+     *            the options
      */
     private static void usage() {
         System.out.println("Usage: Client [-h hostname] [-p port] -c ValidCommand");
         System.out.println("Valid commands:");
- 
-        for (CommandGroup cg: CommandGroup.values()) {
-        	if (cg.name().equals(CommandGroup.INTERNAL)) {
-        		continue;
-        	}
-            for (ValidCommand vc: ValidCommand.getCommandsByGroup(cg)) {
-            	System.out.println("\t"
-            	            +pretifyString(vc.toString(),28)
-            	            +pretifyString("# of parameters: "+vc.getNrOfParams(), 23)
-            	            +vc.getDesc());
+
+        for (CommandGroup cg : CommandGroup.values()) {
+            if (cg.name().equals(CommandGroup.INTERNAL)) {
+                continue;
+            }
+            for (ValidCommand vc : ValidCommand.getCommandsByGroup(cg)) {
+                System.out.println("\t" + pretifyString(vc.toString(), 28)
+                        + pretifyString("# of parameters: " + vc.getNrOfParams(), 23)
+                        + vc.getDesc());
             }
             System.out.println();
         }
     }
 
-
     /**
      * Parses the argument.
-     *
-     * @param args the args
+     * 
+     * @param args
+     *            the args
      * @return the parsed argument
-     * @throws InvalidParameterException 
+     * @throws InvalidParameterException
      */
     protected static ParsedArgument parseArgument(String[] args) throws InvalidParameterException {
 
-        if (args.length<2) {
+        if (args.length < 2) {
             System.out.println("No arguments specified!\n");
             throw new InvalidParameterException("No arguments specified!");
         }
@@ -121,77 +120,80 @@ public class PixConClient {
         String pCmd = "undefined";
         try {
             parser.parse(args);
-            String pHost = (String)parser.getOptionValue(host, DEFAULT_HOST);
-            int pPort = (Integer)parser.getOptionValue(port, DEFAULT_PORT);
-            pCmd = (String)parser.getOptionValue(command);        
-            if (pCmd==null) {
-                System.out.println("Unknown Command: "+ArrayUtils.toString(args));
+            String pHost = (String) parser.getOptionValue(host, DEFAULT_HOST);
+            int pPort = (Integer) parser.getOptionValue(port, DEFAULT_PORT);
+            pCmd = (String) parser.getOptionValue(command);
+            if (pCmd == null) {
+                System.out.println("Unknown Command: " + ArrayUtils.toString(args));
                 System.out.println("Exit now");
                 throw new IllegalArgumentException("no ValidCommand specified!");
             }
-            
+
             ValidCommand parsedCommand = ValidCommand.valueOf(pCmd.toUpperCase());
             String[] otherArgs = parser.getRemainingArgs();
-            
+
             if (parsedCommand.getNrOfParams() < otherArgs.length) {
-            	String err = "Invalid parameter count, expected: "+parsedCommand.getNrOfParams()+", provided: "+otherArgs.length;
-            	System.out.println(err);
-            	throw new InvalidParameterException(err);
+                String err = "Invalid parameter count, expected: " + parsedCommand.getNrOfParams()
+                        + ", provided: " + otherArgs.length;
+                System.out.println(err);
+                throw new InvalidParameterException(err);
             }
-            
+
             String param = "";
-            for (String s: otherArgs) {
-                param += s+" ";
+            for (String s : otherArgs) {
+                param += s + " ";
             }
 
             return new ParsedArgument(pHost, pPort, parsedCommand, param.trim());
         } catch (UnknownOptionException e) {
-        	System.out.println("Invalid option defined: "+e.getMessage());
-        	System.out.println();
+            System.out.println("Invalid option defined: " + e.getMessage());
+            System.out.println();
         } catch (IllegalOptionValueException e) {
-        	System.out.println("Invalid option value defined: "+e.getMessage());
-        	System.out.println();
+            System.out.println("Invalid option value defined: " + e.getMessage());
+            System.out.println();
         } catch (IllegalArgumentException e) {
-			System.out.println("Invalid command defined <"+pCmd+">: "+e.getMessage());
-			System.out.println();
-		}
+            System.out.println("Invalid command defined <" + pCmd + ">: " + e.getMessage());
+            System.out.println();
+        }
 
         throw new InvalidParameterException("Something went wrong..");
     }
 
-
     /**
      * The main method.
-     *
-     * @param args the arguments
-     * @throws ParseException the parse exception
+     * 
+     * @param args
+     *            the arguments
+     * @throws ParseException
+     *             the parse exception
      */
     public static void main(String[] args) throws Exception {
-        System.out.println("PixelController Client v"+VERSION+"\n");
+        System.out.println("PixelController Client v" + VERSION + "\n");
 
-        ParsedArgument cmd=null;        
+        ParsedArgument cmd = null;
         try {
             cmd = parseArgument(args);
-        } catch (Exception e) {  
-        	usage();
-            System.exit(1);            
+        } catch (Exception e) {
+            usage();
+            System.exit(1);
         }
-        
+
         System.out.println(cmd);
-        
+
         if (cmd.getCommand() == ValidCommand.JMX_STAT) {
-        	//send jmx request
+            // send jmx request
             int port = cmd.getPort();
-            if (port==DEFAULT_PORT) {
-                System.out.println("No Port specified, using default JMX port "+DEFAULT_JMX_PORT);   
+            if (port == DEFAULT_PORT) {
+                System.out.println("No Port specified, using default JMX port " + DEFAULT_JMX_PORT);
                 port = DEFAULT_JMX_PORT;
-            }            
-        	PixConClientJmx.queryJmxServer(cmd.getHostname(), port);
+            }
+            PixConClientJmx.queryJmxServer(cmd.getHostname(), port);
         } else {
-        	//send osc payload
-        	System.out.println(cmd.getPayload());
-        	PixOscClient c = OscClientFactory.createClientUdp(cmd.getHostname(), cmd.getPort(), 4096);
-        	c.sendMessage(cmd.getPayload());            
+            // send osc payload
+            System.out.println(cmd.getPayload());
+            PixOscClient c = OscClientFactory.createClientUdp(cmd.getHostname(), cmd.getPort(),
+                    4096);
+            c.sendMessage(cmd.getPayload());
             System.out.println("Close connection, Bye!");
         }
     }
