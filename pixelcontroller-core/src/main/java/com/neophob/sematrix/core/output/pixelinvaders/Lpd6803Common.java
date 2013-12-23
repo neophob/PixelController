@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.output.pixelinvaders;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ import com.neophob.sematrix.core.output.gamma.RGBAdjust;
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.properties.ColorFormat;
 
-public abstract class Lpd6803Common {
+public abstract class Lpd6803Common implements Serializable {
 
     /** The log. */
     private static final transient Logger LOG = Logger.getLogger(Lpd6803Common.class.getName());
