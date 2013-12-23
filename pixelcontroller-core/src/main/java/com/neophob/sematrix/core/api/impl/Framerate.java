@@ -22,48 +22,52 @@ import java.util.logging.Logger;
 
 /**
  * blocking framerate limiter
+ * 
  * @author michu
- *
+ * 
  */
 public class Framerate {
 
-	private static final Logger LOG = Logger.getLogger(Framerate.class.getName());
-	
-	private long nextRepaintDue = 0;
-	private long startTime;
-	private long delay;
-	private long frameCount;
+    private static final Logger LOG = Logger.getLogger(Framerate.class.getName());
 
-	public Framerate(float targetFps) {		
-		this.setFps(targetFps);		
-	}
+    private static final float MINIMAL_FPS = 0.001f;
 
-	public void setFps(float targetFps) {
-		LOG.info("Target fps: "+targetFps);
-		this.delay = (long)(1000f/targetFps);
-		this.startTime = System.currentTimeMillis();
-		this.frameCount = 1;
-	}
-	
-	public float getFps() {
-		return frameCount / (float)((System.currentTimeMillis() - startTime)/1000);
-	}
-	
-	public long getFrameCount() {
-		return frameCount;
-	}
+    private long nextRepaintDue = 0;
+    private long startTime;
+    private long delay;
+    private long frameCount;
 
-	public void waitForFps() {
-		long now = System.currentTimeMillis();
-		if (nextRepaintDue > now) {
-			// too soon to repaint, wait...
-			try {
-				Thread.sleep(nextRepaintDue - now);
-			} catch (InterruptedException e) {
-				//ignore it
-			}
-		}
-		nextRepaintDue = System.currentTimeMillis() + delay;
-		frameCount++;				
-	}
+    public Framerate(float targetFps) {
+        this.setFps(targetFps);
+    }
+
+    public void setFps(float targetFps) {
+        if (targetFps < MINIMAL_FPS) {
+            targetFps = MINIMAL_FPS;
+        }
+        this.delay = (long) (1000f / targetFps);
+        LOG.info("Target fps: " + targetFps + ", delay: " + delay + "ms");
+
+        this.startTime = System.currentTimeMillis();
+        this.frameCount = 1;
+    }
+
+    public float getFps() {
+        return frameCount / (float) ((System.currentTimeMillis() - startTime) / 1000);
+    }
+
+    public long getFrameCount() {
+        return frameCount;
+    }
+
+    public long getDelay() {
+        return delay;
+    }
+
+    public long getFrameDelay() {
+        long now = System.currentTimeMillis();
+        nextRepaintDue = System.currentTimeMillis() + delay;
+        frameCount++;
+        return (nextRepaintDue - now);
+    }
 }

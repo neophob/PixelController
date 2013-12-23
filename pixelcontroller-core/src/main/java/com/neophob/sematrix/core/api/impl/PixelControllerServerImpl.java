@@ -37,6 +37,7 @@ import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 final class PixelControllerServerImpl extends PixelControllerServer implements Runnable {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerServerImpl.class.getName());
+    private static final long MAXIMAL_FRAME_DELAY_IN_MS = 250;
 
     private VisualState visualState;
     private PresetService presetService;
@@ -153,6 +154,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         float lastFramerateValue = 1.0f;
 
+        // Mainloop
         while (Thread.currentThread() == runner) {
             if (this.visualState.isInPauseMode()) {
                 // no update here, we're in pause mode
@@ -178,9 +180,27 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
                 framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
             }
 
-            framerate.waitForFps();
+            long delay = framerate.getFrameDelay();
+            while (delay > MAXIMAL_FRAME_DELAY_IN_MS) {
+                sleep(MAXIMAL_FRAME_DELAY_IN_MS);
+                delay -= MAXIMAL_FRAME_DELAY_IN_MS;
+                if (lastFramerateValue != visualState.getFpsSpeed()) {
+                    lastFramerateValue = visualState.getFpsSpeed();
+                    framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
+                    delay = 1;
+                }
+            }
+            sleep(delay);
+
         }
         LOG.log(Level.INFO, "Main loop finished...");
+    }
+
+    private void sleep(long delay) {
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+        }
     }
 
     /**
@@ -243,8 +263,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     public String getVersion() {
         String version = this.getClass().getPackage().getImplementationVersion();
         if (version != null && !version.isEmpty()) {
