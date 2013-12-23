@@ -122,6 +122,8 @@ public class VisualState extends Observable {
 
     private float brightness = 1.0f;
 
+    private float fpsSpeed = 1.0f;
+
     private ISound sound;
 
     private PresetService presetService;
@@ -698,6 +700,15 @@ public class VisualState extends Observable {
         return brightness;
     }
 
+    public float getFpsSpeed() {
+        return fpsSpeed;
+    }
+
+    public void setFpsSpeed(float fpsSpeed) {
+        this.fpsSpeed = fpsSpeed;
+        System.out.println("SPEED: " + fpsSpeed);
+    }
+
     /**
      * @param brightness
      *            the brightness to set
@@ -719,6 +730,8 @@ public class VisualState extends Observable {
         ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
         int brightnessInt = (int) (this.brightness * 100f);
         ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
+        int generatorSpeed = (int) (this.fpsSpeed * 100f);
+        ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
 
         // get output status
         int ofs = 0;

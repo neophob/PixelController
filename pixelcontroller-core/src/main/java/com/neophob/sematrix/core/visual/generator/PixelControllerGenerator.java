@@ -42,7 +42,7 @@ import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 
 /**
  * The Class PixelControllerGenerator.
- *
+ * 
  * @author michu
  */
 public class PixelControllerGenerator implements PixelControllerElement {
@@ -67,34 +67,33 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private OscListener oscListener1;
     private OscListener oscListener2;
-    
+
     /** The textwriter. */
     private Textwriter textwriter;
-    
-	private float fpsAdjustment = 1.0f;
-	BeatToAnimation bta = BeatToAnimation.MODERATE; 
-    
+
+    BeatToAnimation bta = BeatToAnimation.MODERATE;
+
     private ApplicationConfigurationHelper ph;
-    
+
     private FileUtils fileUtils;
 
     private boolean isCaptureGeneratorActive = false;
-    
+
     private MatrixData matrix;
-    
+
     private int fps;
     private int frames;
     private int notUpdatedSinceFrames;
-    
+
     private ISound sound;
-    
+
     private IResize resize;
-    
+
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils, MatrixData matrix, 
-    		int fps, ISound sound, IResize resize) {
+    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils,
+            MatrixData matrix, int fps, ISound sound, IResize resize) {
         this.ph = ph;
         this.fileUtils = fileUtils;
         this.matrix = matrix;
@@ -103,168 +102,161 @@ public class PixelControllerGenerator implements PixelControllerElement {
         this.resize = resize;
     }
 
-
     /**
      * initialize all generators.
      */
     public void initAll() {
-    	LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
-    	
-        allGenerators = new CopyOnWriteArrayList<Generator>();	
+        LOG.log(Level.INFO, "Start init, data root: {0}", fileUtils.getRootDirectory());
+
+        allGenerators = new CopyOnWriteArrayList<Generator>();
 
         blinkenlights = new Blinkenlights(matrix, fileUtils, resize);
         allGenerators.add(blinkenlights);
-        
+
         image = new Image(matrix, fileUtils, resize);
         allGenerators.add(image);
-        		
-        allGenerators.add(new Plasma2(matrix));        
+
+        allGenerators.add(new Plasma2(matrix));
         allGenerators.add(new PlasmaAdvanced(matrix));
         allGenerators.add(new Fire(matrix));
         allGenerators.add(new PassThruGen(matrix));
         allGenerators.add(new Metaballs(matrix));
-        allGenerators.add(new PixelImage(matrix,sound, fps));
-        
-        textwriter = new Textwriter(matrix, 
-                ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF), 
-                Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)),
-                fileUtils
-        );
+        allGenerators.add(new PixelImage(matrix, sound, fps));
+
+        textwriter = new Textwriter(matrix, ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF),
+                Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)), fileUtils);
         allGenerators.add(textwriter);
 
         allGenerators.add(new Cell(matrix));
         allGenerators.add(new FFTSpectrum(matrix, sound));
-        allGenerators.add(new Geometrics(matrix, sound));                
-        
+        allGenerators.add(new Geometrics(matrix, sound));
+
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
-        if (screenCapureXSize>0 && !GraphicsEnvironment.isHeadless()) {
-        	allGenerators.add(
-        			new ScreenCapture(matrix, ph.parseScreenCaptureOffset(), screenCapureXSize, ph.parseScreenCaptureWindowSizeY())
-        	);
+        if (screenCapureXSize > 0 && !GraphicsEnvironment.isHeadless()) {
+            allGenerators.add(new ScreenCapture(matrix, ph.parseScreenCaptureOffset(),
+                    screenCapureXSize, ph.parseScreenCaptureWindowSizeY()));
             isCaptureGeneratorActive = true;
         }
         colorScroll = new ColorScroll(matrix);
         allGenerators.add(colorScroll);
-        
+
         allGenerators.add(new ColorFade(matrix));
-        
+
         this.oscListener1 = new OscListener(matrix, GeneratorName.OSC_GEN1);
         this.oscListener2 = new OscListener(matrix, GeneratorName.OSC_GEN2);
         allGenerators.add(oscListener1);
         allGenerators.add(oscListener2);
-        
+
         allGenerators.add(new VisualZero(matrix));
-        
-    	LOG.log(Level.INFO, "Init finished");
+
+        LOG.log(Level.INFO, "Init finished");
     }
 
-    /* (non-Javadoc)
-     * @see com.neophob.sematrix.core.glue.PixelControllerElement#getCurrentState()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.glue.PixelControllerElement#getCurrentState()
      */
     public List<String> getCurrentState() {
         List<String> ret = new ArrayList<String>();
 
-        ret.add(ValidCommand.BLINKEN+" "+blinkenlights.getFilename());
-        ret.add(ValidCommand.IMAGE+" "+image.getFilename());
-        ret.add(ValidCommand.TEXTWR+" "+textwriter.getText());
-        ret.add(ValidCommand.TEXTWR_OPTION+" "+textwriter.getTextscroller());
-        ret.add(ValidCommand.COLOR_SCROLL_OPT+" "+colorScroll.getScrollMode().getMode());
-        int generatorSpeed = (int)(this.fpsAdjustment*100f);
-        ret.add(ValidCommand.GENERATOR_SPEED+" "+generatorSpeed);
-        ret.add(ValidCommand.BEAT_WORKMODE+" "+bta.getId());
+        ret.add(ValidCommand.BLINKEN + " " + blinkenlights.getFilename());
+        ret.add(ValidCommand.IMAGE + " " + image.getFilename());
+        ret.add(ValidCommand.TEXTWR + " " + textwriter.getText());
+        ret.add(ValidCommand.TEXTWR_OPTION + " " + textwriter.getTextscroller());
+        ret.add(ValidCommand.COLOR_SCROLL_OPT + " " + colorScroll.getScrollMode().getMode());
+        ret.add(ValidCommand.BEAT_WORKMODE + " " + bta.getId());
         return ret;
     }
-    
+
     /**
      * 
      * @return
      */
     private int getKickValues() {
-    	int updateAmount = 0;
-    	
-		if (sound.isKick()) {
-			updateAmount+=3;
-		}
-		if (sound.isHat()) {
-			updateAmount+=1;
-		}			
-    	
-		return updateAmount;
+        int updateAmount = 0;
+
+        if (sound.isKick()) {
+            updateAmount += 3;
+        }
+        if (sound.isHat()) {
+            updateAmount += 1;
+        }
+
+        return updateAmount;
     }
-    
-    
+
     /**
      * 
      * @param bta
      * @return
      */
     private int calculateAnimationSteps(BeatToAnimation bta) {
-		float beatSteps = sound.getVolumeNormalized();
-		int val;
-		
-		switch (bta) {
-		case LINEAR:
-			return (int)(0.5f+1.5f*fpsAdjustment);
+        float beatSteps = sound.getVolumeNormalized();
+        int val;
 
-		case MODERATE:
-			val = (int)((beatSteps*2.5f*fpsAdjustment + 1.0f*fpsAdjustment)/2f+0.5f);
-			val += getKickValues();
-			return val;
+        switch (bta) {
+            case LINEAR:
+                return (int) (0.5f + 1.5f);
 
-		case HEAVY:
-		default:
-			val = (int)((beatSteps*4.5f*fpsAdjustment)/2f+0.5f);
-			val += getKickValues();
-			return val;
-		}
+            case MODERATE:
+                val = (int) ((beatSteps * 2.5f) / 2f + 0.5f);
+                val += getKickValues();
+                return val;
+
+            case HEAVY:
+            default:
+                val = (int) ((beatSteps * 4.5f) / 2f + 0.5f);
+                val += getKickValues();
+                return val;
+        }
     }
-    
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()
      */
     @Override
     public void update() {
-    	//calculate update speed    	    	
-    	int updateAmount = calculateAnimationSteps(bta);
-    	
-		//check for silence - in this case update slowly
-		if (updateAmount<1) {
-			notUpdatedSinceFrames++;
-		} else {
-			notUpdatedSinceFrames=0;
-		}
+        // calculate update speed
+        int updateAmount = calculateAnimationSteps(bta);
 
-		if (bta!= BeatToAnimation.LINEAR && notUpdatedSinceFrames>10) {
-			updateAmount=1;
-			notUpdatedSinceFrames=0;
-		}
+        // check for silence - in this case update slowly
+        if (updateAmount < 1) {
+            notUpdatedSinceFrames++;
+        } else {
+            notUpdatedSinceFrames = 0;
+        }
 
-		frames+=updateAmount;
-		
-        //get a set with active visuals
+        if (bta != BeatToAnimation.LINEAR && notUpdatedSinceFrames > 10) {
+            updateAmount = 1;
+            notUpdatedSinceFrames = 0;
+        }
+
+        frames += updateAmount;
+
+        // get a set with active visuals
         List<Visual> allVisuals = VisualState.getInstance().getAllVisuals();
-        Set<Integer> activeVisuals = new HashSet<Integer>();        
-        for (Visual v: allVisuals) {
+        Set<Integer> activeVisuals = new HashSet<Integer>();
+        for (Visual v : allVisuals) {
             activeVisuals.add(v.getGenerator1Idx());
             activeVisuals.add(v.getGenerator2Idx());
         }
-        
-        //update only selected generators
-        for (Generator m: allGenerators) {
+
+        // update only selected generators
+        for (Generator m : allGenerators) {
             if (activeVisuals.contains(m.getId())) {
-            	for (int i=0; i<updateAmount; i++) {
-                    m.update();            		
-            	}
+                for (int i = 0; i < updateAmount; i++) {
+                    m.update();
+                }
                 m.setActive(true);
             } else {
-            	m.setActive(false);
+                m.setActive(false);
             }
         }
     }
-
-
-
 
     /*
      * GENERATOR ======================================================
@@ -272,24 +264,25 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /**
      * Gets the generator.
-     *
-     * @param name the name
+     * 
+     * @param name
+     *            the name
      * @return the generator
      */
     public Generator getGenerator(GeneratorName name) {
-        for (Generator gen: allGenerators) {
+        for (Generator gen : allGenerators) {
             if (gen.getId() == name.getId()) {
                 return gen;
             }
         }
-        
+
         LOG.log(Level.WARNING, "Invalid Generator name selected: {0}", name);
         return null;
     }
 
     /**
      * Gets the all generators.
-     *
+     * 
      * @return the all generators
      */
     public List<Generator> getAllGenerators() {
@@ -300,12 +293,13 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * Gets the generator.
      * 
      * return null if index is out of scope
-     *
-     * @param index the index
+     * 
+     * @param index
+     *            the index
      * @return the generator
      */
     public Generator getGenerator(int index) {
-        for (Generator gen: allGenerators) {
+        for (Generator gen : allGenerators) {
             if (gen.getId() == index) {
                 return gen;
             }
@@ -317,17 +311,16 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /**
      * Gets the size.
-     *
+     * 
      * @return the size
      */
     public int getSize() {
         return allGenerators.size();
     }
 
-
     /**
      * Gets the file blinken.
-     *
+     * 
      * @return the file blinken
      */
     public String getFileBlinken() {
@@ -339,13 +332,14 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @return
      */
     public ScrollMode getScrollMode() {
-    	return colorScroll.getScrollMode();
+        return colorScroll.getScrollMode();
     }
-    
+
     /**
      * Sets the file blinken.
-     *
-     * @param fileBlinken the new file blinken
+     * 
+     * @param fileBlinken
+     *            the new file blinken
      */
     public void setFileBlinken(String fileBlinken) {
         blinkenlights.loadFile(fileBlinken);
@@ -353,7 +347,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /**
      * Gets the file image simple.
-     *
+     * 
      * @return the file image simple
      */
     public String getFileImageSimple() {
@@ -362,26 +356,28 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /**
      * Sets the file image simple.
-     *
-     * @param fileImageSimple the new file image simple
+     * 
+     * @param fileImageSimple
+     *            the new file image simple
      */
     public void setFileImageSimple(String fileImageSimple) {
         image.loadFile(fileImageSimple);
 
-    }	
+    }
 
     /**
      * Sets the color scroll direction.
-     *
-     * @param colorScrollDir the newcolor scroll direction
+     * 
+     * @param colorScrollDir
+     *            the newcolor scroll direction
      */
     public void setColorScrollingDirection(int colorScrollDir) {
-    	colorScroll.setScrollMode(colorScrollDir);
+        colorScroll.setScrollMode(colorScrollDir);
     }
-    
+
     /**
      * Gets the text.
-     *
+     * 
      * @return the text
      */
     public String getText() {
@@ -390,12 +386,13 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     /**
      * Sets the text.
-     *
-     * @param text the new text
+     * 
+     * @param text
+     *            the new text
      */
     public void setText(String text) {
-        if (text==null || text.isEmpty()) {
-            text=" ";
+        if (text == null || text.isEmpty()) {
+            text = " ";
         }
         textwriter.createTextImage(text);
     }
@@ -405,46 +402,28 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * @param scollerNr
      */
     public void setTextOption(int scollerNr) {
-    	textwriter.setTextscroller(scollerNr);
+        textwriter.setTextscroller(scollerNr);
     }
-    
+
     public int getTextOption() {
-    	return textwriter.getTextscroller();
+        return textwriter.getTextscroller();
     }
 
-	
-	/**
-	 * @return the fpsAdjustment
-	 */
-	public float getFpsAdjustment() {
-		return fpsAdjustment;
-	}
+    /**
+     * 
+     * @return
+     */
+    public OscListener getOscListener1() {
+        return oscListener1;
+    }
 
-
-	/**
-	 * @param fpsAdjustment the fpsAdjustment to set
-	 */
-	public void setFpsAdjustment(float fpsAdjustment) {
-		this.fpsAdjustment = fpsAdjustment;
-	}
-
-
-	/**
-	 * 
-	 * @return
-	 */
-	public OscListener getOscListener1() {
-		return oscListener1;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public OscListener getOscListener2() {
-		return oscListener2;
-	}
-
+    /**
+     * 
+     * @return
+     */
+    public OscListener getOscListener2() {
+        return oscListener2;
+    }
 
     /**
      * @return the isCaptureGeneratorActive
@@ -453,29 +432,26 @@ public class PixelControllerGenerator implements PixelControllerElement {
         return isCaptureGeneratorActive;
     }
 
+    /**
+     * @return the frames
+     */
+    public int getFrames() {
+        return frames;
+    }
 
-	/**
-	 * @return the frames
-	 */
-	public int getFrames() {
-		return frames;
-	}
+    /**
+     * @return the bta
+     */
+    public BeatToAnimation getBta() {
+        return bta;
+    }
 
+    /**
+     * @param bta
+     *            the bta to set
+     */
+    public void setBta(BeatToAnimation bta) {
+        this.bta = bta;
+    }
 
-	/**
-	 * @return the bta
-	 */
-	public BeatToAnimation getBta() {
-		return bta;
-	}
-
-
-	/**
-	 * @param bta the bta to set
-	 */
-	public void setBta(BeatToAnimation bta) {
-		this.bta = bta;
-	}
-
-	
 }

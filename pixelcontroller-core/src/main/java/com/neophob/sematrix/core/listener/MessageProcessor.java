@@ -42,628 +42,643 @@ import com.neophob.sematrix.core.visual.mixer.Mixer;
 /**
  * Messagebus of the application
  * 
- * reason to use a singleton here:
- * - there exist ONE message processor
- * - processing the messages should be done synchronized
+ * reason to use a singleton here: - there exist ONE message processor -
+ * processing the messages should be done synchronized
  */
 public enum MessageProcessor {
-	INSTANCE;
-	
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(MessageProcessor.class.getName());
+    INSTANCE;
 
-	/** The Constant IGNORE_COMMAND. */
-	private static final String IGNORE_COMMAND = "Ignored command";
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(MessageProcessor.class.getName());
 
-	private PresetService presetService;
-	
-	/**
-	 * Instantiates a new message processor.
-	 */
-	private MessageProcessor() {
-		//no instance allowed
-	}
+    /** The Constant IGNORE_COMMAND. */
+    private static final String IGNORE_COMMAND = "Ignored command";
 
-	/**
-	 * 
-	 * @param presetService
-	 */
-	public void init(PresetService presetService) {
-		this.presetService = presetService;
-	}
-	
-	/**
-	 * process message from gui.
-	 *
-	 * @param msg the msg
-	 * @param startFader the start fader
-	 * @return STATUS if we need to send updates back to the gui (loaded preferences)
-	 */
-	public synchronized void processMsg(String[] msg, boolean startFader, byte[] blob) {
-		if (msg==null || msg.length<1) {
-			return;
-		}
-                
-		int msgLength = msg.length-1;
-		int tmp;		
-		VisualState col = VisualState.getInstance();
-		
-		try {
-			ValidCommand cmd = ValidCommand.valueOf(msg[0]);			
-			Visual v;
-			switch (cmd) {
-			case CHANGE_GENERATOR_A:
-				try {
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
-					//silly check of generator exists
-					g.getId();
-					col.getVisual(nr).setGenerator1(g);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+    private PresetService presetService;
 
-			case CHANGE_GENERATOR_B:
-				try {
-					//the new method - used by the gui
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
-					g.getId();
-					col.getVisual(nr).setGenerator2(g);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+    /**
+     * Instantiates a new message processor.
+     */
+    private MessageProcessor() {
+        // no instance allowed
+    }
 
-			case CHANGE_EFFECT_A:
-				try {
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					Effect e = col.getPixelControllerEffect().getEffect(tmp);
-					e.getId();
-					col.getVisual(nr).setEffect1(e);						
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+    /**
+     * 
+     * @param presetService
+     */
+    public void init(PresetService presetService) {
+        this.presetService = presetService;
+    }
 
-			case CHANGE_EFFECT_B:
-				try {
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					Effect e = col.getPixelControllerEffect().getEffect(tmp);
-					e.getId();
-					col.getVisual(nr).setEffect2(e);						
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+    /**
+     * process message from gui.
+     * 
+     * @param msg
+     *            the msg
+     * @param startFader
+     *            the start fader
+     * @return STATUS if we need to send updates back to the gui (loaded
+     *         preferences)
+     */
+    public synchronized void processMsg(String[] msg, boolean startFader, byte[] blob) {
+        if (msg == null || msg.length < 1) {
+            return;
+        }
 
-			case CHANGE_MIXER:
-				try {
-					//the new method - used by the gui
-					int nr = col.getCurrentVisual();
-					tmp=Integer.parseInt(msg[1]);
-					Mixer m = col.getPixelControllerMixer().getMixer(tmp);
-					m.getId();
-					col.getVisual(nr).setMixer(m);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+        int msgLength = msg.length - 1;
+        int tmp;
+        VisualState col = VisualState.getInstance();
 
-			case CHANGE_OUTPUT_VISUAL:
-				try {
-					int nr = col.getCurrentOutput();				
-					int newFx = Integer.parseInt(msg[1]);
-					int oldFx = col.getFxInputForScreen(nr);
-					int nrOfVisual = col.getAllVisuals().size();
-					LOG.log(Level.INFO,	"old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-					if (oldFx!=newFx && newFx>=0 && newFx<nrOfVisual) {
-						LOG.log(Level.INFO,	"Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-						if (startFader) {
-							//start fader to change screen
-							col.getOutputMappings(nr).getFader().startFade(newFx, nr);								
-						} else {
-							//do not fade if we load setting from present
-							col.mapInputToScreen(nr, newFx);
-						}
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+        try {
+            ValidCommand cmd = ValidCommand.valueOf(msg[0]);
+            Visual v;
+            switch (cmd) {
+                case CHANGE_GENERATOR_A:
+                    try {
+                        int nr = col.getCurrentVisual();
+                        tmp = Integer.parseInt(msg[1]);
+                        Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
+                        // silly check of generator exists
+                        g.getId();
+                        col.getVisual(nr).setGenerator1(g);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CHANGE_ALL_OUTPUT_VISUAL:
-				try {
-				    int newFx = Integer.parseInt(msg[1]);
-					int size = col.getAllOutputMappings().size();					
-					int nrOfVisual = col.getAllVisuals().size();
-					
-					if (newFx>=0 && newFx<nrOfVisual) {
-	                    for (int i=0; i<size; i++) {                        
-	                        int oldFx = col.getFxInputForScreen(i);                     
-	                        if (oldFx!=newFx) {
-	                            LOG.log(Level.INFO, "Change Output 0, old fx: {0}, new fx {1}", new Object[] {oldFx, newFx});
-	                            if (startFader) {
-	                                //start fader to change screen
-	                                col.getOutputMappings(i).getFader().startFade(newFx, i);                                
-	                            } else {
-	                                //do not fade if we load setting from present
-	                                col.mapInputToScreen(i, newFx);
-	                            }
-	                        }                       
-	                    }					    
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-				
-			case CHANGE_OUTPUT_FADER:
-				try {
-					int nr = col.getCurrentOutput();
-					tmp=Integer.parseInt(msg[1]);
-					//do not start a new fader while the old one is still running
-					if (!col.getOutputMappings(nr).getFader().isStarted()) {
-					    IFader f = col.getPixelControllerFader().getVisualFader(tmp);
-					    if (f!=null) {
-					        col.getOutputMappings(nr).setFader(f);   
-					    }
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_GENERATOR_B:
+                    try {
+                        // the new method - used by the gui
+                        int nr = col.getCurrentVisual();
+                        tmp = Integer.parseInt(msg[1]);
+                        Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
+                        g.getId();
+                        col.getVisual(nr).setGenerator2(g);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CHANGE_ALL_OUTPUT_FADER:
-				try {
-					tmp=Integer.parseInt(msg[1]);
-					for (OutputMapping om: col.getAllOutputMappings()) {
-						//do not start a new fader while the old one is still running
-						if (!om.getFader().isStarted()) {
-						    IFader f = col.getPixelControllerFader().getVisualFader(tmp);
-						    if (f!=null) {
-						        om.setFader(f);						        
-						    }
-						}						
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_EFFECT_A:
+                    try {
+                        int nr = col.getCurrentVisual();
+                        tmp = Integer.parseInt(msg[1]);
+                        Effect e = col.getPixelControllerEffect().getEffect(tmp);
+                        e.getId();
+                        col.getVisual(nr).setEffect1(e);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CHANGE_SHUFFLER_SELECT:
-				try {					
-					int size = col.getPixelControllerShufflerSelect().getShufflerSelect().size();
-					if (size>msgLength) {
-						size=msgLength;
-					}
-					boolean b;
-					String str="";
-					for (int i=0; i<size; i++) {
-						b = false;
-						if (msg[i+1].equals("1")) {
-							b = true;
-							str += '1';
-						} else str += '0';
-						
-						col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
-					}
-					LOG.log(Level.INFO, "Shuffler select: "+str);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_EFFECT_B:
+                    try {
+                        int nr = col.getCurrentVisual();
+                        tmp = Integer.parseInt(msg[1]);
+                        Effect e = col.getPixelControllerEffect().getEffect(tmp);
+                        e.getId();
+                        col.getVisual(nr).setEffect2(e);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CHANGE_ROTOZOOM:
-				try {					
-					int val = Integer.parseInt(msg[1]);
-					RotoZoom r = (RotoZoom)col.getPixelControllerEffect().getEffect(EffectName.ROTOZOOM);
-					r.setAngle(val);					
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_MIXER:
+                    try {
+                        // the new method - used by the gui
+                        int nr = col.getCurrentVisual();
+                        tmp = Integer.parseInt(msg[1]);
+                        Mixer m = col.getPixelControllerMixer().getMixer(tmp);
+                        m.getId();
+                        col.getVisual(nr).setMixer(m);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case SAVE_PRESET:
-				try {
-					int idxs = presetService.getSelectedPreset();
-					List<String> present = col.getCurrentStatus();
-					presetService.getPresets().get(idxs).setPresent(present);
-					presetService.getPresets().get(idxs).setName(msg[1]);
-					presetService.savePresents();					
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_OUTPUT_VISUAL:
+                    try {
+                        int nr = col.getCurrentOutput();
+                        int newFx = Integer.parseInt(msg[1]);
+                        int oldFx = col.getFxInputForScreen(nr);
+                        int nrOfVisual = col.getAllVisuals().size();
+                        LOG.log(Level.INFO, "old fx: {0}, new fx {1}",
+                                new Object[] { oldFx, newFx });
+                        if (oldFx != newFx && newFx >= 0 && newFx < nrOfVisual) {
+                            LOG.log(Level.INFO, "Change Output 0, old fx: {0}, new fx {1}",
+                                    new Object[] { oldFx, newFx });
+                            if (startFader) {
+                                // start fader to change screen
+                                col.getOutputMappings(nr).getFader().startFade(newFx, nr);
+                            } else {
+                                // do not fade if we load setting from present
+                                col.mapInputToScreen(nr, newFx);
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case LOAD_PRESET:
-				try {
-					loadPreset(presetService.getSelectedPreset());
-					col.notifyGuiUpdate();					
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_ALL_OUTPUT_VISUAL:
+                    try {
+                        int newFx = Integer.parseInt(msg[1]);
+                        int size = col.getAllOutputMappings().size();
+                        int nrOfVisual = col.getAllVisuals().size();
 
-			case CHANGE_PRESET:
-				try {
-					int a = Integer.parseInt(msg[1]);
-					presetService.setSelectedPreset(a);		    
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                        if (newFx >= 0 && newFx < nrOfVisual) {
+                            for (int i = 0; i < size; i++) {
+                                int oldFx = col.getFxInputForScreen(i);
+                                if (oldFx != newFx) {
+                                    LOG.log(Level.INFO, "Change Output 0, old fx: {0}, new fx {1}",
+                                            new Object[] { oldFx, newFx });
+                                    if (startFader) {
+                                        // start fader to change screen
+                                        col.getOutputMappings(i).getFader().startFade(newFx, i);
+                                    } else {
+                                        // do not fade if we load setting from
+                                        // present
+                                        col.mapInputToScreen(i, newFx);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CHANGE_THRESHOLD_VALUE:
-				try {
-					int a = Integer.parseInt(msg[1]);
-					if (a>255) {
-						a=255;
-					}
-					if (a<0) {
-						a=0;
-					}
-					col.getPixelControllerEffect().setThresholdValue(a);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_OUTPUT_FADER:
+                    try {
+                        int nr = col.getCurrentOutput();
+                        tmp = Integer.parseInt(msg[1]);
+                        // do not start a new fader while the old one is still
+                        // running
+                        if (!col.getOutputMappings(nr).getFader().isStarted()) {
+                            IFader f = col.getPixelControllerFader().getVisualFader(tmp);
+                            if (f != null) {
+                                col.getOutputMappings(nr).setFader(f);
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case BLINKEN:
-				try {
-					String fileToLoad = msg[1];
-					col.getPixelControllerGenerator().setFileBlinken(fileToLoad);											
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_ALL_OUTPUT_FADER:
+                    try {
+                        tmp = Integer.parseInt(msg[1]);
+                        for (OutputMapping om : col.getAllOutputMappings()) {
+                            // do not start a new fader while the old one is
+                            // still running
+                            if (!om.getFader().isStarted()) {
+                                IFader f = col.getPixelControllerFader().getVisualFader(tmp);
+                                if (f != null) {
+                                    om.setFader(f);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case IMAGE:
-				try {
-					String fileToLoad = msg[1];
-				    col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);   
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-			
-			case COLOR_SCROLL_OPT:
-				try {
-					int dir = Integer.parseInt(msg[1]);
-					col.getPixelControllerGenerator().setColorScrollingDirection(dir);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_SHUFFLER_SELECT:
+                    try {
+                        int size = col.getPixelControllerShufflerSelect().getShufflerSelect()
+                                .size();
+                        if (size > msgLength) {
+                            size = msgLength;
+                        }
+                        boolean b;
+                        String str = "";
+                        for (int i = 0; i < size; i++) {
+                            b = false;
+                            if (msg[i + 1].equals("1")) {
+                                b = true;
+                                str += '1';
+                            } else
+                                str += '0';
 
+                            col.getPixelControllerShufflerSelect().setShufflerSelect(i, b);
+                        }
+                        LOG.log(Level.INFO, "Shuffler select: " + str);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-            case TEXTDEF:
-				try {
-					int lut = Integer.parseInt(msg[1]);
-					col.getPixelControllerEffect().setTextureDeformationLut(lut);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-				
-            case ZOOMOPT:
-				try {
-					int zoomMode = Integer.parseInt(msg[1]);
-					col.getPixelControllerEffect().setZoomOption(zoomMode);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING,	IGNORE_COMMAND, e);
-				}
-				break;
-				
-			case TEXTWR:
-				try {
-					String message = msg[1];
-					col.getPixelControllerGenerator().setText(message);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_ROTOZOOM:
+                    try {
+                        int val = Integer.parseInt(msg[1]);
+                        RotoZoom r = (RotoZoom) col.getPixelControllerEffect().getEffect(
+                                EffectName.ROTOZOOM);
+                        r.setAngle(val);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case TEXTWR_OPTION:
-				try {
-					int scollerNr = Integer.parseInt(msg[1]);
-					col.getPixelControllerGenerator().setTextOption(scollerNr);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
-				
-			case RANDOM:	//enable or disable random mode
-				try {
-					String onOrOff = msg[1];
-					if (onOrOff.equalsIgnoreCase("ON")) {
-						col.setRandomPresetMode(false);
-						col.setRandomMode(true);
-						LOG.log(Level.INFO, "Random Mode enabled");
-					}
-					if (onOrOff.equalsIgnoreCase("OFF")) {
-						col.setRandomPresetMode(false);
-						col.setRandomMode(false);
-						LOG.log(Level.INFO, "Random Mode disabled");
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case SAVE_PRESET:
+                    try {
+                        int idxs = presetService.getSelectedPreset();
+                        List<String> present = col.getCurrentStatus();
+                        presetService.getPresets().get(idxs).setPresent(present);
+                        presetService.getPresets().get(idxs).setName(msg[1]);
+                        presetService.savePresents();
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case RANDOM_PRESET_MODE:
-				try {
-					String onOrOff = msg[1];
-					if (onOrOff.equalsIgnoreCase("ON")) {
-						col.setRandomMode(false);
-						col.setRandomPresetMode(true);
-						LOG.log(Level.INFO, "Random Preset Mode enabled");
-					}
-					if (onOrOff.equalsIgnoreCase("OFF")) {
-						col.setRandomMode(false);
-						col.setRandomPresetMode(false);
-						LOG.log(Level.INFO, "Random Preset Mode disabled");
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}				
-				break;
-				
-			case RANDOMIZE:	//one shot randomizer
-				try {
-					//save current visual buffer
-					TransitionManager transition = new TransitionManager(col);
-					Shuffler.manualShuffleStuff();
-					transition.startCrossfader();
-					col.notifyGuiUpdate();
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case LOAD_PRESET:
+                    try {
+                        loadPreset(presetService.getSelectedPreset());
+                        col.notifyGuiUpdate();
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case PRESET_RANDOM:	//one shot randomizer, use a pre-stored present
-				try {
-					int currentPreset = Shuffler.getRandomPreset(presetService);					
-					loadPreset(currentPreset);
-					presetService.setSelectedPreset(currentPreset);
-					col.notifyGuiUpdate();
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_PRESET:
+                    try {
+                        int a = Integer.parseInt(msg[1]);
+                        presetService.setSelectedPreset(a);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CURRENT_VISUAL:
-				//change the selected visual, need to update
-				//some of the gui elements 
-				try {
-					int a = Integer.parseInt(msg[1]);
-					col.setCurrentVisual(a);
-					col.notifyGuiUpdate();
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case CHANGE_THRESHOLD_VALUE:
+                    try {
+                        int a = Integer.parseInt(msg[1]);
+                        if (a > 255) {
+                            a = 255;
+                        }
+                        if (a < 0) {
+                            a = 0;
+                        }
+                        col.getPixelControllerEffect().setThresholdValue(a);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CURRENT_OUTPUT:
-				//change the selected output, need to update
-				//some of the gui elements 
-				try {
-					int a = Integer.parseInt(msg[1]);
-					col.setCurrentOutput(a);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
+                case BLINKEN:
+                    try {
+                        String fileToLoad = msg[1];
+                        col.getPixelControllerGenerator().setFileBlinken(fileToLoad);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case CHANGE_BRIGHTNESS:
-				try {
-					int a = Integer.parseInt(msg[1]);
-					if (a<0 || a>100) {
-						LOG.log(Level.WARNING, IGNORE_COMMAND+", invalid brightness value: "+a);
-						break;
-					} else {
-						float f = a/100f;
-						col.setBrightness(f);
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
-				
-			case GENERATOR_SPEED:
-				try {
-					int fpsAdjustment = Integer.parseInt(msg[1]);
-					if (fpsAdjustment<0 || fpsAdjustment>200) {
-						LOG.log(Level.WARNING, IGNORE_COMMAND+", invalid fps adjustment value: "+fpsAdjustment);
-						break;
-					} else {
-						float f = fpsAdjustment/100f;
-						col.getPixelControllerGenerator().setFpsAdjustment(f);
-					}
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				break;
-				
-			//create a screenshot of all current buffers
-			case SCREENSHOT:
-				ScreenshotHelper.saveScreenshot(col.getFrames(), col.getAllVisuals());				
-				LOG.log(Level.INFO, "Saved some screenshots");
-				break;
-				
-			//change current colorset
-			case CURRENT_COLORSET:
-				int nr = col.getCurrentVisual();
-				try {
-					//old method, reference colorset by index
-					int newColorSetIndex = Integer.parseInt(msg[1]);				                
-	                col.getVisual(nr).setColorSet(newColorSetIndex);
-	                break;
-				} catch (Exception e) {
-					//ignore
-				}
-				
-				try {
-					//now try to reference colorset by name
-					col.getVisual(nr).setColorSet(msg[1]);
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
+                case IMAGE:
+                    try {
+                        String fileToLoad = msg[1];
+                        col.getPixelControllerGenerator().setFileImageSimple(fileToLoad);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-				break;
-								
-			//pause output, needed to create screenshots or take an image of the output
-			case FREEZE:
-				col.togglePauseMode();
-				break;
-			
-			case OSC_GENERATOR1:
-				col.getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
-				break;
-				
-			case OSC_GENERATOR2:
-				col.getPixelControllerGenerator().getOscListener2().updateBuffer(blob);
-				break;
+                case COLOR_SCROLL_OPT:
+                    try {
+                        int dir = Integer.parseInt(msg[1]);
+                        col.getPixelControllerGenerator().setColorScrollingDirection(dir);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case ROTATE_COLORSET:
-				v = col.getVisual(col.getCurrentVisual());
-            	String colorSetName = v.getColorSet().getName();
-            	
-                boolean takeNext = false;
-                ColorSet nextColorSet = col.getColorSets().get(0);
-                for (ColorSet cs : col.getColorSets()) {
-                	if (takeNext) {
-                		nextColorSet = cs;
-                		break;
-                	}                	
-                	if (cs.getName().equals(colorSetName)) {
-                		takeNext = true;
-                	}
-                }
-                v.setColorSet(nextColorSet.getName());				
-				break;
+                case TEXTDEF:
+                    try {
+                        int lut = Integer.parseInt(msg[1]);
+                        col.getPixelControllerEffect().setTextureDeformationLut(lut);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case ROTATE_GENERATOR_A:
-				v = col.getVisual(col.getCurrentVisual());
-        		int currentGenerator = v.getGenerator1Idx();
-        		int nrOfGenerators = 1+col.getPixelControllerGenerator().getSize();
-        		int count=nrOfGenerators;
-        		Generator g=null;
-        		while (count>=0 && g==null) {
-        			currentGenerator++;
-        			g = col.getPixelControllerGenerator().getGenerator(currentGenerator%nrOfGenerators);
-        		}
-        		if (g!=null && g.getName() != null) {
-        			v.setGenerator1(currentGenerator%nrOfGenerators);
-        		}				
-				break;
+                case ZOOMOPT:
+                    try {
+                        int zoomMode = Integer.parseInt(msg[1]);
+                        col.getPixelControllerEffect().setZoomOption(zoomMode);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case ROTATE_GENERATOR_B:
-				v = col.getVisual(col.getCurrentVisual());
-        		currentGenerator = v.getGenerator2Idx();
-        		nrOfGenerators = 1+col.getPixelControllerGenerator().getSize();
-        		count=nrOfGenerators;
-        		g=null;
-        		while (count>=0 && g==null) {
-        			currentGenerator++;
-        			g = col.getPixelControllerGenerator().getGenerator(currentGenerator%nrOfGenerators);
-        		}
-        		if (g!=null && g.getName() != null) {
-        			v.setGenerator2(currentGenerator%nrOfGenerators);
-        		}				
-				break;
+                case TEXTWR:
+                    try {
+                        String message = msg[1];
+                        col.getPixelControllerGenerator().setText(message);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case ROTATE_EFFECT_A:
-				v = col.getVisual(col.getCurrentVisual());
-                int currentEffect = v.getEffect1Idx();
-                int nrOfEffects = col.getPixelControllerEffect().getSize();
-                currentEffect++;
-                v.setEffect1(currentEffect%nrOfEffects);				
-				break;
+                case TEXTWR_OPTION:
+                    try {
+                        int scollerNr = Integer.parseInt(msg[1]);
+                        col.getPixelControllerGenerator().setTextOption(scollerNr);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case ROTATE_EFFECT_B:
-				v = col.getVisual(col.getCurrentVisual());
-                currentEffect = v.getEffect2Idx();
-                nrOfEffects = col.getPixelControllerEffect().getSize();
-                currentEffect++;
-                v.setEffect2(currentEffect%nrOfEffects);
-				break;
+                case RANDOM: // enable or disable random mode
+                    try {
+                        String onOrOff = msg[1];
+                        if (onOrOff.equalsIgnoreCase("ON")) {
+                            col.setRandomPresetMode(false);
+                            col.setRandomMode(true);
+                            LOG.log(Level.INFO, "Random Mode enabled");
+                        }
+                        if (onOrOff.equalsIgnoreCase("OFF")) {
+                            col.setRandomPresetMode(false);
+                            col.setRandomMode(false);
+                            LOG.log(Level.INFO, "Random Mode disabled");
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-			case ROTATE_MIXER:
-				v = col.getVisual(col.getCurrentVisual());
-                int currentMixer = v.getMixerIdx();
-                int nrOfMixerss = col.getPixelControllerMixer().getSize();
-                currentMixer++;
-                v.setMixer(currentMixer%nrOfMixerss);				
-				break;
-				
-			case BEAT_WORKMODE:
-				try {
-					int workmodeId = Integer.parseInt(msg[1]);
-					for (BeatToAnimation bta: BeatToAnimation.values()) {
-						if (bta.getId() == workmodeId) {
-							col.getPixelControllerGenerator().setBta(bta);
-							LOG.log(Level.INFO, "Select beat workmode "+bta);
-						}
-					}
+                case RANDOM_PRESET_MODE:
+                    try {
+                        String onOrOff = msg[1];
+                        if (onOrOff.equalsIgnoreCase("ON")) {
+                            col.setRandomMode(false);
+                            col.setRandomPresetMode(true);
+                            LOG.log(Level.INFO, "Random Preset Mode enabled");
+                        }
+                        if (onOrOff.equalsIgnoreCase("OFF")) {
+                            col.setRandomMode(false);
+                            col.setRandomPresetMode(false);
+                            LOG.log(Level.INFO, "Random Preset Mode disabled");
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
 
-				} catch (Exception e) {
-					LOG.log(Level.WARNING, IGNORE_COMMAND, e);
-				}
-				
-				break;
-							
-			//unkown message
-			default:
-				StringBuilder sb = new StringBuilder();
-				for (int i=0; i<msg.length;i++) {
-					sb.append(msg[i]);
-					sb.append("; ");
-				}
-				LOG.log(Level.INFO,	"Ignored command <{0}>", sb);
-				break;
-			}
-			
-			col.notifyGuiUpdate();
-			
-		} catch (IllegalArgumentException e) {
-			LOG.log(Level.INFO,	"Unknown attribute ignored <{0}>", new Object[] { msg[0] });			
-		}
-		
-	}
-	
-	
-	/**
-	 * 
-	 * @param nr
-	 */
-	private void loadPreset(int nr) {
-		VisualState col = VisualState.getInstance();
-		
-		//save current selections
-		int currentVisual = col.getCurrentVisual();
-		int currentOutput = col.getCurrentOutput();
-							
-		List<String> present = presetService.getPresets().get(nr).getPresent();					
-		if (present!=null) {	
-			//save current visual buffer
-			TransitionManager transition = new TransitionManager(col);
-			
-			//load preset
-			col.setCurrentStatus(present);
-			
-			//Restore current Selection 
-			col.setCurrentVisual(currentVisual);
-			col.setCurrentOutput(currentOutput);
-			
-			//start preset fader here, hardcoded to Crossfading
-			transition.startCrossfader();
-		}		
-	}
-	
+                case RANDOMIZE: // one shot randomizer
+                    try {
+                        // save current visual buffer
+                        TransitionManager transition = new TransitionManager(col);
+                        Shuffler.manualShuffleStuff();
+                        transition.startCrossfader();
+                        col.notifyGuiUpdate();
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case PRESET_RANDOM: // one shot randomizer, use a pre-stored
+                                    // present
+                    try {
+                        int currentPreset = Shuffler.getRandomPreset(presetService);
+                        loadPreset(currentPreset);
+                        presetService.setSelectedPreset(currentPreset);
+                        col.notifyGuiUpdate();
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case CURRENT_VISUAL:
+                    // change the selected visual, need to update
+                    // some of the gui elements
+                    try {
+                        int a = Integer.parseInt(msg[1]);
+                        col.setCurrentVisual(a);
+                        col.notifyGuiUpdate();
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case CURRENT_OUTPUT:
+                    // change the selected output, need to update
+                    // some of the gui elements
+                    try {
+                        int a = Integer.parseInt(msg[1]);
+                        col.setCurrentOutput(a);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case CHANGE_BRIGHTNESS:
+                    try {
+                        int a = Integer.parseInt(msg[1]);
+                        if (a < 0 || a > 100) {
+                            LOG.log(Level.WARNING, IGNORE_COMMAND + ", invalid brightness value: "
+                                    + a);
+                            break;
+                        } else {
+                            float f = a / 100f;
+                            col.setBrightness(f);
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                case GENERATOR_SPEED:
+                    try {
+                        int fpsAdjustment = Integer.parseInt(msg[1]);
+                        if (fpsAdjustment < 0 || fpsAdjustment > 200) {
+                            LOG.log(Level.WARNING, IGNORE_COMMAND
+                                    + ", invalid fps adjustment value: " + fpsAdjustment);
+                            break;
+                        } else {
+                            float f = fpsAdjustment / 100f;
+                            col.setFpsSpeed(f);
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
+                // create a screenshot of all current buffers
+                case SCREENSHOT:
+                    ScreenshotHelper.saveScreenshot(col.getFrames(), col.getAllVisuals());
+                    LOG.log(Level.INFO, "Saved some screenshots");
+                    break;
+
+                // change current colorset
+                case CURRENT_COLORSET:
+                    int nr = col.getCurrentVisual();
+                    try {
+                        // old method, reference colorset by index
+                        int newColorSetIndex = Integer.parseInt(msg[1]);
+                        col.getVisual(nr).setColorSet(newColorSetIndex);
+                        break;
+                    } catch (Exception e) {
+                        // ignore
+                    }
+
+                    try {
+                        // now try to reference colorset by name
+                        col.getVisual(nr).setColorSet(msg[1]);
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+
+                    break;
+
+                // pause output, needed to create screenshots or take an image
+                // of the output
+                case FREEZE:
+                    col.togglePauseMode();
+                    break;
+
+                case OSC_GENERATOR1:
+                    col.getPixelControllerGenerator().getOscListener1().updateBuffer(blob);
+                    break;
+
+                case OSC_GENERATOR2:
+                    col.getPixelControllerGenerator().getOscListener2().updateBuffer(blob);
+                    break;
+
+                case ROTATE_COLORSET:
+                    v = col.getVisual(col.getCurrentVisual());
+                    String colorSetName = v.getColorSet().getName();
+
+                    boolean takeNext = false;
+                    ColorSet nextColorSet = col.getColorSets().get(0);
+                    for (ColorSet cs : col.getColorSets()) {
+                        if (takeNext) {
+                            nextColorSet = cs;
+                            break;
+                        }
+                        if (cs.getName().equals(colorSetName)) {
+                            takeNext = true;
+                        }
+                    }
+                    v.setColorSet(nextColorSet.getName());
+                    break;
+
+                case ROTATE_GENERATOR_A:
+                    v = col.getVisual(col.getCurrentVisual());
+                    int currentGenerator = v.getGenerator1Idx();
+                    int nrOfGenerators = 1 + col.getPixelControllerGenerator().getSize();
+                    int count = nrOfGenerators;
+                    Generator g = null;
+                    while (count >= 0 && g == null) {
+                        currentGenerator++;
+                        g = col.getPixelControllerGenerator().getGenerator(
+                                currentGenerator % nrOfGenerators);
+                    }
+                    if (g != null && g.getName() != null) {
+                        v.setGenerator1(currentGenerator % nrOfGenerators);
+                    }
+                    break;
+
+                case ROTATE_GENERATOR_B:
+                    v = col.getVisual(col.getCurrentVisual());
+                    currentGenerator = v.getGenerator2Idx();
+                    nrOfGenerators = 1 + col.getPixelControllerGenerator().getSize();
+                    count = nrOfGenerators;
+                    g = null;
+                    while (count >= 0 && g == null) {
+                        currentGenerator++;
+                        g = col.getPixelControllerGenerator().getGenerator(
+                                currentGenerator % nrOfGenerators);
+                    }
+                    if (g != null && g.getName() != null) {
+                        v.setGenerator2(currentGenerator % nrOfGenerators);
+                    }
+                    break;
+
+                case ROTATE_EFFECT_A:
+                    v = col.getVisual(col.getCurrentVisual());
+                    int currentEffect = v.getEffect1Idx();
+                    int nrOfEffects = col.getPixelControllerEffect().getSize();
+                    currentEffect++;
+                    v.setEffect1(currentEffect % nrOfEffects);
+                    break;
+
+                case ROTATE_EFFECT_B:
+                    v = col.getVisual(col.getCurrentVisual());
+                    currentEffect = v.getEffect2Idx();
+                    nrOfEffects = col.getPixelControllerEffect().getSize();
+                    currentEffect++;
+                    v.setEffect2(currentEffect % nrOfEffects);
+                    break;
+
+                case ROTATE_MIXER:
+                    v = col.getVisual(col.getCurrentVisual());
+                    int currentMixer = v.getMixerIdx();
+                    int nrOfMixerss = col.getPixelControllerMixer().getSize();
+                    currentMixer++;
+                    v.setMixer(currentMixer % nrOfMixerss);
+                    break;
+
+                case BEAT_WORKMODE:
+                    try {
+                        int workmodeId = Integer.parseInt(msg[1]);
+                        for (BeatToAnimation bta : BeatToAnimation.values()) {
+                            if (bta.getId() == workmodeId) {
+                                col.getPixelControllerGenerator().setBta(bta);
+                                LOG.log(Level.INFO, "Select beat workmode " + bta);
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+
+                    break;
+
+                // unkown message
+                default:
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < msg.length; i++) {
+                        sb.append(msg[i]);
+                        sb.append("; ");
+                    }
+                    LOG.log(Level.INFO, "Ignored command <{0}>", sb);
+                    break;
+            }
+
+            col.notifyGuiUpdate();
+
+        } catch (IllegalArgumentException e) {
+            LOG.log(Level.INFO, "Unknown attribute ignored <{0}>", new Object[] { msg[0] });
+        }
+
+    }
+
+    /**
+     * 
+     * @param nr
+     */
+    private void loadPreset(int nr) {
+        VisualState col = VisualState.getInstance();
+
+        // save current selections
+        int currentVisual = col.getCurrentVisual();
+        int currentOutput = col.getCurrentOutput();
+
+        List<String> present = presetService.getPresets().get(nr).getPresent();
+        if (present != null) {
+            // save current visual buffer
+            TransitionManager transition = new TransitionManager(col);
+
+            // load preset
+            col.setCurrentStatus(present);
+
+            // Restore current Selection
+            col.setCurrentVisual(currentVisual);
+            col.setCurrentOutput(currentOutput);
+
+            // start preset fader here, hardcoded to Crossfading
+            transition.startCrossfader();
+        }
+    }
+
 }

@@ -151,7 +151,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
     // info tab
     private List<Tab> allTabs = new ArrayList<Tab>();
-    private Label currentFps;
+    private Label currentFps, configuredFps;
     private Label currentVolume;
     private Label runtime;
     private Label sentFrames;
@@ -170,6 +170,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private Messages messages;
 
     private long frames = 0;
+
+    private int coreFps;
 
     private PixConServer pixConServer;
     private IResize resize;
@@ -377,6 +379,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         generatorSpeedSlider.setDecimalPrecision(0);
         generatorSpeedSlider.setRange(0, 200);
         generatorSpeedSlider.setLabelVisible(true);
+        generatorSpeedSlider.setNumberOfTickMarks(21);
 
         // beat animation
         cp5.addTextlabel("beatWorkmode", messages.getString("GeneratorGui.BEAT_WORKMODE"),
@@ -735,9 +738,10 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         int nfoYPos = yPosStartDrowdown + 20;
         int nfoXPos = xOfs;
 
-        int coreFps = (int) (pixConServer.getConfig().parseFps() + 0.5);
-        cp5.addTextlabel(
-                "nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS") + coreFps, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
+        coreFps = (int) (pixConServer.getConfig().parseFps() + 0.5);
+        configuredFps = cp5
+                .addTextlabel(
+                        "nfoFpsConf", messages.getString("GeneratorGui.CONF_FPS") + coreFps, nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
         nfoYPos += yposAdd;
         currentFps = cp5
                 .addTextlabel("nfoFpsCurrent", "", nfoXPos, nfoYPos).moveTo(infoTab).getValueLabel(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1028,6 +1032,9 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         // update more details, mostly info tab
         if (frames % 10 == 1) {
             // INFO TAB
+            int currentFps10 = (int) (coreFps * generatorSpeedSlider.getValue());
+            configuredFps
+                    .setText(messages.getString("GeneratorGui.CONF_FPS") + currentFps10 / 100f);
             int fps10 = (int) (pixConServer.getCurrentFps() * 10);
             currentFps.setText(messages.getString("GeneratorGui.CURRENT_FPS") + fps10 / 10f); //$NON-NLS-1$
             String runningSince = DurationFormatUtils.formatDuration(System.currentTimeMillis()

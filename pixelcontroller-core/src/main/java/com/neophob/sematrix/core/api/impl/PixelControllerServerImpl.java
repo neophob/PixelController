@@ -150,6 +150,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         initialized = true;
 
         LOG.log(Level.INFO, "Enter main loop");
+
+        float lastFramerateValue = 1.0f;
+
         while (Thread.currentThread() == runner) {
             if (this.visualState.isInPauseMode()) {
                 // no update here, we're in pause mode
@@ -169,6 +172,12 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
             pixConStat.setCurrentFps(framerate.getFps());
             pixConStat.setFrameCount(cnt++);
+
+            if (lastFramerateValue != visualState.getFpsSpeed()) {
+                lastFramerateValue = visualState.getFpsSpeed();
+                framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
+                System.out.println(visualState.getFpsSpeed());
+            }
 
             framerate.waitForFps();
         }
