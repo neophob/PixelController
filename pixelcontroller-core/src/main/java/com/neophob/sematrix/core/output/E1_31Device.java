@@ -37,7 +37,6 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  * 
  * @author michu
  * 
- *         TODO: -implement multipanel support
  */
 public class E1_31Device extends AbstractDmxDevice {
 
