@@ -39,6 +39,8 @@ public class Framerate {
 
     public Framerate(float targetFps) {
         this.setFps(targetFps);
+        this.startTime = System.currentTimeMillis();
+        this.frameCount = 1;
     }
 
     public void setFps(float targetFps) {
@@ -47,9 +49,6 @@ public class Framerate {
         }
         this.delay = (long) (1000f / targetFps);
         LOG.info("Target fps: " + targetFps + ", delay: " + delay + "ms");
-
-        this.startTime = System.currentTimeMillis();
-        this.frameCount = 1;
     }
 
     public float getFps() {
@@ -58,10 +57,6 @@ public class Framerate {
 
     public long getFrameCount() {
         return frameCount;
-    }
-
-    public long getDelay() {
-        return delay;
     }
 
     public long getFrameDelay() {
