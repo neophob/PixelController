@@ -176,7 +176,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             if (lastFramerateValue != visualState.getFpsSpeed()) {
                 lastFramerateValue = visualState.getFpsSpeed();
                 framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
-                System.out.println(visualState.getFpsSpeed());
             }
 
             framerate.waitForFps();
