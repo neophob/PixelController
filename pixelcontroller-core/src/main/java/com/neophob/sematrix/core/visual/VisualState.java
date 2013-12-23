@@ -706,7 +706,6 @@ public class VisualState extends Observable {
 
     public void setFpsSpeed(float fpsSpeed) {
         this.fpsSpeed = fpsSpeed;
-        System.out.println("SPEED: " + fpsSpeed);
     }
 
     /**
