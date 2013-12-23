@@ -32,37 +32,37 @@ import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
  * 
  * 
  * @author michu
- *
+ * 
  */
 public class GuiUpdateFeedback implements Observer {
 
-	private static final Logger LOG = Logger.getLogger(GuiUpdateFeedback.class.getName());
-	
-	private GuiState state;
-	private GuiCallbackAction callBackAction;
-	
-	/**
-	 * 
-	 * @param callBackAction
-	 */
-	public GuiUpdateFeedback(GuiCallbackAction callBackAction) {
-		this.callBackAction = callBackAction;
-		this.state = new GuiState();
-	}
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		if (arg instanceof List<?>) {
-			
-			state.updateState((List<?>)arg);
-			Map<String, String> diff = state.getDiff();
-			if (diff.size()>0) {
-				callBackAction.updateGuiElements(diff);
-				LOG.log(Level.INFO, "{0} settings updated.", diff.size());				
-			}			
+    private static final Logger LOG = Logger.getLogger(GuiUpdateFeedback.class.getName());
+
+    private GuiState state;
+    private GuiCallbackAction callBackAction;
+
+    /**
+     * 
+     * @param callBackAction
+     */
+    public GuiUpdateFeedback(GuiCallbackAction callBackAction) {
+        this.callBackAction = callBackAction;
+        this.state = new GuiState();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof List<?>) {
+
+            state.updateState((List<?>) arg);
+            Map<String, String> diff = state.getDiff();
+            if (!diff.isEmpty()) {
+                callBackAction.updateGuiElements(diff);
+                LOG.log(Level.INFO, "{0} settings updated.", diff.size());
+            }
         } else {
-        	LOG.log(Level.WARNING, "Ignored notification of unknown type: "+arg);
+            LOG.log(Level.WARNING, "Ignored notification of unknown type: " + arg);
         }
-	}
+    }
 
 }
