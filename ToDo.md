@@ -4,7 +4,6 @@
 * Add console to GUI
 * Documentation for bonjour, client/server
 * Random-Mode with selectable time-life
-* Generator Speed, adjust fps instead of fancy multiplications
 
 ## Version 2.2
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
