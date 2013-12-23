@@ -54,6 +54,9 @@ public enum MessageProcessor {
     /** The Constant IGNORE_COMMAND. */
     private static final String IGNORE_COMMAND = "Ignored command";
 
+    private static final String OFF = "OFF";
+    private static final String ON = "ON";
+
     private PresetService presetService;
 
     /**
@@ -255,7 +258,7 @@ public enum MessageProcessor {
                         String str = "";
                         for (int i = 0; i < size; i++) {
                             b = false;
-                            if (msg[i + 1].equals("1")) {
+                            if ("1".equals(msg[i + 1])) {
                                 b = true;
                                 str += '1';
                             } else
@@ -391,12 +394,12 @@ public enum MessageProcessor {
                 case RANDOM: // enable or disable random mode
                     try {
                         String onOrOff = msg[1];
-                        if (onOrOff.equalsIgnoreCase("ON")) {
+                        if (ON.equalsIgnoreCase(onOrOff)) {
                             col.setRandomPresetMode(false);
                             col.setRandomMode(true);
                             LOG.log(Level.INFO, "Random Mode enabled");
                         }
-                        if (onOrOff.equalsIgnoreCase("OFF")) {
+                        if (OFF.equalsIgnoreCase(onOrOff)) {
                             col.setRandomPresetMode(false);
                             col.setRandomMode(false);
                             LOG.log(Level.INFO, "Random Mode disabled");
@@ -409,12 +412,12 @@ public enum MessageProcessor {
                 case RANDOM_PRESET_MODE:
                     try {
                         String onOrOff = msg[1];
-                        if (onOrOff.equalsIgnoreCase("ON")) {
+                        if (ON.equalsIgnoreCase(onOrOff)) {
                             col.setRandomMode(false);
                             col.setRandomPresetMode(true);
                             LOG.log(Level.INFO, "Random Preset Mode enabled");
                         }
-                        if (onOrOff.equalsIgnoreCase("OFF")) {
+                        if (OFF.equalsIgnoreCase(onOrOff)) {
                             col.setRandomMode(false);
                             col.setRandomPresetMode(false);
                             LOG.log(Level.INFO, "Random Preset Mode disabled");
