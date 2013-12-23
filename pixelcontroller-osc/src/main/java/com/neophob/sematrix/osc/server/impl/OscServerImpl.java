@@ -35,87 +35,88 @@ import de.sciss.net.OSCServer;
 
 /**
  * concrete osc server implementation
+ * 
  * @author michu
- *
+ * 
  */
 class OscServerImpl extends AbstractOscServer implements OSCListener {
 
-	private static transient final Logger LOG = Logger.getLogger(AbstractOscServer.class.getName());
-	
-	private transient OSCServer oscServer;
-	
-	/**
-	 * 
-	 * @param useTcp
-	 * @param handler
-	 * @param host
-	 * @param port
-	 * @param bufferSize
-	 * @throws OscServerException
-	 */
-	public OscServerImpl(boolean useTcp, Observer handler, String host, int port, int bufferSize) throws OscServerException {
-		super(handler, host, port, bufferSize);
-		long t1 = System.currentTimeMillis();
-		try {
-			if (useTcp) {
-				oscServer = OSCServer.newUsing(OSCServer.TCP, port);				
-			} else {
-				oscServer = OSCServer.newUsing(OSCServer.UDP, port);				
-			}
-			oscServer.addOSCListener(this);
-			oscServer.setBufferSize(bufferSize);
-			LOG.log(Level.INFO, "OSC Server initialized on port "+port+" (buffersize: "+bufferSize+" bytes) in "
-			+(System.currentTimeMillis()-t1)+"ms");
-		} catch (Exception e) {
-			throw new OscServerException("Failed to start OSC Server", e);			
-		}		
-	}
+    private static final transient Logger LOG = Logger.getLogger(AbstractOscServer.class.getName());
 
-	@Override
-	public void startServer() {
-		try {
-			oscServer.start();
-			LOG.log(Level.INFO, "OSC Server started");
-		} catch (IOException e) {
-			LOG.log(Level.SEVERE, "Failed to start OSC Server!", e);
-		}
-	}
+    private transient OSCServer oscServer;
 
-	@Override
-	public void stopServer() {
-		try {
-			oscServer.stop();
-			oscServer.dispose();
-			LOG.log(Level.INFO, "OSC Server stopped");
-		} catch (Exception e) {
-			//LOG.log(Level.SEVERE, "Failed to stop OSC Server!", e);
-		}		
-	}
+    /**
+     * 
+     * @param useTcp
+     * @param handler
+     * @param host
+     * @param port
+     * @param bufferSize
+     * @throws OscServerException
+     */
+    public OscServerImpl(boolean useTcp, Observer handler, String host, int port, int bufferSize)
+            throws OscServerException {
+        super(handler, host, port, bufferSize);
+        long t1 = System.currentTimeMillis();
+        try {
+            if (useTcp) {
+                oscServer = OSCServer.newUsing(OSCServer.TCP, port);
+            } else {
+                oscServer = OSCServer.newUsing(OSCServer.UDP, port);
+            }
+            oscServer.addOSCListener(this);
+            oscServer.setBufferSize(bufferSize);
+            LOG.log(Level.INFO, "OSC Server initialized on port " + port + " (buffersize: "
+                    + bufferSize + " bytes) in " + (System.currentTimeMillis() - t1) + "ms");
+        } catch (Exception e) {
+            throw new OscServerException("Failed to start OSC Server", e);
+        }
+    }
 
-	@Override
-	public void messageReceived(OSCMessage m, SocketAddress addr, long time) {
-		String[] args = null;
-		byte[] blob = null;
-		if (m.getArgCount()>0) {
-			List<String> tmp = new ArrayList<String>();
-			for (int i=0; i<m.getArgCount(); i++) {
-				Object o = m.getArg(i);
+    @Override
+    public void startServer() {
+        try {
+            oscServer.start();
+            LOG.log(Level.INFO, "OSC Server started");
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, "Failed to start OSC Server!", e);
+        }
+    }
 
-				if (o instanceof Integer || o instanceof String || o instanceof Long) {
-					tmp.add(""+o);
-				} else if (o instanceof byte[]) {
-					blob = (byte[])o;
-				} 
-			}
-			args = new String[tmp.size()];
-			args = tmp.toArray(args);
-			
-		}
-		
-		OscMessage msg = new OscMessage(m.getName(), args, blob);
-		msg.setSocketAddress(addr);
-		this.notifyOscClients(msg);		
-	}
+    @Override
+    public void stopServer() {
+        try {
+            oscServer.stop();
+            oscServer.dispose();
+            LOG.log(Level.INFO, "OSC Server stopped");
+        } catch (Exception e) {
+            // LOG.log(Level.SEVERE, "Failed to stop OSC Server!", e);
+        }
+    }
 
+    @Override
+    public void messageReceived(OSCMessage m, SocketAddress addr, long time) {
+        String[] args = null;
+        byte[] blob = null;
+        if (m.getArgCount() > 0) {
+            List<String> tmp = new ArrayList<String>();
+            for (int i = 0; i < m.getArgCount(); i++) {
+                Object o = m.getArg(i);
+
+                if (o instanceof Integer || o instanceof String || o instanceof Long) {
+                    tmp.add("" + o);
+                } else if (o instanceof byte[]) {
+                    blob = (byte[]) o;
+                }
+            }
+            args = new String[tmp.size()];
+            args = tmp.toArray(args);
+
+        }
+
+        OscMessage msg = new OscMessage(m.getName(), args, blob);
+        msg.setSocketAddress(addr);
+        this.notifyOscClients(msg);
+    }
 
 }

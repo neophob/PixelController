@@ -26,86 +26,86 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * simple class to store present set's.
- *
+ * 
  * @author michu
  */
 public class PresetSettings implements Serializable {
-	
-    private transient static final String NAME_MARKER = "presetname=";
-    
-    private transient static final char DELIM = ';';
-    	
-	/** The present. */
-	private List<String> present;
-	private String name = "";
 
-	/**
-	 * Gets the present.
-	 *
-	 * @return the present
-	 */
-	public List<String> getPresent() {
-		return present;
-	}
+    private static final transient String NAME_MARKER = "presetname=";
 
-	/**
-	 * Sets the present.
-	 *
-	 * @param present the new present
-	 */
-	public void setPresent(List<String> present) {
-		this.present = present;
-	}
-	
-	/**
-	 * Sets the present.
-	 *
-	 * @param present the new present
-	 */
-	public void setPresent(String[] present) {
-		List<String> list=new ArrayList<String>();
-		for (String s: present) {
-		    if (StringUtils.startsWith(s, NAME_MARKER)) {		        
-		        String rawName = StringUtils.substring(s, NAME_MARKER.length());
-		        if (StringUtils.isNotBlank(rawName)){
-		            this.name = rawName;
-		        }
-		    } else {
-		        list.add(s);   
-		    }			
-		}
-		this.present=list;
-	}
-	
-	/**
-	 * Gets the settings as string.
-	 *
-	 * @return the settings as string
-	 */
-	public String getSettingsAsString() {		
-		if (present==null) {
-			return "";
-		}
-		
-		StringBuilder ret=new StringBuilder();
-		
-		for (String s: present) {
-			ret.append(s);
-			ret.append(DELIM);
-		}
-		
-		//add name
-		if (StringUtils.isNotBlank(name)) {		    
-		    ret.append(NAME_MARKER);
-		    ret.append(name);
-		    ret.append(DELIM);
-		}
-		
-		return ret.toString();
-	}
-	
-	
-	
+    private static final transient char DELIM = ';';
+
+    /** The present. */
+    private List<String> present;
+    private String name = "";
+
+    /**
+     * Gets the present.
+     * 
+     * @return the present
+     */
+    public List<String> getPresent() {
+        return present;
+    }
+
+    /**
+     * Sets the present.
+     * 
+     * @param present
+     *            the new present
+     */
+    public void setPresent(List<String> present) {
+        this.present = present;
+    }
+
+    /**
+     * Sets the present.
+     * 
+     * @param present
+     *            the new present
+     */
+    public void setPresent(String[] present) {
+        List<String> list = new ArrayList<String>();
+        for (String s : present) {
+            if (StringUtils.startsWith(s, NAME_MARKER)) {
+                String rawName = StringUtils.substring(s, NAME_MARKER.length());
+                if (StringUtils.isNotBlank(rawName)) {
+                    this.name = rawName;
+                }
+            } else {
+                list.add(s);
+            }
+        }
+        this.present = list;
+    }
+
+    /**
+     * Gets the settings as string.
+     * 
+     * @return the settings as string
+     */
+    public String getSettingsAsString() {
+        if (present == null) {
+            return "";
+        }
+
+        StringBuilder ret = new StringBuilder();
+
+        for (String s : present) {
+            ret.append(s);
+            ret.append(DELIM);
+        }
+
+        // add name
+        if (StringUtils.isNotBlank(name)) {
+            ret.append(NAME_MARKER);
+            ret.append(name);
+            ret.append(DELIM);
+        }
+
+        return ret.toString();
+    }
+
     /**
      * @return the name
      */
@@ -114,7 +114,8 @@ public class PresetSettings implements Serializable {
     }
 
     /**
-     * @param name the name to set
+     * @param name
+     *            the name to set
      */
     public void setName(String name) {
         this.name = name;
@@ -125,11 +126,10 @@ public class PresetSettings implements Serializable {
      * @return
      */
     public boolean isSlotUsed() {
-        if (present==null || present.isEmpty()) {
+        if (present == null || present.isEmpty()) {
             return false;
         }
         return true;
     }
-    
-	
+
 }

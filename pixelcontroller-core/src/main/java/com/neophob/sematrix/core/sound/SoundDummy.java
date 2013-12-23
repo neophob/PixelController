@@ -25,83 +25,99 @@ import java.util.logging.Logger;
  * The Class SoundDummy.
  */
 public class SoundDummy implements ISound {
-	
-	private transient static final Logger LOG = Logger.getLogger(SoundDummy.class.getName());
 
-	/**
-	 * Instantiates a new sound dummy.
-	 */
-	public SoundDummy() {
-		LOG.log(Level.INFO,	"Sound thread started, dummy implementation...");
-	}
-	
-	/**
-	 * get current volume.
-	 *
-	 * @return the volume
-	 */
-	public float getVolume() {
-		return 0.5f;
-	}
+    private static final transient Logger LOG = Logger.getLogger(SoundDummy.class.getName());
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#getVolumeNormalized()
-	 */
-	public float getVolumeNormalized() {
-		return getVolume();
-	}
+    /**
+     * Instantiates a new sound dummy.
+     */
+    public SoundDummy() {
+        LOG.log(Level.INFO, "Sound thread started, dummy implementation...");
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isKick()
-	 */
-	public boolean isKick() {
-		return false;
-	}
+    /**
+     * get current volume.
+     * 
+     * @return the volume
+     */
+    public float getVolume() {
+        return 0.5f;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isSnare()
-	 */
-	public boolean isSnare() {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#getVolumeNormalized()
+     */
+    public float getVolumeNormalized() {
+        return getVolume();
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isHat()
-	 */
-	public boolean isHat() {
-		return false;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isPang()
-	 */
-	public boolean isPang() {
-		return false;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#getFftAvg()
-	 */
-	public int getFftAvg() {		
-		return 1;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#getFftAvg(int)
-	 */
-	public float getFftAvg(int i) {
-		return 1.0f;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isKick()
+     */
+    public boolean isKick() {
+        return false;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#shutdown()
-	 */
-	public void shutdown() {
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isSnare()
+     */
+    public boolean isSnare() {
+        return false;
+    }
 
-	@Override
-	public String getImplementationName() {		
-		return "Dummy Sound";
-	}
-	
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isHat()
+     */
+    public boolean isHat() {
+        return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isPang()
+     */
+    public boolean isPang() {
+        return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#getFftAvg()
+     */
+    public int getFftAvg() {
+        return 1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#getFftAvg(int)
+     */
+    public float getFftAvg(int i) {
+        return 1.0f;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#shutdown()
+     */
+    public void shutdown() {
+    }
+
+    @Override
+    public String getImplementationName() {
+        return "Dummy Sound";
+    }
+
 }

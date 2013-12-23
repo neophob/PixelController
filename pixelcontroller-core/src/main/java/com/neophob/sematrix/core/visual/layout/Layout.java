@@ -67,7 +67,7 @@ public abstract class Layout implements Serializable {
     }
 
     /** The log. */
-    private transient static final Logger LOG = Logger.getLogger(Layout.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(Layout.class.getName());
 
     /** The layout name. */
     private LayoutName layoutName;

@@ -26,16 +26,16 @@ import java.util.logging.Logger;
 /**
  * matrix display buffer class
  * 
- * the internal buffer is much larger than the actual device. the buffer for the matrix is recalculated
- * each frame. reason: better display quality 
+ * the internal buffer is much larger than the actual device. the buffer for the
+ * matrix is recalculated each frame. reason: better display quality
  * 
  * @author mvogt
- *
+ * 
  */
-public class MatrixData implements Serializable{
+public class MatrixData implements Serializable {
 
     /** The log. */
-    private transient static final Logger LOG = Logger.getLogger(MatrixData.class.getName());
+    private static final transient Logger LOG = Logger.getLogger(MatrixData.class.getName());
 
     /** The device x size. */
     private final int deviceXSize;
@@ -51,12 +51,13 @@ public class MatrixData implements Serializable{
     private int bufferHeight;
 
     /**
-     * init matrix data.
-     * Use Case 1: 2 PixelInvader panels, each panel have a 8x8 resolution
-     * Use Case 2: 1 TPM2Net panel, size 24*16
-     *
-     * @param deviceXSize the device x size
-     * @param deviceYSize the device y size
+     * init matrix data. Use Case 1: 2 PixelInvader panels, each panel have a
+     * 8x8 resolution Use Case 2: 1 TPM2Net panel, size 24*16
+     * 
+     * @param deviceXSize
+     *            the device x size
+     * @param deviceYSize
+     *            the device y size
      */
     public MatrixData(int deviceXSize, int deviceYSize) {
         if (deviceXSize < 1 || deviceYSize < 1) {
@@ -64,21 +65,22 @@ public class MatrixData implements Serializable{
         }
         this.deviceXSize = deviceXSize;
         this.deviceYSize = deviceYSize;
-        this.deviceSize = deviceXSize*deviceYSize;
+        this.deviceSize = deviceXSize * deviceYSize;
 
-        //select buffer size depending on the output device
+        // select buffer size depending on the output device
         int internalBufferSizeMultiplier = 8;
-        bufferWidth = deviceXSize*internalBufferSizeMultiplier;
-        bufferHeight = deviceYSize*internalBufferSizeMultiplier;
-        
-        while (getRgbBufferSize()>60*1024 && internalBufferSizeMultiplier>1) {
-        	internalBufferSizeMultiplier/=2;
-            bufferWidth = deviceXSize*internalBufferSizeMultiplier;
-            bufferHeight = deviceYSize*internalBufferSizeMultiplier;
+        bufferWidth = deviceXSize * internalBufferSizeMultiplier;
+        bufferHeight = deviceYSize * internalBufferSizeMultiplier;
+
+        while (getRgbBufferSize() > 60 * 1024 && internalBufferSizeMultiplier > 1) {
+            internalBufferSizeMultiplier /= 2;
+            bufferWidth = deviceXSize * internalBufferSizeMultiplier;
+            bufferHeight = deviceYSize * internalBufferSizeMultiplier;
         }
 
-        LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), multiplication factor: {3} ({4} * {5})", 
-        		new Object[] { deviceSize, deviceXSize, deviceYSize, internalBufferSizeMultiplier, bufferWidth, bufferHeight});        
+        LOG.log(Level.INFO, "screenSize: {0} ({1} * {2}), multiplication factor: {3} ({4} * {5})",
+                new Object[] { deviceSize, deviceXSize, deviceYSize, internalBufferSizeMultiplier,
+                        bufferWidth, bufferHeight });
     }
 
     /**
@@ -86,18 +88,19 @@ public class MatrixData implements Serializable{
      * @return
      */
     private int getRgbBufferSize() {
-    	return getBufferXSize()*getBufferYSize()*3;
+        return getBufferXSize() * getBufferYSize() * 3;
     }
-    
 
     /**
-     * ========[ getter/setter ]======================================================================.
-     *
+     * ========[ getter/setter
+     * ]======================================================================.
+     * 
      * @return the device x size
      */
 
     /**
      * return effective device pixel size
+     * 
      * @return
      */
     public int getDeviceXSize() {
@@ -106,7 +109,7 @@ public class MatrixData implements Serializable{
 
     /**
      * return effective device pixel size.
-     *
+     * 
      * @return the device y size
      */
     public int getDeviceYSize() {
@@ -115,7 +118,7 @@ public class MatrixData implements Serializable{
 
     /**
      * return effective BUFFER size.
-     *
+     * 
      * @return the buffer x size
      */
     public int getBufferXSize() {
@@ -124,7 +127,7 @@ public class MatrixData implements Serializable{
 
     /**
      * return effective BUFFER size.
-     *
+     * 
      * @return the buffer y size
      */
     public int getBufferYSize() {
@@ -133,23 +136,23 @@ public class MatrixData implements Serializable{
 
     /**
      * Gets the device size.
-     *
+     * 
      * @return the device size
      */
     public int getDeviceSize() {
         return deviceSize;
     }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return String
-				.format("MatrixData [deviceXSize=%s, deviceYSize=%s, deviceSize=%s, bufferWidth=%s, bufferHeight=%s]",
-						deviceXSize, deviceYSize, deviceSize, bufferWidth,
-						bufferHeight);
-	}
-
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String
+                .format("MatrixData [deviceXSize=%s, deviceYSize=%s, deviceSize=%s, bufferWidth=%s, bufferHeight=%s]",
+                        deviceXSize, deviceYSize, deviceSize, bufferWidth, bufferHeight);
+    }
 
 }

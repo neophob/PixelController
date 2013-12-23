@@ -32,241 +32,259 @@ import ddf.minim.analysis.FFT;
  */
 public final class SoundMinim implements ISound, Runnable {
 
-	//samples per 1/4s
-	/** The Constant SOUND_BUFFER_RESOLUTION. */
-	private transient static final int SOUND_BUFFER_RESOLUTION = 8;
+    // samples per 1/4s
+    /** The Constant SOUND_BUFFER_RESOLUTION. */
+    private static final transient int SOUND_BUFFER_RESOLUTION = 8;
 
-	/** The log. */
-	private transient static final Logger LOG = Logger.getLogger(SoundMinim.class.getName());
+    /** The log. */
+    private static final transient Logger LOG = Logger.getLogger(SoundMinim.class.getName());
 
-	/** The minim. */
-	private transient Minim minim;
-	
-	/** The in. */
-	private transient AudioInput in;
-	
-	/** The beat. */
-	private transient BeatDetect beat;
-	
-	/** The bl. */
-	@SuppressWarnings("unused")
-	private transient BeatListener bl;
+    /** The minim. */
+    private transient Minim minim;
 
-	/** The fft. */
-	private transient FFT fft;
+    /** The in. */
+    private transient AudioInput in;
 
-	/* thread to collect volume information */
-	/** The runner. */
-	private transient Thread runner;
+    /** The beat. */
+    private transient BeatDetect beat;
 
-	/** The snd volume max. */
-	private float sndVolumeMax=0;
+    /** The bl. */
+    @SuppressWarnings("unused")
+    private transient BeatListener bl;
 
-	private float silenceThreshold;
-	private long dropedVolumeRequests;
-	
-	/**
-	 * Instantiates a new sound minim.
-	 */
-	public SoundMinim(float silenceThreshold) {
-		minim = new Minim(this);
-		//in = minim.getLineIn( Minim.STEREO, 512 );
-		in = minim.getLineIn( Minim.MONO, 1024 );
+    /** The fft. */
+    private transient FFT fft;
 
-		// a beat detection object that is FREQ_ENERGY mode that 
-		// expects buffers the length of song's buffer size
-		// and samples captured at songs's sample rate
-		beat = new BeatDetect(in.bufferSize(), in.sampleRate());
+    /* thread to collect volume information */
+    /** The runner. */
+    private transient Thread runner;
 
-		// set the sensitivity to 300 milliseconds
-		// After a beat has been detected, the algorithm will wait for 300 milliseconds 
-		// before allowing another beat to be reported. You can use this to dampen the 
-		// algorithm if it is giving too many false-positives. The default value is 10, 
-		// which is essentially no damping. If you try to set the sensitivity to a negative value, 
-		// an error will be reported and it will be set to 10 instead. 
-		beat.setSensitivity(250); 
-		beat.detectMode(BeatDetect.FREQ_ENERGY);
+    /** The snd volume max. */
+    private float sndVolumeMax = 0;
 
-		bl = new BeatListener(beat, in);		 
+    private float silenceThreshold;
+    private long dropedVolumeRequests;
 
-		fft = new FFT(in.bufferSize(), in.sampleRate());
-		fft.window(FFT.HAMMING);
-		fft.logAverages(120,4); // 32 bands
-		
-		this.silenceThreshold = silenceThreshold;
-		
-		this.runner = new Thread(this);
-		this.runner.setName("ZZ Sound stuff");
-		this.runner.setDaemon(true);
-		this.runner.start();
-	}
+    /**
+     * Instantiates a new sound minim.
+     */
+    public SoundMinim(float silenceThreshold) {
+        minim = new Minim(this);
+        // in = minim.getLineIn( Minim.STEREO, 512 );
+        in = minim.getLineIn(Minim.MONO, 1024);
 
-	/**
-	 * Minim requirement
-	 * @param fileName
-	 * @return
-	 */
-	public String sketchPath(String fileName) {
-		LOG.log(Level.INFO, "Not implemented, not used, sketchPath: "+fileName);
-		return "";
-	}
+        // a beat detection object that is FREQ_ENERGY mode that
+        // expects buffers the length of song's buffer size
+        // and samples captured at songs's sample rate
+        beat = new BeatDetect(in.bufferSize(), in.sampleRate());
 
-	/**
-	 * Minim requirement
-	 * @param fileName
-	 * @return
-	 */
-	public InputStream createInput(String fileName) {
-		LOG.log(Level.INFO, "Not implemented, not used, createInput: "+fileName);
-		return null;
-	}
+        // set the sensitivity to 300 milliseconds
+        // After a beat has been detected, the algorithm will wait for 300
+        // milliseconds
+        // before allowing another beat to be reported. You can use this to
+        // dampen the
+        // algorithm if it is giving too many false-positives. The default value
+        // is 10,
+        // which is essentially no damping. If you try to set the sensitivity to
+        // a negative value,
+        // an error will be reported and it will be set to 10 instead.
+        beat.setSensitivity(250);
+        beat.detectMode(BeatDetect.FREQ_ENERGY);
 
-	/**
-	 * Gets the current level of the buffer. It is calculated as 
-	 * the root-mean-squared of all the samples in the buffer.
-	 * @return the RMS amplitude of the buffer
-	 */
-	public float getVolume() {
-		return getVolumeNormalized();
-	}
+        bl = new BeatListener(beat, in);
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#getVolumeNormalized()
-	 */
-	public float getVolumeNormalized() {
-		float max = getSndVolumeMax();		
-		//volume is too low, normalization would create wrong results.
-		if (max<silenceThreshold) {
-			dropedVolumeRequests++;
-			if (dropedVolumeRequests%1000==0) {
-				LOG.log(Level.INFO, "Ignored volume request, as volume is too low ("+ max +
-						"), this happend "+ dropedVolumeRequests+" times.");
-			}
-			return 0;
-		}
-		
-		float f = in.mix.level();		
-		float norm=(1.0f/max)*f;	
+        fft = new FFT(in.bufferSize(), in.sampleRate());
+        fft.window(FFT.HAMMING);
+        fft.logAverages(120, 4); // 32 bands
 
-		//im a bad coder! limit it!
-		if (norm>1f) {
-			norm=1f;		
-		}
+        this.silenceThreshold = silenceThreshold;
 
-		return norm;
-	}
+        this.runner = new Thread(this);
+        this.runner.setName("ZZ Sound stuff");
+        this.runner.setDaemon(true);
+        this.runner.start();
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isKick()
-	 */
-	public boolean isKick() {
-		return beat.isKick();
-	}
+    /**
+     * Minim requirement
+     * 
+     * @param fileName
+     * @return
+     */
+    public String sketchPath(String fileName) {
+        LOG.log(Level.INFO, "Not implemented, not used, sketchPath: " + fileName);
+        return "";
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isSnare()
-	 */
-	public boolean isSnare() {
-		return beat.isSnare();
-	}
+    /**
+     * Minim requirement
+     * 
+     * @param fileName
+     * @return
+     */
+    public InputStream createInput(String fileName) {
+        LOG.log(Level.INFO, "Not implemented, not used, createInput: " + fileName);
+        return null;
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isHat()
-	 */
-	public boolean isHat() {
-		return beat.isHat();
-	}
+    /**
+     * Gets the current level of the buffer. It is calculated as the
+     * root-mean-squared of all the samples in the buffer.
+     * 
+     * @return the RMS amplitude of the buffer
+     */
+    public float getVolume() {
+        return getVolumeNormalized();
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#isPang()
-	 */
-	public boolean isPang() {
-		return beat.isHat() || beat.isKick() || beat.isSnare();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#getVolumeNormalized()
+     */
+    public float getVolumeNormalized() {
+        float max = getSndVolumeMax();
+        // volume is too low, normalization would create wrong results.
+        if (max < silenceThreshold) {
+            dropedVolumeRequests++;
+            if (dropedVolumeRequests % 1000 == 0) {
+                LOG.log(Level.INFO, "Ignored volume request, as volume is too low (" + max
+                        + "), this happend " + dropedVolumeRequests + " times.");
+            }
+            return 0;
+        }
 
-	/**
-	 * Returns the number of averages currently being calculated.
-	 *
-	 * @return the fft avg
-	 */
-	public int getFftAvg() {
-		// perform a forward FFT on the samples 
-		fft.forward(in.mix);
+        float f = in.mix.level();
+        float norm = (1.0f / max) * f;
 
-		return fft.avgSize();
-	}
-	
-	/**
-	 * Gets the value of the ith average.
-	 *
-	 * @param i the i
-	 * @return the fft avg
-	 */
-	public float getFftAvg(int i) {
-		return fft.getAvg(i);
-	}
+        // im a bad coder! limit it!
+        if (norm > 1f) {
+            norm = 1f;
+        }
 
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.input.SeSound#shutdown()
-	 */
-	public void shutdown() {
-		in.close();
-		minim.stop();
-	}
+        return norm;
+    }
 
-	/**
-	 * Dispose.
-	 */
-	public void dispose() {		
-		runner = null;
-		//XXX 		this.shutdown();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isKick()
+     */
+    public boolean isKick() {
+        return beat.isKick();
+    }
 
-	/**
-	 * the thread runner.
-	 */
-	public void run() {
-		long sleep = (int)(250/SOUND_BUFFER_RESOLUTION);
-		LOG.log(Level.INFO,	"Sound thread started...");
-		int loop=0;
-		while (Thread.currentThread() == runner) {
-			try {
-				Thread.sleep(sleep);
-			} catch (InterruptedException e) {}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isSnare()
+     */
+    public boolean isSnare() {
+        return beat.isSnare();
+    }
 
-			// perform a forward FFT on the samples 
-//			fft.forward(in.mix);
-			
-			//decrement max volume after 1/4s
-			if (loop>SOUND_BUFFER_RESOLUTION) {
-				sndVolumeMax*=.93f;
-			}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isHat()
+     */
+    public boolean isHat() {
+        return beat.isHat();
+    }
 
-			float f = in.mix.level();
-			if (f>sndVolumeMax) {
-				sndVolumeMax=f;
-				loop=0;
-			}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#isPang()
+     */
+    public boolean isPang() {
+        return beat.isHat() || beat.isKick() || beat.isSnare();
+    }
 
-			loop++;
-		}
-	}
+    /**
+     * Returns the number of averages currently being calculated.
+     * 
+     * @return the fft avg
+     */
+    public int getFftAvg() {
+        // perform a forward FFT on the samples
+        fft.forward(in.mix);
 
+        return fft.avgSize();
+    }
 
-	/**
-	 * Gets the snd volume max.
-	 *
-	 * @return the snd volume max
-	 */
-	public synchronized float getSndVolumeMax() {
-		return sndVolumeMax;
-	}
+    /**
+     * Gets the value of the ith average.
+     * 
+     * @param i
+     *            the i
+     * @return the fft avg
+     */
+    public float getFftAvg(int i) {
+        return fft.getAvg(i);
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.input.SeSound#shutdown()
+     */
+    public void shutdown() {
+        in.close();
+        minim.stop();
+    }
 
-	@Override
-	public String getImplementationName() {		
-		return "Minim Sound";
-	}
+    /**
+     * Dispose.
+     */
+    public void dispose() {
+        runner = null;
+        // XXX this.shutdown();
+    }
+
+    /**
+     * the thread runner.
+     */
+    public void run() {
+        long sleep = (int) (250 / SOUND_BUFFER_RESOLUTION);
+        LOG.log(Level.INFO, "Sound thread started...");
+        int loop = 0;
+        while (Thread.currentThread() == runner) {
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+            }
+
+            // perform a forward FFT on the samples
+            // fft.forward(in.mix);
+
+            // decrement max volume after 1/4s
+            if (loop > SOUND_BUFFER_RESOLUTION) {
+                sndVolumeMax *= .93f;
+            }
+
+            float f = in.mix.level();
+            if (f > sndVolumeMax) {
+                sndVolumeMax = f;
+                loop = 0;
+            }
+
+            loop++;
+        }
+    }
+
+    /**
+     * Gets the snd volume max.
+     * 
+     * @return the snd volume max
+     */
+    public synchronized float getSndVolumeMax() {
+        return sndVolumeMax;
+    }
+
+    @Override
+    public String getImplementationName() {
+        return "Minim Sound";
+    }
 
 }
