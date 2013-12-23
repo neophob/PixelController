@@ -96,7 +96,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         clientNotification("Initialize System");
         LOG.log(Level.INFO, "Initialize System");
         this.pixConStat = new PixelControllerStatus((int) applicationConfig.parseFps());
-        this.sound = initSound();
+        this.initSound();
         this.presetService = new PresetServiceImpl(fileUtils.getDataDir());
         MessageProcessor.INSTANCE.init(presetService);
 
@@ -226,13 +226,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
      * 
      * @return
      */
-    private ISound initSound() {
-        ISound sound;
+    private void initSound() {
         // choose sound implementation
         if (applicationConfig.isAudioAware()) {
             try {
                 sound = new SoundMinim(applicationConfig.getSoundSilenceThreshold());
-                return sound;
             } catch (Exception e) {
                 LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.");
             } catch (Error e) {
@@ -242,7 +240,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         }
 
         LOG.log(Level.INFO, "Initialize dummy sound.");
-        return new SoundDummy();
+        sound = new SoundDummy();
     }
 
     /**
