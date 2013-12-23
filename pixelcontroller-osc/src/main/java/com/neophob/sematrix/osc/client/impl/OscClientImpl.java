@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.osc.client.impl;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,22 +44,20 @@ class OscClientImpl implements PixOscClient {
     private OSCClient client;
     private String targetIp;
     private int targetPort;
+    private int bufferSize;
+    private boolean useTcp;
 
     public OscClientImpl(boolean useTcp, String targetIp, int targetPort, int bufferSize)
             throws OscClientException {
+
         try {
             long t1 = System.currentTimeMillis();
-            if (useTcp) {
-                client = OSCClient.newUsing(OSCServer.TCP);
-            } else {
-                client = OSCClient.newUsing(OSCServer.UDP);
-            }
-            this.client.setBufferSize(bufferSize);
-            this.client.setTarget(new InetSocketAddress(targetIp, targetPort));
-            this.client.start();
-
             this.targetIp = targetIp;
             this.targetPort = targetPort;
+            this.useTcp = useTcp;
+            this.bufferSize = bufferSize;
+
+            startClient();
 
             LOG.log(Level.INFO,
                     "OSC Client Factory initialized and started, buffersize: "
@@ -67,6 +66,17 @@ class OscClientImpl implements PixOscClient {
         } catch (Exception e) {
             throw new OscClientException("Failed to initialize OSC Client", e);
         }
+    }
+
+    private void startClient() throws IOException {
+        if (useTcp) {
+            client = OSCClient.newUsing(OSCServer.TCP);
+        } else {
+            client = OSCClient.newUsing(OSCServer.UDP);
+        }
+        this.client.setBufferSize(bufferSize);
+        this.client.setTarget(new InetSocketAddress(targetIp, targetPort));
+        this.client.start();
     }
 
     @Override
@@ -91,6 +101,24 @@ class OscClientImpl implements PixOscClient {
             // LOG.log(Level.INFO,
             // "Send OSC Package "+oscPacket+" to "+targetPort+", size: "+oscPacket.getSize());
             client.send(oscPacket);
+        } catch (IOException ioEx) {
+            // java.io.IOException: Broken pipe -> reconnect
+            LOG.log(Level.WARNING, "IOException detected, restart client", ioEx);
+            try {
+                client.stop();
+            } catch (IOException e) {
+            }
+            try {
+                startClient();
+            } catch (IOException e) {
+            }
+
+            try {
+                client.send(oscPacket);
+                LOG.log(Level.INFO, "Resend command " + oscPacket);
+            } catch (IOException e) {
+                throw new OscClientException("Failed to re-send OSC Message", e);
+            }
         } catch (Exception e) {
             throw new OscClientException("Failed to send OSC Message", e);
         }
