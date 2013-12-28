@@ -22,6 +22,7 @@ public class RmiTest implements Observer {
 
     private static final int BUFFERSIZE = 1024 * 60;
     private static final int PORT = 12346;
+    private static final int CLIENTPORT = 0;
 
     private OscMessage m;
 
@@ -34,7 +35,7 @@ public class RmiTest implements Observer {
     public void RmiTestSimpleCompressed() throws Exception {
         RmiApi remoteServer = RmiFactory.getRmiApi(true, BUFFERSIZE);
         remoteServer.startServer(Protocol.UDP, this, PORT);
-        remoteServer.startClient(Protocol.UDP, "localhost", PORT);
+        remoteServer.startClient(Protocol.UDP, "localhost", PORT, CLIENTPORT);
         remoteServer.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_A), null);
         Thread.sleep(200);
         assertNotNull(m);
@@ -46,7 +47,7 @@ public class RmiTest implements Observer {
     public void RmiTestSimpleUnCompressed() throws Exception {
         RmiApi remoteServer = RmiFactory.getRmiApi(false, BUFFERSIZE);
         remoteServer.startServer(Protocol.UDP, this, PORT);
-        remoteServer.startClient(Protocol.UDP, "localhost", PORT);
+        remoteServer.startClient(Protocol.UDP, "localhost", PORT, CLIENTPORT);
         remoteServer.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_A), null);
         Thread.sleep(200);
         assertNotNull(m);
@@ -64,7 +65,7 @@ public class RmiTest implements Observer {
         remoteServer.startServer(Protocol.UDP, this, PORT);
 
         RmiApi remoteClient = RmiFactory.getRmiApi(false, BUFFERSIZE);
-        remoteClient.startClient(Protocol.UDP, "localhost", PORT);
+        remoteClient.startClient(Protocol.UDP, "localhost", PORT, CLIENTPORT);
         remoteClient.sendPayload(new Command(ValidCommand.GET_CONFIGURATION), ach);
 
         Thread.sleep(200);
@@ -85,7 +86,7 @@ public class RmiTest implements Observer {
         remoteServer.startServer(Protocol.TCP, this, PORT);
 
         RmiApi remoteClient = RmiFactory.getRmiApi(false, BUFFERSIZE);
-        remoteClient.startClient(Protocol.TCP, "localhost", PORT);
+        remoteClient.startClient(Protocol.TCP, "localhost", PORT, CLIENTPORT);
         remoteClient.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_A), null);
         Thread.sleep(200);
         assertEquals(ValidCommand.CHANGE_GENERATOR_A.toString(), m.getPattern());
@@ -94,6 +95,8 @@ public class RmiTest implements Observer {
         remoteServer.startServer(Protocol.TCP, this, PORT);
         Thread.sleep(200);
 
+        remoteClient.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_B), null);
+        remoteClient.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_B), null);
         remoteClient.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_B), null);
         remoteClient.sendPayload(new Command(ValidCommand.CHANGE_GENERATOR_B), null);
         Thread.sleep(200);
@@ -105,9 +108,7 @@ public class RmiTest implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("AAA");
         if (arg instanceof OscMessage) {
-            System.out.println("Y>>>IN");
             m = (OscMessage) arg;
         }
     }

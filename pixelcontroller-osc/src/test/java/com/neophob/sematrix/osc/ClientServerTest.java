@@ -30,53 +30,53 @@ import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 public class ClientServerTest extends OscMessageHandler {
 
-	OscMessage lastMsgHandler;
-	
-	@Test
-	public void ClientServerMsg() throws Exception {
-		final String msgName = "/PILLEPALLE";
-		final String msgNameTwo = "/PILLEPALLE-TWO";
-		final String msgName3 = "/PILLEPALLE-3";
-		final String param = "param234";
-		
-		PixOscServer srv1 = OscServerFactory.createServerUdp(this, 8888, 4096);
-		srv1.startServer();
+    OscMessage lastMsgHandler;
 
-		PixOscClient c = OscClientFactory.createClientUdp("127.0.0.1", 8888, 4096);
-		OscMessage msg = new OscMessage(msgName); 
-		c.sendMessage(msg);
-		Thread.sleep(100);
-		Assert.assertEquals(msgName, lastMsgHandler.getOscPattern());
-		
-		msg = new OscMessage(msgNameTwo, param);
-		c.sendMessage(msg);
-		Thread.sleep(100);
-		Assert.assertEquals(msgNameTwo, lastMsgHandler.getOscPattern());
-		Assert.assertEquals(param, lastMsgHandler.getArgs()[0]);
+    @Test
+    public void ClientServerMsg() throws Exception {
+        final String msgName = "/PILLEPALLE";
+        final String msgNameTwo = "/PILLEPALLE-TWO";
+        final String msgName3 = "/PILLEPALLE-3";
+        final String param = "param234";
 
-		c.disconnect();
-		Thread.sleep(100);
+        PixOscServer srv1 = OscServerFactory.createServerUdp(this, 8888, 4096);
+        srv1.startServer();
 
-		srv1.stopServer();
+        PixOscClient c = OscClientFactory.createClientUdp("127.0.0.1", 8888, 0, 4096);
+        OscMessage msg = new OscMessage(msgName);
+        c.sendMessage(msg);
+        Thread.sleep(100);
+        Assert.assertEquals(msgName, lastMsgHandler.getOscPattern());
 
-		//recreate a new server on a new port, test osc client
-		srv1 = OscServerFactory.createServerUdp(this, 8889, 4096);
-		srv1.startServer();
-		c = OscClientFactory.createClientUdp("127.0.0.1", 8889, 4096);
-		
-		msg = new OscMessage(msgName3, param);
-		c.sendMessage(msg);
-		Thread.sleep(100);
-		Assert.assertEquals(msgName3, lastMsgHandler.getOscPattern());
-		Assert.assertEquals(param, lastMsgHandler.getArgs()[0]);
+        msg = new OscMessage(msgNameTwo, param);
+        c.sendMessage(msg);
+        Thread.sleep(100);
+        Assert.assertEquals(msgNameTwo, lastMsgHandler.getOscPattern());
+        Assert.assertEquals(param, lastMsgHandler.getArgs()[0]);
 
-		srv1.stopServer();
-	}
+        c.disconnect();
+        Thread.sleep(100);
 
-	@Override
-	public void handleOscMessage(OscMessage msg) {
-		System.out.println(msg);
-		lastMsgHandler = msg;
-	}
+        srv1.stopServer();
+
+        // recreate a new server on a new port, test osc client
+        srv1 = OscServerFactory.createServerUdp(this, 8889, 4096);
+        srv1.startServer();
+        c = OscClientFactory.createClientUdp("127.0.0.1", 8889, 0, 4096);
+
+        msg = new OscMessage(msgName3, param);
+        c.sendMessage(msg);
+        Thread.sleep(100);
+        Assert.assertEquals(msgName3, lastMsgHandler.getOscPattern());
+        Assert.assertEquals(param, lastMsgHandler.getArgs()[0]);
+
+        srv1.stopServer();
+    }
+
+    @Override
+    public void handleOscMessage(OscMessage msg) {
+        System.out.println(msg);
+        lastMsgHandler = msg;
+    }
 
 }

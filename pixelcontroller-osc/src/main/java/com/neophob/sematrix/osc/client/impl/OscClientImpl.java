@@ -44,16 +44,18 @@ class OscClientImpl implements PixOscClient {
     private OSCClient client;
     private String targetIp;
     private int targetPort;
+    private int sourcePort;
     private int bufferSize;
     private boolean useTcp;
 
-    public OscClientImpl(boolean useTcp, String targetIp, int targetPort, int bufferSize)
-            throws OscClientException {
+    public OscClientImpl(boolean useTcp, String targetIp, int targetPort, int sourcePort,
+            int bufferSize) throws OscClientException {
 
         try {
             long t1 = System.currentTimeMillis();
             this.targetIp = targetIp;
             this.targetPort = targetPort;
+            this.sourcePort = sourcePort;
             this.useTcp = useTcp;
             this.bufferSize = bufferSize;
 
@@ -61,8 +63,9 @@ class OscClientImpl implements PixOscClient {
 
             LOG.log(Level.INFO,
                     "OSC Client Factory initialized and started, buffersize: "
-                            + client.getBufferSize() + " in " + (System.currentTimeMillis() - t1)
-                            + "ms");
+                            + client.getBufferSize() + " bytes, startup time: "
+                            + (System.currentTimeMillis() - t1) + "ms. Source Port: "
+                            + this.client.getLocalAddress().getPort());
         } catch (Exception e) {
             throw new OscClientException("Failed to initialize OSC Client", e);
         }
@@ -70,9 +73,9 @@ class OscClientImpl implements PixOscClient {
 
     private void startClient() throws IOException {
         if (useTcp) {
-            client = OSCClient.newUsing(OSCServer.TCP);
+            client = OSCClient.newUsing(OSCServer.TCP, sourcePort);
         } else {
-            client = OSCClient.newUsing(OSCServer.UDP);
+            client = OSCClient.newUsing(OSCServer.UDP, sourcePort);
         }
         this.client.setBufferSize(bufferSize);
         this.client.setTarget(new InetSocketAddress(targetIp, targetPort));

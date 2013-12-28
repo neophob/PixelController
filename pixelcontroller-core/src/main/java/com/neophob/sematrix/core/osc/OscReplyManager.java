@@ -43,6 +43,8 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 
     private Thread oscSendThread;
     private RmiApi remoteServer;
+    private String currentClientIp = "";
+
     private int sendError;
     private boolean startSendImageThread = false;
 
@@ -65,14 +67,13 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
         Command command = new Command(cmd);
 
         if (oscIn != null) {
-            // the client port is defined as SERVER port - 1
-            int clientPort = pixelController.getConfig().getOscListeningPort() - 1;
             InetSocketAddress currentTarget = (InetSocketAddress) oscIn.getSocketAddress();
-
-            if (!remoteServer.getClientTargetIp().equalsIgnoreCase(currentTarget.getHostName())) {
+            int clientPort = currentTarget.getPort();
+            if (!currentClientIp.equalsIgnoreCase(currentTarget.getHostName())) {
                 LOG.log(Level.INFO, "New Client connection, IP: {0}/{1}, Port: {2}", new Object[] {
                         remoteServer.getClientTargetIp(), currentTarget.getHostName(), clientPort });
-                remoteServer.startClient(Protocol.TCP, currentTarget.getHostName(), clientPort);
+                remoteServer.startClient(Protocol.TCP, currentTarget.getHostName(), clientPort, 0);
+                currentClientIp = currentTarget.getHostName();
             }
         }
 

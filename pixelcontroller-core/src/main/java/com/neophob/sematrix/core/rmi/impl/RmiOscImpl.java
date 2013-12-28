@@ -61,16 +61,18 @@ class RmiOscImpl implements RmiApi, PacketAndBytesStatictics {
     }
 
     @Override
-    public void startClient(Protocol protocol, String targetIp, int targetPort)
+    public void startClient(Protocol protocol, String targetIp, int targetPort, int sourcePort)
             throws OscClientException {
         if (this.oscClient != null && oscClient.isConnected()) {
             LOG.log(Level.INFO, "Disconnect current client: " + oscClient);
             this.oscClient.disconnect();
         }
         if (protocol == Protocol.TCP) {
-            this.oscClient = OscClientFactory.createClientTcp(targetIp, targetPort, bufferSize);
+            this.oscClient = OscClientFactory.createClientTcp(targetIp, targetPort, sourcePort,
+                    bufferSize);
         } else {
-            this.oscClient = OscClientFactory.createClientUdp(targetIp, targetPort, bufferSize);
+            this.oscClient = OscClientFactory.createClientUdp(targetIp, targetPort, sourcePort,
+                    bufferSize);
         }
         this.clientTargetIp = targetIp;
         this.clientTargetPort = targetPort;

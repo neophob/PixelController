@@ -25,20 +25,22 @@ import com.neophob.sematrix.osc.client.PixOscClient;
  * OSC Client Factory, send OSC Message
  * 
  * @author michu
- *
+ * 
  */
 public final class OscClientFactory {
 
-	private OscClientFactory() {
-		//no instance
-	}
-	
-	public static PixOscClient createClientTcp(String targetIp, int targetPort, int bufferSize) throws OscClientException {		
-		return new OscClientImpl(true, targetIp, targetPort, bufferSize);
-	}
+    private OscClientFactory() {
+        // no instance
+    }
 
-	public static PixOscClient createClientUdp(String targetIp, int targetPort, int bufferSize) throws OscClientException {		
-		return new OscClientImpl(false, targetIp, targetPort, bufferSize);
-	}
+    public static PixOscClient createClientTcp(String targetIp, int targetPort, int sourcePort,
+            int bufferSize) throws OscClientException {
+        return new OscClientImpl(true, targetIp, targetPort, sourcePort, bufferSize);
+    }
+
+    public static PixOscClient createClientUdp(String targetIp, int targetPort, int sourcePort,
+            int bufferSize) throws OscClientException {
+        return new OscClientImpl(false, targetIp, targetPort, sourcePort, bufferSize);
+    }
 
 }
