@@ -224,7 +224,7 @@ If you have a non-rectangular LED matrix you want to use with PixelController yo
 
     output.mapping=5,8,2,...
     
-This means the first pixel gets the content of 5th pixel, the second pixel gets the content of the 8th pixel, the third pixel gets the content of the 2nd pixel and so on.
+This means the first physical pixel gets the content of 5th pixel of the visual, the second physical pixel gets the content of the 8th visual pixel, the third physical pixel gets the content of the 2nd visual pixel and so on.
 
 For example you wired up this Christmas tree (Matrix resolution 9x12):
 
