@@ -24,32 +24,32 @@ import processing.core.PApplet;
 
 import com.neophob.sematrix.gui.service.impl.RemoteOscServer;
 
-
 /**
  * The Class PixelController.
- *
+ * 
  * @author michu
  */
-public class PixelControllerP5Remote extends AbstractPixelControllerP5 {  
+public class PixelControllerP5Remote extends AbstractPixelControllerP5 {
 
-	public void initPixelController() {
-		try {
-			pixelController = new RemoteOscServer(this);			
-			pixelController.start();
-			LOG.log(Level.INFO, "RemoteOscServer created");
+    public void initPixelController() {
+        try {
+            pixelController = new RemoteOscServer(this);
+            pixelController.start();
+            LOG.log(Level.INFO, "RemoteOscServer created");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		PApplet.main(new String[] { PixelControllerP5Remote.class.getName().toString() });
-	}
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Failed to start Remote OSC Server", e);
+        }
+    }
+
+    /**
+     * The main method.
+     * 
+     * @param args
+     *            the arguments
+     */
+    public static void main(String[] args) {
+        PApplet.main(new String[] { PixelControllerP5Remote.class.getName().toString() });
+    }
 
 }
