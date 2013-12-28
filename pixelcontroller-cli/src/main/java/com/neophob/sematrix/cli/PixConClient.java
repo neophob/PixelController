@@ -24,20 +24,18 @@ import jargs.gnu.CmdLineParser.UnknownOptionException;
 
 import java.security.InvalidParameterException;
 import java.text.ParseException;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.neophob.sematrix.core.osc.PixelControllerOscServer;
+import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.CommandGroup;
 import com.neophob.sematrix.core.properties.ValidCommand;
+import com.neophob.sematrix.core.rmi.RmiApi;
+import com.neophob.sematrix.core.rmi.RmiApi.Protocol;
+import com.neophob.sematrix.core.rmi.impl.RmiFactory;
 import com.neophob.sematrix.osc.client.OscClientException;
-import com.neophob.sematrix.osc.client.PixOscClient;
-import com.neophob.sematrix.osc.client.impl.OscClientFactory;
-import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscServerException;
-import com.neophob.sematrix.osc.server.PixOscServer;
-import com.neophob.sematrix.osc.server.impl.OscServerFactory;
 
 /**
  * PixelController OSC Client
@@ -45,13 +43,14 @@ import com.neophob.sematrix.osc.server.impl.OscServerFactory;
  * @author michu
  * 
  */
-public class PixConClient implements Observer {
+public class PixConClient {
 
-    private static final float VERSION = 0.6f;
+    private static final int SLEEP_INTERVAL = 200;
+
+    private static final float VERSION = 0.8f;
 
     /** The Constant DEFAULT_PORT. */
     private static final int DEFAULT_PORT = 9876;
-    private static final int DEFAULT_JMX_PORT = 1337;
 
     private static final int LOCAL_SERVER_PORT = 10009;
 
@@ -62,26 +61,35 @@ public class PixConClient implements Observer {
     private static final String PARAM_PORT = "port";
     private static final String PARAM_HOST = "hostname";
 
-    private PixOscServer srv;
-    private boolean answerRecieved;
+    private OscAnswerHandler oap;
+    private RmiApi rmi;
 
     protected PixConClient(ParsedArgument cmd) throws OscServerException, OscClientException,
             InterruptedException {
         // send osc payload
+
+        rmi = RmiFactory.getRmiApi(true, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
+
         System.out.println(cmd.getPayload());
         if (cmd.getCommand().isExpectAnswer()) {
-            srv = OscServerFactory.createServerTcp(this, LOCAL_SERVER_PORT, 0x0ffff);
-            srv.startServer();
+            oap = new OscAnswerHandler(rmi);
+            rmi.startServer(Protocol.TCP, oap, LOCAL_SERVER_PORT);
         }
 
-        PixOscClient c = OscClientFactory.createClientUdp(cmd.getHostname(), cmd.getPort(),
-                LOCAL_SERVER_PORT, 0xffff);
-        c.sendMessage(cmd.getPayload());
-        answerRecieved = false;
+        rmi.startClient(Protocol.UDP, cmd.getHostname(), cmd.getPort(), LOCAL_SERVER_PORT);
+        Command cmdAndParameter = new Command(cmd.getCommand(), new String[] { cmd.getParameter() });
+        rmi.sendPayload(cmdAndParameter, null);
+
         if (cmd.getCommand().isExpectAnswer()) {
             System.out.println("Wait for answer...");
-            while (!answerRecieved) {
-                Thread.sleep(100);
+            long maxWait = 5000;
+            while (!oap.isAnswerRecieved()) {
+                if (maxWait < 0) {
+                    System.out.println("No reply recieved, Bye!");
+                    return;
+                }
+                Thread.sleep(SLEEP_INTERVAL);
+                maxWait -= SLEEP_INTERVAL;
             }
         }
         System.out.println("Close connection, Bye!");
@@ -192,33 +200,7 @@ public class PixConClient implements Observer {
         }
 
         System.out.println(cmd);
-
-        if (cmd.getCommand() == ValidCommand.JMX_STAT) {
-            // send jmx request
-            int port = cmd.getPort();
-            if (port == DEFAULT_PORT) {
-                System.out.println("No Port specified, using default JMX port " + DEFAULT_JMX_PORT);
-                port = DEFAULT_JMX_PORT;
-            }
-            PixConClientJmx.queryJmxServer(cmd.getHostname(), port);
-        } else {
-            PixConClient pcc = new PixConClient(cmd);
-        }
-    }
-
-    public void handleOscMessage(OscMessage msg) {
-        System.out.println("got: " + msg);
-        this.answerRecieved = true;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (arg instanceof OscMessage) {
-            OscMessage msg = (OscMessage) arg;
-            handleOscMessage(msg);
-        } else {
-            System.out.println("Ignored notification of unknown type: " + arg);
-        }
+        new PixConClient(cmd);
     }
 
 }
