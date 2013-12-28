@@ -88,23 +88,6 @@ public class PixConClient implements Observer {
     }
 
     /**
-     * 
-     * @param s
-     * @param length
-     * @return
-     */
-    private static String pretifyString(String s, int length) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(s);
-        while (sb.length() < length) {
-            sb.append(' ');
-        }
-
-        return sb.toString();
-    }
-
-    /**
      * Usage.
      * 
      * @param options
@@ -119,8 +102,8 @@ public class PixConClient implements Observer {
                 continue;
             }
             for (ValidCommand vc : ValidCommand.getCommandsByGroup(cg)) {
-                System.out.println("\t" + pretifyString(vc.toString(), 28)
-                        + pretifyString("# of parameters: " + vc.getNrOfParams(), 23)
+                System.out.println("\t" + ClientHelper.pretifyString(vc.toString(), 28)
+                        + ClientHelper.pretifyString("# of parameters: " + vc.getNrOfParams(), 23)
                         + vc.getDesc());
             }
             System.out.println();
