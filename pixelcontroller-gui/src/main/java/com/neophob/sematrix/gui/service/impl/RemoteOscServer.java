@@ -49,8 +49,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
 	private static final Logger LOG = Logger.getLogger(RemoteOscServer.class.getName());
 
-	private static final String TARGET_HOST = "pixelcontroller.local";
-	private static final int REMOTE_OSC_SERVER_PORT = 9876;
+	private static final String DEFAULT_TARGET_HOST = "pixelcontroller.local";
+	private static final int DEFAULT_REMOTE_OSC_SERVER_PORT = 9876;
 
 	private float steps;
 
@@ -315,7 +315,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 	@Override
 	public void run() {
 		LOG.log(Level.INFO, "Start PixelController Client thread");
-		String targetHost = TARGET_HOST;
+		String targetHost = DEFAULT_TARGET_HOST;
 		int serverPort;
 		try {
 			setupFeedback.handleMessage("Detect PixelController OSC Server");
@@ -327,13 +327,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 					setupFeedback.handleMessage("... found on port "+serverPort+", ip: "+client.getFirstIp());
 					targetHost = client.getFirstIp();
 				} else {
-					setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
-					serverPort = REMOTE_OSC_SERVER_PORT;
+					setupFeedback.handleMessage("... not found, use default port "+DEFAULT_REMOTE_OSC_SERVER_PORT);
+					serverPort = DEFAULT_REMOTE_OSC_SERVER_PORT;
 				}
 			} catch (MDnsClientException e) {
 				LOG.log(Level.WARNING, "Service discover failed.", e);
-				serverPort = REMOTE_OSC_SERVER_PORT;
-				setupFeedback.handleMessage("... not found, use default port "+REMOTE_OSC_SERVER_PORT);
+				serverPort = DEFAULT_REMOTE_OSC_SERVER_PORT;
+				setupFeedback.handleMessage("... not found, use default port "+DEFAULT_REMOTE_OSC_SERVER_PORT);
 			}
 			LOG.log(Level.INFO, "Remote target, IP: "+targetHost+", port: "+serverPort);
 
