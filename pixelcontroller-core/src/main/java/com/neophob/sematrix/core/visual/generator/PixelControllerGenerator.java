@@ -148,6 +148,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(oscListener2);
 
         allGenerators.add(new VisualZero(matrix));
+        allGenerators.add(new Noise(matrix));
 
         LOG.log(Level.INFO, "Init finished");
     }
