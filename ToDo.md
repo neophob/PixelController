@@ -2,7 +2,8 @@
 
 ## Version 2.1
 * Add console to GUI
-* Documentation for bonjour, client/server
+* Update pixconcli
+* Documentation for bonjour, client/server 
 * Random-Mode with selectable time-life
 
 ## Version 2.2
@@ -17,6 +18,7 @@
 ## Features
 
 * Support Artnet remote, should be independent from the artnet output, should work more like the osc input.
+* current RMI API use targetip/port - but should use sockets. current limit: can not use same socket for client/server
 * Remove Adler32 hash code, replace with something faster (xxhash, murmur2)
 * Support multiple panels for tpm2serial output
 * Support autodetection for tpm2 protocol
