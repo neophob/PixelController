@@ -16,6 +16,7 @@
 
 ## Features
 
+* Support Artnet remote, should be independent from the artnet output, should work more like the osc input.
 * Remove Adler32 hash code, replace with something faster (xxhash, murmur2)
 * Support multiple panels for tpm2serial output
 * Particle generator (rain,snow,fireworks...) remember: maybe rip from cocos2d particle system, should replace fire and metaballs
