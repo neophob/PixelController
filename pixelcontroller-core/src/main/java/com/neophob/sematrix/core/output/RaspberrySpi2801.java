@@ -13,7 +13,7 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
     private static final transient int LATCH_TIME_IN_US = 500;
     private static final transient int MAXIMAL_SPI_DATA_SIZE = 1024;
 
-    private BufferCache bufferCache;
+    private transient BufferCache bufferCache;
 
     private boolean connected = false;
     private int spiChannel;
