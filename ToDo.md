@@ -4,7 +4,7 @@
 * framerate, fix strange values (too low)
 * build process, move rpi native libs to rpi directory, remove junit from distro
 * Update pixconcli
-* fix sound initit for rpi
+* fix sound init for rpi
 * singleoutput - chache last entries
 * remote setup, do not display duplicate entries but display whats missing.
 * Documentation for bonjour, client/server, rpi
