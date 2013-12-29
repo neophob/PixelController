@@ -23,10 +23,9 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
         spiChannel = Spi.CHANNEL_0;
         int fd = Spi.wiringPiSPISetup(spiChannel, ph.getRpiWs2801SpiSpeed());
         if (fd < 0) {
-            LOG.log(Level.SEVERE,
-                    "Failed to initialize SPI, error: "
-                            + fd
-                            + ".\nMake sure the pi user has access to it (sudo chown `id -u`.`id -g` /dev/spidev0.*)\n");
+            LOG.log(Level.SEVERE, "Failed to initialize SPI, error: " + fd
+                    + ".\nHint: Verify the SPI module is loaded and not blacklisted. "
+                    + "You need to run PixelController as root user to use the SPI device.\n");
             return;
         }
         this.connected = true;
