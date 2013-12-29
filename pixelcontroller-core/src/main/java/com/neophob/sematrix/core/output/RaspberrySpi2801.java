@@ -2,6 +2,7 @@ package com.neophob.sematrix.core.output;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.Adler32;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.pi4j.wiringpi.Spi;
@@ -12,6 +13,9 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
 
     private static final transient int LATCH_TIME_IN_US = 500;
     private static final transient int MAXIMAL_SPI_DATA_SIZE = 1024;
+
+    private static Adler32 adler = new Adler32();
+    private long lastDataMap;
 
     private boolean connected = false;
     private int spiChannel;
@@ -31,6 +35,20 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
         this.connected = true;
     }
 
+    private boolean didFrameChange(byte[] data) {
+        adler.reset();
+        adler.update(data);
+        long l = adler.getValue();
+
+        if (lastDataMap == l) {
+            // last frame was equal current frame, do not send it!
+            return false;
+        }
+        // update new hash
+        lastDataMap = l;
+        return true;
+    }
+
     @Override
     public void update() {
         if (!this.connected) {
@@ -45,7 +63,7 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
                     new Object[] { MAXIMAL_SPI_DATA_SIZE, rgbBuffer.length });
             this.connected = false;
             return;
-        } else {
+        } else if (didFrameChange(rgbBuffer)) {
             int rc = Spi.wiringPiSPIDataRW(spiChannel, rgbBuffer, rgbBuffer.length);
             if (rc != rgbBuffer.length) {
                 LOG.log(Level.WARNING, "Failed to send data, send {0} bytes, rc: {1}.",
