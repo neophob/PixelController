@@ -175,6 +175,10 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             pixConStat.setCurrentFps(framerate.getFps());
             pixConStat.setFrameCount(cnt++);
 
+            if (cnt % 5000 == 0) {
+                LOG.log(Level.INFO, "Framerate: {0}, Framecount: {1}",
+                        new Object[] { framerate.getFps(), cnt });
+            }
             if (lastFramerateValue != visualState.getFpsSpeed()) {
                 lastFramerateValue = visualState.getFpsSpeed();
                 framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
@@ -184,6 +188,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             while (delay > MAXIMAL_FRAME_DELAY_IN_MS) {
                 sleep(MAXIMAL_FRAME_DELAY_IN_MS);
                 delay -= MAXIMAL_FRAME_DELAY_IN_MS;
+                // prevent that very low framerate (<1) result in a non response
                 if (lastFramerateValue != visualState.getFpsSpeed()) {
                     lastFramerateValue = visualState.getFpsSpeed();
                     framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
