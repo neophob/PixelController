@@ -57,7 +57,6 @@ public final class RotateBuffer {
         int ofs = 0;
         for (int x = 0; x < deviceXSize; x++) {
             for (int y = 0; y < deviceYSize; y++) {
-                // TODO missing y size?
                 ret[deviceXSize * y + deviceXSize - 1 - x] = buffer[ofs++];
             }
         }
@@ -147,6 +146,7 @@ public final class RotateBuffer {
             int deviceYSize) {
 
         if (deviceXSize == 0) {
+            LOG.log(Level.SEVERE, "Lazy init output width");
             deviceXSize = VisualState.getInstance().getMatrix().getDeviceXSize();
         }
 
