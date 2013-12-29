@@ -48,7 +48,10 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
             return;
         } else {
             int rc = Spi.wiringPiSPIDataRW(spiChannel, rgbBuffer, rgbBuffer.length);
-            LOG.log(Level.INFO, "Send {0} bytes, rc: {1}.", new Object[] { rgbBuffer.length, rc });
+            if (rc != rgbBuffer.length) {
+                LOG.log(Level.WARNING, "Failed to send data, send {0} bytes, rc: {1}.",
+                        new Object[] { rgbBuffer.length, rc });
+            }
         }
         try {
             Thread.sleep(0, LATCH_TIME_IN_US);
