@@ -11,6 +11,7 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
     private static final transient Logger LOG = Logger.getLogger(RaspberrySpi2801.class.getName());
 
     private static final transient int LATCH_TIME_IN_US = 500;
+    private static final transient int MAXIMAL_SPI_DATA_SIZE = 1024;
 
     private boolean connected = false;
     private int spiChannel;
@@ -38,7 +39,17 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
         }
 
         byte[] rgbBuffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
-        Spi.wiringPiSPIDataRW(0, rgbBuffer, rgbBuffer.length);
+
+        if (rgbBuffer.length >= MAXIMAL_SPI_DATA_SIZE) {
+            LOG.log(Level.SEVERE,
+                    "Maximal SPI sending size is {0}, you tried to send {1}. Reduce matrix size. Disable output.",
+                    new Object[] { MAXIMAL_SPI_DATA_SIZE, rgbBuffer.length });
+            this.connected = false;
+            return;
+        } else {
+            int rc = Spi.wiringPiSPIDataRW(spiChannel, rgbBuffer, rgbBuffer.length);
+            LOG.log(Level.INFO, "Send {0} bytes, rc: {1}.", new Object[] { rgbBuffer.length, rc });
+        }
         try {
             Thread.sleep(0, LATCH_TIME_IN_US);
         } catch (InterruptedException e) {
