@@ -12,7 +12,7 @@ package com.neophob.sematrix.core.visual.generator;
  * 
  */
 
-public class SimplexNoise {
+final class SimplexNoise {
 
     private static final double SQRT3 = Math.sqrt(3.0);
     private static final double SQRT5 = Math.sqrt(5.0);
@@ -501,5 +501,9 @@ public class SimplexNoise {
         }
         // Sum up and scale the result to cover the range [-1,1]
         return 27.0 * (n0 + n1 + n2 + n3 + n4);
+    }
+
+    private SimplexNoise() {
+        // no instance
     }
 }
