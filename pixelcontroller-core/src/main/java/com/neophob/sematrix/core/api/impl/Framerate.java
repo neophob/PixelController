@@ -32,7 +32,6 @@ public class Framerate {
 
     private static final float MINIMAL_FPS = 0.001f;
 
-    private long nextRepaintDue = 0;
     private long startTime;
     private long delay;
     private long frameCount;
@@ -60,9 +59,7 @@ public class Framerate {
     }
 
     public long getFrameDelay() {
-        long now = System.currentTimeMillis();
-        nextRepaintDue = System.currentTimeMillis() + delay;
         frameCount++;
-        return (nextRepaintDue - now);
+        return delay;
     }
 }
