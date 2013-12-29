@@ -8,16 +8,16 @@
 		<relativePath>../pom.xml</relativePath>
 		<version>2.1.0-SNAPSHOT</version>
 	</parent>
-                
+
 	<artifactId>pixelcontroller-core</artifactId>
 	<name>PixelController Core Library</name>
-	
+
 	<packaging>jar</packaging>
 
 	<properties>
 		<minim.version>2.1.0-BETA</minim.version>
 	</properties>
-	
+
 	<build>
 		<!-- include properties files in jar -->
 		<resources>
@@ -340,8 +340,12 @@
 			<artifactId>lz4</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-		
-		
+		<dependency>
+			<groupId>com.pi4j</groupId>
+			<artifactId>pi4j-core</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+
 	</dependencies>
-	
+
 </project>

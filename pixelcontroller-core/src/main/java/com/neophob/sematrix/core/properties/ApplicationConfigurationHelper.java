@@ -53,6 +53,7 @@ public class ApplicationConfigurationHelper implements Serializable {
             .getLogger(ApplicationConfigurationHelper.class.getName());
 
     private static final transient int DEFAULT_RESOLUTION = 8;
+
     private static final transient float DEFAULT_SOUND_THRESHOLD = 0.0005f;
 
     /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
@@ -138,6 +139,7 @@ public class ApplicationConfigurationHelper implements Serializable {
         int tpm2Devices = parseTpm2Devices();
         int tpm2NetDevices = parseTpm2NetDevices();
         int udpDevices = parseUdpDevices();
+        int rpi2801Devices = parseRpi2801Devices();
         // track how many output systems are enabled
         int enabledOutputs = 0;
 
@@ -209,6 +211,12 @@ public class ApplicationConfigurationHelper implements Serializable {
             totalDevices = udpDevices;
             LOG.log(Level.INFO, "found UDP device: " + totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.UDP;
+        }
+        if (rpi2801Devices > 0) {
+            enabledOutputs++;
+            totalDevices = rpi2801Devices;
+            LOG.log(Level.INFO, "found RPI2801 device: " + totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.RASPBERRYPI_SPI_WS2801;
         }
         if (nullDevices > 0) {
             // enable null output only if configured AND no other output is
@@ -924,6 +932,19 @@ public class ApplicationConfigurationHelper implements Serializable {
         return 0;
     }
 
+    public int parseRpi2801Devices() {
+        if (getRpiWs2801SpiSpeed() > 1000 && parseOutputXResolution() > 0
+                && parseOutputYResolution() > 0) {
+            this.devicesInRow1 = 1;
+            this.devicesInRow2 = 0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
+            return 1;
+        }
+
+        return 0;
+    }
+
     /**
      * Parses the mini dmx devices.
      * 
@@ -1002,6 +1023,10 @@ public class ApplicationConfigurationHelper implements Serializable {
             }
         }
         return tpm2netDevice.size();
+    }
+
+    public int getRpiWs2801SpiSpeed() {
+        return parseInt(ConfigConstant.RPI_WS2801_SPI_SPEED, 0);
     }
 
     /**

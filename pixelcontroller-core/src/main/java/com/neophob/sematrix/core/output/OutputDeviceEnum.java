@@ -22,83 +22,87 @@ package com.neophob.sematrix.core.output;
  * The Enum OutputDeviceEnum.
  */
 public enum OutputDeviceEnum {
-	
-	/** The PIXELINVADERS (LPD6803 Based) PANELS. */
-	PIXELINVADERS(PixelInvadersSerialDevice.class, true),
-	
-	/** The Element STEALTH LED PANELS. */
-	STEALTH(StealthDevice.class, true),
 
-	/** The RAINBOWDUINO_V2. */
-	RAINBOWDUINO_V2(RainbowduinoV2Device.class, true),
-	
-	/** The RAINBOWDUINO_V3. */
-	RAINBOWDUINO_V3(RainbowduinoV3Device.class, true),
+    /** The PIXELINVADERS (LPD6803 Based) PANELS. */
+    PIXELINVADERS(PixelInvadersSerialDevice.class, true),
 
-	/** The ARTNET. */
-	ARTNET(ArtnetDevice.class, true),
+    /** The Element STEALTH LED PANELS. */
+    STEALTH(StealthDevice.class, true),
 
-	/** The E1.31 output. */
-	E1_31(E1_31Device.class, true),
+    /** The RAINBOWDUINO_V2. */
+    RAINBOWDUINO_V2(RainbowduinoV2Device.class, true),
 
-	/** The MINIDMX. */
-	MINIDMX(MiniDmxDevice.class, true),
+    /** The RAINBOWDUINO_V3. */
+    RAINBOWDUINO_V3(RainbowduinoV3Device.class, true),
 
-	/** The TPM2. */
-	TPM2(Tpm2.class, true),
+    /** The ARTNET. */
+    ARTNET(ArtnetDevice.class, true),
 
-	/** The TPM2Net. */
-	TPM2NET(Tpm2Net.class, true),
+    /** The E1.31 output. */
+    E1_31(E1_31Device.class, true),
 
-	/** The UDP. */
-	UDP(UdpDevice.class, true),
-	
-	PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
+    /** The MINIDMX. */
+    MINIDMX(MiniDmxDevice.class, true),
 
-	/** The NULL Output. */
-	NULL(NullDevice.class, true);
-	
-	/** The implementing class. */
-	private transient Class<? extends Output> implementingClass;
-	
-	/** The physical. */
-	private boolean physical;
-	
-	/**
-	 * Instantiates a new output device enum.
-	 *
-	 * @param implementingClass the implementing class
-	 * @param physical the physical
-	 */
-	private OutputDeviceEnum(Class<? extends Output> implementingClass, boolean physical) {
-		this.implementingClass = implementingClass;
-		this.physical = physical;
-	}
-	
-	/**
-	 * Checks if is physical.
-	 *
-	 * @return true, if is physical
-	 */
-	public boolean isPhysical() {
-		return this.physical;
-	}
-	
-	/**
-	 * Gets the implementing class.
-	 *
-	 * @return the implementing class
-	 */
-	public Class<? extends Output> getImplementingClass() {
-		return this.implementingClass;
-	}
-	
-	/**
-	 * Gets the readable name.
-	 *
-	 * @return the readable name
-	 */
-	public String getReadableName() {
-		return this.name() + " (" + this.implementingClass.getSimpleName() + ")";
-	}
+    /** The TPM2. */
+    TPM2(Tpm2.class, true),
+
+    /** The TPM2Net. */
+    TPM2NET(Tpm2Net.class, true),
+
+    /** The UDP. */
+    UDP(UdpDevice.class, true),
+
+    PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
+
+    RASPBERRYPI_SPI_WS2801(RaspberrySpi2801.class, true),
+
+    /** The NULL Output. */
+    NULL(NullDevice.class, true);
+
+    /** The implementing class. */
+    private transient Class<? extends Output> implementingClass;
+
+    /** The physical. */
+    private boolean physical;
+
+    /**
+     * Instantiates a new output device enum.
+     * 
+     * @param implementingClass
+     *            the implementing class
+     * @param physical
+     *            the physical
+     */
+    private OutputDeviceEnum(Class<? extends Output> implementingClass, boolean physical) {
+        this.implementingClass = implementingClass;
+        this.physical = physical;
+    }
+
+    /**
+     * Checks if is physical.
+     * 
+     * @return true, if is physical
+     */
+    public boolean isPhysical() {
+        return this.physical;
+    }
+
+    /**
+     * Gets the implementing class.
+     * 
+     * @return the implementing class
+     */
+    public Class<? extends Output> getImplementingClass() {
+        return this.implementingClass;
+    }
+
+    /**
+     * Gets the readable name.
+     * 
+     * @return the readable name
+     */
+    public String getReadableName() {
+        return this.name() + " (" + this.implementingClass.getSimpleName() + ")";
+    }
 }
