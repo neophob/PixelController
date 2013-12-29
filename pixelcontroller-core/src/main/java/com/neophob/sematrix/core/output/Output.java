@@ -127,16 +127,16 @@ public abstract class Output implements IOutput {
             LOG.log(Level.SEVERE, "Failed to get entry for entry: " + (switchBuffer + screenNr));
             return null;
         }
-        float brightness = VisualState.getInstance().getBrightness();
 
+        float brightness = VisualState.getInstance().getBrightness();
         if (!applyGamma) {
             return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);
         }
-        // gamma correct buffer
         return Gammatab.applyBrightnessAndGammaTab(buffer, this.gammaType, brightness);
     }
 
     /**
+     * return buffer for screen, applied gamma and brightness correction
      * 
      * @param screenNr
      * @return
