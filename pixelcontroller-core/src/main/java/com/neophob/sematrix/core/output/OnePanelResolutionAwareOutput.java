@@ -21,9 +21,12 @@ package com.neophob.sematrix.core.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.output.gamma.GammaType;
+import com.neophob.sematrix.core.output.gamma.Gammatab;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * The Class ResolutionAwareOutput.
@@ -58,6 +61,8 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
     /** The initialized. */
     protected boolean initialized;
 
+    protected GammaType gammaType;
+
     /**
      * Instantiates a new ResolutionAwareOutput.
      * 
@@ -76,6 +81,7 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         this.yResolution = ph.parseOutputYResolution();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
         this.mapping = ph.getOutputMappingValues();
+        this.gammaType = ph.getGammaType();
 
         // get the mini dmx layout
         this.displayOption = ph.getOutputDeviceLayout();
@@ -116,7 +122,8 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
                     yResolution);
         }
 
-        return transformedBuffer;
+        float brightness = VisualState.getInstance().getBrightness();
+        return Gammatab.applyBrightnessAndGammaTab(transformedBuffer, this.gammaType, brightness);
     }
 
 }
