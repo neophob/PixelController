@@ -16,5 +16,10 @@ public class BufferCacheTest {
         assertFalse(cache.didFrameChange(new byte[] { 1, 2, 3 }));
 
         assertTrue(cache.didFrameChange(new byte[] { 1, 2, 3, 4 }));
+
+        assertTrue(cache.didFrameChange((byte) 2, new byte[] { 1, 2, 3, 4 }));
+        assertFalse(cache.didFrameChange((byte) 2, new byte[] { 1, 2, 3, 4 }));
+        cache.resetHash((byte) 2);
+        assertTrue(cache.didFrameChange((byte) 2, new byte[] { 1, 2, 3, 4 }));
     }
 }

@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.Adler32;
 
+import com.neophob.sematrix.core.output.BufferCache;
 import com.neophob.sematrix.core.output.OutputHelper;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
@@ -43,13 +43,10 @@ public abstract class Lpd6803Common implements Serializable {
     /** The Constant BUFFERSIZE. */
     protected int bufferSize;
 
-    protected static transient Adler32 adler = new Adler32();
-
     /** The connection error counter. */
     protected int connectionErrorCounter;
 
-    /** map to store checksum of image. */
-    protected transient Map<Byte, Long> lastDataMap = new HashMap<Byte, Long>();
+    protected transient BufferCache bufferCache;
 
     /**
      * correction map to store adjustment data, contains offset and correction
@@ -130,7 +127,7 @@ public abstract class Lpd6803Common implements Serializable {
             return imagePayload.length;
         }
         // in case of an error, make sure we send it the next time!
-        lastDataMap.put(ofs, 0L);
+        bufferCache.resetHash(ofs);
         return -1;
     }
 
@@ -207,36 +204,6 @@ public abstract class Lpd6803Common implements Serializable {
     protected abstract byte[] getReplyFromController();
 
     /**
-     * get md5 hash out of an image. used to check if the image changed
-     * 
-     * @param ofs
-     *            the ofs
-     * @param data
-     *            the data
-     * @return true if send was successful
-     */
-    private boolean didFrameChange(byte ofs, byte[] data) {
-        adler.reset();
-        adler.update(data);
-        long l = adler.getValue();
-
-        if (!lastDataMap.containsKey(ofs)) {
-            // first run
-            lastDataMap.put(ofs, l);
-            return true;
-        }
-
-        if (lastDataMap.get(ofs) == l) {
-            // last frame was equal current frame, do not send it!
-            // log.log(Level.INFO, "do not send frame to {0}", addr);
-            return false;
-        }
-        // update new hash
-        lastDataMap.put(ofs, l);
-        return true;
-    }
-
-    /**
      * 
      * @param ofs
      * @param data
@@ -248,7 +215,7 @@ public abstract class Lpd6803Common implements Serializable {
             b.putInt(i);
         }
 
-        return didFrameChange(ofs, b.array());
+        return bufferCache.didFrameChange(ofs, b.array());
     }
 
     /**
