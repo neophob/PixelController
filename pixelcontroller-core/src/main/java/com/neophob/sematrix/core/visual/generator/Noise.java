@@ -24,7 +24,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 
 /**
- * display an image.
+ * simplex noise generator
  * 
  * @author mvogt
  */
