@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.api.impl;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -57,7 +58,7 @@ public class Framerate {
         }
 
         this.delay = (long) (1000f / this.targetFps);
-        LOG.info("Target fps: " + this.targetFps + ", delay: " + delay + "ms");
+        LOG.log(Level.INFO, "Target fps: " + this.targetFps + ", delay: " + delay + "ms");
     }
 
     public float getFps() {
@@ -71,27 +72,33 @@ public class Framerate {
     public long getFrameDelay() {
         long newtick = System.currentTimeMillis() - lastTime;
         ticksum -= ticklist[tickindex];
-        ticksum += newtick; /* add new value */
+        ticksum += newtick;
         ticklist[tickindex] = newtick;
         if (++tickindex == SAMPLE_COUNT) {
             tickindex = 0;
         }
 
+        // calculate fps
         if (frameCount % 25 == 24) {
             float f = (float) ticksum / SAMPLE_COUNT;
             this.fps = 1000 / f;
         }
 
+        // dynamic adjust delay
         if (frameCount % (3 * SAMPLE_COUNT) == (3 * SAMPLE_COUNT - 1)) {
-            // dynamic adjust delay
             float fpsDelta = this.targetFps - this.fps;
             float correctionThreshold = this.targetFps * 0.1f;
             if (fpsDelta > correctionThreshold) {
                 if (delay > 1) {
                     delay--;
+                    LOG.log(Level.INFO,
+                            "Adjust (decrease) frame delay to {0}ms. FPS delta was {1}",
+                            new Object[] { delay, fpsDelta });
                 }
             } else if (fpsDelta < -correctionThreshold) {
                 delay++;
+                LOG.log(Level.INFO, "Adjust (increase) frame delay to {0}ms. FPS delta was {1}",
+                        new Object[] { delay, fpsDelta });
             }
         }
 
