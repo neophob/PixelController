@@ -30,7 +30,7 @@ import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
 import com.neophob.sematrix.core.visual.effect.RotoZoom;
@@ -552,8 +552,8 @@ public enum MessageProcessor {
                     String colorSetName = v.getColorSet().getName();
 
                     boolean takeNext = false;
-                    ColorSet nextColorSet = col.getColorSets().get(0);
-                    for (ColorSet cs : col.getColorSets()) {
+                    IColorSet nextColorSet = col.getColorSets().get(0);
+                    for (IColorSet cs : col.getColorSets()) {
                         if (takeNext) {
                             nextColorSet = cs;
                             break;

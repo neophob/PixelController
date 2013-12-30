@@ -26,6 +26,7 @@ import org.junit.Test;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.PassThru;
 import com.neophob.sematrix.core.visual.generator.Generator;
@@ -55,7 +56,7 @@ public class GenerateAllResolutionResizeTest {
         Generator g = new PassThruGen(matrix);
         Effect e = new PassThru(matrix);
         Mixer m = new Checkbox(matrix);
-        ColorSet c = new ColorSet("test", new int[] { 1, 2, 3 });
+        IColorSet c = new ColorSet("test", new int[] { 1, 2, 3 });
         Visual v = new Visual(g, e, m, c);
 
         for (IResize rsz : pcr.getAllResizers()) {

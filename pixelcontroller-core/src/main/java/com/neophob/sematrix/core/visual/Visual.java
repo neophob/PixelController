@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.generator.Generator;
 import com.neophob.sematrix.core.visual.mixer.Mixer;
@@ -48,7 +49,7 @@ public class Visual {
     /** The mixer. */
     private Mixer mixer;
 
-    private ColorSet colorSet;
+    private IColorSet colorSet;
 
     /**
      * 
@@ -60,7 +61,7 @@ public class Visual {
      * @param colorSet
      */
     public Visual(Generator generator1, Generator generator2, Effect effect1, Effect effect2,
-            Mixer mixer, ColorSet colorSet) {
+            Mixer mixer, IColorSet colorSet) {
         this.generator1 = generator1;
         this.generator2 = generator2;
         this.effect1 = effect1;
@@ -76,7 +77,7 @@ public class Visual {
      * @param m
      * @param c
      */
-    public Visual(Generator g, Effect e, Mixer m, ColorSet c) {
+    public Visual(Generator g, Effect e, Mixer m, IColorSet c) {
         this.generator1 = g;
         this.generator2 = g;
         this.effect1 = e;
@@ -389,7 +390,7 @@ public class Visual {
      */
     public void setColorSet(String name) {
         List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
-        for (ColorSet cs : allColorSets) {
+        for (IColorSet cs : allColorSets) {
             if (cs.getName().equalsIgnoreCase(name)) {
                 this.colorSet = cs;
             }
@@ -399,7 +400,7 @@ public class Visual {
     /**
      * @return the colorSet
      */
-    public ColorSet getColorSet() {
+    public IColorSet getColorSet() {
         return colorSet;
     }
 

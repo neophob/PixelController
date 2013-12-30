@@ -30,6 +30,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.PassThru;
 import com.neophob.sematrix.core.visual.fader.IFader;
@@ -41,7 +42,7 @@ import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 
 public class GenerateAllFaderTest {
 
-	private ColorSet col;
+	private IColorSet col;
 	private ApplicationConfigurationHelper ph;
 	private int fps = 50;
 	
@@ -90,7 +91,7 @@ public class GenerateAllFaderTest {
     }
     
     
-    private Visual createVisual(MatrixData matrix, ColorSet col) {
+    private Visual createVisual(MatrixData matrix, IColorSet col) {
     	Generator g = new PassThruGen(matrix);
     	Effect e = new PassThru(matrix);
     	Mixer m = new PassThruMixer();

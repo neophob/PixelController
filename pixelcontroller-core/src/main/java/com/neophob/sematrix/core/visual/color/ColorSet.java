@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  * @author michu
  * 
  */
-public class ColorSet implements Comparable<ColorSet>, Serializable {
+public class ColorSet implements Comparable<IColorSet>, Serializable, IColorSet {
 
     private static final transient Logger LOG = Logger.getLogger(ColorSet.class.getName());
 
@@ -72,21 +72,22 @@ public class ColorSet implements Comparable<ColorSet>, Serializable {
         }
     }
 
-    /**
-     * get ColorSet name
+    /*
+     * (non-Javadoc)
      * 
-     * @return
+     * @see com.neophob.sematrix.core.visual.color.IColorSet#getName()
      */
+    @Override
     public String getName() {
         return name;
     }
 
-    /**
-     * return a color defined in this color set
+    /*
+     * (non-Javadoc)
      * 
-     * @param pos
-     * @return
+     * @see com.neophob.sematrix.core.visual.color.IColorSet#getSmoothColor(int)
      */
+    @Override
     public int getSmoothColor(int pos) {
         return precalc[pos];
     }
@@ -151,15 +152,14 @@ public class ColorSet implements Comparable<ColorSet>, Serializable {
         return ret;
     }
 
-    /**
-     * colorize an image buffer
+    /*
+     * (non-Javadoc)
      * 
-     * @param buffer
-     *            8bpp image
-     * @param cs
-     *            ColorSet to apply
-     * @return 24 bpp image
+     * @see
+     * com.neophob.sematrix.core.visual.color.IColorSet#convertToColorSetImage
+     * (int[])
      */
+    @Override
     public int[] convertToColorSetImage(int[] buffer) {
 
         int[] ret = new int[buffer.length];
@@ -177,8 +177,15 @@ public class ColorSet implements Comparable<ColorSet>, Serializable {
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.visual.color.IColorSet#compareTo(com.neophob
+     * .sematrix.core.visual.color.ColorSet)
+     */
     @Override
-    public int compareTo(ColorSet otherColorSet) {
+    public int compareTo(IColorSet otherColorSet) {
         if (otherColorSet.getName() == null && this.getName() == null) {
             return 0;
         }

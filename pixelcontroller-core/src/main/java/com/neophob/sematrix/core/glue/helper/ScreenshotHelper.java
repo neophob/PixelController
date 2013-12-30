@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import com.neophob.sematrix.core.visual.Visual;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 
 public class ScreenshotHelper {
 
@@ -47,7 +47,7 @@ public class ScreenshotHelper {
 		}
 		for (Visual v: allVisuals) {
 			String prefix = "screenshot"+File.separator+frames+"-"+ofs+"-";
-			ColorSet cs = v.getColorSet();			
+			IColorSet cs = v.getColorSet();			
 			saveImage(v, prefix+"gen1"+suffix, cs.convertToColorSetImage(v.getGenerator1().internalBuffer));
 			saveImage(v, prefix+"gen2"+suffix, cs.convertToColorSetImage(v.getGenerator2().internalBuffer));
 

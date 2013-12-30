@@ -50,7 +50,7 @@ import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
 import com.neophob.sematrix.core.visual.generator.ColorScroll.ScrollMode;
 import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
@@ -628,7 +628,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 + 5 * Theme.DROPBOX_XOFS, p5GuiYOffset, Theme.DROPBOXLIST_LENGTH, 140);
         Theme.themeDropdownList(colorSetList);
         i = 0;
-        for (ColorSet cs : pixConServer.getColorSets()) {
+        for (IColorSet cs : pixConServer.getColorSets()) {
             colorSetList.addItem(cs.getName(), i);
             i++;
         }

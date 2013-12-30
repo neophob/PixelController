@@ -13,6 +13,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Inverter;
 import com.neophob.sematrix.core.visual.generator.Generator;
@@ -74,7 +75,7 @@ public class PerfTests {
         Generator g = new Plasma2(matrix);
         Effect e = new Inverter(matrix);
         Mixer m = new AddSat();
-        ColorSet c = new ColorSet("pillepalle", new int[] { 0, 0x0000ff, 0x00ff00, 0xff0000,
+        IColorSet c = new ColorSet("pillepalle", new int[] { 0, 0x0000ff, 0x00ff00, 0xff0000,
                 0xffffff });
         Visual v = new Visual(g, e, m, c);
         for (int i = 0; i < smallRound; i++) {

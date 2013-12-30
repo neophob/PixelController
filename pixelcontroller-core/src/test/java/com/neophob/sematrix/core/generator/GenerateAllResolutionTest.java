@@ -37,6 +37,7 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.PassThru;
 import com.neophob.sematrix.core.visual.generator.ColorScroll;
@@ -53,7 +54,7 @@ public class GenerateAllResolutionTest {
     private FileUtils fileUtils;
     private ISound sound;
     private IResize resize;
-    private ColorSet col;
+    private IColorSet col;
     private ApplicationConfigurationHelper ph;
     private int fps = 50;
 
@@ -121,7 +122,7 @@ public class GenerateAllResolutionTest {
      * @param col
      * @return
      */
-    private Visual createVisual(MatrixData matrix, ColorSet col) {
+    private Visual createVisual(MatrixData matrix, IColorSet col) {
         Generator g = new PassThruGen(matrix);
         Effect e = new PassThru(matrix);
         Mixer m = new PassThruMixer();
