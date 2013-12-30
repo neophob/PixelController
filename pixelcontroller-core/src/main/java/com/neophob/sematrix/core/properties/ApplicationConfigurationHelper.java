@@ -48,6 +48,8 @@ import com.neophob.sematrix.core.visual.layout.Layout;
  */
 public class ApplicationConfigurationHelper implements Serializable {
 
+    private static final long serialVersionUID = -742970229384663801L;
+
     /** The log. */
     private static final transient Logger LOG = Logger
             .getLogger(ApplicationConfigurationHelper.class.getName());
