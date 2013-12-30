@@ -21,9 +21,7 @@ package com.neophob.sematrix.core.api.impl;
 import java.util.logging.Logger;
 
 /**
- * blocking framerate limiter
- * 
- * time = time * 0.9 + last_frame * 0.1
+ * calculate framedelay / FPS
  * 
  * @author michu
  * 
@@ -95,8 +93,6 @@ public class Framerate {
             } else if (fpsDelta < -correctionThreshold) {
                 delay++;
             }
-
-            System.out.println(fpsDelta + " :: Delay: " + delay);
         }
 
         frameCount++;
