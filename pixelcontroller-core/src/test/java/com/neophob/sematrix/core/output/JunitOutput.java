@@ -2,9 +2,9 @@ package com.neophob.sematrix.core.output;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 
-public class StrangeWiringOutput extends OnePanelResolutionAwareOutput {
+public class JunitOutput extends OnePanelResolutionAwareOutput {
 
-    public StrangeWiringOutput(ApplicationConfigurationHelper ph) {
+    public JunitOutput(ApplicationConfigurationHelper ph) {
         super(OutputDeviceEnum.ARTNET, ph, 8);
     }
 

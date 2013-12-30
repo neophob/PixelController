@@ -19,7 +19,7 @@ import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 
-public class StrangeWiringTest {
+public class OutputWiringTest {
 
     private int[] processOutput(Properties p) {
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(p);
@@ -41,7 +41,7 @@ public class StrangeWiringTest {
         // for (int i = 0; i < 50; i++)
         vs.updateSystem(pixConStat);
 
-        StrangeWiringOutput output = new StrangeWiringOutput(ph);
+        JunitOutput output = new JunitOutput(ph);
         output.prepareOutputBuffer();
         output.switchBuffers();
         output.prepareOutputBuffer();
@@ -57,11 +57,21 @@ public class StrangeWiringTest {
         p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "NO_ROTATE");
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         int[] b = processOutput(p);
+        Assert.assertEquals(0x90, b[0]);
+        Assert.assertEquals(0x90, b[9]);
+        Assert.assertEquals(0x90, b[10]);
+        Assert.assertEquals(0x90, b[19]);
+        Assert.assertEquals(0x90, b[20]);
+        Assert.assertEquals(0x90, b[29]);
+        Assert.assertEquals(0x0, b[30]);
+        Assert.assertEquals(0x0, b[39]);
+        Assert.assertEquals(0x0, b[40]);
+        Assert.assertEquals(0x0, b[49]);
         printArray(b);
     }
 
     @Test
-    public void testSnakeCabling90Rotate() {
+    public void testSnakeCabling90RotateSnake() {
         Properties p = new Properties();
         p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
         p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "5");
@@ -70,6 +80,38 @@ public class StrangeWiringTest {
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         int[] b = processOutput(p);
         printArray(b);
+        Assert.assertEquals(0x0, b[0]);
+        Assert.assertEquals(0x90, b[9]);
+        Assert.assertEquals(0x90, b[10]);
+        Assert.assertEquals(0x0, b[19]);
+        Assert.assertEquals(0x0, b[20]);
+        Assert.assertEquals(0x90, b[29]);
+        Assert.assertEquals(0x90, b[30]);
+        Assert.assertEquals(0x0, b[39]);
+        Assert.assertEquals(0x0, b[40]);
+        Assert.assertEquals(0x90, b[49]);
+    }
+
+    @Test
+    public void testSnakeCabling90RotateNoSnake() {
+        Properties p = new Properties();
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "5");
+        p.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "false");
+        p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "ROTATE_90");
+        p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        int[] b = processOutput(p);
+        printArray(b);
+        Assert.assertEquals(0x0, b[0]);
+        Assert.assertEquals(0x90, b[9]);
+        Assert.assertEquals(0x0, b[10]);
+        Assert.assertEquals(0x90, b[19]);
+        Assert.assertEquals(0x0, b[20]);
+        Assert.assertEquals(0x90, b[29]);
+        Assert.assertEquals(0x0, b[30]);
+        Assert.assertEquals(0x90, b[39]);
+        Assert.assertEquals(0x0, b[40]);
+        Assert.assertEquals(0x90, b[49]);
     }
 
     private void printArray(int[] ret) {
