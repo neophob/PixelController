@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 /**
  * blocking framerate limiter
  * 
+ * time = time * 0.9 + last_frame * 0.1
+ * 
  * @author michu
  * 
  */
@@ -32,26 +34,36 @@ public class Framerate {
 
     private static final float MINIMAL_FPS = 0.001f;
 
-    private long startTime;
     private long delay;
     private long frameCount;
 
+    private static int MAXSAMPLES = 200;
+    private int tickindex = 0;
+    private long ticksum = 0;
+    private long[] ticklist;
+    private long lastTime;
+    private float fps;
+    private float targetFps;
+
     public Framerate(float targetFps) {
         this.setFps(targetFps);
-        this.startTime = System.currentTimeMillis();
         this.frameCount = 1;
+        ticklist = new long[MAXSAMPLES];
+        lastTime = System.currentTimeMillis();
     }
 
     public void setFps(float targetFps) {
-        if (targetFps < MINIMAL_FPS) {
-            targetFps = MINIMAL_FPS;
+        this.targetFps = targetFps;
+        if (this.targetFps < MINIMAL_FPS) {
+            this.targetFps = MINIMAL_FPS;
         }
-        this.delay = (long) (1000f / targetFps);
-        LOG.info("Target fps: " + targetFps + ", delay: " + delay + "ms");
+
+        this.delay = (long) (1000f / this.targetFps);
+        LOG.info("Target fps: " + this.targetFps + ", delay: " + delay + "ms");
     }
 
     public float getFps() {
-        return frameCount / (float) ((System.currentTimeMillis() - startTime) / 1000);
+        return fps;
     }
 
     public long getFrameCount() {
@@ -59,7 +71,31 @@ public class Framerate {
     }
 
     public long getFrameDelay() {
+        long newtick = System.currentTimeMillis() - lastTime;
+        ticksum -= ticklist[tickindex];
+        ticksum += newtick; /* add new value */
+        ticklist[tickindex] = newtick;
+        if (++tickindex == MAXSAMPLES) {
+            tickindex = 0;
+        }
+
+        if (frameCount % 25 == 24) {
+            float f = (float) ticksum / MAXSAMPLES;
+            this.fps = 1000 / f;
+        }
+
+        if (frameCount % MAXSAMPLES == MAXSAMPLES - 1) {
+            // dynamic adjust delay
+            float fpsDelta = this.targetFps - this.fps;
+            if (fpsDelta > 0.1f) {
+                delay--;
+            } else if (fpsDelta < -0.1f) {
+                delay++;
+            }
+        }
+
         frameCount++;
+        lastTime = System.currentTimeMillis();
         return delay;
     }
 }
