@@ -68,6 +68,7 @@ public abstract class Lpd6803Common implements Serializable {
         this.nrOfLedHorizontal = xRes;
         this.nrOfLedVertical = yRes;
         this.bufferSize = xRes * yRes;
+        this.bufferCache = new BufferCache();
     }
 
     /**
