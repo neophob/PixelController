@@ -28,7 +28,7 @@ import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.gui.service.PixConServer;
 import com.neophob.sematrix.mdns.client.MDnsClientException;
 import com.neophob.sematrix.mdns.client.PixMDnsClient;
@@ -62,7 +62,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
     private String version;
     private ApplicationConfigurationHelper config;
     private MatrixData matrix;
-    private List<ColorSet> colorSets;
+    private List<IColorSet> colorSets;
     private ISound sound;
     private List<OutputMapping> outputMapping;
     private IOutput output;
@@ -118,7 +118,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
     }
 
     @Override
-    public List<ColorSet> getColorSets() {
+    public List<IColorSet> getColorSets() {
         return colorSets;
     }
 
@@ -249,7 +249,6 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
         processMessage(command, oscIn.getBlob());
     }
 
-
     private void processMessage(ValidCommand command, byte[] data) {
         try {
             switch (command) {
@@ -311,6 +310,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
             }
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to convert input data!", e);
+            setupFeedback.handleMessage("Error converting " + command);
         }
     }
 

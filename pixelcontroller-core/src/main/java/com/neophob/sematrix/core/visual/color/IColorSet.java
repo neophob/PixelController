@@ -28,11 +28,4 @@ public interface IColorSet extends Comparable<IColorSet> {
      */
     public abstract int[] convertToColorSetImage(int[] buffer);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public abstract int compareTo(IColorSet otherColorSet);
-
 }
