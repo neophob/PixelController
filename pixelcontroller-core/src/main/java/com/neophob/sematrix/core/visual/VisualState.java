@@ -412,6 +412,11 @@ public class VisualState extends Observable {
             ofs++;
         }
 
+        int brightnessInt = (int) (this.brightness * 100f);
+        ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
+        int generatorSpeed = (int) (this.fpsSpeed * 100f);
+        ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
+
         // add element status
         ret.addAll(pixelControllerEffect.getCurrentState());
         ret.addAll(pixelControllerGenerator.getCurrentState());

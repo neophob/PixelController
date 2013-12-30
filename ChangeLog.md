@@ -15,6 +15,7 @@
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI in random mode
 * Fix Generator speed changes the target fps (0..200%), much smoother
+* Fix generator speed and brightness were not stored as part of the preset
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
