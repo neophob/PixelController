@@ -1,6 +1,6 @@
 package com.neophob.sematrix.core.visual.color;
 
-public interface IColorSet {
+public interface IColorSet extends Comparable<IColorSet> {
 
     /**
      * get ColorSet name

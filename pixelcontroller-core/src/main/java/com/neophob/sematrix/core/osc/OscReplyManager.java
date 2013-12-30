@@ -19,7 +19,7 @@ import com.neophob.sematrix.core.rmi.RmiApi.Protocol;
 import com.neophob.sematrix.core.rmi.impl.RmiFactory;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.Visual;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.model.OscMessage;
 
@@ -92,7 +92,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 
             case GET_COLORSETS:
                 remoteServer.sendPayload(command,
-                        (ArrayList<ColorSet>) pixelController.getColorSets());
+                        (ArrayList<IColorSet>) pixelController.getColorSets());
                 break;
 
             case GET_OUTPUTMAPPING:

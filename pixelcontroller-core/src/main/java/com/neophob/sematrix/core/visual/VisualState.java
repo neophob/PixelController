@@ -40,7 +40,7 @@ import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.effect.Effect.EffectName;
 import com.neophob.sematrix.core.visual.effect.PixelControllerEffect;
@@ -115,7 +115,7 @@ public class VisualState extends Observable {
     /** The is loading present. */
     private boolean isLoadingPresent = false;
 
-    private List<ColorSet> colorSets;
+    private List<IColorSet> colorSets;
 
     /** The random mode. */
     private boolean inPauseMode = false;
@@ -150,7 +150,7 @@ public class VisualState extends Observable {
      *            the PropertiesHelper
      */
     public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph,
-            ISound sound, List<ColorSet> colorSets, PresetService presetService) {
+            ISound sound, List<IColorSet> colorSets, PresetService presetService) {
 
         LOG.log(Level.INFO, "Initialize collector");
         if (initialized) {
@@ -611,7 +611,7 @@ public class VisualState extends Observable {
      * 
      * @return
      */
-    public List<ColorSet> getColorSets() {
+    public List<IColorSet> getColorSets() {
         return colorSets;
     }
 
@@ -619,7 +619,7 @@ public class VisualState extends Observable {
      * 
      * @param colorSets
      */
-    public void setColorSets(List<ColorSet> colorSets) {
+    public void setColorSets(List<IColorSet> colorSets) {
         this.colorSets = colorSets;
     }
 

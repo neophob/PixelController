@@ -25,7 +25,7 @@ import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
@@ -46,7 +46,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     private ISound sound;
 
     private ApplicationConfigurationHelper applicationConfig;
-    private List<ColorSet> colorSets;
+    private List<IColorSet> colorSets;
     private FileUtils fileUtils;
     private Framerate framerate;
 
@@ -342,7 +342,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     }
 
     @Override
-    public List<ColorSet> getColorSets() {
+    public List<IColorSet> getColorSets() {
         return colorSets;
     }
 

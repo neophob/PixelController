@@ -21,7 +21,6 @@ package com.neophob.sematrix.core.visual;
 import java.util.List;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
-import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.core.visual.effect.Effect;
 import com.neophob.sematrix.core.visual.generator.Generator;
@@ -376,7 +375,7 @@ public class Visual {
      * @param index
      */
     public void setColorSet(int index) {
-        List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
+        List<IColorSet> allColorSets = VisualState.getInstance().getColorSets();
         if (index > allColorSets.size()) {
             index = 0;
         }
@@ -389,7 +388,7 @@ public class Visual {
      * @param index
      */
     public void setColorSet(String name) {
-        List<ColorSet> allColorSets = VisualState.getInstance().getColorSets();
+        List<IColorSet> allColorSets = VisualState.getInstance().getColorSets();
         for (IColorSet cs : allColorSets) {
             if (cs.getName().equalsIgnoreCase(name)) {
                 this.colorSet = cs;

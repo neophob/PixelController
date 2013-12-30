@@ -12,7 +12,7 @@ import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 
 /**
  * the pixelcontroller API
@@ -55,7 +55,7 @@ public interface PixelController {
      */
     ApplicationConfigurationHelper getConfig();
 
-    List<ColorSet> getColorSets();
+    List<IColorSet> getColorSets();
 
     /**
      * 

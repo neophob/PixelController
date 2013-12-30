@@ -34,7 +34,7 @@ import java.util.logging.Logger;
  * @author michu
  * 
  */
-public class ColorSet implements Comparable<IColorSet>, Serializable, IColorSet {
+public class ColorSet implements Serializable, IColorSet {
 
     private static final transient Logger LOG = Logger.getLogger(ColorSet.class.getName());
 
@@ -124,8 +124,8 @@ public class ColorSet implements Comparable<IColorSet>, Serializable, IColorSet 
      * @param palette
      * @return
      */
-    public static List<ColorSet> loadAllEntries(Properties palette) {
-        List<ColorSet> ret = new ArrayList<ColorSet>();
+    public static List<IColorSet> loadAllEntries(Properties palette) {
+        List<IColorSet> ret = new ArrayList<IColorSet>();
 
         for (Entry<Object, Object> entry : palette.entrySet()) {
             try {
@@ -139,7 +139,7 @@ public class ColorSet implements Comparable<IColorSet>, Serializable, IColorSet 
                 for (String s : colorsAsString) {
                     colorsAsInt[ofs++] = Integer.decode(s.trim());
                 }
-                ColorSet cs = new ColorSet(setName, colorsAsInt);
+                IColorSet cs = new ColorSet(setName, colorsAsInt);
                 ret.add(cs);
             } catch (Exception e) {
                 LOG.log(Level.SEVERE, "Failed to load Palette entry: " + entry.getKey(), e);

@@ -17,32 +17,19 @@ import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.SoundMinim;
 import com.neophob.sematrix.core.visual.VisualState;
-import com.neophob.sematrix.core.visual.color.ColorSet;
+import com.neophob.sematrix.core.visual.color.IColorSet;
 
 public class StrangeWiringTest {
 
-    private static Properties getConfig() {
-        Properties p = new Properties();
-
-        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
-        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "5");
-        p.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
-        p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "ROTATE_90");
-        p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
-
-        return p;
-    }
-
-    @Test
-    public void testStrangeWiring() {
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(getConfig());
+    private int[] processOutput(Properties p) {
+        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(p);
         Assert.assertEquals(10, ph.getDeviceXResolution());
         Assert.assertEquals(5, ph.getDeviceYResolution());
 
         PixelControllerStatusMBean pixConStat = new PixelControllerStatus((int) ph.parseFps());
         VisualState vs = VisualState.getInstance();
-        List<ColorSet> cs = new ArrayList<ColorSet>();
-        cs.add(new ColorSet("aa", new int[] { 0x111111, 0xffffff }));
+        List<IColorSet> cs = new ArrayList<IColorSet>();
+        cs.add(new JunitColorSet());
         vs.init(new FileUtilsJunit(), ph, new SoundMinim(0), cs, new PresetServiceDummy());
 
         // load image HALF.JPG
@@ -58,7 +45,30 @@ public class StrangeWiringTest {
         output.prepareOutputBuffer();
         output.switchBuffers();
         output.prepareOutputBuffer();
-        int[] b = output.getTransformedBuffer();
+        return output.getTransformedBuffer();
+    }
+
+    @Test
+    public void testSnakeCabling() {
+        Properties p = new Properties();
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "5");
+        p.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
+        p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "NO_ROTATE");
+        p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        int[] b = processOutput(p);
+        printArray(b);
+    }
+
+    @Test
+    public void testSnakeCabling90Rotate() {
+        Properties p = new Properties();
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "5");
+        p.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "true");
+        p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "ROTATE_90");
+        p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        int[] b = processOutput(p);
         printArray(b);
     }
 
