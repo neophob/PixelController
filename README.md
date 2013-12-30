@@ -60,7 +60,6 @@ PixelController supports different (LED) matrix hardware devices/controller:
 * Seeedstudios Rainbowduino V3 (Using this firmware: [https://code.google.com/p/rainbowduino-v3-streaming-firmware](https://code.google.com/p/rainbowduino-v3-streaming-firmware))
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
 * MiniDmx Devices (like the SEDU board of [http://www.led-studien.de](http://www.led-studien.de))
-* Element Labs Stealth LED panel. No longer in production ([](http://cled.barcousa.com/support/STEALTH/STEALTH_Users_Guide.pdf))
 * Generic UDP Devices (for example Raspberry Pi, check out the PixelPi Software)
 * TPM2 Serial devices (see [http://www.led-studien.de](http://www.led-studien.de) for more information)
 * TPM2 Net devices (see [http://www.led-studien.de](http://www.led-studien.de) for more information)

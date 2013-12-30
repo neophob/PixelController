@@ -10,6 +10,7 @@
 * Add client/server architecture, supports remote server 
 * Add Noise generator
 * Add RaspberryPi WS2801 output driver
+* Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI in random mode

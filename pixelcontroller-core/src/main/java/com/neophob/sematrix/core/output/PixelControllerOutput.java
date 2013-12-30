@@ -75,9 +75,6 @@ public class PixelControllerOutput implements PixelControllerElement {
                 case PIXELINVADERS_NET:
                     output = new PixelInvadersNetDevice(applicationConfig, nrOfOutputScreens);
                     break;
-                case STEALTH:
-                    output = new StealthDevice(applicationConfig, nrOfOutputScreens);
-                    break;
                 case RAINBOWDUINO_V2:
                     output = new RainbowduinoV2Device(applicationConfig);
                     break;

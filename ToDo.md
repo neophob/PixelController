@@ -1,11 +1,9 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* framerate, fix strange values (too low)
 * build process, move rpi native libs to rpi directory, remove junit from distro
 * Update pixconcli
 * fix sound init for rpi
-* singleoutput - chache last entries
 * remote setup, do not display duplicate entries but display whats missing.
 * Documentation for bonjour, client/server, rpi
 * Add console to GUI
