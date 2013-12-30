@@ -36,7 +36,7 @@ public class Framerate {
     private long delay;
     private long frameCount;
 
-    private static int SAMPLE_COUNT = 500;
+    private static int SAMPLE_COUNT = 200;
     private int tickindex = 0;
     private long ticksum = 0;
     private long[] ticklist;
@@ -89,26 +89,15 @@ public class Framerate {
             }
         }
 
-        // dynamic adjust delay
-        if (frameCount % (3 * SAMPLE_COUNT) == (3 * SAMPLE_COUNT - 1)) {
-            float fpsDelta = this.targetFps - this.fps;
-            float correctionThreshold = this.targetFps * 0.1f;
-            if (fpsDelta > correctionThreshold) {
-                if (delay > 1) {
-                    delay--;
-                    LOG.log(Level.INFO,
-                            "Adjust (decrease) frame delay to {0}ms. FPS delta was {1}",
-                            new Object[] { delay, fpsDelta });
-                }
-            } else if (fpsDelta < -correctionThreshold) {
-                delay++;
-                LOG.log(Level.INFO, "Adjust (increase) frame delay to {0}ms. FPS delta was {1}",
-                        new Object[] { delay, fpsDelta });
-            }
-        }
-
         frameCount++;
         lastTime = System.currentTimeMillis();
+
+        if (newtick > delay) {
+            long diff = newtick - delay;
+            if (delay - diff > 0) {
+                return delay - diff;
+            }
+        }
         return delay;
     }
 }
