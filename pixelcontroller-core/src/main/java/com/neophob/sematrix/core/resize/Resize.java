@@ -119,8 +119,8 @@ public abstract class Resize implements IResize {
      *            the device y size
      * @return the pixels from image
      */
-    public static int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize,
-            int deviceYSize) {
+    @Override
+    public int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
         // painfull slow!
         // return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0,
         // deviceXSize);

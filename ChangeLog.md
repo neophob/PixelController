@@ -16,6 +16,7 @@
 * Fix refresh GUI in random mode
 * Fix generator speed changes the target fps (0..200%), much smoother
 * Fix generator speed and brightness were not stored as part of the preset
+* Fix capture generator, crashed if recording window was too small
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  

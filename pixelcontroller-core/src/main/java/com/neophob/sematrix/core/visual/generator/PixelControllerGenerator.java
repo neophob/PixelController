@@ -133,7 +133,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
         int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
         if (screenCapureXSize > 0 && !GraphicsEnvironment.isHeadless()) {
-            allGenerators.add(new ScreenCapture(matrix, ph.parseScreenCaptureOffset(),
+            allGenerators.add(new ScreenCapture(matrix, this.resize, ph.parseScreenCaptureOffset(),
                     screenCapureXSize, ph.parseScreenCaptureWindowSizeY()));
             isCaptureGeneratorActive = true;
         }
