@@ -18,50 +18,49 @@
  */
 package com.neophob.sematrix.core.output.gamma;
 
-import java.io.Serializable;
 
 /**
  * fine tune color resolution of multiple pixelinvaders panels
  * 
  * @author michu
- *
+ * 
  */
-public class RGBAdjust implements Serializable {
+public class RGBAdjust {
 
-	private int r,g,b;
-	
-	/**
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 */
-	public RGBAdjust(int r, int g, int b) {
-		this.r = r;
-		this.g = g;
-		this.b = b;
-	}
+    private int r, g, b;
 
-	public int getR() {
-		return r;
-	}
+    /**
+     * 
+     * @param r
+     * @param g
+     * @param b
+     */
+    public RGBAdjust(int r, int g, int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
 
-	public int getG() {
-		return g;
-	}
+    public int getR() {
+        return r;
+    }
 
-	public int getB() {
-		return b;
-	}
+    public int getG() {
+        return g;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return String.format("RGBAdjust [r=%s, g=%s, b=%s]", r, g, b);
-	}
-	
-	
+    public int getB() {
+        return b;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("RGBAdjust [r=%s, g=%s, b=%s]", r, g, b);
+    }
 
 }
