@@ -80,8 +80,13 @@ public class Framerate {
 
         // calculate fps
         if (frameCount % 25 == 24) {
-            float f = (float) ticksum / SAMPLE_COUNT;
-            this.fps = 1000 / f;
+            if (frameCount < SAMPLE_COUNT) {
+                float f = (float) ticksum / frameCount;
+                this.fps = 1000 / f;
+            } else {
+                float f = (float) ticksum / SAMPLE_COUNT;
+                this.fps = 1000 / f;
+            }
         }
 
         // dynamic adjust delay
