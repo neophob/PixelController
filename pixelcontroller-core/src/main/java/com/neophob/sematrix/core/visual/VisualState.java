@@ -382,53 +382,6 @@ public class VisualState extends Observable {
         LOG.log(Level.INFO, "Preset loaded in " + needed + "ms");
     }
 
-    /**
-     * get current state of visuals/outputs as string list - used to save
-     * current settings.
-     * 
-     * @return the current status
-     */
-    public List<String> getCurrentStatus() {
-        List<String> ret = new ArrayList<String>();
-
-        // get visual status
-        int n = 0;
-        for (Visual v : allVisuals) {
-            ret.add(ValidCommand.CURRENT_VISUAL + EMPTY_CHAR + n++);
-            ret.add(ValidCommand.CHANGE_GENERATOR_A + EMPTY_CHAR + v.getGenerator1Idx());
-            ret.add(ValidCommand.CHANGE_GENERATOR_B + EMPTY_CHAR + v.getGenerator2Idx());
-            ret.add(ValidCommand.CHANGE_EFFECT_A + EMPTY_CHAR + v.getEffect1Idx());
-            ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
-            ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
-            ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
-        }
-
-        // get output status
-        int ofs = 0;
-        for (OutputMapping om : ioMapping) {
-            ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + ofs);
-            ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR + om.getFader().getId());
-            ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL + EMPTY_CHAR + om.getVisualId());
-            ofs++;
-        }
-
-        int brightnessInt = (int) (this.brightness * 100f);
-        ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
-        int generatorSpeed = (int) (this.fpsSpeed * 100f);
-        ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
-
-        // add element status
-        ret.addAll(pixelControllerEffect.getCurrentState());
-        ret.addAll(pixelControllerGenerator.getCurrentState());
-        ret.addAll(pixelControllerShufflerSelect.getCurrentState());
-
-        ret.add(ValidCommand.CHANGE_PRESET + EMPTY_CHAR + presetService.getSelectedPreset());
-        if (inPauseMode) {
-            ret.add(ValidCommand.FREEZE + EMPTY_CHAR);
-        }
-        return ret;
-    }
-
     /*
      * MATRIX ======================================================
      */
@@ -721,6 +674,67 @@ public class VisualState extends Observable {
         this.brightness = brightness;
     }
 
+    private List<String> getSystemState() {
+        List<String> ret = new ArrayList<String>();
+        // get output status
+        int ofs = 0;
+        for (OutputMapping om : ioMapping) {
+            ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + ofs);
+            ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR + om.getFader().getId());
+            ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL + EMPTY_CHAR + om.getVisualId());
+            ofs++;
+        }
+
+        int brightnessInt = (int) (this.brightness * 100f);
+        ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
+        int generatorSpeed = (int) (this.fpsSpeed * 100f);
+        ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
+
+        // add element status
+        ret.addAll(pixelControllerEffect.getCurrentState());
+        ret.addAll(pixelControllerGenerator.getCurrentState());
+        ret.addAll(pixelControllerShufflerSelect.getCurrentState());
+
+        ret.add(ValidCommand.CHANGE_PRESET + EMPTY_CHAR + presetService.getSelectedPreset());
+
+        return ret;
+    }
+
+    /**
+     * get current state of all visuals/outputs as string list - used to save
+     * current settings.
+     * 
+     * @return the current status
+     */
+    public List<String> getCurrentStatus() {
+        List<String> ret = new ArrayList<String>();
+
+        // get visual status
+        int n = 0;
+        for (Visual v : allVisuals) {
+            ret.add(ValidCommand.CURRENT_VISUAL + EMPTY_CHAR + n++);
+            ret.add(ValidCommand.CHANGE_GENERATOR_A + EMPTY_CHAR + v.getGenerator1Idx());
+            ret.add(ValidCommand.CHANGE_GENERATOR_B + EMPTY_CHAR + v.getGenerator2Idx());
+            ret.add(ValidCommand.CHANGE_EFFECT_A + EMPTY_CHAR + v.getEffect1Idx());
+            ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
+            ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
+            ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
+        }
+        if (inPauseMode) {
+            ret.add(ValidCommand.FREEZE + EMPTY_CHAR);
+        }
+
+        ret.addAll(getSystemState());
+
+        return ret;
+    }
+
+    /**
+     * get the current state of the current visual/outputs - used to update the
+     * gui
+     * 
+     * @return
+     */
     public List<String> getGuiState() {
         List<String> ret = new ArrayList<String>();
 
@@ -732,26 +746,10 @@ public class VisualState extends Observable {
         ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
         ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
         ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
-        int brightnessInt = (int) (this.brightness * 100f);
-        ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
-        int generatorSpeed = (int) (this.fpsSpeed * 100f);
-        ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
 
-        // get output status
-        int ofs = 0;
-        for (OutputMapping om : ioMapping) {
-            ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + ofs);
-            ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR + om.getFader().getId());
-            ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL + EMPTY_CHAR + om.getVisualId());
-            ofs++;
-        }
-
-        ret.addAll(pixelControllerEffect.getCurrentState());
-        ret.addAll(pixelControllerGenerator.getCurrentState());
-        ret.addAll(pixelControllerShufflerSelect.getCurrentState());
-
-        ret.add(ValidCommand.CHANGE_PRESET + EMPTY_CHAR + presetService.getSelectedPreset());
         ret.add(ValidCommand.FREEZE + EMPTY_CHAR + inPauseMode);
+
+        ret.addAll(getSystemState());
 
         return ret;
     }
