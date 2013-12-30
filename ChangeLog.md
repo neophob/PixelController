@@ -14,7 +14,7 @@
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI in random mode
-* Fix Generator speed changes the target fps (0..200%), much smoother
+* Fix generator speed changes the target fps (0..200%), much smoother
 * Fix generator speed and brightness were not stored as part of the preset
 
 
