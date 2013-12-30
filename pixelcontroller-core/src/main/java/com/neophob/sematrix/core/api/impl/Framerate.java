@@ -37,7 +37,7 @@ public class Framerate {
     private long delay;
     private long frameCount;
 
-    private static int MAXSAMPLES = 200;
+    private static int SAMPLE_COUNT = 500;
     private int tickindex = 0;
     private long ticksum = 0;
     private long[] ticklist;
@@ -48,7 +48,7 @@ public class Framerate {
     public Framerate(float targetFps) {
         this.setFps(targetFps);
         this.frameCount = 1;
-        ticklist = new long[MAXSAMPLES];
+        ticklist = new long[SAMPLE_COUNT];
         lastTime = System.currentTimeMillis();
     }
 
@@ -75,23 +75,28 @@ public class Framerate {
         ticksum -= ticklist[tickindex];
         ticksum += newtick; /* add new value */
         ticklist[tickindex] = newtick;
-        if (++tickindex == MAXSAMPLES) {
+        if (++tickindex == SAMPLE_COUNT) {
             tickindex = 0;
         }
 
         if (frameCount % 25 == 24) {
-            float f = (float) ticksum / MAXSAMPLES;
+            float f = (float) ticksum / SAMPLE_COUNT;
             this.fps = 1000 / f;
         }
 
-        if (frameCount % MAXSAMPLES == MAXSAMPLES - 1) {
+        if (frameCount % (3 * SAMPLE_COUNT) == (3 * SAMPLE_COUNT - 1)) {
             // dynamic adjust delay
             float fpsDelta = this.targetFps - this.fps;
-            if (fpsDelta > 0.1f) {
-                delay--;
-            } else if (fpsDelta < -0.1f) {
+            float correctionThreshold = this.targetFps * 0.1f;
+            if (fpsDelta > correctionThreshold) {
+                if (delay > 1) {
+                    delay--;
+                }
+            } else if (fpsDelta < -correctionThreshold) {
                 delay++;
             }
+
+            System.out.println(fpsDelta + " :: Delay: " + delay);
         }
 
         frameCount++;
