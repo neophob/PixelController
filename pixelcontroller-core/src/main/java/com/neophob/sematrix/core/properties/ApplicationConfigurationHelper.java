@@ -83,9 +83,6 @@ public class ApplicationConfigurationHelper implements Serializable {
     /** The lpd device. */
     private List<DeviceConfig> lpdDevice = null;
 
-    /** The stealth device. */
-    private List<DeviceConfig> stealthDevice = null;
-
     private List<DeviceConfig> tpm2netDevice = null;
     private List<DeviceConfig> artNetDevice = null;
     private List<DeviceConfig> e131Device = null;
@@ -132,7 +129,6 @@ public class ApplicationConfigurationHelper implements Serializable {
         int rainbowduinoV3Devices = parseRainbowduinoV3Config();
         int pixelInvadersDevices = parsePixelInvaderConfig();
         int pixelInvadersNetDevices = parsePixelInvaderNetConfig();
-        int stealthDevices = parseStealthConfig();
         int artnetDevices = parseArtNetDevices();
         int e131Devices = parseE131Devices();
         int miniDmxDevices = parseMiniDmxDevices();
@@ -157,12 +153,6 @@ public class ApplicationConfigurationHelper implements Serializable {
             totalDevices = rainbowduinoV3Devices;
             LOG.log(Level.INFO, "found RainbowduinoV3 device: " + totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.RAINBOWDUINO_V3;
-        }
-        if (stealthDevices > 0) {
-            enabledOutputs++;
-            totalDevices = stealthDevices;
-            LOG.log(Level.INFO, "found Stealth device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.STEALTH;
         }
         if (pixelInvadersDevices > 0) {
             enabledOutputs++;
@@ -495,45 +485,6 @@ public class ApplicationConfigurationHelper implements Serializable {
         }
 
         return 0;
-    }
-
-    /**
-     * Parses the stealth address.
-     * 
-     * @return the int
-     */
-    private int parseStealthConfig() {
-        stealthDevice = new ArrayList<DeviceConfig>();
-
-        String value = config.getProperty(ConfigConstant.STEALTH_ROW1);
-        if (StringUtils.isNotBlank(value)) {
-            this.deviceXResolution = 16;
-            this.deviceYResolution = 16;
-            for (String s : value.split(ConfigConstant.DELIM)) {
-                try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                    stealthDevice.add(cfg);
-                    devicesInRow1++;
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                }
-            }
-        }
-
-        value = config.getProperty(ConfigConstant.STEALTH_ROW2);
-        if (StringUtils.isNotBlank(value)) {
-            for (String s : value.split(ConfigConstant.DELIM)) {
-                try {
-                    DeviceConfig cfg = DeviceConfig.valueOf(StringUtils.strip(s));
-                    stealthDevice.add(cfg);
-                    devicesInRow2++;
-                } catch (Exception e) {
-                    LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
-                }
-            }
-        }
-
-        return stealthDevice.size();
     }
 
     /**

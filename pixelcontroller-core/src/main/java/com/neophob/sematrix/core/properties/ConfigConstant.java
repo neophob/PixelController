@@ -111,12 +111,6 @@ public final class ConfigConstant {
 
     public static final String PIXELINVADERS_IS_AN_EXPEDITINVADER = "pixelinvaders.is.a.expeditinvader";
 
-    /** The Constant STEALTH_ROW1. */
-    public static final String STEALTH_ROW1 = "stealth.layout.row1";
-
-    /** The Constant STEALTH_ROW2. */
-    public static final String STEALTH_ROW2 = "stealth.layout.row2";
-
     public static final String NET_OSC_LISTENING_PORT = "osc.listening.port";
 
     /** The Constant ADDITIONAL_VISUAL_SCREENS. */
