@@ -22,12 +22,8 @@ package com.neophob.sematrix.core.output.gamma;
  * define gamma type
  * 
  * @author michu
- *
+ * 
  */
 public enum GammaType {
-	NONE,
-	GAMMA_20,
-	GAMMA_22,
-	GAMMA_25,
-	SPECIAL1,
+    NONE, GAMMA_20, GAMMA_22, GAMMA_25, GAMMA_30, SPECIAL1,
 }
