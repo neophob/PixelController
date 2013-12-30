@@ -1188,15 +1188,6 @@ public class ApplicationConfigurationHelper implements Serializable {
     }
 
     /**
-     * Gets the stealth device.
-     * 
-     * @return options to display Stealth displays
-     */
-    public List<DeviceConfig> getStealthDevice() {
-        return stealthDevice;
-    }
-
-    /**
      * Gets the tpm2net device.
      * 
      * @return options to display Stealth displays
