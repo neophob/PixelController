@@ -1,25 +1,27 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    406 files changed, 25176 insertions(+), 193689 deletions(-)
+    441 files changed, 27618 insertions(+), 198647 deletions(-)
     
-* More Code cleanup
+* Add client/server architecture, supports remote server 
+* Add RaspberryPi WS2801 output driver
+* Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
 * Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
 * Add support for (optional) GZipped Blinkenlight files
-* Add client/server architecture, supports remote server 
 * Add Noise generator
-* Add RaspberryPi WS2801 output driver
-* Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
 * Add Gamma 3.0 correction
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
+* Fix replace all image resize code with a simple Java based resize code, major performance improvment
+* Fix add missing float parameter to the OSC server
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI in random mode
 * Fix generator speed changes the target fps (0..200%), much smoother
 * Fix generator speed and brightness were not stored as part of the preset
 * Fix capture generator, crashed if recording window was too small
 * Fix Metaballs resolution for different sizes
+* Fix more Code cleanup
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
