@@ -103,7 +103,8 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
             for (int i = 0; i < m.getArgCount(); i++) {
                 Object o = m.getArg(i);
 
-                if (o instanceof Integer || o instanceof String || o instanceof Long) {
+                if (o instanceof Integer || o instanceof String || o instanceof Long
+                        || o instanceof Float) {
                     tmp.add("" + o);
                 } else if (o instanceof byte[]) {
                     blob = (byte[]) o;
@@ -118,5 +119,4 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
         msg.setSocketAddress(addr);
         this.notifyOscClients(msg);
     }
-
 }
