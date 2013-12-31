@@ -74,6 +74,10 @@ public enum MessageProcessor {
         this.presetService = presetService;
     }
 
+    private int parseValue(String s) {
+        return (int) Float.parseFloat(s);
+    }
+
     /**
      * process message from gui.
      * 
@@ -100,7 +104,7 @@ public enum MessageProcessor {
                 case CHANGE_GENERATOR_A:
                     try {
                         int nr = col.getCurrentVisual();
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
                         // silly check of generator exists
                         g.getId();
@@ -114,7 +118,7 @@ public enum MessageProcessor {
                     try {
                         // the new method - used by the gui
                         int nr = col.getCurrentVisual();
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         Generator g = col.getPixelControllerGenerator().getGenerator(tmp);
                         g.getId();
                         col.getVisual(nr).setGenerator2(g);
@@ -126,7 +130,7 @@ public enum MessageProcessor {
                 case CHANGE_EFFECT_A:
                     try {
                         int nr = col.getCurrentVisual();
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         Effect e = col.getPixelControllerEffect().getEffect(tmp);
                         e.getId();
                         col.getVisual(nr).setEffect1(e);
@@ -138,7 +142,7 @@ public enum MessageProcessor {
                 case CHANGE_EFFECT_B:
                     try {
                         int nr = col.getCurrentVisual();
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         Effect e = col.getPixelControllerEffect().getEffect(tmp);
                         e.getId();
                         col.getVisual(nr).setEffect2(e);
@@ -151,7 +155,7 @@ public enum MessageProcessor {
                     try {
                         // the new method - used by the gui
                         int nr = col.getCurrentVisual();
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         Mixer m = col.getPixelControllerMixer().getMixer(tmp);
                         m.getId();
                         col.getVisual(nr).setMixer(m);
@@ -163,7 +167,7 @@ public enum MessageProcessor {
                 case CHANGE_OUTPUT_VISUAL:
                     try {
                         int nr = col.getCurrentOutput();
-                        int newFx = Integer.parseInt(msg[1]);
+                        int newFx = parseValue(msg[1]);
                         int oldFx = col.getFxInputForScreen(nr);
                         int nrOfVisual = col.getAllVisuals().size();
                         LOG.log(Level.INFO, "old fx: {0}, new fx {1}",
@@ -186,7 +190,7 @@ public enum MessageProcessor {
 
                 case CHANGE_ALL_OUTPUT_VISUAL:
                     try {
-                        int newFx = Integer.parseInt(msg[1]);
+                        int newFx = parseValue(msg[1]);
                         int size = col.getAllOutputMappings().size();
                         int nrOfVisual = col.getAllVisuals().size();
 
@@ -215,7 +219,7 @@ public enum MessageProcessor {
                 case CHANGE_OUTPUT_FADER:
                     try {
                         int nr = col.getCurrentOutput();
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         // do not start a new fader while the old one is still
                         // running
                         if (!col.getOutputMappings(nr).getFader().isStarted()) {
@@ -231,7 +235,7 @@ public enum MessageProcessor {
 
                 case CHANGE_ALL_OUTPUT_FADER:
                     try {
-                        tmp = Integer.parseInt(msg[1]);
+                        tmp = parseValue(msg[1]);
                         for (OutputMapping om : col.getAllOutputMappings()) {
                             // do not start a new fader while the old one is
                             // still running
@@ -274,7 +278,7 @@ public enum MessageProcessor {
 
                 case CHANGE_ROTOZOOM:
                     try {
-                        int val = Integer.parseInt(msg[1]);
+                        int val = parseValue(msg[1]);
                         RotoZoom r = (RotoZoom) col.getPixelControllerEffect().getEffect(
                                 EffectName.ROTOZOOM);
                         r.setAngle(val);
@@ -306,7 +310,7 @@ public enum MessageProcessor {
 
                 case CHANGE_PRESET:
                     try {
-                        int a = Integer.parseInt(msg[1]);
+                        int a = parseValue(msg[1]);
                         presetService.setSelectedPreset(a);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -315,7 +319,7 @@ public enum MessageProcessor {
 
                 case CHANGE_THRESHOLD_VALUE:
                     try {
-                        int a = Integer.parseInt(msg[1]);
+                        int a = parseValue(msg[1]);
                         if (a > 255) {
                             a = 255;
                         }
@@ -348,7 +352,7 @@ public enum MessageProcessor {
 
                 case COLOR_SCROLL_OPT:
                     try {
-                        int dir = Integer.parseInt(msg[1]);
+                        int dir = parseValue(msg[1]);
                         col.getPixelControllerGenerator().setColorScrollingDirection(dir);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -357,7 +361,7 @@ public enum MessageProcessor {
 
                 case TEXTDEF:
                     try {
-                        int lut = Integer.parseInt(msg[1]);
+                        int lut = parseValue(msg[1]);
                         col.getPixelControllerEffect().setTextureDeformationLut(lut);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -366,7 +370,7 @@ public enum MessageProcessor {
 
                 case ZOOMOPT:
                     try {
-                        int zoomMode = Integer.parseInt(msg[1]);
+                        int zoomMode = parseValue(msg[1]);
                         col.getPixelControllerEffect().setZoomOption(zoomMode);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -384,7 +388,7 @@ public enum MessageProcessor {
 
                 case TEXTWR_OPTION:
                     try {
-                        int scollerNr = Integer.parseInt(msg[1]);
+                        int scollerNr = parseValue(msg[1]);
                         col.getPixelControllerGenerator().setTextOption(scollerNr);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -455,7 +459,7 @@ public enum MessageProcessor {
                     // change the selected visual, need to update
                     // some of the gui elements
                     try {
-                        int a = Integer.parseInt(msg[1]);
+                        int a = parseValue(msg[1]);
                         col.setCurrentVisual(a);
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
@@ -467,7 +471,7 @@ public enum MessageProcessor {
                     // change the selected output, need to update
                     // some of the gui elements
                     try {
-                        int a = Integer.parseInt(msg[1]);
+                        int a = parseValue(msg[1]);
                         col.setCurrentOutput(a);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -476,7 +480,7 @@ public enum MessageProcessor {
 
                 case CHANGE_BRIGHTNESS:
                     try {
-                        int a = Integer.parseInt(msg[1]);
+                        int a = parseValue(msg[1]);
                         if (a < 0 || a > 100) {
                             LOG.log(Level.WARNING, IGNORE_COMMAND + ", invalid brightness value: "
                                     + a);
@@ -492,7 +496,7 @@ public enum MessageProcessor {
 
                 case GENERATOR_SPEED:
                     try {
-                        int fpsAdjustment = Integer.parseInt(msg[1]);
+                        int fpsAdjustment = (int) Float.parseFloat(msg[1]);
                         if (fpsAdjustment < 0 || fpsAdjustment > 200) {
                             LOG.log(Level.WARNING, IGNORE_COMMAND
                                     + ", invalid fps adjustment value: " + fpsAdjustment);
@@ -517,7 +521,7 @@ public enum MessageProcessor {
                     int nr = col.getCurrentVisual();
                     try {
                         // old method, reference colorset by index
-                        int newColorSetIndex = Integer.parseInt(msg[1]);
+                        int newColorSetIndex = parseValue(msg[1]);
                         col.getVisual(nr).setColorSet(newColorSetIndex);
                         break;
                     } catch (Exception e) {
@@ -623,7 +627,7 @@ public enum MessageProcessor {
 
                 case BEAT_WORKMODE:
                     try {
-                        int workmodeId = Integer.parseInt(msg[1]);
+                        int workmodeId = parseValue(msg[1]);
                         for (BeatToAnimation bta : BeatToAnimation.values()) {
                             if (bta.getId() == workmodeId) {
                                 col.getPixelControllerGenerator().setBta(bta);
