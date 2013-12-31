@@ -102,12 +102,13 @@ class OscServerImpl extends AbstractOscServer implements OSCListener {
             List<String> tmp = new ArrayList<String>();
             for (int i = 0; i < m.getArgCount(); i++) {
                 Object o = m.getArg(i);
-
                 if (o instanceof Integer || o instanceof String || o instanceof Long
                         || o instanceof Float) {
                     tmp.add("" + o);
                 } else if (o instanceof byte[]) {
                     blob = (byte[]) o;
+                } else {
+                    LOG.log(Level.INFO, "Unknown argument: " + o);
                 }
             }
             args = new String[tmp.size()];
