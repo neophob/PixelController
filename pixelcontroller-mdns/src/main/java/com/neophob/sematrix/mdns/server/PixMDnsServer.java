@@ -18,47 +18,46 @@
  */
 package com.neophob.sematrix.mdns.server;
 
-
 /**
  * OSC Server interface exposed to PixelController Core
  * 
  * @author michu
- *
+ * 
  */
 public interface PixMDnsServer {
 
-	final String REMOTE_TYPE_TCP = "_pixconosc._tcp.local.";
-	final String REMOTE_TYPE_UDP = "_pixconosc._udp.local.";
-	
-	/**
-	 * start the OSC server, blocks until registered
-	 */
-	void startServer();
+    final String REMOTE_TYPE_UDP = "_osc._udp.local";
+    final String REMOTE_TYPE_TCP = "_osc._tcp.local";
 
-	/**
-	 * start the OSC server async
-	 */
-	void startServerAsync();
+    /**
+     * start the OSC server, blocks until registered
+     */
+    void startServer();
 
-	/**
-	 * start the OSC server
-	 */
-	void stopServer();
+    /**
+     * start the OSC server async
+     */
+    void startServerAsync();
 
-	/**
-	 * @return listening port of the osc server
-	 */
-	int getListeningPort();
+    /**
+     * start the OSC server
+     */
+    void stopServer();
 
-	/**
-	 * 
-	 * @return registered name
-	 */
-	String getRegisterName();
+    /**
+     * @return listening port of the osc server
+     */
+    int getListeningPort();
 
-	/**
-	 * 
-	 * @return
-	 */
-	boolean isUsingTcp();
+    /**
+     * 
+     * @return registered name
+     */
+    String getRegisterName();
+
+    /**
+     * 
+     * @return
+     */
+    boolean isUsingTcp();
 }
