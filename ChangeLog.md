@@ -11,6 +11,7 @@
 * Add Noise generator
 * Add RaspberryPi WS2801 output driver
 * Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
+* Add Gamma 3.0 correction
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
@@ -18,6 +19,7 @@
 * Fix generator speed changes the target fps (0..200%), much smoother
 * Fix generator speed and brightness were not stored as part of the preset
 * Fix capture generator, crashed if recording window was too small
+* Fix Metaballs resolution for different sizes
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
