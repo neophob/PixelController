@@ -101,11 +101,11 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
             return;
         }
 
-        String[] msg = new String[1 + command.getNrOfParams()];
+        String[] msg = new String[1 + oscIn.getArgLen()];
         msg[0] = pattern;
 
         if (oscIn.getBlob() == null && command.getNrOfParams() > 0
-                && command.getNrOfParams() != oscIn.getArgs().length) {
+                && command.getNrOfParams() < oscIn.getArgLen()) {
             String args = oscIn.getArgs() == null ? "null" : "" + oscIn.getArgs().length;
             LOG.log(Level.WARNING,
                     "Parameter count missmatch, expected: {0} available: {1}. Command: {2}.",
@@ -115,7 +115,7 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
 
         // ignore nr of parameter for osc generator
         if (command != ValidCommand.OSC_GENERATOR1 && command != ValidCommand.OSC_GENERATOR2) {
-            for (int i = 0; i < command.getNrOfParams(); i++) {
+            for (int i = 0; i < oscIn.getArgLen(); i++) {
                 msg[1 + i] = oscIn.getArgs()[i];
             }
         }

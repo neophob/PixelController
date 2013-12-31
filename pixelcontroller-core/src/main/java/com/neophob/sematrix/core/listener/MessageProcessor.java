@@ -18,6 +18,7 @@
  */
 package com.neophob.sematrix.core.listener;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -76,6 +77,24 @@ public enum MessageProcessor {
 
     private int parseValue(String s) {
         return (int) Float.parseFloat(s);
+    }
+
+    /**
+     * TouchOSC sends two commands if a button is pressed "/COMMAND 0" and
+     * "/COMMAND 1" -> ignore the 0 parameter
+     * 
+     * @param msg
+     * @return
+     */
+    private boolean ignoreTouchOscCommand(String[] msg) {
+        System.out.println("len: " + msg.length + ": " + Arrays.toString(msg));
+        if (msg.length > 1) {
+            System.out.println(parseValue(msg[1]));
+            if (parseValue(msg[1]) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -431,7 +450,11 @@ public enum MessageProcessor {
                     }
                     break;
 
-                case RANDOMIZE: // one shot randomizer
+                // one shot randomizer
+                case RANDOMIZE:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     try {
                         // save current visual buffer
                         TransitionManager transition = new TransitionManager(col);
@@ -443,8 +466,11 @@ public enum MessageProcessor {
                     }
                     break;
 
-                case PRESET_RANDOM: // one shot randomizer, use a pre-stored
-                                    // present
+                // one shot randomizer, use a pre-stored present
+                case PRESET_RANDOM:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     try {
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         loadPreset(currentPreset);
@@ -552,6 +578,9 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_COLORSET:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     v = col.getVisual(col.getCurrentVisual());
                     String colorSetName = v.getColorSet().getName();
 
@@ -570,6 +599,9 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_GENERATOR_A:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     v = col.getVisual(col.getCurrentVisual());
                     int currentGenerator = v.getGenerator1Idx();
                     int nrOfGenerators = 1 + col.getPixelControllerGenerator().getSize();
@@ -586,6 +618,9 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_GENERATOR_B:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     v = col.getVisual(col.getCurrentVisual());
                     currentGenerator = v.getGenerator2Idx();
                     nrOfGenerators = 1 + col.getPixelControllerGenerator().getSize();
@@ -602,6 +637,9 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_EFFECT_A:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     v = col.getVisual(col.getCurrentVisual());
                     int currentEffect = v.getEffect1Idx();
                     int nrOfEffects = col.getPixelControllerEffect().getSize();
@@ -610,6 +648,9 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_EFFECT_B:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     v = col.getVisual(col.getCurrentVisual());
                     currentEffect = v.getEffect2Idx();
                     nrOfEffects = col.getPixelControllerEffect().getSize();
@@ -618,6 +659,9 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_MIXER:
+                    if (ignoreTouchOscCommand(msg)) {
+                        break;
+                    }
                     v = col.getVisual(col.getCurrentVisual());
                     int currentMixer = v.getMixerIdx();
                     int nrOfMixerss = col.getPixelControllerMixer().getSize();
