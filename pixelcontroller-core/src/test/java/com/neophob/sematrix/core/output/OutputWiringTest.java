@@ -15,7 +15,7 @@ import com.neophob.sematrix.core.listener.PresetServiceDummy;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
-import com.neophob.sematrix.core.sound.SoundMinim;
+import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 
@@ -30,7 +30,7 @@ public class OutputWiringTest {
         VisualState vs = VisualState.getInstance();
         List<IColorSet> cs = new ArrayList<IColorSet>();
         cs.add(new JunitColorSet());
-        vs.init(new FileUtilsJunit(), ph, new SoundMinim(0), cs, new PresetServiceDummy());
+        vs.init(new FileUtilsJunit(), ph, new SoundDummy(), cs, new PresetServiceDummy());
 
         // load image HALF.JPG
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_GENERATOR_A + "",
@@ -57,6 +57,7 @@ public class OutputWiringTest {
         p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "NO_ROTATE");
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         int[] b = processOutput(p);
+        printArray(b);
         Assert.assertEquals(0x90, b[0]);
         Assert.assertEquals(0x90, b[9]);
         Assert.assertEquals(0x90, b[10]);
@@ -67,7 +68,6 @@ public class OutputWiringTest {
         Assert.assertEquals(0x0, b[39]);
         Assert.assertEquals(0x0, b[40]);
         Assert.assertEquals(0x0, b[49]);
-        printArray(b);
     }
 
     @Test
@@ -112,6 +112,22 @@ public class OutputWiringTest {
         Assert.assertEquals(0x90, b[39]);
         Assert.assertEquals(0x0, b[40]);
         Assert.assertEquals(0x90, b[49]);
+    }
+
+    @Test
+    public void testX() {
+        // expected output for half.jpg:
+        //
+        // 0,0,90,90,90, 90,90,90,0,0
+        Properties p = new Properties();
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "10");
+        p.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, "5");
+        p.put(ConfigConstant.OUTPUT_DEVICE_SNAKE_CABELING, "false");
+        p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "ROTATE_90");
+        p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
+        int[] b = processOutput(p);
+        printArray(b);
+
     }
 
     private void printArray(int[] ret) {
