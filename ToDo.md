@@ -5,7 +5,7 @@
 * Update pixconcli
 * fix sound init for rpi
 * remote setup, do not display duplicate entries but display whats missing.
-* Documentation for bonjour, client/server, rpi
+* Documentation for bonjour, client/server, rpi, custom mapping tool
 * Add console to GUI
 * Random-Mode with selectable time-life
 
