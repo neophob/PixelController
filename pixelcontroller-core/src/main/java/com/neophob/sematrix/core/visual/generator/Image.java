@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.core.visual.generator;
 
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -40,135 +39,148 @@ import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * display an image.
- *
+ * 
  * @author mvogt
  */
 public class Image extends Generator {
 
-	//list to store movie files used by shuffler
+    // list to store movie files used by shuffler
     private List<String> imageFiles;
-    
-	/** The Constant RESIZE_TYP. */
-	private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;	
-	
-	/** The Constant LOG. */
-	private static final Logger LOG = Logger.getLogger(Image.class.getName());
-	
-	/** The currently loaded file */
-	private String filename;
-	
-	private FileUtils fileUtils;
-		
-	private IResize resize;
-	
-	/**
-	 * Instantiates a new image viewer
-	 *
-	 * @param controller the controller
-	 * @param filename the filename
-	 */
-	public Image(MatrixData matrix, FileUtils fu, IResize resize) {
-		super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
-		this.fileUtils = fu;
-		this.resize = resize;
-		
-	    //find image files      
-		imageFiles = new ArrayList<String>();
-		
-		try {
-	        for (String s: fu.findImagesFiles()) {
-	            imageFiles.add(s);
-	        }		    
-		} catch (NullPointerException e) {
-		    LOG.log(Level.SEVERE, "Failed to search image files, make sure directory '"+fu.getImageDir()+"' exist!");
-		    throw new IllegalArgumentException("Failed to search image files, make sure directory '"+fu.getImageDir()+"' exist!");
-		}
 
-		this.loadFile(imageFiles.get(0));
-        LOG.log(Level.INFO, "Image, found "+imageFiles.size()+" image files");        
-	}
-	
-	/**
-	 * load a new file.
-	 *
-	 * @param filename the filename
-	 */
-	public synchronized void loadFile(String filename) {
-		if (StringUtils.isBlank(filename)) {
-			LOG.log(Level.INFO, "Empty filename provided, call ignored!");
-			return;
-		}
+    /** The Constant RESIZE_TYP. */
+    private static final ResizeName RESIZE_TYP = ResizeName.QUALITY_RESIZE;
 
-		//only load if needed
-		if (StringUtils.equals(filename, this.filename)) {
-			LOG.log(Level.INFO, "new filename does not differ from old: "+filename);
-			return;
-		}
-						
-		try {
-			String fileToLoad = fileUtils.getImageDir()+File.separator+filename;
+    /** The Constant LOG. */
+    private static final Logger LOG = Logger.getLogger(Image.class.getName());
 
-			LOG.log(Level.INFO, "load image "+fileToLoad);
-			BufferedImage img = ImageIO.read(new File(fileToLoad));
-			if (img==null || img.getHeight()<2) {
-				LOG.log(Level.WARNING, "Invalid image, image height is < 2!");
-				return;
-			}			
-			
-			//convert to RGB colorspace
-			int w = img.getWidth();
-		    int h = img.getHeight();
-			int[] dataBuffInt = img.getRGB(0, 0, w, h, null, 0, w); 
-			
-	        LOG.log(Level.INFO, "resize to img "+filename+" "+internalBufferXSize+", "+internalBufferYSize+" using "+resize.getName());
-			this.internalBuffer = resize.resizeImage(dataBuffInt, w, h, internalBufferXSize, internalBufferYSize);
-			this.filename = filename;
-			
-	        short r,g,b;
-	        int rgbColor;
+    /** The currently loaded file */
+    private String filename;
 
-	        //greyscale it
-	        for (int i=0; i<internalBuffer.length; i++){
-	            rgbColor = internalBuffer[i];
-	            r = (short) ((rgbColor>>16) & 255);
-	            g = (short) ((rgbColor>>8)  & 255);
-	            b = (short) ( rgbColor      & 255);
-	            int val = (int)(r*0.3f+g*0.59f+b*0.11f);
-	            internalBuffer[i]=val;
-	        }
-	        
-		} catch (Exception e) {			
-			LOG.log(Level.WARNING, "Failed to load image "+filename, e);
-		}
-	}
+    private FileUtils fileUtils;
 
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
+    private IResize resize;
 
-	}
+    /**
+     * Instantiates a new image viewer
+     * 
+     * @param controller
+     *            the controller
+     * @param filename
+     *            the filename
+     */
+    public Image(MatrixData matrix, FileUtils fu, IResize resize) {
+        super(matrix, GeneratorName.IMAGE, RESIZE_TYP);
+        this.fileUtils = fu;
+        this.resize = resize;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#shuffle()
-	 */
-	@Override
-	public void shuffle() {
-		if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
-			int nr = new Random().nextInt(imageFiles.size());
-			loadFile(imageFiles.get(nr));		
-		}
-	}
-	
-	/**
-	 * Gets the filename.
-	 *
-	 * @return the filename
-	 */
-	public String getFilename() {
-		return filename;
-	}
+        // find image files
+        imageFiles = new ArrayList<String>();
+
+        try {
+            for (String s : fu.findImagesFiles()) {
+                imageFiles.add(s);
+            }
+        } catch (NullPointerException e) {
+            LOG.log(Level.SEVERE,
+                    "Failed to search image files, make sure directory '" + fu.getImageDir()
+                            + "' exist!");
+            throw new IllegalArgumentException(
+                    "Failed to search image files, make sure directory '" + fu.getImageDir()
+                            + "' exist!");
+        }
+
+        this.loadFile(imageFiles.get(0));
+        LOG.log(Level.INFO, "Image, found " + imageFiles.size() + " image files");
+    }
+
+    /**
+     * load a new file.
+     * 
+     * @param filename
+     *            the filename
+     */
+    public synchronized void loadFile(String filename) {
+        if (StringUtils.isBlank(filename)) {
+            LOG.log(Level.INFO, "Empty filename provided, call ignored!");
+            return;
+        }
+
+        // only load if needed
+        if (StringUtils.equals(filename, this.filename)) {
+            LOG.log(Level.INFO, "new filename does not differ from old: " + filename);
+            return;
+        }
+
+        try {
+            long t1 = System.currentTimeMillis();
+            String fileToLoad = fileUtils.getImageDir() + File.separator + filename;
+
+            LOG.log(Level.INFO, "load image " + fileToLoad);
+            BufferedImage img = ImageIO.read(new File(fileToLoad));
+            if (img == null || img.getHeight() < 2) {
+                LOG.log(Level.WARNING, "Invalid image, image height is < 2!");
+                return;
+            }
+
+            // convert to RGB colorspace
+            int[] dataBuffInt = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0,
+                    img.getWidth());
+
+            LOG.log(Level.INFO, "resize to img " + filename + " " + internalBufferXSize + ", "
+                    + internalBufferYSize + " using " + resize.getName());
+            this.internalBuffer = resize.resizeImage(dataBuffInt, img.getWidth(), img.getHeight(),
+                    internalBufferXSize, internalBufferYSize);
+            this.filename = filename;
+
+            short r, g, b;
+            int rgbColor;
+
+            // greyscale it
+            for (int i = 0; i < internalBuffer.length; i++) {
+                rgbColor = internalBuffer[i];
+                r = (short) ((rgbColor >> 16) & 255);
+                g = (short) ((rgbColor >> 8) & 255);
+                b = (short) (rgbColor & 255);
+                int val = (int) (r * 0.3f + g * 0.59f + b * 0.11f);
+                internalBuffer[i] = val;
+            }
+            LOG.log(Level.INFO, "Image " + filename + " loaded in "
+                    + (System.currentTimeMillis() - t1) + "ms");
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to load image " + filename, e);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#update()
+     */
+    @Override
+    public void update() {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#shuffle()
+     */
+    @Override
+    public void shuffle() {
+        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.IMAGE)) {
+            int nr = new Random().nextInt(imageFiles.size());
+            loadFile(imageFiles.get(nr));
+        }
+    }
+
+    /**
+     * Gets the filename.
+     * 
+     * @return the filename
+     */
+    public String getFilename() {
+        return filename;
+    }
 
 }

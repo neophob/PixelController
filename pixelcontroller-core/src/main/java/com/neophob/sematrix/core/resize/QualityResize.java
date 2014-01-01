@@ -42,7 +42,7 @@ class QualityResize extends Resize {
     @Override
     public int[] getBuffer(BufferedImage bi, int newX, int newY) {
         bi = ScalrOld.resize(bi, ScalrOld.Method.QUALITY, newX, newY);
-        int[] ret = getPixelsFromImage(bi, newX, newY);
+        int[] ret = getPixelsFromImage(bi);
 
         // destroy image
         bi.flush();

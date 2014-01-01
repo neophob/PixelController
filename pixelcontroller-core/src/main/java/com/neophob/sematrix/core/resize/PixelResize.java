@@ -42,7 +42,7 @@ class PixelResize extends Resize {
     @Override
     public int[] getBuffer(BufferedImage bi, int newX, int newY) {
         bi = ScalrOld.resize(bi, ScalrOld.Method.SPEED, newX, newY);
-        int[] ret = getPixelsFromImage(bi, newX, newY);
+        int[] ret = getPixelsFromImage(bi);
 
         // destroy image
         bi.flush();

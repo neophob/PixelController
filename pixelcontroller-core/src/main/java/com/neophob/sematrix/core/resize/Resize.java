@@ -120,14 +120,7 @@ public abstract class Resize implements IResize {
      * @return the pixels from image
      */
     @Override
-    public int[] getPixelsFromImage(BufferedImage scaledImage, int deviceXSize, int deviceYSize) {
-        // painfull slow!
-        // return scaledImage.getRGB(0, 0, deviceXSize, deviceYSize, null, 0,
-        // deviceXSize);
-
-        // must be DataBuffer.TYPE_INT, or it will crash here. processing use
-        // only RGB images so this
-        // should work
+    public int[] getPixelsFromImage(BufferedImage scaledImage) {
         DataBufferInt buf = (DataBufferInt) scaledImage.getRaster().getDataBuffer();
         return buf.getData();
     }
