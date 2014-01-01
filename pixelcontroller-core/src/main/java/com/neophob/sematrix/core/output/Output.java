@@ -291,6 +291,7 @@ public abstract class Output implements IOutput {
             LayoutModel lm = this.layout.getDataForScreen(screen, VisualState.getInstance()
                     .getAllOutputMappings());
             OutputMapping map = VisualState.getInstance().getOutputMappings(screen);
+            // TODO inject someday..
             v = VisualState.getInstance().getVisual(lm.getVisualId());
 
             if (lm.screenDoesNotNeedStretching()) {
