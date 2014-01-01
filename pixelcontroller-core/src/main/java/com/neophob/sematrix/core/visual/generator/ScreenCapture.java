@@ -152,8 +152,7 @@ public class ScreenCapture extends Generator {
             BufferedImage screencapture = robot.createScreenCapture(rectangleCaptureArea);
 
             // resize it to internalBufferSize
-            int[] tmp = resize.getPixelsFromImage(screencapture, rectangleCaptureArea.width,
-                    rectangleCaptureArea.height);
+            int[] tmp = resize.getPixelsFromImage(screencapture);
             this.internalBuffer = resize.resizeImage(tmp, rectangleCaptureArea.width,
                     rectangleCaptureArea.height, internalBufferXSize, internalBufferYSize);
         }
