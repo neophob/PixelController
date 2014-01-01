@@ -33,10 +33,21 @@ public class OutputWiringTest {
         vs.init(new FileUtilsJunit(), ph, new SoundDummy(), cs, new PresetServiceDummy());
 
         // load image HALF.JPG
+
+        MessageProcessor.INSTANCE.processMsg(
+                new String[] { ValidCommand.CURRENT_VISUAL + "", "0" }, false, null);
+        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CURRENT_COLORSET + "",
+                "JunitColorSet" }, false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_GENERATOR_A + "",
                 "2" }, false, null);
+        MessageProcessor.INSTANCE.processMsg(
+                new String[] { ValidCommand.CHANGE_EFFECT_A + "", "0" }, false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.IMAGE + "", "half.jpg" },
                 false, null);
+        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_MIXER + "", "0" },
+                false, null);
+        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_BRIGHTNESS + "",
+                "100" }, false, null);
 
         // for (int i = 0; i < 50; i++)
         vs.updateSystem(pixConStat);
