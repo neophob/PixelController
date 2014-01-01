@@ -182,7 +182,7 @@ public abstract class Generator implements IShuffleState {
     /**
      * update the generator.
      */
-    public abstract void update();
+    public abstract void update(int amount);
 
     /**
      * deinit generator.

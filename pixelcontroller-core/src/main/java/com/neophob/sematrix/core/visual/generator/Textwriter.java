@@ -41,315 +41,325 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
- * The text is created once and stored to a buffer. The Scroller just change the X offset of the display window.
- *
+ * The text is created once and stored to a buffer. The Scroller just change the
+ * X offset of the display window.
+ * 
  * @author mvogt
  */
 public class Textwriter extends Generator {
-    
+
     public static final String FONT_FILENAME = "font.filename";
     public static final String FONT_SIZE = "font.size";
-    
+
     private static final String INITIAL_STRING = "PIXELCONTROLLER";
-	public enum TextwriterMode {
-		PINGPONG,
-		LEFT,
-		//SINGLE_CHARACTERS
-	}
-	
-	/** The Constant TEXT_BUFFER_X_SIZE. */
-	private static final int TEXT_BUFFER_X_SIZE=128;
-	
-	/** The Constant CHANGE_SCROLLING_DIRECTION_TIMEOUT. */
-	private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT=12;
-	
-	/** The Constant SCROLL_AMMOUNT. */
-	private static final int SCROLL_AMMOUNT = 4;
-	
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(Textwriter.class.getName());
-	
-	/** The font. */
-	private Font font;
-	
-	/** The xofs. */
-	private int xofs;
-	
-	/** The max x pos. */
-	private int maxXPos;
-	
-	/** The text stored as bitmap. */
-	private int[] textAsImage;
-	
-	/** The text. */
-	private String text;
 
-	private AbstractScroller scroller;
-	private int scrollerNr = 0;
-	
-	/**
-	 * Instantiates a new textwriter.
-	 *
-	 * @param controller the controller
-	 * @param fontName the font name
-	 * @param fontSize the font size
-	 * @param text the text
-	 */
-	public Textwriter(MatrixData matrix, String fontName, int fontSize, FileUtils fu) {
-		super(matrix, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
-		String filename = fu.getDataDir()+File.separator+fontName;
-		InputStream is = null;
-		try {			
-			is = new FileInputStream(filename);
-			textAsImage = new int[internalBuffer.length];
-			font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float)fontSize);
-			LOG.log(Level.INFO, "Loaded font "+fontName+", size: "+fontSize);
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to load font "+filename+":", e);
-			throw new IllegalArgumentException("Failed to load font "+filename+". Check your config.properties file.");
-		} finally {
-			if(is!=null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-					LOG.log(Level.WARNING, "Failed to close InputStream.", e);
-				}	
-			}	            		
-		}
-		createTextImage(INITIAL_STRING);
-		scroller = new PingPongScroller();
-	}
+    public enum TextwriterMode {
+        PINGPONG, LEFT,
+        // SINGLE_CHARACTERS
+    }
 
-	/**
-	 * create image.
-	 *
-	 * @param text the text
-	 */
-	public void createTextImage(String text) {	
-		//only load if needed
-		if (StringUtils.equals(text, this.text)) {
-			return;
-		}
+    /** The Constant TEXT_BUFFER_X_SIZE. */
+    private static final int TEXT_BUFFER_X_SIZE = 128;
 
-		this.text = text;
-		
-		BufferedImage img = 
-			new BufferedImage( TEXT_BUFFER_X_SIZE, internalBufferYSize, BufferedImage.TYPE_INT_RGB);
+    /** The Constant CHANGE_SCROLLING_DIRECTION_TIMEOUT. */
+    private static final int CHANGE_SCROLLING_DIRECTION_TIMEOUT = 12;
 
-		Graphics2D g2 = img.createGraphics();
-		FontRenderContext frc = g2.getFontRenderContext(); 
-		TextLayout layout = new TextLayout(text, font, frc); 
-		Rectangle2D rect = layout.getBounds();
+    /** The Constant SCROLL_AMMOUNT. */
+    private static final int SCROLL_AMMOUNT = 4;
 
-		int h = (int)(0.5f+rect.getHeight());
-		//head and tailing space
-		maxXPos=(int)(0.5f+rect.getWidth())+2*internalBufferXSize;
-		int ypos=internalBufferYSize-(internalBufferYSize-h)/2;
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(Textwriter.class.getName());
 
-		img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_BYTE_GRAY);
-		g2 = img.createGraphics();
+    /** The font. */
+    private Font font;
 
-		g2.setColor(new Color(128));
-		g2.setFont(font);		
-		g2.setClip(0, 0, maxXPos, internalBufferYSize);
+    /** The xofs. */
+    private int xofs;
 
-		g2.drawString(text, internalBufferXSize, ypos);
-		DataBufferByte dbi = (DataBufferByte)img.getRaster().getDataBuffer();
-		byte[] textBuffer=dbi.getData();
-		g2.dispose();
+    /** The max x pos. */
+    private int maxXPos;
 
-		xofs = 0;
-		
-		textAsImage = new int[maxXPos*internalBufferYSize];
-		for (int i=0; i<textAsImage.length; i++) {
-		    if (textBuffer[i]>10) {
-		        textAsImage[i] = 127;
-		    } else {
-		        textAsImage[i] = 0;
-		    }
-		}
-		
-		//clear internalbuffer
-		Arrays.fill(this.internalBuffer, 0);
-	}
+    /** The text stored as bitmap. */
+    private int[] textAsImage;
 
+    /** The text. */
+    private String text;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
-		scroller.updateText();
-	}	
+    private AbstractScroller scroller;
+    private int scrollerNr = 0;
 
-	
-	/**
-	 * Gets the text.
-	 *
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Instantiates a new textwriter.
+     * 
+     * @param controller
+     *            the controller
+     * @param fontName
+     *            the font name
+     * @param fontSize
+     *            the font size
+     * @param text
+     *            the text
+     */
+    public Textwriter(MatrixData matrix, String fontName, int fontSize, FileUtils fu) {
+        super(matrix, GeneratorName.TEXTWRITER, ResizeName.PIXEL_RESIZE);
+        String filename = fu.getDataDir() + File.separator + fontName;
+        InputStream is = null;
+        try {
+            is = new FileInputStream(filename);
+            textAsImage = new int[internalBuffer.length];
+            font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.BOLD, (float) fontSize);
+            LOG.log(Level.INFO, "Loaded font " + fontName + ", size: " + fontSize);
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to load font " + filename + ":", e);
+            throw new IllegalArgumentException("Failed to load font " + filename
+                    + ". Check your config.properties file.");
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LOG.log(Level.WARNING, "Failed to close InputStream.", e);
+                }
+            }
+        }
+        createTextImage(INITIAL_STRING);
+        scroller = new PingPongScroller();
+    }
 
-	/**
-	 * 
-	 * @param nr
-	 */
-	public void setTextscroller(int nr) {	
-		if (nr==0) {
-			scroller = new PingPongScroller();
-			scrollerNr = 0;
-		} else {
-			scroller = new LeftScroller();
-			scrollerNr = 1;
-		}
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getTextscroller() {		
-		return scrollerNr;
-	}
-	
-	/**
-	 * this interface is used by all text scrollers
-	 * 
-	 * @author mvogt
-	 *
-	 */
-	interface Textscroller {
-		void updateText();
-	}
+    /**
+     * create image.
+     * 
+     * @param text
+     *            the text
+     */
+    public void createTextImage(String text) {
+        // only load if needed
+        if (StringUtils.equals(text, this.text)) {
+            return;
+        }
 
-	
-	/**
-	 * abstract class for text scrollers
-	 * @author mvogt
-	 *
-	 */
-	abstract class AbstractScroller implements Textscroller {
-		/** The wait. */
-		protected int wait=0;
+        this.text = text;
 
-		protected abstract void scroll();
+        BufferedImage img = new BufferedImage(TEXT_BUFFER_X_SIZE, internalBufferYSize,
+                BufferedImage.TYPE_INT_RGB);
 
-		@Override
-		public void updateText() {
-			//is scrolling needed?
-			if (wait>0) {
-				wait--;
-			} else {
-				if (maxXPos < getInternalBufferXSize()) {
-					//no need to scroll
-					xofs = (getInternalBufferXSize()-maxXPos)/2;
-					wait=99999;
-				} else {
-					scroll();
-				}
-			}
-			
-			copyDataToBuffer();
-		}
-		
-		private void copyDataToBuffer() {
-			int srcOfs=xofs;
-			int dstOfs=0;	
-			try {
-				if (maxXPos < getInternalBufferXSize()) {
-					//text image smaller than internal buffer
-					srcOfs=0;
-					dstOfs=xofs;				
-					for (int y=0; y<internalBufferYSize; y++) {				    
-					    System.arraycopy(textAsImage, srcOfs, internalBuffer, dstOfs, maxXPos);
-						dstOfs+=internalBufferXSize;
-						srcOfs+=maxXPos;
-					}				
-				} else {
-					for (int y=0; y<internalBufferYSize; y++) {
-					    System.arraycopy(textAsImage, srcOfs, internalBuffer, dstOfs, internalBufferXSize);
-						dstOfs+=internalBufferXSize;
-						srcOfs+=maxXPos;
-					}				
-				}
-			} catch (Exception e) {
-				//if the image is resized, this could lead to an arrayoutofboundexception!
-			}
-			
-		}
-	}
-	
-	
-	/**
-	 * scoll left, wait, scoll right, wait, repeat
-	 * @author mvogt
-	 *
-	 */
-	class PingPongScroller extends AbstractScroller {
-		/** The scroll right. */
-		private boolean scrollRight=false;
+        Graphics2D g2 = img.createGraphics();
+        FontRenderContext frc = g2.getFontRenderContext();
+        TextLayout layout = new TextLayout(text, font, frc);
+        Rectangle2D rect = layout.getBounds();
 
-		public PingPongScroller() {
-			xofs = internalBufferXSize;
-		}
-		
-		protected void scroll() {
-			if (scrollRight) {
-				xofs+=SCROLL_AMMOUNT;
-				if (xofs>maxXPos-internalBufferXSize*2) {
-					scrollRight=false;
-					xofs=maxXPos-internalBufferXSize*2;
-					wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
-				}			
-			} else {
-				xofs-=SCROLL_AMMOUNT;
-				if (xofs<1+internalBufferXSize) {
-					scrollRight=true;
-					xofs=internalBufferXSize;
-					wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
-				}
-			}						
+        int h = (int) (0.5f + rect.getHeight());
+        // head and tailing space
+        maxXPos = (int) (0.5f + rect.getWidth()) + 2 * internalBufferXSize;
+        int ypos = internalBufferYSize - (internalBufferYSize - h) / 2;
 
-		}
+        img = new BufferedImage(maxXPos, internalBufferYSize, BufferedImage.TYPE_BYTE_GRAY);
+        g2 = img.createGraphics();
 
-	}
+        g2.setColor(new Color(128));
+        g2.setFont(font);
+        g2.setClip(0, 0, maxXPos, internalBufferYSize);
 
-	/**
-	 * Scroll the text to the left, jump to left side if finished
-	 * 
-	 * @author mvogt
-	 *
-	 */
-	class LeftScroller extends AbstractScroller {
-		boolean flipNext = false;
-		
-		public void scroll() {	
-			if (flipNext) {
-				xofs=0;
-				flipNext = false;
-				return;
-			}
-			
-			xofs+=SCROLL_AMMOUNT;
-			if (xofs+internalBufferXSize>maxXPos) {				
-				flipNext = true;
-				wait=CHANGE_SCROLLING_DIRECTION_TIMEOUT;
-			}						
-		}
-	}
+        g2.drawString(text, internalBufferXSize, ypos);
+        DataBufferByte dbi = (DataBufferByte) img.getRaster().getDataBuffer();
+        byte[] textBuffer = dbi.getData();
+        g2.dispose();
 
-	
-	/**
-	 * 
-	 * @author mvogt
-	 *
-	 */
-	class SingleCharScroller extends AbstractScroller {
-		public void scroll() {
-			
-		}		
-	}
+        xofs = 0;
+
+        textAsImage = new int[maxXPos * internalBufferYSize];
+        for (int i = 0; i < textAsImage.length; i++) {
+            if (textBuffer[i] > 10) {
+                textAsImage[i] = 127;
+            } else {
+                textAsImage[i] = 0;
+            }
+        }
+
+        // clear internalbuffer
+        Arrays.fill(this.internalBuffer, 0);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#update()
+     */
+    @Override
+    public void update(int amount) {
+        for (int n = 0; n < amount; n++) {
+            scroller.updateText();
+        }
+    }
+
+    /**
+     * Gets the text.
+     * 
+     * @return the text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * 
+     * @param nr
+     */
+    public void setTextscroller(int nr) {
+        if (nr == 0) {
+            scroller = new PingPongScroller();
+            scrollerNr = 0;
+        } else {
+            scroller = new LeftScroller();
+            scrollerNr = 1;
+        }
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public int getTextscroller() {
+        return scrollerNr;
+    }
+
+    /**
+     * this interface is used by all text scrollers
+     * 
+     * @author mvogt
+     * 
+     */
+    interface Textscroller {
+        void updateText();
+    }
+
+    /**
+     * abstract class for text scrollers
+     * 
+     * @author mvogt
+     * 
+     */
+    abstract class AbstractScroller implements Textscroller {
+        /** The wait. */
+        protected int wait = 0;
+
+        protected abstract void scroll();
+
+        @Override
+        public void updateText() {
+            // is scrolling needed?
+            if (wait > 0) {
+                wait--;
+            } else {
+                if (maxXPos < getInternalBufferXSize()) {
+                    // no need to scroll
+                    xofs = (getInternalBufferXSize() - maxXPos) / 2;
+                    wait = 99999;
+                } else {
+                    scroll();
+                }
+            }
+
+            copyDataToBuffer();
+        }
+
+        private void copyDataToBuffer() {
+            int srcOfs = xofs;
+            int dstOfs = 0;
+            try {
+                if (maxXPos < getInternalBufferXSize()) {
+                    // text image smaller than internal buffer
+                    srcOfs = 0;
+                    dstOfs = xofs;
+                    for (int y = 0; y < internalBufferYSize; y++) {
+                        System.arraycopy(textAsImage, srcOfs, internalBuffer, dstOfs, maxXPos);
+                        dstOfs += internalBufferXSize;
+                        srcOfs += maxXPos;
+                    }
+                } else {
+                    for (int y = 0; y < internalBufferYSize; y++) {
+                        System.arraycopy(textAsImage, srcOfs, internalBuffer, dstOfs,
+                                internalBufferXSize);
+                        dstOfs += internalBufferXSize;
+                        srcOfs += maxXPos;
+                    }
+                }
+            } catch (Exception e) {
+                // if the image is resized, this could lead to an
+                // arrayoutofboundexception!
+            }
+
+        }
+    }
+
+    /**
+     * scoll left, wait, scoll right, wait, repeat
+     * 
+     * @author mvogt
+     * 
+     */
+    class PingPongScroller extends AbstractScroller {
+        /** The scroll right. */
+        private boolean scrollRight = false;
+
+        public PingPongScroller() {
+            xofs = internalBufferXSize;
+        }
+
+        protected void scroll() {
+            if (scrollRight) {
+                xofs += SCROLL_AMMOUNT;
+                if (xofs > maxXPos - internalBufferXSize * 2) {
+                    scrollRight = false;
+                    xofs = maxXPos - internalBufferXSize * 2;
+                    wait = CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+                }
+            } else {
+                xofs -= SCROLL_AMMOUNT;
+                if (xofs < 1 + internalBufferXSize) {
+                    scrollRight = true;
+                    xofs = internalBufferXSize;
+                    wait = CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * Scroll the text to the left, jump to left side if finished
+     * 
+     * @author mvogt
+     * 
+     */
+    class LeftScroller extends AbstractScroller {
+        boolean flipNext = false;
+
+        public void scroll() {
+            if (flipNext) {
+                xofs = 0;
+                flipNext = false;
+                return;
+            }
+
+            xofs += SCROLL_AMMOUNT;
+            if (xofs + internalBufferXSize > maxXPos) {
+                flipNext = true;
+                wait = CHANGE_SCROLLING_DIRECTION_TIMEOUT;
+            }
+        }
+    }
+
+    /**
+     * 
+     * @author mvogt
+     * 
+     */
+    class SingleCharScroller extends AbstractScroller {
+        public void scroll() {
+
+        }
+    }
 
 }

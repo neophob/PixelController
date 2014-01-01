@@ -25,87 +25,97 @@ import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class Fire.
- *
- * @author mvogt
- * ripped from http://demo-effects.cvs.sourceforge.net/viewvc/demo-effects/demo-effects/FIRE/fire.c?revision=1.5&content-type=text%2Fplain
+ * 
+ * @author mvogt ripped from
+ *         http://demo-effects.cvs.sourceforge.net/viewvc/demo-
+ *         effects/demo-effects
+ *         /FIRE/fire.c?revision=1.5&content-type=text%2Fplain
  */
 public class Fire extends Generator {
 
-	/** The r. */
-	private Random r;
-	
-	/* fire buffer, contains 0..255 */
-	/** The buffer. */
-	private int[] buffer;
+    /** The r. */
+    private Random r;
 
-	/**
-	 * Instantiates a new fire.
-	 *
-	 * @param controller the controller
-	 */
-	public Fire(MatrixData matrix) {
-		super(matrix, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
+    /* fire buffer, contains 0..255 */
+    /** The buffer. */
+    private int[] buffer;
 
-		this.buffer = new int[internalBufferXSize*(internalBufferYSize+10)];		
-		r = new Random();
-	}
+    /**
+     * Instantiates a new fire.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Fire(MatrixData matrix) {
+        super(matrix, GeneratorName.FIRE, ResizeName.QUALITY_RESIZE);
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
-		int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize()+1);
-		int random;
-		for (int i = 0; i < this.getInternalBufferXSize(); i++) {
-			random = r.nextInt(16);
-			/* the lower the value, the intense the fire, compensate a lower value with a higher decay value*/
-			if (random > 8) {
-				/*maximum heat*/
-				this.buffer[j + i] = 255; 
-			} else {
-				this.buffer[j + i] = 0;
-			}
-		}  
-		
-		/* move fire upwards, start at bottom*/
-		int temp;
-		for (int index = 0; index < internalBufferYSize+1; index++) {
-			for (int i = 0; i < internalBufferXSize; i++) {
-				if (i == 0) {
-					/* at the left border*/
-					temp = buffer[j];
-					temp += buffer[j + 1];
-					temp += buffer[j - internalBufferXSize];
-					temp /=3;
-				} else 
-					if (i == this.getInternalBufferXSize()) {
-						/* at the right border*/
-						temp = buffer[j + i];
-						temp += buffer[j - internalBufferXSize + i];
-						temp += buffer[j + i - 1];
-						temp /= 3;
-					} else {
-						temp = buffer[j + i];
-						temp += buffer[j + i + 1];
-						temp += buffer[j + i - 1];
-						temp += buffer[j - internalBufferXSize + i];
-						temp >>= 2;
-					}
-				if (temp > 1) {
-					/* decay */
-					temp --; 
-				}
-				
-				int dofs = j - internalBufferXSize + i;
-				this.buffer[dofs] = temp;
-				if (dofs<this.internalBuffer.length) {
-					this.internalBuffer[dofs] = temp;					
-				}
-			}
-			j -= this.getInternalBufferXSize();
-		}      
+        this.buffer = new int[internalBufferXSize * (internalBufferYSize + 10)];
+        r = new Random();
+    }
 
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#update()
+     */
+    @Override
+    public void update(int amount) {
+        int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize() + 1);
+        int random;
+        int temp;
+
+        for (int n = 0; n < amount; n++) {
+            for (int i = 0; i < this.getInternalBufferXSize(); i++) {
+                random = r.nextInt(16);
+                /*
+                 * the lower the value, the intense the fire, compensate a lower
+                 * value with a higher decay value
+                 */
+                if (random > 8) {
+                    /* maximum heat */
+                    this.buffer[j + i] = 255;
+                } else {
+                    this.buffer[j + i] = 0;
+                }
+            }
+
+            /* move fire upwards, start at bottom */
+            for (int index = 0; index < internalBufferYSize + 1; index++) {
+                for (int i = 0; i < internalBufferXSize; i++) {
+                    if (i == 0) {
+                        /* at the left border */
+                        temp = buffer[j];
+                        temp += buffer[j + 1];
+                        temp += buffer[j - internalBufferXSize];
+                        temp /= 3;
+                    } else if (i == this.getInternalBufferXSize()) {
+                        /* at the right border */
+                        temp = buffer[j + i];
+                        temp += buffer[j - internalBufferXSize + i];
+                        temp += buffer[j + i - 1];
+                        temp /= 3;
+                    } else {
+                        temp = buffer[j + i];
+                        temp += buffer[j + i + 1];
+                        temp += buffer[j + i - 1];
+                        temp += buffer[j - internalBufferXSize + i];
+                        temp >>= 2;
+                    }
+                    if (temp > 1) {
+                        /* decay */
+                        temp--;
+                    }
+
+                    int dofs = j - internalBufferXSize + i;
+                    this.buffer[dofs] = temp;
+                    if (dofs < this.internalBuffer.length) {
+                        this.internalBuffer[dofs] = temp;
+                    }
+                }
+                j -= this.getInternalBufferXSize();
+            }
+        }
+
+    }
 
 }

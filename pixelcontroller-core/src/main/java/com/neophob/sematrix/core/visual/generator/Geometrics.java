@@ -89,7 +89,7 @@ public class Geometrics extends Generator {
      * @see com.neophob.sematrix.core.generator.Generator#update()
      */
     @Override
-    public void update() {
+    public void update(int amount) {
         // maximal 3 active drops
         if ((sound.isHat() || sound.isKick() || drops.isEmpty()) && drops.size() < 3) {
             drops.add(new Drop(random(THICKNESS, internalBufferXSize), random(THICKNESS,
@@ -102,7 +102,7 @@ public class Geometrics extends Generator {
         Arrays.fill(this.internalBufferTmp, 0);
 
         for (Drop d : drops) {
-            d.update();
+            d.update(amount);
             if (d.done()) {
                 tmp.add(d);
             }
@@ -150,14 +150,16 @@ public class Geometrics extends Generator {
         /**
          * Update.
          */
-        private void update() {
+        private void update(int amount) {
 
-            if (!finished) {
-                drawCircle();
-                if (dropSize < internalBufferXSize * 2) {
-                    dropSize++;
-                } else {
-                    finished = true;
+            for (int n = 0; n < amount; n++) {
+                if (!finished) {
+                    drawCircle();
+                    if (dropSize < internalBufferXSize * 2) {
+                        dropSize++;
+                    } else {
+                        finished = true;
+                    }
                 }
             }
         }

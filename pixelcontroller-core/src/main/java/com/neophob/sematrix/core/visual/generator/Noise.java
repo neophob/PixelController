@@ -57,7 +57,7 @@ public class Noise extends Generator {
      * @see com.neophob.sematrix.core.generator.Generator#update()
      */
     @Override
-    public void update() {
+    public void update(int amount) {
         int ofs = 0;
         float xx, yy;
         float xstep = 1.0f / internalBufferXSize;
@@ -72,7 +72,7 @@ public class Noise extends Generator {
             }
             yy += ystep;
         }
-        walk += 0.005f;
+        walk += 0.005f * amount;
     }
 
     // first domain wraping

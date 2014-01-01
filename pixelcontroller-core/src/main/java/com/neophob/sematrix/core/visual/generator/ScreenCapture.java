@@ -146,7 +146,7 @@ public class ScreenCapture extends Generator {
      * @see com.neophob.sematrix.core.generator.Generator#update()
      */
     @Override
-    public void update() {
+    public void update(int amount) {
         if (robot != null) {
             // get screenshot
             BufferedImage screencapture = robot.createScreenCapture(rectangleCaptureArea);

@@ -72,6 +72,10 @@ public class MessageProcessorTest {
         str[0] = "LOAD_PRESET";
         str[1] = "";
         MessageProcessor.INSTANCE.processMsg(str, false, null);
+
+        str[0] = "CHANGE_PRESET";
+        str[1] = "5000";
+        MessageProcessor.INSTANCE.processMsg(str, false, null);
     }
 
     @Test

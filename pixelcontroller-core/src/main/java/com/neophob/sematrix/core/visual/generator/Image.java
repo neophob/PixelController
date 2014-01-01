@@ -157,7 +157,7 @@ public class Image extends Generator {
      * @see com.neophob.sematrix.core.generator.Generator#update()
      */
     @Override
-    public void update() {
+    public void update(int amount) {
 
     }
 

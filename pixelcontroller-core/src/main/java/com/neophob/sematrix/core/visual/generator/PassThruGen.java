@@ -23,25 +23,28 @@ import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class PassThruGen.
- *
+ * 
  * @author mvogt
  */
 public class PassThruGen extends Generator {
 
-	/**
-	 * Instantiates a new pass thru gen.
-	 *
-	 * @param controller the controller
-	 */
-	public PassThruGen(MatrixData matrix) {
-		super(matrix, GeneratorName.PASSTHRU, ResizeName.PIXEL_RESIZE);
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#update()
-	 */
-	@Override
-	public void update() {	
-	}
+    /**
+     * Instantiates a new pass thru gen.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public PassThruGen(MatrixData matrix) {
+        super(matrix, GeneratorName.PASSTHRU, ResizeName.PIXEL_RESIZE);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#update()
+     */
+    @Override
+    public void update(int amount) {
+    }
 
 }

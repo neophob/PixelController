@@ -27,114 +27,106 @@ import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * The Class ColorScroll.
- *
+ * 
  * @author McGyver
  */
 public class ColorScroll extends Generator {
 
     /** The scroll mode. */
     private ScrollMode scrollMode;
-    
+
     /** The frame count. */
     private int frameCount;
-    
+
     /** The internal buffer x size2. */
     private int internalBufferXSize2;
-    
+
     /** The internal buffer y size2. */
     private int internalBufferYSize2;
 
-    
     /**
      * The Enum ScrollMode.
      */
-    public enum ScrollMode{
-	    LEFT_TO_RIGHT(0),
-	    RIGHT_TO_LEFT(1),
-	    TOP_TO_BOTTOM(2),
-	    BOTTOM_TO_TOP(3),
-	    RIGHTBOTTOM_TO_LEFTTOP(4),
-	    LEFTBOTTOM_TO_RIGHTTOP(5),
-	    RIGHTTOP_TO_LEFTBOTTOM(6),
-	    LEFTTOP_TO_RIGHTBOTTOM(7),
-	    MIDDLE_TO_SIDES_VERT(8),
-	    SIDES_TO_MIDDLE_VERT(9),
-	    MIDDLE_TO_SIDES_HORIZ(10),
-	    SIDES_TO_MIDDLE_HORIZ(11),
-	    EXPLODE_CIRCLE(12),
-	    IMPLODE_CIRCLE(13),
-	    EXPLODE_DIAMOND(14),
-	    IMPLODE_DIAMOND(15);
-    	
-    	/** The mode. */
-	    private int mode;
-    	
-    	/**
-	     * Instantiates a new scroll mode.
-	     *
-	     * @param mode the mode
-	     */
-	    private ScrollMode(int mode) {
-    		this.mode = mode;
-    	}
-    	
-    	/**
-	     * Gets the mode.
-	     *
-	     * @return the mode
-	     */
-	    public int getMode() {
-    		return mode;
-    	}
-    	 
-	    public String getDisplayName() {
-	    	return this.name().replace("_", " ");
-	    }
-	    
-    	/**
-	     * Gets the scroll mode.
-	     *
-	     * @param nr the nr
-	     * @return the scroll mode
-	     */
-	    public static ScrollMode getScrollMode(int nr) {
-    		for (ScrollMode s: ScrollMode.values()) {
-    			if (s.getMode() == nr) {
-    				return s;
-    			}
-    		}    		
-    		return null;
-    	}
-	    
+    public enum ScrollMode {
+        LEFT_TO_RIGHT(0), RIGHT_TO_LEFT(1), TOP_TO_BOTTOM(2), BOTTOM_TO_TOP(3), RIGHTBOTTOM_TO_LEFTTOP(
+                4), LEFTBOTTOM_TO_RIGHTTOP(5), RIGHTTOP_TO_LEFTBOTTOM(6), LEFTTOP_TO_RIGHTBOTTOM(7), MIDDLE_TO_SIDES_VERT(
+                8), SIDES_TO_MIDDLE_VERT(9), MIDDLE_TO_SIDES_HORIZ(10), SIDES_TO_MIDDLE_HORIZ(11), EXPLODE_CIRCLE(
+                12), IMPLODE_CIRCLE(13), EXPLODE_DIAMOND(14), IMPLODE_DIAMOND(15);
+
+        /** The mode. */
+        private int mode;
+
+        /**
+         * Instantiates a new scroll mode.
+         * 
+         * @param mode
+         *            the mode
+         */
+        private ScrollMode(int mode) {
+            this.mode = mode;
+        }
+
+        /**
+         * Gets the mode.
+         * 
+         * @return the mode
+         */
+        public int getMode() {
+            return mode;
+        }
+
+        public String getDisplayName() {
+            return this.name().replace("_", " ");
+        }
+
+        /**
+         * Gets the scroll mode.
+         * 
+         * @param nr
+         *            the nr
+         * @return the scroll mode
+         */
+        public static ScrollMode getScrollMode(int nr) {
+            for (ScrollMode s : ScrollMode.values()) {
+                if (s.getMode() == nr) {
+                    return s;
+                }
+            }
+            return null;
+        }
+
     }
-    
+
     /**
      * Instantiates a new colorscroll.
-     *
-     * @param controller the controller
-     * @param colorList the color list
+     * 
+     * @param controller
+     *            the controller
+     * @param colorList
+     *            the color list
      */
     public ColorScroll(MatrixData matrix) {
         super(matrix, GeneratorName.COLOR_SCROLL, ResizeName.QUALITY_RESIZE);
 
         scrollMode = ScrollMode.EXPLODE_CIRCLE;
 
-        internalBufferXSize2 = internalBufferXSize/2;
-        internalBufferYSize2 = internalBufferYSize/2;
+        internalBufferXSize2 = internalBufferXSize / 2;
+        internalBufferYSize2 = internalBufferYSize / 2;
     }
 
-    
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.neophob.sematrix.core.generator.Generator#update()
      */
     @Override
-    public void update() {
-        
-        //do not remove, sanity check
-        if (scrollMode==null) {
-            scrollMode = ScrollMode.EXPLODE_CIRCLE;            
+    public void update(int amount) {
+
+        // do not remove, sanity check
+        if (scrollMode == null) {
+            scrollMode = ScrollMode.EXPLODE_CIRCLE;
         }
-        
+
         // scroll colors on x axis
         switch (scrollMode) {
             case LEFT_TO_RIGHT:
@@ -180,59 +172,61 @@ public class ColorScroll extends Generator {
                 implodeCircle();
                 break;
             case EXPLODE_DIAMOND:
-            	explodeDiamond();
-            	break;
+                explodeDiamond();
+                break;
             case IMPLODE_DIAMOND:
-            	imploadDiamond();
-            	break;
+                imploadDiamond();
+                break;
         }
-        
-        frameCount++;
+
+        frameCount += amount;
     }
 
     /**
      * Sets the scroll mode.
-     *
-     * @param scrollMode the new scroll mode
+     * 
+     * @param scrollMode
+     *            the new scroll mode
      */
     void setScrollMode(int scrollMode) {
-        ScrollMode sm = ScrollMode.getScrollMode(scrollMode);          
-        //sanity check
-        if (sm!=null) {
+        ScrollMode sm = ScrollMode.getScrollMode(scrollMode);
+        // sanity check
+        if (sm != null) {
             this.scrollMode = sm;
-        }                 
+        }
     }
 
-    
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#shuffle()
-	 */
-	@Override
-	public void shuffle() {
-		if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.COLOR_SCROLL)) {
-			Random rand = new Random();
-			int nr = rand.nextInt(ScrollMode.values().length);
-			this.setScrollMode(nr);
-		}
-	}
-    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#shuffle()
+     */
+    @Override
+    public void shuffle() {
+        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.COLOR_SCROLL)) {
+            Random rand = new Random();
+            int nr = rand.nextInt(ScrollMode.values().length);
+            this.setScrollMode(nr);
+        }
+    }
+
     /**
      * Gets the color.
-     *
-     * @param val the val
+     * 
+     * @param val
+     *            the val
      * @return the color
      */
     private int getColor(int val) {
-    	return (val+frameCount)&0xff;
+        return (val + frameCount) & 0xff;
     }
-    
 
     /**
      * Left to right.
      */
     private void leftToRight() {
-        for (int x = 0; x < internalBufferXSize; x++) {	
-        	int col = getColor(x);
+        for (int x = 0; x < internalBufferXSize; x++) {
+            int col = getColor(x);
             for (int y = 0; y < internalBufferYSize; y++) {
                 this.internalBuffer[y * internalBufferXSize + x] = col;
             }
@@ -245,7 +239,7 @@ public class ColorScroll extends Generator {
     private void rightToLeft() {
         for (int x = 0; x < internalBufferXSize; x++) {
             int xRev = internalBufferXSize - x - 1;
-            
+
             int col = getColor(x);
             for (int y = 0; y < internalBufferYSize; y++) {
                 this.internalBuffer[y * internalBufferXSize + xRev] = col;
@@ -308,7 +302,7 @@ public class ColorScroll extends Generator {
     private void leftBottomToRightTop() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
-        	int col = getColor(diagStep);
+            int col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -331,7 +325,7 @@ public class ColorScroll extends Generator {
     private void rightTopToLeftBottom() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
-        	int col = getColor(diagStep);
+            int col = getColor(diagStep);
 
             int diagPixelCount = diagStep;
             int diagOffset = 0;
@@ -354,9 +348,9 @@ public class ColorScroll extends Generator {
     private void leftTopToRightBottom() {
         int bigSide = Math.max(internalBufferXSize, internalBufferYSize);
         for (int diagStep = 0; diagStep < 2 * bigSide; diagStep++) {
-        	int col = getColor(diagStep);
+            int col = getColor(diagStep);
 
-        	int diagPixelCount = diagStep;
+            int diagPixelCount = diagStep;
             int diagOffset = 0;
             if (diagStep >= bigSide) {
                 diagPixelCount = (2 * bigSide) - diagStep;
@@ -378,7 +372,7 @@ public class ColorScroll extends Generator {
         int ySize = internalBufferYSize;
 
         for (int x = 0; x < internalBufferXSize2; x++) {
-        	int col = getColor(x);
+            int col = getColor(x);
 
             for (int y = 0; y < ySize; y++) {
                 this.internalBuffer[y * internalBufferXSize + x] = col;
@@ -412,7 +406,7 @@ public class ColorScroll extends Generator {
 
         for (int y = 0; y < internalBufferYSize2; y++) {
 
-        	int col = getColor(y);
+            int col = getColor(y);
 
             for (int x = 0; x < xSize; x++) {
                 this.internalBuffer[y * internalBufferXSize + x] = col;
@@ -446,16 +440,16 @@ public class ColorScroll extends Generator {
 
         for (int i = 0; i < internalBufferXSize; i++) {
             for (int j = 0; j < internalBufferYSize; j++) {
-                //calculate distance to center:
+                // calculate distance to center:
                 double x = (internalBufferXSize2) - i;
                 double y = (internalBufferYSize2) - j;
                 double r = Math.sqrt((x * x) + (y * y));
-                int col = getColor((int)r);
+                int col = getColor((int) r);
                 setPixel(i, j, col);
             }
         }
     }
-    
+
     /**
      * Explode circle.
      */
@@ -467,20 +461,17 @@ public class ColorScroll extends Generator {
 
         for (int i = 0; i < internalBufferXSize; i++) {
             for (int j = 0; j < internalBufferYSize; j++) {
-                //calculate distance to center:
+                // calculate distance to center:
                 double x = (internalBufferXSize2) - i;
                 double y = (internalBufferYSize2) - j;
                 double r = Math.sqrt((x * x) + (y * y));
                 r = maxR - r;
-                int col = getColor((int)r);
+                int col = getColor((int) r);
                 setPixel(i, j, col);
             }
         }
 
     }
-    
-    
-    
 
     /**
      * Explode diamond.
@@ -489,11 +480,11 @@ public class ColorScroll extends Generator {
 
         for (int i = 0; i < internalBufferXSize; i++) {
             for (int j = 0; j < internalBufferYSize; j++) {
-                //calculate distance to center:
+                // calculate distance to center:
                 double x = (internalBufferXSize2) - i;
                 double y = (internalBufferYSize2) - j;
                 double r = Math.abs(x) + Math.abs(y);
-                int col = getColor((int)r);
+                int col = getColor((int) r);
                 setPixel(i, j, col);
             }
         }
@@ -510,24 +501,27 @@ public class ColorScroll extends Generator {
 
         for (int i = 0; i < internalBufferXSize; i++) {
             for (int j = 0; j < internalBufferYSize; j++) {
-                //calculate distance to center:
+                // calculate distance to center:
                 double x = (internalBufferXSize2) - i;
                 double y = (internalBufferYSize2) - j;
                 double r = Math.abs(x) + Math.abs(y);
                 r = maxR - r;
-                int col = getColor((int)r);
+                int col = getColor((int) r);
                 setPixel(i, j, col);
             }
         }
 
     }
-    
+
     /**
      * Sets the pixel.
-     *
-     * @param x the x
-     * @param y the y
-     * @param col the col
+     * 
+     * @param x
+     *            the x
+     * @param y
+     *            the y
+     * @param col
+     *            the col
      */
     private void setPixel(int x, int y, int col) {
         if (y >= 0 && y < internalBufferYSize && x >= 0 && x < internalBufferXSize) {
@@ -535,26 +529,22 @@ public class ColorScroll extends Generator {
         }
     }
 
-
     /**
      * @return the scrollMode
      */
     public ScrollMode getScrollMode() {
-        if (scrollMode==null) {
+        if (scrollMode == null) {
             return ScrollMode.EXPLODE_CIRCLE;
         }
         return scrollMode;
     }
 
-
     /**
-     * @param scrollMode the scrollMode to set
+     * @param scrollMode
+     *            the scrollMode to set
      */
     public void setScrollMode(ScrollMode scrollMode) {
         this.scrollMode = scrollMode;
     }
-    
-    
-    
 
 }

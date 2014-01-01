@@ -71,45 +71,49 @@ public class Metaballs extends Generator {
      * @see com.neophob.sematrix.core.generator.Generator#update()
      */
     @Override
-    public void update() {
+    public void update(int amount) {
         float f;
-        for (int i = 1; i < NUM_BLOBS; ++i) {
-            f = (float) Math.sin((i + 1) * 3 + 5 * blobPx[i]);
-            f *= 3f;
-            if (f < 0) {
-                f = 0 - f;
-            }
-            f += 0.5f;
-            blobPx[i] += blobDx[i] * f;
 
-            f = (float) Math.cos(a % 256 + (i + 3) * blobPy[i]);
-            f *= 3f;
-            if (f < 0) {
-                f = 0 - f;
-            }
-            f += 0.5f;
-            blobPy[i] += (int) (blobDy[i] * f);
+        // update
+        for (int n = 0; n < amount; n++) {
+            for (int i = 1; i < NUM_BLOBS; ++i) {
+                f = (float) Math.sin((i + 1) * 3 + 5 * blobPx[i]);
+                f *= 3f;
+                if (f < 0) {
+                    f = 0 - f;
+                }
+                f += 0.5f;
+                blobPx[i] += blobDx[i] * f;
 
-            // bounce across screen
-            if (blobPx[i] < 0) {
-                blobDx[i] = 1;
-            }
-            if (blobPx[i] > internalBufferXSize) {
-                blobDx[i] = -1;
-            }
-            if (blobPy[i] < 0) {
-                blobDy[i] = 1;
-            }
-            if (blobPy[i] > internalBufferYSize) {
-                blobDy[i] = -1;
-            }
+                f = (float) Math.cos(a % 256 + (i + 3) * blobPy[i]);
+                f *= 3f;
+                if (f < 0) {
+                    f = 0 - f;
+                }
+                f += 0.5f;
+                blobPy[i] += (int) (blobDy[i] * f);
 
-            for (int x = 0; x < internalBufferXSize; x++) {
-                vx[i][x] = (blobPx[i] - x) * (blobPx[i] - x);
-            }
+                // bounce across screen
+                if (blobPx[i] < 0) {
+                    blobDx[i] = 1;
+                }
+                if (blobPx[i] > internalBufferXSize) {
+                    blobDx[i] = -1;
+                }
+                if (blobPy[i] < 0) {
+                    blobDy[i] = 1;
+                }
+                if (blobPy[i] > internalBufferYSize) {
+                    blobDy[i] = -1;
+                }
 
-            for (int y = 0; y < internalBufferYSize; y++) {
-                vy[i][y] = (blobPy[i] - y) * (blobPy[i] - y);
+                for (int x = 0; x < internalBufferXSize; x++) {
+                    vx[i][x] = (blobPx[i] - x) * (blobPx[i] - x);
+                }
+
+                for (int y = 0; y < internalBufferYSize; y++) {
+                    vy[i][y] = (blobPy[i] - y) * (blobPy[i] - y);
+                }
             }
         }
 
@@ -118,6 +122,7 @@ public class Metaballs extends Generator {
             a = 1;
         }
 
+        // draw
         for (int y = 0; y < internalBufferYSize; y++) {
             for (int x = 0; x < internalBufferXSize; x++) {
                 int m = 1;
@@ -131,7 +136,6 @@ public class Metaballs extends Generator {
                     b = 255;
                 }
                 this.internalBuffer[y * internalBufferXSize + x] = b;
-
             }
         }
 

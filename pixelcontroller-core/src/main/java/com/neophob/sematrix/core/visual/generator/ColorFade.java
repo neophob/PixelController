@@ -24,7 +24,7 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
- *              
+ * 
  * @author McGyver
  */
 public class ColorFade extends Generator {
@@ -33,17 +33,18 @@ public class ColorFade extends Generator {
 
     /**
      * Instantiates a new colorscroll
-     *
-     * @param controller the controller
+     * 
+     * @param controller
+     *            the controller
      */
     public ColorFade(MatrixData matrix) {
         super(matrix, GeneratorName.COLOR_FADE, ResizeName.QUALITY_RESIZE);
     }
 
     @Override
-    public void update() {
-        Arrays.fill(this.internalBuffer, frameCount%255);        
-        frameCount++;
+    public void update(int amount) {
+        Arrays.fill(this.internalBuffer, frameCount % 255);
+        frameCount += amount;
     }
-    
+
 }

@@ -25,116 +25,124 @@ import java.util.Random;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 
-
 /**
  * moving cell.
- *
+ * 
  * @author mvogt
  */
 public class Cell extends Generator {
 
-	/** The Constant BUBBLES. */
-	private static final int NR_OF_CELLS=5;
-	
-	/** The Constant RENDERSIZE. */
-	private static final int RENDERSIZE=2;
+    /** The Constant BUBBLES. */
+    private static final int NR_OF_CELLS = 5;
 
-	private static final int RENDERSIZE_SQRT=RENDERSIZE*RENDERSIZE;
+    /** The Constant RENDERSIZE. */
+    private static final int RENDERSIZE = 2;
 
-	/** The random. */
-	private Random random=new Random();
-	
-	/** The points. */
-	private List<Attractor> points=new ArrayList<Attractor>();
-	
-	/** The distlookup. */
-	private float[][] distlookup;
-	
-	private int lowXRes, lowYRes;
-	private int hsize;
+    private static final int RENDERSIZE_SQRT = RENDERSIZE * RENDERSIZE;
 
-	/**
-	 * Instantiates a new cell.
-	 *
-	 * @param controller the controller
-	 */
-	public Cell(MatrixData matrix) {
-		super(matrix, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
+    /** The random. */
+    private Random random = new Random();
 
-		//create LUT
-		hsize = (int)(Math.sqrt(internalBufferXSize*internalBufferYSize*2));
-		distlookup=new float[hsize][hsize];
-		for (int i=0;i<hsize;i++) {
-			for (int j=0;j<hsize;j++) {
-				distlookup[i][j]=(float)Math.sqrt(Math.pow(i,2)+Math.pow(j,2));
-			}
-		}
+    /** The points. */
+    private List<Attractor> points = new ArrayList<Attractor>();
 
-		lowXRes = (int)Math.floor(internalBufferXSize/(float)RENDERSIZE);
-		lowYRes = (int)Math.floor(internalBufferYSize/(float)RENDERSIZE);
+    /** The distlookup. */
+    private float[][] distlookup;
 
-		for (int i=0;i<NR_OF_CELLS;i++) {
-			points.add(new Attractor(lowXRes, lowYRes));   
-		}
-	}
+    private int lowXRes, lowYRes;
+    private int hsize;
 
+    /**
+     * Instantiates a new cell.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Cell(MatrixData matrix) {
+        super(matrix, GeneratorName.CELL, ResizeName.QUALITY_RESIZE);
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
-		for (int x=0;x<lowXRes;x+=RENDERSIZE) {
-			for (int y=0;y<lowYRes;y+=RENDERSIZE) {
+        // create LUT
+        hsize = (int) (Math.sqrt(internalBufferXSize * internalBufferYSize * 2));
+        distlookup = new float[hsize][hsize];
+        for (int i = 0; i < hsize; i++) {
+            for (int j = 0; j < hsize; j++) {
+                distlookup[i][j] = (float) Math.sqrt(Math.pow(i, 2) + Math.pow(j, 2));
+            }
+        }
 
-				int nearest=0;
-				float closest=1000.0f;      
+        lowXRes = (int) Math.floor(internalBufferXSize / (float) RENDERSIZE);
+        lowYRes = (int) Math.floor(internalBufferYSize / (float) RENDERSIZE);
 
-				for (int p=0; p<points.size(); p++) {
-					Attractor a=(Attractor)points.get(p);
-					float dist=a.distanceTo(x,y);
-					if (dist<closest) {
-						nearest=p;
-						closest=dist;
-					}
-				}
+        for (int i = 0; i < NR_OF_CELLS; i++) {
+            points.add(new Attractor(lowXRes, lowYRes));
+        }
+    }
 
-				Attractor a=(Attractor)points.get(nearest);
-				rect(x*RENDERSIZE,y*RENDERSIZE, RENDERSIZE_SQRT, RENDERSIZE_SQRT, a.color);
-			}
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#update()
+     */
+    @Override
+    public void update(int amount) {
+        for (int x = 0; x < lowXRes; x += RENDERSIZE) {
+            for (int y = 0; y < lowYRes; y += RENDERSIZE) {
 
-		for (Attractor a: points) {			
-			a.move();
-		}   
-	}
+                int nearest = 0;
+                float closest = 1000.0f;
 
-	/**
-	 * draw rectangle in buffer.
-	 *
-	 * @param xofs the xofs
-	 * @param yofs the yofs
-	 * @param xsize the xsize
-	 * @param ysize the ysize
-	 * @param col the col
-	 */
-	private void rect(int xofs, int yofs, int xsize, int ysize, int col) {
-		if (ysize+yofs>internalBufferYSize) {
-			ysize=ysize+yofs-internalBufferYSize;
-		}
-		if (xsize+xofs>internalBufferXSize) {
-			xsize=xsize+xofs-internalBufferXSize;
-		}
-		
-		for (int y=0; y<ysize; y++) {
-			int ofs=(yofs+y)*internalBufferXSize+xofs;
-			for (int x=0; x<xsize; x++) {				
-				this.internalBuffer[ofs++] = col;
-			}
-		}
-	}
-	
-	class Attractor {
+                for (int p = 0; p < points.size(); p++) {
+                    Attractor a = (Attractor) points.get(p);
+                    float dist = a.distanceTo(x, y);
+                    if (dist < closest) {
+                        nearest = p;
+                        closest = dist;
+                    }
+                }
+
+                Attractor a = (Attractor) points.get(nearest);
+                rect(x * RENDERSIZE, y * RENDERSIZE, RENDERSIZE_SQRT, RENDERSIZE_SQRT, a.color);
+            }
+        }
+
+        for (Attractor a : points) {
+            for (int i = 0; i < amount; i++) {
+                a.move();
+            }
+        }
+    }
+
+    /**
+     * draw rectangle in buffer.
+     * 
+     * @param xofs
+     *            the xofs
+     * @param yofs
+     *            the yofs
+     * @param xsize
+     *            the xsize
+     * @param ysize
+     *            the ysize
+     * @param col
+     *            the col
+     */
+    private void rect(int xofs, int yofs, int xsize, int ysize, int col) {
+        if (ysize + yofs > internalBufferYSize) {
+            ysize = ysize + yofs - internalBufferYSize;
+        }
+        if (xsize + xofs > internalBufferXSize) {
+            xsize = xsize + xofs - internalBufferXSize;
+        }
+
+        for (int y = 0; y < ysize; y++) {
+            int ofs = (yofs + y) * internalBufferXSize + xofs;
+            for (int x = 0; x < xsize; x++) {
+                this.internalBuffer[ofs++] = col;
+            }
+        }
+    }
+
+    class Attractor {
 
         int x;
         int y;
@@ -147,62 +155,63 @@ public class Cell extends Generator {
          * Instantiates a new attractor.
          */
         public Attractor(int lowXRes, int lowYRes) {
-        		this.lowXRes = lowXRes;
-        		this.lowYRes = lowYRes;
-        		
-    			if (lowXRes>0) {
-    				this.x=random.nextInt(lowXRes);				
-    			} else {
-    				this.x=1;
-    			}
-    			
-    			if (lowYRes>0) {
-    				this.y=random.nextInt(lowYRes);				
-    			} else {
-    				this.y=1;
-    			}
+            this.lowXRes = lowXRes;
+            this.lowYRes = lowYRes;
 
-                
-                while (this.dx==0) {
-                        this.dx=-1+random.nextInt(2);
-                }
-                while (this.dy==0) {
-                        this.dy=-1+random.nextInt(2); 
-                }
-                this.color=random.nextInt(255);
+            if (lowXRes > 0) {
+                this.x = random.nextInt(lowXRes);
+            } else {
+                this.x = 1;
+            }
+
+            if (lowYRes > 0) {
+                this.y = random.nextInt(lowYRes);
+            } else {
+                this.y = 1;
+            }
+
+            while (this.dx == 0) {
+                this.dx = -1 + random.nextInt(2);
+            }
+            while (this.dy == 0) {
+                this.dy = -1 + random.nextInt(2);
+            }
+            this.color = random.nextInt(255);
         }
 
         /**
          * Move.
          */
         public void move() {
-                // move with wrap-around
-                this.x+=this.dx;
-                this.y+=this.dy;
-                if (this.x<0 || this.x>lowXRes) {
-                        this.dx=-this.dx;
-                }
-                if (this.y<0 || this.y>lowYRes) {
-                        this.dy=-this.dy;
-                }
-                
-                int rnd = random.nextInt(64);
-                if (rnd==3) {
-                        this.color=random.nextInt(255);
-                }
-                
+            // move with wrap-around
+            this.x += this.dx;
+            this.y += this.dy;
+            if (this.x < 0 || this.x > lowXRes) {
+                this.dx = -this.dx;
+            }
+            if (this.y < 0 || this.y > lowYRes) {
+                this.dy = -this.dy;
+            }
+
+            int rnd = random.nextInt(64);
+            if (rnd == 3) {
+                this.color = random.nextInt(255);
+            }
+
         }
-        
+
         /**
          * Distance to.
-         *
-         * @param xx the xx
-         * @param yy the yy
+         * 
+         * @param xx
+         *            the xx
+         * @param yy
+         *            the yy
          * @return the float
          */
-        public float distanceTo(int xx,int yy) {
-                // Euclidian Distance
-                return distlookup[Math.abs(xx-this.x)%hsize][Math.abs(yy-this.y)%hsize]; 
+        public float distanceTo(int xx, int yy) {
+            // Euclidian Distance
+            return distlookup[Math.abs(xx - this.x) % hsize][Math.abs(yy - this.y) % hsize];
         }
-}
+    }
 }

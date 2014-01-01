@@ -23,26 +23,28 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
 
-
 /**
  * Get content from first visual.
  */
-public class VisualZero extends Generator {	
+public class VisualZero extends Generator {
 
-	/**
-	 * @param controller the controller
-	 */
-	public VisualZero(MatrixData matrix) {
-		super(matrix, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);	
-	}
+    /**
+     * @param controller
+     *            the controller
+     */
+    public VisualZero(MatrixData matrix) {
+        super(matrix, GeneratorName.VISUAL_ZERO, ResizeName.QUALITY_RESIZE);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.generator.Generator#update()
-	 */
-	@Override
-	public void update() {
-		Visual visual = VisualState.getInstance().getVisual(0);
-	    this.internalBuffer = visual.getMixer().getBuffer(visual);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.generator.Generator#update()
+     */
+    @Override
+    public void update(int amount) {
+        Visual visual = VisualState.getInstance().getVisual(0);
+        this.internalBuffer = visual.getMixer().getBuffer(visual);
+    }
 
 }
