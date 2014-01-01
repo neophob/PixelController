@@ -60,11 +60,11 @@ public class Fire extends Generator {
      */
     @Override
     public void update(int amount) {
-        int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize() + 1);
         int random;
         int temp;
 
         for (int n = 0; n < amount; n++) {
+            int j = this.getInternalBufferXSize() * (this.getInternalBufferYSize() + 1);
             for (int i = 0; i < this.getInternalBufferXSize(); i++) {
                 random = r.nextInt(16);
                 /*
