@@ -26,178 +26,182 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.fader.CrossfaderHelper;
 
-
 /**
  * The Class RotoZoom.
- *
+ * 
  * @author michu
  * 
- * ripped from http://www.openprocessing.org/visuals/?visualID=8030
+ *         ripped from http://www.openprocessing.org/visuals/?visualID=8030
  */
 public class RotoZoom extends RotoZoomEffect {
 
-	//endless zooming or zoomin-zoomout...
-	/**
-	 * The Enum WORKMODE.
-	 */
-	public enum WORKMODE {
-		
-		/** The PINGPONG. */
-		PINGPONG,
-		
-		/** The ZOOM. */
-		ZOOM
-	}
+    // endless zooming or zoomin-zoomout...
+    /**
+     * The Enum WORKMODE.
+     */
+    public enum WORKMODE {
 
-	/** The angle. */
-	private float angle;
-	
-	/** The angle orig. */
-	private int angleOrig;
-	
-	/** The angle diff. */
-	private float angleDiff;
-	
-	/** The scale2. */
-	private float scale, scale2;
-	
-	/** The scale orig. */
-	private float scaleOrig;
-	
-	/** The fader pos. */
-	private float faderPos;
-	
-	/** The dscalee. */
-	private float dscalee=0.03f;
+        /** The PINGPONG. */
+        PINGPONG,
 
-	/** The workmode. */
-	private WORKMODE workmode = WORKMODE.ZOOM;
+        /** The ZOOM. */
+        ZOOM
+    }
 
-	/**
-	 * Instantiates a new roto zoom.
-	 *
-	 * @param controller the controller
-	 * @param scale the scale
-	 * @param angle the angle
-	 */
-	public RotoZoom(MatrixData matrix, float scale, float angle) {
-		super(matrix, EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
-		this.scale = scale;
-		this.scaleOrig = scale;
-		this.angle = angle;
-		this.faderPos = 0.0f;
-		this.angleDiff = 0.02f;
-	}
+    /** The angle. */
+    private float angle;
 
-	/**
-	 * Gets the angle.
-	 *
-	 * @return the angle
-	 */
-	public int getAngle() {
-		return angleOrig;
-	}
+    /** The angle orig. */
+    private int angleOrig;
 
-	/**
-	 * Sets the angle.
-	 *
-	 * @param angle from -127 to 127
-	 * @return the int
-	 */
-	public int setAngle(int angle) {
-		if (angle > 127) {
-			angle = 127;
-		}
-		if (angle < -127) {
-			angle = -127;
-		}
-		
-		this.angleOrig = angle;
-		
-		//137 sound funny - but correct
-		//using 137 - the max value is 10 used for the diff!
-		if (angle>0) {
-			angle=137-angle;			
-		} else {
-			angle=-137-angle;
-		}
-		
-		if (angle != 0) {
-			float f = (1.0f / (float)angle)*2;
-			this.angleDiff = f;	
-		} else {
-			this.angleDiff = 0.0f;
-		}
-		return angle;
-	}
+    /** The angle diff. */
+    private float angleDiff;
 
-	
-	/**
-	 * Sets the zoom.
-	 *
-	 * @param zoom the zoom
-	 * @return the int
-	 */
-	public int setZoom(int zoom) {
-		return 0;
-	}
+    /** The scale2. */
+    private float scale, scale2;
 
+    /** The scale orig. */
+    private float scaleOrig;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
-	 */
-	public int[] getBuffer(int[] buffer) {		
-		int[] rotoZoomedBuffer = rotoZoom(scale, angle, buffer);
+    /** The fader pos. */
+    private float faderPos;
 
-		//the crossfade is used for the endless zoom option
-		if (workmode == WORKMODE.ZOOM && faderPos>0.0f) {			
-			return CrossfaderHelper.getBuffer(faderPos, rotoZoomedBuffer, rotoZoom(scale2, angle, buffer));
-		}
-		return rotoZoomedBuffer;
-	}
+    /** The dscalee. */
+    private float dscalee = 0.01f;
 
+    /** The workmode. */
+    private WORKMODE workmode = WORKMODE.ZOOM;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.effect.Effect#update()
-	 */
-	@Override
-	public void update() {
-		angle+=this.angleDiff;
-		scale-=dscalee;
+    /**
+     * Instantiates a new roto zoom.
+     * 
+     * @param controller
+     *            the controller
+     * @param scale
+     *            the scale
+     * @param angle
+     *            the angle
+     */
+    public RotoZoom(MatrixData matrix, float scale, float angle) {
+        super(matrix, EffectName.ROTOZOOM, ResizeName.QUALITY_RESIZE);
+        this.scale = scale;
+        this.scaleOrig = scale;
+        this.angle = angle;
+        this.faderPos = 0.0f;
+        this.angleDiff = 0.02f;
+    }
 
-		if (workmode == WORKMODE.ZOOM) {
-			if (this.scale < 0.4f) {
-				faderPos += 0.04f;
-				scale2-=dscalee;
+    /**
+     * Gets the angle.
+     * 
+     * @return the angle
+     */
+    public int getAngle() {
+        return angleOrig;
+    }
 
-				if (faderPos>0.98f) {
-					//finished fading - reset values
-					this.faderPos = 0.0f;
-					this.scale = this.scale2;
-					this.scale2 = this.scaleOrig;
-				}			
-			}			
-		} else {
-			//WORKMODE.PINGPONG
-			if (scale<0.13f || scale>1.6f) {
-				dscalee*=-1;
-			}			
-		}
-	}
+    /**
+     * Sets the angle.
+     * 
+     * @param angle
+     *            from -127 to 127
+     * @return the int
+     */
+    public int setAngle(int angle) {
+        if (angle > 127) {
+            angle = 127;
+        }
+        if (angle < -127) {
+            angle = -127;
+        }
 
+        this.angleOrig = angle;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.effect.Effect#shuffle()
-	 */
-	@Override
-	public void shuffle() {
-		if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
-			int tmpAngle = (new Random().nextInt(255))-128;
-			this.setAngle(tmpAngle);					
-		}
-	}
-	
-	
-	
+        // 137 sound funny - but correct
+        // using 137 - the max value is 10 used for the diff!
+        if (angle > 0) {
+            angle = 137 - angle;
+        } else {
+            angle = -137 - angle;
+        }
+
+        if (angle != 0) {
+            float f = (1.0f / (float) angle) * 2;
+            this.angleDiff = f;
+        } else {
+            this.angleDiff = 0.0f;
+        }
+        return angle;
+    }
+
+    /**
+     * Sets the zoom.
+     * 
+     * @param zoom
+     *            the zoom
+     * @return the int
+     */
+    public int setZoom(int zoom) {
+        return 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
+     */
+    public int[] getBuffer(int[] buffer) {
+        int[] rotoZoomedBuffer = rotoZoom(scale, angle, buffer);
+
+        // the crossfade is used for the endless zoom option
+        if (workmode == WORKMODE.ZOOM && faderPos > 0.0f) {
+            return CrossfaderHelper.getBuffer(faderPos, rotoZoomedBuffer,
+                    rotoZoom(scale2, angle, buffer));
+        }
+        return rotoZoomedBuffer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.effect.Effect#update()
+     */
+    @Override
+    public void update() {
+        angle += this.angleDiff;
+        scale -= dscalee;
+
+        if (workmode == WORKMODE.ZOOM) {
+            if (this.scale < 0.4f) {
+                faderPos += 0.04f;
+                scale2 -= dscalee;
+
+                if (faderPos > 0.98f) {
+                    // finished fading - reset values
+                    this.faderPos = 0.0f;
+                    this.scale = this.scale2;
+                    this.scale2 = this.scaleOrig;
+                }
+            }
+        } else {
+            // WORKMODE.PINGPONG
+            if (scale < 0.13f || scale > 1.6f) {
+                dscalee *= -1;
+            }
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.effect.Effect#shuffle()
+     */
+    @Override
+    public void shuffle() {
+        if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.ROTOZOOMER)) {
+            int tmpAngle = (new Random().nextInt(255)) - 128;
+            this.setAngle(tmpAngle);
+        }
+    }
 
 }
