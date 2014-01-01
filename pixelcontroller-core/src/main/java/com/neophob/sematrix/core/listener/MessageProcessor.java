@@ -710,18 +710,31 @@ public enum MessageProcessor {
      */
     private void loadPreset(int nr) {
         VisualState col = VisualState.getInstance();
-
+        col.setLoadingPresent(true);
         // save current selections
         int currentVisual = col.getCurrentVisual();
         int currentOutput = col.getCurrentOutput();
 
-        List<String> present = presetService.getPresets().get(nr).getPresent();
-        if (present != null) {
+        List<String> preset = presetService.getPresets().get(nr).getPresent();
+        if (preset != null) {
+            if (preset.contains("CHANGE_GENERATOR_B 1") || preset.contains("CHANGE_GENERATOR_A 1")) {
+                // blinken generator found
+            } else {
+                LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
+                int ofs = 0;
+                for (String s : preset) {
+                    if (s.startsWith("BLINKEN")) {
+                        break;
+                    }
+                    ofs++;
+                }
+                preset.remove(ofs);
+            }
             // save current visual buffer
             TransitionManager transition = new TransitionManager(col);
 
             // load preset
-            col.setCurrentStatus(present);
+            col.setCurrentStatus(preset);
 
             // Restore current Selection
             col.setCurrentVisual(currentVisual);
@@ -730,6 +743,7 @@ public enum MessageProcessor {
             // start preset fader here, hardcoded to Crossfading
             transition.startCrossfader();
         }
+        col.setLoadingPresent(false);
     }
 
 }
