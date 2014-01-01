@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.core.listener;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,18 +79,10 @@ public enum MessageProcessor {
         return (int) Float.parseFloat(s);
     }
 
-    /**
-     * TouchOSC sends two commands if a button is pressed "/COMMAND 0" and
-     * "/COMMAND 1" -> ignore the 0 parameter
-     * 
-     * @param msg
-     * @return
-     */
-    private boolean ignoreTouchOscCommand(String[] msg) {
-        System.out.println("len: " + msg.length + ": " + Arrays.toString(msg));
-        if (msg.length > 1) {
-            System.out.println(parseValue(msg[1]));
-            if (parseValue(msg[1]) == 0) {
+    private boolean ignoreCommand(ValidCommand cmd, String[] msg) {
+        // filter out double touchOsc messages
+        if (msg.length == 2 && cmd.getNrOfParams() == 0) {
+            if (msg[1].equals("0.0")) {
                 return true;
             }
         }
@@ -118,6 +110,11 @@ public enum MessageProcessor {
 
         try {
             ValidCommand cmd = ValidCommand.valueOf(msg[0]);
+            if (ignoreCommand(cmd, msg)) {
+                LOG.log(Level.INFO, "Ignore command, assume TouchOSC action");
+                return;
+            }
+
             Visual v;
             switch (cmd) {
                 case CHANGE_GENERATOR_A:
@@ -452,9 +449,6 @@ public enum MessageProcessor {
 
                 // one shot randomizer
                 case RANDOMIZE:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     try {
                         // save current visual buffer
                         TransitionManager transition = new TransitionManager(col);
@@ -468,9 +462,6 @@ public enum MessageProcessor {
 
                 // one shot randomizer, use a pre-stored present
                 case PRESET_RANDOM:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     try {
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         loadPreset(currentPreset);
@@ -578,9 +569,6 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_COLORSET:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     v = col.getVisual(col.getCurrentVisual());
                     String colorSetName = v.getColorSet().getName();
 
@@ -599,9 +587,6 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_GENERATOR_A:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     v = col.getVisual(col.getCurrentVisual());
                     int currentGenerator = v.getGenerator1Idx();
                     int nrOfGenerators = 1 + col.getPixelControllerGenerator().getSize();
@@ -618,9 +603,6 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_GENERATOR_B:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     v = col.getVisual(col.getCurrentVisual());
                     currentGenerator = v.getGenerator2Idx();
                     nrOfGenerators = 1 + col.getPixelControllerGenerator().getSize();
@@ -637,9 +619,6 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_EFFECT_A:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     v = col.getVisual(col.getCurrentVisual());
                     int currentEffect = v.getEffect1Idx();
                     int nrOfEffects = col.getPixelControllerEffect().getSize();
@@ -648,9 +627,6 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_EFFECT_B:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     v = col.getVisual(col.getCurrentVisual());
                     currentEffect = v.getEffect2Idx();
                     nrOfEffects = col.getPixelControllerEffect().getSize();
@@ -659,9 +635,6 @@ public enum MessageProcessor {
                     break;
 
                 case ROTATE_MIXER:
-                    if (ignoreTouchOscCommand(msg)) {
-                        break;
-                    }
                     v = col.getVisual(col.getCurrentVisual());
                     int currentMixer = v.getMixerIdx();
                     int nrOfMixerss = col.getPixelControllerMixer().getSize();
@@ -704,6 +677,32 @@ public enum MessageProcessor {
 
     }
 
+    private List<String> removeObsoleteCommands(List<String> preset) {
+        if (!preset.contains("CHANGE_GENERATOR_B 1") && !preset.contains("CHANGE_GENERATOR_A 1")) {
+            LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
+            int ofs = 0;
+            for (String s : preset) {
+                if (s.startsWith("BLINKEN")) {
+                    break;
+                }
+                ofs++;
+            }
+            preset.remove(ofs);
+        }
+        if (!preset.contains("CHANGE_GENERATOR_B 2") && !preset.contains("CHANGE_GENERATOR_A 2")) {
+            LOG.log(Level.INFO, "No Imagegenerator found, remove loading image resource");
+            int ofs = 0;
+            for (String s : preset) {
+                if (s.startsWith("IMAGE")) {
+                    break;
+                }
+                ofs++;
+            }
+            preset.remove(ofs);
+        }
+        return preset;
+    }
+
     /**
      * 
      * @param nr
@@ -717,30 +716,7 @@ public enum MessageProcessor {
 
         List<String> preset = presetService.getPresets().get(nr).getPresent();
         if (preset != null) {
-            if (!preset.contains("CHANGE_GENERATOR_B 1")
-                    && !preset.contains("CHANGE_GENERATOR_A 1")) {
-                LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
-                int ofs = 0;
-                for (String s : preset) {
-                    if (s.startsWith("BLINKEN")) {
-                        break;
-                    }
-                    ofs++;
-                }
-                preset.remove(ofs);
-            }
-            if (!preset.contains("CHANGE_GENERATOR_B 2")
-                    && !preset.contains("CHANGE_GENERATOR_A 2")) {
-                LOG.log(Level.INFO, "No Imagegenerator found, remove loading image resource");
-                int ofs = 0;
-                for (String s : preset) {
-                    if (s.startsWith("IMAGE")) {
-                        break;
-                    }
-                    ofs++;
-                }
-                preset.remove(ofs);
-            }
+            preset = removeObsoleteCommands(new ArrayList<String>(preset));
             // save current visual buffer
             TransitionManager transition = new TransitionManager(col);
 
