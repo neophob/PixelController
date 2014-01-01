@@ -20,9 +20,7 @@ package com.neophob.sematrix.core.listener;
 
 import static org.junit.Assert.assertEquals;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -30,9 +28,11 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
+import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
+import com.neophob.sematrix.core.preset.PresetService;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
@@ -48,58 +48,41 @@ public class MessageProcessorTest {
 
     private static final Logger LOG = Logger.getLogger(MessageProcessorTest.class.getName());
 
-    /*
-     * public static Unsafe getUnsafe() { try { Field f =
-     * Unsafe.class.getDeclaredField("theUnsafe"); f.setAccessible(true); return
-     * (Unsafe)f.get(null); } catch (Exception e) { } return null; }
-     */
+    @Test
+    public void loadPreset() throws Exception {
+        FileUtils fileUtils = new FileUtilsLocalImpl();
+        PresetService presetService = new PresetServiceImpl(fileUtils.getDataDir());
+        List<IColorSet> colorsets = new ArrayList<IColorSet>();
+        colorsets.add(new ColorSet("aa", new int[] { 1, 100, 1000 }));
+        colorsets.add(new ColorSet("bb", new int[] { 999, 555, 0xffffff }));
 
-    static void setFinalStatic(Field field, Object newValue) throws Exception {
-        field.setAccessible(true);
+        VisualState.getInstance().init(fileUtils,
+                new ApplicationConfigurationHelper(new Properties()), new SoundDummy(), colorsets,
+                presetService);
 
-        Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+        MessageProcessor.INSTANCE.init(presetService);
+        String[] str = new String[2];
+        str[0] = "LOAD_PRESET";
+        MessageProcessor.INSTANCE.processMsg(str, false, null);
 
-        field.set(null, newValue);
+        str[0] = "CHANGE_PRESET";
+        str[1] = "11";
+        MessageProcessor.INSTANCE.processMsg(str, false, null);
+
+        str[0] = "LOAD_PRESET";
+        str[1] = "";
+        MessageProcessor.INSTANCE.processMsg(str, false, null);
     }
 
     @Test
     public void processMessages() throws Exception {
-        if (java.awt.GraphicsEnvironment.isHeadless()) {
-            /**
-             * Initialize PApplet on headless machines will fail, the reason for
-             * this error is this field:
-             * 
-             * static public final int MENU_SHORTCUT =
-             * Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
-             * 
-             * -> there is not Toolkit on headless machines.
-             * 
-             * I try to subclass, overwrite with reflection and set it with the
-             * Unsafe method but I couldn't get this to work if the unit test is
-             * executed on a machine with the option "-Djava.awt.headless=true"
-             */
-            return;
-        }
-
-        /*
-         * try { Unsafe u = getUnsafe(); System.out.println(u.addressSize());
-         * final long ofs =
-         * u.objectFieldOffset(PApplet.class.getDeclaredField("MENU_SHORTCUT"));
-         * //u.putInt(ofs, 0); } catch (Throwable e) { e.printStackTrace(); }
-         */
-
-        // PApplet papplet = mock(PApplet.class);
-
         Properties config = new Properties();
         String rootDir = System.getProperty("buildDirectory");
         LOG.log(Level.INFO, "Test Root Directory: " + rootDir);
 
-        config.put(ConfigConstant.RESOURCE_PATH, rootDir);
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
 
-        List<IColorSet> colorsets = new LinkedList<IColorSet>();
+        List<IColorSet> colorsets = new ArrayList<IColorSet>();
         colorsets.add(new ColorSet("aa", new int[] { 1, 100, 1000 }));
         colorsets.add(new ColorSet("bb", new int[] { 999, 555, 0xffffff }));
 
