@@ -34,76 +34,80 @@ import com.neophob.sematrix.gui.service.PixConServer;
 
 /**
  * Helper class to create a new window
- *
+ * 
  * @author michu
  */
 public class GeneratorGuiCreator {
 
-	/** The log. */
-	private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
+    /** The log. */
+    private static final Logger LOG = Logger.getLogger(GeneratorGuiCreator.class.getName());
 
     private PApplet gui;
-    
-	/**
-	 * Instantiates a new internal debug window.
-	 *
-	 * @param displayHoriz the display horiz
-	 * @param the maximal x size of the window
-	 */
-	public GeneratorGuiCreator(PixConServer pixelController, PApplet parentPapplet, int maximalXSize, int maximalYSize) {
-        int nrOfScreens = pixelController.getConfig().getNrOfScreens();
-        LOG.log(Level.INFO, "create GUI, nr of screens: "+nrOfScreens);
-                           
+
+    /**
+     * Instantiates a new internal debug window.
+     * 
+     * @param displayHoriz
+     *            the display horiz
+     * @param the
+     *            maximal x size of the window
+     */
+    public GeneratorGuiCreator(PixConServer pixelController, PApplet parentPapplet,
+            int maximalXSize, int maximalYSize) {
+        int nrOfScreens = pixelController.getConfig().getNrOfScreens() + 1
+                + pixelController.getConfig().getNrOfAdditionalVisuals();
+        LOG.log(Level.INFO, "create GUI, nr of screens: " + nrOfScreens);
+
         MatrixData md = pixelController.getMatrixData();
-		WindowSizeCalculator wsc = new WindowSizeCalculator(md.getBufferXSize(), 
-				md.getBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
-        
-        //connect the new PApplet to our frame
+        WindowSizeCalculator wsc = new WindowSizeCalculator(md.getBufferXSize(),
+                md.getBufferYSize(), maximalXSize, maximalYSize, nrOfScreens);
+
+        // connect the new PApplet to our frame
         gui = new GeneratorGui(pixelController, wsc);
         gui.init();
-         
-        //create new window for child
-        LOG.log(Level.INFO, "Create new window: "+wsc);
-        JFrame childFrame = new JFrame("PixelController Generator Window "+pixelController.getVersion());        
+
+        // create new window for child
+        LOG.log(Level.INFO, "Create new window: " + wsc);
+        JFrame childFrame = new JFrame("PixelController Generator Window "
+                + pixelController.getVersion());
         childFrame.setResizable(false);
         childFrame.setIconImage(createLargeIcon(gui));
-        
+
         childFrame.add(gui);
-        
-        childFrame.setBounds(0, 0, wsc.getWindowWidth(), wsc.getWindowHeight()+30);
-        gui.setBounds(0, 0, wsc.getWindowWidth(), wsc.getWindowHeight()+30);
+
+        childFrame.setBounds(0, 0, wsc.getWindowWidth(), wsc.getWindowHeight() + 30);
+        gui.setBounds(0, 0, wsc.getWindowWidth(), wsc.getWindowHeight() + 30);
 
         // important to call this whenever embedding a PApplet.
         // It ensures that the animation thread is started and
         // that other internal variables are properly set.
         childFrame.setVisible(true);
-        
-        //childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        childFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);                
-        childFrame.addWindowListener( new WindowHandler(parentPapplet) );
-	}	
 
-	/**
-	 * helper function to load the large pixelinvaders logo
-	 * @return
-	 */
-	public static Image createLargeIcon(PApplet papplet) {
-	    PImage img = papplet.loadImage("pics/logoBig.jpg");
-	    if (img!=null) {
-	        return img.getImage();	        
-	    }
-	    LOG.log(Level.WARNING, "failed to load icon image!");
-	    img = new PImage(400,400);
-	    return img.getImage();
-	}
+        // childFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        childFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        childFrame.addWindowListener(new WindowHandler(parentPapplet));
+    }
+
+    /**
+     * helper function to load the large pixelinvaders logo
+     * 
+     * @return
+     */
+    public static Image createLargeIcon(PApplet papplet) {
+        PImage img = papplet.loadImage("pics/logoBig.jpg");
+        if (img != null) {
+            return img.getImage();
+        }
+        LOG.log(Level.WARNING, "failed to load icon image!");
+        img = new PImage(400, 400);
+        return img.getImage();
+    }
 
     /**
      * @return the gui
      */
     public GuiCallbackAction getGuiCallbackAction() {
-        return (GuiCallbackAction)gui;
+        return (GuiCallbackAction) gui;
     }
-	
-	
 
 }
