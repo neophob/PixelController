@@ -86,7 +86,11 @@ class OscClientImpl implements PixOscClient {
     public void sendMessage(OscMessage msg) throws OscClientException {
         if (client == null || !client.isActive()) {
             LOG.log(Level.WARNING, "Not initialized");
-            return;
+            try {
+                startClient();
+            } catch (IOException e) {
+                LOG.log(Level.WARNING, "Failed to start client", e);
+            }
         }
 
         OSCPacket oscPacket = null;
