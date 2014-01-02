@@ -56,7 +56,7 @@ public class LocalServer implements PixConServer {
 
     @Override
     public int[] getOutputBuffer(int nr) {
-        return pixelController.getOutput().getBufferForScreen(nr, true);
+        return pixelController.getOutput().getBufferForScreen(nr, false);
     }
 
     @Override

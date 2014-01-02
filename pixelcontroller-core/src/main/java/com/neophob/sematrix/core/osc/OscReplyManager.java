@@ -188,7 +188,7 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
             int nrOfOutputs = pixelController.getConfig().getNrOfScreens();
             int[][] outputBuffer = new int[nrOfOutputs][];
             for (int i = 0; i < nrOfOutputs; i++) {
-                outputBuffer[i] = pixelController.getOutput().getBufferForScreen(i, true);
+                outputBuffer[i] = pixelController.getOutput().getBufferForScreen(i, false);
             }
 
             List<Visual> allVisuals = pixelController.getVisualState().getAllVisuals();
