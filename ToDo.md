@@ -2,6 +2,7 @@
 
 ## Version 2.1
 * build process, move rpi native libs to rpi directory, remove junit from distro
+* fix preset fader
 * Update pixconcli
 * fix sound init for rpi
 * 10x5 matrix, 3 visuals - gui fails to init correctly

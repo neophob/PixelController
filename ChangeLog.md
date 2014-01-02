@@ -3,7 +3,7 @@
 ## Changelog v2.0.0 to v2.x.y
     441 files changed, 27618 insertions(+), 198647 deletions(-)
     
-* Add client/server architecture, supports remote server 
+* Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
 * Add RaspberryPi WS2801 output driver
 * Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
@@ -20,8 +20,11 @@
 * Fix generator speed changes the target fps (0..200%), much smoother
 * Fix generator speed and brightness were not stored as part of the preset
 * Fix capture generator, crashed if recording window was too small
-* Fix Metaballs resolution for different sizes
-* Fix more Code cleanup
+* Fix Metaball generator resolution for different sizes
+* Fix more code cleanup
+* Fix optimize CPU usage in heavy beat detection mode
+* Fix optimize preset load time
+* Fix reduce rotozoom effect speed
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
