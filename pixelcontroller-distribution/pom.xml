@@ -33,7 +33,21 @@
 	                        <overWriteReleases>false</overWriteReleases>
 	                        <overWriteSnapshots>true</overWriteSnapshots>
 	                        <overWriteIfNewer>true</overWriteIfNewer>
-	                        <excludeGroupIds>junit,org.hamcrest</excludeGroupIds>
+	                        <excludeGroupIds>junit,org.hamcrest,com.pi4j</excludeGroupIds>
+	                    </configuration>
+	                </execution>
+	                <execution>
+	                    <id>copy-dependencies-rpi</id>
+	                    <phase>prepare-package</phase>
+	                    <goals>
+	                        <goal>copy-dependencies</goal>
+	                    </goals>
+	                    <configuration>
+	                        <outputDirectory>${project.build.directory}/assembly/${project.artifactId}-${project.version}/lib/RPi</outputDirectory>
+	                        <overWriteReleases>false</overWriteReleases>
+	                        <overWriteSnapshots>true</overWriteSnapshots>
+	                        <overWriteIfNewer>true</overWriteIfNewer>
+	                        <includeGroupIds>com.pi4j</includeGroupIds>
 	                    </configuration>
 	                </execution>
 	            </executions>
