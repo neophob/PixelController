@@ -1,7 +1,6 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* build process, move rpi native libs to rpi directory, remove junit from distro
 * fix preset fader
 * Update pixconcli
 * fix/test sound init for rpi
