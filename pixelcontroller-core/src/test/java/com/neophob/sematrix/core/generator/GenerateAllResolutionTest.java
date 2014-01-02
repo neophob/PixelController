@@ -102,13 +102,13 @@ public class GenerateAllResolutionTest {
                 sound, resize);
         pcGen.initAll();
         for (Generator gen : pcGen.getAllGenerators()) {
-            gen.update();
+            gen.update(2);
 
             if (gen.getId() == GeneratorName.COLOR_SCROLL.getId()) {
                 for (int i = 0; i < 16; i++) {
                     ColorScroll cs = (ColorScroll) gen;
                     cs.setScrollMode(ScrollMode.BOTTOM_TO_TOP);
-                    cs.update();
+                    cs.update(2);
                 }
             }
         }
