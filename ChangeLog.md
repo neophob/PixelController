@@ -11,6 +11,7 @@
 * Add support for (optional) GZipped Blinkenlight files
 * Add Noise generator
 * Add Gamma 3.0 correction
+* Add TouchOsc layout
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace all image resize code with a simple Java based resize code, major performance improvment
