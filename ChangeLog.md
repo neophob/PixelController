@@ -25,6 +25,7 @@
 * Fix optimize CPU usage in heavy beat detection mode
 * Fix optimize preset load time
 * Fix reduce rotozoom effect speed
+* Fix visual size in GUI
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
