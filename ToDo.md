@@ -4,19 +4,19 @@
 * build process, move rpi native libs to rpi directory, remove junit from distro
 * fix preset fader
 * Update pixconcli
-* fix sound init for rpi
+* fix/test sound init for rpi
 * 10x5 matrix, 3 visuals - gui fails to init correctly
 * remote setup, do not display duplicate entries but display whats missing.
 * Documentation for bonjour, client/server, rpi, custom mapping tool
-* Add console to GUI
 * Random-Mode with selectable time-life
+* Create TouchOSC GUI
 
 ## Version 2.2
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
 * PixelInvaders firmware: Support ambient color for the output panel(s)
 * Support Multiple Output devices with different matrix sizes
-* Simplyify output configuration
-* Create TouchOSC GUI
+* Simplify output configuration
+* Add console to GUI
 
 # Backlog
 
