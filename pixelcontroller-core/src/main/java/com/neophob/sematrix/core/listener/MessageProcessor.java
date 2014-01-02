@@ -87,8 +87,8 @@ public enum MessageProcessor {
             }
         }
 
-        // filter out (double) touchOSC Messages, example push buttons, but
-        // ignore the low value
+        // filter out (double) touchOSC Messages, example push buttons with
+        // arguments, but ignore the low value
         if (msg.length == 2 && cmd.getNrOfParams() == 1) {
             if (msg[1].equals("-1.0")) {
                 return true;
