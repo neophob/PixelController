@@ -80,12 +80,21 @@ public enum MessageProcessor {
     }
 
     private boolean ignoreCommand(ValidCommand cmd, String[] msg) {
-        // filter out double touchOsc messages
+        // filter out (double) touchOSC Messages, example push buttons
         if (msg.length == 2 && cmd.getNrOfParams() == 0) {
             if (msg[1].equals("0.0")) {
                 return true;
             }
         }
+
+        // filter out (double) touchOSC Messages, example push buttons, but
+        // ignore the low value
+        if (msg.length == 2 && cmd.getNrOfParams() == 1) {
+            if (msg[1].equals("-1.0")) {
+                return true;
+            }
+        }
+
         return false;
     }
 
