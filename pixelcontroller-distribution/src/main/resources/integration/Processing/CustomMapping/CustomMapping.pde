@@ -8,8 +8,7 @@ int resY = 5;
 
 void setup() {
   println("PixelController custom mapping tool. Press 'd' to undo last action.");
-  println("Press 'a' or 'y' to change width, use 's' or 'x' to change matrix height.");
-  println("Copy and paste result to your config.properties file. ");
+  println("Copy and paste result to your config.properties file.");
   size(800,630);
   background(0);
   frameRate(20);
@@ -22,7 +21,8 @@ void draw() {
   background(0);
   drawMatrix(mX, mY);
   fill(255);
-  text("PixelController Custom Matrix Mapping, Matrix Resolution: "+mX+"/"+mY, 10, 20);
+  text("PixelController Custom Matrix Mapping, Matrix Resolution: "+mX+"/"+mY+". "+
+  "Press a or y to change matrix width, press s or x to change matrix height.", 10, 20);
 }
 
 void calcRectSize(int w, int h) {
