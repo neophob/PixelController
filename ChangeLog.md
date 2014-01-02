@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    441 files changed, 27618 insertions(+), 198647 deletions(-)
+    444 files changed, 28314 insertions(+), 198880 deletions(-)
     
 * Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
 * Add RaspberryPi WS2801 output driver
@@ -10,7 +10,7 @@
 * Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
 * Add support for (optional) GZipped Blinkenlight files
 * Add Noise generator
-* Add Gamma 3.0 correction
+* Add Gamma 3.0 color correction
 * Add TouchOsc layout
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
@@ -28,6 +28,7 @@
 * Fix reduce rotozoom effect speed
 * Fix visual size in GUI
 * Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
+* Fix update build process, put RPi specifiy resources (Serial and pi4j) dependencies into special directory, do not include junit dependencies.
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
