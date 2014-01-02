@@ -33,6 +33,7 @@
 	                        <overWriteReleases>false</overWriteReleases>
 	                        <overWriteSnapshots>true</overWriteSnapshots>
 	                        <overWriteIfNewer>true</overWriteIfNewer>
+	                        <excludeGroupIds>junit,org.hamcrest</excludeGroupIds>
 	                    </configuration>
 	                </execution>
 	            </executions>
