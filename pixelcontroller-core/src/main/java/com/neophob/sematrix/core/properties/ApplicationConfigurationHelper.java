@@ -208,7 +208,7 @@ public class ApplicationConfigurationHelper implements Serializable {
             enabledOutputs++;
             totalDevices = rpi2801Devices;
             LOG.log(Level.INFO, "found RPI2801 device: " + totalDevices);
-            this.outputDeviceEnum = OutputDeviceEnum.RASPBERRYPI_SPI_WS2801;
+            this.outputDeviceEnum = OutputDeviceEnum.RPI_2801;
         }
         if (nullDevices > 0) {
             // enable null output only if configured AND no other output is

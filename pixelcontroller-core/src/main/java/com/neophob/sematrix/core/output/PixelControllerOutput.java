@@ -102,7 +102,7 @@ public class PixelControllerOutput implements PixelControllerElement {
                 case TPM2NET:
                     output = new Tpm2Net(applicationConfig);
                     break;
-                case RASPBERRYPI_SPI_WS2801:
+                case RPI_2801:
                     output = new RaspberrySpi2801(applicationConfig);
                     break;
                 default:

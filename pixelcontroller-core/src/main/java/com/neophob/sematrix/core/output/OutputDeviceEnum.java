@@ -52,7 +52,7 @@ public enum OutputDeviceEnum {
 
     PIXELINVADERS_NET(PixelInvadersNetDevice.class, true),
 
-    RASPBERRYPI_SPI_WS2801(RaspberrySpi2801.class, true),
+    RPI_2801(RaspberrySpi2801.class, true),
 
     /** The NULL Output. */
     NULL(NullDevice.class, true);

@@ -443,7 +443,7 @@ public class PropertiesHelperTest {
         assertEquals(8, ph.getDeviceXResolution());
         assertEquals(8, ph.getDeviceYResolution());
         assertEquals(1000000, ph.getRpiWs2801SpiSpeed());
-        assertEquals(OutputDeviceEnum.RASPBERRYPI_SPI_WS2801, ph.getOutputDevice());
+        assertEquals(OutputDeviceEnum.RPI_2801, ph.getOutputDevice());
 
     }
 

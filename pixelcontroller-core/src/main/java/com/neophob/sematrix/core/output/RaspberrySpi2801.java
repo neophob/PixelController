@@ -19,7 +19,7 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
     private int spiChannel;
 
     public RaspberrySpi2801(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.RASPBERRYPI_SPI_WS2801, ph, 8);
+        super(OutputDeviceEnum.RPI_2801, ph, 8);
 
         LOG.log(Level.INFO, "Initialize RPi SPI channel, speed: " + ph.getRpiWs2801SpiSpeed());
         spiChannel = Spi.CHANNEL_0;
