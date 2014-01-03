@@ -29,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.PixelControllerShufflerSelect;
-import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
@@ -136,9 +135,6 @@ public class VisualState extends Observable {
 
         ioMapping = new CopyOnWriteArrayList<OutputMapping>();
         initialized = false;
-
-        pixelControllerShufflerSelect = new PixelControllerShufflerSelect();
-        pixelControllerShufflerSelect.initAll();
     }
 
     /**
@@ -167,6 +163,10 @@ public class VisualState extends Observable {
         if (fps < 1) {
             fps = 1;
         }
+
+        this.pixelControllerShufflerSelect = new PixelControllerShufflerSelect(sound,
+                ph.getRandomModeLifetime());
+        this.pixelControllerShufflerSelect.initAll();
 
         // create the device with specific size
         this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
@@ -267,18 +267,7 @@ public class VisualState extends Observable {
         }
         pixConStat.trackTime(TimeMeasureItemGlobal.FADER, System.currentTimeMillis() - l);
 
-        if (randomMode) {
-            if (Shuffler.shuffleStuff(sound)) {
-                this.notifyGuiUpdate();
-            }
-        } else if (randomPresetMode) {
-            if (Shuffler.randomPresentModeShuffler(sound)) {
-                String[] msg = new String[1];
-                msg[0] = "" + ValidCommand.PRESET_RANDOM;
-                MessageProcessor.INSTANCE.processMsg(msg, true, null);
-                this.notifyGuiUpdate();
-            }
-        }
+        pixelControllerShufflerSelect.update();
     }
 
     /**

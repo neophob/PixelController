@@ -150,4 +150,5 @@ public final class ConfigConstant {
 
     public static final String RPI_WS2801_SPI_SPEED = "rpiws2801.spi.speed";
 
+    public static final String RANDOMMODE_LIFETIME = "randommode.lifetime.in.s";
 }

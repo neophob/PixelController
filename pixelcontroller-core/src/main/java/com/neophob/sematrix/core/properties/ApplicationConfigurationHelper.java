@@ -714,6 +714,10 @@ public class ApplicationConfigurationHelper implements Serializable {
         return parseInt(ConfigConstant.E131_FIRST_UNIVERSE_ID, 0);
     }
 
+    public int getRandomModeLifetime() {
+        return parseInt(ConfigConstant.RANDOMMODE_LIFETIME, 0);
+    }
+
     /**
      * get configured artnet ip.
      * 
