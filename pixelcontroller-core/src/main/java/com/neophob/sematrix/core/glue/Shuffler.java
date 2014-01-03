@@ -98,31 +98,23 @@ public final class Shuffler {
      * RANDOMIZE.
      * 
      */
-    public static void manualShuffleStuff() {
+    public static void manualShuffleStuff(VisualState vs) {
         long start = System.currentTimeMillis();
 
-        VisualState col = VisualState.getInstance();
-        int currentVisual = col.getCurrentVisual();
-        Visual visual = col.getVisual(currentVisual);
+        int currentVisual = vs.getCurrentVisual();
+        Visual visual = vs.getVisual(currentVisual);
         Random rand = new Random();
 
         LOG.log(Level.INFO, "Manual Shuffle for Visual {0}", currentVisual);
 
-        // optimize, update blinkenlighst movie file only when visible
-        boolean isBlinkenLightsVisible = false;
-        if (visual.getGenerator1Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId()
-                || visual.getGenerator2Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
-            isBlinkenLightsVisible = true;
-        }
+        int totalNrGenerator = vs.getPixelControllerGenerator().getSize();
+        // if (!vs.getPixelControllerGenerator().isCaptureGeneratorActive()) {
+        // totalNrGenerator++;
+        // }
+        int totalNrEffect = vs.getPixelControllerEffect().getSize();
+        int totalNrMixer = vs.getPixelControllerMixer().getSize();
 
-        int totalNrGenerator = col.getPixelControllerGenerator().getSize();
-        if (!col.getPixelControllerGenerator().isCaptureGeneratorActive()) {
-            totalNrGenerator++;
-        }
-        int totalNrEffect = col.getPixelControllerEffect().getSize();
-        int totalNrMixer = col.getPixelControllerMixer().getSize();
-
-        if (col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
+        if (vs.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {
             // make sure we only select inuse generators
             boolean isGeneratorInUse = false;
             while (!isGeneratorInUse) {
@@ -132,7 +124,7 @@ public final class Shuffler {
             }
         }
 
-        if (col.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {
+        if (vs.getShufflerSelect(ShufflerOffset.GENERATOR_B)) {
             // make sure we only select inuse generators
             boolean isGeneratorInUse = false;
             while (!isGeneratorInUse) {
@@ -142,15 +134,15 @@ public final class Shuffler {
             }
         }
 
-        if (col.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
+        if (vs.getShufflerSelect(ShufflerOffset.EFFECT_A)) {
             visual.setEffect1(rand.nextInt(totalNrEffect));
         }
 
-        if (col.getShufflerSelect(ShufflerOffset.EFFECT_B)) {
+        if (vs.getShufflerSelect(ShufflerOffset.EFFECT_B)) {
             visual.setEffect2(rand.nextInt(totalNrEffect));
         }
 
-        if (col.getShufflerSelect(ShufflerOffset.MIXER)) {
+        if (vs.getShufflerSelect(ShufflerOffset.MIXER)) {
             if (visual.getGenerator2Idx() == 0) {
                 // no 2nd generator - use passthru mixer
                 visual.setMixer(0);
@@ -162,8 +154,8 @@ public final class Shuffler {
         // set used to find out if visual is on screen
         Set<Integer> activeGeneratorIds = new HashSet<Integer>();
         Set<Integer> activeEffectIds = new HashSet<Integer>();
-        for (OutputMapping om : col.getAllOutputMappings()) {
-            Visual v = col.getVisual(om.getVisualId());
+        for (OutputMapping om : vs.getAllOutputMappings()) {
+            Visual v = vs.getVisual(om.getVisualId());
 
             if (v.equals(visual)) {
                 continue;
@@ -176,15 +168,31 @@ public final class Shuffler {
             activeGeneratorIds.add(v.getGenerator2Idx());
         }
 
+        // optimize, update blinkenlighst movie file only when visible
+        boolean isBlinkenlightGeneratorVisible = false;
+        if (visual.getGenerator1Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId()
+                || visual.getGenerator2Idx() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
+            isBlinkenlightGeneratorVisible = true;
+        }
+        boolean isImageGeneratorVisible = false;
+        if (visual.getGenerator1Idx() == Generator.GeneratorName.IMAGE.getId()
+                || visual.getGenerator2Idx() == Generator.GeneratorName.IMAGE.getId()) {
+            isImageGeneratorVisible = true;
+        }
+
         // shuffle only items which are NOT visible
-        for (Generator g : col.getPixelControllerGenerator().getAllGenerators()) {
+        for (Generator g : vs.getPixelControllerGenerator().getAllGenerators()) {
             if (!activeGeneratorIds.contains(g.getId())) {
 
                 // optimize, loading a blinkenlights movie file is quite
                 // expensive (takes a long time)
                 // so load only a new movie file if the generator is active!
                 if (g.getId() == Generator.GeneratorName.BLINKENLIGHTS.getId()) {
-                    if (isBlinkenLightsVisible) {
+                    if (isBlinkenlightGeneratorVisible) {
+                        g.shuffle();
+                    }
+                } else if (g.getId() == Generator.GeneratorName.IMAGE.getId()) {
+                    if (isImageGeneratorVisible) {
                         g.shuffle();
                     }
                 } else {
@@ -193,34 +201,25 @@ public final class Shuffler {
             }
         }
 
-        for (Effect e : col.getPixelControllerEffect().getAllEffects()) {
+        for (Effect e : vs.getPixelControllerEffect().getAllEffects()) {
             if (!activeEffectIds.contains(e.getId())) {
                 e.shuffle();
             }
         }
 
-        // do not shuffle output
-        /*
-         * if (col.getShufflerSelect(ShufflerOffset.OUTPUT)) { int nrOfVisuals =
-         * col.getAllVisuals().size(); int screenNr = 0; for (OutputMapping om:
-         * col.getAllOutputMappings()) { Fader f=om.getFader(); if
-         * (!f.isStarted()) { //start fader only if not another one is started
-         * f.startFade(rand.nextInt(nrOfVisuals), screenNr); } screenNr++; } }
-         */
-
-        if (col.getShufflerSelect(ShufflerOffset.COLORSET)) {
-            int colorSets = col.getColorSets().size();
+        if (vs.getShufflerSelect(ShufflerOffset.COLORSET)) {
+            int colorSets = vs.getColorSets().size();
             visual.setColorSet(rand.nextInt(colorSets));
         }
 
-        if (col.getShufflerSelect(ShufflerOffset.BEAT_WORK_MODE)) {
+        if (vs.getShufflerSelect(ShufflerOffset.BEAT_WORK_MODE)) {
             BeatToAnimation bta = BeatToAnimation.values()[new Random().nextInt(BeatToAnimation
                     .values().length)];
-            col.getPixelControllerGenerator().setBta(bta);
+            vs.getPixelControllerGenerator().setBta(bta);
         }
 
-        if (col.getShufflerSelect(ShufflerOffset.GENERATORSPEED)) {
-            col.setFpsSpeed(new Random().nextFloat() * 2.0f);
+        if (vs.getShufflerSelect(ShufflerOffset.GENERATORSPEED)) {
+            vs.setFpsSpeed(new Random().nextFloat() * 2.0f);
         }
 
         LOG.log(Level.INFO, "Shuffle finished in {0}ms", System.currentTimeMillis() - start);

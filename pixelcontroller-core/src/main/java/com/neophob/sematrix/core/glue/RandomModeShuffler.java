@@ -2,6 +2,8 @@ package com.neophob.sematrix.core.glue;
 
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -13,6 +15,8 @@ import com.neophob.sematrix.core.visual.generator.Generator.GeneratorName;
 
 public final class RandomModeShuffler {
 
+    private static final Logger LOG = Logger.getLogger(RandomModeShuffler.class.getName());
+
     private RandomModeShuffler() {
         // no instance
     }
@@ -23,6 +27,11 @@ public final class RandomModeShuffler {
     public static boolean shuffleStuff(List<Boolean> shufflerSelect, boolean kick, boolean hat,
             boolean snare) {
         if (!hat && !kick && !snare) {
+            return false;
+        }
+
+        if (shufflerSelect == null || shufflerSelect.size() < ShufflerOffset.values().length) {
+            LOG.log(Level.WARNING, "Invalid shufflerSelect size: " + shufflerSelect);
             return false;
         }
 

@@ -229,7 +229,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         // start in random mode?
         if (applicationConfig.startRandommode()) {
             LOG.log(Level.INFO, "Random Mode enabled");
-            Shuffler.manualShuffleStuff();
+            Shuffler.manualShuffleStuff(visualState);
             visualState.setRandomMode(true);
         }
 
