@@ -74,9 +74,17 @@ public class GenerateAllResolutionTest {
         sound = new SoundDummy();
         PixelControllerResize pcr = new PixelControllerResize();
         pcr.initAll();
-        resize = pcr.getResize(ResizeName.SIMPLE_RESIZE);
+        resize = pcr.getResize(ResizeName.PIXEL_RESIZE);
         col = new ColorSet("test", new int[] { 1, 2, 3 });
 
+        for (int x = 1; x < maxResolution; x++) {
+            for (int y = 1; y < maxResolution; y++) {
+                testWithResolution(x, y);
+                testWithResolution(y, x);
+            }
+        }
+
+        resize = pcr.getResize(ResizeName.QUALITY_RESIZE);
         for (int x = 1; x < maxResolution; x++) {
             for (int y = 1; y < maxResolution; y++) {
                 testWithResolution(x, y);

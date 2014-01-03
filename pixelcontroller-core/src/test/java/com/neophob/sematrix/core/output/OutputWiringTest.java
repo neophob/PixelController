@@ -69,16 +69,16 @@ public class OutputWiringTest {
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         int[] b = processOutput(p);
         printArray(b);
-        Assert.assertEquals(0x90, b[0]);
-        Assert.assertEquals(0x90, b[9]);
-        Assert.assertEquals(0x90, b[10]);
-        Assert.assertEquals(0x90, b[19]);
-        Assert.assertEquals(0x90, b[20]);
-        Assert.assertEquals(0x90, b[29]);
-        Assert.assertEquals(0x0, b[30]);
-        Assert.assertEquals(0x0, b[39]);
-        Assert.assertEquals(0x0, b[40]);
-        Assert.assertEquals(0x0, b[49]);
+        Assert.assertEquals(0x90, b[0], 2);
+        Assert.assertEquals(0x90, b[9], 2);
+        Assert.assertEquals(0x90, b[10], 2);
+        Assert.assertEquals(0x90, b[19], 2);
+        Assert.assertEquals(0x90, b[20], 2);
+        Assert.assertEquals(0x90, b[29], 2);
+        Assert.assertEquals(0x0, b[30], 2);
+        Assert.assertEquals(0x0, b[39], 2);
+        Assert.assertEquals(0x0, b[40], 2);
+        Assert.assertEquals(0x0, b[49], 2);
     }
 
     @Test
@@ -91,16 +91,16 @@ public class OutputWiringTest {
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         int[] b = processOutput(p);
         printArray(b);
-        Assert.assertEquals(0x0, b[0]);
-        Assert.assertEquals(0x90, b[9]);
-        Assert.assertEquals(0x90, b[10]);
-        Assert.assertEquals(0x0, b[19]);
-        Assert.assertEquals(0x0, b[20]);
-        Assert.assertEquals(0x90, b[29]);
-        Assert.assertEquals(0x90, b[30]);
-        Assert.assertEquals(0x0, b[39]);
-        Assert.assertEquals(0x0, b[40]);
-        Assert.assertEquals(0x90, b[49]);
+        Assert.assertEquals(0x0, b[0], 2);
+        Assert.assertEquals(0x90, b[9], 2);
+        Assert.assertEquals(0x90, b[10], 2);
+        Assert.assertEquals(0x0, b[19], 2);
+        Assert.assertEquals(0x0, b[20], 2);
+        Assert.assertEquals(0x90, b[29], 2);
+        Assert.assertEquals(0x90, b[30], 2);
+        Assert.assertEquals(0x0, b[39], 2);
+        Assert.assertEquals(0x0, b[40], 2);
+        Assert.assertEquals(0x90, b[49], 2);
     }
 
     @Test
@@ -113,16 +113,16 @@ public class OutputWiringTest {
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         int[] b = processOutput(p);
         printArray(b);
-        Assert.assertEquals(0x0, b[0]);
-        Assert.assertEquals(0x90, b[9]);
-        Assert.assertEquals(0x0, b[10]);
-        Assert.assertEquals(0x90, b[19]);
-        Assert.assertEquals(0x0, b[20]);
-        Assert.assertEquals(0x90, b[29]);
-        Assert.assertEquals(0x0, b[30]);
-        Assert.assertEquals(0x90, b[39]);
-        Assert.assertEquals(0x0, b[40]);
-        Assert.assertEquals(0x90, b[49]);
+        Assert.assertEquals(0x0, b[0], 2);
+        Assert.assertEquals(0x90, b[9], 2);
+        Assert.assertEquals(0x0, b[10], 2);
+        Assert.assertEquals(0x90, b[19], 2);
+        Assert.assertEquals(0x0, b[20], 2);
+        Assert.assertEquals(0x90, b[29], 2);
+        Assert.assertEquals(0x0, b[30], 2);
+        Assert.assertEquals(0x90, b[39], 2);
+        Assert.assertEquals(0x0, b[40], 2);
+        Assert.assertEquals(0x90, b[49], 2);
     }
 
     @Test

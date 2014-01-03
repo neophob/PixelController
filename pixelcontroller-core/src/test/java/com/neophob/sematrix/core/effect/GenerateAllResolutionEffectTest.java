@@ -63,7 +63,7 @@ public class GenerateAllResolutionEffectTest {
         MatrixData matrix = new MatrixData(x, y);
         PixelControllerResize pcr = new PixelControllerResize();
         pcr.initAll();
-        IResize resize = pcr.getResize(ResizeName.SIMPLE_RESIZE);
+        IResize resize = pcr.getResize(ResizeName.PIXEL_RESIZE);
         PixelControllerEffect pce = new PixelControllerEffect(matrix, sound, resize);
         pce.initAll();
 
