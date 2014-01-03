@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    444 files changed, 28314 insertions(+), 198880 deletions(-)
+    446 files changed, 28343 insertions(+), 199349 deletions(-)
     
 * Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
 * Add RaspberryPi WS2801 output driver
@@ -15,17 +15,17 @@
 * Add simple performance test (`PixelController.sh -perf` or `PixelControllerRPi.sh -perf`)
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
-* Fix replace Pixel and Quality image resize code with custom implementations (simple and bilinear), major performance improvment
+* Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
 * Fix add missing float parameter to the OSC server
-* Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
-* Fix refresh GUI in random mode
+* Fix the framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
+* Fix refresh GUI settings when random mode kicks in
 * Fix generator speed changes the target fps (0..200%), much smoother
 * Fix generator speed and brightness were not stored as part of the preset
 * Fix capture generator, crashed if recording window was too small
 * Fix Metaball generator resolution for different sizes
 * Fix more code cleanup
 * Fix optimize CPU usage in heavy beat detection mode
-* Fix optimize preset load time
+* Fix optimize preset load time, load resource files (image and blinkenlight) only if generator is used in preset
 * Fix reduce rotozoom effect speed
 * Fix visual size in GUI
 * Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
