@@ -247,7 +247,6 @@ public final class Shuffler {
 
         Random rand = new Random();
         int blah = rand.nextInt(18);
-        // LOG.log(Level.INFO, "Automatic Shuffler {0}", blah);
 
         if (snare) {
             if (blah == 1 && col.getShufflerSelect(ShufflerOffset.GENERATOR_A)) {

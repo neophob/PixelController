@@ -176,12 +176,11 @@ public class VisualState extends Observable {
 
         // create generators
         pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, fps, sound,
-                pixelControllerResize.getResize(ResizeName.SIMPLE_RESIZE));
-        // sound, pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
+                pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
         pixelControllerGenerator.initAll();
 
         pixelControllerEffect = new PixelControllerEffect(matrix, sound,
-                pixelControllerResize.getResize(ResizeName.SIMPLE_RESIZE));
+                pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
         pixelControllerEffect.initAll();
 
         pixelControllerMixer = new PixelControllerMixer(matrix, sound);
@@ -227,7 +226,7 @@ public class VisualState extends Observable {
     }
 
     /**
-     * update the whole system: -generators -effects -outputs
+     * update the whole system: generators and effects
      * 
      * update the generators, if the sound is louder, update faster.
      */

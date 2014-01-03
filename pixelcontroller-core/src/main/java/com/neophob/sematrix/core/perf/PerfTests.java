@@ -94,7 +94,7 @@ public class PerfTests {
 
         PixelControllerResize pcr = new PixelControllerResize();
         pcr.initAll();
-        IResize res = pcr.getResize(ResizeName.SIMPLE_RESIZE);
+        IResize res = pcr.getResize(ResizeName.PIXEL_RESIZE);
         preTest();
         int[] buffer = new int[largeSize * largeSize];
         for (int i = 0; i < smallRound; i++) {
@@ -104,6 +104,17 @@ public class PerfTests {
         long timePerResize = time * 1000L / smallRound;
         LOG.log(Level.INFO, ">>> PixelResize needed {0}ms - {1}ns per resize", new Object[] { time,
                 timePerResize });
+
+        res = pcr.getResize(ResizeName.QUALITY_RESIZE);
+        preTest();
+        buffer = new int[largeSize * largeSize];
+        for (int i = 0; i < smallRound; i++) {
+            res.resizeImage(buffer, largeSize, largeSize, smallSize, smallSize);
+        }
+        time = postTest();
+        timePerResize = time * 1000L / smallRound;
+        LOG.log(Level.INFO, ">>> QualityResize needed {0}ms - {1}ns per resize", new Object[] {
+                time, timePerResize });
     }
 
     private void preTest() {

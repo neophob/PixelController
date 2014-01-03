@@ -12,9 +12,10 @@
 * Add Noise generator
 * Add Gamma 3.0 color correction
 * Add TouchOsc layout
+* Add simple performance test (`PixelController.sh -perf` or `PixelControllerRPi.sh -perf`)
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
-* Fix replace all image resize code with a simple Java based resize code, major performance improvment
+* Fix replace Pixel and Quality image resize code with custom implementations (simple and bilinear), major performance improvment
 * Fix add missing float parameter to the OSC server
 * Fix The framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI in random mode

@@ -18,8 +18,6 @@
  */
 package com.neophob.sematrix.core.resize;
 
-import java.awt.image.BufferedImage;
-
 /**
  * This filter is optimized for pixel oriented images.
  * 
@@ -34,12 +32,7 @@ class SimpleResize extends Resize {
      *            the controller
      */
     public SimpleResize() {
-        super(ResizeName.SIMPLE_RESIZE);
-    }
-
-    @Override
-    public int[] getBuffer(BufferedImage bi, int newX, int newY) {
-        return null;
+        super(ResizeName.PIXEL_RESIZE);
     }
 
     @Override

@@ -52,6 +52,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
     private Thread runner;
     private boolean initialized = false;
+    private float lastFramerateValue = 1.0f;
 
     private PixelControllerOscServer oscServer;
     private PixelControllerStatusMBean pixConStat;
@@ -152,8 +153,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         LOG.log(Level.INFO, "Enter main loop");
 
-        float lastFramerateValue = 1.0f;
-
         // Mainloop
         while (Thread.currentThread() == runner) {
             if (this.visualState.isInPauseMode()) {
@@ -179,26 +178,31 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
                 LOG.log(Level.INFO, "Framerate: {0}, Framecount: {1}",
                         new Object[] { framerate.getFps(), cnt });
             }
-            if (lastFramerateValue != visualState.getFpsSpeed()) {
-                lastFramerateValue = visualState.getFpsSpeed();
-                framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
-            }
-
-            long delay = framerate.getFrameDelay();
-            while (delay > MAXIMAL_FRAME_DELAY_IN_MS) {
-                sleep(MAXIMAL_FRAME_DELAY_IN_MS);
-                delay -= MAXIMAL_FRAME_DELAY_IN_MS;
-                // prevent that very low framerate (<1) result in a non response
-                if (lastFramerateValue != visualState.getFpsSpeed()) {
-                    lastFramerateValue = visualState.getFpsSpeed();
-                    framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
-                    delay = 1;
-                }
-            }
-            sleep(delay);
+            handleFpsSleep();
 
         }
         LOG.log(Level.INFO, "Main loop finished...");
+    }
+
+    private void handleFpsSleep() {
+        if (lastFramerateValue != visualState.getFpsSpeed()) {
+            lastFramerateValue = visualState.getFpsSpeed();
+            framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
+        }
+
+        long delay = framerate.getFrameDelay();
+        while (delay > MAXIMAL_FRAME_DELAY_IN_MS) {
+            sleep(MAXIMAL_FRAME_DELAY_IN_MS);
+            delay -= MAXIMAL_FRAME_DELAY_IN_MS;
+            // prevent that very low framerate (<1) result in a non
+            // responsiveness
+            if (lastFramerateValue != visualState.getFpsSpeed()) {
+                lastFramerateValue = visualState.getFpsSpeed();
+                framerate.setFps(visualState.getFpsSpeed() * applicationConfig.parseFps());
+                delay = 1;
+            }
+        }
+        sleep(delay);
     }
 
     private void sleep(long delay) {

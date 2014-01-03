@@ -21,8 +21,6 @@ package com.neophob.sematrix.core.resize;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * resize a larger buffer for a smaller buffer.
@@ -30,8 +28,6 @@ import java.util.logging.Logger;
  * @author michu
  */
 public abstract class Resize implements IResize {
-
-    private static final Logger LOG = Logger.getLogger(Resize.class.getName());
 
     /**
      * The Enum ResizeName.
@@ -44,9 +40,7 @@ public abstract class Resize implements IResize {
         PIXEL_RESIZE(0),
 
         /** The QUALIT y_ resize. */
-        QUALITY_RESIZE(1),
-
-        SIMPLE_RESIZE(2);
+        QUALITY_RESIZE(1);
 
         /** The id. */
         private int id;
@@ -85,11 +79,6 @@ public abstract class Resize implements IResize {
     public Resize(ResizeName resizeName) {
         this.resizeName = resizeName;
     }
-
-    /**
-     * subclass needs to implement it
-     */
-    protected abstract int[] getBuffer(BufferedImage bi, int newX, int newY);
 
     /**
      * Gets the id.
@@ -138,22 +127,11 @@ public abstract class Resize implements IResize {
      */
     public BufferedImage createImage(int[] buffer, int currentXSize, int currentYSize) {
         BufferedImage bi = new BufferedImage(currentXSize, currentYSize, BufferedImage.TYPE_INT_RGB);
-        // bi.setRGB(0, 0, currentXSize, currentYSize, buffer, 0, currentXSize);
         WritableRaster newRaster = bi.getRaster();
         newRaster.setDataElements(0, 0, currentXSize, currentYSize, buffer);
         bi.setData(newRaster);
 
         return bi;
-    }
-
-    @Override
-    public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
-        if (buffer.length != currentXSize * currentYSize) {
-            LOG.log(Level.WARNING, "Invalid currentSize defined, buffersize: {0}, calculated: {1}",
-                    new Object[] { buffer.length, currentXSize * currentYSize });
-        }
-        BufferedImage bi = createImage(buffer, currentXSize, currentYSize);
-        return getBuffer(bi, newX, newY);
     }
 
 }

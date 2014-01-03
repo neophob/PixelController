@@ -63,9 +63,8 @@ public class PixelControllerResize implements PixelControllerElement {
      */
     @Override
     public void initAll() {
-        // allResizers.add(new PixelResize());
-        // allResizers.add(new QualityResize());
         allResizers.add(new SimpleResize());
+        allResizers.add(new BilinearResize());
     }
 
     /*
@@ -101,8 +100,7 @@ public class PixelControllerResize implements PixelControllerElement {
     public int[] resizeImage(ResizeName resizeTyp, int[] inputBuffer, int currentX, int currentY,
             int newX, int newY) {
         IResize r = null;
-        // r = getResize(resizeTyp);
-        r = getResize(ResizeName.SIMPLE_RESIZE);
+        r = getResize(resizeTyp);
         if (r == null) {
             LOG.log(Level.WARNING, "invalid resize typ selected: " + resizeTyp);
             return null;
