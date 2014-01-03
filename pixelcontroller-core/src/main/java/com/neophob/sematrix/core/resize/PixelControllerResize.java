@@ -63,7 +63,7 @@ public class PixelControllerResize implements PixelControllerElement {
      */
     @Override
     public void initAll() {
-        allResizers.add(new SimpleResize());
+        allResizers.add(new NearestNeighbourResize());
         allResizers.add(new BilinearResize());
     }
 

@@ -23,7 +23,7 @@ package com.neophob.sematrix.core.resize;
  * 
  * @author michu
  */
-class SimpleResize extends Resize {
+class NearestNeighbourResize extends Resize {
 
     /**
      * Instantiates a new pixel resize.
@@ -31,7 +31,7 @@ class SimpleResize extends Resize {
      * @param controller
      *            the controller
      */
-    public SimpleResize() {
+    public NearestNeighbourResize() {
         super(ResizeName.PIXEL_RESIZE);
     }
 
