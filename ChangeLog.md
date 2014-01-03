@@ -8,11 +8,12 @@
 * Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
 * Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
-* Add support for (optional) GZipped Blinkenlight files
+* Add support for (optional) GZipped Blinkenlight files (file extension .gz)
 * Add Noise generator
 * Add Gamma 3.0 color correction
 * Add TouchOsc layout
 * Add simple performance test (`PixelController.sh -perf` or `PixelControllerRPi.sh -perf`)
+* Add Random Mode with selectable time-life (option `randommode.lifetime.in.s`)
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
