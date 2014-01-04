@@ -461,7 +461,7 @@ public enum MessageProcessor {
                     try {
                         // save current visual buffer
                         TransitionManager transition = new TransitionManager(col);
-                        Shuffler.manualShuffleStuff();
+                        Shuffler.manualShuffleStuff(col);
                         transition.startCrossfader();
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
@@ -472,9 +472,12 @@ public enum MessageProcessor {
                 // one shot randomizer, use a pre-stored present
                 case PRESET_RANDOM:
                     try {
+                        // save current visual buffer
+                        TransitionManager transition = new TransitionManager(col);
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         loadPreset(currentPreset);
                         presetService.setSelectedPreset(currentPreset);
+                        transition.startCrossfader();
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -726,8 +729,6 @@ public enum MessageProcessor {
         List<String> preset = presetService.getPresets().get(nr).getPresent();
         if (preset != null) {
             preset = removeObsoleteCommands(new ArrayList<String>(preset));
-            // save current visual buffer
-            TransitionManager transition = new TransitionManager(col);
 
             // load preset
             col.setCurrentStatus(preset);
@@ -735,9 +736,6 @@ public enum MessageProcessor {
             // Restore current Selection
             col.setCurrentVisual(currentVisual);
             col.setCurrentOutput(currentOutput);
-
-            // start preset fader here, hardcoded to Crossfading
-            transition.startCrossfader();
         }
         col.setLoadingPresent(false);
     }

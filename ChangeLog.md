@@ -12,15 +12,16 @@
 * Add Gamma 3.0 color correction
 * Add TouchOsc layout
 * Add simple performance test (`PixelController.sh -perf` or `PixelControllerRPi.sh -perf`)
-* Add Random Mode with selectable time-life (option `randommode.lifetime.in.s`)
+* Add Random Mode with selectable time-life (option `randommode.lifetime.in.s`) (Issue #44)
+* Add more Blinkenlights movie files
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
 * Fix add missing float parameter to the OSC server
 * Fix the framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI settings when random mode kicks in
-* Fix generator speed changes the target fps (0..200%), much smoother
-* Fix generator speed and brightness were not stored as part of the preset
+* Fix generator speed changes the target fps (0..200%), much smoother (Issue #46, #52 and #59)
+* Fix generator speed and brightness were not stored as part of the preset (Issue #62)
 * Fix capture generator, crashed if recording window was too small
 * Fix Metaball generator resolution for different sizes
 * Fix more code cleanup
@@ -30,7 +31,7 @@
 * Fix visual size in GUI
 * Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
 * Fix update build process, put RPi specifiy resources (Serial and pi4j) dependencies into special directory, do not include junit dependencies.
-* Fix speedup Blinkenlight parser
+* Fix speedup Blinkenlight parser, some frames were displayed too long
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
