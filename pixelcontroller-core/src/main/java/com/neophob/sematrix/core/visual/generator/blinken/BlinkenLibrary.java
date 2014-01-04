@@ -41,8 +41,7 @@
 
 package com.neophob.sematrix.core.visual.generator.blinken;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,36 +93,29 @@ public class BlinkenLibrary {
      */
     public boolean loadFile(String filename) {
         long start = System.currentTimeMillis();
-        InputStream input = null;
 
         try {
-            input = new FileInputStream(filename);
-
             // make sure input file exist
             long t1 = System.currentTimeMillis();
-            blm = (Blm) unmarshaller.unmarshal(input);
-
+            blm = (Blm) unmarshaller.unmarshal(new File(filename));
             long t2 = System.currentTimeMillis();
 
+            if (Integer.parseInt(blm.getChannels()) != 1) {
+                LOG.log(Level.WARNING, "Bml file using " + blm.getChannels()
+                        + " channels - only 1 channel files are supported!");
+                return false;
+            }
             this.frames = extractFrames(128);
 
             long timeNeeded = System.currentTimeMillis() - start;
             System.out.println("unmarshall: " + (t2 - t1));
             LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename,
                     frames.length, timeNeeded });
+
             return true;
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to load " + filename + ", Error: ", e);
             return false;
-        } finally {
-            try {
-                if (input != null) {
-                    input.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close file {0}, Error: {1}", new Object[] {
-                        filename, e });
-            }
         }
     }
 

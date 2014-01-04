@@ -56,10 +56,10 @@ public final class BlinkenHelper {
         int bits = Integer.parseInt(blm.getBits());
         float col = (float) (color & 255) / 255.f;
 
-        int frames = blm.getFrame().size();
-        BlinkenImage[] allFrames = new BlinkenImage[frames];
+        int frameCount = blm.getFrame().size();
+        BlinkenImage[] allFrames = new BlinkenImage[frameCount];
 
-        for (int i = 0; i < frames; i++) {
+        for (int i = 0; i < frameCount; i++) {
             Frame f = blm.getFrame().get(i);
             BlinkenImage img = new BlinkenImage(width, height);
             for (Row r : f.getRow()) {

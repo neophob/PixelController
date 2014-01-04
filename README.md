@@ -280,13 +280,18 @@ The included PixelController PixConCli tool can also send OSC messages - but are
 
 Links that help you create Blinkenlights files:
 
+* [Blinkenlights Dev Tools](http://blinkenlights.net/project/developer-tools)
 * [BLIMP - Blinkenlights Interactive Movie Program](http://wiki.blinkenarea.org/index.php/Blimp)
 * [Image to BML Converter](http://www.capybara.org/~dfraser/archives/261)
 * [162 Blinkenlights Movie files](http://www.littlelights.de/downloads/162-blms.zip)
-* [BML to GIF Converter **German**](http://blinkenmini.schuermans.info/software.de.html)
+* [bmconv, GIF to BML Converter **German**](http://blinkenmini.schuermans.info/software.de.html)
 * [Processing library to create Blinkenlights movie files](http://robinsenior.com/blinkenlights/)
 
 A note about BLIMP, if you save a file, make sure to add the ".bml" file extension, else it may fail.
+
+To create a bml file out of an animated gif file, download and install blib and blinkentools (see Blinkenlights Dev Tools link). Example how to convert an animated gif to bml: `./b2b -o _NAMEIT_ -t bml -b 4 INPUT.gif`
+
+Make sure you create blinkenlights files using 4 or 8 bits, using 1 channel (3 channels are not supported!).
 
 ### Beat Workmode
 The **Beat Workmode** define how the *sound event detection* (beat/hat/snare detection) should influence the Generator speed (=speed of the Visual). Currently three modes are implemented:
