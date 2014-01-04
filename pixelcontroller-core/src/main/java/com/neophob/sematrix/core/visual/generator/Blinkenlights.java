@@ -53,9 +53,6 @@ public class Blinkenlights extends Generator {
     /** The blinken. */
     private BlinkenLibrary blinken;
 
-    /** The random. */
-    private boolean random;
-
     /** The rand. */
     private Random rand = new Random();
 
@@ -84,7 +81,6 @@ public class Blinkenlights extends Generator {
         super(matrix, GeneratorName.BLINKENLIGHTS, ResizeName.QUALITY_RESIZE);
         this.filename = null;
         this.resize = resize;
-        this.random = false;
         this.fu = fu;
 
         // find movie files
@@ -148,43 +144,15 @@ public class Blinkenlights extends Generator {
      */
     @Override
     public void update(int amount) {
-        if (random) {
-            img = blinken.getFrame(rand.nextInt(blinken.getFrameCount()));
-        } else {
-            for (int n = 0; n < amount; n++) {
-                frameNr++;
-                if (frameNr % 2 == 0) {
-                    currentFrame++;
-                }
-            }
-            img = blinken.getFrame(currentFrame);
-
-            if (currentFrame > blinken.getFrameCount()) {
-                currentFrame = 0;
-            }
+        frameNr++;
+        if (frameNr % 2 == 0) {
+            return;
         }
 
+        img = blinken.getFrame(currentFrame);
+        currentFrame += amount;
         this.internalBuffer = resize.resizeImage(img.getData(), img.getWidth(), img.getHeight(),
                 internalBufferXSize, internalBufferYSize);
-    }
-
-    /**
-     * Checks if is random.
-     * 
-     * @return true, if is random
-     */
-    public boolean isRandom() {
-        return random;
-    }
-
-    /**
-     * Sets the random.
-     * 
-     * @param random
-     *            the new random
-     */
-    public void setRandom(boolean random) {
-        this.random = random;
     }
 
     /**
