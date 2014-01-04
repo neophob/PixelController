@@ -68,7 +68,7 @@ public class BlinkenLibrary {
     private Unmarshaller unmarshaller;
 
     public static final String NAME = "blinkenlights-mini";
-    public static final String VERSION = "v0.41";
+    public static final String VERSION = "v0.5";
 
     /**
      * 
@@ -108,9 +108,8 @@ public class BlinkenLibrary {
             this.frames = extractFrames(128);
 
             long timeNeeded = System.currentTimeMillis() - start;
-            System.out.println("unmarshall: " + (t2 - t1));
-            LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename,
-                    frames.length, timeNeeded });
+            LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms (Unmarshall: {3}ms)",
+                    new Object[] { filename, frames.length, timeNeeded, (t2 - t1) });
 
             return true;
         } catch (Exception e) {
