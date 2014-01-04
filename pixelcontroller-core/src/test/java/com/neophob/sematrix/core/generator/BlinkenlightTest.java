@@ -13,10 +13,10 @@ public class BlinkenlightTest {
         BlinkenLibrary blinken = new BlinkenLibrary();
         FileUtils fu = new FileUtilsJunit();
         // load 4bpp file
-        blinken.loadFile(fu.getBmlDir() + "torus2.bml.gz");
+        blinken.loadFile(fu.getBmlDir() + "torus2.bml");
 
         // load 8bpp file
-        blinken.loadFile(fu.getBmlDir() + "xflame.bml.gz");
+        blinken.loadFile(fu.getBmlDir() + "xflame.bml");
     }
 
 }
