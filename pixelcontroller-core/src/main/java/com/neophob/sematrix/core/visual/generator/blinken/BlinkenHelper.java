@@ -129,15 +129,12 @@ public final class BlinkenHelper {
     private static int[] getDataFromTwoCharRow(String data) {
         int[] ret = new int[data.length() / 2];
         char[] convertedData = data.toCharArray();
-        int ofs = 0;
         int dst = 0;
         int col;
-        System.out.println("TWOCHAR: " + data);
 
-        String tmp = "";
-        for (int i = 0; i < data.length() / 2; i++) {
-            tmp = convertedData[ofs++] + "" + convertedData[ofs++];
-            col = Integer.parseInt(tmp, 16);
+        for (int i = 0; i < convertedData.length;) {
+            col = (Character.digit(convertedData[i++], 16) << 4)
+                    | Character.digit(convertedData[i++], 16);
             ret[dst++] = col << 16 | col << 8 | col;
         }
         return ret;
