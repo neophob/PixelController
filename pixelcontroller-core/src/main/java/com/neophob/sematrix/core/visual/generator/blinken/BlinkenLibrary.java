@@ -41,7 +41,6 @@
 
 package com.neophob.sematrix.core.visual.generator.blinken;
 
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -61,135 +60,134 @@ import com.neophob.sematrix.core.visual.generator.blinken.jaxb.Header;
  */
 public class BlinkenLibrary {
 
-	public static final String GZIP_FILE_SUFFIX = ".gz";
-	private static final Logger LOG = Logger.getLogger(BlinkenLibrary.class.getName());
+    public static final String GZIP_FILE_SUFFIX = ".gz";
+    private static final Logger LOG = Logger.getLogger(BlinkenLibrary.class.getName());
 
-	// the marshalled .blm file
-	private Blm blm;	
+    // the marshalled .blm file
+    private Blm blm;
 
-	private BlinkenImage[] frames;
-	
-	private Unmarshaller unmarshaller;
+    private BlinkenImage[] frames;
 
-	public static final String NAME = "blinkenlights-mini";
-	public static final String VERSION = "v0.41";
+    private Unmarshaller unmarshaller;
 
-	/**
-	 * 
-	 * @param parent
-	 */
-	public BlinkenLibrary() {
-		try {
-			JAXBContext context = JAXBContext.newInstance(Blm.class.getPackage().getName());
-			unmarshaller = context.createUnmarshaller();			
-		} catch (JAXBException e) {
-			LOG.log(Level.SEVERE, "Failed to initialize Blinkenlights lib!", e);
-		}
+    public static final String NAME = "blinkenlights-mini";
+    public static final String VERSION = "v0.41";
 
-	}
+    /**
+     * 
+     * @param parent
+     */
+    public BlinkenLibrary() {
+        try {
+            JAXBContext context = JAXBContext.newInstance(Blm.class.getPackage().getName());
+            unmarshaller = context.createUnmarshaller();
+        } catch (JAXBException e) {
+            LOG.log(Level.SEVERE, "Failed to initialize Blinkenlights lib!", e);
+        }
 
-	/**
-	 * load a new bml file
-	 * @param filename
-	 * @param maximalSize maximal height or width of an image
-	 */
-	public boolean loadFile(String filename) {
-		long start = System.currentTimeMillis();			
-		InputStream input = null;
+    }
 
-		try {
-		    if (filename.toLowerCase().endsWith(GZIP_FILE_SUFFIX)) {
-		    	input = new GZIPInputStream(new FileInputStream(filename));
-		    } else {
-		    	input = new FileInputStream(filename);
-		    }
-			//make sure input file exist
-			blm = (Blm) unmarshaller.unmarshal(input);
-			this.frames = extractFrames(128);			
-	
-			long timeNeeded = System.currentTimeMillis()-start;
-			LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename, frames.length,timeNeeded });
-			return true;
-		} catch (Exception e) {
-			LOG.log(Level.WARNING, "Failed to load "+filename+", Error: ", e);
-			return false;
-		} finally {
-			try {
-				if (input!=null) {
-					input.close();
-				}
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Failed to close file {0}, Error: {1}" , new Object[] { filename, e });
-			}
-		}
-	}
+    /**
+     * load a new bml file
+     * 
+     * @param filename
+     * @param maximalSize
+     *            maximal height or width of an image
+     */
+    public boolean loadFile(String filename) {
+        long start = System.currentTimeMillis();
+        InputStream input = null;
 
+        try {
+            if (filename.toLowerCase().endsWith(GZIP_FILE_SUFFIX)) {
+                input = new GZIPInputStream(new FileInputStream(filename), 1000000);
+            } else {
+                input = new FileInputStream(filename);
+            }
+            // make sure input file exist
+            blm = (Blm) unmarshaller.unmarshal(input);
+            this.frames = extractFrames(128);
 
-	/**
-	 * creates a PImage-array of gif frames in a GifDecoder object 
-	 * @return 
-	 */
-	public BlinkenImage[] extractFrames(int color) {
-		int n = blm.getFrame().size();
-		BlinkenImage[] framesTmp = new BlinkenImage[n];
+            long timeNeeded = System.currentTimeMillis() - start;
+            LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms", new Object[] { filename,
+                    frames.length, timeNeeded });
+            return true;
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Failed to load " + filename + ", Error: ", e);
+            return false;
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "Failed to close file {0}, Error: {1}", new Object[] {
+                        filename, e });
+            }
+        }
+    }
 
-		for (int i = 0; i < n; i++) {
-			framesTmp[i] = BlinkenHelper.grabFrame(i, blm, color);
-		}						
-		return framesTmp;
-	}
+    /**
+     * creates a PImage-array of gif frames in a GifDecoder object
+     * 
+     * @return
+     */
+    public BlinkenImage[] extractFrames(int color) {
+        return BlinkenHelper.grabFrames(blm, color);
+    }
 
+    /**
+     * total frame numbers of current movie
+     * 
+     * @return how many frames this movie contains
+     */
+    public int getNrOfFrames() {
+        return blm.getFrame().size();
+    }
 
-	/**
-	 * total frame numbers of current movie
-	 * @return how many frames this movie contains
-	 */
-	public int getNrOfFrames() {
-		return blm.getFrame().size();
-	}
+    /**
+     * get meta information (title, duration...) about the loaded file
+     * 
+     * @return the header object
+     */
+    public Header getHeader() {
+        return blm.getHeader();
+    }
 
-	/**
-	 * get meta information (title, duration...) about the loaded file
-	 * @return the header object
-	 */
-	public Header getHeader() {
-		return blm.getHeader();
-	}
+    /**
+     * get the marshalled object
+     * 
+     * @return the marshalled blinkenlights file
+     */
+    public Blm getRawObject() {
+        return blm;
+    }
 
-	/**
-	 * get the marshalled object
-	 * @return the marshalled blinkenlights file
-	 */
-	public Blm getRawObject() {
-		return blm;
-	}
+    public BlinkenImage[] getFrames() {
+        return frames;
+    }
 
+    public int getFrameCount() {
+        if (frames == null) {
+            return 0;
+        }
+        return frames.length;
+    }
 
-	public BlinkenImage[] getFrames() {
-		return frames;
-	}
-	
-	public int getFrameCount() {
-		if (frames==null) {
-			return 0;
-		}
-		return frames.length;
-	}
-	
-	public BlinkenImage getFrame(int nr) {
-		if (frames==null) {
-			return null;
-		}
-		return frames[nr%frames.length];
-	}
+    public BlinkenImage getFrame(int nr) {
+        if (frames == null) {
+            return null;
+        }
+        return frames[nr % frames.length];
+    }
 
-	/**
-	 * return the version of the library.
-	 * @return String
-	 */
-	public static String version() {
-		return VERSION;
-	}
+    /**
+     * return the version of the library.
+     * 
+     * @return String
+     */
+    public static String version() {
+        return VERSION;
+    }
 
 }
-

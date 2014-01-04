@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.core.visual.generator.blinken;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,65 +40,47 @@ public final class BlinkenHelper {
     }
 
     /**
-     * return a converted frame
+     * Structure of row data (http://blinkenlights.net/project/bml) Each single
+     * row describes the pixel colour values in hexadecimal notation. If the
+     * colour depth is between 1 and 4, one hexadecimal digit is used per colour
+     * value (0-f). If the colour depth is between 5 and 8, two hexadecimal
+     * digits are used per colour value (00-ff).
      * 
-     * @param frameNr
-     *            which frame to convert
-     * @param blm
-     *            to marshalled object, our source
-     * @return an image out of the frame
+     * The is one value for each pixel, one after the other. In an RGB picture
+     * with channels="3" there are three colour values in sequence.
+     * 
      */
-    public static BlinkenImage grabFrame(int frameNr, Blm blm, int color)
-            throws NumberFormatException {
-        int frames = blm.getFrame().size();
-
-        // some sanity checks
-        if (frameNr > frames || frameNr < 0) {
-            return null;
-        }
-
+    public static BlinkenImage[] grabFrames(Blm blm, int color) throws NumberFormatException {
         int width = Integer.parseInt(blm.getWidth());
         int height = Integer.parseInt(blm.getHeight());
         int bits = Integer.parseInt(blm.getBits());
-        // int channels = Integer.parseInt(blm.getChannels());
-
-        Frame f = blm.getFrame().get(frameNr);
-        List<Row> rows = f.getRow();
-
-        BlinkenImage img = new BlinkenImage(width, height);
-
-        /**
-         * Structure of row data (http://blinkenlights.net/project/bml) Each
-         * single row describes the pixel colour values in hexadecimal notation.
-         * If the colour depth is between 1 and 4, one hexadecimal digit is used
-         * per colour value (0-f). If the colour depth is between 5 and 8, two
-         * hexadecimal digits are used per colour value (00-ff).
-         * 
-         * The is one value for each pixel, one after the other. In an RGB
-         * picture with channels="3" there are three colour values in sequence.
-         * 
-         */
         float col = (float) (color & 255) / 255.f;
 
-        for (Row r : rows) {
-            String s = r.getvalue();
-            int[] data;
-            if (bits > 0 && bits < 5) {
-                // one char per color value
-                data = getDataFromOneCharRow(s, col);
-            } else {
-                // two char per color value
-                data = getDataFromTwoCharRow(s);
-            }
-            if (data.length != width) {
-                log.log(Level.WARNING, "Ooops: looks like here is an error: {0}!={1}",
-                        new Object[] { width, data.length });
-            }
+        int frames = blm.getFrame().size();
+        BlinkenImage[] allFrames = new BlinkenImage[frames];
 
-            img.addData(data);
+        for (int i = 0; i < frames; i++) {
+            Frame f = blm.getFrame().get(i);
+            BlinkenImage img = new BlinkenImage(width, height);
+            for (Row r : f.getRow()) {
+                int[] data;
+                if (bits > 0 && bits < 5) {
+                    // one char per color value
+                    data = getDataFromOneCharRow(r.getvalue(), col);
+                } else {
+                    // two char per color value
+                    data = getDataFromTwoCharRow(r.getvalue());
+                }
+                if (data.length != width) {
+                    log.log(Level.WARNING, "Ooops: looks like here is an error: {0}!={1}",
+                            new Object[] { width, data.length });
+                }
+                img.addData(data);
+            }
+            allFrames[i] = img;
         }
 
-        return img;
+        return allFrames;
     }
 
     /**
