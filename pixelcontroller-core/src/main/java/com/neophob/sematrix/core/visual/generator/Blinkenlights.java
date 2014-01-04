@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.core.visual.generator;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -126,17 +125,6 @@ public class Blinkenlights extends Generator {
         if (!StringUtils.equals(file, this.filename)) {
 
             String fileToLoad = file;
-            boolean canReadFile = new File(fu.getBmlDir() + fileToLoad).exists();
-
-            // if file load fails, try to add/remove the .gz file extension
-            if (!canReadFile) {
-                if (file.toLowerCase().endsWith(BlinkenLibrary.GZIP_FILE_SUFFIX)) {
-                    fileToLoad = fileToLoad.substring(0, fileToLoad.length()
-                            - BlinkenLibrary.GZIP_FILE_SUFFIX.length());
-                } else {
-                    fileToLoad = fileToLoad + BlinkenLibrary.GZIP_FILE_SUFFIX;
-                }
-            }
 
             LOG.log(Level.INFO, "Load blinkenlights file {0} (input {1}).", new String[] {
                     fileToLoad, file });

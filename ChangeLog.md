@@ -8,7 +8,6 @@
 * Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
 * Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
-* Add support for (optional) GZipped Blinkenlight files (file extension .gz)
 * Add Noise generator
 * Add Gamma 3.0 color correction
 * Add TouchOsc layout
@@ -31,6 +30,7 @@
 * Fix visual size in GUI
 * Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
 * Fix update build process, put RPi specifiy resources (Serial and pi4j) dependencies into special directory, do not include junit dependencies.
+* Fix speedup Blinkenlight parser
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
