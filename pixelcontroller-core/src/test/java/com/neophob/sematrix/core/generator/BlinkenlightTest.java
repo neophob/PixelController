@@ -16,7 +16,7 @@ public class BlinkenlightTest {
         blinken.loadFile(fu.getBmlDir() + "torus2.bml");
 
         // load 8bpp file
-        blinken.loadFile(fu.getBmlDir() + "xflame.bml");
+        // blinken.loadFile(fu.getBmlDir() + "xflame.bml");
     }
 
 }
