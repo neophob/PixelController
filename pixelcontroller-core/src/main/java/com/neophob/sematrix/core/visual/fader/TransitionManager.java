@@ -18,6 +18,9 @@
  */
 package com.neophob.sematrix.core.visual.fader;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
 
@@ -28,6 +31,8 @@ import com.neophob.sematrix.core.visual.VisualState;
  * 
  */
 public class TransitionManager {
+
+    private static final Logger LOG = Logger.getLogger(TransitionManager.class.getName());
 
     private int[][] savedVisuals;
     private VisualState visualState;
@@ -44,6 +49,8 @@ public class TransitionManager {
         for (OutputMapping om : visualState.getAllOutputMappings()) {
             savedVisuals[i++] = visualState.getVisual(om.getVisualId()).getBuffer().clone();
         }
+
+        LOG.log(Level.INFO, "Transition Manager created, saved " + i + " visual output buffer(s)");
     }
 
     /**
@@ -58,6 +65,8 @@ public class TransitionManager {
                     visualState.getFpsSpeed()));
             om.getFader().startFade(om.getVisualId(), savedVisuals[i++]);
         }
+        LOG.log(Level.INFO, "Transition Manager finished, started fader");
+
     }
 
 }

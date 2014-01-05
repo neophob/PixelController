@@ -53,9 +53,9 @@ public class OutputWiringTest {
         vs.updateSystem(pixConStat);
 
         JunitOutput output = new JunitOutput(ph);
-        output.prepareOutputBuffer();
+        output.prepareOutputBuffer(vs);
         output.switchBuffers();
-        output.prepareOutputBuffer();
+        output.prepareOutputBuffer(vs);
         return output.getTransformedBuffer();
     }
 

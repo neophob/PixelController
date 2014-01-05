@@ -19,6 +19,7 @@
 package com.neophob.sematrix.core.output;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -283,16 +284,15 @@ public abstract class Output implements IOutput {
      * fill the the preparedBufferMap instance with int[] buffers for all
      * screens.
      */
-    public synchronized void prepareOutputBuffer() {
+    public synchronized void prepareOutputBuffer(VisualState vs) {
         int[] buffer;
         Visual v;
-
+        List<OutputMapping> allOutputMappings = vs.getAllOutputMappings();
         for (int screen = 0; screen < this.totalNrOfOutputBuffers; screen++) {
-            LayoutModel lm = this.layout.getDataForScreen(screen, VisualState.getInstance()
-                    .getAllOutputMappings());
-            OutputMapping map = VisualState.getInstance().getOutputMappings(screen);
+            LayoutModel lm = this.layout.getDataForScreen(screen, allOutputMappings);
+            OutputMapping map = allOutputMappings.get(screen);
             // TODO inject someday..
-            v = VisualState.getInstance().getVisual(lm.getVisualId());
+            v = vs.getVisual(lm.getVisualId());
 
             if (lm.screenDoesNotNeedStretching()) {
                 buffer = this.getScreenBufferForDevice(v, map);

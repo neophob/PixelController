@@ -61,8 +61,8 @@ public class PixelControllerOutput implements PixelControllerElement {
      * @param applicationConfig
      * @throws IllegalArgumentException
      */
-    public static IOutput getOutputDevice(VisualState visualState,
-            ApplicationConfigurationHelper applicationConfig) throws IllegalArgumentException {
+    public static IOutput getOutputDevice(ApplicationConfigurationHelper applicationConfig)
+            throws IllegalArgumentException {
         OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
         IOutput output = null;
         int nrOfOutputScreens = applicationConfig.getNrOfScreens();
@@ -156,15 +156,15 @@ public class PixelControllerOutput implements PixelControllerElement {
     public void update() {
         // check if this is the first call of this method
         if (this.prepareEndGate == null && this.updateEndGate == null) {
+            LOG.log(Level.INFO, "Init output");
             // we have to prepare the int[] buffers manually the first time. to
-            // not mess up this method
-            // even more the prepare() methods will be called directly without
-            // any additional threading
-            // overhead. for the first frame it shouldn't really matter that the
-            // outputs have to wait
-            // until the int[] buffers preparation is done.
+            // not mess up this method even more the prepare() methods will be
+            // called directly without any additional threading overhead. for
+            // the first frame it shouldn't really matter that the outputs have
+            // to wait until the int[] buffers preparation is done.
+            VisualState vs = VisualState.getInstance();
             for (IOutput output : this.allOutputs) {
-                output.prepareOutputBuffer();
+                output.prepareOutputBuffer(vs);
             }
         }
 
@@ -200,15 +200,12 @@ public class PixelControllerOutput implements PixelControllerElement {
                 - startTime);
 
         // after the prepare() and update() methods call of all outputs are done
-        // we have in every
-        // output the currentBufferMap instance that contains all int[] buffer
-        // that just have been
-        // written to the output instances and can therefore be cleaned. also we
-        // have the preparedBufferMap
+        // we have in every output the currentBufferMap instance that contains
+        // all int[] buffer that just have been written to the output instances
+        // and can therefore be cleaned. also we have the preparedBufferMap
         // instance containing the new set of int[] buffers to be written to the
-        // output. therefore we have
-        // switch both map instances to be ready for the next call of this
-        // method
+        // output. therefore we have switch both map instances to be ready for
+        // the next call of this method
         for (IOutput output : this.allOutputs) {
             output.switchBuffers();
         }
@@ -232,7 +229,7 @@ public class PixelControllerOutput implements PixelControllerElement {
                         prepareStartGate.await();
                         try {
                             long startTime = System.currentTimeMillis();
-                            output.prepareOutputBuffer();
+                            output.prepareOutputBuffer(VisualState.getInstance());
                             statistic.trackOutputTime(output, TimeMeasureItemOutput.PREPARE,
                                     System.currentTimeMillis() - startTime);
                         } finally {

@@ -22,75 +22,81 @@ import java.io.Serializable;
 
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * Output device interface
  * 
  * @author michu
- *
+ * 
  */
-public interface IOutput extends Serializable{
+public interface IOutput extends Serializable {
 
-	/**
-	 * 
-	 * @return Output type
-	 */
-	OutputDeviceEnum getType();
+    /**
+     * 
+     * @return Output type
+     */
+    OutputDeviceEnum getType();
 
-	/**
-	 * connection oriented device?
-	 * @return
-	 */
-	boolean isSupportConnectionState();
+    /**
+     * connection oriented device?
+     * 
+     * @return
+     */
+    boolean isSupportConnectionState();
 
-	/**
-	 * 
-	 * @return connection state
-	 */
-	boolean isConnected();
+    /**
+     * 
+     * @return connection state
+     */
+    boolean isConnected();
 
-	/**
-	 * if device supports a connection status, overwrite me.
-	 * examples: connected to /dev/aaa or IP Adress: 1.2.3.4
-	 */	
-	String getConnectionStatus();
+    /**
+     * if device supports a connection status, overwrite me. examples: connected
+     * to /dev/aaa or IP Adress: 1.2.3.4
+     */
+    String getConnectionStatus();
 
-	/**
-	 * configured gamma type
-	 * @return
-	 */
-	GammaType getGammaType();
+    /**
+     * configured gamma type
+     * 
+     * @return
+     */
+    GammaType getGammaType();
 
-	/**
-	 * 
-	 * @return color resolution
-	 */
-	int getBpp();
+    /**
+     * 
+     * @return color resolution
+     */
+    int getBpp();
 
-	/**
-	 * @return how many errors occurred (if supported)
-	 */
-	long getErrorCounter();
-	
-	/**
-	 * get buffer for a output, this method respect the mapping and brightness
-	 *
-	 * @param screenNr the screen nr
-	 * @return the buffer for screen
-	 */
-	int[] getBufferForScreen(int screenNr, boolean applyGamma);
-	
-	/**
-	 * Update the output device
-	 */
-	void update();
-	
-	/**
-	 * fill the the preparedBufferMap instance with int[] buffers for all screens
-	 */
-	void prepareOutputBuffer();
-	
-	void switchBuffers();
-	
-	int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize, int deviceYSize);
+    /**
+     * @return how many errors occurred (if supported)
+     */
+    long getErrorCounter();
+
+    /**
+     * get buffer for a output, this method respect the mapping and brightness
+     * 
+     * @param screenNr
+     *            the screen nr
+     * @return the buffer for screen
+     */
+    int[] getBufferForScreen(int screenNr, boolean applyGamma);
+
+    /**
+     * Update the output device
+     */
+    void update();
+
+    /**
+     * fill the the preparedBufferMap instance with int[] buffers for all
+     * screens
+     */
+    void prepareOutputBuffer(VisualState vs);
+
+    void switchBuffers();
+
+    int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize,
+            int deviceYSize);
 }
