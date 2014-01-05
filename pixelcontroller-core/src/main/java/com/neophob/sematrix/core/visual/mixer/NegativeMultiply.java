@@ -27,30 +27,35 @@ import com.neophob.sematrix.core.visual.Visual;
 public class NegativeMultiply extends Mixer {
 
     /**
-     * Instantiates a new negative multiply.
-     *
-     * @param controller the controller
+     * Instantiates a new negative multiply (aka Screen blend mode).
+     * 
+     * @param controller
+     *            the controller
      */
     public NegativeMultiply() {
         super(MixerName.NEGATIVE_MULTIPLY, ResizeName.QUALITY_RESIZE);
     }
 
-    /* (non-Javadoc)
-     * @see com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.core.glue.Visual)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.
+     * core.glue.Visual)
      */
     public int[] getBuffer(Visual visual) {
         if (visual.getEffect2() == null) {
             return visual.getEffect1Buffer();
         }
-		
+
         int[] src1 = visual.getEffect1Buffer();
         int[] src2 = visual.getEffect2Buffer();
-        int[] dst = new int [src1.length];
+        int[] dst = new int[src1.length];
 
-        for (int i=0; i<src1.length; i++){
-            int pixelOne = src1[i]&255;
-            int pixelTwo = src2[i]&255;   
-            dst[i]=255 - ((255-pixelOne)*(255-pixelTwo) / 255);
+        for (int i = 0; i < src1.length; i++) {
+            int pixelOne = src1[i] & 255;
+            int pixelTwo = src2[i] & 255;
+            dst[i] = 255 - ((255 - pixelOne) * (255 - pixelTwo) / 255);
         }
 
         return dst;

@@ -26,6 +26,8 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class Posterize extends Effect {
 
+    private static final int POSTERIZE_LEVEL = 5;
+
     /**
      * Instantiates a new posterize.
      * 
@@ -44,7 +46,7 @@ public class Posterize extends Effect {
     public int[] getBuffer(int[] buffer) {
         int[] ret = new int[buffer.length];
         for (int i = 0; i < buffer.length; i++) {
-            ret[i] = (buffer[i] >> 5) * 32;
+            ret[i] = (buffer[i] >> POSTERIZE_LEVEL) << POSTERIZE_LEVEL;
         }
         return ret;
     }
