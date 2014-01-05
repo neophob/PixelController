@@ -22,18 +22,19 @@ import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
- * compress color information
+ * Due the color scroll mechanism, 128 is the brightest color. so instead of a
+ * regular color value 0..128..255 darken modifies the color to 0..127..0
  */
-public class Posterize extends Effect {
+public class Darken extends Effect {
 
     /**
-     * Instantiates a new posterize.
+     * Instantiates a new inverter.
      * 
      * @param controller
      *            the controller
      */
-    public Posterize(MatrixData matrix) {
-        super(matrix, EffectName.POSTERIZE, ResizeName.QUALITY_RESIZE);
+    public Darken(MatrixData matrix) {
+        super(matrix, EffectName.DARKEN, ResizeName.QUALITY_RESIZE);
     }
 
     /*
@@ -44,8 +45,16 @@ public class Posterize extends Effect {
     public int[] getBuffer(int[] buffer) {
         int[] ret = new int[buffer.length];
         for (int i = 0; i < buffer.length; i++) {
-            ret[i] = (buffer[i] >> 5) * 32;
+            int aa = buffer[i] & 0xff;
+            if (aa > 127) {
+                aa = (255 - aa) / 2;
+            } else {
+                aa /= 2;
+            }
+
+            ret[i] = aa;
         }
         return ret;
     }
+
 }

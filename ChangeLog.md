@@ -15,6 +15,7 @@
 * Add Random Mode with selectable time-life (option `randommode.lifetime.in.s`) (Issue #44)
 * Add more Blinkenlights movie files
 * Add new effect Posterize
+* Add new effect Darken
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
