@@ -100,7 +100,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         this.pixConStat = new PixelControllerStatus((int) applicationConfig.parseFps());
         this.initSound();
         this.presetService = new PresetServiceImpl(fileUtils.getDataDir());
-        MessageProcessor.INSTANCE.init(presetService);
+        MessageProcessor.INSTANCE.init(presetService, applicationConfig.parseFps());
 
         this.visualState.init(fileUtils, applicationConfig, sound, colorSets, presetService);
         framerate = new Framerate(applicationConfig.parseFps());

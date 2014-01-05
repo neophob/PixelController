@@ -25,38 +25,41 @@ import com.neophob.sematrix.core.visual.VisualState;
  * the transition manager handle smooth transition for the output visuals
  * 
  * @author michu
- *
+ * 
  */
 public class TransitionManager {
 
-	private int[][] savedVisuals;
-	private VisualState visualState;
-	
-	/**
-	 * save current visual output, used for preset fading
-	 * 
-	 * @param col
-	 */
-	public TransitionManager(VisualState visualState) {
-		this.visualState = visualState;
-		savedVisuals = new int[visualState.getAllVisuals().size()][];
-		int i = 0;
-		for (OutputMapping om: visualState.getAllOutputMappings()) {
-			savedVisuals[i++] = visualState.getVisual(om.getVisualId()).getBuffer().clone();
-		}		
-	}
-	
-	/**
-	 * start crossfading
-	 * 
-	 * @param visualState
-	 */
-	public void startCrossfader() {
-		int i=0;
-		for (OutputMapping om: visualState.getAllOutputMappings()) {				
-			om.setFader(visualState.getPixelControllerFader().getPresetFader(1));
-			om.getFader().startFade(om.getVisualId(), savedVisuals[i++]);
-		}		
-	}
-	
+    private int[][] savedVisuals;
+    private VisualState visualState;
+    private float fps;
+
+    /**
+     * save current visual output, used for preset fading
+     * 
+     * @param col
+     */
+    public TransitionManager(VisualState visualState, float configuredFps) {
+        this.visualState = visualState;
+        savedVisuals = new int[visualState.getAllVisuals().size()][];
+        this.fps = configuredFps;
+        int i = 0;
+        for (OutputMapping om : visualState.getAllOutputMappings()) {
+            savedVisuals[i++] = visualState.getVisual(om.getVisualId()).getBuffer().clone();
+        }
+    }
+
+    /**
+     * start crossfading
+     * 
+     * @param visualState
+     */
+    public void startCrossfader() {
+        int i = 0;
+        for (OutputMapping om : visualState.getAllOutputMappings()) {
+            om.setFader(visualState.getPixelControllerFader().getPresetFader(1,
+                    (int) (visualState.getFpsSpeed() * fps)));
+            om.getFader().startFade(om.getVisualId(), savedVisuals[i++]);
+        }
+    }
+
 }

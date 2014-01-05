@@ -121,6 +121,7 @@ public class VisualState extends Observable {
 
     private float brightness = 1.0f;
 
+    // the fps multiplier
     private float fpsSpeed = 1.0f;
 
     private ISound sound;
