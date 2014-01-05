@@ -46,42 +46,21 @@ public final class PixelControllerFader {
      */
 
     /**
-     * return a NEW INSTANCE of a fader.
-     * 
-     * @param faderName
-     *            the fader name
-     * @return the fader
-     */
-    public IFader getVisualFader(FaderName faderName) {
-        switch (faderName) {
-            case CROSSFADE:
-                return new Crossfader(matrix, visualFadeTime, fps);
-            case SWITCH:
-                return new Switch(matrix, fps);
-            case SLIDE_UPSIDE_DOWN:
-                return new SlideUpsideDown(matrix, visualFadeTime, fps);
-            case SLIDE_LEFT_RIGHT:
-                return new SlideLeftRight(matrix, visualFadeTime, fps);
-        }
-        return null;
-    }
-
-    /**
      * return a fader with default duration
      * 
      * @param index
      * @return
      */
-    public IFader getVisualFader(int index) {
+    public IFader getVisualFader(int index, float fpsMultiplier) {
         switch (index) {
             case 0:
-                return new Switch(matrix, fps);
+                return new Switch(matrix, fps * fpsMultiplier);
             case 1:
-                return new Crossfader(matrix, visualFadeTime, fps);
+                return new Crossfader(matrix, visualFadeTime, fps * fpsMultiplier);
             case 2:
-                return new SlideUpsideDown(matrix, visualFadeTime, fps);
+                return new SlideUpsideDown(matrix, visualFadeTime, fps * fpsMultiplier);
             case 3:
-                return new SlideLeftRight(matrix, visualFadeTime, fps);
+                return new SlideLeftRight(matrix, visualFadeTime, fps * fpsMultiplier);
         }
         return null;
     }

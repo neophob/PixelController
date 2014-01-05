@@ -216,8 +216,8 @@ public class VisualState extends Observable {
         // create an empty mapping
         ioMapping.clear();
         for (int n = 0; n < nrOfScreens; n++) {
-            ioMapping.add(new OutputMapping(pixelControllerFader.getVisualFader(FaderName.SWITCH),
-                    n));
+            ioMapping.add(new OutputMapping(pixelControllerFader.getVisualFader(
+                    FaderName.SWITCH.getId(), 1), n));
         }
 
         initialized = true;

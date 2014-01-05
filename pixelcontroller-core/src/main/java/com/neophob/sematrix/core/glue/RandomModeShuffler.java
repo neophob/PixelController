@@ -109,8 +109,8 @@ public final class RandomModeShuffler {
                 for (OutputMapping om : col.getAllOutputMappings()) {
                     IFader f = om.getFader();
                     if (!f.isStarted()) {
-                        om.setFader(col.getPixelControllerFader()
-                                .getVisualFader(rand.nextInt(size)));
+                        om.setFader(col.getPixelControllerFader().getVisualFader(
+                                rand.nextInt(size), col.getFpsSpeed()));
                     }
                 }
                 changed = true;

@@ -248,7 +248,8 @@ public enum MessageProcessor {
                         // do not start a new fader while the old one is still
                         // running
                         if (!col.getOutputMappings(nr).getFader().isStarted()) {
-                            IFader f = col.getPixelControllerFader().getVisualFader(tmp);
+                            IFader f = col.getPixelControllerFader().getVisualFader(tmp,
+                                    col.getFpsSpeed());
                             if (f != null) {
                                 col.getOutputMappings(nr).setFader(f);
                             }
@@ -265,7 +266,8 @@ public enum MessageProcessor {
                             // do not start a new fader while the old one is
                             // still running
                             if (!om.getFader().isStarted()) {
-                                IFader f = col.getPixelControllerFader().getVisualFader(tmp);
+                                IFader f = col.getPixelControllerFader().getVisualFader(tmp,
+                                        col.getFpsSpeed());
                                 if (f != null) {
                                     om.setFader(f);
                                 }

@@ -76,7 +76,7 @@ public class GenerateAllFaderTest {
 
         PixelControllerFader pcf = new PixelControllerFader(ph, matrix);
         for (int i = 0; i < 4; i++) {
-            IFader f = pcf.getVisualFader(i);
+            IFader f = pcf.getVisualFader(i, 1);
             f.startFade(0, 0);
             f.getBuffer(v.getBuffer(), v.getBuffer());
             f.cleanUp();
