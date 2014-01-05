@@ -28,15 +28,20 @@ public class Multiply extends Mixer {
 
     /**
      * Instantiates a new multiply.
-     *
-     * @param controller the controller
+     * 
+     * @param controller
+     *            the controller
      */
     public Multiply() {
         super(MixerName.MULTIPLY, ResizeName.QUALITY_RESIZE);
     }
 
-    /* (non-Javadoc)
-     * @see com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.core.glue.Visual)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.
+     * core.glue.Visual)
      */
     public int[] getBuffer(Visual visual) {
         if (visual.getEffect2() == null) {
@@ -45,15 +50,39 @@ public class Multiply extends Mixer {
 
         int[] src1 = visual.getEffect1Buffer();
         int[] src2 = visual.getEffect2Buffer();
-        int[] dst = new int [src1.length];
+        int[] dst = new int[src1.length];
 
-        for (int i=0; i<src1.length; i++){
-            int pixelOne = src1[i]&255;
-            int pixelTwo = src2[i]&255;
-            dst[i]=(pixelOne*pixelTwo)/255;
+        for (int i = 0; i < src1.length; i++) {
+            int pixelOne = src1[i] & 255;
+            int pixelTwo = src2[i] & 255;
+
+            dst[i] = mul(pixelOne, pixelTwo);
         }
 
         return dst;
+    }
+
+    private static int norm(int v) {
+        if (v > 127) {
+            v = 255 - v;
+        }
+        return v;
+    }
+
+    private static int normDiff(int v) {
+        if (v > 127) {
+            return 255 - v;
+        }
+        return 0;
+    }
+
+    public static int mul(int u, int v) {
+        int a = (norm(u) * norm(v) / 128);
+        int b = (normDiff(u) * normDiff(v) / 128);
+        if (b > 127) {
+            return 255 - a;
+        }
+        return a;
     }
 
 }

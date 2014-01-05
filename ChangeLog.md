@@ -34,6 +34,7 @@
 * Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
 * Fix update build process, put RPi specifiy resources (Serial and pi4j) dependencies into special directory, do not include junit dependencies.
 * Fix speedup Blinkenlight parser, some frames were displayed too long
+* Fix Mutliply and Negative Multiply mixer, output didn't respect ColorSets correctly
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  
