@@ -37,7 +37,7 @@ public class PresetServiceImpl implements PresetService {
     public PresetServiceImpl(String filePath) {
         this.filename = filePath + File.separator + PRESETS_FILENAME;
         selectedPreset = 0;
-        loadPresents();
+        loadPresets();
     }
 
     /*
@@ -78,7 +78,7 @@ public class PresetServiceImpl implements PresetService {
     /**
      * Load presents.
      */
-    private List<PresetSettings> loadPresents() {
+    private List<PresetSettings> loadPresets() {
         Properties props = new Properties();
 
         presets = new ArrayList<PresetSettings>(NR_OF_PRESET_SLOTS);
