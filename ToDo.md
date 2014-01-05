@@ -1,7 +1,8 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* fix preset fader
+* fix preset fader -> loading a preset switch output -> should not as the transition manager handle this.
+* fix images, use png/gif images to speed up loading (not jpg)
 * Update pixconcli
 * fix/test sound init for rpi
 * remote setup, do not display duplicate entries but display whats missing.

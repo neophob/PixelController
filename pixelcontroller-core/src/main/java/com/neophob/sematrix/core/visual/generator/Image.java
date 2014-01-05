@@ -121,10 +121,12 @@ public class Image extends Generator {
                 LOG.log(Level.WARNING, "Invalid image, image height is < 2!");
                 return;
             }
+            long t2 = System.currentTimeMillis();
 
             // convert to RGB colorspace
             int[] dataBuffInt = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0,
                     img.getWidth());
+            long t3 = System.currentTimeMillis();
 
             LOG.log(Level.INFO, "resize to img " + filename + " " + internalBufferXSize + ", "
                     + internalBufferYSize + " using " + resize.getName());
@@ -144,8 +146,9 @@ public class Image extends Generator {
                 int val = (int) (r * 0.3f + g * 0.59f + b * 0.11f);
                 internalBuffer[i] = val;
             }
-            LOG.log(Level.INFO, "Image " + filename + " loaded in "
-                    + (System.currentTimeMillis() - t1) + "ms");
+            LOG.log(Level.INFO,
+                    "Image {0} loaded in {1} ms. Load image: {2}ms, get data from image: {3}ms",
+                    new Object[] { filename, (System.currentTimeMillis() - t1), t2 - t1, t3 - t2 });
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to load image " + filename, e);
         }
