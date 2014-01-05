@@ -22,160 +22,167 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
-import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.IShuffleState;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class Effect.
  */
 public abstract class Effect implements IShuffleState {
-	
-	/**
-	 * The Enum EffectName.
-	 *
-	 * @author michu
-	 */
-	public enum EffectName {
-		
-		/** The PASSTHRU. */
-		PASSTHRU(0),
-		
-		/** The INVERTER. */
-		INVERTER(1),
-		
-		/** The ROTOZOOM. */
-		ROTOZOOM(2),
-		
-		/** The BEAT horizontal shift. */
-		BEAT_HORIZONTAL_SHIFT(3),
-		
-		/** The BEAT vertical shift. */
-		BEAT_VERTICAL_SHIFT(4),
-		
-		/** The VOLUMINIZE. */
-		VOLUMINIZE(5),
-		
-		/** The THRESHOLD. */
-		THRESHOLD(6),
-				
-		TEXTURE_DEFORMATION(7),
-		
-		/** The ZOOM. */
-		ZOOM(8),
-		
-		FLIP_X(9),
-		
-		FLIP_Y(10),		
-		
-		STROBO(11),		
 
-		ROTATE90(12),		
-		;
+    /**
+     * The Enum EffectName.
+     * 
+     * @author michu
+     */
+    public enum EffectName {
 
-		/** The id. */
-		private int id;
-		
-		/**
-		 * Instantiates a new effect name.
-		 *
-		 * @param id the id
-		 */
-		EffectName(int id) {
-			this.id = id;
-		}
-		
-		/**
-		 * Gets the id.
-		 *
-		 * @return the id
-		 */
-		public int getId() {
-			return id;
-		}
-		
-		/**
-		 * 
-		 * @return
-		 */
-		public String guiText() {
-			return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
-		}
-	}
-	
-	/** The effect name. */
-	private EffectName effectName;
-	
-	/** The resize option. */
-	private ResizeName resizeOption;
-	
-	/** The internal buffer x size. */
-	protected int internalBufferXSize;
-	
-	/** The internal buffer y size. */
-	protected int internalBufferYSize;
+        /** The PASSTHRU. */
+        PASSTHRU(0),
 
-	
-	/**
-	 * Instantiates a new effect.
-	 *
-	 * @param controller the controller
-	 * @param effectName the effect name
-	 * @param resizeOption the resize option
-	 */
-	public Effect(MatrixData matrix, EffectName effectName, ResizeName resizeOption) {
-		this.effectName = effectName;
-		this.resizeOption = resizeOption;
-		this.internalBufferXSize = matrix.getBufferXSize();
-		this.internalBufferYSize = matrix.getBufferYSize();
-	}
-	
-	/**
-	 * return the image buffer.
-	 *
-	 * @param buffer the buffer
-	 * @return the buffer
-	 */
-	public abstract int[] getBuffer(int[] buffer);
-	
-	/**
-	 * Gets the resize option.
-	 *
-	 * @return the resize option
-	 */
-	public ResizeName getResizeOption() {
-		return resizeOption;
-	}
-	
-	/**
-	 * update an effect.
-	 */
-	public void update() {
-		//overwrite me if needed
-	}
-	
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public int getId() {
-		return this.effectName.getId();
-	}
-		
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.glue.RandomizeState#shuffle()
-	 */
-	public void shuffle() {
-		//default shuffle method - do nothing	
-	}
+        /** The INVERTER. */
+        INVERTER(1),
 
-	@Override
-	public String toString() {
-		return String
-				.format("Effect [effectName=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s]",
-						effectName, resizeOption, internalBufferXSize,
-						internalBufferYSize);
-	}
-	
+        /** The ROTOZOOM. */
+        ROTOZOOM(2),
+
+        /** The BEAT horizontal shift. */
+        BEAT_HORIZONTAL_SHIFT(3),
+
+        /** The BEAT vertical shift. */
+        BEAT_VERTICAL_SHIFT(4),
+
+        /** The VOLUMINIZE. */
+        VOLUMINIZE(5),
+
+        /** The THRESHOLD. */
+        THRESHOLD(6),
+
+        TEXTURE_DEFORMATION(7),
+
+        /** The ZOOM. */
+        ZOOM(8),
+
+        FLIP_X(9),
+
+        FLIP_Y(10),
+
+        STROBO(11),
+
+        ROTATE90(12),
+
+        POSTERIZE(13),
+
+        DARKEN(14);
+
+        /** The id. */
+        private int id;
+
+        /**
+         * Instantiates a new effect name.
+         * 
+         * @param id
+         *            the id
+         */
+        EffectName(int id) {
+            this.id = id;
+        }
+
+        /**
+         * Gets the id.
+         * 
+         * @return the id
+         */
+        public int getId() {
+            return id;
+        }
+
+        /**
+         * 
+         * @return
+         */
+        public String guiText() {
+            return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));
+        }
+    }
+
+    /** The effect name. */
+    private EffectName effectName;
+
+    /** The resize option. */
+    private ResizeName resizeOption;
+
+    /** The internal buffer x size. */
+    protected int internalBufferXSize;
+
+    /** The internal buffer y size. */
+    protected int internalBufferYSize;
+
+    /**
+     * Instantiates a new effect.
+     * 
+     * @param controller
+     *            the controller
+     * @param effectName
+     *            the effect name
+     * @param resizeOption
+     *            the resize option
+     */
+    public Effect(MatrixData matrix, EffectName effectName, ResizeName resizeOption) {
+        this.effectName = effectName;
+        this.resizeOption = resizeOption;
+        this.internalBufferXSize = matrix.getBufferXSize();
+        this.internalBufferYSize = matrix.getBufferYSize();
+    }
+
+    /**
+     * return the image buffer.
+     * 
+     * @param buffer
+     *            the buffer
+     * @return the buffer
+     */
+    public abstract int[] getBuffer(int[] buffer);
+
+    /**
+     * Gets the resize option.
+     * 
+     * @return the resize option
+     */
+    public ResizeName getResizeOption() {
+        return resizeOption;
+    }
+
+    /**
+     * update an effect.
+     */
+    public void update() {
+        // overwrite me if needed
+    }
+
+    /**
+     * Gets the id.
+     * 
+     * @return the id
+     */
+    public int getId() {
+        return this.effectName.getId();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.glue.RandomizeState#shuffle()
+     */
+    public void shuffle() {
+        // default shuffle method - do nothing
+    }
+
+    @Override
+    public String toString() {
+        return String
+                .format("Effect [effectName=%s, resizeOption=%s, internalBufferXSize=%s, internalBufferYSize=%s]",
+                        effectName, resizeOption, internalBufferXSize, internalBufferYSize);
+    }
 
 }

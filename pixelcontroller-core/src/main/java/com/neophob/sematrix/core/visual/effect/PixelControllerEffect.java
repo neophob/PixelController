@@ -98,6 +98,8 @@ public class PixelControllerEffect implements PixelControllerElement {
         allEffects.add(new FlipX(matrix));
         allEffects.add(new Strobo(matrix));
         allEffects.add(new Rotate90(matrix, resize));
+        allEffects.add(new Posterize(matrix));
+        allEffects.add(new Darken(matrix));
 
         textureDeformation = new TextureDeformation(matrix);
         allEffects.add(textureDeformation);
