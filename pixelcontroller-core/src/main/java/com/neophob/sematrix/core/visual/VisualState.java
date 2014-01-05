@@ -284,7 +284,7 @@ public class VisualState extends Observable {
      *            the screen output
      * @return fx nr.
      */
-    public int getFxInputForScreen(int screenOutput) {
+    public int getCurrentVisualForScreen(int screenOutput) {
         return ioMapping.get(screenOutput).getVisualId();
     }
 

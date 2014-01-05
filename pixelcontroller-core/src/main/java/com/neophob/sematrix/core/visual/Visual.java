@@ -102,7 +102,7 @@ public class Visual {
      * @return true, if is visual on screen
      */
     public boolean isVisualOnScreen(int screenNr) {
-        int fxInput = VisualState.getInstance().getFxInputForScreen(screenNr);
+        int fxInput = VisualState.getInstance().getCurrentVisualForScreen(screenNr);
         if (fxInput == getGenerator1Idx()) {
             return true;
         }

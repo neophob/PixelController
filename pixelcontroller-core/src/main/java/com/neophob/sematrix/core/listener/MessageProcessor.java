@@ -192,21 +192,26 @@ public enum MessageProcessor {
                 case CHANGE_OUTPUT_VISUAL:
                     try {
                         int nr = col.getCurrentOutput();
-                        int newFx = parseValue(msg[1]);
-                        int oldFx = col.getFxInputForScreen(nr);
+                        int newOutputVisual = parseValue(msg[1]);
+                        int currentOutputVisual = col.getCurrentVisualForScreen(nr);
                         int nrOfVisual = col.getAllVisuals().size();
-                        LOG.log(Level.INFO, "old fx: {0}, new fx {1}",
-                                new Object[] { oldFx, newFx });
-                        if (oldFx != newFx && newFx >= 0 && newFx < nrOfVisual) {
-                            LOG.log(Level.INFO, "Change Output 0, old fx: {0}, new fx {1}",
-                                    new Object[] { oldFx, newFx });
+                        LOG.log(Level.INFO, "Change output, current visual: {0}, new visual {1}",
+                                new Object[] { currentOutputVisual, newOutputVisual });
+                        if (currentOutputVisual != newOutputVisual && newOutputVisual >= 0
+                                && newOutputVisual < nrOfVisual) {
                             if (startFader) {
                                 // start fader to change screen
-                                col.getOutputMappings(nr).getFader().startFade(newFx, nr);
+                                LOG.log(Level.INFO, "Start Fader for new Output " + nr);
+                                col.getOutputMappings(nr).getFader().startFade(newOutputVisual, nr);
                             } else {
                                 // do not fade if we load setting from present
-                                col.mapInputToScreen(nr, newFx);
+                                LOG.log(Level.INFO, "Switch to new Output, no Fader for " + nr);
+                                col.mapInputToScreen(nr, newOutputVisual);
                             }
+                        } else {
+                            LOG.log(Level.WARNING,
+                                    "Invalid Visual in Preset found, current visual: {0}, new visual {1}",
+                                    new Object[] { currentOutputVisual, newOutputVisual });
                         }
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -215,26 +220,36 @@ public enum MessageProcessor {
 
                 case CHANGE_ALL_OUTPUT_VISUAL:
                     try {
-                        int newFx = parseValue(msg[1]);
-                        int size = col.getAllOutputMappings().size();
+                        int newOutputVisual = parseValue(msg[1]);
+                        int nrOfOutputs = col.getAllOutputMappings().size();
                         int nrOfVisual = col.getAllVisuals().size();
+                        LOG.log(Level.INFO, "Change all Outputs to visual {0}",
+                                new Object[] { newOutputVisual });
 
-                        if (newFx >= 0 && newFx < nrOfVisual) {
-                            for (int i = 0; i < size; i++) {
-                                int oldFx = col.getFxInputForScreen(i);
-                                if (oldFx != newFx) {
-                                    LOG.log(Level.INFO, "Change Output 0, old fx: {0}, new fx {1}",
-                                            new Object[] { oldFx, newFx });
+                        if (newOutputVisual >= 0 && newOutputVisual < nrOfVisual) {
+                            for (int i = 0; i < nrOfOutputs; i++) {
+                                int currentOutputVisual = col.getCurrentVisualForScreen(i);
+                                if (currentOutputVisual != newOutputVisual) {
                                     if (startFader) {
                                         // start fader to change screen
-                                        col.getOutputMappings(i).getFader().startFade(newFx, i);
+                                        LOG.log(Level.INFO, "Start Fader for new Output " + i);
+                                        col.getOutputMappings(i).getFader()
+                                                .startFade(newOutputVisual, i);
                                     } else {
                                         // do not fade if we load setting from
                                         // present
-                                        col.mapInputToScreen(i, newFx);
+                                        LOG.log(Level.INFO, "Switch to new Output, no Fader for "
+                                                + i);
+                                        col.mapInputToScreen(i, newOutputVisual);
                                     }
+                                } else {
+                                    LOG.log(Level.INFO, "Current Visual == New Visual " + i);
                                 }
                             }
+                        } else {
+                            LOG.log(Level.WARNING,
+                                    "Invalid Visual in Preset found, switch all Outputs to new visual {0}",
+                                    new Object[] { newOutputVisual });
                         }
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
