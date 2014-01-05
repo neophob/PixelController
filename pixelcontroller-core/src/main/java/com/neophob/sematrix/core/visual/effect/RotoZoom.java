@@ -155,7 +155,7 @@ public class RotoZoom extends RotoZoomEffect {
 
         // the crossfade is used for the endless zoom option
         if (workmode == WORKMODE.ZOOM && faderPos > 0.0f) {
-            return CrossfaderHelper.getBuffer(faderPos, rotoZoomedBuffer,
+            return CrossfaderHelper.getBuffer8Bit(faderPos, rotoZoomedBuffer,
                     rotoZoom(scale2, angle, buffer));
         }
         return rotoZoomedBuffer;

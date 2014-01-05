@@ -20,48 +20,64 @@ package com.neophob.sematrix.core.visual.fader;
 
 /**
  * The Class CrossfaderHelper.
- *
+ * 
  * @author michu
  */
 public final class CrossfaderHelper {
 
-	/**
-	 * Instantiates a new crossfader helper.
-	 */
-	private CrossfaderHelper() {
-		//no instance allowed
-	}
-	
-	/**
-	 * Gets the buffer.
-	 *
-	 * @param f the f
-	 * @param oldBuffer the old buffer
-	 * @param newBuffer the new buffer
-	 * @return the buffer
-	 */
-	public static int[] getBuffer(float f, int[] oldBuffer, int[] newBuffer) {
+    /**
+     * Instantiates a new crossfader helper.
+     */
+    private CrossfaderHelper() {
+        // no instance allowed
+    }
 
-		int[] ret = new int[oldBuffer.length];
-		int oTmp, nTmp;
-		short or,og,ob;
-		short nr,ng,nb;
+    /**
+     * Gets the buffer.
+     * 
+     * @param f
+     *            the f
+     * @param oldBuffer
+     *            the old buffer
+     * @param newBuffer
+     *            the new buffer
+     * @return the buffer
+     */
+    public static int[] getBuffer(float f, int[] oldBuffer, int[] newBuffer) {
+        int[] ret = new int[oldBuffer.length];
+        int oTmp, nTmp;
+        short or, og, ob;
+        short nr, ng, nb;
 
-		for (int i=0; i<oldBuffer.length; i++){
-			oTmp = oldBuffer[i];
-			nTmp = newBuffer[i];
+        for (int i = 0; i < oldBuffer.length; i++) {
+            oTmp = oldBuffer[i];
+            nTmp = newBuffer[i];
 
-			or=(short) (((oTmp>>16)&255)* (1.0f-f));
-			og=(short) (((oTmp>>8)&255)* (1.0f-f));
-			ob=(short) (( oTmp&255)* (1.0f-f));
+            or = (short) (((oTmp >> 16) & 255) * (1.0f - f));
+            og = (short) (((oTmp >> 8) & 255) * (1.0f - f));
+            ob = (short) ((oTmp & 255) * (1.0f - f));
 
-			nr=(short) (((nTmp>>16)&255)* f);
-			ng=(short) (((nTmp>>8)&255)* f);
-			nb=(short) (( nTmp&255)* f);
+            nr = (short) (((nTmp >> 16) & 255) * f);
+            ng = (short) (((nTmp >> 8) & 255) * f);
+            nb = (short) ((nTmp & 255) * f);
 
-			ret[i] = ((or << 16) | (og << 8) | ob) + ((nr << 16) | (ng << 8) | nb);
-		}
-		return ret;
+            ret[i] = ((or << 16) | (og << 8) | ob) + ((nr << 16) | (ng << 8) | nb);
+        }
+        return ret;
+    }
 
-	}
+    public static int[] getBuffer8Bit(float f, int[] oldBuffer, int[] newBuffer) {
+        int[] ret = new int[oldBuffer.length];
+
+        int oTmp, nTmp;
+
+        for (int i = 0; i < oldBuffer.length; i++) {
+            oTmp = oldBuffer[i] & 0xff;
+            nTmp = newBuffer[i] & 0xff;
+
+            ret[i] = (int) (oTmp * (1.0f - f) + nTmp * f);
+        }
+
+        return ret;
+    }
 }

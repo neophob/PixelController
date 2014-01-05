@@ -19,79 +19,83 @@
 package com.neophob.sematrix.core.visual.fader;
 
 /**
- * a fader is a transition between two buffers. the target buffer is always a visual, the source
- * can be a static imag (preset fader) or another visual.
- * a fader has a defined time to run
+ * a fader is a transition between two buffers. the target buffer is always a
+ * visual, the source can be a static image (preset fader) or another visual. a
+ * fader has a defined time to run
+ * 
  * @author michu
- *
+ * 
  */
 public interface IFader {
 
-	/**
-	 * return the faded buffer
-	 * 
-	 * @param buffer
-	 * @return
-	 */
-	int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer);
-	
-	/**
-	 * start visual to visual buffer
-	 * 
-	 * @param newVisual
-	 * @param screenNr
-	 */
-	void startFade(int newVisual, int screenNr);
-	
-	/**
-	 * start static image (preset) to visual buffer
-	 * 
-	 * @param newVisual
-	 * @param bfr
-	 */
-	void startFade(int newVisual, int[] bfr);
-	
-	/**
-	 * switch the output and stop the fading.
-	 */
-	void cleanUp();
-	
-	/**
-	 * is fading still running.
-	 *
-	 * @return true, if is done
-	 */
-	boolean isDone();
-	
-	/**
-	 * Gets the fader id.
-	 *
-	 * @return the id
-	 */
-	int getId();
+    /**
+     * return the faded buffer
+     * 
+     * @param buffer
+     * @return
+     */
+    int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer);
 
-	/**
-	 * get fadername
-	 * @return
-	 */
-	String getFaderName();
-	
-	/**
-	 * Checks if fader is started.
-	 *
-	 * @return true, if is started
-	 */
-	 boolean isStarted();
+    /**
+     * start visual to visual buffer
+     * 
+     * @param newVisual
+     * @param screenNr
+     */
+    void startFade(int newVisual, int screenNr);
 
-	 /**
-	  * get the id of the new visual
-	  * @return
-	  */
-	 int getNewVisual();
-	 
-	 /**
-	  * switch to this output if fader is finished
-	  * @return
-	  */
-	 int getScreenOutput();
+    /**
+     * start static image (preset) to visual buffer
+     * 
+     * @param newVisual
+     * @param bfr
+     */
+    void startFade(int newVisual, int[] bfr);
+
+    /**
+     * switch the output and stop the fading.
+     */
+    void cleanUp();
+
+    /**
+     * is fading still running.
+     * 
+     * @return true, if is done
+     */
+    boolean isDone();
+
+    /**
+     * Gets the fader id.
+     * 
+     * @return the id
+     */
+    int getId();
+
+    /**
+     * get fadername
+     * 
+     * @return
+     */
+    String getFaderName();
+
+    /**
+     * Checks if fader is started.
+     * 
+     * @return true, if is started
+     */
+    boolean isStarted();
+
+    /**
+     * get the id of the new visual
+     * 
+     * @return
+     */
+    int getNewVisual();
+
+    /**
+     * switch to this output if fader is finished
+     * 
+     * @return
+     */
+    int getScreenOutput();
 }
