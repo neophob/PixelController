@@ -69,10 +69,10 @@ public class PixelImage extends Generator {
      * @throws InvalidParameterException
      *             the invalid parameter exception
      */
-    public PixelImage(MatrixData matrix, ISound sound, int fps) throws InvalidParameterException {
+    public PixelImage(MatrixData matrix, ISound sound, float fps) throws InvalidParameterException {
         super(matrix, GeneratorName.PIXELIMAGE, ResizeName.PIXEL_RESIZE);
         this.sound = sound;
-        this.fps = fps;
+        this.fps = (int) (fps + 0.5f);
         frame = 0;
 
         // populate known images

@@ -20,33 +20,36 @@ package com.neophob.sematrix.core.visual.fader;
 
 import com.neophob.sematrix.core.visual.MatrixData;
 
-
 /**
  * The Class Switch.
  */
 public class Switch extends Fader {
 
-	/**
-	 * Instantiates a new switch.
-	 */
-	public Switch(MatrixData matrix, int fps) {
-		super(matrix, FaderName.SWITCH, 50, fps);
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.fader.Fader#getBuffer(int[])
-	 */
-	@Override
-	public int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer) {
-		return visual1Buffer;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.fader.Fader#isDone()
-	 */
-	@Override
-	public boolean isDone() {
-		return true;
-	}
+    /**
+     * Instantiates a new switch.
+     */
+    public Switch(MatrixData matrix, float fps) {
+        super(matrix, FaderName.SWITCH, 50, fps);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.fader.Fader#getBuffer(int[])
+     */
+    @Override
+    public int[] getBuffer(int[] visual1Buffer, int[] visual2Buffer) {
+        return visual1Buffer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.fader.Fader#isDone()
+     */
+    @Override
+    public boolean isDone() {
+        return true;
+    }
 
 }

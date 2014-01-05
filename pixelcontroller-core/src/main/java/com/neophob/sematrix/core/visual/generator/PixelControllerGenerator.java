@@ -81,7 +81,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     private MatrixData matrix;
 
-    private int fps;
+    private float fps;
     private int frames;
     private int notUpdatedSinceFrames;
 
@@ -93,7 +93,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
      * Instantiates a new pixel controller generator.
      */
     public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils,
-            MatrixData matrix, int fps, ISound sound, IResize resize) {
+            MatrixData matrix, float fps, ISound sound, IResize resize) {
         this.ph = ph;
         this.fileUtils = fileUtils;
         this.matrix = matrix;

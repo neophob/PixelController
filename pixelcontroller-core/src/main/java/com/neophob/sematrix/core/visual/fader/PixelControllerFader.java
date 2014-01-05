@@ -32,13 +32,13 @@ public final class PixelControllerFader {
     private int presetLoadingFadeTime;
     private int visualFadeTime;
     private MatrixData matrix;
-    private int fps;
+    private float fps;
 
-    public PixelControllerFader(ApplicationConfigurationHelper ah, MatrixData matrix, int fps) {
+    public PixelControllerFader(ApplicationConfigurationHelper ah, MatrixData matrix) {
         presetLoadingFadeTime = ah.getPresetLoadingFadeTime();
         visualFadeTime = ah.getVisualFadeTime();
         this.matrix = matrix;
-        this.fps = fps;
+        this.fps = ah.parseFps();
     }
 
     /*
@@ -92,16 +92,16 @@ public final class PixelControllerFader {
      * @param index
      * @return
      */
-    public IFader getPresetFader(int index, int fps) {
+    public IFader getPresetFader(int index, float fpsMultiplier) {
         switch (index) {
             case 0:
-                return new Switch(matrix, fps);
+                return new Switch(matrix, fps * fpsMultiplier);
             case 1:
-                return new Crossfader(matrix, presetLoadingFadeTime, fps);
+                return new Crossfader(matrix, presetLoadingFadeTime, fps * fpsMultiplier);
             case 2:
-                return new SlideUpsideDown(matrix, presetLoadingFadeTime, fps);
+                return new SlideUpsideDown(matrix, presetLoadingFadeTime, fps * fpsMultiplier);
             case 3:
-                return new SlideLeftRight(matrix, presetLoadingFadeTime, fps);
+                return new SlideLeftRight(matrix, presetLoadingFadeTime, fps * fpsMultiplier);
         }
         return null;
     }

@@ -59,7 +59,6 @@ public enum MessageProcessor {
     private static final String ON = "ON";
 
     private PresetService presetService;
-    private float configuredFps;
 
     /**
      * Instantiates a new message processor.
@@ -72,9 +71,8 @@ public enum MessageProcessor {
      * 
      * @param presetService
      */
-    public void init(PresetService presetService, float configuredFps) {
+    public void init(PresetService presetService) {
         this.presetService = presetService;
-        this.configuredFps = configuredFps;
     }
 
     private int parseValue(String s) {
@@ -465,7 +463,7 @@ public enum MessageProcessor {
                 case RANDOMIZE:
                     try {
                         // save current visual buffer
-                        TransitionManager transition = new TransitionManager(col, configuredFps);
+                        TransitionManager transition = new TransitionManager(col);
                         Shuffler.manualShuffleStuff(col);
                         transition.startCrossfader();
                         col.notifyGuiUpdate();
@@ -478,7 +476,7 @@ public enum MessageProcessor {
                 case PRESET_RANDOM:
                     try {
                         // save current visual buffer
-                        TransitionManager transition = new TransitionManager(col, configuredFps);
+                        TransitionManager transition = new TransitionManager(col);
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         loadPreset(currentPreset);
                         presetService.setSelectedPreset(currentPreset);

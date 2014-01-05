@@ -54,7 +54,7 @@ public class Crossfader extends Fader {
     /**
      * Instantiates a new crossfader.
      */
-    public Crossfader(MatrixData matrix, int fps) {
+    public Crossfader(MatrixData matrix, float fps) {
         this(matrix, DEFAULT_FADER_DURATION, fps);
     }
 
@@ -64,7 +64,7 @@ public class Crossfader extends Fader {
      * @param time
      *            the time
      */
-    public Crossfader(MatrixData matrix, int time, int fps) {
+    public Crossfader(MatrixData matrix, int time, float fps) {
         super(matrix, FaderName.CROSSFADE, time, fps);
     }
 

@@ -33,14 +33,14 @@ public class SlideUpsideDown extends Fader {
     /**
 	 * 
 	 */
-    public SlideUpsideDown(MatrixData matrix, int fps) {
+    public SlideUpsideDown(MatrixData matrix, float fps) {
         this(matrix, DEFAULT_FADER_DURATION, fps);
     }
 
     /**
      * Instantiates a new slide upside down.
      */
-    public SlideUpsideDown(MatrixData matrix, int duration, int fps) {
+    public SlideUpsideDown(MatrixData matrix, int duration, float fps) {
         super(matrix, FaderName.SLIDE_UPSIDE_DOWN, duration, fps);
     }
 

@@ -42,61 +42,57 @@ import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 
 public class GenerateAllFaderTest {
 
-	private IColorSet col;
-	private ApplicationConfigurationHelper ph;
-	private int fps = 50;
-	
+    private IColorSet col;
+    private ApplicationConfigurationHelper ph;
+
     @Test
     public void verifyGeneratorsDoNotCrash() {
-    	final int maxResolution = 17;
-    	
-		String rootDir = System.getProperty("buildDirectory");
-		if (rootDir == null) {
-			//if unit test is run in eclipse
-			rootDir = "."+File.separatorChar;
-		}
-    	ph = new ApplicationConfigurationHelper(new Properties());
-    	col = new ColorSet("test", new int[]{1,2,3});
-    	
-    	for (int x=1; x<maxResolution; x++) {
-    		for (int y=1; y<maxResolution; y++) {
-    			testWithResolution(x,y);
-    			testWithResolution(y,x);
-    		}
-    	}
+        final int maxResolution = 17;
+
+        String rootDir = System.getProperty("buildDirectory");
+        if (rootDir == null) {
+            // if unit test is run in eclipse
+            rootDir = "." + File.separatorChar;
+        }
+        ph = new ApplicationConfigurationHelper(new Properties());
+        col = new ColorSet("test", new int[] { 1, 2, 3 });
+
+        for (int x = 1; x < maxResolution; x++) {
+            for (int y = 1; y < maxResolution; y++) {
+                testWithResolution(x, y);
+                testWithResolution(y, x);
+            }
+        }
 
     }
 
-    
     private void testWithResolution(int x, int y) {
-    	MatrixData matrix = new MatrixData(x,y);
-    	
-    	List<Visual> vlist = new ArrayList<Visual>();
-    	Visual v = createVisual(matrix, col);
-    	vlist.add(v);
-    	VisualState.getInstance().setAllVisuals(vlist);
-    	    	
-    	PixelControllerFader pcf = new PixelControllerFader(ph, matrix, fps);    	
-    	for (int i=0; i<4; i++) {
-    		IFader f = pcf.getVisualFader(i);    		
-    		f.startFade(0, 0);
-    		f.getBuffer(v.getBuffer(), v.getBuffer());
-    		f.cleanUp();
-    		
-    		f = pcf.getPresetFader(i);
-    		f.startFade(0, v.getBuffer());
-    		f.getBuffer(v.getBuffer(), v.getBuffer());
-    	}
-    	
+        MatrixData matrix = new MatrixData(x, y);
+
+        List<Visual> vlist = new ArrayList<Visual>();
+        Visual v = createVisual(matrix, col);
+        vlist.add(v);
+        VisualState.getInstance().setAllVisuals(vlist);
+
+        PixelControllerFader pcf = new PixelControllerFader(ph, matrix);
+        for (int i = 0; i < 4; i++) {
+            IFader f = pcf.getVisualFader(i);
+            f.startFade(0, 0);
+            f.getBuffer(v.getBuffer(), v.getBuffer());
+            f.cleanUp();
+
+            f = pcf.getPresetFader(i, 1);
+            f.startFade(0, v.getBuffer());
+            f.getBuffer(v.getBuffer(), v.getBuffer());
+        }
+
     }
-    
-    
+
     private Visual createVisual(MatrixData matrix, IColorSet col) {
-    	Generator g = new PassThruGen(matrix);
-    	Effect e = new PassThru(matrix);
-    	Mixer m = new PassThruMixer();
-    	return new Visual(g,e,m,col);
+        Generator g = new PassThruGen(matrix);
+        Effect e = new PassThru(matrix);
+        Mixer m = new PassThruMixer();
+        return new Visual(g, e, m, col);
     }
-    
-    
+
 }

@@ -33,7 +33,7 @@ public class SlideLeftRight extends Fader {
     /**
      * Instantiates a new slide left right.
      */
-    public SlideLeftRight(MatrixData matrix, int fps) {
+    public SlideLeftRight(MatrixData matrix, float fps) {
         this(matrix, DEFAULT_FADER_DURATION, fps);
     }
 
@@ -41,7 +41,7 @@ public class SlideLeftRight extends Fader {
      * 
      * @param duration
      */
-    public SlideLeftRight(MatrixData matrix, int duration, int fps) {
+    public SlideLeftRight(MatrixData matrix, int duration, float fps) {
         super(matrix, FaderName.SLIDE_LEFT_RIGHT, duration, fps);
     }
 

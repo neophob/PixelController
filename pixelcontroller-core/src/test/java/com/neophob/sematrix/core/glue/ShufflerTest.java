@@ -47,6 +47,6 @@ public class ShufflerTest {
             LOG.info("---------");
             Shuffler.manualShuffleStuff(vs);
         }
-
     }
+
 }

@@ -160,10 +160,7 @@ public class VisualState extends Observable {
         this.presetService = presetService;
 
         int nrOfScreens = ph.getNrOfScreens();
-        int fps = (int) (ph.parseFps());
-        if (fps < 1) {
-            fps = 1;
-        }
+        float fps = ph.parseFps();
 
         this.pixelControllerShufflerSelect = new PixelControllerShufflerSelect(sound,
                 ph.getRandomModeLifetime());
@@ -187,7 +184,7 @@ public class VisualState extends Observable {
         pixelControllerMixer = new PixelControllerMixer(matrix, sound);
         pixelControllerMixer.initAll();
 
-        pixelControllerFader = new PixelControllerFader(ph, matrix, fps);
+        pixelControllerFader = new PixelControllerFader(ph, matrix);
 
         // create visuals
         int additionalVisuals = 1 + ph.getNrOfAdditionalVisuals();

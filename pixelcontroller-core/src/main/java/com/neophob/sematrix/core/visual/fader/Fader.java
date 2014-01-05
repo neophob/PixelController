@@ -124,7 +124,7 @@ public abstract class Fader implements IFader, Serializable {
      * @param fadeTime
      *            the fade time
      */
-    public Fader(MatrixData matrix, FaderName faderName, int fadeTime, int fps) {
+    public Fader(MatrixData matrix, FaderName faderName, int fadeTime, float fps) {
         this.faderName = faderName;
         this.fadeTime = fadeTime;
 
