@@ -26,39 +26,44 @@ import com.neophob.sematrix.core.visual.Visual;
  */
 public class SubSat extends Mixer {
 
-	/**
-	 * Instantiates a new adds the sat.
-	 *
-	 * @param controller the controller
-	 */
-	public SubSat() {
-		super(MixerName.SUBSAT, ResizeName.QUALITY_RESIZE);
-	}
+    /**
+     * Instantiates a new adds the sat.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public SubSat() {
+        super(MixerName.SUBSAT, ResizeName.QUALITY_RESIZE);
+    }
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.core.glue.Visual)
-	 */
-	public int[] getBuffer(Visual visual) {
-		
-		if (visual.getEffect2() == null) {
-			return visual.getEffect1Buffer();
-		}
-		
-		int[] src1 = visual.getEffect1Buffer();
-		int[] src2 = visual.getEffect2Buffer();
-		int[] dst = new int [src1.length];
-		
-		int col;
-		
-		for (int i=0; i<src1.length; i++) {
-			col = (src1[i]&0xff) - (src2[i]&0xff);
-			if (col<0) {
-			    col+=255;
-			}
-			dst[i] = col;		
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.
+     * core.glue.Visual)
+     */
+    public int[] getBuffer(Visual visual) {
 
-		return dst;
-	}
+        if (visual.getEffect2() == null) {
+            return visual.getEffect1Buffer();
+        }
+
+        int[] src1 = visual.getEffect1Buffer();
+        int[] src2 = visual.getEffect2Buffer();
+        int[] dst = new int[src1.length];
+
+        int col;
+
+        for (int i = 0; i < src1.length; i++) {
+            col = (src1[i] & 0xff) - (src2[i] & 0xff);
+            if (col < 0) {
+                col = 0 - col;
+            }
+            dst[i] = col;
+        }
+
+        return dst;
+    }
 
 }
