@@ -47,7 +47,7 @@ class BilinearResize extends Resize {
             centerOfs += (w / w2) / 2;
         }
         if (h > h2) {
-            centerOfs += w * (h / h2) / 2;
+            centerOfs += (w * ((h / h2) / 2));
         }
 
         for (int i = 0; i < h2; i++) {

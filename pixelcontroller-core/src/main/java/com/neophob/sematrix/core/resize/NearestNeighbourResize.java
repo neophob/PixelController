@@ -51,7 +51,7 @@ class NearestNeighbourResize extends Resize {
             inOffset += (currentXSize / newX) / 2;
         }
         if (currentYSize > newY) {
-            inOffset += currentXSize * (currentYSize / newY) / 2;
+            inOffset += (currentXSize * ((currentYSize / newY) / 2));
         }
 
         for (int y = newY, YE = 0; y > 0; y--) {
