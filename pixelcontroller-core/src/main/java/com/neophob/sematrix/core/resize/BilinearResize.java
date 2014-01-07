@@ -41,13 +41,23 @@ class BilinearResize extends Resize {
         float y_ratio = ((float) (h - 1)) / h2;
         float x_diff, y_diff, blue, red, green;
         int offset = 0;
+
+        int centerOfs = 0;
+        if (w > w2) {
+            centerOfs += (w / w2) / 2;
+        }
+        if (h > h2) {
+            centerOfs += w * (h / h2) / 2;
+        }
+
         for (int i = 0; i < h2; i++) {
+            y = (int) (y_ratio * i);
+            y_diff = (y_ratio * i) - y;
+
             for (int j = 0; j < w2; j++) {
                 x = (int) (x_ratio * j);
-                y = (int) (y_ratio * i);
                 x_diff = (x_ratio * j) - x;
-                y_diff = (y_ratio * i) - y;
-                index = (y * w + x);
+                index = centerOfs + (y * w + x);
                 a = pixels[index];
                 b = pixels[index + 1];
                 c = pixels[index + w];
