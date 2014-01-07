@@ -190,26 +190,30 @@ public enum MessageProcessor {
                     break;
 
                 case CHANGE_OUTPUT_VISUAL:
+                    if (!startFader) {
+                        LOG.log(Level.INFO, "Fader should not start, ignore CHANGE_OUTPUT_VISUAL");
+                        break;
+                    }
                     try {
                         int nr = col.getCurrentOutput();
                         int newOutputVisual = parseValue(msg[1]);
                         int currentOutputVisual = col.getCurrentVisualForScreen(nr);
                         int nrOfVisual = col.getAllVisuals().size();
+
+                        if (currentOutputVisual == newOutputVisual) {
+                            LOG.log(Level.INFO,
+                                    "No need to CHANGE_OUTPUT_VISUAL, new Visual == current Visual: "
+                                            + currentOutputVisual);
+                            break;
+                        }
                         LOG.log(Level.INFO, "Change output, current visual: {0}, new visual {1}",
                                 new Object[] { currentOutputVisual, newOutputVisual });
-                        if (currentOutputVisual != newOutputVisual && newOutputVisual >= 0
-                                && newOutputVisual < nrOfVisual) {
-                            if (startFader) {
-                                // start fader to change screen
-                                LOG.log(Level.INFO, "Start Fader for new Output " + nr);
-                                col.getOutputMappings(nr).getFader().startFade(newOutputVisual, nr);
-                            } else {
-                                // do not fade if we load setting from present
-                                LOG.log(Level.INFO, "Switch to new Output, no Fader for " + nr);
-                                col.mapInputToScreen(nr, newOutputVisual);
-                            }
+                        if (newOutputVisual >= 0 && newOutputVisual < nrOfVisual) {
+                            // start fader to change screen
+                            LOG.log(Level.INFO, "Start Fader for new Output " + nr);
+                            col.getOutputMappings(nr).getFader().startFade(newOutputVisual, nr);
                         } else {
-                            LOG.log(Level.WARNING,
+                            LOG.log(Level.INFO,
                                     "Invalid Visual in Preset found, current visual: {0}, new visual {1}",
                                     new Object[] { currentOutputVisual, newOutputVisual });
                         }
@@ -219,6 +223,12 @@ public enum MessageProcessor {
                     break;
 
                 case CHANGE_ALL_OUTPUT_VISUAL:
+                    if (!startFader) {
+                        LOG.log(Level.INFO,
+                                "Fader should not start, ignore CHANGE_ALL_OUTPUT_VISUAL");
+                        break;
+                    }
+
                     try {
                         int newOutputVisual = parseValue(msg[1]);
                         int nrOfOutputs = col.getAllOutputMappings().size();
@@ -230,20 +240,14 @@ public enum MessageProcessor {
                             for (int i = 0; i < nrOfOutputs; i++) {
                                 int currentOutputVisual = col.getCurrentVisualForScreen(i);
                                 if (currentOutputVisual != newOutputVisual) {
-                                    if (startFader) {
-                                        // start fader to change screen
-                                        LOG.log(Level.INFO, "Start Fader for new Output " + i);
-                                        col.getOutputMappings(i).getFader()
-                                                .startFade(newOutputVisual, i);
-                                    } else {
-                                        // do not fade if we load setting from
-                                        // present
-                                        LOG.log(Level.INFO, "Switch to new Output, no Fader for "
-                                                + i);
-                                        col.mapInputToScreen(i, newOutputVisual);
-                                    }
+                                    // start fader to change screen
+                                    LOG.log(Level.INFO, "Start Fader for new Output " + i);
+                                    col.getOutputMappings(i).getFader()
+                                            .startFade(newOutputVisual, i);
                                 } else {
-                                    LOG.log(Level.INFO, "Current Visual == New Visual " + i);
+                                    LOG.log(Level.INFO,
+                                            "No need to CHANGE_ALL_OUTPUT_VISUAL, current Visual == new Visual: "
+                                                    + i);
                                 }
                             }
                         } else {
