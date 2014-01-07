@@ -20,26 +20,28 @@ package com.neophob.sematrix.core.properties;
 
 /**
  * The Enum DeviceConfig.
- *
+ * 
  * @author michu
  */
 public enum DeviceConfig {
-	
-	/** The No rotate. */
-	NO_ROTATE,
-	
-	/** The ROTATE 90. */
-	ROTATE_90,
-	
-	/** The ROTATE 90 flippedy. */
-	ROTATE_90_FLIPPEDY,
-	
-	/** The ROTATE 180. */
-	ROTATE_180,
-	
-	/** The ROTATE 180 flippedy. */
-	ROTATE_180_FLIPPEDY,
-	
-	/** The ROTATE 270. */
-	ROTATE_270
+
+    /** The No rotate. */
+    NO_ROTATE,
+
+    FLIPPEDY,
+
+    /** The ROTATE 90. */
+    ROTATE_90,
+
+    /** The ROTATE 90 flippedy. */
+    ROTATE_90_FLIPPEDY,
+
+    /** The ROTATE 180. */
+    ROTATE_180,
+
+    /** The ROTATE 180 flippedy. */
+    ROTATE_180_FLIPPEDY,
+
+    /** The ROTATE 270. */
+    ROTATE_270
 }
