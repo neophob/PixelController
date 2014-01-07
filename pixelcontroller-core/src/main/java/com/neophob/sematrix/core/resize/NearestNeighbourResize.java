@@ -35,7 +35,6 @@ class NearestNeighbourResize extends Resize {
         super(ResizeName.PIXEL_RESIZE);
     }
 
-    @Override
     public int[] resizeImage(int[] buffer, int currentXSize, int currentYSize, int newX, int newY) {
         int[] rawOutput = new int[newX * newY];
 
@@ -46,6 +45,14 @@ class NearestNeighbourResize extends Resize {
         int XR = currentXSize % newX;
         int outOffset = 0;
         int inOffset = 0;
+
+        // fix center shrinked images
+        if (currentXSize > newX) {
+            inOffset += (currentXSize / newX) / 2;
+        }
+        if (currentYSize > newY) {
+            inOffset += currentXSize * (currentYSize / newY) / 2;
+        }
 
         for (int y = newY, YE = 0; y > 0; y--) {
             for (int x = newX, XE = 0; x > 0; x--) {
@@ -66,4 +73,5 @@ class NearestNeighbourResize extends Resize {
         }
         return rawOutput;
     }
+
 }
