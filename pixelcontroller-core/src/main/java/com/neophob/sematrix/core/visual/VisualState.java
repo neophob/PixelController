@@ -663,14 +663,6 @@ public class VisualState extends Observable {
 
     private List<String> getSystemState() {
         List<String> ret = new ArrayList<String>();
-        // get output status
-        int ofs = 0;
-        for (OutputMapping om : ioMapping) {
-            ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + ofs);
-            ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR + om.getFader().getId());
-            ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL + EMPTY_CHAR + om.getVisualId());
-            ofs++;
-        }
 
         int brightnessInt = (int) (this.brightness * 100f);
         ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
@@ -707,6 +699,16 @@ public class VisualState extends Observable {
             ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
             ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
         }
+
+        // get output status
+        int ofs = 0;
+        for (OutputMapping om : ioMapping) {
+            ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + ofs);
+            ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR + om.getFader().getId());
+            ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL + EMPTY_CHAR + om.getVisualId());
+            ofs++;
+        }
+
         if (inPauseMode) {
             ret.add(ValidCommand.FREEZE + EMPTY_CHAR);
         }
@@ -734,6 +736,11 @@ public class VisualState extends Observable {
         ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
         ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
 
+        ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR
+                + ioMapping.get(currentOutput).getFader().getId());
+        ret.add(ValidCommand.CHANGE_OUTPUT_VISUAL + EMPTY_CHAR
+                + ioMapping.get(currentOutput).getVisualId());
+        ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + currentOutput);
         ret.add(ValidCommand.FREEZE + EMPTY_CHAR + inPauseMode);
 
         ret.addAll(getSystemState());
