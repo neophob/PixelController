@@ -167,16 +167,20 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             }
 
             long l = System.currentTimeMillis();
-            pixelControllerOutput.update();
-            pixConStat.trackTime(TimeMeasureItemGlobal.OUTPUT_SCHEDULE, System.currentTimeMillis()
-                    - l);
 
-            pixConStat.setCurrentFps(framerate.getFps());
-            pixConStat.setFrameCount(cnt++);
+            // do not update preset if a preset is loaded
+            if (!visualState.isLoadingPresent()) {
+                pixelControllerOutput.update();
+                pixConStat.trackTime(TimeMeasureItemGlobal.OUTPUT_SCHEDULE,
+                        System.currentTimeMillis() - l);
 
-            if (cnt % 5000 == 0) {
-                LOG.log(Level.INFO, "Framerate: {0}, Framecount: {1}",
-                        new Object[] { framerate.getFps(), cnt });
+                pixConStat.setCurrentFps(framerate.getFps());
+                pixConStat.setFrameCount(cnt++);
+
+                if (cnt % 5000 == 0) {
+                    LOG.log(Level.INFO, "Framerate: {0}, Framecount: {1}",
+                            new Object[] { framerate.getFps(), cnt });
+                }
             }
             handleFpsSleep();
 
