@@ -158,8 +158,8 @@ public abstract class Output implements IOutput {
     private int[] doTheFaderBaby(int[] buffer, OutputMapping map) {
         IFader fader = map.getFader();
         if (fader.isStarted()) {
-            buffer = fader.getBuffer(buffer,
-                    VisualState.getInstance().getVisual(fader.getNewVisual()).getBuffer());
+            return fader.getBuffer(buffer, VisualState.getInstance()
+                    .getVisual(fader.getNewVisual()).getBuffer());
             // do not cleanup fader here, the box layout gets messed up!
             // the fader is cleaned up in the update system method
         }
@@ -206,14 +206,6 @@ public abstract class Output implements IOutput {
      */
     public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize,
             int deviceYSize) {
-        // processing RESIZE is buggy!
-        // return ResizeImageHelper.processingResize(buffer, deviceXSize,
-        // deviceYSize, getBufferXSize(), getBufferYSize());
-
-        // Area Average Filter - nice output but slow!
-        // return ResizeImageHelper.areaAverageFilterResize(buffer, deviceXSize,
-        // deviceYSize, getBufferXSize(), getBufferYSize());
-        // return new int[deviceXSize* deviceYSize];
 
         IResize r = VisualState.getInstance().getPixelControllerResize().getResize(resizeName);
         return r.resizeImage(buffer, matrixData.getBufferXSize(), matrixData.getBufferYSize(),
@@ -234,14 +226,9 @@ public abstract class Output implements IOutput {
      * @return the screen buffer for device
      */
     private int[] getScreenBufferForDevice(Visual visual, LayoutModel lm, OutputMapping map) {
-        int[] buffer = visual.getBuffer();
-
-        // apply output specific effect
-        // buffer = map.getBuffer();
-        // buffer = map.getFader().getBuffer(buffer);
-
         // apply the fader (if needed)
-        buffer = doTheFaderBaby(buffer, map);
+        int[] buffer = doTheFaderBaby(visual.getBuffer(), map);
+
         int bufferWidth = matrixData.getBufferXSize();
         int bufferHeight = matrixData.getBufferYSize();
 
@@ -261,7 +248,6 @@ public abstract class Output implements IOutput {
 
         int dst = 0;
         int src;
-
         float srcYofs = yStart;
         for (int y = 0; y < bufferHeight; y++) {
             float srcXofs = xStart + (int) (srcYofs * bufferWidth);
@@ -293,7 +279,6 @@ public abstract class Output implements IOutput {
             OutputMapping map = allOutputMappings.get(screen);
             // TODO inject someday..
             v = vs.getVisual(lm.getVisualId());
-
             if (lm.screenDoesNotNeedStretching()) {
                 buffer = this.getScreenBufferForDevice(v, map);
             } else {
