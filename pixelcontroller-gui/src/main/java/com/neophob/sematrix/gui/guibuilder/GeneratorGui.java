@@ -1110,8 +1110,8 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         fill(0, 180, 234);
         rect(GENERIC_X_OFS, localY + SELECTED_MARKER + 4, currentFrames, WIDGET_BAR_SIZE);
         fill(2, 52, 77);
-        rect(GENERIC_X_OFS + currentFrames, localY + SELECTED_MARKER + 4, xSizeForEachWidget - currentFrames
-                - WIDGET_BOARDER, WIDGET_BAR_SIZE);
+        rect(GENERIC_X_OFS + currentFrames, localY + SELECTED_MARKER + 4, xSizeForEachWidget
+                - currentFrames - WIDGET_BOARDER, WIDGET_BAR_SIZE);
 
         // draw sound stats
         ISound snd = pixConServer.getSoundImplementation();
@@ -1455,7 +1455,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                             freeze.setState(false);
                             freeze.setBroadcast(true);
                         }
+                        break;
 
+                    case CURRENT_OUTPUT:
+                        int value = Integer.parseInt(s.getValue());
+                        selectedOutputs.activate(value);
                         break;
 
                     default:
@@ -1469,5 +1473,4 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         }
 
     }
-
 }
