@@ -161,14 +161,12 @@ public class ColorSet implements Serializable, IColorSet {
      */
     @Override
     public int[] convertToColorSetImage(int[] buffer) {
-
-        int[] ret = new int[buffer.length];
-
-        for (int i = 0; i < ret.length; i++) {
+        int len = buffer.length;
+        int[] ret = new int[len];
+        for (int i = 0; i < len; i++) {
             // use only 8bpp here!
             ret[i] = precalc[buffer[i] & 255];
         }
-
         return ret;
     }
 
