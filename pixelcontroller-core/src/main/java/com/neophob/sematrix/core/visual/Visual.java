@@ -331,10 +331,9 @@ public class Visual {
             return generator2.getBuffer();
         }
 
+        return colorSet.convertToColorSetImage(
         // get greyscale buffer
-        int[] buffer = mixer.getBuffer(this);
-
-        return colorSet.convertToColorSetImage(buffer);
+                mixer.getBuffer(this));
     }
 
     /**
