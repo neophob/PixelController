@@ -162,9 +162,8 @@ public class PixelControllerOutput implements PixelControllerElement {
             // called directly without any additional threading overhead. for
             // the first frame it shouldn't really matter that the outputs have
             // to wait until the int[] buffers preparation is done.
-            VisualState vs = VisualState.getInstance();
             for (IOutput output : this.allOutputs) {
-                output.prepareOutputBuffer(vs);
+                output.prepareOutputBuffer(VisualState.getInstance());
             }
         }
 
@@ -211,9 +210,8 @@ public class PixelControllerOutput implements PixelControllerElement {
         }
 
         // create countDownLatches used to call all update() and prepare()
-        // methods simultaneously
-        // and to block until all calls have been finished via the end gate
-        // instances
+        // methods simultaneously and to block until all calls have been
+        // finished via the end gate instances
         final CountDownLatch updateStartGate = new CountDownLatch(1);
         this.updateEndGate = new CountDownLatch(this.getNumberOfPhysicalOutputs());
         final CountDownLatch prepareStartGate = new CountDownLatch(1);
