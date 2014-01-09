@@ -72,9 +72,6 @@ public class OutputWiringTest {
         Assert.assertEquals(0x90, b[0], 2);
         Assert.assertEquals(0x90, b[9], 2);
         Assert.assertEquals(0x90, b[10], 2);
-        Assert.assertEquals(0x90, b[19], 2);
-        Assert.assertEquals(0x0, b[20], 2);
-        Assert.assertEquals(0x0, b[29], 2);
         Assert.assertEquals(0x0, b[30], 2);
         Assert.assertEquals(0x0, b[39], 2);
         Assert.assertEquals(0x0, b[40], 2);
