@@ -40,11 +40,11 @@ public class OutputWiringTest {
                 "JunitColorSet" }, false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_GENERATOR_A + "",
                 "2" }, false, null);
+        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_MIXER + "", "0" },
+                false, null);
         MessageProcessor.INSTANCE.processMsg(
                 new String[] { ValidCommand.CHANGE_EFFECT_A + "", "0" }, false, null);
-        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.IMAGE + "", "half.jpg" },
-                false, null);
-        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_MIXER + "", "0" },
+        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.IMAGE + "", "half.png" },
                 false, null);
         MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.CHANGE_BRIGHTNESS + "",
                 "100" }, false, null);
@@ -73,8 +73,8 @@ public class OutputWiringTest {
         Assert.assertEquals(0x90, b[9], 2);
         Assert.assertEquals(0x90, b[10], 2);
         Assert.assertEquals(0x90, b[19], 2);
-        Assert.assertEquals(0x90, b[20], 2);
-        Assert.assertEquals(0x90, b[29], 2);
+        Assert.assertEquals(0x0, b[20], 2);
+        Assert.assertEquals(0x0, b[29], 2);
         Assert.assertEquals(0x0, b[30], 2);
         Assert.assertEquals(0x0, b[39], 2);
         Assert.assertEquals(0x0, b[40], 2);
