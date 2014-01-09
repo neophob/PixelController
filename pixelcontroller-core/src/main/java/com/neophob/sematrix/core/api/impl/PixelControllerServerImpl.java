@@ -269,10 +269,10 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
                 LOG.log(Level.WARNING,
                         "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);
             }
+        } else {
+            LOG.log(Level.INFO, "Initialize dummy sound.");
+            sound = new SoundDummy();
         }
-
-        LOG.log(Level.INFO, "Initialize dummy sound.");
-        sound = new SoundDummy();
     }
 
     /**
