@@ -64,10 +64,11 @@ PixelController supports different (LED) matrix hardware devices/controller:
 * TPM2 Serial devices (see [http://www.led-studien.de](http://www.led-studien.de) for more information)
 * TPM2 Net devices (see [http://www.led-studien.de](http://www.led-studien.de) for more information)
 * E1.31 devices (see [http://www.opendmx.net/index.php/E1.31](http://www.opendmx.net/index.php/E1.31))
+* RPi (Raspberry Pi) SPI controlled WS2801 LED pixels, see [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)
 
 Check out the `integration/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
-### Which firmware should I use?
+### [Arduino] Which firmware should I use?
 If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between different firmwares.  
 * If you bought a [PixelInvaders DIY Kit](http://shop.pixelinvaders.ch/product/pixelinvaders-diy-basic-pack), use the `integration/ArduinoFw/pixelinvaders/neoLedLPD6803Spi` firmware
 * If you want to create a ONE panel matrix with an arbitrary resolution, use the `integration/ArduinoFw/tpm2serial` firmware
@@ -392,6 +393,7 @@ If you want to select another Generator, Effect or Mixer via OSC Message, you ne
 		OSC_GEN1(15)
 		OSC_GEN2(16)
 		VISUAL_ZERO(17)
+		NOISE(18)
 
 Here is the list of all **Effect** ID's:
 
@@ -408,6 +410,8 @@ Here is the list of all **Effect** ID's:
 		FLIP_Y(10)
 		STROBO(11)
 		ROTATE90(12)
+		POSTERIZE(13)
+        DARKEN(14)
 		
 Here is the list of all **Mixer** ID's:		
 
