@@ -21,6 +21,7 @@ package com.neophob.sematrix.core.visual.effect;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
+import com.neophob.sematrix.core.visual.mixer.Multiply;
 
 /**
  * The Class Voluminize.
@@ -29,29 +30,32 @@ public class Voluminize extends Effect {
 
     private float volume = 0;
     private ISound sound;
-    
-	/**
-	 * Instantiates a new voluminize.
-	 *
-	 * @param controller the controller
-	 */
-	public Voluminize(MatrixData matrix, ISound sound) {
-		super(matrix, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
-		this.sound = sound;
-	}
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
-	 */
-	public int[] getBuffer(int[] buffer) {
-		int[] ret = new int[buffer.length];
-		
-		for (int i=0; i<buffer.length; i++){
-    		ret[i]= (int)(buffer[i]*volume);
-		}
-		return ret;
-	}
-	
+    /**
+     * Instantiates a new voluminize.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Voluminize(MatrixData matrix, ISound sound) {
+        super(matrix, EffectName.VOLUMINIZE, ResizeName.QUALITY_RESIZE);
+        this.sound = sound;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.effect.Effect#getBuffer(int[])
+     */
+    public int[] getBuffer(int[] buffer) {
+        int[] ret = new int[buffer.length];
+
+        for (int i = 0; i < buffer.length; i++) {
+            ret[i] = Multiply.mul(buffer[i], (int) (volume * 255));
+        }
+        return ret;
+    }
+
     @Override
     public void update() {
         volume = sound.getVolumeNormalized();
