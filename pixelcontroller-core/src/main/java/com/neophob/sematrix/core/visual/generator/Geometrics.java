@@ -100,7 +100,6 @@ public class Geometrics extends Generator {
 
         // clear background
         Arrays.fill(this.internalBufferTmp, 0);
-
         for (Drop d : drops) {
             d.update(amount);
             if (d.done()) {
@@ -151,10 +150,8 @@ public class Geometrics extends Generator {
          * Update.
          */
         private void update(int amount) {
-
             for (int n = 0; n < amount; n++) {
                 if (!finished) {
-                    drawCircle();
                     if (dropSize < internalBufferXSize * 2) {
                         dropSize++;
                     } else {
@@ -162,6 +159,7 @@ public class Geometrics extends Generator {
                     }
                 }
             }
+            drawCircle();
         }
 
         /**
