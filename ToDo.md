@@ -4,7 +4,8 @@
 * Update pixconcli
 * fix/test sound init for rpi
 * remote setup, do not display duplicate entries but display whats missing.
-* Documentation for bonjour, client/server, rpi, custom mapping tool
+* Documentation for bonjour, client/server, rpi, 
+* fix Volumizer Mixer
 
 
 ## Version 2.2

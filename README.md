@@ -246,6 +246,8 @@ To create a valid mapping use this config:
     output.mapping=4, 12,13,14, 24,23,22,21,20, 30,31,32, 42,41,40,39,38, 46,47,48,49,50,51,52 ...
 
 With this feature you can use all kinds of matrices, for example a circle matrix. 
+
+To make the mapping process easier you can use the online mapping tool at [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/). First use the keys `a`/`y` and `s`/`x` to change the matrix size, then click the corresponding pixel order. Selected pixels turns yellow. The debug output on the lower end print out the pixel order you can copy and past into the PixelController config file.
     
 ### How to use PixelInvaders.net
 
