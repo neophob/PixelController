@@ -202,7 +202,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
                 return (int) (0.5f + 1.5f);
 
             case MODERATE:
-                val = (int) ((beatSteps * 2.5f) / 2f + 0.5f);
+                val = (int) ((beatSteps * 2.5f) / 2f + 1f);
                 val += getKickValues();
                 return val;
 
