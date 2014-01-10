@@ -18,7 +18,8 @@ Prerequisite:
 
  * Java Runtime, v1.6+
 
-You can start PixelController with an integrated GUI by double click on `PixelController.jar` or you can start the console version (for example on a Raspberry PI) of PixelController by executing the `console\PixelController.sh` (OSX/Linux) or `console\PixelController.cmd` (Windows) Script.
+### Basic usage
+You can start PixelController with the integrated GUI by double click on `PixelController.jar`.
 
 By default PixelController has **no configured** output device (= no configured LED Matrix). To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
 
@@ -31,6 +32,15 @@ which defines the resolution of your matrix. Next you need to define one or mult
     #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
 
 Take a look at the config file, there are a lot of hints how to configure PixelController.
+
+### Advanced usage
+
+You can start the PixelController server by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The server part generate the visuals and send them to the output. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control PixelController server by
+
+* using the PixelController remote client, start it with `pixConClient/PixelControllerClient.jar`
+* using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
+* using the TouchOSC mobile application, see the `integration/TouchOsc/` directory for pre made layouts.
+* any other OSC Client
 
 ### Main idea
 A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
@@ -217,6 +227,8 @@ As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's
 
    
 Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
+
+The RPi has no audio input onboard, you must connect an USB audio card/USB microphone or a Webcam with a microphone. Use `sudo alsamixer --card 1` to verify the input volume is set correct. Use `sudo alsactl store` to save your current settings.
 
 ### Non-rectangular LED matrix
 
