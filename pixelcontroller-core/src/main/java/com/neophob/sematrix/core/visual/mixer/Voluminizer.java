@@ -24,40 +24,50 @@ import com.neophob.sematrix.core.visual.Visual;
 
 /**
  * mix src/dst accoring to volume of sound!.
- *
+ * 
  * @author michu
  */
 public class Voluminizer extends Mixer {
 
-	private ISound sound;
-	/**
-	 * Instantiates a new voluminizer.
-	 *
-	 * @param controller the controller
-	 */
-	public Voluminizer(ISound sound) {
-		super(MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
-		this.sound = sound;
-	}
+    private ISound sound;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.core.glue.Visual)
-	 */
-	public int[] getBuffer(Visual visual) {
-		if (visual.getEffect2() == null) {
-			return visual.getEffect1Buffer();
-		}
-		
-		int[] src1 = visual.getEffect1Buffer();
-		int[] src2 = visual.getEffect2Buffer();
-		int[] dst = new int [src1.length];
+    /**
+     * Instantiates a new voluminizer.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Voluminizer(ISound sound) {
+        super(MixerName.VOLUMINIZER, ResizeName.QUALITY_RESIZE);
+        this.sound = sound;
+    }
 
-		float snd = sound.getVolumeNormalized();
-		for (int i=0; i<src1.length; i++){
-    		dst[i]=(int)(src2[i]*snd + ((1.0f-snd)*src1[i]));
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.
+     * core.glue.Visual)
+     */
+    public int[] getBuffer(Visual visual) {
+        if (visual.getEffect2() == null) {
+            return visual.getEffect1Buffer();
         }
-	
-		return dst;
-	}
+
+        int[] src1 = visual.getEffect1Buffer();
+        int[] src2 = visual.getEffect2Buffer();
+        int[] dst = new int[src1.length];
+
+        int a, b;
+        float snd = sound.getVolumeNormalized();
+        float sndInv = 1.0f - snd;
+        for (int i = 0; i < src1.length; i++) {
+            a = Multiply.mul(src2[i], (int) (snd * 255f));
+            b = Multiply.mul(src1[i], (int) (sndInv * 255f));
+            dst[i] = a + b;
+        }
+
+        return dst;
+    }
 
 }
