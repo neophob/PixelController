@@ -59,15 +59,15 @@ public class Voluminizer extends Mixer {
         int[] dst = new int[src1.length];
 
         int a, b;
-        float snd = sound.getVolumeNormalized();
-        float sndInv = 1.0f - snd;
+        int snd = (int) (127 * sound.getVolumeNormalized());
+        int sndInv = (int) ((1.0f - sound.getVolumeNormalized()) * 127);
+
         for (int i = 0; i < src1.length; i++) {
-            a = Multiply.mul(src2[i], (int) (snd * 255f));
-            b = Multiply.mul(src1[i], (int) (sndInv * 255f));
+            a = Multiply.mul(src1[i], snd);
+            b = Multiply.mul(255 - src2[i], sndInv);
             dst[i] = a + b;
         }
 
         return dst;
     }
-
 }
