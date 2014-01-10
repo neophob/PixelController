@@ -263,16 +263,17 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         if (applicationConfig.isAudioAware()) {
             try {
                 sound = new SoundMinim(applicationConfig.getSoundSilenceThreshold());
+                return;
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.");
+                LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.", e);
             } catch (Error e) {
                 LOG.log(Level.WARNING,
                         "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);
             }
-        } else {
-            LOG.log(Level.INFO, "Initialize dummy sound.");
-            sound = new SoundDummy();
-        }
+        } 
+        
+        LOG.log(Level.INFO, "Initialize dummy sound.");
+        sound = new SoundDummy();
     }
 
     /**
