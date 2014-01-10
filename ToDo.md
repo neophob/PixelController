@@ -4,8 +4,7 @@
 * Update pixconcli
 * fix/test sound init for rpi
 * remote setup, do not display duplicate entries but display whats missing.
-* Documentation for rpi, 
-* fix Volumizer Mixer
+* Documentation for rpi
 
 
 ## Version 2.2
@@ -29,7 +28,6 @@
 * Add OpenGL Shader Generator/Effects, using JOGL
 * More GUI improvements (scaling, bigger fonts, save window position, option to bring both windows to front)
 * Option to modify colorsets of all visuals
-* Add Perlin Noise generator
 * add more fader (pixel fader for example)
 * support more than 2 rows
 * Option to save output of PixelController (byte stream) to a flat file (Offline usage)
