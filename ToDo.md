@@ -2,9 +2,7 @@
 
 ## Version 2.1
 * Update pixconcli
-* fix/test sound init for rpi
 * remote setup, do not display duplicate entries but display whats missing.
-* Documentation for rpi
 
 
 ## Version 2.2
