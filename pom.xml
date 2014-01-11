@@ -134,6 +134,16 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>3.2</version>
 			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>2.1.0</version>
+				<!-- provided by travis-ci 
+				<configuration>
+					<repoToken>yourcoverallsprojectrepositorytoken</repoToken>
+				</configuration>
+				 -->
+			</plugin>
 		</plugins>
 	</build>
 
