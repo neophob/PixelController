@@ -691,7 +691,10 @@ public enum MessageProcessor {
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
+                    break;
 
+                case DUMMY:
+                    // nothing todo
                     break;
 
                 // unkown message

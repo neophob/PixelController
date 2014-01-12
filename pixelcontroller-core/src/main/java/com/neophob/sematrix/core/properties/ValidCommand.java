@@ -144,6 +144,8 @@ public enum ValidCommand {
 
     ROTATE_MIXER(CommandGroup.VISUAL, 0, "Select next Mixer"),
 
+    DUMMY(CommandGroup.VISUAL, 0, "Do nothing"),
+
     /* INTERNAL COMMANDS, USED BY INTENRAL API */
     GET_CONFIGURATION(CommandGroup.INTERNAL, 0, "Return the application configuration", true),
 
