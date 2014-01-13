@@ -459,7 +459,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
         textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CLOUD"), 7); //$NON-NLS-1$
         textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_PLANAR"), 8); //$NON-NLS-1$
         textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CIRCLE"), 9); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 10); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLUSH"), 10); //$NON-NLS-1$
         textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 11); //$NON-NLS-1$
         textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
         textureDeformOptions.setGroup(generatorTab);
