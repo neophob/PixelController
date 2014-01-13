@@ -1,7 +1,7 @@
 [![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neophob/PixelController/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Build Status](https://buildhive.cloudbees.com/job/neophob/job/PixelController/badge/icon)](https://buildhive.cloudbees.com/job/neophob/job/PixelController/)[![Coverage Status](https://coveralls.io/repos/neophob/PixelController/badge.png)](https://coveralls.io/r/neophob/PixelController)
 
 # PixelController
-**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2013. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
+**PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2014. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
 **Primary Website**: [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)
 
@@ -39,8 +39,7 @@ You can start the PixelController server by execute `pixConServer/PixelControlle
 
 * using the PixelController remote client, start it with `pixConClient/PixelControllerClient.jar`
 * using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
-* using the TouchOSC mobile application, see the `integration/TouchOsc/` directory for pre made layouts.
-* any other OSC Client
+* any other OSC client, see chapter **OSC Clients to control PixelController** 
 
 ### Main idea
 A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
@@ -286,10 +285,15 @@ See the Processing examples `OscSendControllMessages/sendImageKreise` and `OscSe
 
 ### OSC Clients to control PixelController
 
-If you want to use the console to control PixelController you can use tools like `liblo-tools`. An example to freeze the update would be `/usr/bin/oscsend 192.168.1.1 9876 /FREEZE`.
+[OSC](http://en.wikipedia.org/wiki/Open_Sound_Control) is a generic protocol that can be used to control PixelController. 
+
+If you want to use the **console** to control PixelController you can use tools like `liblo-tools`. An example to freeze the update would be `/usr/bin/oscsend 192.168.1.1 9876 /FREEZE`.
 
 The included PixelController PixConCli tool can also send OSC messages - but are slower to execute and require an installed JVM - which is not always feasible.
 
+If you prefer to use your mobile/tablet to control PixelController you can use the TouchOSC app, see the `integration/TouchOsc/` directory for pre made layouts. I've also included examples for the free Control OSC example in the `integration/ControlOSC/` directory.
+
+* any other OSC Client
 
 ### Create Blinkenlights movie files
 
