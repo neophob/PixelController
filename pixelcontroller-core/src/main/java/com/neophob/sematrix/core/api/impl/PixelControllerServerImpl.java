@@ -19,6 +19,7 @@ import com.neophob.sematrix.core.output.PixelControllerOutput;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
@@ -247,7 +248,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         List<String> preset = presetService.getPresets().get(presetNr).getPresent();
         presetService.setSelectedPreset(presetNr);
         if (preset != null) {
-            visualState.setCurrentStatus(preset);
+            MessageProcessor.INSTANCE.processMsg(
+                    new String[] { ValidCommand.LOAD_PRESET.toString() }, true, null);
         } else {
             LOG.log(Level.WARNING, "Invalid preset load on start value ignored!");
         }
@@ -265,13 +267,14 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
                 sound = new SoundMinim(applicationConfig.getSoundSilenceThreshold());
                 return;
             } catch (Exception e) {
-                LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.", e);
+                LOG.log(Level.WARNING, "FAILED TO INITIALIZE SOUND INSTANCE. Disable sound input.",
+                        e);
             } catch (Error e) {
                 LOG.log(Level.WARNING,
                         "FAILED TO INITIALIZE SOUND INSTANCE (Error). Disable sound input.", e);
             }
-        } 
-        
+        }
+
         LOG.log(Level.INFO, "Initialize dummy sound.");
         sound = new SoundDummy();
     }
