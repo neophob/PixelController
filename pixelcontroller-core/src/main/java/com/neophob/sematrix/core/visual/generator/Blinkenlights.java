@@ -58,6 +58,7 @@ public class Blinkenlights extends Generator {
 
     /** The filename. */
     private String filename;
+    private int loadedPosition;
 
     private int currentFrame;
 
@@ -105,6 +106,11 @@ public class Blinkenlights extends Generator {
         this.loadFile(movieFiles.get(0));
     }
 
+    public void loadNextFile() {
+        loadedPosition = (loadedPosition + 1) % movieFiles.size();
+        this.loadFile(movieFiles.get(loadedPosition));
+    }
+
     /**
      * load a new file.
      * 
@@ -129,6 +135,13 @@ public class Blinkenlights extends Generator {
     }
 
     private boolean loadBlinken(String filename) {
+        int pos = movieFiles.indexOf(filename);
+        if (pos == -1) {
+            LOG.log(Level.INFO, "Filename {0} not found in list", filename);
+        } else {
+            loadedPosition = pos;
+        }
+
         if (blinken.loadFile(fu.getBmlDir() + filename)) {
             this.filename = filename;
             currentFrame = 0;

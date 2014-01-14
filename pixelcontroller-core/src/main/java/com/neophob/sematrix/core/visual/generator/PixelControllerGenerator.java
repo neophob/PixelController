@@ -453,4 +453,12 @@ public class PixelControllerGenerator implements PixelControllerElement {
         this.bta = bta;
     }
 
+    public void loadNextImage() {
+        image.loadNextFile();
+    }
+
+    public void loadNextBlinkenfile() {
+        blinkenlights.loadNextFile();
+    }
+
 }

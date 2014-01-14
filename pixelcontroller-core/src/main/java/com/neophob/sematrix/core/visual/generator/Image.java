@@ -55,6 +55,7 @@ public class Image extends Generator {
 
     /** The currently loaded file */
     private String filename;
+    private int loadedPosition;
 
     private FileUtils fileUtils;
 
@@ -93,6 +94,11 @@ public class Image extends Generator {
         LOG.log(Level.INFO, "Image, found " + imageFiles.size() + " image files");
     }
 
+    public void loadNextFile() {
+        loadedPosition = (loadedPosition + 1) % imageFiles.size();
+        this.loadFile(imageFiles.get(loadedPosition));
+    }
+
     /**
      * load a new file.
      * 
@@ -112,6 +118,12 @@ public class Image extends Generator {
         }
 
         try {
+            int pos = imageFiles.indexOf(filename);
+            if (pos == -1) {
+                LOG.log(Level.INFO, "Filename {0} not found in list", filename);
+            } else {
+                loadedPosition = pos;
+            }
             long t1 = System.currentTimeMillis();
             String fileToLoad = fileUtils.getImageDir() + File.separator + filename;
 
