@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.neophob.sematrix.core.visual.VisualState;
+
 /**
  * 
  * @author michu
@@ -37,7 +39,7 @@ public class PresetServiceImpl implements PresetService {
     public PresetServiceImpl(String filePath) {
         this.filename = filePath + File.separator + PRESETS_FILENAME;
         selectedPreset = 0;
-        loadPresets();
+        loadPresetsFile();
     }
 
     /*
@@ -78,7 +80,7 @@ public class PresetServiceImpl implements PresetService {
     /**
      * Load presents.
      */
-    private List<PresetSettings> loadPresets() {
+    private List<PresetSettings> loadPresetsFile() {
         Properties props = new Properties();
 
         presets = new ArrayList<PresetSettings>(NR_OF_PRESET_SLOTS);
@@ -155,5 +157,58 @@ public class PresetServiceImpl implements PresetService {
     @Override
     public PresetSettings getSelectedPresetSettings() {
         return presets.get(selectedPreset);
+    }
+
+    /**
+     * remove obsolete commands form preset
+     * 
+     * @param preset
+     * @return
+     */
+    private List<String> removeObsoleteCommands(List<String> preset) {
+        if (!preset.contains("CHANGE_GENERATOR_B 1") && !preset.contains("CHANGE_GENERATOR_A 1")) {
+            LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
+            int ofs = 0;
+            for (String s : preset) {
+                if (s.startsWith("BLINKEN")) {
+                    break;
+                }
+                ofs++;
+            }
+            preset.remove(ofs);
+        }
+        if (!preset.contains("CHANGE_GENERATOR_B 2") && !preset.contains("CHANGE_GENERATOR_A 2")) {
+            LOG.log(Level.INFO, "No Imagegenerator found, remove loading image resource");
+            int ofs = 0;
+            for (String s : preset) {
+                if (s.startsWith("IMAGE")) {
+                    break;
+                }
+                ofs++;
+            }
+            preset.remove(ofs);
+        }
+        return preset;
+    }
+
+    @Override
+    public void loadActivePreset(VisualState visualState) {
+        visualState.setLoadingPresent(true);
+        // save current selections
+        int currentVisual = visualState.getCurrentVisual();
+        int currentOutput = visualState.getCurrentOutput();
+
+        List<String> preset = presets.get(selectedPreset).getPresent();
+        if (preset != null) {
+            preset = removeObsoleteCommands(new ArrayList<String>(preset));
+
+            // load preset
+            visualState.setCurrentStatus(preset);
+
+            // Restore current Selection
+            visualState.setCurrentVisual(currentVisual);
+            visualState.setCurrentOutput(currentOutput);
+        }
+        visualState.setLoadingPresent(false);
     }
 }

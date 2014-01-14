@@ -2,6 +2,8 @@ package com.neophob.sematrix.core.preset;
 
 import java.util.List;
 
+import com.neophob.sematrix.core.visual.VisualState;
+
 public interface PresetService {
 
     final int NR_OF_PRESET_SLOTS = 144;
@@ -32,5 +34,13 @@ public interface PresetService {
      * Save presents.
      */
     void savePresents();
+
+    /**
+     * load a preset
+     * 
+     * @param nr
+     * @param visualState
+     */
+    void loadActivePreset(VisualState visualState);
 
 }

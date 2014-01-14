@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.core.listener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -352,7 +351,7 @@ public enum MessageProcessor {
 
                 case LOAD_PRESET:
                     try {
-                        loadPreset(presetService.getSelectedPreset());
+                        presetService.loadActivePreset(col);
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -504,8 +503,8 @@ public enum MessageProcessor {
                         // save current visual buffer
                         TransitionManager transition = new TransitionManager(col);
                         int currentPreset = Shuffler.getRandomPreset(presetService);
-                        loadPreset(currentPreset);
                         presetService.setSelectedPreset(currentPreset);
+                        presetService.loadActivePreset(col);
                         transition.startCrossfader();
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
@@ -727,57 +726,6 @@ public enum MessageProcessor {
             LOG.log(Level.INFO, "Unknown attribute ignored <{0}>", new Object[] { msg[0] });
         }
 
-    }
-
-    private List<String> removeObsoleteCommands(List<String> preset) {
-        if (!preset.contains("CHANGE_GENERATOR_B 1") && !preset.contains("CHANGE_GENERATOR_A 1")) {
-            LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
-            int ofs = 0;
-            for (String s : preset) {
-                if (s.startsWith("BLINKEN")) {
-                    break;
-                }
-                ofs++;
-            }
-            preset.remove(ofs);
-        }
-        if (!preset.contains("CHANGE_GENERATOR_B 2") && !preset.contains("CHANGE_GENERATOR_A 2")) {
-            LOG.log(Level.INFO, "No Imagegenerator found, remove loading image resource");
-            int ofs = 0;
-            for (String s : preset) {
-                if (s.startsWith("IMAGE")) {
-                    break;
-                }
-                ofs++;
-            }
-            preset.remove(ofs);
-        }
-        return preset;
-    }
-
-    /**
-     * 
-     * @param nr
-     */
-    private void loadPreset(int nr) {
-        VisualState col = VisualState.getInstance();
-        col.setLoadingPresent(true);
-        // save current selections
-        int currentVisual = col.getCurrentVisual();
-        int currentOutput = col.getCurrentOutput();
-
-        List<String> preset = presetService.getPresets().get(nr).getPresent();
-        if (preset != null) {
-            preset = removeObsoleteCommands(new ArrayList<String>(preset));
-
-            // load preset
-            col.setCurrentStatus(preset);
-
-            // Restore current Selection
-            col.setCurrentVisual(currentVisual);
-            col.setCurrentOutput(currentOutput);
-        }
-        col.setLoadingPresent(false);
     }
 
 }
