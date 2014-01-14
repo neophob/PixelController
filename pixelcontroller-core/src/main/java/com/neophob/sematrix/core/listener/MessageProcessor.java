@@ -18,7 +18,6 @@
  */
 package com.neophob.sematrix.core.listener;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -339,11 +338,8 @@ public enum MessageProcessor {
 
                 case SAVE_PRESET:
                     try {
-                        int idxs = presetService.getSelectedPreset();
-                        List<String> present = col.getCurrentStatus();
-                        presetService.getPresets().get(idxs).setPresent(present);
-                        presetService.getPresets().get(idxs).setName(msg[1]);
-                        presetService.savePresents();
+                        presetService.saveActivePreset(msg[1], col.getCurrentStatus());
+                        presetService.writePresetFile();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }

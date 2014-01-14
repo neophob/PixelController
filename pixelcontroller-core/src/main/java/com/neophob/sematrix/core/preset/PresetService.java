@@ -33,7 +33,7 @@ public interface PresetService {
     /**
      * Save presents.
      */
-    void savePresents();
+    void writePresetFile();
 
     /**
      * load a preset
@@ -42,5 +42,7 @@ public interface PresetService {
      * @param visualState
      */
     void loadActivePreset(VisualState visualState);
+
+    void saveActivePreset(String name, List<String> presetString);
 
 }

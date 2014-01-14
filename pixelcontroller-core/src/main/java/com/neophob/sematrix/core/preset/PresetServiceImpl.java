@@ -97,7 +97,7 @@ public class PresetServiceImpl implements PresetService {
             for (int i = 0; i < NR_OF_PRESET_SLOTS; i++) {
                 s = props.getProperty("" + i);
                 if (StringUtils.isNotBlank(s)) {
-                    presets.get(i).setPresent(s.split(";"));
+                    presets.get(i).setPreset(s.split(";"));
                     count++;
                 }
             }
@@ -125,7 +125,7 @@ public class PresetServiceImpl implements PresetService {
      * @see com.neophob.sematrix.core.preset.PresetService#savePresents()
      */
     @Override
-    public void savePresents() {
+    public void writePresetFile() {
         long t1 = System.currentTimeMillis();
         Properties props = new Properties();
         int idx = 0;
@@ -198,7 +198,7 @@ public class PresetServiceImpl implements PresetService {
         int currentVisual = visualState.getCurrentVisual();
         int currentOutput = visualState.getCurrentOutput();
 
-        List<String> preset = presets.get(selectedPreset).getPresent();
+        List<String> preset = presets.get(selectedPreset).getPreset();
         if (preset != null) {
             preset = removeObsoleteCommands(new ArrayList<String>(preset));
 
@@ -210,5 +210,12 @@ public class PresetServiceImpl implements PresetService {
             visualState.setCurrentOutput(currentOutput);
         }
         visualState.setLoadingPresent(false);
+    }
+
+    @Override
+    public void saveActivePreset(String name, List<String> presetString) {
+        PresetSettings currentPreset = getSelectedPresetSettings();
+        currentPreset.setName(name);
+        currentPreset.setPreset(presetString);
     }
 }

@@ -36,7 +36,7 @@ public class PresetSettings implements Serializable {
     private static final transient char DELIM = ';';
 
     /** The present. */
-    private List<String> present;
+    private List<String> preset;
     private String name = "";
 
     /**
@@ -44,8 +44,8 @@ public class PresetSettings implements Serializable {
      * 
      * @return the present
      */
-    public List<String> getPresent() {
-        return present;
+    public List<String> getPreset() {
+        return preset;
     }
 
     /**
@@ -54,8 +54,8 @@ public class PresetSettings implements Serializable {
      * @param present
      *            the new present
      */
-    public void setPresent(List<String> present) {
-        this.present = present;
+    public void setPreset(List<String> preset) {
+        this.preset = preset;
     }
 
     /**
@@ -64,9 +64,9 @@ public class PresetSettings implements Serializable {
      * @param present
      *            the new present
      */
-    public void setPresent(String[] present) {
+    public void setPreset(String[] preset) {
         List<String> list = new ArrayList<String>();
-        for (String s : present) {
+        for (String s : preset) {
             if (StringUtils.startsWith(s, NAME_MARKER)) {
                 String rawName = StringUtils.substring(s, NAME_MARKER.length());
                 if (StringUtils.isNotBlank(rawName)) {
@@ -76,7 +76,7 @@ public class PresetSettings implements Serializable {
                 list.add(s);
             }
         }
-        this.present = list;
+        this.preset = list;
     }
 
     /**
@@ -85,13 +85,13 @@ public class PresetSettings implements Serializable {
      * @return the settings as string
      */
     public String getSettingsAsString() {
-        if (present == null) {
+        if (preset == null) {
             return "";
         }
 
         StringBuilder ret = new StringBuilder();
 
-        for (String s : present) {
+        for (String s : preset) {
             ret.append(s);
             ret.append(DELIM);
         }
@@ -126,7 +126,7 @@ public class PresetSettings implements Serializable {
      * @return
      */
     public boolean isSlotUsed() {
-        if (present == null || present.isEmpty()) {
+        if (preset == null || preset.isEmpty()) {
             return false;
         }
         return true;
