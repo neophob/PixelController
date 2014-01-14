@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neophob/PixelController/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Build Status](https://buildhive.cloudbees.com/job/neophob/job/PixelController/badge/icon)](https://buildhive.cloudbees.com/job/neophob/job/PixelController/)[![Coverage Status](https://coveralls.io/repos/neophob/PixelController/badge.png)](https://coveralls.io/r/neophob/PixelController)
+[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neophob/PixelController/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Build Status](https://buildhive.cloudbees.com/job/neophob/job/PixelController/badge/icon)](https://buildhive.cloudbees.com/job/neophob/job/PixelController/)
 
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2014. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
@@ -99,7 +99,9 @@ Here are some primitive schemes:
 
     [PixelController]---<USB>---[Teensy with TPM2 firmware using fastspi2 lib]---<SPI>---[LED#1]---[LED#2]...
 
-    [PixelController]---<ethernet>---[Artnet Controller]---<???>---[LED#1]---[LED#2]...
+    [PixelController]---<Ethernet>---[Artnet Controller]---<SPI>---[LED#1]---[LED#2]...
+    
+    [PixelController]---<SPI on RPi>---[LED#1]---[LED#2]...
 
 
 ### Advanced PixelController configuration
