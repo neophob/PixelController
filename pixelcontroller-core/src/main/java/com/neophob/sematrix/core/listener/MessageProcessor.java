@@ -80,9 +80,13 @@ public enum MessageProcessor {
     }
 
     private boolean ignoreCommand(ValidCommand cmd, String[] msg) {
+
         // filter out (double) touchOSC Messages, example push buttons
         if (msg.length == 2 && cmd.getNrOfParams() == 0) {
             if ("0.0".equals(msg[1])) {
+                return true;
+            }
+            if ("-1.0".equals(msg[1])) {
                 return true;
             }
         }
@@ -110,6 +114,7 @@ public enum MessageProcessor {
      */
     public synchronized void processMsg(String[] msg, boolean startFader, byte[] blob) {
         if (msg == null || msg.length < 1) {
+            LOG.log(Level.WARNING, "Ignore invalid message");
             return;
         }
 
