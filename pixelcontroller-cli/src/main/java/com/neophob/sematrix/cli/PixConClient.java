@@ -46,20 +46,17 @@ import com.neophob.sematrix.osc.server.OscServerException;
 public class PixConClient {
 
     private static final int SLEEP_INTERVAL = 200;
-
-    private static final float VERSION = 0.8f;
-
-    /** The Constant DEFAULT_PORT. */
+    private static final float VERSION = 0.9f;
     private static final int DEFAULT_PORT = 9876;
-
     private static final int LOCAL_SERVER_PORT = 10009;
 
-    /** The Constant DEFAULT_HOST. */
     private static final String DEFAULT_HOST = "127.0.0.1";
 
     private static final String PARAM_COMMAND = "command";
     private static final String PARAM_PORT = "port";
     private static final String PARAM_HOST = "hostname";
+
+    private static final long MAXIMAL_WAIT_FOR_ANSWER_MS = 5000;
     private static final Protocol NETWORK_PROTOCOL = Protocol.UDP;
 
     private OscAnswerHandler oap;
@@ -85,7 +82,7 @@ public class PixConClient {
 
         if (cmd.getCommand().isWaitForServerResponse()) {
             System.out.println("Wait for answer...");
-            long maxWait = 5000;
+            long maxWait = MAXIMAL_WAIT_FOR_ANSWER_MS;
             while (!oap.isAnswerRecieved()) {
                 if (maxWait < 0) {
                     System.out.println("No reply recieved, Bye!");
