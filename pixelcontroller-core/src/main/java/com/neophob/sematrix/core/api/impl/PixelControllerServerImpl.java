@@ -272,9 +272,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         sound = new SoundDummy();
     }
 
-    /**
-     * 
-     */
+    @Override
     public String getVersion() {
         String version = this.getClass().getPackage().getImplementationVersion();
         if (version != null && !version.isEmpty()) {
@@ -314,9 +312,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         return visualState.getMatrix();
     }
 
-    /**
-     * @return the visualState
-     */
+    @Override
     public VisualState getVisualState() {
         return visualState;
     }
