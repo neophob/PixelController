@@ -51,6 +51,8 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
     private static final String DEFAULT_TARGET_HOST = "pixelcontroller.local";
     private static final int DEFAULT_REMOTE_OSC_SERVER_PORT = 9876;
+    private static final Protocol SERVER_PROTOCOL = Protocol.TCP;
+    private static final Protocol CLIENT_PROTOCOL = Protocol.UDP;
 
     private float steps;
 
@@ -345,13 +347,13 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
             setupFeedback.handleMessage("Start OSC Server");
             // create a tcp server, expected large messages (> then MTU)
-            remoteServer.startServer(Protocol.TCP, this, serverPort - 1);
+            remoteServer.startServer(SERVER_PROTOCOL, this, serverPort - 1);
             setupFeedback.handleMessage(" ... started");
 
             setupFeedback.handleMessage("Connect to PixelController OSC Server");
             // use udp to communicate with the pixelcontroller OSC server
             int clientPort = serverPort - 1;
-            remoteServer.startClient(Protocol.UDP, targetHost, serverPort, clientPort);
+            remoteServer.startClient(CLIENT_PROTOCOL, targetHost, serverPort, clientPort);
             setupFeedback.handleMessage(" ... done");
 
             this.remoteObserver = new RemoteOscObservable();
