@@ -168,7 +168,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
             long l = System.currentTimeMillis();
 
-            // do not update preset if a preset is loaded
+            // do not update output if a preset is loaded
             if (!visualState.isLoadingPresent()) {
                 pixelControllerOutput.update();
                 pixConStat.trackTime(TimeMeasureItemGlobal.OUTPUT_SCHEDULE,
@@ -183,7 +183,6 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
                 }
             }
             handleFpsSleep();
-
         }
         LOG.log(Level.INFO, "Main loop finished...");
     }
