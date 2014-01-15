@@ -186,7 +186,8 @@ public enum ValidCommand {
     /** The desc. */
     private String desc;
 
-    private boolean expectAnswer;
+    /** expect an answer from server? (ie. is this a client request) */
+    private boolean waitForServerResponse;
 
     /** The group. */
     private CommandGroup group;
@@ -205,11 +206,11 @@ public enum ValidCommand {
         this(group, nrOfParams, desc, false);
     }
 
-    ValidCommand(CommandGroup group, int nrOfParams, String desc, boolean expectAnswer) {
+    ValidCommand(CommandGroup group, int nrOfParams, String desc, boolean waitForServerResponse) {
         this.group = group;
         this.nrOfParams = nrOfParams;
         this.desc = desc;
-        this.expectAnswer = expectAnswer;
+        this.waitForServerResponse = waitForServerResponse;
     }
 
     /**
@@ -230,8 +231,8 @@ public enum ValidCommand {
         return desc;
     }
 
-    public boolean isExpectAnswer() {
-        return expectAnswer;
+    public boolean isWaitForServerResponse() {
+        return waitForServerResponse;
     }
 
     /**

@@ -9,6 +9,12 @@ import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
 import com.neophob.sematrix.osc.model.OscMessage;
 
+/**
+ * wait for an answer of the pixecontroller server and reassemble message
+ * 
+ * @author michu
+ * 
+ */
 public class OscAnswerHandler implements Observer {
 
     private boolean answerRecieved = false;

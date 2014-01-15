@@ -60,27 +60,30 @@ public class PixConClient {
     private static final String PARAM_COMMAND = "command";
     private static final String PARAM_PORT = "port";
     private static final String PARAM_HOST = "hostname";
+    private static final Protocol NETWORK_PROTOCOL = Protocol.UDP;
 
     private OscAnswerHandler oap;
     private RmiApi rmi;
 
     protected PixConClient(ParsedArgument cmd) throws OscServerException, OscClientException,
             InterruptedException {
-        // send osc payload
 
+        // start rmi api
         rmi = RmiFactory.getRmiApi(true, PixelControllerOscServer.REPLY_PACKET_BUFFERSIZE);
-
         System.out.println(cmd.getPayload());
-        if (cmd.getCommand().isExpectAnswer()) {
+
+        // if request is a request, wait for server answer
+        if (cmd.getCommand().isWaitForServerResponse()) {
             oap = new OscAnswerHandler(rmi);
-            rmi.startServer(Protocol.TCP, oap, LOCAL_SERVER_PORT);
+            rmi.startServer(NETWORK_PROTOCOL, oap, LOCAL_SERVER_PORT);
         }
 
-        rmi.startClient(Protocol.UDP, cmd.getHostname(), cmd.getPort(), LOCAL_SERVER_PORT);
+        // send request
+        rmi.startClient(NETWORK_PROTOCOL, cmd.getHostname(), cmd.getPort(), LOCAL_SERVER_PORT);
         Command cmdAndParameter = new Command(cmd.getCommand(), new String[] { cmd.getParameter() });
         rmi.sendPayload(cmdAndParameter, null);
 
-        if (cmd.getCommand().isExpectAnswer()) {
+        if (cmd.getCommand().isWaitForServerResponse()) {
             System.out.println("Wait for answer...");
             long maxWait = 5000;
             while (!oap.isAnswerRecieved()) {
