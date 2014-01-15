@@ -449,19 +449,19 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                 genFxXOfs + 0 * Theme.DROPBOX_XOFS, genElYOfs + 11, Theme.DROPBOXLIST_LENGTH, 80);
         Theme.themeDropdownList(textureDeformOptions);
         textureDeformOptions.addItem(
-                messages.getString("GeneratorGui.TEXTUREDEFORM_ANAMORPHOSIS"), 1); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 2); //$NON-NLS-1$
+                messages.getString("GeneratorGui.TEXTUREDEFORM_ANAMORPHOSIS"), 0); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_SPIRAL"), 1); //$NON-NLS-1$
         textureDeformOptions.addItem(
-                messages.getString("GeneratorGui.TEXTUREDEFORM_ROTATINGTUNNEL"), 3); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_START"), 4); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_TUNNEL"), 5); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLOWER"), 6); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CLOUD"), 7); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_PLANAR"), 8); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CIRCLE"), 9); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLUSH"), 10); //$NON-NLS-1$
-        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 11); //$NON-NLS-1$
-        textureDeformOptions.setLabel(textureDeformOptions.getItem(1).getName());
+                messages.getString("GeneratorGui.TEXTUREDEFORM_ROTATINGTUNNEL"), 2); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_START"), 3); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_TUNNEL"), 4); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLOWER"), 5); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CLOUD"), 6); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_PLANAR"), 7); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_CIRCLE"), 8); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_FLUSH"), 9); //$NON-NLS-1$
+        textureDeformOptions.addItem(messages.getString("GeneratorGui.TEXTUREDEFORM_3D"), 10); //$NON-NLS-1$
+        textureDeformOptions.setLabel(textureDeformOptions.getItem(0).getName());
         textureDeformOptions.setGroup(generatorTab);
 
         cp5.addTextlabel(
@@ -1414,8 +1414,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
 
                     case TEXTDEF:
                         int i = Integer.parseInt(s.getValue());
-                        textureDeformOptions
-                                .setLabel(textureDeformOptions.getItem(i - 1).getName());
+                        textureDeformOptions.setLabel(textureDeformOptions.getItem(i).getName());
                         break;
 
                     case CHANGE_BRIGHTNESS:

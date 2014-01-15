@@ -1,5 +1,6 @@
 package com.neophob.sematrix.core.preset;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -90,7 +91,8 @@ public class PresetServiceImpl implements PresetService {
 
         InputStream input = null;
         try {
-            input = new FileInputStream(filename);
+            long t1 = System.currentTimeMillis();
+            input = new BufferedInputStream(new FileInputStream(filename));
             props.load(input);
             String s;
             int count = 0;
@@ -101,8 +103,9 @@ public class PresetServiceImpl implements PresetService {
                     count++;
                 }
             }
-            LOG.log(Level.INFO, "Loaded {0} presets from file {1}", new Object[] { count,
-                    PRESETS_FILENAME });
+            long t2 = System.currentTimeMillis() - t1;
+            LOG.log(Level.INFO, "Loaded {0} presets from file {1} in {2}ms", new Object[] { count,
+                    PRESETS_FILENAME, t2 });
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] {
                     PRESETS_FILENAME, e });
