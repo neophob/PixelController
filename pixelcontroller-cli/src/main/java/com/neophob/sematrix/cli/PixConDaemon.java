@@ -32,17 +32,17 @@ import com.neophob.sematrix.core.perf.PerfTests;
  * @author michu
  * 
  */
-public class PixelControllerCli extends CallbackMessage<String> {
+public class PixConDaemon extends CallbackMessage<String> {
 
     /** The log. */
-    private static final Logger LOG = Logger.getLogger(PixelControllerCli.class.getName());
+    private static final Logger LOG = Logger.getLogger(PixConDaemon.class.getName());
 
     private PixelController pixelController;
 
     /**
      * 
      */
-    public PixelControllerCli() {
+    public PixConDaemon() {
         LOG.log(Level.INFO, "Initialize...");
         pixelController = PixelControllerFactory.initialize(this);
         LOG.log(Level.INFO, "\n\nPixelController " + pixelController.getVersion()
@@ -73,7 +73,7 @@ public class PixelControllerCli extends CallbackMessage<String> {
             new PerfTests(500000, 32).startPerfTest();
             return;
         }
-        new PixelControllerCli();
+        new PixConDaemon();
     }
 
     @Override

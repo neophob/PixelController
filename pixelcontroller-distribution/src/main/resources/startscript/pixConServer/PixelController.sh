@@ -24,5 +24,5 @@ cd "$CURRENT"
 
 # do not start jmx server on RPI
 export JAVA_OPT="-Xmx512m -Djava.util.logging.config.file=./sys/logging.properties -Djava.library.path=./lib -Djava.security.policy=./sys/client.policy" 
-java $JAVA_OPT -classpath .:./lib/* -XX:ErrorFile=./log/hs_err_pid%p.log com.neophob.sematrix.cli.PixelControllerCli "$@"
+java $JAVA_OPT -classpath .:./lib/* -XX:ErrorFile=./log/hs_err_pid%p.log com.neophob.sematrix.cli.PixConDaemon "$@"
 
