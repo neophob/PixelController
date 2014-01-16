@@ -44,12 +44,12 @@ public interface RmiApi {
 
     /**
      * return the server ip this client use
-     * /
+     */
     String getClientTargetIp();
 
     /**
      * return the server port this client use
-     * /
+     */
     int getClientTargetPort();
 
     /**
