@@ -251,6 +251,12 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
         processMessage(command, oscIn.getBlob());
     }
 
+    /**
+     * reassemble object
+     * 
+     * @param command
+     * @param data
+     */
     private void processMessage(ValidCommand command, byte[] data) {
         try {
             switch (command) {

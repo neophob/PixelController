@@ -1057,13 +1057,6 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
             String oscStat = messages.getString("GeneratorGui.OSC_STATISTIC")
                     + pixConServer.getRecievedOscPackets() + "/" + recievedMB;
             oscStatistic.setText(oscStat);
-
-            /*
-             * if (pixConServer.isPassThroughModeEnabled()) {
-             * passThroughMode.setText
-             * (messages.getString("GeneratorGui.PASSTHROUGH_MODE")); } else {
-             * passThroughMode.setText(""); }
-             */
         }
 
         // update gui
