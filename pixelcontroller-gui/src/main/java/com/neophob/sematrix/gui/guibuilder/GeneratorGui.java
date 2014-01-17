@@ -176,7 +176,7 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
     private PixConServer pixConServer;
     private IResize resize;
     private int nrOfVisuals;
-    P5EventListener listener;
+    private P5EventListener listener;
 
     /**
      * Instantiates a new internal buffer.
@@ -1058,14 +1058,11 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                     + pixConServer.getRecievedOscPackets() + "/" + recievedMB;
             oscStatistic.setText(oscStat);
 
-            // TODO make notification of server
             /*
-             * Visual v = col.getVisual(col.getCurrentVisual()); if (v!=null) {
-             * if (v.getGenerator1().isPassThoughModeActive() ||
-             * v.getGenerator2().isPassThoughModeActive()) {
+             * if (pixConServer.isPassThroughModeEnabled()) {
              * passThroughMode.setText
              * (messages.getString("GeneratorGui.PASSTHROUGH_MODE")); } else {
-             * passThroughMode.setText(""); } }
+             * passThroughMode.setText(""); }
              */
         }
 
@@ -1459,6 +1456,16 @@ public class GeneratorGui extends PApplet implements GuiCallbackAction {
                     case CURRENT_OUTPUT:
                         int value = Integer.parseInt(s.getValue());
                         selectedOutputs.activate(value);
+                        break;
+
+                    case GET_PASSTHROUGH_MODE:
+                        boolean b = Boolean.parseBoolean(s.getValue());
+                        if (b) {
+                            passThroughMode.setText(messages
+                                    .getString("GeneratorGui.PASSTHROUGH_MODE"));
+                        } else {
+                            passThroughMode.setText("");
+                        }
                         break;
 
                     default:

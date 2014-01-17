@@ -661,6 +661,10 @@ public class VisualState extends Observable {
         this.brightness = brightness;
     }
 
+    public boolean isPassThroughModeEnabledForCurrentVisual() {
+        return getVisual(currentVisual).isPassThroughModeEnabledForCurrentVisual();
+    }
+
     private List<String> getSystemState() {
         List<String> ret = new ArrayList<String>();
 
@@ -742,7 +746,8 @@ public class VisualState extends Observable {
                 + ioMapping.get(currentOutput).getVisualId());
         ret.add(ValidCommand.CURRENT_OUTPUT + EMPTY_CHAR + currentOutput);
         ret.add(ValidCommand.FREEZE + EMPTY_CHAR + inPauseMode);
-
+        ret.add(ValidCommand.GET_PASSTHROUGH_MODE + EMPTY_CHAR
+                + v.isPassThroughModeEnabledForCurrentVisual());
         ret.addAll(getSystemState());
 
         return ret;

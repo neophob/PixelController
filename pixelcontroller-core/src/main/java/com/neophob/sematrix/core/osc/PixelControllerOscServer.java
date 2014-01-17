@@ -113,15 +113,21 @@ public class PixelControllerOscServer extends OscMessageHandler implements Packe
             return;
         }
 
+        // do not display debug messages if we recieve a OSC Generator package
+        boolean showDebugMessage = false;
+
         // ignore nr of parameter for osc generator
         if (command != ValidCommand.OSC_GENERATOR1 && command != ValidCommand.OSC_GENERATOR2) {
             for (int i = 0; i < oscIn.getArgLen(); i++) {
                 msg[1 + i] = oscIn.getArgs()[i];
             }
+            showDebugMessage = true;
         }
 
         if (command.getGroup() != CommandGroup.INTERNAL) {
-            LOG.log(Level.INFO, "Recieved OSC message: {0}", msg);
+            if (showDebugMessage) {
+                LOG.log(Level.INFO, "Recieved OSC message: {0}", msg);
+            }
             MessageProcessor.INSTANCE.processMsg(msg, true, oscIn.getBlob());
         } else {
             LOG.log(Level.FINE, "Recieved internal OSC message: {0}", msg);

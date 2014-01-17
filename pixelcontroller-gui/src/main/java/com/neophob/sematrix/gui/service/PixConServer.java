@@ -69,4 +69,5 @@ public interface PixConServer {
     void observeVisualState(Observer o);
 
     float getSetupSteps();
+
 }

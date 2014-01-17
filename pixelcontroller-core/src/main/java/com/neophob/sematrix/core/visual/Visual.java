@@ -402,4 +402,8 @@ public class Visual {
         return colorSet;
     }
 
+    public boolean isPassThroughModeEnabledForCurrentVisual() {
+        return generator1.isPassThoughModeActive() || generator2.isPassThoughModeActive();
+    }
+
 }

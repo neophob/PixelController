@@ -178,6 +178,8 @@ public enum ValidCommand {
 
     UNREGISTER_VISUALOBSERVER(CommandGroup.INTERNAL, 0, "unregister a remote visual observer"),
 
+    GET_PASSTHROUGH_MODE(CommandGroup.INTERNAL, 0, "Return the pass through mode", true),
+
     ;
 
     /** The nr of params. */
