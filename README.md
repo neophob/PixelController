@@ -229,7 +229,9 @@ As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's
    
 Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
 
-The RPi has no audio input onboard, you must connect an USB audio card/USB microphone or a Webcam with a microphone. Use `sudo alsamixer --card 1` to verify the input volume is set correct. Use `sudo alsactl store` to save your current settings.
+The RPi has no **audio input** onboard, you must connect an USB audio card/USB microphone or a Webcam with a microphone. Use `sudo alsamixer --card 1` to verify the input volume is set correct. Use `sudo alsactl store` to save your current settings.
+
+Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upgrade` and `sudo rpi-update`. If you want to enable the **SPI device**, make sure it's not blacklkisted, see `/etc/modprobe.d/raspi-blacklist.conf` and remove the `spi-bcm2708` entry.
 
 ### Non-rectangular LED matrix
 
