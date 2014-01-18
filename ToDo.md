@@ -17,6 +17,7 @@
 ## Features
 
 * Support Artnet remote, should be independent from the artnet output, should work more like the osc input.
+* Processing SDK
 * current RMI API use targetip/port - but should use sockets. current limit: can not use same socket for client/server
 * Remove Adler32 hash code, replace with something faster (xxhash, murmur2)
 * Support multiple panels for tpm2serial output
@@ -52,7 +53,7 @@
 ## Design
 * Create an API for the core (http://lcsd05.cs.tamu.edu/slides/keynote.pdf, http://theamiableapi.com/2012/01/16/java-api-design-checklist/)
 * Switch to logback
-* Use google-guice as DI containe
+* Use google-guice as DI container
 
 ## Bugfixes
 * Do not freeze application if output fails (disconnect serial controller)
