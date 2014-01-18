@@ -7,8 +7,11 @@ final int MAX_PARTICLE = 10;
 final int PARTICLE_SIZE_Y = 4*2;
 final int PARTICLE_SIZE_X = 2*2;
 
+final int XRES = 64;
+final int YRES = 64;
+
 void setup() {
-  size(64,64);
+  size(XRES, YRES);
   noSmooth();
   ps = new ParticleSystemTwo();
   initOsc();

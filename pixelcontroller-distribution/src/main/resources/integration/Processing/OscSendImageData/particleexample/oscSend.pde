@@ -2,10 +2,10 @@ import oscP5.*;
 import netP5.*;
 
 OscP5 oscP5;
-NetAddress myRemoteLocation = new NetAddress("127.0.0.1", 9876);
+NetAddress myRemoteLocation = new NetAddress("pixelcontroller.local", 9876);
 
 OscMessage myMessage = new OscMessage("OSC_GENERATOR1");
-byte[] bfr = new byte[4096];
+byte[] bfr = new byte[XRES*YRES];
 
 boolean sendData = true;
 

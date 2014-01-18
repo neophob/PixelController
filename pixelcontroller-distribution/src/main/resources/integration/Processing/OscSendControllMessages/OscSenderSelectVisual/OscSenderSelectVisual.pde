@@ -11,7 +11,7 @@ void setup() {
   oscP5 = new OscP5(this, 12000);
 
   //CHANGE to your ip
-  myRemoteLocation = new NetAddress("127.0.0.1", 9876);
+  myRemoteLocation = new NetAddress("pixelcontroller.local", 9876);
 
   long now=System.currentTimeMillis();  
 

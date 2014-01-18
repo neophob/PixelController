@@ -5,7 +5,7 @@ import netP5.*;
 int BPP = 1;
 
 OscP5 oscP5 = new OscP5(this, 12000);
-NetAddress myRemoteLocation = new NetAddress("127.0.0.1", 9876);
+NetAddress myRemoteLocation = new NetAddress("pixelcontroller.local", 9876);
 
 OscMessage myMessage = new OscMessage("OSC_GENERATOR1");
 byte[] bfr = new byte[DATA_SIZE*BPP];

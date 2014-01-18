@@ -10,6 +10,8 @@
 //map visual 2 to output 2
 
 int STEP = 15;
+final int XRES = 64;
+final int YRES = 64;
 
 int activePanel=0;
 int[] r,g,b;
@@ -18,8 +20,7 @@ int[][] bfr = new int[2][4096];
 void setup()
 {
   frameRate(25);
-  //must be 64 x 64!
-  size(64, 64);
+  size(XRES, YRES);
   smooth();
   noStroke();
   
@@ -36,7 +37,7 @@ void setup()
  
 void draw()
 {
-  background(0);  
+  background(color(r[activePanel], g[activePanel], b[activePanel]));  
   sendOsc();
 }
  

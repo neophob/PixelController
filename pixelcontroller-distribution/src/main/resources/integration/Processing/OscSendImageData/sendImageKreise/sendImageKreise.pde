@@ -3,8 +3,8 @@
 float i;
 
 //define the size of your matrix here. the maximal size is 16x16!
-int PIXELS_X = 64;
-int PIXELS_Y = 64;
+final int PIXELS_X = 64;
+final int PIXELS_Y = 64;
 int DATA_SIZE = PIXELS_X * PIXELS_Y;
 
 //the maximal UDP packet size
