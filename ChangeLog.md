@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    446 files changed, 28343 insertions(+), 199349 deletions(-)
+    522 files changed, 90317 insertions(+), 146697 deletions(-)
     
 * Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
 * Add RaspberryPi WS2801 output driver

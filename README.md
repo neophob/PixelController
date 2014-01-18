@@ -231,7 +231,12 @@ Make sure you configured your LED Matrix (See above), to control PixelController
 
 The RPi has no **audio input** onboard, you must connect an USB audio card/USB microphone or a Webcam with a microphone. Use `sudo alsamixer --card 1` to verify the input volume is set correct. Use `sudo alsactl store` to save your current settings.
 
-Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upgrade` and `sudo rpi-update`. If you want to enable the **SPI device**, make sure it's not blacklisted, see `/etc/modprobe.d/raspi-blacklist.conf` and remove the `spi-bcm2708` entry.
+Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upgrade` and `sudo rpi-update`. If you want to enable the **SPI device**, make sure it's not blacklisted, see `/etc/modprobe.d/raspi-blacklist.conf` and remove the `spi-bcm2708` entry. After a reboot the SPI device should be visible:
+
+    pi@raspberrypi ~ $ ls -al /dev/spi*
+    crw------- 1 root root 153, 0 Jan  1  1970 /dev/spidev0.0
+    crw------- 1 root root 153, 1 Jan  1  1970 /dev/spidev0.1
+
 
 ### Non-rectangular LED matrix
 
