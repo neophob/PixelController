@@ -10,12 +10,13 @@
 * Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
 * Add Noise generator
 * Add Gamma 3.0 color correction
-* Add TouchOsc layout
+* Add TouchOsc layout for phone and tablet
 * Add simple performance test (`PixelController.sh -perf` or `PixelControllerRPi.sh -perf`)
 * Add Random Mode with selectable time-life (option `randommode.lifetime.in.s`) (Issue #44)
 * Add more Blinkenlights movie files
 * Add new effect Posterize
 * Add new effect Darken
+* Add PixelInvaders firmware for Arduino UNO, thanks Yves Alter
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
