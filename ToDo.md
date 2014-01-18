@@ -4,6 +4,7 @@
 * Update pixconcli
 * remote setup, do not display duplicate entries but display whats missing.
 * add document about basic perf test (-perf)
+* finish / remove teensy3 firmware
 
 ## Version 2.2
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
