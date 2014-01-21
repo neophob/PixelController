@@ -17,6 +17,7 @@
 * Add new effect Posterize
 * Add new effect Darken
 * Add PixelInvaders firmware for Arduino UNO, thanks Yves Alter
+* Add new output rotate option: FLIPPEDY
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
@@ -37,6 +38,7 @@
 * Fix speedup Blinkenlight parser, some frames were displayed too long
 * Fix Mutliply and Negative Multiply mixer, output didn't respect ColorSets correctly
 * Fix Subsat mixer - was completly broken
+* Fix output layout for all *FLIPPEDY entries - all FLIPPEDY action were broken.
 
 
 ## Changelog v1.5.1 to v2.0.0 (2. December 2013)  

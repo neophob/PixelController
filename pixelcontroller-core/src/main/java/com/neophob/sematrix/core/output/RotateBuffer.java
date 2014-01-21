@@ -76,12 +76,12 @@ public final class RotateBuffer {
      */
     private static int[] flipY(int[] buffer, int deviceXSize, int deviceYSize) {
         int[] ret = new int[deviceXSize * deviceYSize];
+        int ofs = 0;
         for (int y = 0; y < deviceYSize; y++) {
-            int ofsSrc = y * deviceXSize;
-            int ofsDst = (deviceYSize - 1 - y) * deviceXSize;
             for (int x = 0; x < deviceXSize; x++) {
-                ret[x + ofsDst] = buffer[x + ofsSrc];
+                ret[ofs + x] = buffer[ofs + deviceXSize - x - 1];
             }
+            ofs += deviceXSize;
         }
         return ret;
     }
