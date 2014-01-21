@@ -1,0 +1,92 @@
+#!/bin/bash
+#
+# Startup Script based on http://monocaffe.blogspot.ch/2011/04/java-daemon.html
+### BEGIN INIT INFO
+# Provides:          pixelcontroller
+# Required-Start:    
+# Required-Stop:     
+# Should-Start:      
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Regular background program processing daemon
+# Description:       run pixelcontroller daemon 
+### END INIT INFO
+
+JAVA_HOME="/usr/"
+application_dir="/home/pi/pixcon/"
+logfile="${application_dir}log/daemon.log"
+runnable="com.neophob.sematrix.cli.PixConDaemon"
+pid=""
+
+do_start () {
+    if [ ! -d "${JAVA_HOME}" ] ; then
+        echo "${JAVA_HOME} Directory doesn't exist."
+        exit 1
+    else
+        if [ ! -x "${JAVA_HOME}/bin/java" ] ; then
+            echo "${JAVA_HOME}/bin/java binary error: not found or not executable"
+            exit 1
+        fi
+    fi
+
+    /usr/bin/logger start pixelcontroller daemon
+
+    local path="${application_dir}lib/*"
+
+    # Launch the process
+    local exit_code=10
+    while [ $exit_code -eq 10 ]; do
+        nohup "${application_dir}pixConServer/PixelControllerRPi.sh" >> ${logfile} 2>&1 &        
+        exit_code=$?
+    done
+}
+
+do_stop () {
+    getPID 
+    kill ${pid} > /dev/null 2>&1 && echo "Stoping process ${pid}"
+}
+
+do_status () {
+    getPID 
+    kill -0 ${pid} > /dev/null 2>&1 && echo "Process is running"
+}
+
+do_restart () {
+    getPID 
+    kill -10 ${pid}  > /dev/null 2>&1 && echo "Restarting"
+}
+
+getPID () {
+    # not the best, but works on most linux
+    pid=$( ps -ef | grep  ${runnable} | grep -v grep | awk '{ print $2 }' )
+}
+case ${1} in
+    start)
+        do_start
+    ;;
+
+    stop)
+        do_stop
+    ;;
+
+    status)
+        do_status
+    ;;
+
+    nohup)
+        # I really like this hack 
+        nohup $0 start > /dev/null 2>&1 &
+    ;;
+    
+    restart)
+        do_restart
+    ;;
+
+    *)
+        echo "Usage: $0 start|nohup|restart|stop|status"
+        exit 1
+    ;;
+esac
+
+exit 0
