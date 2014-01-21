@@ -239,6 +239,7 @@ Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upg
     crw------- 1 root root 153, 0 Jan  1  1970 /dev/spidev0.0
     crw------- 1 root root 153, 1 Jan  1  1970 /dev/spidev0.1
 
+See `integration/RPi-Startscript` for an example startscript. Make sure the `application_dir` is correct (default value is `/home/pi/pixcon`) and copy it to `/etc/init.d/`.
 
 ### Non-rectangular LED matrix
 

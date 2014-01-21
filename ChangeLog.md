@@ -16,12 +16,12 @@
 * Add more Blinkenlights movie files
 * Add new effect Posterize
 * Add new effect Darken
-* Add PixelInvaders firmware for Arduino UNO, thanks Yves Alter
+* Add PixelInvaders firmware for Arduino UNO, thanks Yves Alter. This should fix all UNO related issues.
 * Add new output rotate option: FLIPPEDY
 * Remove support for stealth panels
 * Fix decouple fps setting of PixelController from the GUI update speed (Issue #61)
 * Fix replace Pixel and Quality image resize code with custom implementations (nearest neighbour and bilinear), major performance improvement
-* Fix add missing float parameter to the OSC server
+* Fix add missing float parameter to the OSC server, only int values were parsed
 * Fix the framerate configuration can be a float number (ex. fps=0.1) if you need a really slow update rate
 * Fix refresh GUI settings when random mode kicks in
 * Fix generator speed changes the target fps (0..200%), much smoother (Issue #46, #52 and #59)
