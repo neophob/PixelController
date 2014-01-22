@@ -36,6 +36,9 @@ Neophob_LPD6803::Neophob_LPD6803(uint16_t n) {
 }
 
 //just feed out the clock line to drive the pwm cycle
+//hint: it works with only on clock pulse (even faster), however
+//      there are visible patterns if you're using a long chain of modules.
+//      those patters disapper if a second pulse is sent
 static void isr2() {
   SPI_WAIT_TILL_TRANSMITED;  
   SPI_LOAD_BYTE(0);
