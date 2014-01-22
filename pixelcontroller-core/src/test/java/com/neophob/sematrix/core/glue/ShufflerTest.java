@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
-import com.neophob.sematrix.core.listener.PresetServiceDummy;
+import com.neophob.sematrix.core.preset.PresetService;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
@@ -29,7 +31,8 @@ public class ShufflerTest {
         colorSets.add(new ColorSet("Blah", new int[] { 1, 2, 3 }));
         VisualState vs = VisualState.getInstance();
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(new Properties());
-        vs.init(new FileUtilsJunit(), ph, sound, colorSets, new PresetServiceDummy());
+        PresetService presetService = new PresetServiceImpl(new ArrayList<PresetSettings>());
+        vs.init(new FileUtilsJunit(), ph, sound, colorSets, presetService);
         PixelControllerStatusMBean pixConStat = new PixelControllerStatus(20);
         vs.updateSystem(pixConStat);
 

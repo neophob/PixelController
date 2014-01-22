@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * 
@@ -104,24 +103,14 @@ public class PresetServiceImpl implements PresetService {
     }
 
     @Override
-    public void loadActivePreset(VisualState visualState) {
-        visualState.setLoadingPresent(true);
-        // save current selections
-        int currentVisual = visualState.getCurrentVisual();
-        int currentOutput = visualState.getCurrentOutput();
-
+    public void loadActivePreset() {
         List<String> preset = presets.get(selectedPreset).getPreset();
         if (preset != null) {
             preset = removeObsoleteCommands(new ArrayList<String>(preset));
 
             // load preset
             this.setCurrentStatus(preset);
-
-            // Restore current Selection
-            visualState.setCurrentVisual(currentVisual);
-            visualState.setCurrentOutput(currentOutput);
         }
-        visualState.setLoadingPresent(false);
     }
 
     /**

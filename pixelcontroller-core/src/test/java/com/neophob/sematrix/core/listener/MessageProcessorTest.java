@@ -91,8 +91,9 @@ public class MessageProcessorTest {
         colorsets.add(new ColorSet("aa", new int[] { 1, 100, 1000 }));
         colorsets.add(new ColorSet("bb", new int[] { 999, 555, 0xffffff }));
 
+        PresetService presetService = new PresetServiceImpl(new ArrayList<PresetSettings>());
         VisualState.getInstance().init(new FileUtilsLocalImpl(), ph, new SoundDummy(), colorsets,
-                new PresetServiceDummy());
+                presetService);
 
         String[] str = null;
         MessageProcessor.INSTANCE.processMsg(str, false, null);

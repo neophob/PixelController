@@ -11,7 +11,9 @@ import com.neophob.sematrix.core.glue.FileUtilsJunit;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.listener.MessageProcessor;
-import com.neophob.sematrix.core.listener.PresetServiceDummy;
+import com.neophob.sematrix.core.preset.PresetService;
+import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
@@ -30,7 +32,8 @@ public class OutputWiringTest {
         VisualState vs = VisualState.getInstance();
         List<IColorSet> cs = new ArrayList<IColorSet>();
         cs.add(new JunitColorSet());
-        vs.init(new FileUtilsJunit(), ph, new SoundDummy(), cs, new PresetServiceDummy());
+        PresetService presetService = new PresetServiceImpl(new ArrayList<PresetSettings>());
+        vs.init(new FileUtilsJunit(), ph, new SoundDummy(), cs, presetService);
 
         // load image HALF.JPG
 

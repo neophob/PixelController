@@ -247,7 +247,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         }
         LOG.log(Level.INFO, "Load preset " + presetNr);
         presetService.setSelectedPreset(presetNr);
-        presetService.loadActivePreset(visualState);
+        presetService.loadActivePreset();
         visualState.notifyGuiUpdate();
     }
 

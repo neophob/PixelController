@@ -354,8 +354,7 @@ public enum MessageProcessor {
 
                 case LOAD_PRESET:
                     try {
-                        presetService.loadActivePreset(col);
-                        col.notifyGuiUpdate();
+                        loadActivePreset(col);
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }
@@ -507,7 +506,9 @@ public enum MessageProcessor {
                         TransitionManager transition = new TransitionManager(col);
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         presetService.setSelectedPreset(currentPreset);
-                        presetService.loadActivePreset(col);
+
+                        // presetService.loadActivePreset(col);
+                        loadActivePreset(col);
                         transition.startCrossfader();
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
@@ -731,4 +732,18 @@ public enum MessageProcessor {
 
     }
 
+    private void loadActivePreset(VisualState visualState) {
+        visualState.setLoadingPresent(true);
+        // save current selections
+        int currentVisual = visualState.getCurrentVisual();
+        int currentOutput = visualState.getCurrentOutput();
+
+        presetService.loadActivePreset();
+
+        // Restore current Selection
+        visualState.setCurrentVisual(currentVisual);
+        visualState.setCurrentOutput(currentOutput);
+        visualState.setLoadingPresent(false);
+        visualState.notifyGuiUpdate();
+    }
 }
