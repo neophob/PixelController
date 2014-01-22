@@ -12,8 +12,10 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.output.JunitColorSet;
+import com.neophob.sematrix.core.preset.PresetFactory;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.SoundDummy;
@@ -27,7 +29,8 @@ public class PresetTest {
     @Test
     public void loadAllPresetTest() {
         FileUtils fu = new FileUtilsJunit();
-        PresetService ps = new PresetServiceImpl(fu.getDataDir());
+        List<PresetSettings> presets = PresetFactory.loadPresetsFile(fu.getDataDir());
+        PresetService ps = new PresetServiceImpl(presets);
         Assert.assertTrue(ps.getPresets().size() > 0);
 
         List<IColorSet> col = new ArrayList<IColorSet>();
@@ -35,7 +38,7 @@ public class PresetTest {
         VisualState.getInstance().init(fu, new ApplicationConfigurationHelper(new Properties()),
                 new SoundDummy(), col, ps);
 
-        MessageProcessor.INSTANCE.init(ps);
+        MessageProcessor.INSTANCE.init(ps, fu);
         for (int i = 0; i < ps.getPresets().size(); i++) {
             LOG.info("Load Preset " + i);
             ps.setSelectedPreset(i);

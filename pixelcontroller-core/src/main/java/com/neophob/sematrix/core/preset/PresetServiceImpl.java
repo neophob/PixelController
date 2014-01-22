@@ -1,19 +1,13 @@
 package com.neophob.sematrix.core.preset;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.visual.VisualState;
 
 /**
@@ -25,10 +19,6 @@ public class PresetServiceImpl implements PresetService {
 
     private static final Logger LOG = Logger.getLogger(PresetServiceImpl.class.getName());
 
-    private static final String PRESETS_FILENAME = "presets.properties";
-
-    private String filename;
-
     private List<PresetSettings> presets;
 
     private int selectedPreset;
@@ -37,10 +27,9 @@ public class PresetServiceImpl implements PresetService {
      * 
      * @param fileUtils
      */
-    public PresetServiceImpl(String filePath) {
-        this.filename = filePath + File.separator + PRESETS_FILENAME;
+    public PresetServiceImpl(List<PresetSettings> presets) {
         selectedPreset = 0;
-        loadPresetsFile();
+        this.presets = presets;
     }
 
     /*
@@ -78,86 +67,6 @@ public class PresetServiceImpl implements PresetService {
         return presets;
     }
 
-    /**
-     * Load presents.
-     */
-    private List<PresetSettings> loadPresetsFile() {
-        Properties props = new Properties();
-
-        presets = new ArrayList<PresetSettings>(NR_OF_PRESET_SLOTS);
-        for (int i = 0; i < NR_OF_PRESET_SLOTS; i++) {
-            presets.add(new PresetSettings());
-        }
-
-        InputStream input = null;
-        try {
-            long t1 = System.currentTimeMillis();
-            input = new BufferedInputStream(new FileInputStream(filename));
-            props.load(input);
-            String s;
-            int count = 0;
-            for (int i = 0; i < NR_OF_PRESET_SLOTS; i++) {
-                s = props.getProperty("" + i);
-                if (StringUtils.isNotBlank(s)) {
-                    presets.get(i).setPreset(s.split(";"));
-                    count++;
-                }
-            }
-            long t2 = System.currentTimeMillis() - t1;
-            LOG.log(Level.INFO, "Loaded {0} presets from file {1} in {2}ms", new Object[] { count,
-                    PRESETS_FILENAME, t2 });
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to load {0}, Error: {1}", new Object[] {
-                    PRESETS_FILENAME, e });
-        } finally {
-            try {
-                if (input != null) {
-                    input.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close input stream", e);
-            }
-        }
-
-        return presets;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.neophob.sematrix.core.preset.PresetService#savePresents()
-     */
-    @Override
-    public void writePresetFile() {
-        long t1 = System.currentTimeMillis();
-        Properties props = new Properties();
-        int idx = 0;
-        for (PresetSettings p : presets) {
-            props.setProperty("" + idx, p.getSettingsAsString());
-            idx++;
-        }
-
-        OutputStream output = null;
-        try {
-            output = new FileOutputStream(filename);
-            props.store(output, "Visual Daemon presets file");
-            LOG.log(Level.INFO, "Presets saved as {0}, time needed: {1}ms", new Object[] {
-                    PRESETS_FILENAME, (System.currentTimeMillis() - t1) });
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] {
-                    PRESETS_FILENAME, e });
-        } finally {
-            try {
-                if (output != null) {
-                    output.close();
-                }
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close output stream", e);
-            }
-        }
-    }
-
-    @Override
     public PresetSettings getSelectedPresetSettings() {
         return presets.get(selectedPreset);
     }
@@ -206,13 +115,34 @@ public class PresetServiceImpl implements PresetService {
             preset = removeObsoleteCommands(new ArrayList<String>(preset));
 
             // load preset
-            visualState.setCurrentStatus(preset);
+            this.setCurrentStatus(preset);
 
             // Restore current Selection
             visualState.setCurrentVisual(currentVisual);
             visualState.setCurrentOutput(currentOutput);
         }
         visualState.setLoadingPresent(false);
+    }
+
+    /**
+     * load a saved preset.
+     * 
+     * @param preset
+     *            the new current status
+     */
+    private void setCurrentStatus(List<String> preset) {
+        LOG.log(Level.FINEST, "--------------");
+        long start = System.currentTimeMillis();
+        // setLoadingPresent(true);
+        for (String s : preset) {
+            s = StringUtils.trim(s);
+            s = StringUtils.removeEnd(s, ";");
+            LOG.log(Level.FINEST, "LOAD PRESET: " + s);
+            MessageProcessor.INSTANCE.processMsg(StringUtils.split(s, ' '), false, null);
+        }
+        // setLoadingPresent(false);
+        long needed = System.currentTimeMillis() - start;
+        LOG.log(Level.INFO, "Preset loaded in " + needed + "ms");
     }
 
     @Override

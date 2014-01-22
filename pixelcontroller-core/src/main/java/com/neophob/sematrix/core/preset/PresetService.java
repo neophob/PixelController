@@ -31,11 +31,6 @@ public interface PresetService {
     List<PresetSettings> getPresets();
 
     /**
-     * Save presents.
-     */
-    void writePresetFile();
-
-    /**
      * load a preset
      * 
      * @param nr

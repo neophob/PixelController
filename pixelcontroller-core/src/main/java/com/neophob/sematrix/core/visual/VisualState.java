@@ -25,14 +25,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.PixelControllerShufflerSelect;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
-import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommand;
@@ -346,27 +343,6 @@ public class VisualState extends Observable {
 
     public void setRandomPresetMode(boolean randomPresetMode) {
         this.randomPresetMode = randomPresetMode;
-    }
-
-    /**
-     * load a saved preset.
-     * 
-     * @param preset
-     *            the new current status
-     */
-    public void setCurrentStatus(List<String> preset) {
-        LOG.log(Level.FINEST, "--------------");
-        long start = System.currentTimeMillis();
-        // setLoadingPresent(true);
-        for (String s : preset) {
-            s = StringUtils.trim(s);
-            s = StringUtils.removeEnd(s, ";");
-            LOG.log(Level.FINEST, "LOAD PRESET: " + s);
-            MessageProcessor.INSTANCE.processMsg(StringUtils.split(s, ' '), false, null);
-        }
-        // setLoadingPresent(false);
-        long needed = System.currentTimeMillis() - start;
-        LOG.log(Level.INFO, "Preset loaded in " + needed + "ms");
     }
 
     /*

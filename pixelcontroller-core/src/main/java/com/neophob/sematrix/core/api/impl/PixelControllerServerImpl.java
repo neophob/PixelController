@@ -16,8 +16,10 @@ import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.output.PixelControllerOutput;
+import com.neophob.sematrix.core.preset.PresetFactory;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
@@ -99,8 +101,10 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         LOG.log(Level.INFO, "Initialize System");
         this.pixConStat = new PixelControllerStatus((int) applicationConfig.parseFps());
         this.initSound();
-        this.presetService = new PresetServiceImpl(fileUtils.getDataDir());
-        MessageProcessor.INSTANCE.init(presetService);
+
+        List<PresetSettings> presetSettings = PresetFactory.loadPresetsFile(fileUtils.getDataDir());
+        this.presetService = new PresetServiceImpl(presetSettings);
+        MessageProcessor.INSTANCE.init(presetService, fileUtils);
 
         this.visualState.init(fileUtils, applicationConfig, sound, colorSets, presetService);
         framerate = new Framerate(applicationConfig.parseFps());

@@ -18,12 +18,16 @@
  */
 package com.neophob.sematrix.core.listener;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.helper.ScreenshotHelper;
+import com.neophob.sematrix.core.preset.PresetFactory;
 import com.neophob.sematrix.core.preset.PresetService;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -57,6 +61,7 @@ public enum MessageProcessor {
     private static final String ON = "ON";
 
     private PresetService presetService;
+    private FileUtils fileUtils;
 
     /**
      * Instantiates a new message processor.
@@ -69,8 +74,9 @@ public enum MessageProcessor {
      * 
      * @param presetService
      */
-    public void init(PresetService presetService) {
+    public void init(PresetService presetService, FileUtils fileUtils) {
         this.presetService = presetService;
+        this.fileUtils = fileUtils;
     }
 
     private int parseValue(String s) {
@@ -339,7 +345,8 @@ public enum MessageProcessor {
                 case SAVE_PRESET:
                     try {
                         presetService.saveActivePreset(msg[1], col.getCurrentStatus());
-                        presetService.writePresetFile();
+                        List<PresetSettings> presets = presetService.getPresets();
+                        PresetFactory.writePresetFile(presets, fileUtils.getDataDir());
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
                     }

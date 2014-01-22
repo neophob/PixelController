@@ -33,12 +33,6 @@ public class PresetServiceDummy implements PresetService {
     }
 
     @Override
-    public void writePresetFile() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void loadActivePreset(VisualState visualState) {
         // TODO Auto-generated method stub
 

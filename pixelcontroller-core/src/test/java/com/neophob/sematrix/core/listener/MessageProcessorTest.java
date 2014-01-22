@@ -32,6 +32,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
+import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -51,7 +52,7 @@ public class MessageProcessorTest {
     @Test
     public void loadPreset() throws Exception {
         FileUtils fileUtils = new FileUtilsLocalImpl();
-        PresetService presetService = new PresetServiceImpl(fileUtils.getDataDir());
+        PresetService presetService = new PresetServiceImpl(new ArrayList<PresetSettings>());
         List<IColorSet> colorsets = new ArrayList<IColorSet>();
         colorsets.add(new ColorSet("aa", new int[] { 1, 100, 1000 }));
         colorsets.add(new ColorSet("bb", new int[] { 999, 555, 0xffffff }));
@@ -60,7 +61,7 @@ public class MessageProcessorTest {
                 new ApplicationConfigurationHelper(new Properties()), new SoundDummy(), colorsets,
                 presetService);
 
-        MessageProcessor.INSTANCE.init(presetService);
+        MessageProcessor.INSTANCE.init(presetService, fileUtils);
         String[] str = new String[2];
         str[0] = "LOAD_PRESET";
         MessageProcessor.INSTANCE.processMsg(str, false, null);
