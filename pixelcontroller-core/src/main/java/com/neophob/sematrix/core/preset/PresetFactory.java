@@ -90,7 +90,7 @@ public final class PresetFactory {
             output = new FileOutputStream(filename);
             props.store(output, "Visual Daemon presets file");
             LOG.log(Level.INFO, "Presets saved as {0}, time needed: {1}ms", new Object[] {
-                    PRESETS_FILENAME, (System.currentTimeMillis() - t1) });
+                    PRESETS_FILENAME, System.currentTimeMillis() - t1 });
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to save {0}, Error: {1}", new Object[] {
                     PRESETS_FILENAME, e });
