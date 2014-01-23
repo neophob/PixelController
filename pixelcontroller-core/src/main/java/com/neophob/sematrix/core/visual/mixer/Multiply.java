@@ -77,8 +77,8 @@ public class Multiply extends Mixer {
     }
 
     public static int mul(int u, int v) {
-        int a = (norm(u) * norm(v) / 128);
-        int b = (normDiff(u) * normDiff(v) / 128);
+        int a = norm(u) * norm(v) / 128;
+        int b = normDiff(u) * normDiff(v) / 128;
         if (b > 127) {
             return 255 - a;
         }
