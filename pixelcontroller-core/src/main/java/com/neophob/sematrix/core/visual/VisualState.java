@@ -248,16 +248,11 @@ public class VisualState extends Observable {
                 // fading is finished, cleanup
                 fader.cleanUp();
 
-                if (fader.getScreenOutput() >= 0) {
-                    setOutputVisual(fader.getScreenOutput(), fader.getNewVisual());
-                    LOG.log(Level.INFO,
-                            "Cleanup {0}, new visual: {1}, output screen: {2}",
-                            new Object[] { fader.getFaderName(), fader.getNewVisual(),
-                                    fader.getScreenOutput() });
-                } else {
-                    LOG.log(Level.INFO, "Cleanup preset {0}, new visual: {1}",
-                            new Object[] { fader.getFaderName(), fader.getNewVisual() });
-                }
+                setOutputVisual(fader.getScreenOutput(), fader.getNewVisual());
+                LOG.log(Level.INFO,
+                        "Cleanup fader {0}, new visual: {1}, output screen: {2}",
+                        new Object[] { fader.getFaderName(), fader.getNewVisual(),
+                                fader.getScreenOutput() });
             }
         }
         pixConStat.trackTime(TimeMeasureItemGlobal.FADER, System.currentTimeMillis() - l);
