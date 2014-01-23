@@ -18,7 +18,9 @@
  */
 package com.neophob.sematrix.core.fader;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -31,42 +33,41 @@ public class SwitchTest {
 
     @Test
     public void presetFadeTest() throws Exception {
-    	final int fps = 50;
-    	
-    	MatrixData matrix = new MatrixData(8, 8);
-    	IFader switchFader = new Switch(matrix, fps);
-    	assertEquals(Fader.FaderName.SWITCH.getId(), switchFader.getId());
+        final int fps = 50;
 
-    	//special case, the switch fader is always done!
-    	assertTrue(switchFader.isDone());
-    	assertFalse(switchFader.isStarted());
-    	
-    	switchFader.startFade(99, new int[77]);
-    	assertTrue(switchFader.isStarted());
-    	
-    	switchFader.getBuffer(new int[55], new int[5]);
-    	switchFader.cleanUp();
+        MatrixData matrix = new MatrixData(8, 8);
+        IFader switchFader = new Switch(matrix, fps);
+        assertEquals(Fader.FaderName.SWITCH.getId(), switchFader.getId());
+
+        // special case, the switch fader is always done!
+        assertTrue(switchFader.isDone());
+        assertFalse(switchFader.isStarted());
+
+        switchFader.startFade(99, 12, new int[77]);
+        assertTrue(switchFader.isStarted());
+
+        switchFader.getBuffer(new int[55], new int[5]);
+        switchFader.cleanUp();
     }
 
-    
     @Test
     public void visualFadeTest() throws Exception {
-    	final int fps = 5000;
-    	
-    	MatrixData matrix = new MatrixData(8, 8);
-    	IFader switchFader = new Switch(matrix, fps);
-    	assertEquals(Fader.FaderName.SWITCH.getId(), switchFader.getId());
+        final int fps = 5000;
 
-    	//special case, the switch fader is always done!
-    	assertTrue(switchFader.isDone());
-    	assertFalse(switchFader.isStarted());
-    	
-    	switchFader.startFade(99, 1);
-    	assertTrue(switchFader.isStarted());
-    	
-    	switchFader.getBuffer(new int[55], new int[5]);
-    	switchFader.getBuffer(new int[55], new int[5]);
-    	switchFader.cleanUp();
+        MatrixData matrix = new MatrixData(8, 8);
+        IFader switchFader = new Switch(matrix, fps);
+        assertEquals(Fader.FaderName.SWITCH.getId(), switchFader.getId());
+
+        // special case, the switch fader is always done!
+        assertTrue(switchFader.isDone());
+        assertFalse(switchFader.isStarted());
+
+        switchFader.startFade(99, 1);
+        assertTrue(switchFader.isStarted());
+
+        switchFader.getBuffer(new int[55], new int[5]);
+        switchFader.getBuffer(new int[55], new int[5]);
+        switchFader.cleanUp();
     }
-    
+
 }

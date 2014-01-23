@@ -33,39 +33,39 @@ public class CrossfaderTest {
 
     @Test
     public void presetFadeTest() throws Exception {
-    	final int fps = 50;
-    	    	
-    	MatrixData matrix = new MatrixData(8, 8);
-    	IFader switchFader = new Crossfader(matrix, fps);
-    	assertEquals(Fader.FaderName.CROSSFADE.getId(), switchFader.getId());
+        final int fps = 50;
 
-    	assertFalse(switchFader.isDone());
-    	assertFalse(switchFader.isStarted());
-    	
-    	switchFader.startFade(99, new int[55]);
-    	assertTrue(switchFader.isStarted());
-    	
-    	switchFader.getBuffer(new int[55], new int[55]);
-    	switchFader.cleanUp();
+        MatrixData matrix = new MatrixData(8, 8);
+        IFader switchFader = new Crossfader(matrix, fps);
+        assertEquals(Fader.FaderName.CROSSFADE.getId(), switchFader.getId());
+
+        assertFalse(switchFader.isDone());
+        assertFalse(switchFader.isStarted());
+
+        switchFader.startFade(99, 12, new int[55]);
+        assertTrue(switchFader.isStarted());
+
+        switchFader.getBuffer(new int[55], new int[55]);
+        switchFader.cleanUp();
     }
-    
+
     @Test
     public void visualFadeTest() throws Exception {
-    	final int fps = 50;
-    	    	
-    	MatrixData matrix = new MatrixData(8, 8);
-    	IFader switchFader = new Crossfader(matrix, 20, fps);
-    	assertEquals(Fader.FaderName.CROSSFADE.getId(), switchFader.getId());
+        final int fps = 50;
 
-    	assertFalse(switchFader.isDone());
-    	assertFalse(switchFader.isStarted());
-    	
-    	switchFader.startFade(99, 1);
-    	assertTrue(switchFader.isStarted());
-    	
-    	switchFader.getBuffer(new int[55], new int[55]);
-    	switchFader.getBuffer(new int[55], new int[55]);
-    	assertTrue(switchFader.isDone());
-    	switchFader.cleanUp();
-    }    
+        MatrixData matrix = new MatrixData(8, 8);
+        IFader switchFader = new Crossfader(matrix, 20, fps);
+        assertEquals(Fader.FaderName.CROSSFADE.getId(), switchFader.getId());
+
+        assertFalse(switchFader.isDone());
+        assertFalse(switchFader.isStarted());
+
+        switchFader.startFade(99, 1);
+        assertTrue(switchFader.isStarted());
+
+        switchFader.getBuffer(new int[55], new int[55]);
+        switchFader.getBuffer(new int[55], new int[55]);
+        assertTrue(switchFader.isDone());
+        switchFader.cleanUp();
+    }
 }

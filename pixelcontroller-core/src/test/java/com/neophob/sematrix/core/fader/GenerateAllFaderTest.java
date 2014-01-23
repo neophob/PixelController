@@ -82,7 +82,7 @@ public class GenerateAllFaderTest {
             f.cleanUp();
 
             f = pcf.getPresetFader(i, 1);
-            f.startFade(0, v.getBuffer());
+            f.startFade(0, 0, v.getBuffer());
             f.getBuffer(v.getBuffer(), v.getBuffer());
         }
 
