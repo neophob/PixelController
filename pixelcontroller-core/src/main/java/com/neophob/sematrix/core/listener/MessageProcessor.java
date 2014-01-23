@@ -213,7 +213,7 @@ public enum MessageProcessor {
                                     new Object[] { currentOutput, newOutputVisual });
                             transitionManager.addOutputMapping(currentOutput, newOutputVisual);
                         } else {
-                            LOG.log(Level.INFO,
+                            LOG.log(Level.WARNING,
                                     "Fader should not start, ignore CHANGE_OUTPUT_VISUAL - Transaction Manager will fade to new visual");
                         }
                         break;
@@ -248,7 +248,7 @@ public enum MessageProcessor {
 
                 case CHANGE_ALL_OUTPUT_VISUAL:
                     if (!startFader) {
-                        LOG.log(Level.INFO,
+                        LOG.log(Level.WARNING,
                                 "Fader should not start, ignore CHANGE_ALL_OUTPUT_VISUAL");
                         break;
                     }
@@ -762,7 +762,6 @@ public enum MessageProcessor {
             s = StringUtils.trim(s);
             s = StringUtils.removeEnd(s, ";");
             LOG.log(Level.FINEST, "LOAD PRESET: " + s);
-            System.out.println(s);
             this.processMsg(StringUtils.split(s, ' '), false, null);
         }
         long needed = System.currentTimeMillis() - start;
