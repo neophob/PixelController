@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.helper.ScreenshotHelper;
@@ -62,6 +64,8 @@ public enum MessageProcessor {
 
     private PresetService presetService;
     private FileUtils fileUtils;
+
+    private TransitionManager transitionManager;
 
     /**
      * Instantiates a new message processor.
@@ -199,14 +203,24 @@ public enum MessageProcessor {
                     break;
 
                 case CHANGE_OUTPUT_VISUAL:
+                    int currentOutput = col.getCurrentOutput();
+                    int newOutputVisual = parseValue(msg[1]);
+
                     if (!startFader) {
-                        LOG.log(Level.INFO, "Fader should not start, ignore CHANGE_OUTPUT_VISUAL");
+                        if (this.transitionManager != null) {
+                            LOG.log(Level.INFO,
+                                    "Update Transition Manager, output {0} should have new visual {1}",
+                                    new Object[] { currentOutput, newOutputVisual });
+                            transitionManager.addOutputMapping(currentOutput, newOutputVisual);
+                        } else {
+                            LOG.log(Level.INFO,
+                                    "Fader should not start, ignore CHANGE_OUTPUT_VISUAL - Transaction Manager will fade to new visual");
+                        }
                         break;
                     }
+
                     try {
-                        int nr = col.getCurrentOutput();
-                        int newOutputVisual = parseValue(msg[1]);
-                        int currentOutputVisual = col.getCurrentVisualForScreen(nr);
+                        int currentOutputVisual = col.getCurrentVisualForScreen(currentOutput);
                         int nrOfVisual = col.getAllVisuals().size();
 
                         if (currentOutputVisual == newOutputVisual) {
@@ -219,8 +233,9 @@ public enum MessageProcessor {
                                 new Object[] { currentOutputVisual, newOutputVisual });
                         if (newOutputVisual >= 0 && newOutputVisual < nrOfVisual) {
                             // start fader to change screen
-                            LOG.log(Level.INFO, "Start Fader for new Output " + nr);
-                            col.getOutputMappings(nr).getFader().startFade(newOutputVisual, nr);
+                            LOG.log(Level.INFO, "Start Fader for new Output " + currentOutput);
+                            col.getOutputMappings(currentOutput).getFader()
+                                    .startFade(newOutputVisual, currentOutput);
                         } else {
                             LOG.log(Level.INFO,
                                     "Invalid Visual in Preset found, current visual: {0}, new visual {1}",
@@ -239,20 +254,21 @@ public enum MessageProcessor {
                     }
 
                     try {
-                        int newOutputVisual = parseValue(msg[1]);
+                        int newOutputVisualForAllVisuals = parseValue(msg[1]);
                         int nrOfOutputs = col.getAllOutputMappings().size();
                         int nrOfVisual = col.getAllVisuals().size();
                         LOG.log(Level.INFO, "Change all Outputs to visual {0}",
-                                new Object[] { newOutputVisual });
+                                new Object[] { newOutputVisualForAllVisuals });
 
-                        if (newOutputVisual >= 0 && newOutputVisual < nrOfVisual) {
+                        if (newOutputVisualForAllVisuals >= 0
+                                && newOutputVisualForAllVisuals < nrOfVisual) {
                             for (int i = 0; i < nrOfOutputs; i++) {
                                 int currentOutputVisual = col.getCurrentVisualForScreen(i);
-                                if (currentOutputVisual != newOutputVisual) {
+                                if (currentOutputVisual != newOutputVisualForAllVisuals) {
                                     // start fader to change screen
                                     LOG.log(Level.INFO, "Start Fader for new Output " + i);
                                     col.getOutputMappings(i).getFader()
-                                            .startFade(newOutputVisual, i);
+                                            .startFade(newOutputVisualForAllVisuals, i);
                                 } else {
                                     LOG.log(Level.INFO,
                                             "No need to CHANGE_ALL_OUTPUT_VISUAL, current Visual == new Visual: "
@@ -262,7 +278,7 @@ public enum MessageProcessor {
                         } else {
                             LOG.log(Level.WARNING,
                                     "Invalid Visual in Preset found, switch all Outputs to new visual {0}",
-                                    new Object[] { newOutputVisual });
+                                    new Object[] { newOutputVisualForAllVisuals });
                         }
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -502,14 +518,9 @@ public enum MessageProcessor {
                 // one shot randomizer, use a pre-stored present
                 case PRESET_RANDOM:
                     try {
-                        // save current visual buffer
-                        TransitionManager transition = new TransitionManager(col);
                         int currentPreset = Shuffler.getRandomPreset(presetService);
                         presetService.setSelectedPreset(currentPreset);
-
-                        // presetService.loadActivePreset(col);
                         loadActivePreset(col);
-                        transition.startCrossfader();
                         col.notifyGuiUpdate();
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -732,18 +743,39 @@ public enum MessageProcessor {
 
     }
 
-    private void loadActivePreset(VisualState visualState) {
+    private synchronized void loadActivePreset(VisualState visualState) {
+        LOG.log(Level.INFO, "Load Preset ...");
         visualState.setLoadingPresent(true);
+
+        // save current visual buffer
+        transitionManager = new TransitionManager(visualState);
+
         // save current selections
         int currentVisual = visualState.getCurrentVisual();
         int currentOutput = visualState.getCurrentOutput();
 
-        presetService.loadActivePreset();
+        List<String> presetToLoad = presetService.getActivePreset();
+
+        // load preset
+        long start = System.currentTimeMillis();
+        for (String s : presetToLoad) {
+            s = StringUtils.trim(s);
+            s = StringUtils.removeEnd(s, ";");
+            LOG.log(Level.FINEST, "LOAD PRESET: " + s);
+            System.out.println(s);
+            this.processMsg(StringUtils.split(s, ' '), false, null);
+        }
+        long needed = System.currentTimeMillis() - start;
+        LOG.log(Level.INFO, "Preset loaded in " + needed + "ms");
 
         // Restore current Selection
         visualState.setCurrentVisual(currentVisual);
         visualState.setCurrentOutput(currentOutput);
         visualState.setLoadingPresent(false);
+
+        // fade to new visual
+        transitionManager.startCrossfader();
+
         visualState.notifyGuiUpdate();
     }
 }

@@ -29,12 +29,13 @@ public interface PresetService {
     List<PresetSettings> getPresets();
 
     /**
-     * load a preset
+     * get a list of entries to load a preset. the returned values are optimized
+     * so not needed actions like loading a blinkenlights file while no
+     * blinkenlights generator is active are removed.
      * 
-     * @param nr
-     * @param visualState
+     * @return
      */
-    void loadActivePreset();
+    List<String> getActivePreset();
 
     void saveActivePreset(String name, List<String> presetString);
 

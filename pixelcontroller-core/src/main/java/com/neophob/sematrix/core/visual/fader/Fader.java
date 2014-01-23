@@ -191,9 +191,9 @@ public abstract class Fader implements IFader, Serializable {
      * @param bfr
      *            static buffer input, fade source
      */
-    public void startFade(int newVisual, int[] bfr) {
+    public void startFade(int newVisual, int screenNr, int[] bfr) {
         this.newVisual = newVisual;
-        this.screenOutput = -1;
+        this.screenOutput = screenNr;
         oldBuffer = bfr;
 
         currentStep = 0;

@@ -18,6 +18,8 @@
  */
 package com.neophob.sematrix.core.visual.fader;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,6 +38,7 @@ public class TransitionManager {
 
     private int[][] savedVisuals;
     private VisualState visualState;
+    private Map<Integer, Integer> outputMapping = new HashMap<Integer, Integer>();
 
     /**
      * save current visual output, used for preset fading
@@ -53,6 +56,10 @@ public class TransitionManager {
         LOG.log(Level.INFO, "Transition Manager created, saved " + i + " visual output buffer(s)");
     }
 
+    public void addOutputMapping(int outputNr, int newVisualNr) {
+        outputMapping.put(outputNr, newVisualNr);
+    }
+
     /**
      * start crossfading
      * 
@@ -61,12 +68,20 @@ public class TransitionManager {
     public void startCrossfader() {
         int i = 0;
         for (OutputMapping om : visualState.getAllOutputMappings()) {
+            // set crossfader
             om.setFader(visualState.getPixelControllerFader().getPresetFader(1,
                     visualState.getFpsSpeed()));
-            om.getFader().startFade(om.getVisualId(), savedVisuals[i++]);
-        }
-        LOG.log(Level.INFO, "Transition Manager finished, started fader");
 
+            // set new visual
+            int newVisualId = om.getVisualId();
+            if (outputMapping.containsKey(i)) {
+                newVisualId = outputMapping.get(i);
+            }
+            om.getFader().startFade(newVisualId, i, savedVisuals[i]);
+            LOG.log(Level.INFO, "Started fader for output {0}, new Visual: {1}", new Object[] { i,
+                    newVisualId, });
+            i++;
+        }
     }
 
 }

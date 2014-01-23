@@ -21,6 +21,7 @@ import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.sound.SoundMinim;
@@ -247,7 +248,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         }
         LOG.log(Level.INFO, "Load preset " + presetNr);
         presetService.setSelectedPreset(presetNr);
-        presetService.loadActivePreset();
+        MessageProcessor.INSTANCE.processMsg(new String[] { ValidCommand.LOAD_PRESET.toString() },
+                false, null);
         visualState.notifyGuiUpdate();
     }
 

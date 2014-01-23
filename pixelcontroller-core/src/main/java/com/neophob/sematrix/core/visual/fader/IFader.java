@@ -50,7 +50,7 @@ public interface IFader {
      * @param newVisual
      * @param bfr
      */
-    void startFade(int newVisual, int[] bfr);
+    void startFade(int newVisual, int screenNr, int[] bfr);
 
     /**
      * switch the output and stop the fading.

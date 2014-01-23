@@ -249,7 +249,7 @@ public class VisualState extends Observable {
                 fader.cleanUp();
 
                 if (fader.getScreenOutput() >= 0) {
-                    mapInputToScreen(fader.getScreenOutput(), fader.getNewVisual());
+                    setOutputVisual(fader.getScreenOutput(), fader.getNewVisual());
                     LOG.log(Level.INFO,
                             "Cleanup {0}, new visual: {1}, output screen: {2}",
                             new Object[] { fader.getFaderName(), fader.getNewVisual(),
@@ -286,14 +286,14 @@ public class VisualState extends Observable {
     }
 
     /**
-     * define which fx is shown on which screen, without fading.
+     * define which visual is shown on which output, without fading.
      * 
      * @param screenOutput
      *            which screen nr
      * @param visualInput
      *            which visual
      */
-    public void mapInputToScreen(int screenOutput, int visualInput) {
+    public void setOutputVisual(int screenOutput, int visualInput) {
         OutputMapping o = ioMapping.get(screenOutput);
         o.setVisualId(visualInput);
         ioMapping.set(screenOutput, o);

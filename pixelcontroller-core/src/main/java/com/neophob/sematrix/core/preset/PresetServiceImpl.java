@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.neophob.sematrix.core.listener.MessageProcessor;
-
 /**
  * 
  * @author michu
@@ -29,6 +25,7 @@ public class PresetServiceImpl implements PresetService {
     public PresetServiceImpl(List<PresetSettings> presets) {
         selectedPreset = 0;
         this.presets = presets;
+        LOG.log(Level.INFO, "Preset Service initialized, contains {0} elements", presets.size());
     }
 
     /*
@@ -103,35 +100,15 @@ public class PresetServiceImpl implements PresetService {
     }
 
     @Override
-    public void loadActivePreset() {
+    public List<String> getActivePreset() {
         List<String> preset = presets.get(selectedPreset).getPreset();
         if (preset != null) {
-            preset = removeObsoleteCommands(new ArrayList<String>(preset));
-
-            // load preset
-            this.setCurrentStatus(preset);
+            // remove not needed commands (load image, load blinkenlight...)
+            return removeObsoleteCommands(new ArrayList<String>(preset));
         }
-    }
 
-    /**
-     * load a saved preset.
-     * 
-     * @param preset
-     *            the new current status
-     */
-    private void setCurrentStatus(List<String> preset) {
-        LOG.log(Level.FINEST, "--------------");
-        long start = System.currentTimeMillis();
-        // setLoadingPresent(true);
-        for (String s : preset) {
-            s = StringUtils.trim(s);
-            s = StringUtils.removeEnd(s, ";");
-            LOG.log(Level.FINEST, "LOAD PRESET: " + s);
-            MessageProcessor.INSTANCE.processMsg(StringUtils.split(s, ' '), false, null);
-        }
-        // setLoadingPresent(false);
-        long needed = System.currentTimeMillis() - start;
-        LOG.log(Level.INFO, "Preset loaded in " + needed + "ms");
+        // else return empty array if no saved preset is found
+        return new ArrayList<String>();
     }
 
     @Override
