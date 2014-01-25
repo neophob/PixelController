@@ -38,7 +38,7 @@ final class SimplexNoise {
      * Gradient vectors for 3D (pointing to mid points of all edges of a unit
      * cube)
      */
-    private static final int[][] grad3 = { { 1, 1, 0 }, { -1, 1, 0 }, { 1, -1, 0 }, { -1, -1, 0 },
+    private static final int[][] GRAD3 = { { 1, 1, 0 }, { -1, 1, 0 }, { 1, -1, 0 }, { -1, -1, 0 },
             { 1, 0, 1 }, { -1, 0, 1 }, { 1, 0, -1 }, { -1, 0, -1 }, { 0, 1, 1 }, { 0, -1, 1 },
             { 0, 1, -1 }, { 0, -1, -1 } };
 
@@ -46,7 +46,7 @@ final class SimplexNoise {
      * Gradient vectors for 4D (pointing to mid points of all edges of a unit 4D
      * hypercube)
      */
-    private static final int[][] grad4 = { { 0, 1, 1, 1 }, { 0, 1, 1, -1 }, { 0, 1, -1, 1 },
+    private static final int[][] GRAD4 = { { 0, 1, 1, 1 }, { 0, 1, 1, -1 }, { 0, 1, -1, 1 },
             { 0, 1, -1, -1 }, { 0, -1, 1, 1 }, { 0, -1, 1, -1 }, { 0, -1, -1, 1 },
             { 0, -1, -1, -1 }, { 1, 0, 1, 1 }, { 1, 0, 1, -1 }, { 1, 0, -1, 1 }, { 1, 0, -1, -1 },
             { -1, 0, 1, 1 }, { -1, 0, 1, -1 }, { -1, 0, -1, 1 }, { -1, 0, -1, -1 }, { 1, 1, 0, 1 },
@@ -58,7 +58,7 @@ final class SimplexNoise {
     /**
      * Permutation table
      */
-    private static final int[] p = { 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233,
+    private static final int[] PERMUTATE = { 151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233,
             7, 225, 140, 36, 103, 30, 69, 142, 8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120,
             234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117, 35, 11, 32, 57, 177, 33, 88, 237, 149,
             56, 87, 174, 20, 125, 136, 171, 168, 68, 175, 74, 165, 71, 134, 139, 48, 27, 166, 77,
@@ -77,12 +77,12 @@ final class SimplexNoise {
      * To remove the need for index wrapping, double the permutation table
      * length
      */
-    private static int[] perm = new int[0x200];
+    private static int[] PERM = new int[0x200];
     /**
      * A lookup table to traverse the simplex around a given point in 4D.
      * Details can be found where this table is used, in the 4D noise method.
      */
-    private static final int[][] simplex = { { 0, 1, 2, 3 }, { 0, 1, 3, 2 }, { 0, 0, 0, 0 },
+    private static final int[][] SIMPLEX = { { 0, 1, 2, 3 }, { 0, 1, 3, 2 }, { 0, 0, 0, 0 },
             { 0, 2, 3, 1 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 1, 2, 3, 0 },
             { 0, 2, 1, 3 }, { 0, 0, 0, 0 }, { 0, 3, 1, 2 }, { 0, 3, 2, 1 }, { 0, 0, 0, 0 },
             { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 1, 3, 2, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 },
@@ -99,7 +99,7 @@ final class SimplexNoise {
 
     static {
         for (int i = 0; i < 0x200; i++) {
-            perm[i] = p[i & 0xff];
+            PERM[i] = PERMUTATE[i & 0xff];
         }
     }
 
@@ -200,21 +200,21 @@ final class SimplexNoise {
         double t0 = 0.5 - x0 * x0 - y0 * y0;
         if (t0 > 0) {
             t0 *= t0;
-            int gi0 = perm[ii + perm[jj]] % 12;
-            n0 = t0 * t0 * dot(grad3[gi0], x0, y0); // (x,y) of grad3 used for
+            int gi0 = PERM[ii + PERM[jj]] % 12;
+            n0 = t0 * t0 * dot(GRAD3[gi0], x0, y0); // (x,y) of grad3 used for
             // 2D gradient
         }
         double t1 = 0.5 - x1 * x1 - y1 * y1;
         if (t1 > 0) {
             t1 *= t1;
-            int gi1 = perm[ii + i1 + perm[jj + j1]] % 12;
-            n1 = t1 * t1 * dot(grad3[gi1], x1, y1);
+            int gi1 = PERM[ii + i1 + PERM[jj + j1]] % 12;
+            n1 = t1 * t1 * dot(GRAD3[gi1], x1, y1);
         }
         double t2 = 0.5 - x2 * x2 - y2 * y2;
         if (t2 > 0) {
             t2 *= t2;
-            int gi2 = perm[ii + 1 + perm[jj + 1]] % 12;
-            n2 = t2 * t2 * dot(grad3[gi2], x2, y2);
+            int gi2 = PERM[ii + 1 + PERM[jj + 1]] % 12;
+            n2 = t2 * t2 * dot(GRAD3[gi2], x2, y2);
         }
         // Add contributions from each corner to get the final noise value.
         // The result is scaled to return values in the interval [-1,1].
@@ -332,26 +332,26 @@ final class SimplexNoise {
         double t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
         if (t0 > 0) {
             t0 *= t0;
-            int gi0 = perm[ii + perm[jj + perm[kk]]] % 12;
-            n0 = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
+            int gi0 = PERM[ii + PERM[jj + PERM[kk]]] % 12;
+            n0 = t0 * t0 * dot(GRAD3[gi0], x0, y0, z0);
         }
         double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
         if (t1 > 0) {
             t1 *= t1;
-            int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1]]] % 12;
-            n1 = t1 * t1 * dot(grad3[gi1], x1, y1, z1);
+            int gi1 = PERM[ii + i1 + PERM[jj + j1 + PERM[kk + k1]]] % 12;
+            n1 = t1 * t1 * dot(GRAD3[gi1], x1, y1, z1);
         }
         double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
         if (t2 > 0) {
             t2 *= t2;
-            int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2]]] % 12;
-            n2 = t2 * t2 * dot(grad3[gi2], x2, y2, z2);
+            int gi2 = PERM[ii + i2 + PERM[jj + j2 + PERM[kk + k2]]] % 12;
+            n2 = t2 * t2 * dot(GRAD3[gi2], x2, y2, z2);
         }
         double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
         if (t3 > 0) {
             t3 *= t3;
-            int gi3 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1]]] % 12;
-            n3 = t3 * t3 * dot(grad3[gi3], x3, y3, z3);
+            int gi3 = PERM[ii + 1 + PERM[jj + 1 + PERM[kk + 1]]] % 12;
+            n3 = t3 * t3 * dot(GRAD3[gi3], x3, y3, z3);
         }
         // Add contributions from each corner to get the final noise value.
         // The result is scaled to stay just inside [-1,1]
@@ -423,7 +423,7 @@ final class SimplexNoise {
         // entries make any sense. We use a thresholding to set the coordinates
         // in turn from the largest magnitude. The number 3 in the "simplex"
         // array is at the position of the largest coordinate.
-        int[] sc = simplex[c];
+        int[] sc = SIMPLEX[c];
         i1 = sc[0] >= 3 ? 1 : 0;
         j1 = sc[1] >= 3 ? 1 : 0;
         k1 = sc[2] >= 3 ? 1 : 0;
@@ -472,32 +472,32 @@ final class SimplexNoise {
         double t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0;
         if (t0 > 0) {
             t0 *= t0;
-            int gi0 = perm[ii + perm[jj + perm[kk + perm[ll]]]] % 32;
-            n0 = t0 * t0 * dot(grad4[gi0], x0, y0, z0, w0);
+            int gi0 = PERM[ii + PERM[jj + PERM[kk + PERM[ll]]]] % 32;
+            n0 = t0 * t0 * dot(GRAD4[gi0], x0, y0, z0, w0);
         }
         double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1;
         if (t1 > 0) {
             t1 *= t1;
-            int gi1 = perm[ii + i1 + perm[jj + j1 + perm[kk + k1 + perm[ll + l1]]]] % 32;
-            n1 = t1 * t1 * dot(grad4[gi1], x1, y1, z1, w1);
+            int gi1 = PERM[ii + i1 + PERM[jj + j1 + PERM[kk + k1 + PERM[ll + l1]]]] % 32;
+            n1 = t1 * t1 * dot(GRAD4[gi1], x1, y1, z1, w1);
         }
         double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2;
         if (t2 > 0) {
             t2 *= t2;
-            int gi2 = perm[ii + i2 + perm[jj + j2 + perm[kk + k2 + perm[ll + l2]]]] % 32;
-            n2 = t2 * t2 * dot(grad4[gi2], x2, y2, z2, w2);
+            int gi2 = PERM[ii + i2 + PERM[jj + j2 + PERM[kk + k2 + PERM[ll + l2]]]] % 32;
+            n2 = t2 * t2 * dot(GRAD4[gi2], x2, y2, z2, w2);
         }
         double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3;
         if (t3 > 0) {
             t3 *= t3;
-            int gi3 = perm[ii + i3 + perm[jj + j3 + perm[kk + k3 + perm[ll + l3]]]] % 32;
-            n3 = t3 * t3 * dot(grad4[gi3], x3, y3, z3, w3);
+            int gi3 = PERM[ii + i3 + PERM[jj + j3 + PERM[kk + k3 + PERM[ll + l3]]]] % 32;
+            n3 = t3 * t3 * dot(GRAD4[gi3], x3, y3, z3, w3);
         }
         double t4 = 0.6 - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4;
         if (t4 > 0) {
             t4 *= t4;
-            int gi4 = perm[ii + 1 + perm[jj + 1 + perm[kk + 1 + perm[ll + 1]]]] % 32;
-            n4 = t4 * t4 * dot(grad4[gi4], x4, y4, z4, w4);
+            int gi4 = PERM[ii + 1 + PERM[jj + 1 + PERM[kk + 1 + PERM[ll + 1]]]] % 32;
+            n4 = t4 * t4 * dot(GRAD4[gi4], x4, y4, z4, w4);
         }
         // Sum up and scale the result to cover the range [-1,1]
         return 27.0 * (n0 + n1 + n2 + n3 + n4);
