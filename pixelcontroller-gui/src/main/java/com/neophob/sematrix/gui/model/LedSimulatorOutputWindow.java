@@ -92,7 +92,7 @@ public class LedSimulatorOutputWindow {
             }
             windowSize = getWindowSize(layout);
 
-        } while ((windowSize.getX() > screenWidth || windowSize.getY() > screenHeight));
+        } while (windowSize.getX() > screenWidth || windowSize.getY() > screenHeight);
 
         ledSizeX = ledSize;// *matrixData.getDeviceXSize() < MINIMAL_SIZE ?
                            // MINIMAL_SIZE : ledSize;
