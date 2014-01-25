@@ -160,7 +160,7 @@ public class Image extends Generator {
             }
             LOG.log(Level.INFO,
                     "Image {0} loaded in {1} ms. Load image: {2}ms, get data from image: {3}ms",
-                    new Object[] { filename, (System.currentTimeMillis() - t1), t2 - t1, t3 - t2 });
+                    new Object[] { filename, System.currentTimeMillis() - t1, t2 - t1, t3 - t2 });
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to load image " + filename, e);
         }

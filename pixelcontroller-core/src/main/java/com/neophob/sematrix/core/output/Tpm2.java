@@ -93,7 +93,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
                 // need to splitup buffers
                 int bytesToSend = rgbBuffer.length;
                 int currentUniverse = 0;
-                int totalUniverse = (int) ((bytesToSend / 510f)) + 1;
+                int totalUniverse = (int) (bytesToSend / 510f) + 1;
                 while (currentUniverse < totalUniverse) {
                     int l = bytesToSend - 510 * currentUniverse;
                     if (l > 510) {

@@ -109,7 +109,7 @@ public class BlinkenLibrary {
 
             long timeNeeded = System.currentTimeMillis() - start;
             LOG.log(Level.INFO, "Loaded file {0} / {1} frames in {2}ms (Unmarshall: {3}ms)",
-                    new Object[] { filename, frames.length, timeNeeded, (t2 - t1) });
+                    new Object[] { filename, frames.length, timeNeeded, t2 - t1 });
 
             return true;
         } catch (Exception e) {
