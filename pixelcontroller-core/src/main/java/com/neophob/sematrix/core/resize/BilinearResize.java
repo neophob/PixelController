@@ -37,9 +37,9 @@ class BilinearResize extends Resize {
     public int[] resizeBilinear(int[] pixels, int w, int h, int w2, int h2) {
         int[] temp = new int[w2 * h2];
         int a, b, c, d, x, y, index;
-        float x_ratio = ((float) (w - 1)) / w2;
-        float y_ratio = ((float) (h - 1)) / h2;
-        float x_diff, y_diff, blue, red, green;
+        float xRatio = ((float) (w - 1)) / w2;
+        float yRatio = ((float) (h - 1)) / h2;
+        float xDiff, yDiff, blue, red, green;
         int offset = 0;
 
         int centerOfs = 0;
@@ -51,12 +51,12 @@ class BilinearResize extends Resize {
         }
 
         for (int i = 0; i < h2; i++) {
-            y = (int) (y_ratio * i);
-            y_diff = (y_ratio * i) - y;
+            y = (int) (yRatio * i);
+            yDiff = (yRatio * i) - y;
 
             for (int j = 0; j < w2; j++) {
-                x = (int) (x_ratio * j);
-                x_diff = (x_ratio * j) - x;
+                x = (int) (xRatio * j);
+                xDiff = (xRatio * j) - x;
                 index = centerOfs + (y * w + x);
                 a = pixels[index];
                 b = pixels[index + 1];
@@ -65,21 +65,21 @@ class BilinearResize extends Resize {
 
                 // blue element
                 // Yb = Ab(1-w)(1-h) + Bb(w)(1-h) + Cb(h)(1-w) + Db(wh)
-                blue = (a & 0xff) * (1 - x_diff) * (1 - y_diff) + (b & 0xff) * (x_diff)
-                        * (1 - y_diff) + (c & 0xff) * (y_diff) * (1 - x_diff) + (d & 0xff)
-                        * (x_diff * y_diff);
+                blue = (a & 0xff) * (1 - xDiff) * (1 - yDiff) + (b & 0xff) * (xDiff)
+                        * (1 - yDiff) + (c & 0xff) * (yDiff) * (1 - xDiff) + (d & 0xff)
+                        * (xDiff * yDiff);
 
                 // green element
                 // Yg = Ag(1-w)(1-h) + Bg(w)(1-h) + Cg(h)(1-w) + Dg(wh)
-                green = ((a >> 8) & 0xff) * (1 - x_diff) * (1 - y_diff) + ((b >> 8) & 0xff)
-                        * (x_diff) * (1 - y_diff) + ((c >> 8) & 0xff) * (y_diff) * (1 - x_diff)
-                        + ((d >> 8) & 0xff) * (x_diff * y_diff);
+                green = ((a >> 8) & 0xff) * (1 - xDiff) * (1 - yDiff) + ((b >> 8) & 0xff)
+                        * (xDiff) * (1 - yDiff) + ((c >> 8) & 0xff) * (yDiff) * (1 - xDiff)
+                        + ((d >> 8) & 0xff) * (xDiff * yDiff);
 
                 // red element
                 // Yr = Ar(1-w)(1-h) + Br(w)(1-h) + Cr(h)(1-w) + Dr(wh)
-                red = ((a >> 16) & 0xff) * (1 - x_diff) * (1 - y_diff) + ((b >> 16) & 0xff)
-                        * (x_diff) * (1 - y_diff) + ((c >> 16) & 0xff) * (y_diff) * (1 - x_diff)
-                        + ((d >> 16) & 0xff) * (x_diff * y_diff);
+                red = ((a >> 16) & 0xff) * (1 - xDiff) * (1 - yDiff) + ((b >> 16) & 0xff)
+                        * (xDiff) * (1 - yDiff) + ((c >> 16) & 0xff) * (yDiff) * (1 - xDiff)
+                        + ((d >> 16) & 0xff) * (xDiff * yDiff);
 
                 temp[offset++] = 0xff000000
                         | // hardcode alpha

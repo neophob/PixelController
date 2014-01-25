@@ -39,10 +39,10 @@ class NearestNeighbourResize extends Resize {
         int[] rawOutput = new int[newX * newY];
 
         // YD compensates for the x loop by subtracting the width back out
-        int YD = (currentYSize / newY) * currentXSize - currentXSize;
-        int YR = currentYSize % newY;
-        int XD = currentXSize / newX;
-        int XR = currentXSize % newX;
+        int yDiff = (currentYSize / newY) * currentXSize - currentXSize;
+        int yr = currentYSize % newY;
+        int xDiff = currentXSize / newX;
+        int xr = currentXSize % newX;
         int outOffset = 0;
         int inOffset = 0;
 
@@ -57,15 +57,15 @@ class NearestNeighbourResize extends Resize {
         for (int y = newY, YE = 0; y > 0; y--) {
             for (int x = newX, XE = 0; x > 0; x--) {
                 rawOutput[outOffset++] = buffer[inOffset];
-                inOffset += XD;
-                XE += XR;
+                inOffset += xDiff;
+                XE += xr;
                 if (XE >= newX) {
                     XE -= newX;
                     inOffset++;
                 }
             }
-            inOffset += YD;
-            YE += YR;
+            inOffset += yDiff;
+            YE += yr;
             if (YE >= newY) {
                 YE -= newY;
                 inOffset += currentXSize;
