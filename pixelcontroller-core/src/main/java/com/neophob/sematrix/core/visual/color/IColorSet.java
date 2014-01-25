@@ -7,7 +7,7 @@ public interface IColorSet extends Comparable<IColorSet> {
      * 
      * @return
      */
-    public abstract String getName();
+    String getName();
 
     /**
      * return a color defined in this color set
@@ -15,7 +15,7 @@ public interface IColorSet extends Comparable<IColorSet> {
      * @param pos
      * @return
      */
-    public abstract int getSmoothColor(int pos);
+    int getSmoothColor(int pos);
 
     /**
      * colorize an image buffer
@@ -26,6 +26,6 @@ public interface IColorSet extends Comparable<IColorSet> {
      *            ColorSet to apply
      * @return 24 bpp image
      */
-    public abstract int[] convertToColorSetImage(int[] buffer);
+    int[] convertToColorSetImage(int[] buffer);
 
 }
