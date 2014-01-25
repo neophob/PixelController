@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PresetService {
 
-    final int NR_OF_PRESET_SLOTS = 144;
+    int NR_OF_PRESET_SLOTS = 144;
 
     /**
      * @return the selectedPreset
