@@ -66,8 +66,6 @@ public class Blinkenlights extends Generator {
 
     private IResize resize;
 
-    private BlinkenImage img;
-
     private FileUtils fu;
 
     /**
@@ -162,7 +160,7 @@ public class Blinkenlights extends Generator {
             return;
         }
 
-        img = blinken.getFrame(currentFrame);
+        BlinkenImage img = blinken.getFrame(currentFrame);
         currentFrame += amount;
         this.internalBuffer = resize.resizeImage(img.getData(), img.getWidth(), img.getHeight(),
                 internalBufferXSize, internalBufferYSize);
