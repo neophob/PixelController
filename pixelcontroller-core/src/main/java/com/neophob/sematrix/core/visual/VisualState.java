@@ -654,6 +654,17 @@ public class VisualState extends Observable {
         return ret;
     }
 
+    private List<String> getVisualState(Visual v) {
+        List<String> ret = new ArrayList<String>();
+        ret.add(ValidCommand.CHANGE_GENERATOR_A + EMPTY_CHAR + v.getGenerator1Idx());
+        ret.add(ValidCommand.CHANGE_GENERATOR_B + EMPTY_CHAR + v.getGenerator2Idx());
+        ret.add(ValidCommand.CHANGE_EFFECT_A + EMPTY_CHAR + v.getEffect1Idx());
+        ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
+        ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
+        ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
+        return ret;
+    }
+
     /**
      * get current state of all visuals/outputs as string list - used to save
      * current settings.
@@ -667,12 +678,7 @@ public class VisualState extends Observable {
         int n = 0;
         for (Visual v : allVisuals) {
             ret.add(ValidCommand.CURRENT_VISUAL + EMPTY_CHAR + n++);
-            ret.add(ValidCommand.CHANGE_GENERATOR_A + EMPTY_CHAR + v.getGenerator1Idx());
-            ret.add(ValidCommand.CHANGE_GENERATOR_B + EMPTY_CHAR + v.getGenerator2Idx());
-            ret.add(ValidCommand.CHANGE_EFFECT_A + EMPTY_CHAR + v.getEffect1Idx());
-            ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
-            ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
-            ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
+            ret.addAll(getVisualState(v));
         }
 
         // get output status
@@ -704,12 +710,7 @@ public class VisualState extends Observable {
 
         Visual v = allVisuals.get(currentVisual);
         ret.add(ValidCommand.CURRENT_VISUAL + EMPTY_CHAR + currentVisual);
-        ret.add(ValidCommand.CHANGE_GENERATOR_A + EMPTY_CHAR + v.getGenerator1Idx());
-        ret.add(ValidCommand.CHANGE_GENERATOR_B + EMPTY_CHAR + v.getGenerator2Idx());
-        ret.add(ValidCommand.CHANGE_EFFECT_A + EMPTY_CHAR + v.getEffect1Idx());
-        ret.add(ValidCommand.CHANGE_EFFECT_B + EMPTY_CHAR + v.getEffect2Idx());
-        ret.add(ValidCommand.CHANGE_MIXER + EMPTY_CHAR + v.getMixerIdx());
-        ret.add(ValidCommand.CURRENT_COLORSET + EMPTY_CHAR + v.getColorSet().getName());
+        ret.addAll(getVisualState(v));
 
         ret.add(ValidCommand.CHANGE_OUTPUT_FADER + EMPTY_CHAR
                 + ioMapping.get(currentOutput).getFader().getId());
