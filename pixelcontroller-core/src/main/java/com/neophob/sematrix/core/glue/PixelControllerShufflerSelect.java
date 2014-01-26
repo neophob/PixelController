@@ -99,15 +99,14 @@ public class PixelControllerShufflerSelect implements PixelControllerElement {
             if (randomLifetime > 0 && now - lastRandomHit > randomLifetime) {
                 lastRandomHit = now;
                 LOG.log(Level.INFO, "Random Mode lifetime is over, fire manual shuffler");
-                Shuffler.manualShuffleStuff(visualState);
-                visualState.notifyGuiUpdate();
+                String[] msg = new String[] { "" + ValidCommand.RANDOMIZE };
+                MessageProcessor.INSTANCE.processMsg(msg, true, null);
             }
         } else if (visualState.isRandomPresetMode()) {
             if (Shuffler.randomPresentModeShuffler(sound)) {
                 LOG.log(Level.INFO, "Fire Preset Random");
                 String[] msg = new String[] { "" + ValidCommand.PRESET_RANDOM };
                 MessageProcessor.INSTANCE.processMsg(msg, true, null);
-                visualState.notifyGuiUpdate();
             }
         }
     }
