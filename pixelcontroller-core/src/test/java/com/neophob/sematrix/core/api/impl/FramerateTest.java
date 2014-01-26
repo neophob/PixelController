@@ -19,6 +19,9 @@ public class FramerateTest {
         f.setFps(1);
         assertEquals(1000L, f.getFrameDelay());
         assertEquals(4, f.getFrameCount());
+
+        f.setFps(0);
+        assertEquals(f.getConfiguredFps(), Framerate.MINIMAL_FPS, 0.001);
     }
 
 }

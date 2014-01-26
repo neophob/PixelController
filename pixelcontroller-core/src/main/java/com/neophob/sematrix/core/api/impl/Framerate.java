@@ -31,7 +31,7 @@ public class Framerate {
 
     private static final Logger LOG = Logger.getLogger(Framerate.class.getName());
 
-    private static final float MINIMAL_FPS = 0.001f;
+    public static final float MINIMAL_FPS = 0.001f;
 
     private long delay;
     private long frameCount;
@@ -61,8 +61,22 @@ public class Framerate {
         LOG.log(Level.INFO, "Target fps: " + this.targetFps + ", delay: " + delay + "ms");
     }
 
+    /**
+     * get current fps
+     * 
+     * @return
+     */
     public float getFps() {
         return fps;
+    }
+
+    /**
+     * the configured fps
+     * 
+     * @return
+     */
+    public float getConfiguredFps() {
+        return targetFps;
     }
 
     public long getFrameCount() {
