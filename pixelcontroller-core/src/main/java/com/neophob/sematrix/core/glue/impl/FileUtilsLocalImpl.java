@@ -60,7 +60,7 @@ public class FileUtilsLocalImpl implements FileUtils {
             LOG.log(Level.INFO, "Try root directory: {0}", rootDirectory);
 
             if (!new File(getDataDir()).isDirectory()) {
-                LOG.log(Level.INFO, "Root directory {0} is not correct!", rootDirectory);
+                LOG.log(Level.SEVERE, "Root directory {0} is not correct!", rootDirectory);
             }
         } else {
             LOG.log(Level.INFO, "Use root directory: {0}", rootDirectory);

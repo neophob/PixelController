@@ -1,9 +1,13 @@
 package com.neophob.sematrix.gui.service.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Observer;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,10 +34,6 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 import com.neophob.sematrix.gui.service.PixConServer;
-import com.neophob.sematrix.mdns.client.MDnsClientException;
-import com.neophob.sematrix.mdns.client.PixMDnsClient;
-import com.neophob.sematrix.mdns.client.impl.MDnsClientFactory;
-import com.neophob.sematrix.mdns.server.PixMDnsServer;
 import com.neophob.sematrix.osc.client.OscClientException;
 import com.neophob.sematrix.osc.model.OscMessage;
 import com.neophob.sematrix.osc.server.OscMessageHandler;
@@ -48,9 +48,8 @@ import com.neophob.sematrix.osc.server.OscMessageHandler;
 public class RemoteOscServer extends OscMessageHandler implements PixConServer, Runnable {
 
     private static final Logger LOG = Logger.getLogger(RemoteOscServer.class.getName());
+    private static final String CLIENT_CONFIG_FILENAME = "clientRemote.properties";
 
-    private static final String DEFAULT_TARGET_HOST = "pixelcontroller.local";
-    private static final int DEFAULT_REMOTE_OSC_SERVER_PORT = 9876;
     private static final Protocol SERVER_PROTOCOL = Protocol.TCP;
     private static final Protocol CLIENT_PROTOCOL = Protocol.UDP;
 
@@ -325,41 +324,25 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
     @Override
     public void run() {
         LOG.log(Level.INFO, "Start PixelController Client thread");
-        String targetHost = DEFAULT_TARGET_HOST;
-        int serverPort;
         try {
             setupFeedback.handleMessage("Detect PixelController OSC Server");
-            try {
-                PixMDnsClient client = MDnsClientFactory.queryService(
-                        PixMDnsServer.REMOTE_TYPE_UDP, 6000);
-                client.start();
-                if (client.mdnsServerFound()) {
-                    serverPort = client.getPort();
-                    setupFeedback.handleMessage("... found on port " + serverPort + ", ip: "
-                            + client.getFirstIp());
-                    targetHost = client.getFirstIp();
-                } else {
-                    setupFeedback.handleMessage("... not found, use default port "
-                            + DEFAULT_REMOTE_OSC_SERVER_PORT);
-                    serverPort = DEFAULT_REMOTE_OSC_SERVER_PORT;
-                }
-            } catch (MDnsClientException e) {
-                LOG.log(Level.WARNING, "Service discover failed.", e);
-                serverPort = DEFAULT_REMOTE_OSC_SERVER_PORT;
-                setupFeedback.handleMessage("... not found, use default port "
-                        + DEFAULT_REMOTE_OSC_SERVER_PORT);
-            }
-            LOG.log(Level.INFO, "Remote target, IP: " + targetHost + ", port: " + serverPort);
+            Properties p = loadLocalProperties();
+            RemoteClientName remoteHost = new RemoteClientName(setupFeedback, p);
+            remoteHost.queryRemoteName();
+            LOG.log(Level.INFO, "Remote target, IP: " + remoteHost.getTargetHost() + ", port: "
+                    + remoteHost.getTargetPort());
+            setupFeedback.handleMessage(" ... use " + remoteHost.getTargetHost());
 
             setupFeedback.handleMessage("Start OSC Server");
             // create a tcp server, expected large messages (> then MTU)
-            remoteServer.startServer(SERVER_PROTOCOL, this, serverPort - 1);
+            remoteServer.startServer(SERVER_PROTOCOL, this, remoteHost.getTargetPort() - 1);
             setupFeedback.handleMessage(" ... started");
 
             setupFeedback.handleMessage("Connect to PixelController OSC Server");
             // use udp to communicate with the pixelcontroller OSC server
-            int clientPort = serverPort - 1;
-            remoteServer.startClient(CLIENT_PROTOCOL, targetHost, serverPort, clientPort);
+            int clientPort = remoteHost.getTargetPort() - 1;
+            remoteServer.startClient(CLIENT_PROTOCOL, remoteHost.getTargetHost(),
+                    remoteHost.getTargetPort(), clientPort);
             setupFeedback.handleMessage(" ... done");
 
             this.remoteObserver = new RemoteOscObservable();
@@ -425,6 +408,32 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
     @Override
     public float getSetupSteps() {
         return steps;
+    }
+
+    private Properties loadLocalProperties() {
+        Properties config = new Properties();
+        InputStream is = null;
+
+        String fileToLoad = System.getProperty("user.dir") + File.separator
+                + CLIENT_CONFIG_FILENAME;
+        try {
+            is = new FileInputStream(fileToLoad);
+            config.load(is);
+            LOG.log(Level.INFO, "Config loaded, {0} entries", config.size());
+            return config;
+        } catch (Exception e) {
+            String error = "Failed to open the configfile " + fileToLoad;
+            LOG.log(Level.SEVERE, error, e);
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (Exception e) {
+                // ignored
+            }
+        }
+        return null;
     }
 
 }
