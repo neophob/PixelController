@@ -140,7 +140,7 @@ public class TextureDeformation extends Effect {
     public void shuffle() {
         if (VisualState.getInstance().getShufflerSelect(ShufflerOffset.TEXTURE_DEFORM)) {
             Random rand = new Random();
-            this.changeLUT(1 + rand.nextInt(11));
+            this.changeLUT(rand.nextInt(11));
         }
     }
 
