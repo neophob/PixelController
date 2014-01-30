@@ -33,6 +33,7 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
 import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.output.serial.SerialImpl;
+import com.neophob.sematrix.core.output.spi.SpiRaspberryPi;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -114,7 +115,8 @@ public class PixelControllerOutput implements PixelControllerElement {
                     output = new Tpm2Net(matrixData, resizeHelper, applicationConfig);
                     break;
                 case RPI_2801:
-                    output = new RaspberrySpi2801(matrixData, resizeHelper, applicationConfig);
+                    output = new RaspberrySpi2801(matrixData, resizeHelper, applicationConfig,
+                            new SpiRaspberryPi());
                     break;
                 default:
                     throw new IllegalArgumentException(

@@ -99,4 +99,6 @@ public interface IOutput extends Serializable {
 
     int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize,
             int deviceYSize);
+
+    void close();
 }
