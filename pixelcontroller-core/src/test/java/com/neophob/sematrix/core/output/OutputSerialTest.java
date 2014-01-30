@@ -165,4 +165,23 @@ public class OutputSerialTest {
         o.prepareOutputBuffer(vs);
         o.update();
     }
+
+    @Test
+    public void testRainbowduinoV2Device() {
+        // test negative
+        IOutput o = new RainbowduinoV2Device(matrix, res, ph, serialPort);
+        Assert.assertFalse(o.isConnected());
+
+        // test positive
+        when(serialPort.isConnected()).thenReturn(true);
+        when(serialPort.available()).thenReturn(3);
+        when(serialPort.readBytes()).thenReturn("AKK".getBytes());
+        when(serialPort.getOutputStream()).thenReturn(new ByteArrayOutputStream());
+        o = new RainbowduinoV2Device(matrix, res, ph, serialPort);
+        Assert.assertTrue(o.isConnected());
+        o.prepareOutputBuffer(vs);
+        o.switchBuffers();
+        o.prepareOutputBuffer(vs);
+        o.update();
+    }
 }
