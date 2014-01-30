@@ -67,9 +67,7 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
 
     @Override
     public void close() {
-        if (!this.connected) {
-            return;
-        }
+        // nothing todo
     }
 
     @Override
