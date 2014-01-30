@@ -557,38 +557,61 @@ Do a deployment build:
 Release
 
 ## PERFORMANCE
-With the JMX interface you can monitor the status of your PixelController instance in real time. This 
-will provide you with useful data such as required time for each layer (generator, effect, mixer…), the 
-frame rate of your instance, allowing you to diagnose problems or performance issues. To read the JMX 
-data, you will need to use a JMX client or the PixConCli util.
 
-Example how to use PixConCli:
+PixelController ...
 
-    localhost:PixelController-1.3-SNAPSHOT michu$ ./PixConCli.sh -c JMX_STAT -p 1337
-    Create an RMI connector client and connect it to the RMI connector server 127.0.0.1:1337
-    Get an MBeanServerConnection...
-    
-    Generic:
-    server version           : 1.1
-    current fps              : 20,036 (100% of configured fps: 20)
-    frame count              : 1771
-    running since            : 0:01:28.980
-    
-    The following average times have been collected during the last 10.007 seconds:
-       generator             : 0,310ms
-       effect                : 0,000ms
-       output schedule       : 0,140ms
-       fader                 : 0,000ms
-       debug window          : 15,210ms
-       output prepare wait   : 0,005ms
-       output update wait    : 0,005ms
-       matrix emulator window: 0,440ms
-    
-    Ouput-specific average times for output #1: NULL (NullDevice)
-       prepare               : 1,550ms
-       update                : 0,000ms
-    
-    Close the connection to the server
+`./PixelController.sh -perf`
+
+PixelController v2.1.0-RC1.
+
+### Performance on BBB
+
+Machine: Beagle Bone Black, ARMv7 Processor rev 2 (v7l), 300 BogoMIPS
+
+Kernel: `Linux beaglebone 3.8.13 #1 SMP Thu Sep 12 10:27:06 CEST 2013 armv7l GNU/Linux`
+
+JRE: `Java(TM) SE Runtime Environment (build 1.7.0_51-b13)`
+
+Performance test using 500,000 rounds and pixelsize of 16 (**512 buffer size**).
+
+* Adler32 Hash: 806ms - 1ns per hash
+* XXHash: 1,799ms - 3ns per hash
+* Visual needed 7,985ms - 3,194ns per getBuffer call
+* PixelResize needed 31ms - 12ns per resize
+* QualityResize needed 397ms - 158ns per resize
+
+Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**).
+
+* Adler32 Hash: 2,554ms - 5ns per hash
+* XXHash: 6,883ms - 13ns per hash
+* Visual needed 7,971ms - 3,188ns per getBuffer call
+* PixelResize needed 151ms - 60ns per resize
+* QualityResize needed 1,633ms - 653ns per resize
+
+### Performance on OSX
+
+Machine: MacBook Air, 2x1.8GHz i5
+
+Kernel: `Darwin xxx.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27 PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64`
+
+JRE: `Java(TM) SE Runtime Environment (build 1.7.0_21-b12)`
+
+Performance test using 500,000 rounds and pixelsize of 16 (**512 buffer size**).
+
+* Adler32 Hash: 119ms - 0ns per hash
+* XXHash: 118ms - 0ns per hash
+* Visual needed 614ms - 245ns per getBuffer call
+* PixelResize needed 2ms - 0ns per resize
+* QualityResize needed 28ms - 11ns per resize
+
+Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**).
+
+* Adler32 Hash: 179ms - 0ns per hash
+* XXHash: 262ms - 0ns per hash
+* Visual needed 618ms - 247ns per getBuffer call
+* PixelResize needed 7ms - 2ns per resize
+* QualityResize needed 123ms - 49ns per resize
+
 
 
 ## CREDITS
