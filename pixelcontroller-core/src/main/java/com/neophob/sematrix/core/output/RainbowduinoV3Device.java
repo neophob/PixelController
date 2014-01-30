@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 import de.programmerspain.rv3sf.api.GammaTable;
 import de.programmerspain.rv3sf.api.RainbowduinoV3;
@@ -45,8 +48,9 @@ public class RainbowduinoV3Device extends Output {
 
     private boolean initialized = false;
 
-    public RainbowduinoV3Device(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.RAINBOWDUINO_V3, ph, 8);
+    public RainbowduinoV3Device(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph, ISerial serialPort) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.RAINBOWDUINO_V3, ph, 8);
 
         // initialize internal variables
         try {
@@ -54,7 +58,7 @@ public class RainbowduinoV3Device extends Output {
             List<String> devices = new ArrayList<String>();
             for (String s : tmp) {
                 // convert os dependent serial port names
-                devices.add(OutputHelper.getSerialPortName(s));
+                devices.add(serialPort.getSerialPortName(s));
             }
 
             // this counter is used to track serial port initialization errors

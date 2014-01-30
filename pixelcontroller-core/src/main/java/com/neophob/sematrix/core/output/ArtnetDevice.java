@@ -33,6 +33,8 @@ import artnet4j.events.ArtNetDiscoveryListener;
 import artnet4j.packets.ArtDmxPacket;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class ArtnetDevice.
@@ -44,6 +46,8 @@ import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
  */
 public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryListener {
 
+    private static final boolean RUN_DISCOVERY = false;
+
     private static final transient Logger LOG = Logger.getLogger(ArtnetDevice.class.getName());
 
     private transient ArtNet artnet;
@@ -52,8 +56,9 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
      * 
      * @param controller
      */
-    public ArtnetDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
-        super(OutputDeviceEnum.ARTNET, ph, 8, nrOfScreens);
+    public ArtnetDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.ARTNET, ph, 8, ph.getNrOfScreens());
 
         this.displayOptions = ph.getArtNetDevice();
 
@@ -77,8 +82,10 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
             this.artnet.init();
             this.artnet.setBroadCastAddress(broadcastAddr);
             this.artnet.start();
-            this.artnet.getNodeDiscovery().addListener(this);
-            this.artnet.startNodeDiscovery();
+            if (RUN_DISCOVERY) {
+                this.artnet.getNodeDiscovery().addListener(this);
+                this.artnet.startNodeDiscovery();
+            }
 
             this.initialized = true;
             LOG.log(Level.INFO, "ArtNet device initialized, use " + this.displayOptions.size()

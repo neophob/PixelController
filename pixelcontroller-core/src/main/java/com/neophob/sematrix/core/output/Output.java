@@ -28,6 +28,7 @@ import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.Gammatab;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.IResize;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -76,6 +77,8 @@ public abstract class Output implements IOutput {
      */
     protected boolean supportConnectionState = false;
 
+    private transient PixelControllerResize resizeHelper;
+
     /**
      * Instantiates a new output.
      * 
@@ -88,10 +91,12 @@ public abstract class Output implements IOutput {
      * @param bpp
      *            the bpp
      */
-    public Output(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+    public Output(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
         this.outputDeviceEnum = outputDeviceEnum;
 
-        this.matrixData = VisualState.getInstance().getMatrix();
+        this.resizeHelper = resizeHelper;
+        this.matrixData = matrixData;
         this.layout = ph.getLayout();
         this.bpp = bpp;
         this.gammaType = ph.getGammaType();
@@ -99,6 +104,10 @@ public abstract class Output implements IOutput {
         this.bufferMap = new HashMap<Integer, int[]>();
         this.totalNrOfOutputBuffers = ph.getNrOfScreens();
         this.switchBuffer = 0;
+
+        if (this.gammaType == null) {
+            this.gammaType = GammaType.NONE;
+        }
 
         LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}, Gamma Correction: {3}",
                 new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp,
@@ -125,7 +134,8 @@ public abstract class Output implements IOutput {
     public int[] getBufferForScreen(int screenNr, boolean applyGamma) {
         int[] buffer = this.bufferMap.get(switchBuffer + screenNr);
         if (buffer == null) {
-            LOG.log(Level.SEVERE, "Failed to get entry for entry: " + (switchBuffer + screenNr));
+            LOG.log(Level.SEVERE, "Failed to get entry for entry {0}, buffer size: "
+                    + this.bufferMap.size(), (switchBuffer + screenNr));
             return null;
         }
 
@@ -207,7 +217,7 @@ public abstract class Output implements IOutput {
     public int[] resizeBufferForDevice(int[] buffer, ResizeName resizeName, int deviceXSize,
             int deviceYSize) {
 
-        IResize r = VisualState.getInstance().getPixelControllerResize().getResize(resizeName);
+        IResize r = resizeHelper.getResize(resizeName);
         return r.resizeImage(buffer, matrixData.getBufferXSize(), matrixData.getBufferYSize(),
                 deviceXSize, deviceYSize);
     }
@@ -277,7 +287,7 @@ public abstract class Output implements IOutput {
         for (int screen = 0; screen < this.totalNrOfOutputBuffers; screen++) {
             LayoutModel lm = this.layout.getDataForScreen(screen, allOutputMappings);
             OutputMapping map = allOutputMappings.get(screen);
-            // TODO inject someday..
+
             v = vs.getVisual(lm.getVisualId());
             if (lm.screenDoesNotNeedStretching()) {
                 buffer = this.getScreenBufferForDevice(v, map);

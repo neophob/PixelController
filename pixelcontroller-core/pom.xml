@@ -138,12 +138,12 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>artnet4j-0001.jar</id>
+						<id>artnet4j-0002.jar</id>
 						<configuration>
-							<file>lib/artnet4j-0001.jar</file>
+							<file>lib/artnet4j-0002.jar</file>
 							<groupId>artnet4j</groupId>
 							<artifactId>artnet4j</artifactId>
-							<version>0001</version>
+							<version>0002</version>
 							<packaging>jar</packaging>
 						</configuration>
 						<phase>initialize</phase>
@@ -272,6 +272,13 @@
 			<version>3.2.7</version>
 		</dependency>
 
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
+        <version>1.8.1</version>
+        <scope>test</scope>
+      </dependency>
+      
 		<!-- processing deps -->
 		<dependency>
 			<groupId>org.qbang</groupId>
@@ -307,7 +314,7 @@
 		<dependency>
 			<groupId>artnet4j</groupId>
 			<artifactId>artnet4j</artifactId>
-			<version>0001</version>
+			<version>0002</version>
 		</dependency>
 		<!-- src: https://code.google.com/p/rainbowduino-v3-streaming-firmware/ -->
 		<dependency>

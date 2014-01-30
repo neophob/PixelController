@@ -21,6 +21,7 @@ package com.neophob.sematrix.core.properties;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ import java.util.Properties;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.neophob.sematrix.core.output.ArtnetDevice;
 import com.neophob.sematrix.core.output.E1_31Device;
@@ -35,6 +39,8 @@ import com.neophob.sematrix.core.output.NullDevice;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.UdpDevice;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.layout.Layout.LayoutName;
 
 /**
@@ -43,7 +49,14 @@ import com.neophob.sematrix.core.visual.layout.Layout.LayoutName;
  * @author michu
  * 
  */
+@RunWith(MockitoJUnitRunner.class)
 public class PropertiesHelperTest {
+
+    @Mock
+    private MatrixData matrixData;
+
+    @Mock
+    private PixelControllerResize resizeHelper;
 
     @Test
     public void testEmptyConfig() {
@@ -186,7 +199,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
         config.put(
                 ConfigConstant.PIXELINVADERS_BLACKLIST,
-                "/dev/tty.Bluetooth-Serial-1,/dev/cu.Bluetooth-Serial-1,/dev/cu.Bluetooth-Modem,/dev/cu.Bluetooth-Serial-2,/dev/cu.Bluetooth-PDA-Sync,/dev/tty.Bluetooth-PDA-Sync,/dev/cu.Bluetooth-Modem,/dev/tty.Bluetooth-Modem,/dev/tty.Bluetooth-Serial-2");
+                "/dev/tty.Bluetooth-SerialP5-1,/dev/cu.Bluetooth-SerialP5-1,/dev/cu.Bluetooth-Modem,/dev/cu.Bluetooth-SerialP5-2,/dev/cu.Bluetooth-PDA-Sync,/dev/tty.Bluetooth-PDA-Sync,/dev/cu.Bluetooth-Modem,/dev/tty.Bluetooth-Modem,/dev/tty.Bluetooth-SerialP5-2");
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
         config.put(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, "16");
@@ -204,7 +217,7 @@ public class PropertiesHelperTest {
         config.put(ConfigConstant.PIXELINVADERS_ROW1, "ROTATE_180,NO_ROTATE");
         config.put(
                 ConfigConstant.PIXELINVADERS_BLACKLIST,
-                "/dev/tty.Bluetooth-Serial-1,/dev/cu.Bluetooth-Serial-1,/dev/cu.Bluetooth-Modem,/dev/cu.Bluetooth-Serial-2,/dev/cu.Bluetooth-PDA-Sync,/dev/tty.Bluetooth-PDA-Sync,/dev/cu.Bluetooth-Modem,/dev/tty.Bluetooth-Modem,/dev/tty.Bluetooth-Serial-2");
+                "/dev/tty.Bluetooth-SerialP5-1,/dev/cu.Bluetooth-SerialP5-1,/dev/cu.Bluetooth-Modem,/dev/cu.Bluetooth-SerialP5-2,/dev/cu.Bluetooth-PDA-Sync,/dev/tty.Bluetooth-PDA-Sync,/dev/cu.Bluetooth-Modem,/dev/tty.Bluetooth-Modem,/dev/tty.Bluetooth-SerialP5-2");
         config.put(ConfigConstant.PIXELINVADERS_NET_IP, "127.0.0.1");
         config.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
         config.put(ConfigConstant.NULLOUTPUT_ROW2, "0");
@@ -301,7 +314,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.ARTNET, ph.getOutputDevice());
 
-        ArtnetDevice device = new ArtnetDevice(ph, 1);
+        ArtnetDevice device = new ArtnetDevice(matrixData, resizeHelper, ph);
         assertTrue(device.isConnected());
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -326,7 +339,7 @@ public class PropertiesHelperTest {
         assertEquals(8, ph.getDeviceYResolution());
         assertEquals(true, ph.isOutputSnakeCabeling());
 
-        ArtnetDevice device = new ArtnetDevice(ph, 1);
+        ArtnetDevice device = new ArtnetDevice(matrixData, resizeHelper, ph);
         assertEquals(170, device.getPixelsPerUniverse());
     }
 
@@ -346,7 +359,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
-        E1_31Device device = new E1_31Device(ph, 1);
+        E1_31Device device = new E1_31Device(matrixData, resizeHelper, ph);
         assertFalse(device.isSendMulticast());
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -371,7 +384,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
-        device = new E1_31Device(ph, 1);
+        device = new E1_31Device(matrixData, resizeHelper, ph);
         assertTrue(device.isSendMulticast());
         assertEquals(1, device.getFirstUniverseId());
         assertEquals(170, device.getPixelsPerUniverse());
@@ -429,7 +442,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.NULL, ph.getOutputDevice());
 
-        NullDevice device = new NullDevice(ph);
+        NullDevice device = new NullDevice(matrixData, resizeHelper, ph);
         assertTrue(device.isConnected());
     }
 
@@ -561,7 +574,9 @@ public class PropertiesHelperTest {
         assertEquals("1.2.3.4", ph.getUdpIp());
         assertEquals(15, ph.getUdpPort());
 
-        UdpDevice device = new UdpDevice(ph);
+        when(matrixData.getDeviceXSize()).thenReturn(8);
+        when(matrixData.getDeviceYSize()).thenReturn(8);
+        UdpDevice device = new UdpDevice(matrixData, resizeHelper, ph);
         assertTrue(device.isConnected());
     }
 

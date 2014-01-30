@@ -26,6 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send frames out via UDP
@@ -48,8 +50,9 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
      * 
      * @param controller
      */
-    public UdpDevice(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.UDP, ph, 8);
+    public UdpDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.UDP, ph, 8);
 
         targetHost = ph.getUdpIp();
         targetPort = ph.getUdpPort();

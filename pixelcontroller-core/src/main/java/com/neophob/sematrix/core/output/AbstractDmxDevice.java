@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * 
@@ -75,9 +77,10 @@ public abstract class AbstractDmxDevice extends Output {
      * @param controller
      * @param bpp
      */
-    public AbstractDmxDevice(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph,
-            int bpp, int nrOfScreens) {
-        super(outputDeviceEnum, ph, bpp);
+    public AbstractDmxDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp,
+            int nrOfScreens) {
+        super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
         this.nrOfScreens = nrOfScreens;
         this.colorFormat = ph.getColorFormat();

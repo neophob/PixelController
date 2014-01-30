@@ -21,9 +21,12 @@ package com.neophob.sematrix.core.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.output.tpm2.Tpm2Serial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to a Tpm2 Device. this protocol is a successor of miniDMX and
@@ -48,8 +51,9 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
      * @param controller
      *            the controller
      */
-    public Tpm2(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.TPM2, ph, 8);
+    public Tpm2(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph, ISerial serialPort) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.TPM2, ph, 8);
 
         int baud = ph.parseTpm2BaudRate();
         if (baud == 0) {
@@ -59,16 +63,16 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 
         // HINT: on windows you need to (for example) use COM1, com1 will not
         // work! (case sensitive)
-        String serialPort = OutputHelper.getSerialPortName(ph.getTpm2Device().toUpperCase());
+        String serialPortName = serialPort.getSerialPortName(ph.getTpm2Device().toUpperCase());
         this.initialized = false;
         this.supportConnectionState = true;
         try {
-            tpm2 = new Tpm2Serial(serialPort, baud);
+            tpm2 = new Tpm2Serial(serialPortName, baud, serialPort);
             this.initialized = true;
 
             LOG.log(Level.INFO,
                     "Initialized TPM2 serial device v{0}, target port: {1}, Resolution: {2}/{3}",
-                    new Object[] { VERSION, serialPort, this.matrixData.getDeviceXSize(),
+                    new Object[] { VERSION, serialPortName, this.matrixData.getDeviceXSize(),
                             this.matrixData.getDeviceYSize() });
 
         } catch (NoSerialPortFoundException e) {
@@ -108,8 +112,8 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
                             totalUniverse, tmp));
 
                     // debug out
-                    while (tpm2.getPort().available() > 0) {
-                        LOG.log(Level.INFO, "<<< [" + tpm2.getPort().readString() + "]");
+                    while (tpm2.getSerialPort().available() > 0) {
+                        LOG.log(Level.INFO, "<<< [" + tpm2.getSerialPort().readString() + "]");
                     }
 
                     currentUniverse++;

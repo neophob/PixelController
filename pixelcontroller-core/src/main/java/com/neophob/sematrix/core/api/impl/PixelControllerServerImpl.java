@@ -140,7 +140,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         clientNotification("Initialize Output device");
         LOG.log(Level.INFO, "Initialize Output device");
-        this.output = PixelControllerOutput.getOutputDevice(applicationConfig);
+        this.output = PixelControllerOutput.getOutputDevice(this.visualState.getMatrix(),
+                this.visualState.getPixelControllerResize(), applicationConfig);
         if (this.output == null) {
             throw new IllegalArgumentException("No output device found!");
         }

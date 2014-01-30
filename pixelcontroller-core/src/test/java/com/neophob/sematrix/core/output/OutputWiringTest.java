@@ -17,7 +17,9 @@ import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.sound.SoundDummy;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 
@@ -55,7 +57,10 @@ public class OutputWiringTest {
         // for (int i = 0; i < 50; i++)
         vs.updateSystem(pixConStat);
 
-        JunitOutput output = new JunitOutput(ph);
+        MatrixData matrix = vs.getMatrix();
+        PixelControllerResize res = new PixelControllerResize();
+        res.initAll();
+        JunitOutput output = new JunitOutput(matrix, res, ph);
         output.prepareOutputBuffer(vs);
         output.switchBuffers();
         output.prepareOutputBuffer(vs);

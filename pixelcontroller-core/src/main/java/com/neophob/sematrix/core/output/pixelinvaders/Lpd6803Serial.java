@@ -47,8 +47,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.NoSerialPortFoundException;
-import com.neophob.sematrix.core.output.Serial;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.output.serial.ISerial;
 
 /**
  * library to communicate with an LPD6803 stripes via serial port<br>
@@ -60,11 +60,13 @@ import com.neophob.sematrix.core.output.gamma.RGBAdjust;
  */
 public class Lpd6803Serial extends Lpd6803Common {
 
+    private static final long serialVersionUID = 4356560697627713291L;
+
     /** The log. */
     private static final transient Logger LOG = Logger.getLogger(Lpd6803Serial.class.getName());
 
     /** internal lib version. */
-    public static final transient String VERSION = "2.1";
+    public static final transient String VERSION = "2.2";
 
     // how many attemps are made to get the data
     private static final transient int TIMEOUT_LOOP = 50;
@@ -76,7 +78,7 @@ public class Lpd6803Serial extends Lpd6803Common {
     private int baud = 115200;
 
     /** The port. */
-    private transient Serial port;
+    private transient ISerial serialPort;
 
     /** The arduino heartbeat. */
     private long arduinoHeartbeat;
@@ -102,9 +104,9 @@ public class Lpd6803Serial extends Lpd6803Common {
      * @throws NoSerialPortFoundException
      *             the no serial port found exception
      */
-    public Lpd6803Serial(List<String> portBlacklist, Map<Integer, RGBAdjust> correctionMap,
-            int panelSize) throws NoSerialPortFoundException {
-        this(null, 0, portBlacklist, correctionMap, panelSize);
+    public Lpd6803Serial(ISerial serialPort, List<String> portBlacklist,
+            Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
+        this(serialPort, null, 0, portBlacklist, correctionMap, panelSize);
     }
 
     /**
@@ -119,11 +121,12 @@ public class Lpd6803Serial extends Lpd6803Common {
      * @throws NoSerialPortFoundException
      *             the no serial port found exception
      */
-    public Lpd6803Serial(String portName, int baud, List<String> portBlacklist,
+    public Lpd6803Serial(ISerial serialPort, String portName, int baud, List<String> portBlacklist,
             Map<Integer, RGBAdjust> correctionMap, int panelSize) throws NoSerialPortFoundException {
         super(panelSize, panelSize);
         LOG.log(Level.INFO, "Initialize LPD6803 lib v{0}", VERSION);
 
+        this.serialPort = serialPort;
         this.correctionMap = correctionMap;
 
         serialPortName = "";
@@ -136,12 +139,10 @@ public class Lpd6803Serial extends Lpd6803Common {
             LOG.log(Level.INFO, "open port: {0}", portName);
             serialPortName = portName;
             openPort(portName);
-            initialized = true;
         } else {
             // try to find the port
-            String[] ports = Serial.list();
-
-            for (int i = 0; port == null && i < ports.length; i++) {
+            String[] ports = serialPort.getAllSerialPorts();
+            for (int i = 0; !serialPort.isConnected() && i < ports.length; i++) {
                 // check blacklist
                 if (portBlacklist != null && portBlacklist.contains(ports[i])) {
                     LOG.log(Level.INFO, "ignore blacklist port: {0}", ports[i]);
@@ -152,7 +153,6 @@ public class Lpd6803Serial extends Lpd6803Common {
                 try {
                     serialPortName = ports[i];
                     openPort(ports[i]);
-                    initialized = true;
                     // catch all, there are multiple exception to catch
                     // (NoSerialPortFoundException, PortInUseException...)
                 } catch (Exception e) {
@@ -162,22 +162,18 @@ public class Lpd6803Serial extends Lpd6803Common {
             }
         }
 
-        if (port == null) {
+        if (!serialPort.isConnected()) {
             throw new NoSerialPortFoundException("\nError: no serial port found!\n");
         }
-
-        LOG.log(Level.INFO, "found serial port: " + serialPortName);
+        initialized = true;
+        LOG.log(Level.INFO, "found serial port: <{0}>", serialPortName);
     }
 
     /**
      * clean up library.
      */
     public void dispose() {
-        if (connected()) {
-            LOG.log(Level.INFO, "Serial connection closed");
-            port.stop();
-            port = null;
-        }
+        serialPort.closePort();
     }
 
     /**
@@ -204,29 +200,25 @@ public class Lpd6803Serial extends Lpd6803Common {
         }
 
         try {
-            port = new Serial(portName, this.baud);
+            serialPort.openPort(portName, this.baud);
             sleep(1500); // give it time to initialize
             if (ping()) {
                 return;
             }
 
             LOG.log(Level.WARNING, "No response from port {0}", portName);
-            if (port != null) {
-                port.stop();
+            if (serialPort.isConnected()) {
+                serialPort.closePort();
                 byte[] reply = getReplyFromController();
                 if (reply == null) {
                     reply = new byte[0];
                 }
-                LOG.log(Level.WARNING, new String(reply));
+                LOG.log(Level.WARNING, "Input from serial port <{0}>", new String(reply));
             }
-            port = null;
             throw new NoSerialPortFoundException("No response from port " + portName);
         } catch (Exception e) {
             LOG.log(Level.WARNING, "Failed to open port <" + portName + ">", e);
-            if (port != null) {
-                port.stop();
-            }
-            port = null;
+            serialPort.closePort();
             throw new NoSerialPortFoundException("Failed to open port " + portName + ": " + e);
         }
     }
@@ -284,13 +276,13 @@ public class Lpd6803Serial extends Lpd6803Common {
      *             the serial port exception
      */
     protected synchronized void writeData(byte[] cmdfull) throws WriteDataException {
-        if (port == null) {
+        if (!serialPort.isConnected()) {
             throw new WriteDataException("serial port is not ready!");
         }
 
         try {
-            port.output.write(cmdfull);
-            port.output.flush();
+            serialPort.getOutputStream().write(cmdfull);
+            serialPort.getOutputStream().flush();
         } catch (Exception e) {
             LOG.log(Level.INFO, "Error sending serial data!", e);
             connectionErrorCounter++;
@@ -308,18 +300,18 @@ public class Lpd6803Serial extends Lpd6803Common {
         long start = System.currentTimeMillis();
         int timeout = TIMEOUT_LOOP; // wait up to 50ms
         // log.log(Level.INFO, "wait for ack");
-        while (timeout > 0 && port.available() < 4) {
+        while (timeout > 0 && serialPort.available() < 4) {
             sleep(TIMEOUT_SLEEP); // in ms
             timeout--;
         }
-        if (timeout == 0 && port.available() < 4) {
+        if (timeout == 0 && serialPort.available() < 4) {
             LOG.log(Level.INFO, "#### No serial reply, duration: {0}ms ###",
                     System.currentTimeMillis() - start);
             ackErrors++;
             return false;
         }
 
-        byte[] msg = port.readBytes();
+        byte[] msg = serialPort.readBytes();
         String reply = new String(msg);
         LOG.log(Level.INFO, "got ACK: {0}", reply);
 
@@ -338,7 +330,7 @@ public class Lpd6803Serial extends Lpd6803Common {
 
     @Override
     protected byte[] getReplyFromController() {
-        return port.readBytes();
+        return serialPort.readBytes();
     }
 
 }

@@ -1,11 +1,14 @@
 package com.neophob.sematrix.core.output;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 public class JunitOutput extends OnePanelResolutionAwareOutput {
 
-    public JunitOutput(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.ARTNET, ph, 8);
+    public JunitOutput(MatrixData matrix, PixelControllerResize resize,
+            ApplicationConfigurationHelper ph) {
+        super(matrix, resize, OutputDeviceEnum.ARTNET, ph, 8);
     }
 
     public int[] getBuffer() {

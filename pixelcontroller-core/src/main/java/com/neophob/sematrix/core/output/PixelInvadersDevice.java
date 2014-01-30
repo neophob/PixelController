@@ -28,6 +28,8 @@ import com.neophob.sematrix.core.output.pixelinvaders.Lpd6803Common;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to the PixelInvaders Device. A PixelInvaders Panel is always 8x8
@@ -70,9 +72,10 @@ public abstract class PixelInvadersDevice extends Output {
      * @param controller
      * @param bpp
      */
-    public PixelInvadersDevice(OutputDeviceEnum outputDeviceEnum,
-            ApplicationConfigurationHelper ph, int bpp, int nrOfScreens) {
-        super(outputDeviceEnum, ph, bpp);
+    public PixelInvadersDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp,
+            int nrOfScreens) {
+        super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
         this.nrOfScreens = nrOfScreens;
         this.displayOptions = ph.getLpdDevice();

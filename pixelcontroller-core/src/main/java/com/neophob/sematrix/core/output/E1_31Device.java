@@ -30,6 +30,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.output.e131.E1_31DataPacket;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Basic E1.31 device support. Can be tested with
@@ -56,8 +58,9 @@ public class E1_31Device extends AbstractDmxDevice {
      * 
      * @param controller
      */
-    public E1_31Device(ApplicationConfigurationHelper ph, int nrOfScreens) {
-        super(OutputDeviceEnum.E1_31, ph, 8, nrOfScreens);
+    public E1_31Device(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.E1_31, ph, 8, ph.getNrOfScreens());
         this.displayOptions = ph.getE131Device();
 
         // Get dmx specific config

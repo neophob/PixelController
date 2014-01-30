@@ -23,7 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.neorainbowduino.Rainbowduino;
+import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to Rainbowduino.
@@ -52,14 +55,15 @@ public class RainbowduinoV2Device extends ArduinoOutput {
      * @param allI2cAddress
      *            the all i2c address
      */
-    public RainbowduinoV2Device(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.RAINBOWDUINO_V2, ph, 4);
+    public RainbowduinoV2Device(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph, ISerial serialPort) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.RAINBOWDUINO_V2, ph, 4);
 
         this.nrOfScreens = ph.getNrOfScreens();
         this.allI2cAddress = ph.getI2cAddr();
         this.initialized = false;
         try {
-            rainbowduino = new Rainbowduino(allI2cAddress);
+            rainbowduino = new Rainbowduino(allI2cAddress, serialPort);
             this.initialized = rainbowduino.ping();
             LOG.log(Level.INFO, "ping result: " + this.initialized);
         } catch (NoSerialPortFoundException e) {

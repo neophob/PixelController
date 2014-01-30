@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.pi4j.wiringpi.Spi;
 
 public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
@@ -18,8 +20,9 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
     private boolean connected = false;
     private int spiChannel;
 
-    public RaspberrySpi2801(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.RPI_2801, ph, 8);
+    public RaspberrySpi2801(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.RPI_2801, ph, 8);
 
         LOG.log(Level.INFO, "Initialize RPi SPI channel, speed: " + ph.getRpiWs2801SpiSpeed());
         spiChannel = Spi.CHANNEL_0;

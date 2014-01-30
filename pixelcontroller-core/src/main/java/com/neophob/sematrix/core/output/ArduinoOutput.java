@@ -19,66 +19,70 @@
 package com.neophob.sematrix.core.output;
 
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class ArduinoOutput.
- *
+ * 
  * @author michu
  */
 public abstract class ArduinoOutput extends Output {
-	
-	/** The initialized. */
-	protected boolean initialized;
-	
-	/** The need update. */
-	protected long needUpdate;
-	
-	/** The no update. */
-	protected long noUpdate;
-	
-	/**
-	 * Instantiates a new arduino output.
-	 *
-	 * @param outputDeviceEnum the outputDeviceEnum
-	 * @param ph the ph
-	 * @param controller the controller
-	 */
-	public ArduinoOutput(OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
-		super(outputDeviceEnum, ph, bpp);
-		this.supportConnectionState = true;
-	}
-	
-	/**
-	 * Gets the arduino error counter.
-	 *
-	 * @return the arduino error counter
-	 */
-	public abstract long getArduinoErrorCounter();
 
-	/**
-	 * Gets the arduino buffer size.
-	 *
-	 * @return the arduino buffer size
-	 */
-	public abstract int getArduinoBufferSize();
-	
-	/**
-	 * Gets the latest heartbeat.
-	 *
-	 * @return the latest heartbeat
-	 */
-	public abstract long getLatestHeartbeat();
-	
-	
+    /** The initialized. */
+    protected boolean initialized;
+
+    /** The need update. */
+    protected long needUpdate;
+
+    /** The no update. */
+    protected long noUpdate;
+
+    /**
+     * Instantiates a new arduino output.
+     * 
+     * @param outputDeviceEnum
+     *            the outputDeviceEnum
+     * @param ph
+     *            the ph
+     * @param controller
+     *            the controller
+     */
+    public ArduinoOutput(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+        super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
+        this.supportConnectionState = true;
+    }
+
+    /**
+     * Gets the arduino error counter.
+     * 
+     * @return the arduino error counter
+     */
+    public abstract long getArduinoErrorCounter();
+
+    /**
+     * Gets the arduino buffer size.
+     * 
+     * @return the arduino buffer size
+     */
+    public abstract int getArduinoBufferSize();
+
+    /**
+     * Gets the latest heartbeat.
+     * 
+     * @return the latest heartbeat
+     */
+    public abstract long getLatestHeartbeat();
+
     @Override
     public boolean isConnected() {
         return this.initialized;
     }
-	
 
     @Override
     public long getErrorCounter() {
         return getArduinoErrorCounter();
     }
-    
+
 }

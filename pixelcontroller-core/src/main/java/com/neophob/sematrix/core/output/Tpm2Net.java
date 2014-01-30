@@ -32,6 +32,8 @@ import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * 
@@ -104,8 +106,9 @@ public class Tpm2Net extends Output {
      * @param ph
      * @param controller
      */
-    public Tpm2Net(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.TPM2NET, ph, 8);
+    public Tpm2Net(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.TPM2NET, ph, 8);
 
         this.displayOptions = ph.getTpm2NetDevice();
         this.colorFormat = ph.getColorFormat();

@@ -31,7 +31,11 @@ import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
+import com.neophob.sematrix.core.output.serial.ISerial;
+import com.neophob.sematrix.core.output.serial.SerialImpl;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
 
 /**
@@ -61,49 +65,56 @@ public class PixelControllerOutput implements PixelControllerElement {
      * @param applicationConfig
      * @throws IllegalArgumentException
      */
-    public static IOutput getOutputDevice(ApplicationConfigurationHelper applicationConfig)
+    public static IOutput getOutputDevice(MatrixData matrixData,
+            PixelControllerResize resizeHelper, ApplicationConfigurationHelper applicationConfig)
             throws IllegalArgumentException {
         OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
         IOutput output = null;
-        int nrOfOutputScreens = applicationConfig.getNrOfScreens();
+
+        // create concrete serial implementation
+        ISerial serialPort = new SerialImpl();
 
         try {
             switch (outputDeviceEnum) {
                 case PIXELINVADERS:
-                    output = new PixelInvadersSerialDevice(applicationConfig, nrOfOutputScreens);
+                    output = new PixelInvadersSerialDevice(matrixData, resizeHelper,
+                            applicationConfig, serialPort);
                     break;
                 case PIXELINVADERS_NET:
-                    output = new PixelInvadersNetDevice(applicationConfig, nrOfOutputScreens);
+                    output = new PixelInvadersNetDevice(matrixData, resizeHelper, applicationConfig);
                     break;
                 case RAINBOWDUINO_V2:
-                    output = new RainbowduinoV2Device(applicationConfig);
+                    output = new RainbowduinoV2Device(matrixData, resizeHelper, applicationConfig,
+                            serialPort);
                     break;
                 case RAINBOWDUINO_V3:
-                    output = new RainbowduinoV3Device(applicationConfig);
+                    output = new RainbowduinoV3Device(matrixData, resizeHelper, applicationConfig,
+                            serialPort);
                     break;
                 case ARTNET:
-                    output = new ArtnetDevice(applicationConfig, nrOfOutputScreens);
+                    output = new ArtnetDevice(matrixData, resizeHelper, applicationConfig);
                     break;
                 case E1_31:
-                    output = new E1_31Device(applicationConfig, nrOfOutputScreens);
+                    output = new E1_31Device(matrixData, resizeHelper, applicationConfig);
                     break;
                 case MINIDMX:
-                    output = new MiniDmxDevice(applicationConfig);
+                    output = new MiniDmxDevice(matrixData, resizeHelper, applicationConfig,
+                            serialPort);
                     break;
                 case NULL:
-                    output = new NullDevice(applicationConfig);
+                    output = new NullDevice(matrixData, resizeHelper, applicationConfig);
                     break;
                 case UDP:
-                    output = new UdpDevice(applicationConfig);
+                    output = new UdpDevice(matrixData, resizeHelper, applicationConfig);
                     break;
                 case TPM2:
-                    output = new Tpm2(applicationConfig);
+                    output = new Tpm2(matrixData, resizeHelper, applicationConfig, serialPort);
                     break;
                 case TPM2NET:
-                    output = new Tpm2Net(applicationConfig);
+                    output = new Tpm2Net(matrixData, resizeHelper, applicationConfig);
                     break;
                 case RPI_2801:
-                    output = new RaspberrySpi2801(applicationConfig);
+                    output = new RaspberrySpi2801(matrixData, resizeHelper, applicationConfig);
                     break;
                 default:
                     throw new IllegalArgumentException(

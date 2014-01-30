@@ -24,6 +24,8 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * The Class ResolutionAwareOutput.
@@ -36,12 +38,6 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
     /** The log. */
     private static final transient Logger LOG = Logger
             .getLogger(OnePanelResolutionAwareOutput.class.getName());
-
-    /** The x size. */
-    protected int xResolution;
-
-    /** The y size. */
-    protected int yResolution;
 
     /** does the image needs to be rotated? */
     protected DeviceConfig displayOption;
@@ -68,12 +64,10 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
      * @param controller
      *            the controller
      */
-    public OnePanelResolutionAwareOutput(OutputDeviceEnum outputDeviceEnum,
-            ApplicationConfigurationHelper ph, int bpp) {
-        super(outputDeviceEnum, ph, bpp);
+    public OnePanelResolutionAwareOutput(MatrixData matrixData, PixelControllerResize resizeHelper,
+            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+        super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 
-        this.xResolution = ph.parseOutputXResolution();
-        this.yResolution = ph.parseOutputYResolution();
         this.snakeCabeling = ph.isOutputSnakeCabeling();
         this.mapping = ph.getOutputMappingValues();
 
@@ -89,7 +83,8 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
         }
 
         LOG.log(Level.INFO, "Output Settings:");
-        LOG.log(Level.INFO, "\tResolution: " + xResolution + "/" + yResolution);
+        LOG.log(Level.INFO,
+                "\tResolution: " + matrixData.getDeviceXSize() + "/" + matrixData.getDeviceYSize());
         LOG.log(Level.INFO, "\tSnakeCabeling: " + snakeCabeling);
         LOG.log(Level.INFO, "\tRotate: " + displayOption);
         LOG.log(Level.INFO, "\tColorFormat: " + colorFormat);
@@ -103,18 +98,17 @@ public abstract class OnePanelResolutionAwareOutput extends Output {
      */
     public int[] getTransformedBuffer() {
         // rotate buffer (if needed)
-
         int[] transformedBuffer = RotateBuffer.transformImage(super.getBufferForScreen(0),
-                displayOption, xResolution, yResolution);
+                displayOption, matrixData.getDeviceXSize(), matrixData.getDeviceYSize());
 
         if (this.snakeCabeling) {
             // flip each 2nd scanline
-            transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer, xResolution,
-                    yResolution);
+            transformedBuffer = OutputHelper.flipSecondScanline(transformedBuffer,
+                    matrixData.getDeviceXSize(), matrixData.getDeviceYSize());
         } else if (this.mapping.length > 0) {
             // do manual mapping
-            transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping, xResolution,
-                    yResolution);
+            transformedBuffer = OutputHelper.manualMapping(transformedBuffer, mapping,
+                    matrixData.getDeviceXSize(), matrixData.getDeviceYSize());
         }
 
         return transformedBuffer;

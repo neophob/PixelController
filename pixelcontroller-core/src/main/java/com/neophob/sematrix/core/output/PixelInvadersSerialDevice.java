@@ -22,7 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.pixelinvaders.Lpd6803Serial;
+import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to the PixelInvaders Device. A Pixelinvaders Panel is always 8x8
@@ -49,11 +52,12 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
      * @param colorFormat
      *            the color format
      */
-    public PixelInvadersSerialDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
-        super(OutputDeviceEnum.PIXELINVADERS, ph, 5, nrOfScreens);
+    public PixelInvadersSerialDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph, ISerial serial) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.PIXELINVADERS, ph, 5, ph.getNrOfScreens());
 
         try {
-            lpd6803 = new Lpd6803Serial(ph.getPixelInvadersBlacklist(),
+            lpd6803 = new Lpd6803Serial(serial, ph.getPixelInvadersBlacklist(),
                     ph.getPixelInvadersCorrectionMap(), ph.getDeviceXResolution());
             this.initialized = lpd6803.isInitialized();
             super.setLpd6803(lpd6803);

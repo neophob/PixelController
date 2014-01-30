@@ -75,9 +75,7 @@ public class PixelControllerResize implements PixelControllerElement {
      */
     @Override
     public List<String> getCurrentState() {
-        List<String> ret = new ArrayList<String>();
-
-        return ret;
+        return new ArrayList<String>();
     }
 
     /**

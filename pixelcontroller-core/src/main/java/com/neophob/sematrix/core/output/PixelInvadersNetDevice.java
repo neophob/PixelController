@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.pixelinvaders.Lpd6803Net;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to the PixelInvaders Device. A Pixelinvaders Panel is always 8x8
@@ -49,8 +51,10 @@ public class PixelInvadersNetDevice extends PixelInvadersDevice {
      * @param colorFormat
      *            the color format
      */
-    public PixelInvadersNetDevice(ApplicationConfigurationHelper ph, int nrOfScreens) {
-        super(OutputDeviceEnum.PIXELINVADERS_NET, ph, 5, nrOfScreens);
+    public PixelInvadersNetDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.PIXELINVADERS_NET, ph, 5, ph
+                .getNrOfScreens());
 
         String ip = ph.getPixelinvadersNetIp();
         int port = ph.getPixelinvadersNetPort();

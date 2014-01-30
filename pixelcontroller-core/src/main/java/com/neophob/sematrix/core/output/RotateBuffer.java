@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.DeviceConfig;
-import com.neophob.sematrix.core.visual.VisualState;
 
 /**
  * this class will transform a buffer.
@@ -146,8 +145,8 @@ public final class RotateBuffer {
             int deviceYSize) {
 
         if (deviceXSize == 0) {
-            LOG.log(Level.SEVERE, "Lazy init output width");
-            deviceXSize = VisualState.getInstance().getMatrix().getDeviceXSize();
+            LOG.log(Level.SEVERE, "deviceXSize = 0");
+            return buffer;
         }
 
         switch (deviceConfig) {

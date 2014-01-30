@@ -22,7 +22,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.minidmx.MiniDmxSerial;
+import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.resize.PixelControllerResize;
+import com.neophob.sematrix.core.visual.MatrixData;
 
 /**
  * Send data to a miniDMX Device via serial line
@@ -45,8 +48,9 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
      * @param controller
      *            the controller
      */
-    public MiniDmxDevice(ApplicationConfigurationHelper ph) {
-        super(OutputDeviceEnum.MINIDMX, ph, 8);
+    public MiniDmxDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
+            ApplicationConfigurationHelper ph, ISerial serialPort) {
+        super(matrixData, resizeHelper, OutputDeviceEnum.MINIDMX, ph, 8);
 
         int baud = ph.parseMiniDmxBaudRate();
         if (baud == 0) {
@@ -56,7 +60,8 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
         this.supportConnectionState = true;
         this.initialized = false;
         try {
-            miniDmx = new MiniDmxSerial(this.xResolution * this.yResolution * 3, baud);
+            miniDmx = new MiniDmxSerial(null, matrixData.getDeviceXSize()
+                    * matrixData.getDeviceYSize() * 3, baud, serialPort);
             this.initialized = miniDmx.ping();
             LOG.log(Level.INFO, "ping result: " + this.initialized);
         } catch (NoSerialPortFoundException e) {
