@@ -588,6 +588,29 @@ Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**
 * PixelResize needed 151ms - 60ns per resize
 * QualityResize needed 1,633ms - 653ns per resize
 
+### Performance on RPi
+Machine: Raspberry Pi, Model B, 512MB Ram, ARMv6-compatible processor rev 7 (v6l)
+
+Kernel: `Linux raspberrypi 3.10.27+ #630 PREEMPT Fri Jan 17 19:44:36 GMT 2014 armv6l GNU/Linux`
+
+JRE: `Java(TM) SE Runtime Environment (build 1.7.0_40-b43)`
+
+Performance test using 500,000 rounds and pixelsize of 16 (**512 buffer size**).
+
+* Adler32 Hash: 1,915ms - 3ns per hash
+* XXHash: 3,267ms - 6ns per hash
+* Visual needed 18,355ms - 7,342ns per getBuffer call
+* PixelResize needed 117ms - 46ns per resize
+* QualityResize needed 575ms - 230ns per resize
+
+Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**).
+
+* Adler32 Hash: 5,604ms - 11ns per hash
+* XXHash: 12,616ms - 25ns per hash
+* Visual needed 17,892ms - 7,156ns per getBuffer call
+* PixelResize needed 584ms - 233ns per resize
+* QualityResize needed 2,629ms - 1,051ns per resize
+
 ### Performance on OSX
 
 Machine: MacBook Air, 2x1.8GHz i5
