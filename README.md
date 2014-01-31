@@ -558,7 +558,7 @@ Release
 
 ## PERFORMANCE
 
-You can start a quick PixelController performance test, where common functions (HAshing, Generate Visual, Resize images) are measured. You can start it by execute `./pixConServer/PixelController.sh -perf`.
+You can start a quick PixelController performance test, where common functions (hashing, generate visuals, resize images) are measured. You can start it by execute `./pixConServer/PixelController.sh -perf`.
 
 Performance test using 500,000 rounds (Using PixelController v2.1.0-RC1)
 
