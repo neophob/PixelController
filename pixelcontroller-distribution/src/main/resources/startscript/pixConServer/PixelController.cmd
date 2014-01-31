@@ -23,5 +23,5 @@ setlocal
 set BINDIR=%~dp0
 cd /D "%BINDIR%"\..\
 
-set JAVA_OPT="-Xmx512m -Djava.util.logging.config.file=data\logging.properties -Djava.library.path=lib -Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote -Djava.security.policy=data\client.policy"
-java %JAVA_OPT% -classpath .;./lib/* -XX:ErrorFile=./log/hs_err_pid%p.log com.neophob.sematrix.cli.PixConDaemon
+set JAVA_JMX_OPT=-Dcom.sun.management.jmxremote.port=1337 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=127.0.0.1 -Dcom.sun.management.jmxremote
+java %JAVA_JMX_OPT% -Djava.security.policy=sys/client.policy -Djava.util.logging.config.file=sys/logging.properties -Djava.library.path=lib -Xmx512m -classpath ".;./lib/*" com.neophob.sematrix.cli.PixConDaemon %*
