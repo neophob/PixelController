@@ -31,9 +31,8 @@ import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
+import com.neophob.sematrix.core.output.transport.OutputTransportFactory;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.output.transport.serial.SerialImpl;
-import com.neophob.sematrix.core.output.transport.spi.SpiRaspberryPi;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -73,7 +72,7 @@ public class PixelControllerOutput implements PixelControllerElement {
         IOutput output = null;
 
         // create concrete serial implementation
-        ISerial serialPort = new SerialImpl();
+        ISerial serialPort = OutputTransportFactory.getSerialImpl();
 
         try {
             switch (outputDeviceEnum) {
@@ -116,7 +115,7 @@ public class PixelControllerOutput implements PixelControllerElement {
                     break;
                 case RPI_2801:
                     output = new RaspberrySpi2801(matrixData, resizeHelper, applicationConfig,
-                            new SpiRaspberryPi());
+                            OutputTransportFactory.getRaspberryPiSpiImpl());
                     break;
                 default:
                     throw new IllegalArgumentException(
