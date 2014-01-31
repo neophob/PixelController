@@ -572,6 +572,8 @@ Performance test using 500,000 rounds
 | BBB / 1.7.0_51-b13  | 32x32      | 2554ms (5ns)  | 6883ms (13ns) | 7971ms (3188ns)  | 151ms (60ns) | 1633ms (653ns) |
 | RPi / 1.7.0_40-b43  | 16x16      | 1915ms (3ns)  | 3267ms (6ns)  | 18355ms (7342ns) | 117ms (46ns) | 575ms (230ns)  |
 | RPi / 1.7.0_40-b43  | 32x32      | 5604ms (11ns) | 12616ms (25ns)| 17892ms (7156ns) | 584ms (233ns)| 2629ms (1051ns)|
+| OSX / 1.7.0_21-b12  | 16x16      | 191ms (0ns)   | 118ms (0ns)   | 614ms (245ns)    | 2ms (0ns)    | 28ms (11ns)    |
+| OSX / 1.7.0_21-b12  | 32x32      | 179ms (0ns)   | 262ms (0ns)   | 618ms (247ns)    | 7ms (2ns)    | 123ms (49ns)   |
 
 
 BBB: Beagle Bone Black, ARMv7 Processor rev 2 (v7l), 300 BogoMIPS
@@ -580,31 +582,8 @@ Kernel: `Linux beaglebone 3.8.13 #1 SMP Thu Sep 12 10:27:06 CEST 2013 armv7l GNU
 RPi: Raspberry Pi, Model B, 512MB Ram, ARMv6-compatible processor rev 7 (v6l)
 Kernel: `Linux raspberrypi 3.10.27+ #630 PREEMPT Fri Jan 17 19:44:36 GMT 2014 armv6l GNU/Linux`
 
-
-### Performance on OSX
-
-Machine: MacBook Air, 2x1.8GHz i5
-
+OSX: Machine: MacBook Air, 2x1.8GHz i5
 Kernel: `Darwin xxx.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27 PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64`
-
-JRE: `Java(TM) SE Runtime Environment (build 1.7.0_21-b12)`
-
-Performance test using 500,000 rounds and pixelsize of 16 (**512 buffer size**).
-
-* Adler32 Hash: 119ms - 0ns per hash
-* XXHash: 118ms - 0ns per hash
-* Visual needed 614ms - 245ns per getBuffer call
-* PixelResize needed 2ms - 0ns per resize
-* QualityResize needed 28ms - 11ns per resize
-
-Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**).
-
-* Adler32 Hash: 179ms - 0ns per hash
-* XXHash: 262ms - 0ns per hash
-* Visual needed 618ms - 247ns per getBuffer call
-* PixelResize needed 7ms - 2ns per resize
-* QualityResize needed 123ms - 49ns per resize
-
 
 
 ## CREDITS
