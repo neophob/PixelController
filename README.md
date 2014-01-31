@@ -566,56 +566,20 @@ PixelController v2.1.0-RC1.
 
 Performance test using 500,000 rounds
 
-| System              | Resolution | Adler32       | XXHash        | Visual            | PixelResize | QualityResize |
-| -------------------:| ----------:| -------------:| -------------:| -----------------:| -----------:| -------------:| 
-| BBB / 1.7.0_51-b13  | 16x16      | 806ms (1ns)   | 1,799ms (3ns) | 7,985ms (3,194ns) | 31ms (12ns) | 397ms - 158ns |
+| System              | Resolution | Adler32       | XXHash        | Visual           | PixelResize  | QualityResize  |
+| -------------------:| ----------:| -------------:| -------------:| ----------------:| ------------:| --------------:| 
+| BBB / 1.7.0_51-b13  | 16x16      | 806ms (1ns)   | 1799ms (3ns)  | 7985ms (3194ns)  | 31ms (12ns)  | 397ms (158ns)  |
+| BBB / 1.7.0_51-b13  | 32x32      | 2554ms (5ns)  | 6883ms (13ns) | 7971ms (3188ns)  | 151ms (60ns) | 1633ms (653ns) |
+| RPi / 1.7.0_40-b43  | 16x16      | 1915ms (3ns)  | 3267ms (6ns)  | 18355ms (7342ns) | 117ms (46ns) | 575ms (230ns)  |
+| RPi / 1.7.0_40-b43  | 32x32      | 5604ms (11ns) | 12616ms (25ns)| 17892ms (7156ns) | 584ms (233ns)| 2629ms (1051ns)|
 
-### Performance on BBB
 
-Machine: Beagle Bone Black, ARMv7 Processor rev 2 (v7l), 300 BogoMIPS
-
+BBB: Beagle Bone Black, ARMv7 Processor rev 2 (v7l), 300 BogoMIPS
 Kernel: `Linux beaglebone 3.8.13 #1 SMP Thu Sep 12 10:27:06 CEST 2013 armv7l GNU/Linux`
 
-JRE: `Java(TM) SE Runtime Environment (build 1.7.0_51-b13)`
-
-Performance test using 500,000 rounds and pixelsize of 16 (**512 buffer size**).
-
-* Adler32 Hash: 806ms - 1ns per hash
-* XXHash: 1,799ms - 3ns per hash
-* Visual needed 7,985ms - 3,194ns per getBuffer call
-* PixelResize needed 31ms - 12ns per resize
-* QualityResize needed 397ms - 158ns per resize
-
-Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**).
-
-* Adler32 Hash: 2,554ms - 5ns per hash
-* XXHash: 6,883ms - 13ns per hash
-* Visual needed 7,971ms - 3,188ns per getBuffer call
-* PixelResize needed 151ms - 60ns per resize
-* QualityResize needed 1,633ms - 653ns per resize
-
-### Performance on RPi
-Machine: Raspberry Pi, Model B, 512MB Ram, ARMv6-compatible processor rev 7 (v6l)
-
+RPi: Raspberry Pi, Model B, 512MB Ram, ARMv6-compatible processor rev 7 (v6l)
 Kernel: `Linux raspberrypi 3.10.27+ #630 PREEMPT Fri Jan 17 19:44:36 GMT 2014 armv6l GNU/Linux`
 
-JRE: `Java(TM) SE Runtime Environment (build 1.7.0_40-b43)`
-
-Performance test using 500,000 rounds and pixelsize of 16 (**512 buffer size**).
-
-* Adler32 Hash: 1,915ms - 3ns per hash
-* XXHash: 3,267ms - 6ns per hash
-* Visual needed 18,355ms - 7,342ns per getBuffer call
-* PixelResize needed 117ms - 46ns per resize
-* QualityResize needed 575ms - 230ns per resize
-
-Performance test using 500,000 rounds and pixelsize of 32 (**2,048 buffer size**).
-
-* Adler32 Hash: 5,604ms - 11ns per hash
-* XXHash: 12,616ms - 25ns per hash
-* Visual needed 17,892ms - 7,156ns per getBuffer call
-* PixelResize needed 584ms - 233ns per resize
-* QualityResize needed 2,629ms - 1,051ns per resize
 
 ### Performance on OSX
 
