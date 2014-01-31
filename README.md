@@ -565,6 +565,7 @@ PixelController ...
 PixelController v2.1.0-RC1.
 
 Performance test using 500,000 rounds
+
 | System     | JRE           | Resolution | Adler32       | XXHash        | Visual            | PixelResize | QualityResize |
 | ---------- |:-------------:| ----------:| -------------:| -------------:| -----------------:| -----------:| --------------:|
 | BBB        | 1.7.0_51-b13  | 16x16      | 806ms (1ns)   | 1,799ms (3ns) | 7,985ms (3,194ns) | 31ms (12ns) |
