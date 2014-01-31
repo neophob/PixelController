@@ -558,15 +558,11 @@ Release
 
 ## PERFORMANCE
 
-PixelController ...
+You can start a quick PixelController performance test, where common functions (HAshing, Generate Visual, Resize images) are measured. You can start it by execute `./pixConServer/PixelController.sh -perf`.
 
-`./PixelController.sh -perf`
+Performance test using 500,000 rounds (Using PixelController v2.1.0-RC1)
 
-PixelController v2.1.0-RC1.
-
-Performance test using 500,000 rounds
-
-| Envoirement  | Adler32        | XXHash         | Visual           | PixelResize   | QualityResize   |
+| Environment  | Adler32        | XXHash         | Visual           | PixelResize   | QualityResize   |
 | ------------:| --------------:| --------------:| ----------------:| -------------:| ---------------:| 
 | BBB, 16x16   | `806ms (1ns)`  |`1799ms (3ns)`  |`7985ms (3194ns)` |`31ms (12ns)`  |`397ms (158ns)`  |
 | BBB, 32x32   | `2554ms (5ns)` |`6883ms (13ns)` |`7971ms (3188ns)` |`151ms (60ns)` |`1633ms (653ns)` |
