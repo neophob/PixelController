@@ -52,7 +52,7 @@ import java.util.zip.Adler32;
 
 import com.neophob.sematrix.core.output.NoSerialPortFoundException;
 import com.neophob.sematrix.core.output.SerialPortException;
-import com.neophob.sematrix.core.output.serial.ISerial;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
 
 /**
  * library to communicate with an arduino via serial port<br>

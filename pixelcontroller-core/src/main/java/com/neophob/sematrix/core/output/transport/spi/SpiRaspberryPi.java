@@ -1,8 +1,9 @@
-package com.neophob.sematrix.core.output.spi;
+package com.neophob.sematrix.core.output.transport.spi;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.output.transport.spi.ISpi;
 import com.pi4j.wiringpi.Spi;
 
 public class SpiRaspberryPi implements ISpi {

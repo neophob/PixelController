@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.NoSerialPortFoundException;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
-import com.neophob.sematrix.core.output.serial.ISerial;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
 
 /**
  * library to communicate with an LPD6803 stripes via serial port<br>

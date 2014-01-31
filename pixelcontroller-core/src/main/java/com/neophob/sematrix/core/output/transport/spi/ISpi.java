@@ -1,4 +1,4 @@
-package com.neophob.sematrix.core.output.spi;
+package com.neophob.sematrix.core.output.transport.spi;
 
 public interface ISpi {
 

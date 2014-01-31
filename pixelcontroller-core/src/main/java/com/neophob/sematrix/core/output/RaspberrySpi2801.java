@@ -3,7 +3,7 @@ package com.neophob.sematrix.core.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.output.spi.ISpi;
+import com.neophob.sematrix.core.output.transport.spi.ISpi;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;

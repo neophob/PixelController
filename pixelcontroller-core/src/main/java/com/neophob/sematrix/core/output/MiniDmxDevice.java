@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.minidmx.MiniDmxSerial;
-import com.neophob.sematrix.core.output.serial.ISerial;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;

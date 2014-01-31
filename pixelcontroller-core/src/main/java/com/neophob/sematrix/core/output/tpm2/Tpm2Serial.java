@@ -26,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.output.NoSerialPortFoundException;
 import com.neophob.sematrix.core.output.OutputHelper;
-import com.neophob.sematrix.core.output.serial.ISerial;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
 import com.neophob.sematrix.core.properties.ColorFormat;
 
 /**

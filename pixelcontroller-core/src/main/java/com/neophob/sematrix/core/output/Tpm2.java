@@ -21,9 +21,9 @@ package com.neophob.sematrix.core.output;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.output.serial.ISerial;
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.output.tpm2.Tpm2Serial;
+import com.neophob.sematrix.core.output.transport.serial.ISerial;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
