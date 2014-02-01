@@ -6,8 +6,6 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.neophob.sematrix.core.output.transport.serial.ISerial;
-
 public class SerialImpl implements ISerial {
 
     private static final Logger LOG = Logger.getLogger(SerialImpl.class.getName());
@@ -104,7 +102,6 @@ public class SerialImpl implements ISerial {
 
     @Override
     public String[] getAllSerialPorts() {
-        System.out.println("1");
         return SerialP5.list();
     }
 
