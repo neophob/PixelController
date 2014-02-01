@@ -19,8 +19,6 @@
 package com.neophob.sematrix.core.output;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -29,6 +27,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.output.e131.E1_31DataPacket;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -46,8 +45,7 @@ public class E1_31Device extends AbstractDmxDevice {
     private static final transient String MULTICAST_START = "239.255.";
 
     private transient E1_31DataPacket dataPacket = new E1_31DataPacket();
-    private transient DatagramPacket packet;
-    private transient DatagramSocket dsocket;
+    private transient IEthernetUdp udpImpl;
 
     // multicast or unicast?
     private boolean sendMulticast = false;
@@ -59,48 +57,45 @@ public class E1_31Device extends AbstractDmxDevice {
      * @param controller
      */
     public E1_31Device(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph) {
+            ApplicationConfigurationHelper ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.E1_31, ph, 8, ph.getNrOfScreens());
         this.displayOptions = ph.getE131Device();
+        this.udpImpl = udpImpl;
 
         // Get dmx specific config
         this.pixelsPerUniverse = ph.getE131PixelsPerUniverse();
 
+        String ip = ph.getE131Ip();
+        String sendMode = "Unicast";
+        if (StringUtils.startsWith(ip, MULTICAST_START)) {
+            this.sendMulticast = true;
+            sendMode = "Multicast";
+        }
         try {
-            String ip = ph.getE131Ip();
-            String sendMode = "Unicast";
-            if (StringUtils.startsWith(ip, MULTICAST_START)) {
-                this.sendMulticast = true;
-                sendMode = "Multicast";
-            }
             this.targetAdress = InetAddress.getByName(ip);
-            this.firstUniverseId = ph.getE131StartUniverseId();
-            calculateNrOfUniverse();
-            packet = new DatagramPacket(new byte[0], 0, targetAdress, E1_31DataPacket.E131_PORT);
-            dsocket = new DatagramSocket();
+        } catch (UnknownHostException e) {
+            // ignored
+        }
+        this.firstUniverseId = ph.getE131StartUniverseId();
+        calculateNrOfUniverse();
 
+        if (udpImpl.initializeEthernet(ip, E1_31DataPacket.E131_PORT)) {
             this.initialized = true;
-
             LOG.log(Level.INFO, "E1.31 device initialized, send mode: " + sendMode + ", use "
                     + this.displayOptions.size() + " panels");
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "failed to initialize E1.31 device", e);
+        } else {
+            LOG.log(Level.WARNING, "failed to initialize E1.31 device");
         }
     }
 
     @Override
     public void close() {
-        if (initialized) {
-            dsocket.close();
-        }
+        this.udpImpl.closePort();
     }
 
     @Override
     protected void sendBufferToReceiver(int universeId, byte[] buffer) {
         if (this.initialized) {
-            byte[] data = dataPacket.assembleNewE131Packet(this.sequenceID++, universeId, buffer);
-            packet.setData(data);
-            packet.setLength(data.length);
 
             if (this.sendMulticast) {
                 // multicast - universe number must be in lower 2 bytes
@@ -109,16 +104,13 @@ public class E1_31Device extends AbstractDmxDevice {
                 addr[1] = (byte) 255;
                 addr[2] = (byte) (universeId >> 8);
                 addr[3] = (byte) (universeId & 255);
-                InetAddress iaddr;
-                try {
-                    iaddr = InetAddress.getByAddress(addr);
-                    packet.setAddress(iaddr);
-                } catch (UnknownHostException e) {
-                    LOG.log(Level.WARNING, "Failed to set target address!", e);
-                }
+                this.udpImpl.setTargetIp(addr);
             }
+
             try {
-                dsocket.send(packet);
+                byte[] data = dataPacket.assembleNewE131Packet(this.sequenceID++, universeId,
+                        buffer);
+                this.udpImpl.sendData(data);
             } catch (IOException e) {
                 errorCounter++;
                 LOG.log(Level.WARNING, "failed to send E1.31 data.", e);

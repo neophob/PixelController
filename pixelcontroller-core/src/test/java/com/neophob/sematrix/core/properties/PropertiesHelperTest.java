@@ -39,6 +39,7 @@ import com.neophob.sematrix.core.output.NullDevice;
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.UdpDevice;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.layout.Layout.LayoutName;
@@ -57,6 +58,9 @@ public class PropertiesHelperTest {
 
     @Mock
     private PixelControllerResize resizeHelper;
+
+    @Mock
+    private IEthernetUdp udp;
 
     @Test
     public void testEmptyConfig() {
@@ -359,7 +363,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
-        E1_31Device device = new E1_31Device(matrixData, resizeHelper, ph);
+        E1_31Device device = new E1_31Device(matrixData, resizeHelper, ph, udp);
         assertFalse(device.isSendMulticast());
         assertEquals(170, device.getPixelsPerUniverse());
         assertEquals(1, device.getNrOfUniverse());
@@ -384,7 +388,7 @@ public class PropertiesHelperTest {
         assertEquals(0, ph.getLpdDevice().size());
         assertEquals(OutputDeviceEnum.E1_31, ph.getOutputDevice());
 
-        device = new E1_31Device(matrixData, resizeHelper, ph);
+        device = new E1_31Device(matrixData, resizeHelper, ph, udp);
         assertTrue(device.isSendMulticast());
         assertEquals(1, device.getFirstUniverseId());
         assertEquals(170, device.getPixelsPerUniverse());
@@ -576,8 +580,8 @@ public class PropertiesHelperTest {
 
         when(matrixData.getDeviceXSize()).thenReturn(8);
         when(matrixData.getDeviceYSize()).thenReturn(8);
-        UdpDevice device = new UdpDevice(matrixData, resizeHelper, ph);
-        assertTrue(device.isConnected());
+        UdpDevice device = new UdpDevice(matrixData, resizeHelper, ph, udp);
+        assertFalse(device.isConnected());
     }
 
     @Test

@@ -18,17 +18,12 @@
  */
 package com.neophob.sematrix.core.output;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.Adler32;
 
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
@@ -68,9 +63,9 @@ public class Tpm2Net extends Output {
     /** The log. */
     private static final transient Logger LOG = Logger.getLogger(Tpm2Net.class.getName());
 
-    private static transient Adler32 adler = new Adler32();
+    private transient IEthernetUdp udpImpl;
 
-    private transient DatagramSocket outputSocket;
+    private transient BufferCache bufferCache;
 
     /** The initialized. */
     protected boolean initialized;
@@ -84,14 +79,9 @@ public class Tpm2Net extends Output {
     /** define how the panels are arranged */
     private List<Integer> panelOrder;
 
-    private transient DatagramPacket tpm2UdpPacket;
-
     private String targetAddrStr;
 
     private long errorCounter = 0;
-
-    /** map to store checksum of image. */
-    private transient Map<Integer, Long> lastDataMap;
 
     /** flip each 2nd scanline? */
     private boolean snakeCabeling;
@@ -107,7 +97,7 @@ public class Tpm2Net extends Output {
      * @param controller
      */
     public Tpm2Net(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph) {
+            ApplicationConfigurationHelper ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.TPM2NET, ph, 8);
 
         this.displayOptions = ph.getTpm2NetDevice();
@@ -119,52 +109,20 @@ public class Tpm2Net extends Output {
 
         targetAddrStr = ph.getTpm2NetIpAddress();
         this.initialized = false;
-        this.lastDataMap = new HashMap<Integer, Long>();
+        this.udpImpl = udpImpl;
+        this.bufferCache = new BufferCache();
 
-        try {
-            InetAddress targetAddr = InetAddress.getByName(targetAddrStr);
-            this.outputSocket = new DatagramSocket();
-            this.tpm2UdpPacket = new DatagramPacket(new byte[0], 0, targetAddr,
-                    Tpm2NetProtocol.TPM2_NET_PORT);
-
+        if (this.udpImpl.initializeEthernet(targetAddrStr, Tpm2NetProtocol.TPM2_NET_PORT)) {
             this.initialized = true;
             LOG.log(Level.INFO,
                     "Initialized TPM2NET device, target IP: {0}:{1}, Resolution: {2}/{3}, snakeCabeling: {4}",
-                    new Object[] { targetAddr, Tpm2NetProtocol.TPM2_NET_PORT,
+                    new Object[] { targetAddrStr, Tpm2NetProtocol.TPM2_NET_PORT,
                             this.matrixData.getDeviceXSize(), this.matrixData.getDeviceYSize(),
                             this.snakeCabeling });
-
-        } catch (Exception e) {
+        } else {
             LOG.log(Level.SEVERE, "Failed to resolve target address " + targetAddrStr + ":"
-                    + Tpm2NetProtocol.TPM2_NET_PORT + " {0}", e);
+                    + Tpm2NetProtocol.TPM2_NET_PORT);
         }
-    }
-
-    /**
-     * 
-     * @param ofs
-     * @param data
-     * @return
-     */
-    private boolean didFrameChange(int ofs, byte[] data) {
-        adler.reset();
-        adler.update(data);
-        long l = adler.getValue();
-
-        if (!lastDataMap.containsKey(ofs)) {
-            // first run
-            lastDataMap.put(ofs, l);
-            return true;
-        }
-
-        if (lastDataMap.get(ofs) == l) {
-            // last frame was equal current frame, do not send it!
-            // log.log(Level.INFO, "do not send frame to {0}", addr);
-            return false;
-        }
-        // update new hash
-        lastDataMap.put(ofs, l);
-        return true;
     }
 
     /**
@@ -176,10 +134,9 @@ public class Tpm2Net extends Output {
      * @param data
      */
     private void sendTpm2NetPacketOut(int packetNumber, int totalPackets, byte[] data) {
-        tpm2UdpPacket.setData(Tpm2NetProtocol.createImagePayload(packetNumber, totalPackets, data));
-
         try {
-            this.outputSocket.send(tpm2UdpPacket);
+            this.udpImpl.sendData(Tpm2NetProtocol.createImagePayload(packetNumber, totalPackets,
+                    data));
         } catch (Exception e) {
             errorCounter++;
             LOG.log(Level.SEVERE, "Failed to send network data: {0}", e);
@@ -193,7 +150,7 @@ public class Tpm2Net extends Output {
     public void update() {
 
         if (initialized) {
-            for (int ofs = 0; ofs < nrOfScreens; ofs++) {
+            for (byte ofs = 0; ofs < nrOfScreens; ofs++) {
                 // get the effective panel buffer
                 int panelNr = this.panelOrder.get(ofs);
 
@@ -218,7 +175,7 @@ public class Tpm2Net extends Output {
                 // needs less memory
                 // TODO maybe add option to send one or multiple packets
 
-                if (didFrameChange(ofs, rgbBuffer)) {
+                if (bufferCache.didFrameChange(ofs, rgbBuffer)) {
                     sendTpm2NetPacketOut(ofs, nrOfScreens, rgbBuffer);
                 }
             }
@@ -250,16 +207,7 @@ public class Tpm2Net extends Output {
 
     @Override
     public void close() {
-        if (this.initialized) {
-            LOG.log(Level.INFO, "Close network socket");
-            try {
-                this.outputSocket.close();
-            } catch (Exception e) {
-                LOG.log(Level.SEVERE, "Failed to close network socket: {0}", e);
-            }
-        } else {
-            LOG.log(Level.INFO, "Network socket not initialized, nothing to do.");
-        }
+        this.udpImpl.closePort();
     }
 
 }

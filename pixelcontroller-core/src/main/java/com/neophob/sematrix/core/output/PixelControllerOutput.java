@@ -105,13 +105,15 @@ public class PixelControllerOutput implements PixelControllerElement {
                     output = new NullDevice(matrixData, resizeHelper, applicationConfig);
                     break;
                 case UDP:
-                    output = new UdpDevice(matrixData, resizeHelper, applicationConfig);
+                    output = new UdpDevice(matrixData, resizeHelper, applicationConfig,
+                            OutputTransportFactory.getUdpImpl());
                     break;
                 case TPM2:
                     output = new Tpm2(matrixData, resizeHelper, applicationConfig, serialPort);
                     break;
                 case TPM2NET:
-                    output = new Tpm2Net(matrixData, resizeHelper, applicationConfig);
+                    output = new Tpm2Net(matrixData, resizeHelper, applicationConfig,
+                            OutputTransportFactory.getUdpImpl());
                     break;
                 case RPI_2801:
                     output = new RaspberrySpi2801(matrixData, resizeHelper, applicationConfig,

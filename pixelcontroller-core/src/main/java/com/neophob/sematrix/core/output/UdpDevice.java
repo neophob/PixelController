@@ -19,12 +19,10 @@
 package com.neophob.sematrix.core.output;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
@@ -39,9 +37,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 
     private static final transient Logger LOG = Logger.getLogger(UdpDevice.class.getName());
 
-    private transient DatagramPacket packet;
-    private transient DatagramSocket dsocket;
-
+    private IEthernetUdp udpImpl;
     private String targetHost;
     private int targetPort;
     private int errorCounter = 0;
@@ -51,24 +47,21 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
      * @param controller
      */
     public UdpDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph) {
+            ApplicationConfigurationHelper ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.UDP, ph, 8);
 
         targetHost = ph.getUdpIp();
         targetPort = ph.getUdpPort();
+        this.udpImpl = udpImpl;
 
-        try {
-            InetAddress address = InetAddress.getByName(targetHost);
-            packet = new DatagramPacket(new byte[0], 0, address, targetPort);
-            dsocket = new DatagramSocket();
-
+        if (this.udpImpl.initializeEthernet(targetHost, targetPort)) {
             this.initialized = true;
             LOG.log(Level.INFO, "UDP device initialized, send data to {0}:{1}", new String[] {
                     this.targetHost, "" + this.targetPort });
-
-        } catch (Exception e) {
-            LOG.log(Level.WARNING, "failed to initialize UDP device", e);
+        } else {
+            LOG.log(Level.WARNING, "Failed to initialize UDP device.");
         }
+
     }
 
     /*
@@ -80,10 +73,8 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
     public void update() {
         if (this.initialized) {
             byte[] buffer = OutputHelper.convertBufferTo24bit(getTransformedBuffer(), colorFormat);
-            packet.setData(buffer);
-            packet.setLength(buffer.length);
             try {
-                dsocket.send(packet);
+                udpImpl.sendData(buffer);
             } catch (IOException e) {
                 errorCounter++;
                 LOG.log(Level.WARNING, "failed to send UDP data.", e);
@@ -111,9 +102,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 
     @Override
     public void close() {
-        if (initialized) {
-            dsocket.close();
-        }
+        udpImpl.closePort();
     }
 
     @Override
