@@ -54,20 +54,20 @@ class NearestNeighbourResize extends Resize {
             inOffset += (currentXSize * ((currentYSize / newY) / 2));
         }
 
-        for (int y = newY, YE = 0; y > 0; y--) {
-            for (int x = newX, XE = 0; x > 0; x--) {
+        for (int y = newY, ye = 0; y > 0; y--) {
+            for (int x = newX, xe = 0; x > 0; x--) {
                 rawOutput[outOffset++] = buffer[inOffset];
                 inOffset += xDiff;
-                XE += xr;
-                if (XE >= newX) {
-                    XE -= newX;
+                xe += xr;
+                if (xe >= newX) {
+                    xe -= newX;
                     inOffset++;
                 }
             }
             inOffset += yDiff;
-            YE += yr;
-            if (YE >= newY) {
-                YE -= newY;
+            ye += yr;
+            if (ye >= newY) {
+                ye -= newY;
                 inOffset += currentXSize;
             }
         }
