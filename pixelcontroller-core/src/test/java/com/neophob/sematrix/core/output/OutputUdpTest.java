@@ -148,6 +148,7 @@ public class OutputUdpTest {
                 Arrays.asList(DeviceConfig.ROTATE_180_FLIPPEDY, DeviceConfig.FLIPPEDY));
         when(ph.getE131PixelsPerUniverse()).thenReturn(170);
         when(ph.getE131StartUniverseId()).thenReturn(4);
+        when(ph.getE131Ip()).thenReturn("127.0.0.1");
 
         // test negative
         when(udp.initializeEthernet(anyString(), anyInt())).thenReturn(false);
@@ -156,6 +157,17 @@ public class OutputUdpTest {
 
         // test positive
         when(udp.initializeEthernet(anyString(), anyInt())).thenReturn(true);
+        o = new E1_31Device(matrix, res, ph, udp);
+        Assert.assertTrue(o.isConnected());
+        o.prepareOutputBuffer(vs);
+        o.switchBuffers();
+        o.prepareOutputBuffer(vs);
+        o.update();
+        Assert.assertFalse(o.getConnectionStatus().isEmpty());
+        o.close();
+
+        // test positive multicase
+        when(ph.getE131Ip()).thenReturn("127.0.0.1");
         o = new E1_31Device(matrix, res, ph, udp);
         Assert.assertTrue(o.isConnected());
         o.prepareOutputBuffer(vs);
