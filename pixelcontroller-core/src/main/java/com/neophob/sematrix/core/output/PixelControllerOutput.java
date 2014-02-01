@@ -95,7 +95,8 @@ public class PixelControllerOutput implements PixelControllerElement {
                     output = new ArtnetDevice(matrixData, resizeHelper, applicationConfig);
                     break;
                 case E1_31:
-                    output = new E1_31Device(matrixData, resizeHelper, applicationConfig);
+                    output = new E1_31Device(matrixData, resizeHelper, applicationConfig,
+                            OutputTransportFactory.getUdpImpl());
                     break;
                 case MINIDMX:
                     output = new MiniDmxDevice(matrixData, resizeHelper, applicationConfig,
