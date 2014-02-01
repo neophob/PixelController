@@ -167,7 +167,7 @@ public class OutputUdpTest {
         o.close();
 
         // test positive multicase
-        when(ph.getE131Ip()).thenReturn("127.0.0.1");
+        when(ph.getE131Ip()).thenReturn("239.255.0.0");
         o = new E1_31Device(matrix, res, ph, udp);
         Assert.assertTrue(o.isConnected());
         o.prepareOutputBuffer(vs);
