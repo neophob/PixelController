@@ -1,6 +1,8 @@
 package com.neophob.sematrix.core.output.transport;
 
+import com.neophob.sematrix.core.output.transport.ethernet.EthernetTcpImpl;
 import com.neophob.sematrix.core.output.transport.ethernet.EthernetUdpImpl;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetTcp;
 import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
 import com.neophob.sematrix.core.output.transport.serial.SerialImpl;
@@ -23,6 +25,10 @@ public final class OutputTransportFactory {
 
     public static IEthernetUdp getUdpImpl() {
         return new EthernetUdpImpl();
+    }
+
+    public static IEthernetTcp getTcpImpl() {
+        return new EthernetTcpImpl();
     }
 
 }

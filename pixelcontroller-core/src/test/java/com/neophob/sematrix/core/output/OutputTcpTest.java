@@ -2,9 +2,9 @@ package com.neophob.sematrix.core.output;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.neophob.sematrix.core.output.transport.serial.ISerial;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetTcp;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ColorFormat;
@@ -33,13 +33,13 @@ import com.neophob.sematrix.core.visual.layout.Layout;
 import com.neophob.sematrix.core.visual.layout.LayoutModel;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OutputSerialTest {
+public class OutputTcpTest {
 
     private static final int INTERNAL_SIZE = 64;
     private static final int DEVICE_SIZE = 8;
 
     @Mock
-    private ISerial serialPort;
+    private IEthernetTcp tcp;
 
     @Mock
     private ApplicationConfigurationHelper ph;
@@ -70,6 +70,9 @@ public class OutputSerialTest {
         when(ph.getDeviceXResolution()).thenReturn(DEVICE_SIZE);
         when(ph.getDeviceYResolution()).thenReturn(DEVICE_SIZE);
         when(ph.getNrOfScreens()).thenReturn(2);
+        when(ph.getLpdDevice()).thenReturn(
+                Arrays.asList(DeviceConfig.NO_ROTATE, DeviceConfig.ROTATE_180_FLIPPEDY));
+
         when(ph.getPanelOrder()).thenReturn(Arrays.asList(0, 1));
         when(ph.getColorFormat()).thenReturn(Arrays.asList(ColorFormat.BGR, ColorFormat.GRB));
         when(ph.getOutputMappingValues()).thenReturn(new int[0]);
@@ -92,96 +95,32 @@ public class OutputSerialTest {
         when(visual.getResizeOption()).thenReturn(ResizeName.QUALITY_RESIZE);
         when(visual.getBuffer()).thenReturn(new int[INTERNAL_SIZE * INTERNAL_SIZE]);
 
-        when(serialPort.getAllSerialPorts())
-                .thenReturn(new String[] { "COM77", "/dev/peter.pan2" });
-        when(serialPort.isConnected()).thenReturn(false);
-        when(serialPort.available()).thenReturn(0);
-        when(serialPort.readBytes()).thenReturn(null);
-
         List<IColorSet> colorSets = new ArrayList<IColorSet>();
         colorSets.add(new JunitColorSet());
-        /*
-         * VisualState.getInstance().init(new FileUtilsJunit(), ph, new
-         * SoundDummy(), colorSets, presetService);
-         */
     }
 
     @Test
-    public void testPixelInvadersDevice() {
-        when(ph.getLpdDevice()).thenReturn(
-                Arrays.asList(DeviceConfig.NO_ROTATE, DeviceConfig.ROTATE_180_FLIPPEDY));
+    public void testPixelInvadersNetDevice() {
+        when(ph.getPixelinvadersNetIp()).thenReturn("127.0.0.1");
+        when(ph.getPixelinvadersNetPort()).thenReturn(10000);
+
         // test negative
-        IOutput o = new PixelInvadersSerialDevice(matrix, res, ph, serialPort);
+        when(tcp.initializeEthernet(anyString(), anyInt())).thenReturn(false);
+        IOutput o = new PixelInvadersNetDevice(matrix, res, ph, tcp);
         Assert.assertFalse(o.isConnected());
 
         // test positive
-        when(serialPort.isConnected()).thenReturn(true);
-        when(serialPort.available()).thenReturn(3);
-        when(serialPort.readBytes()).thenReturn("AK PXI".getBytes());
-        o = new PixelInvadersSerialDevice(matrix, res, ph, serialPort);
+        when(tcp.initializeEthernet(anyString(), anyInt())).thenReturn(true);
+        when(tcp.available()).thenReturn(6);
+        when(tcp.readBytes()).thenReturn("AK PXI".getBytes());
+
+        o = new PixelInvadersNetDevice(matrix, res, ph, tcp);
         Assert.assertTrue(o.isConnected());
         o.prepareOutputBuffer(vs);
         o.switchBuffers();
         o.prepareOutputBuffer(vs);
         o.update();
         Assert.assertFalse(o.getConnectionStatus().isEmpty());
-    }
-
-    @Test
-    public void testTPM2Device() {
-        when(ph.getTpm2Device()).thenReturn("/dev/peter.pan2");
-        // test negative
-        IOutput o = new Tpm2(matrix, res, ph, serialPort);
-        Assert.assertFalse(o.isConnected());
-
-        // test positive
-        when(serialPort.isConnected()).thenReturn(true);
-        when(serialPort.available()).thenReturn(0);
-        when(serialPort.readBytes()).thenReturn("".getBytes());
-        o = new Tpm2(matrix, res, ph, serialPort);
-        Assert.assertTrue(o.isConnected());
-        o.prepareOutputBuffer(vs);
-        o.switchBuffers();
-        o.prepareOutputBuffer(vs);
-        o.update();
-    }
-
-    @Test
-    public void testMiniDmxDevice() {
-        // test negative
-        IOutput o = new MiniDmxDevice(matrix, res, ph, serialPort);
-        Assert.assertFalse(o.isConnected());
-
-        // test positive
-        when(serialPort.isConnected()).thenReturn(true);
-        when(serialPort.available()).thenReturn(3);
-        when(serialPort.readBytes()).thenReturn(
-                new byte[] { (byte) 0x05a, (byte) 0xC1, (byte) 0x0a5 });
-        when(serialPort.getOutputStream()).thenReturn(new ByteArrayOutputStream());
-        o = new MiniDmxDevice(matrix, res, ph, serialPort);
-        Assert.assertTrue(o.isConnected());
-        o.prepareOutputBuffer(vs);
-        o.switchBuffers();
-        o.prepareOutputBuffer(vs);
-        o.update();
-    }
-
-    @Test
-    public void testRainbowduinoV2Device() {
-        // test negative
-        IOutput o = new RainbowduinoV2Device(matrix, res, ph, serialPort);
-        Assert.assertFalse(o.isConnected());
-
-        // test positive
-        when(serialPort.isConnected()).thenReturn(true);
-        when(serialPort.available()).thenReturn(3);
-        when(serialPort.readBytes()).thenReturn("AKK".getBytes());
-        when(serialPort.getOutputStream()).thenReturn(new ByteArrayOutputStream());
-        o = new RainbowduinoV2Device(matrix, res, ph, serialPort);
-        Assert.assertTrue(o.isConnected());
-        o.prepareOutputBuffer(vs);
-        o.switchBuffers();
-        o.prepareOutputBuffer(vs);
-        o.update();
+        o.close();
     }
 }

@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
+import com.neophob.sematrix.core.output.transport.ethernet.IEthernetTcp;
 
 /**
  * http://blog.mafr.de/2010/03/14/tcp-for-low-latency-applications/ -use apache
@@ -47,16 +48,16 @@ public class Lpd6803Net extends Lpd6803Common {
     private static final transient Logger LOG = Logger.getLogger(Lpd6803Net.class.getName());
 
     /** internal lib version. */
-    public static final transient String VERSION = "1.3";
+    public static final transient String VERSION = "1.4";
 
     // maximal network latency
     public static final transient int MAX_ACK_WAIT = 80;
     public static final transient int WAIT_PER_LOOP = 6;
 
-    private transient TcpClient clientConnection;
-
     private String destIp;
     private int destPort;
+
+    private transient IEthernetTcp tcpImpl;
 
     /**
      * Create a new instance to communicate with the lpd6803 device.
@@ -70,35 +71,32 @@ public class Lpd6803Net extends Lpd6803Common {
      * @throws Exception
      *             the no serial port found exception
      */
-    public Lpd6803Net(String destIp, int destPort, Map<Integer, RGBAdjust> correctionMap,
-            int panelSize) throws Exception {
+    public Lpd6803Net(IEthernetTcp tcpImpl, String destIp, int destPort,
+            Map<Integer, RGBAdjust> correctionMap, int panelSize) throws Exception {
         super(panelSize, panelSize);
         LOG.log(Level.INFO, "Initialize LPD6803 net lib v{0}", VERSION);
 
+        this.tcpImpl = tcpImpl;
         this.destIp = destIp;
         this.destPort = destPort;
         this.correctionMap = correctionMap;
 
         // output connection
         LOG.log(Level.INFO, "Connect to target " + destIp + ":" + destPort);
-        clientConnection = new TcpClient(destIp, destPort);
-        this.initialized = this.ping();
-        LOG.log(Level.INFO, "initialized: " + this.initialized);
+        if (this.tcpImpl.initializeEthernet(destIp, destPort)) {
+            this.initialized = this.ping();
+            LOG.log(Level.INFO, "initialized: " + this.initialized);
+        } else {
+            LOG.log(Level.INFO,
+                    "Failed to initialize LPD6803 net lib, verify the destination settings");
+        }
     }
 
     /**
      * clean up library.
      */
     public void dispose() {
-        if (connected()) {
-            LOG.log(Level.INFO, "Close network connection");
-
-            try {
-                clientConnection.stop();
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Failed to close socket", e);
-            }
-        }
+        tcpImpl.closePort();
     }
 
     /**
@@ -128,19 +126,14 @@ public class Lpd6803Net extends Lpd6803Common {
      *             the serial port exception
      */
     protected synchronized void writeData(byte[] cmdfull) throws WriteDataException {
-        // LOG.log(Level.INFO, "writeData: "+cmdfull.length);
         try {
-            if (clientConnection.output == null) {
-                throw new SocketException("Output not connected");
-            }
-            clientConnection.output.write(cmdfull);
-            clientConnection.output.flush(); // hmm, not sure if a good idea
+            tcpImpl.sendData(cmdfull);
             initialized = true;
         } catch (SocketException se) {
             if (connectionErrorCounter % 10 == 9) {
                 // try to reconnect
                 LOG.log(Level.INFO, "Reinit TCP Client");
-                this.clientConnection = new TcpClient(destIp, destPort);
+                tcpImpl.initializeEthernet(destIp, destPort);
                 return;
             }
             // LOG.log(Level.INFO, "Error sending network data!", se);
@@ -163,35 +156,30 @@ public class Lpd6803Net extends Lpd6803Common {
      */
     protected synchronized boolean waitForAck() {
         LOG.log(Level.INFO, "Wait for ACK, max " + (MAX_ACK_WAIT * WAIT_PER_LOOP) + "ms");
-        if (clientConnection != null) {
-            int currentDelay = 0;
-            byte[] msg = null;
+        int currentDelay = 0;
+        byte[] msg = null;
 
-            // wait maximal MAX_ACK_WAIT ms until we get a reply
-            while (currentDelay < MAX_ACK_WAIT && (msg == null || msg.length < 4)) {
-                sleep(WAIT_PER_LOOP);
-                currentDelay += WAIT_PER_LOOP;
-                msg = clientConnection.readBytes();
-                LOG.log(Level.INFO, "got reply: " + msg.length + " bytes: " + new String(msg));
-            }
+        // wait maximal MAX_ACK_WAIT ms until we get a reply
+        while (currentDelay < MAX_ACK_WAIT && (msg == null || msg.length < 4)) {
+            sleep(WAIT_PER_LOOP);
+            currentDelay += WAIT_PER_LOOP;
+            msg = tcpImpl.readBytes();
+            LOG.log(Level.INFO, "got reply: " + msg.length + " bytes: " + new String(msg));
+        }
 
-            if (msg == null) {
-                LOG.log(Level.WARNING,
-                        "No reply recieved, verify that ser2net is started on the target machine!");
-                ackErrors++;
-                return false;
-            }
-
-            String reply = new String(msg);
-            LOG.log(Level.INFO, "got ACK: {0}", reply);
-
-            if (reply.contains("AK")) {
-                return true;
-            }
+        if (msg == null) {
+            LOG.log(Level.WARNING,
+                    "No reply recieved, verify that ser2net is started on the target machine!");
+            ackErrors++;
             return false;
         }
-        LOG.log(Level.WARNING,
-                "No client connection available, verify that ser2net is started on the target machine");
+
+        String reply = new String(msg);
+        LOG.log(Level.INFO, "got ACK: {0}", reply);
+
+        if (reply.contains("AK")) {
+            return true;
+        }
         return false;
     }
 
@@ -212,7 +200,6 @@ public class Lpd6803Net extends Lpd6803Common {
 
     @Override
     protected byte[] getReplyFromController() {
-        return clientConnection.readBytes();
+        return tcpImpl.readBytes();
     }
-
 }

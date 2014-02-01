@@ -133,7 +133,7 @@ public abstract class Output implements IOutput {
      */
     public int[] getBufferForScreen(int screenNr, boolean applyGamma) {
         int[] buffer = this.bufferMap.get(switchBuffer + screenNr);
-        if (buffer == null) {
+        if (buffer == null || buffer.length == 0) {
             LOG.log(Level.SEVERE, "Failed to get entry for entry {0}, buffer size: "
                     + this.bufferMap.size(), (switchBuffer + screenNr));
             return null;

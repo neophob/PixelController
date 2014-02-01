@@ -81,7 +81,8 @@ public class PixelControllerOutput implements PixelControllerElement {
                             applicationConfig, serialPort);
                     break;
                 case PIXELINVADERS_NET:
-                    output = new PixelInvadersNetDevice(matrixData, resizeHelper, applicationConfig);
+                    output = new PixelInvadersNetDevice(matrixData, resizeHelper,
+                            applicationConfig, OutputTransportFactory.getTcpImpl());
                     break;
                 case RAINBOWDUINO_V2:
                     output = new RainbowduinoV2Device(matrixData, resizeHelper, applicationConfig,

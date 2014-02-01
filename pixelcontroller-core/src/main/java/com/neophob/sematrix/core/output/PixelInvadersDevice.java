@@ -105,7 +105,6 @@ public abstract class PixelInvadersDevice extends Output {
 
             // get the effective panel buffer
             int panelNr = this.panelOrder.get(ofs);
-
             int[] bfr = RotateBuffer.transformImage(super.getBufferForScreen(ofs),
                     displayOptions.get(panelNr), lpd6803.getNrOfLedHorizontal(),
                     lpd6803.getNrOfLedVertical());
