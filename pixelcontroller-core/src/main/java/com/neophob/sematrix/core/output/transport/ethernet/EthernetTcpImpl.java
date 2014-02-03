@@ -1,6 +1,5 @@
 package com.neophob.sematrix.core.output.transport.ethernet;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -16,7 +15,6 @@ public class EthernetTcpImpl implements IEthernetTcp {
     private static final transient Logger LOG = Logger.getLogger(EthernetTcpImpl.class.getName());
 
     private transient Socket socket;
-    private transient BufferedOutputStream out;
     private int targetPort;
 
     @Override
@@ -37,11 +35,6 @@ public class EthernetTcpImpl implements IEthernetTcp {
             return false;
         }
 
-        /*
-         * try { out = new PrintWriter(socket.getOutputStream(), true); } catch
-         * (IOException e) { LOG.log(Level.SEVERE,
-         * "Failed to create socket PrintWriter.", e); return false; }
-         */
         return true;
     }
 
