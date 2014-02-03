@@ -42,7 +42,7 @@ public interface PresetService {
     PresetSettings getSelectedPresetSettings();
 
     /**
-     * @return the presets
+     * @return all presets
      */
     List<PresetSettings> getAllPresets();
 
@@ -55,6 +55,13 @@ public interface PresetService {
      */
     List<String> getActivePreset();
 
+    /**
+     * save a new preset with a given name. this function must NOT persist the
+     * updated preset!
+     * 
+     * @param name
+     * @param presetString
+     */
     void saveActivePreset(String name, List<String> presetString);
 
 }
