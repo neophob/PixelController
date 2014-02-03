@@ -49,7 +49,7 @@ public class PresetTest {
         FileUtils fu = new FileUtilsJunit();
         List<PresetSettings> presets = PresetFactory.loadPresetsFile(fu.getDataDir());
         PresetService ps = new PresetServiceImpl(presets);
-        Assert.assertTrue(ps.getPresets().size() > 0);
+        Assert.assertTrue(ps.getAllPresets().size() > 0);
 
         List<IColorSet> col = new ArrayList<IColorSet>();
         col.add(new JunitColorSet());
@@ -57,7 +57,7 @@ public class PresetTest {
                 new SoundDummy(), col, ps);
 
         MessageProcessor.INSTANCE.init(ps, fu);
-        for (int i = 0; i < ps.getPresets().size(); i++) {
+        for (int i = 0; i < ps.getAllPresets().size(); i++) {
             LOG.info("Load Preset " + i);
             ps.setSelectedPreset(i);
             MessageProcessor.INSTANCE.processMsg(

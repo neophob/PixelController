@@ -361,7 +361,7 @@ public enum MessageProcessor {
                 case SAVE_PRESET:
                     try {
                         presetService.saveActivePreset(msg[1], col.getCurrentStatus());
-                        List<PresetSettings> presets = presetService.getPresets();
+                        List<PresetSettings> presets = presetService.getAllPresets();
                         PresetFactory.writePresetFile(presets, fileUtils.getDataDir());
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);

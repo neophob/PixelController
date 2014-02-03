@@ -77,7 +77,7 @@ public class PresetServiceImpl implements PresetService {
      * @see com.neophob.sematrix.core.preset.PresetService#getPresets()
      */
     @Override
-    public List<PresetSettings> getPresets() {
+    public List<PresetSettings> getAllPresets() {
         return presets;
     }
 

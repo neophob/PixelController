@@ -84,8 +84,8 @@ public final class Shuffler {
         boolean done = false;
         int idx = 0;
         while (!done || sanityCheck-- < 1) {
-            idx = rand.nextInt(presetService.getPresets().size());
-            List<String> present = presetService.getPresets().get(idx).getPreset();
+            idx = rand.nextInt(presetService.getAllPresets().size());
+            List<String> present = presetService.getAllPresets().get(idx).getPreset();
             if (present != null && !present.isEmpty()) {
                 done = true;
             }

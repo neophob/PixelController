@@ -44,7 +44,7 @@ public interface PresetService {
     /**
      * @return the presets
      */
-    List<PresetSettings> getPresets();
+    List<PresetSettings> getAllPresets();
 
     /**
      * get a list of entries to load a preset. the returned values are optimized
