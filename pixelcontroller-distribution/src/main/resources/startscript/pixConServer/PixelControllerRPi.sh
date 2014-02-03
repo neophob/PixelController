@@ -1,5 +1,6 @@
+#!/bin/bash
 #
-# Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+# Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
 #
 # This file is part of PixelController.
 #
@@ -17,7 +18,6 @@
 # along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#!/bin/bash
 
 CURRENT=$(dirname "$0")/../
 cd "$CURRENT"

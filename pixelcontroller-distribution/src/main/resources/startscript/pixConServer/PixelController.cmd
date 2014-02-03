@@ -1,6 +1,5 @@
-@echo off
 @REM
-@REM Copyright (C) 2011 Michael Vogt <michu@neophob.com>
+@REM Copyright (C) 2011-2014 Michael Vogt <michu@neophob.com>
 @REM
 @REM This file is part of PixelController.
 @REM
@@ -18,6 +17,7 @@
 @REM along with PixelController.  If not, see <http://www.gnu.org/licenses/>.
 @REM
 
+@echo off
 setlocal
 
 set BINDIR=%~dp0
