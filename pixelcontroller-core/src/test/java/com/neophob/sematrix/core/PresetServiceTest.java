@@ -25,8 +25,6 @@ import java.util.Properties;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.neophob.sematrix.core.config.Config;
-import com.neophob.sematrix.core.config.ConfigImpl;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
 import com.neophob.sematrix.core.jmx.PixelControllerStatus;
@@ -68,8 +66,7 @@ public class PresetServiceTest {
         Properties props = new Properties();
         props.put(ConfigConstant.NULLOUTPUT_ROW1, "3");
         ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(props);
-        Config config = new ConfigImpl(props);
-        vs.init(fileUtils, ph, config, new SoundDummy(), colorSets, presetService);
+        vs.init(fileUtils, ph, new SoundDummy(), colorSets, presetService);
 
         presetService.setSelectedPreset(0);
 

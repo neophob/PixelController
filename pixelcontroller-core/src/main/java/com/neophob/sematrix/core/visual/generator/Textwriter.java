@@ -48,6 +48,9 @@ import com.neophob.sematrix.core.visual.MatrixData;
  */
 public class Textwriter extends Generator {
 
+    public static final String FONT_FILENAME = "font.filename";
+    public static final String FONT_SIZE = "font.size";
+
     private static final String INITIAL_STRING = "PIXELCONTROLLER";
 
     public enum TextwriterMode {

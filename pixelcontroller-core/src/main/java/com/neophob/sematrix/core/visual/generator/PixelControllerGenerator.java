@@ -28,9 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.PixelControllerElement;
-import com.neophob.sematrix.core.config.Config;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.properties.ConfigConstant;
+import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
@@ -52,7 +51,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
     private static final Logger LOG = Logger.getLogger(PixelControllerGenerator.class.getName());
 
     private static final String DEFAULT_TTF = "04B_03__.TTF";
-    private static final int DEFAULT_TTF_SIZE = 82;
+    private static final String DEFAULT_TTF_SIZE = "82";
 
     /** The all generators. */
     private List<Generator> allGenerators;
@@ -74,7 +73,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     BeatToAnimation bta = BeatToAnimation.MODERATE;
 
-    private Config config;
+    private ApplicationConfigurationHelper ph;
 
     private FileUtils fileUtils;
 
@@ -93,9 +92,9 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(Config config, FileUtils fileUtils, MatrixData matrix,
-            float fps, ISound sound, IResize resize) {
-        this.config = config;
+    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils,
+            MatrixData matrix, float fps, ISound sound, IResize resize) {
+        this.ph = ph;
         this.fileUtils = fileUtils;
         this.matrix = matrix;
         this.fps = fps;
@@ -124,21 +123,18 @@ public class PixelControllerGenerator implements PixelControllerElement {
         allGenerators.add(new Metaballs(matrix));
         allGenerators.add(new PixelImage(matrix, sound, fps));
 
-        String ttfFilename = config.getString(ConfigConstant.FONT_FILENAME, DEFAULT_TTF);
-        int ttfSize = config.getInt(ConfigConstant.FONT_SIZE, DEFAULT_TTF_SIZE);
-        textwriter = new Textwriter(matrix, ttfFilename, ttfSize, fileUtils);
+        textwriter = new Textwriter(matrix, ph.getProperty(Textwriter.FONT_FILENAME, DEFAULT_TTF),
+                Integer.parseInt(ph.getProperty(Textwriter.FONT_SIZE, DEFAULT_TTF_SIZE)), fileUtils);
         allGenerators.add(textwriter);
 
         allGenerators.add(new Cell(matrix));
         allGenerators.add(new FFTSpectrum(matrix, sound));
         allGenerators.add(new Geometrics(matrix, sound));
 
-        int screenCapureWindowWidth = config.getInt(ConfigConstant.CAPTURE_WINDOW_SIZE_X, 200);
-        if (screenCapureWindowWidth > 0 && !GraphicsEnvironment.isHeadless()) {
-            int screenCapureWindowHeight = config.getInt(ConfigConstant.CAPTURE_WINDOW_SIZE_Y, 200);
-            int screenCapureWindowOffset = config.getInt(ConfigConstant.CAPTURE_OFFSET, 200);
-            allGenerators.add(new ScreenCapture(matrix, this.resize, screenCapureWindowOffset,
-                    screenCapureWindowWidth, screenCapureWindowHeight));
+        int screenCapureXSize = ph.parseScreenCaptureWindowSizeX();
+        if (screenCapureXSize > 0 && !GraphicsEnvironment.isHeadless()) {
+            allGenerators.add(new ScreenCapture(matrix, this.resize, ph.parseScreenCaptureOffset(),
+                    screenCapureXSize, ph.parseScreenCaptureWindowSizeY()));
             isCaptureGeneratorActive = true;
         }
         colorScroll = new ColorScroll(matrix);

@@ -25,7 +25,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.neophob.sematrix.core.config.Config;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.PixelControllerShufflerSelect;
 import com.neophob.sematrix.core.glue.ShufflerOffset;
@@ -33,7 +32,6 @@ import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
-import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
@@ -146,7 +144,7 @@ public class VisualState extends Observable {
      *            the PropertiesHelper
      */
     public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph,
-            Config config, ISound sound, List<IColorSet> colorSets, PresetService presetService) {
+            ISound sound, List<IColorSet> colorSets, PresetService presetService) {
 
         if (initialized) {
             LOG.log(Level.WARNING, "Reinitialize collector, use for unit tests only");
@@ -159,26 +157,21 @@ public class VisualState extends Observable {
         this.presetService = presetService;
 
         int nrOfScreens = ph.getNrOfScreens();
-        float fps = config.getFloat(ConfigConstant.FPS, ConfigConstant.DEFAULT_FPS);
+        float fps = ph.parseFps();
 
-        int randomModeLifeTime = config.getInt(ConfigConstant.RANDOMMODE_LIFETIME, 0);
         this.pixelControllerShufflerSelect = new PixelControllerShufflerSelect(sound,
-                randomModeLifeTime);
+                ph.getRandomModeLifetime());
         this.pixelControllerShufflerSelect.initAll();
 
         // create the device with specific size
-        int matrixWidth = config.getInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X,
-                ConfigConstant.DEFAULT_OUTPUT_RESOLUTION);
-        int matrixHeight = config.getInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y,
-                ConfigConstant.DEFAULT_OUTPUT_RESOLUTION);
-        this.matrix = new MatrixData(matrixWidth, matrixHeight);
+        this.matrix = new MatrixData(ph.getDeviceXResolution(), ph.getDeviceYResolution());
 
         pixelControllerResize = new PixelControllerResize();
         pixelControllerResize.initAll();
 
         // create generators
-        pixelControllerGenerator = new PixelControllerGenerator(config, fileUtils, matrix, fps,
-                sound, pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
+        pixelControllerGenerator = new PixelControllerGenerator(ph, fileUtils, matrix, fps, sound,
+                pixelControllerResize.getResize(ResizeName.PIXEL_RESIZE));
         pixelControllerGenerator.initAll();
 
         pixelControllerEffect = new PixelControllerEffect(matrix, sound,
@@ -188,11 +181,10 @@ public class VisualState extends Observable {
         pixelControllerMixer = new PixelControllerMixer(matrix, sound);
         pixelControllerMixer.initAll();
 
-        pixelControllerFader = new PixelControllerFader(config, matrix);
+        pixelControllerFader = new PixelControllerFader(ph, matrix);
 
         // create visuals
-        int additionalVisuals = 1 + config.getInt(ConfigConstant.ADDITIONAL_VISUAL_SCREENS, 0);
-
+        int additionalVisuals = 1 + ph.getNrOfAdditionalVisuals();
         LOG.log(Level.INFO, "Initialize " + (nrOfScreens + additionalVisuals) + " Visuals");
         try {
             Generator genPassThru = pixelControllerGenerator.getGenerator(GeneratorName.PASSTHRU);
