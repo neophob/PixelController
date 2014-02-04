@@ -25,6 +25,8 @@ import java.util.Properties;
 
 import org.junit.Test;
 
+import com.neophob.sematrix.core.config.Config;
+import com.neophob.sematrix.core.config.ConfigImpl;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
@@ -106,8 +108,9 @@ public class GenerateAllResolutionTest {
         vlist.add(createVisual(matrix, col));
         VisualState.getInstance().setAllVisuals(vlist);
 
-        PixelControllerGenerator pcGen = new PixelControllerGenerator(ph, fileUtils, matrix, fps,
-                sound, resize);
+        Config config = new ConfigImpl(new Properties());
+        PixelControllerGenerator pcGen = new PixelControllerGenerator(config, fileUtils, matrix,
+                fps, sound, resize);
         pcGen.initAll();
         for (Generator gen : pcGen.getAllGenerators()) {
             gen.update(2);

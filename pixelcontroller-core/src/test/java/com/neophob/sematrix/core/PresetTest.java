@@ -18,14 +18,19 @@
  */
 package com.neophob.sematrix.core;
 
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import com.neophob.sematrix.core.config.Config;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
 import com.neophob.sematrix.core.listener.MessageProcessor;
@@ -36,13 +41,23 @@ import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
 import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.properties.ValidCommand;
-import com.neophob.sematrix.core.sound.SoundDummy;
+import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PresetTest {
 
     private static final Logger LOG = Logger.getLogger(PresetTest.class.getName());
+
+    @Mock
+    Config config;
+
+    @Mock
+    ApplicationConfigurationHelper oldConfig;
+
+    @Mock
+    ISound sound;
 
     @Test
     public void loadAllPresetTest() {
@@ -50,11 +65,12 @@ public class PresetTest {
         List<PresetSettings> presets = PresetFactory.loadPresetsFile(fu.getDataDir());
         PresetService ps = new PresetServiceImpl(presets);
         Assert.assertTrue(ps.getAllPresets().size() > 0);
-
         List<IColorSet> col = new ArrayList<IColorSet>();
         col.add(new JunitColorSet());
-        VisualState.getInstance().init(fu, new ApplicationConfigurationHelper(new Properties()),
-                new SoundDummy(), col, ps);
+
+        when(oldConfig.getNrOfScreens()).thenReturn(1);
+
+        VisualState.getInstance().init(fu, oldConfig, config, sound, col, ps);
 
         MessageProcessor.INSTANCE.init(ps, fu);
         for (int i = 0; i < ps.getAllPresets().size(); i++) {

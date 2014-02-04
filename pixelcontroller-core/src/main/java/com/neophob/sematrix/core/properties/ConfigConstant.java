@@ -27,6 +27,11 @@ public final class ConfigConstant {
         // Utility Class
     }
 
+    public static final float DEFAULT_FPS = 25;
+    public static final int DEFAULT_VISUAL_FADETIME = 1500;
+    public static final int DEFAULT_PRESETLOADING_FADETIME = 500;
+    public static final int DEFAULT_OUTPUT_RESOLUTION = 8;
+
     /** The Constant DELIM. */
     public static final String DELIM = ",";
 
@@ -151,4 +156,8 @@ public final class ConfigConstant {
     public static final String RPI_WS2801_SPI_SPEED = "rpiws2801.spi.speed";
 
     public static final String RANDOMMODE_LIFETIME = "randommode.lifetime.in.s";
+
+    public static final String FONT_FILENAME = "font.filename";
+    public static final String FONT_SIZE = "font.size";
+
 }

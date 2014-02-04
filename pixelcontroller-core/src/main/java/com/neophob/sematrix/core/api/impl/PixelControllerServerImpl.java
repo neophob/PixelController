@@ -24,6 +24,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
+import com.neophob.sematrix.core.config.Config;
+import com.neophob.sematrix.core.config.ConfigImpl;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.Shuffler;
 import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
@@ -67,6 +69,7 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
     private ISound sound;
 
     private ApplicationConfigurationHelper applicationConfig;
+    private Config config;
     private List<IColorSet> colorSets;
     private FileUtils fileUtils;
     private Framerate framerate;
@@ -109,7 +112,9 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
 
         clientNotification("Load Configuration");
         fileUtils = new FileUtilsLocalImpl();
-        applicationConfig = loadConfiguration(fileUtils.getDataDir());
+        applicationConfig = new ApplicationConfigurationHelper(
+                loadConfiguration(fileUtils.getDataDir()));
+        config = new ConfigImpl(loadConfiguration(fileUtils.getDataDir()));
         this.colorSets = loadColorPalettes(fileUtils.getDataDir());
 
         clientNotification("Create Collector");
@@ -125,7 +130,8 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
         this.presetService = new PresetServiceImpl(presetSettings);
         MessageProcessor.INSTANCE.init(presetService, fileUtils);
 
-        this.visualState.init(fileUtils, applicationConfig, sound, colorSets, presetService);
+        this.visualState
+                .init(fileUtils, applicationConfig, config, sound, colorSets, presetService);
         framerate = new Framerate(applicationConfig.parseFps());
 
         clientNotification("Initialize OSC Server");

@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.api.CallbackMessageInterface;
 import com.neophob.sematrix.core.api.PixelController;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
 import com.neophob.sematrix.core.visual.color.ColorSet;
 import com.neophob.sematrix.core.visual.color.IColorSet;
 
@@ -67,8 +66,7 @@ public abstract class PixelControllerServer extends Observable implements PixelC
      * @return
      * @throws IllegalArgumentException
      */
-    static ApplicationConfigurationHelper loadConfiguration(String dataDir)
-            throws IllegalArgumentException {
+    static Properties loadConfiguration(String dataDir) throws IllegalArgumentException {
         Properties config = new Properties();
         InputStream is = null;
         String fileToLoad = dataDir + File.separator + APPLICATION_CONFIG_FILENAME;
@@ -89,13 +87,7 @@ public abstract class PixelControllerServer extends Observable implements PixelC
                 // ignored
             }
         }
-
-        try {
-            return new ApplicationConfigurationHelper(config);
-        } catch (Exception e) {
-            LOG.log(Level.SEVERE, "Configuration Error: ", e);
-            throw new IllegalArgumentException(e);
-        }
+        return config;
     }
 
     /**
