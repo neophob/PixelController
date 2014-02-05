@@ -1,11 +1,11 @@
 # PixelController ChangeLog
 
 ## Changelog v2.0.0 to v2.x.y
-    522 files changed, 90317 insertions(+), 146697 deletions(-)
+    574 files changed, 96211 insertions(+), 150961 deletions(-)
     
 * Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
 * Add RaspberryPi WS2801 output driver
-* Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/)  for more details
+* Add custom led matrix mapping tool, see [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/) for more details
 * Add Bonjour/Zeroconf support, PixelController register itself as "pixelcontroller.local"
 * Add new ROTATE_ Generator/Effect/Mixer/Colorset OSC command
 * Add Noise generator
@@ -36,7 +36,7 @@
 * Fix rename preset.led -> preset.properties, all PixelController extension files have now the same file extension.
 * Fix update build process, put RPi specifiy resources (Serial and pi4j) dependencies into special directory, do not include junit dependencies.
 * Fix speedup Blinkenlight parser, some frames were displayed too long
-* Fix Mutliply and Negative Multiply mixer, output didn't respect ColorSets correctly
+* Fix Multliply and Negative Multiply mixer, output didn't respect ColorSets correctly
 * Fix Subsat mixer - was completly broken
 * Fix output layout for all *FLIPPEDY entries - all FLIPPEDY action were broken.
 

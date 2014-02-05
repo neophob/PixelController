@@ -11,7 +11,11 @@
 
 You can **download** PixelController on Google Code: [http://code.google.com/p/pixelcontroller/downloads/](http://code.google.com/p/pixelcontroller/downloads/)
 
-You can download the latest **SNAPSHOT** of PixelController on the [Jenkins Server](https://buildhive.cloudbees.com/job/neophob/job/PixelController/ws/pixelcontroller-distribution/target/assembly/) 
+You can download the latest **SNAPSHOT** (=unstable) release of PixelController on the [Jenkins Server](https://buildhive.cloudbees.com/job/neophob/job/PixelController/ws/pixelcontroller-distribution/target/assembly/) 
+
+## DEMO
+Check out [PixelController Rough Cut #2. Featuring two PixelInvaders panels](https://vimeo.com/61141493), [PixelInvaders 3D RGB Panels](http://vimeo.com/27453711) and [PixelInvaders panels controlled by a tablet (OSC)](http://vimeo.com/32580251) to see PixelController in action with two PixelInvaders panels. This should give you a quick overview what PixelController is.
+
 
 ## HOWTO USE PIXELCONTROLLER
 Prerequisite:
@@ -35,7 +39,9 @@ Take a look at the config file, there are a lot of hints how to configure PixelC
 
 ### Advanced usage
 
-You can start the PixelController server by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The server part generate the visuals and send them to the output. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control PixelController server by
+You can run the PixelController daemon without frontend and connect the PixelController frontend to the daemon.
+
+Start the PixelController server by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The server part generate the visuals and send them to the output. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control PixelController server by
 
 * using the PixelController remote client, start it with `pixConClient/PixelControllerClient.jar`
 * using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
@@ -54,10 +60,6 @@ I try to visualize it:
 
 Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a non-visible Visual, that can be displayed later. 
 All Visuals can be stored (and of course loaded) in a preset.
-
-## DEMO
-Check out [PixelController Rough Cut #2. Featuring two PixelInvaders panels](https://vimeo.com/61141493), [PixelInvaders 3D RGB Panels](http://vimeo.com/27453711) and [PixelInvaders panels controlled by a tablet (OSC)](http://vimeo.com/32580251) to see PixelController in action 
-on two PixelInvaders panels. 
 
 
 ## SUPPORTED HARDWARE
@@ -78,10 +80,11 @@ PixelController supports different (LED) matrix hardware devices/controller:
 Check out the `integration/ArduinoFW` directory, all Arduino based firmware files are stored there.
 
 ### [Arduino] Which firmware should I use?
-If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between different firmwares.  
+If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between different firmwares.
+  
 * If you bought a [PixelInvaders DIY Kit](http://shop.pixelinvaders.ch/product/pixelinvaders-diy-basic-pack), use the `integration/ArduinoFw/pixelinvaders/neoLedLPD6803Spi` firmware
 * If you want to create a ONE panel matrix with an arbitrary resolution, use the `integration/ArduinoFw/tpm2serial` firmware
-* If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware
+* If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware. This firmware is based on the fastspi2 library and can handle different led chips.
 
 I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency (especially the Arduino UNO r3). You need to install the Arduino IDE, see the "Getting started with Arduino" ([http://arduino.cc/en/Guide/HomePage](http://arduino.cc/en/Guide/HomePage)) Tutorial.
 
@@ -213,19 +216,7 @@ I included some [Processing](http://processing.org/) example Sketches. Maybe you
 ## MORE HINTS
 
 ### Run PixelController on a RPi
-As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphical frontend. But you can run the console version of PixelController. You need to run PixelController **as root user** (or open the /var/lock directory for the running user), the rxtx library (serial communication) use this directory to create a lock file. Example:
-
-    pi@raspberrypi ~/pixelcontroller-distribution-2.0.0/console $ sudo ./PixelControllerRPi.sh 
-    Nov 24, 2013 1:53:27 PM com.neophob.sematrix.cli.PixelControllerCli <init>
-    INFO: 
-    
-    PixelController v2.0.0 - http://www.pixelinvaders.ch
-    
-    Nov 24, 2013 1:53:29 PM com.neophob.sematrix.core.glue.FileUtils <init>
-    INFO: Use root directory: /home/pi/pixelcontroller-distribution-2.0.0.RC1
-    Nov 24, 2013 1:53:29 PM com.neophob.sematrix.core.setup.InitApplication loadConfiguration
-    <...>
-
+As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphical frontend. But you can run the console version of PixelController (see chapter **Advanced usage**). You need to run PixelController **as root user** if you want to access the USB serial port (or open the /var/lock directory for the running user) or use the RPi SPI interface. 
    
 Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
 
@@ -239,7 +230,7 @@ Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upg
     crw------- 1 root root 153, 0 Jan  1  1970 /dev/spidev0.0
     crw------- 1 root root 153, 1 Jan  1  1970 /dev/spidev0.1
 
-See `integration/RPi-Startscript` for an example startscript. Make sure the `application_dir` is correct (default value is `/home/pi/pixcon`) and copy it to `/etc/init.d/`.
+See `integration/RPi-Startscript` for an example init.d startscript. Make sure the `application_dir` variable is correct (default value is `/home/pi/pixcon`) and copy it to `/etc/init.d/`.
 
 ### Non-rectangular LED matrix
 
