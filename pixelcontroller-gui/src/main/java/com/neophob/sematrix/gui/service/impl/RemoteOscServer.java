@@ -40,7 +40,7 @@ import com.neophob.sematrix.core.osc.PixelControllerOscServer;
 import com.neophob.sematrix.core.osc.remotemodel.ImageBuffer;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
@@ -79,7 +79,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
     private boolean initialized;
     private String version;
-    private ApplicationConfigurationHelper config;
+    private Configuration config;
     private MatrixData matrix;
     private List<IColorSet> colorSets;
     private ISound sound;
@@ -132,7 +132,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
     }
 
     @Override
-    public ApplicationConfigurationHelper getConfig() {
+    public Configuration getConfig() {
         return config;
     }
 
@@ -284,7 +284,7 @@ public class RemoteOscServer extends OscMessageHandler implements PixConServer, 
 
                 case GET_CONFIGURATION:
                     config = remoteServer.reassembleObject(data,
-                            ApplicationConfigurationHelper.class);
+                            Configuration.class);
                     setupFeedback.handleMessage("Recieved Configuration");
                     break;
 

@@ -32,7 +32,7 @@ import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
@@ -44,7 +44,7 @@ import com.neophob.sematrix.core.visual.color.IColorSet;
 public class OutputWiringTest {
 
     private int[] processOutput(Properties p) {
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(p);
+        Configuration ph = new Configuration(p);
         Assert.assertEquals(10, ph.getDeviceXResolution());
         Assert.assertEquals(5, ph.getDeviceYResolution());
 

@@ -32,7 +32,7 @@ import artnet4j.ArtNetServer;
 import artnet4j.events.ArtNetDiscoveryListener;
 import artnet4j.packets.ArtDmxPacket;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -57,7 +57,7 @@ public class ArtnetDevice extends AbstractDmxDevice implements ArtNetDiscoveryLi
      * @param controller
      */
     public ArtnetDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph) {
+            Configuration ph) {
         super(matrixData, resizeHelper, OutputDeviceEnum.ARTNET, ph, 8, ph.getNrOfScreens());
 
         this.displayOptions = ph.getArtNetDevice();

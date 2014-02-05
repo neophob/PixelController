@@ -25,7 +25,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -43,7 +43,7 @@ import com.neophob.sematrix.core.visual.mixer.PassThruMixer;
 public class GenerateAllFaderTest {
 
     private IColorSet col;
-    private ApplicationConfigurationHelper ph;
+    private Configuration ph;
 
     @Test
     public void verifyGeneratorsDoNotCrash() {
@@ -54,7 +54,7 @@ public class GenerateAllFaderTest {
             // if unit test is run in eclipse
             rootDir = "." + File.separatorChar;
         }
-        ph = new ApplicationConfigurationHelper(new Properties());
+        ph = new Configuration(new Properties());
         col = new ColorSet("test", new int[] { 1, 2, 3 });
 
         for (int x = 1; x < maxResolution; x++) {

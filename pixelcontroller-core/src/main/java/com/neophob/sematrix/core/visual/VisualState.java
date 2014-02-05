@@ -31,7 +31,7 @@ import com.neophob.sematrix.core.glue.ShufflerOffset;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.preset.PresetService;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
@@ -143,7 +143,7 @@ public class VisualState extends Observable {
      * @param ph
      *            the PropertiesHelper
      */
-    public synchronized void init(FileUtils fileUtils, ApplicationConfigurationHelper ph,
+    public synchronized void init(FileUtils fileUtils, Configuration ph,
             ISound sound, List<IColorSet> colorSets, PresetService presetService) {
 
         if (initialized) {

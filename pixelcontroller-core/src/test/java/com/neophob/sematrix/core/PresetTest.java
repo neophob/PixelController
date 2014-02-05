@@ -34,7 +34,7 @@ import com.neophob.sematrix.core.preset.PresetFactory;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -53,7 +53,7 @@ public class PresetTest {
 
         List<IColorSet> col = new ArrayList<IColorSet>();
         col.add(new JunitColorSet());
-        VisualState.getInstance().init(fu, new ApplicationConfigurationHelper(new Properties()),
+        VisualState.getInstance().init(fu, new Configuration(new Properties()),
                 new SoundDummy(), col, ps);
 
         MessageProcessor.INSTANCE.init(ps, fu);

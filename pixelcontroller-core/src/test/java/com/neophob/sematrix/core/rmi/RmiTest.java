@@ -28,7 +28,7 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.Command;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
@@ -77,7 +77,7 @@ public class RmiTest implements Observer {
     public void RmiTestAdjustCompressionSetting() throws Exception {
         Properties p = new Properties();
         p.put(ConfigConstant.FPS, 234);
-        ApplicationConfigurationHelper ach = new ApplicationConfigurationHelper(p);
+        Configuration ach = new Configuration(p);
 
         RmiApi remoteServer = RmiFactory.getRmiApi(true, BUFFERSIZE);
         remoteServer.startServer(Protocol.UDP, this, PORT);
@@ -91,8 +91,8 @@ public class RmiTest implements Observer {
         assertNotNull(m);
         assertEquals(ValidCommand.GET_CONFIGURATION.toString(), m.getPattern());
 
-        ApplicationConfigurationHelper ach2 = remoteServer.reassembleObject(m.getBlob(),
-                ApplicationConfigurationHelper.class);
+        Configuration ach2 = remoteServer.reassembleObject(m.getBlob(),
+                Configuration.class);
         assertEquals(ach.parseFps(), ach2.parseFps(), 0.0001);
         remoteServer.shutdown();
         remoteClient.shutdown();

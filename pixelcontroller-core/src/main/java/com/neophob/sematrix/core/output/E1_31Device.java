@@ -28,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.neophob.sematrix.core.output.e131.E1_31DataPacket;
 import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -57,7 +57,7 @@ public class E1_31Device extends AbstractDmxDevice {
      * @param controller
      */
     public E1_31Device(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, IEthernetUdp udpImpl) {
+            Configuration ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.E1_31, ph, 8, ph.getNrOfScreens());
         this.displayOptions = ph.getE131Device();
         this.udpImpl = udpImpl;

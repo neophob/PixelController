@@ -33,7 +33,7 @@ import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.sound.SoundDummy;
@@ -65,7 +65,7 @@ public class PresetServiceTest {
         colorSets.add(new ColorSet("dummy", new int[] { 0, 255 }));
         Properties props = new Properties();
         props.put(ConfigConstant.NULLOUTPUT_ROW1, "3");
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(props);
+        Configuration ph = new Configuration(props);
         vs.init(fileUtils, ph, new SoundDummy(), colorSets, presetService);
 
         presetService.setSelectedPreset(0);

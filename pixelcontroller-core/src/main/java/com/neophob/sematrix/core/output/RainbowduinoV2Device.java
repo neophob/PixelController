@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.neorainbowduino.Rainbowduino;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -56,7 +56,7 @@ public class RainbowduinoV2Device extends ArduinoOutput {
      *            the all i2c address
      */
     public RainbowduinoV2Device(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, ISerial serialPort) {
+            Configuration ph, ISerial serialPort) {
         super(matrixData, resizeHelper, OutputDeviceEnum.RAINBOWDUINO_V2, ph, 4);
 
         this.nrOfScreens = ph.getNrOfScreens();

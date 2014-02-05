@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.Gammatab;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
@@ -92,7 +92,7 @@ public abstract class Output implements IOutput {
      *            the bpp
      */
     public Output(MatrixData matrixData, PixelControllerResize resizeHelper,
-            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp) {
         this.outputDeviceEnum = outputDeviceEnum;
 
         this.resizeHelper = resizeHelper;

@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -49,7 +49,7 @@ public class RainbowduinoV3Device extends Output {
     private boolean initialized = false;
 
     public RainbowduinoV3Device(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, ISerial serialPort) {
+            Configuration ph, ISerial serialPort) {
         super(matrixData, resizeHelper, OutputDeviceEnum.RAINBOWDUINO_V3, ph, 8);
 
         // initialize internal variables

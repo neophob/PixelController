@@ -25,7 +25,7 @@ import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetService;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -71,7 +71,7 @@ public interface PixelController {
      * 
      * @return configuration of pixelcontroller
      */
-    ApplicationConfigurationHelper getConfig();
+    Configuration getConfig();
 
     List<IColorSet> getColorSets();
 

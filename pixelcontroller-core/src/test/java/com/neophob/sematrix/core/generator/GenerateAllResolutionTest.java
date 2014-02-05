@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.glue.FileUtilsJunit;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
@@ -55,7 +55,7 @@ public class GenerateAllResolutionTest {
     private ISound sound;
     private IResize resize;
     private IColorSet col;
-    private ApplicationConfigurationHelper ph;
+    private Configuration ph;
     private int fps = 50;
 
     @Test
@@ -69,7 +69,7 @@ public class GenerateAllResolutionTest {
             // if unit test is run in eclipse
             rootDir = "." + File.separatorChar;
         }
-        ph = new ApplicationConfigurationHelper(new Properties());
+        ph = new Configuration(new Properties());
         fileUtils = new FileUtilsJunit();
         sound = new SoundDummy();
         PixelControllerResize pcr = new PixelControllerResize();

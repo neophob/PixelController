@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.core.output;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -49,7 +49,7 @@ public abstract class ArduinoOutput extends Output {
      *            the controller
      */
     public ArduinoOutput(MatrixData matrixData, PixelControllerResize resizeHelper,
-            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp) {
+            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp) {
         super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
         this.supportConnectionState = true;
     }

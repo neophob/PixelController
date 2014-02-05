@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.core.visual.fader;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.fader.Fader.FaderName;
 
@@ -34,7 +34,7 @@ public final class PixelControllerFader {
     private MatrixData matrix;
     private float fps;
 
-    public PixelControllerFader(ApplicationConfigurationHelper ah, MatrixData matrix) {
+    public PixelControllerFader(Configuration ah, MatrixData matrix) {
         presetLoadingFadeTime = ah.getPresetLoadingFadeTime();
         visualFadeTime = ah.getVisualFadeTime();
         this.matrix = matrix;

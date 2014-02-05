@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -47,7 +47,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
      * @param controller
      */
     public UdpDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, IEthernetUdp udpImpl) {
+            Configuration ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.UDP, ph, 8);
 
         targetHost = ph.getUdpIp();

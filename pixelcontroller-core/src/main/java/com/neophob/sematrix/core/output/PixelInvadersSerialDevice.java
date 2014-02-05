@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.pixelinvaders.Lpd6803Serial;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -53,7 +53,7 @@ public class PixelInvadersSerialDevice extends PixelInvadersDevice {
      *            the color format
      */
     public PixelInvadersSerialDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, ISerial serial) {
+            Configuration ph, ISerial serial) {
         super(matrixData, resizeHelper, OutputDeviceEnum.PIXELINVADERS, ph, 5, ph.getNrOfScreens());
 
         try {

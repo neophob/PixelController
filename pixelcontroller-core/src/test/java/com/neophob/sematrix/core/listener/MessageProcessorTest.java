@@ -33,7 +33,7 @@ import com.neophob.sematrix.core.glue.impl.FileUtilsLocalImpl;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.sound.SoundDummy;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.ColorSet;
@@ -58,7 +58,7 @@ public class MessageProcessorTest {
         colorsets.add(new ColorSet("bb", new int[] { 999, 555, 0xffffff }));
 
         VisualState.getInstance().init(fileUtils,
-                new ApplicationConfigurationHelper(new Properties()), new SoundDummy(), colorsets,
+                new Configuration(new Properties()), new SoundDummy(), colorsets,
                 presetService);
 
         MessageProcessor.INSTANCE.init(presetService, fileUtils);
@@ -85,7 +85,7 @@ public class MessageProcessorTest {
         String rootDir = System.getProperty("buildDirectory");
         LOG.log(Level.INFO, "Test Root Directory: " + rootDir);
 
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(config);
+        Configuration ph = new Configuration(config);
 
         List<IColorSet> colorsets = new ArrayList<IColorSet>();
         colorsets.add(new ColorSet("aa", new int[] { 1, 100, 1000 }));

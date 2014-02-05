@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.output.tpm2.Tpm2Serial;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -52,7 +52,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
      *            the controller
      */
     public Tpm2(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, ISerial serialPort) {
+            Configuration ph, ISerial serialPort) {
         super(matrixData, resizeHelper, OutputDeviceEnum.TPM2, ph, 8);
 
         int baud = ph.parseTpm2BaudRate();

@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.pixelinvaders.Lpd6803Net;
 import com.neophob.sematrix.core.output.transport.ethernet.IEthernetTcp;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -53,7 +53,7 @@ public class PixelInvadersNetDevice extends PixelInvadersDevice {
      *            the color format
      */
     public PixelInvadersNetDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, IEthernetTcp tcpImpl) {
+            Configuration ph, IEthernetTcp tcpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.PIXELINVADERS_NET, ph, 5, ph
                 .getNrOfScreens());
 

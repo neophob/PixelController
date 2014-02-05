@@ -24,7 +24,7 @@ import java.util.Observer;
 import com.neophob.sematrix.core.glue.FileUtils;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -44,7 +44,7 @@ public interface PixConServer {
 
     String getVersion();
 
-    ApplicationConfigurationHelper getConfig();
+    Configuration getConfig();
 
     List<IColorSet> getColorSets();
 

@@ -33,7 +33,7 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.jmx.TimeMeasureItemOutput;
 import com.neophob.sematrix.core.output.transport.OutputTransportFactory;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.VisualState;
@@ -66,7 +66,7 @@ public class PixelControllerOutput implements PixelControllerElement {
      * @throws IllegalArgumentException
      */
     public static IOutput getOutputDevice(MatrixData matrixData,
-            PixelControllerResize resizeHelper, ApplicationConfigurationHelper applicationConfig)
+            PixelControllerResize resizeHelper, Configuration applicationConfig)
             throws IllegalArgumentException {
         OutputDeviceEnum outputDeviceEnum = applicationConfig.getOutputDevice();
         IOutput output = null;

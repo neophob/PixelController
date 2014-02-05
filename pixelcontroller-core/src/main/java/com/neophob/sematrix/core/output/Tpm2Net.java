@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.tpm2.Tpm2NetProtocol;
 import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
@@ -97,7 +97,7 @@ public class Tpm2Net extends Output {
      * @param controller
      */
     public Tpm2Net(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, IEthernetUdp udpImpl) {
+            Configuration ph, IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.TPM2NET, ph, 8);
 
         this.displayOptions = ph.getTpm2NetDevice();

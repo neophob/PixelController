@@ -36,7 +36,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.neophob.sematrix.core.output.transport.ethernet.IEthernetUdp;
 import com.neophob.sematrix.core.preset.PresetService;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
@@ -60,7 +60,7 @@ public class OutputUdpTest {
     private IEthernetUdp udp;
 
     @Mock
-    private ApplicationConfigurationHelper ph;
+    private Configuration ph;
 
     @Mock
     private PresetService presetService;

@@ -32,7 +32,7 @@ import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.preset.PresetService;
 import com.neophob.sematrix.core.preset.PresetServiceImpl;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ConfigConstant;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
@@ -53,7 +53,7 @@ public class TransitionManagerTest {
         p.put(ConfigConstant.OUTPUT_DEVICE_LAYOUT, "NO_ROTATE");
         p.put(ConfigConstant.NULLOUTPUT_ROW1, "1");
 
-        ApplicationConfigurationHelper ph = new ApplicationConfigurationHelper(p);
+        Configuration ph = new Configuration(p);
         Assert.assertEquals(2, ph.getDeviceXResolution());
         Assert.assertEquals(2, ph.getDeviceYResolution());
 

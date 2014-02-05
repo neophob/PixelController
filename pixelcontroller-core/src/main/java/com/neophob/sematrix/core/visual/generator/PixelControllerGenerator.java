@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.PixelControllerElement;
 import com.neophob.sematrix.core.glue.FileUtils;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.resize.IResize;
 import com.neophob.sematrix.core.sound.BeatToAnimation;
@@ -73,7 +73,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
 
     BeatToAnimation bta = BeatToAnimation.MODERATE;
 
-    private ApplicationConfigurationHelper ph;
+    private Configuration ph;
 
     private FileUtils fileUtils;
 
@@ -92,7 +92,7 @@ public class PixelControllerGenerator implements PixelControllerElement {
     /**
      * Instantiates a new pixel controller generator.
      */
-    public PixelControllerGenerator(ApplicationConfigurationHelper ph, FileUtils fileUtils,
+    public PixelControllerGenerator(Configuration ph, FileUtils fileUtils,
             MatrixData matrix, float fps, ISound sound, IResize resize) {
         this.ph = ph;
         this.fileUtils = fileUtils;

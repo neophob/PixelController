@@ -22,7 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.transport.spi.ISpi;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -40,7 +40,7 @@ public class RaspberrySpi2801 extends OnePanelResolutionAwareOutput {
     private transient ISpi spi;
 
     public RaspberrySpi2801(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, ISpi spi) {
+            Configuration ph, ISpi spi) {
         super(matrixData, resizeHelper, OutputDeviceEnum.RPI_2801, ph, 8);
 
         LOG.log(Level.INFO, "Initialize RPi SPI channel, speed: " + ph.getRpiWs2801SpiSpeed());

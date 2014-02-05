@@ -18,7 +18,7 @@
  */
 package com.neophob.sematrix.core.output;
 
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -36,7 +36,7 @@ public class NullDevice extends Output {
      *            the controller
      */
     public NullDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph) {
+            Configuration ph) {
         super(matrixData, resizeHelper, OutputDeviceEnum.NULL, ph, 8);
         this.supportConnectionState = true;
     }

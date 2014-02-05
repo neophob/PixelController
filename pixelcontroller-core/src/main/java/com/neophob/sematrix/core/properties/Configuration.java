@@ -46,17 +46,12 @@ import com.neophob.sematrix.core.visual.layout.Layout;
  * 
  * @author michu
  */
-public class ApplicationConfigurationHelper implements Serializable {
+public class Configuration implements Serializable {
 
     private static final long serialVersionUID = -742970229384663801L;
 
     /** The log. */
-    private static final transient Logger LOG = Logger
-            .getLogger(ApplicationConfigurationHelper.class.getName());
-
-    private static final transient int DEFAULT_RESOLUTION = 8;
-
-    private static final transient float DEFAULT_SOUND_THRESHOLD = 0.0005f;
+    private static final transient Logger LOG = Logger.getLogger(Configuration.class.getName());
 
     /** The Constant ERROR_MULTIPLE_DEVICES_CONFIGURATED. */
     private static final transient String ERROR_MULTIPLE_DEVICES_CONFIGURATED = "Multiple devices configured, illegal configuration!";
@@ -123,7 +118,7 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @param input
      *            the input
      */
-    public ApplicationConfigurationHelper(Properties config) {
+    public Configuration(Properties config) {
         this.config = config;
 
         int nullDevices = parseNullOutputAddress();
@@ -247,8 +242,8 @@ public class ApplicationConfigurationHelper implements Serializable {
             enabledOutputs = 1;
             totalDevices = 1;
             devicesInRow1 = 1;
-            this.deviceXResolution = 8;
-            this.deviceYResolution = 8;
+            this.deviceXResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
+            this.deviceYResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
             LOG.log(Level.WARNING, "no output device defined, use NULL output");
             this.outputDeviceEnum = OutputDeviceEnum.NULL;
         }
@@ -401,11 +396,11 @@ public class ApplicationConfigurationHelper implements Serializable {
         if (StringUtils.isNotBlank(value)) {
 
             if (parseBoolean(ConfigConstant.PIXELINVADERS_IS_AN_EXPEDITINVADER)) {
-                this.deviceXResolution = 4;
-                this.deviceYResolution = 4;
+                this.deviceXResolution = ConfigDefault.DEFAULT_EXPEDITINVADERS_PANEL_RESOULTION;
+                this.deviceYResolution = ConfigDefault.DEFAULT_EXPEDITINVADERS_PANEL_RESOULTION;
             } else {
-                this.deviceXResolution = 8;
-                this.deviceYResolution = 8;
+                this.deviceXResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
+                this.deviceYResolution = ConfigDefault.DEFAULT_PIXELINVADERS_PANEL_RESOULTION;
             }
 
             devicesInRow1 = 0;
@@ -439,22 +434,6 @@ public class ApplicationConfigurationHelper implements Serializable {
         this.pixelinvadersNetIp = StringUtils.strip(tmp);
         this.pixelinvadersNetPort = parseInt(ConfigConstant.PIXELINVADERS_NET_PORT);
 
-        // check if PixelController Net Device is enabled
-        if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
-            LOG.log(Level.INFO, "Found PixelInvaders Net Config " + pixelinvadersNetIp + ":"
-                    + pixelinvadersNetPort);
-            return 0;
-        }
-
-        // get blacklist devices
-        String blacklist = config.getProperty(ConfigConstant.PIXELINVADERS_BLACKLIST);
-        if (blacklist != null) {
-            pixelInvadersBlacklist = new ArrayList<String>();
-            for (String s : blacklist.split(",")) {
-                pixelInvadersBlacklist.add(StringUtils.strip(s));
-            }
-        }
-
         // colorcorrection, maximal 16 panels
         for (int i = 0; i < 16; i++) {
             String pixColAdjustR = config.getProperty(ConfigConstant.PIXELINVADERS_COLORADJUST_R
@@ -474,6 +453,24 @@ public class ApplicationConfigurationHelper implements Serializable {
             }
         }
 
+        // check if PixelController Net Device is enabled
+        if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
+            LOG.log(Level.INFO, "Found PixelInvaders Net Config " + pixelinvadersNetIp + ":"
+                    + pixelinvadersNetPort);
+
+            // TODO this is quite a hack here
+            return 0;
+        }
+
+        // get blacklist devices
+        String blacklist = config.getProperty(ConfigConstant.PIXELINVADERS_BLACKLIST);
+        if (blacklist != null) {
+            pixelInvadersBlacklist = new ArrayList<String>();
+            for (String s : blacklist.split(",")) {
+                pixelInvadersBlacklist.add(StringUtils.strip(s));
+            }
+        }
+
         return lpdDevice.size();
     }
 
@@ -485,7 +482,6 @@ public class ApplicationConfigurationHelper implements Serializable {
         if (StringUtils.isNotBlank(pixelinvadersNetIp) && pixelinvadersNetPort > 0) {
             return lpdDevice.size();
         }
-
         return 0;
     }
 
@@ -495,15 +491,15 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return the size or -1 if nothing was defined
      */
     public int getLedPixelSize() {
-        int ret = 20;
 
-        String tmp = config.getProperty(ConfigConstant.CFG_PIXEL_SIZE, "20");
+        String tmp = config.getProperty(ConfigConstant.CFG_PIXEL_SIZE, ""
+                + ConfigDefault.DEFAULT_GUI_PIXELSIZE);
         try {
-            ret = Integer.parseInt(tmp);
+            return Integer.parseInt(tmp);
         } catch (NumberFormatException e) {
             LOG.log(Level.WARNING, FAILED_TO_PARSE, e);
         }
-        return ret;
+        return ConfigDefault.DEFAULT_GUI_PIXELSIZE;
 
     }
 
@@ -677,7 +673,7 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return the udp port
      */
     public int getUdpPort() {
-        return parseInt(ConfigConstant.UDP_PORT, 6803);
+        return parseInt(ConfigConstant.UDP_PORT, ConfigDefault.DEFAULT_UDP_PORT);
     }
 
     /**
@@ -992,7 +988,7 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return the int
      */
     public int parseOutputXResolution() {
-        return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, DEFAULT_RESOLUTION);
+        return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_X, ConfigDefault.DEFAULT_RESOLUTION);
     }
 
     /**
@@ -1001,7 +997,7 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return the int
      */
     public int parseOutputYResolution() {
-        return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, DEFAULT_RESOLUTION);
+        return parseInt(ConfigConstant.OUTPUT_DEVICE_RESOLUTION_Y, ConfigDefault.DEFAULT_RESOLUTION);
     }
 
     /**
@@ -1052,11 +1048,11 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return the int
      */
     public float parseFps() {
-        return parseFloat(ConfigConstant.FPS, 20);
+        return parseFloat(ConfigConstant.FPS, ConfigDefault.DEFAULT_FPS);
     }
 
     public float parseRemoteFps() {
-        return parseFloat(ConfigConstant.REMOTE_CLIENT_FPS, 10);
+        return parseFloat(ConfigConstant.REMOTE_CLIENT_FPS, ConfigDefault.DEFAULT_REMOTE_CLIENT_FPS);
     }
 
     public boolean parseRemoteConnectionUseCompression() {
@@ -1078,7 +1074,8 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int parseScreenCaptureWindowSizeX() {
-        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_X, 0);
+        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_X,
+                ConfigDefault.DEFAULT_CAPTURE_WINDOW_SIZE_X);
     }
 
     /**
@@ -1087,7 +1084,8 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int parseScreenCaptureWindowSizeY() {
-        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_Y, 64);
+        return parseInt(ConfigConstant.CAPTURE_WINDOW_SIZE_Y,
+                ConfigDefault.DEFAULT_CAPTURE_WINDOW_SIZE_Y);
     }
 
     /**
@@ -1095,7 +1093,8 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int loadPresetOnStart() {
-        return parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR, -1);
+        return parseInt(ConfigConstant.STARTUP_LOAD_PRESET_NR,
+                ConfigDefault.DEFAULT_STARTUP_LOAD_PRESET_NR);
     }
 
     /**
@@ -1139,7 +1138,8 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int getDebugWindowMaximalXSize() {
-        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_X_SIZE, 600);
+        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_X_SIZE,
+                ConfigDefault.DEFAULT_GUI_WINDOW_MAX_X_SIZE);
     }
 
     /**
@@ -1147,7 +1147,8 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int getDebugWindowMaximalYSize() {
-        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_Y_SIZE, 500);
+        return parseInt(ConfigConstant.DEBUG_WINDOW_MAX_Y_SIZE,
+                ConfigDefault.DEFAULT_GUI_WINDOW_MAX_Y_SIZE);
     }
 
     /**
@@ -1337,7 +1338,7 @@ public class ApplicationConfigurationHelper implements Serializable {
                 LOG.log(Level.WARNING, FAILED_TO_PARSE, s);
             }
         }
-        return DEFAULT_SOUND_THRESHOLD;
+        return ConfigDefault.DEFAULT_SOUND_THRESHOLD;
     }
 
     /**
@@ -1345,7 +1346,8 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int getPresetLoadingFadeTime() {
-        return parseInt(ConfigConstant.PRESET_LOADING_FADE_TIME, 500);
+        return parseInt(ConfigConstant.PRESET_LOADING_FADE_TIME,
+                ConfigDefault.DEFAULT_PRESET_LOADING_FADE_TIME);
     }
 
     /**
@@ -1353,11 +1355,12 @@ public class ApplicationConfigurationHelper implements Serializable {
      * @return
      */
     public int getVisualFadeTime() {
-        return parseInt(ConfigConstant.VISUAL_FADE_TIME, 1500);
+        return parseInt(ConfigConstant.VISUAL_FADE_TIME, ConfigDefault.DEFAULT_VISUAL_FADE_TIME);
     }
 
     public int getOscListeningPort() {
-        return parseInt(ConfigConstant.NET_OSC_LISTENING_PORT, 9876);
+        return parseInt(ConfigConstant.NET_OSC_LISTENING_PORT,
+                ConfigDefault.DEFAULT_NET_OSC_LISTENING_PORT);
     }
 
 }

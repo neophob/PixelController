@@ -29,7 +29,7 @@ import com.neophob.sematrix.core.jmx.TimeMeasureItemGlobal;
 import com.neophob.sematrix.core.listener.MessageProcessor;
 import com.neophob.sematrix.core.output.IOutput;
 import com.neophob.sematrix.core.preset.PresetSettings;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.sound.ISound;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
@@ -58,7 +58,7 @@ public class LocalServer implements PixConServer {
     }
 
     @Override
-    public ApplicationConfigurationHelper getConfig() {
+    public Configuration getConfig() {
         return pixelController.getConfig();
     }
 

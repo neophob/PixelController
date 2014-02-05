@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.pixelinvaders.Lpd6803Common;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ColorFormat;
 import com.neophob.sematrix.core.properties.DeviceConfig;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
@@ -73,7 +73,7 @@ public abstract class PixelInvadersDevice extends Output {
      * @param bpp
      */
     public PixelInvadersDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            OutputDeviceEnum outputDeviceEnum, ApplicationConfigurationHelper ph, int bpp,
+            OutputDeviceEnum outputDeviceEnum, Configuration ph, int bpp,
             int nrOfScreens) {
         super(matrixData, resizeHelper, outputDeviceEnum, ph, bpp);
 

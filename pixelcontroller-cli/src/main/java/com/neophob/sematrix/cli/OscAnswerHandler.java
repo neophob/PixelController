@@ -22,7 +22,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import com.neophob.sematrix.core.jmx.PixelControllerStatusMBean;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.core.rmi.RmiApi;
 import com.neophob.sematrix.osc.model.OscMessage;
@@ -66,8 +66,8 @@ public class OscAnswerHandler implements Observer {
                 break;
 
             case GET_CONFIGURATION:
-                ApplicationConfigurationHelper config = rmi.reassembleObject(msg.getBlob(),
-                        ApplicationConfigurationHelper.class);
+                Configuration config = rmi.reassembleObject(msg.getBlob(),
+                        Configuration.class);
                 System.out.println(config);
                 break;
 

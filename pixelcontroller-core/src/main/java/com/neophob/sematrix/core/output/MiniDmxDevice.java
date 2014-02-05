@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.output.minidmx.MiniDmxSerial;
 import com.neophob.sematrix.core.output.transport.serial.ISerial;
-import com.neophob.sematrix.core.properties.ApplicationConfigurationHelper;
+import com.neophob.sematrix.core.properties.Configuration;
 import com.neophob.sematrix.core.resize.PixelControllerResize;
 import com.neophob.sematrix.core.visual.MatrixData;
 
@@ -49,7 +49,7 @@ public class MiniDmxDevice extends OnePanelResolutionAwareOutput {
      *            the controller
      */
     public MiniDmxDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            ApplicationConfigurationHelper ph, ISerial serialPort) {
+            Configuration ph, ISerial serialPort) {
         super(matrixData, resizeHelper, OutputDeviceEnum.MINIDMX, ph, 8);
 
         int baud = ph.parseMiniDmxBaudRate();
