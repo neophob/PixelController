@@ -492,7 +492,7 @@ Here are some common errors:
 ## HOWTO BUILD PIXELCONTROLLER
 Prerequisite:
 
-* Maven v2.x (if you use Maven 3, make sure to read [http://neophob.com/2011/11/maven-3-is-evil/](http://neophob.com/2011/11/maven-3-is-evil/) first!)
+* Maven
 * JDK 1.6+
 
 Then run 
@@ -519,8 +519,8 @@ As a string point, add your hardware in the `OutputDeviceEnum.java` class and ha
 
 Optional, license header check for all source files (http://code.mycila.com/license-maven-plugin/)
 
-    # mvn license:check -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
-    # mvn license:format -Dyear=2013 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
+    # mvn license:check -Dyear=2014 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
+    # mvn license:format -Dyear=2014 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
 
     
 Use the Maven version plugin to update your POM’s versions:
