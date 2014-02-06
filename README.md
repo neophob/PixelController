@@ -38,6 +38,9 @@ which defines the resolution of your matrix. Next you need to define one or mult
 Take a look at the config file, there are a lot of hints how to configure PixelController. You can start PixelController without touching 
 the configuration file, by default the null output device is enabled. 
 
+You can put your own **image files** to the `data/pics` directory or delete existing images. Make sure your image fits your output resolution.
+
+
 ### Main idea
 The main idea of PixelController is, that you can create an nice looking Visual on your matrix by selecting the right "elements". The "elements" of a Visual are
 
@@ -232,7 +235,7 @@ Select Image Generator as Generator A (0 is Passthru, 1 is Blinkenlights...) for
         # ./PixConCli.sh -c CHANGE_GENERATOR_A 2
 
 
-Load image gradient.jpg
+Load image gradient.jpg (the image must be preset in the `data/pics` directory, where PixelController is running):
 
         # ./PixConCli.sh -c IMAGE gradient.jpg
 
