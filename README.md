@@ -13,11 +13,11 @@ You can **download** PixelController on Google Code: [http://code.google.com/p/p
 
 You can download the latest **SNAPSHOT** (=unstable) release of PixelController on the [Jenkins Server](https://buildhive.cloudbees.com/job/neophob/job/PixelController/ws/pixelcontroller-distribution/target/assembly/) 
 
-## DEMO
+## Demo
 Check out [PixelController Rough Cut #2. Featuring two PixelInvaders panels](https://vimeo.com/61141493), [PixelInvaders 3D RGB Panels](http://vimeo.com/27453711) and [PixelInvaders panels controlled by a tablet (OSC)](http://vimeo.com/32580251) to see PixelController in action with two PixelInvaders panels. This should give you a quick overview what PixelController is.
 
 
-## HOWTO USE PIXELCONTROLLER
+## How to use PixelController
 Prerequisite:
 
  * Java Runtime, v1.6+
@@ -37,6 +37,29 @@ which defines the resolution of your matrix. Next you need to define one or mult
 
 Take a look at the config file, there are a lot of hints how to configure PixelController.
 
+### Main idea
+The main idea is, that you can create an nice looking Visual on your matrix by selecting the right "elements". The "elements" of a Visual are
+
+* two **Generators** (create the content)
+* two **Effects** (modify the content)
+* a **Mixer** (mix the content)
+* a **Colorset** (define the look of the content). 
+
+I try to visualize it: 
+
+    [GENERATOR A] ---> [EFFECT A] ---> [MIXER] <--- [EFFECT B] <--- [GENERATOR B]
+                                          |
+                                          V  [Colorset]
+                                       [VISUAL]
+
+A Visual can be assigned to one or more Output LED Matrices.
+
+**Exception:** There are two exceptions, if you use the Capture generator or use the OSC Generator (that sends 24bpp data) PixelController switch to the **Pass-though mode**. This means no Colorset, Effect and Mixer can be used and the original input data is send to the panels.
+
+Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a non-visible Visual, that can be displayed later. 
+All Visuals can be stored (and of course loaded) in a preset.
+
+
 ### Advanced usage
 
 You can run the PixelController daemon without frontend and connect the PixelController frontend to the daemon.
@@ -46,21 +69,6 @@ Start the PixelController server by execute `pixConServer/PixelController.sh` on
 * using the PixelController remote client, start it with `pixConClient/PixelControllerClient.jar`
 * using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
 * any other OSC client, see chapter **OSC Clients to control PixelController** 
-
-### Main idea
-A Visual can be assigned to one or more Output LED Matrices. A Visual consists of two **Generators** (create the content), two **Effects** (modify the content), a **Mixer** (mix the content) and a **Colorset** (define the look of the content). 
-I try to visualize it: 
-
-    [GENERATOR A] ---> [EFFECT A] ---> [MIXER] <--- [EFFECT B] <--- [GENERATOR B]
-                                          |
-                                          V  [Colorset]
-                                       [VISUAL]
-
-**Exception:** There are two exceptions, if you use the Capture generator or use the OSC Generator (that sends 24bpp data) PixelController switch to the **Pass-though mode**. This means no Colorset, Effect and Mixer can be used and the original input data is send to the panels.
-
-Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a non-visible Visual, that can be displayed later. 
-All Visuals can be stored (and of course loaded) in a preset.
-
 
 ## SUPPORTED HARDWARE
 PixelController supports different (LED) matrix hardware devices/controller:
