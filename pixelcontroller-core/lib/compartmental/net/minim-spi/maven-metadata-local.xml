@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>compartmental.net</groupId>
+  <artifactId>minim-spi</artifactId>
+  <versioning>
+    <release>2.1.0-BETA</release>
+    <versions>
+      <version>2.1.0-BETA</version>
+    </versions>
+    <lastUpdated>20140206123120</lastUpdated>
+  </versioning>
+</metadata>

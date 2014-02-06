@@ -11,8 +11,16 @@
 
 	<artifactId>pixelcontroller-core</artifactId>
 	<name>PixelController Core Library</name>
-
 	<packaging>jar</packaging>
+
+	<repositories>
+		<repository>
+			<id>pixelcontroller-core-repo</id>
+			<name>local repo for non published artefacts</name>
+			<url>file://${project.basedir}/lib</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 
 	<properties>
 		<minim.version>2.1.0-BETA</minim.version>
@@ -46,126 +54,6 @@
 						</manifestEntries>
 					</archive>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>2.5.1</version>
-				<executions>
-					<execution>
-						<id>RXTXcomm.jar</id>
-						<configuration>
-							<file>lib/serial/RXTXcomm.jar</file>
-							<groupId>org.qbang</groupId>
-							<artifactId>rxtx</artifactId>
-							<version>2.2</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>minim.jar</id>
-						<configuration>
-							<file>lib/minim/library/minim.jar</file>
-							<groupId>compartmental.net</groupId>
-							<artifactId>minim</artifactId>
-							<version>${minim.version}</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>jsminim.jar</id>
-						<configuration>
-							<file>lib/minim/library/jsminim.jar</file>
-							<groupId>compartmental.net</groupId>
-							<artifactId>jsminim</artifactId>
-							<version>${minim.version}</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>minim-spi.jar</id>
-						<configuration>
-							<file>lib/minim/library/minim-spi.jar</file>
-							<groupId>compartmental.net</groupId>
-							<artifactId>minim-spi</artifactId>
-							<version>${minim.version}</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>tritonus_aos.jar</id>
-						<configuration>
-							<file>lib/minim/library/tritonus_aos.jar</file>
-							<groupId>compartmental.net</groupId>
-							<artifactId>tritonus_aos</artifactId>
-							<version>2.0.2</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>tritonus_share.jar</id>
-						<configuration>
-							<file>lib/minim/library/tritonus_share.jar</file>
-							<groupId>compartmental.net</groupId>
-							<artifactId>tritonus_share</artifactId>
-							<version>2.0.2</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>artnet4j-0002.jar</id>
-						<configuration>
-							<file>lib/artnet4j-0002.jar</file>
-							<groupId>artnet4j</groupId>
-							<artifactId>artnet4j</artifactId>
-							<version>0002</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>rv3sf_api.jar</id>
-						<configuration>
-							<file>lib/rv3sf_api-0.2.jar</file>
-							<groupId>rv3sf_api</groupId>
-							<artifactId>rv3sf_api</artifactId>
-							<version>0.2</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 
@@ -283,7 +171,7 @@
 		<dependency>
 			<groupId>org.qbang</groupId>
 			<artifactId>rxtx</artifactId>
-			<version>2.2</version>
+			<version>2.2-lowlatency</version>
 		</dependency>
 		<dependency>
 			<groupId>compartmental.net</groupId>
@@ -310,6 +198,7 @@
 			<artifactId>tritonus_share</artifactId>
 			<version>2.0.2</version>
 		</dependency>
+		
 		<!-- src: http://code.google.com/p/artnet4j/ -->
 		<dependency>
 			<groupId>artnet4j</groupId>

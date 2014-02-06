@@ -11,37 +11,16 @@
         
 	<artifactId>pixelcontroller-cli</artifactId>
 	<name>PixelController Command Line Interface</name>
-	
 	<packaging>jar</packaging>
 
-	<build>
-		<plugins>
-
-			<!-- use the Maven Install Plugin to deploy needed jars to the local repository 
-				since they aren't available in the public Maven repositories. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<version>2.5.1</version>
-				<executions>
-					<execution>
-						<id>jargs</id>
-						<configuration>
-							<file>lib/jargs-1.0.jar</file>
-							<groupId>net.sf</groupId>
-							<artifactId>jargs</artifactId>
-							<version>1.0</version>
-							<packaging>jar</packaging>
-						</configuration>
-						<phase>initialize</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<repositories>
+		<repository>
+			<id>pixelcontroller-cli-repo</id>
+			<name>local repo for non published artefacts</name>
+			<url>file://${project.basedir}/lib</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 	
 	<dependencies>
 		<dependency>

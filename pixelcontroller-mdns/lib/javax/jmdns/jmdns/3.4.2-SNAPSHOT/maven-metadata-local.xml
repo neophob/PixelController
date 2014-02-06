@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>javax.jmdns</groupId>
+  <artifactId>jmdns</artifactId>
+  <version>3.4.2-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <lastUpdated>20140206125839</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>3.4.2-SNAPSHOT</value>
+        <updated>20140206125839</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>3.4.2-SNAPSHOT</value>
+        <updated>20140206125839</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

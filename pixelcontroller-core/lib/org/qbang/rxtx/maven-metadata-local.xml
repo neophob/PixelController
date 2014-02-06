@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.qbang</groupId>
+  <artifactId>rxtx</artifactId>
+  <versioning>
+    <release>2.2-lowlatency</release>
+    <versions>
+      <version>2.2-lowlatency</version>
+    </versions>
+    <lastUpdated>20140206122716</lastUpdated>
+  </versioning>
+</metadata>
