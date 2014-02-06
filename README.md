@@ -1,4 +1,3 @@
-[![Build Status](https://secure.travis-ci.org/neophob/PixelController.png)](http://travis-ci.org/neophob/PixelController) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/neophob/PixelController/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Build Status](https://buildhive.cloudbees.com/job/neophob/job/PixelController/badge/icon)](https://buildhive.cloudbees.com/job/neophob/job/PixelController/)
 
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2014. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
@@ -528,7 +527,11 @@ Then run
 to build PixelController, **the distribution directory** is `pixelcontroller-distribution/target/assembly`.
 
 **Hint:** if you're using eclipse and you see an error like this
-`java.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersionjava.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersion`
+
+    java.lang.NoClassDefFoundError: 
+    Could not initialize class gnu.io.RXTXVersionjava.lang.NoClassDefFoundError:
+    Could not initialize class gnu.io.RXTXVersion 
+    
 make sure you add the lib/serial directory as "Native library location"
 
 
