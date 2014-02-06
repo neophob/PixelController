@@ -1,7 +1,5 @@
 language: java
-before_install:
-  - mvn initialize
-install: mvn install -DskipTests=true
+install: mvn install -DskipTests=false
 jdk:
   - oraclejdk7
 #env: JAVA_OPTS="-server -Djruby.cext.enabled=false -Djruby.compile.invokedynamic=false"
