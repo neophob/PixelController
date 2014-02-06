@@ -19,6 +19,8 @@
 package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.neophob.sematrix.core.properties.ValidCommand;
 import com.neophob.sematrix.gui.guibuilder.GuiCallbackAction;
@@ -29,108 +31,111 @@ import com.neophob.sematrix.gui.service.PixConServer;
  * PixelController Keyboard handler
  * 
  * @author mvogt
- *
+ * 
  */
 public final class KeyboardHandler {
 
-	private static GuiCallbackAction registerGuiClass;
+    private static final Logger LOG = Logger.getLogger(KeyboardHandler.class.getName());
+
+    private static GuiCallbackAction registerGuiClass;
     private static PixConServer pixConServer;
-    
+
     private KeyboardHandler() {
-    	//no instance
+        // no instance
     }
-    
+
     /**
      * 
      * @param key
      */
     public static void keyboardHandler(char key, int keyCode) {
-    	
-    	//if a user press a key during the setup - ignore it!
-    	if (registerGuiClass==null || pixConServer==null) {    		
-    		return;
-    	}
-    	
-    	//if we edit a textfield, ignore keyboard shortcuts
-    	if (registerGuiClass.isTextfieldInEditMode()) {
-    		return;
-    	}
-    	
-        switch (key) {
-        
-        //change current Colorset
-        case 'C':  
-        	sendMsg(ValidCommand.ROTATE_COLORSET);
-            break;
 
-        //change current generator 1
-        case 'F':
-        	sendMsg(ValidCommand.ROTATE_GENERATOR_A);
-        	break;
-
-        //change current generator 2
-        case 'G':
-        	sendMsg(ValidCommand.ROTATE_GENERATOR_B);
-            break;
-
-        //change current effect 1
-        case 'W':
-        	sendMsg(ValidCommand.ROTATE_EFFECT_A);
-            break;
-
-        //change current effect 2
-        case 'E':        	
-        	sendMsg(ValidCommand.ROTATE_EFFECT_B);
-            break;
-
-        //change current mixer
-        case 'M':
-        	sendMsg(ValidCommand.ROTATE_MIXER);
-            break;
-            
-        //randomize
-        case 'R':
-        	sendMsg(ValidCommand.RANDOMIZE);
-            break;
-            
-        default:
-            break;
-        }   
-
-        //select previous/next tab
-        switch (keyCode) {
-        	case KeyEvent.VK_LEFT:
-        		registerGuiClass.selectPreviousTab();
-        		break;                  
-        	case KeyEvent.VK_RIGHT:
-        		registerGuiClass.selectNextTab();
-        		break;                  
+        // if a user press a key during the setup - ignore it!
+        if (registerGuiClass == null || pixConServer == null) {
+            LOG.log(Level.INFO, "Keyboard handler not initialized yet.");
+            return;
         }
-        
-        if (key>='1' && key<'9') {
-            if (registerGuiClass!=null) {
+
+        // if we edit a textfield, ignore keyboard shortcuts
+        if (registerGuiClass.isTextfieldInEditMode()) {
+            return;
+        }
+
+        switch (key) {
+
+        // change current Colorset
+            case 'C':
+                sendMsg(ValidCommand.ROTATE_COLORSET);
+                break;
+
+            // change current generator 1
+            case 'F':
+                sendMsg(ValidCommand.ROTATE_GENERATOR_A);
+                break;
+
+            // change current generator 2
+            case 'G':
+                sendMsg(ValidCommand.ROTATE_GENERATOR_B);
+                break;
+
+            // change current effect 1
+            case 'W':
+                sendMsg(ValidCommand.ROTATE_EFFECT_A);
+                break;
+
+            // change current effect 2
+            case 'E':
+                sendMsg(ValidCommand.ROTATE_EFFECT_B);
+                break;
+
+            // change current mixer
+            case 'M':
+                sendMsg(ValidCommand.ROTATE_MIXER);
+                break;
+
+            // randomize
+            case 'R':
+                sendMsg(ValidCommand.RANDOMIZE);
+                break;
+
+            default:
+                break;
+        }
+
+        // select previous/next tab
+        switch (keyCode) {
+            case KeyEvent.VK_LEFT:
+                registerGuiClass.selectPreviousTab();
+                break;
+            case KeyEvent.VK_RIGHT:
+                registerGuiClass.selectNextTab();
+                break;
+        }
+
+        if (key >= '1' && key < '9') {
+            if (registerGuiClass != null) {
                 // convert a key-number (48-52) to an int between 0 and 4
-                int currentVisual = (int)key-49;
+                int currentVisual = (int) key - 49;
                 registerGuiClass.activeVisual(currentVisual);
                 pixConServer.refreshGuiState();
             }
         }
-        
+
     }
 
     private static void sendMsg(ValidCommand command) {
-        String[] msg = new String[1];		
-        msg[0] = ""+command;
-    	pixConServer.sendMessage(msg);
+        String[] msg = new String[1];
+        msg[0] = "" + command;
+        pixConServer.sendMessage(msg);
     }
 
     /**
-     * @param registerGuiClass the registerGuiClass to set
+     * @param registerGuiClass
+     *            the registerGuiClass to set
      */
     public static void init(GuiCallbackAction registerGuiClass, PixConServer pixConServer) {
         KeyboardHandler.registerGuiClass = registerGuiClass;
         KeyboardHandler.pixConServer = pixConServer;
     }
-    
-    
+
 }
