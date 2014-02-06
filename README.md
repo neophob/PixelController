@@ -23,7 +23,7 @@ Prerequisite:
  * Java Runtime, v1.6+
 
 ### Basic usage
-You can start PixelController with the integrated GUI by double click on `PixelController.jar`.
+You can start PixelController with the integrated GUI by double click on the file `PixelController.jar`.
 
 By default PixelController has **no configured** output device (= no configured LED Matrix). To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
 
@@ -35,7 +35,8 @@ which defines the resolution of your matrix. Next you need to define one or mult
     pixelinvaders.layout.row1=NO_ROTATE,ROTATE_180
     #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
 
-Take a look at the config file, there are a lot of hints how to configure PixelController.
+Take a look at the config file, there are a lot of hints how to configure PixelController. You can start PixelController without touching 
+the configuration file, by default the null output device is enabled. 
 
 ### Main idea
 The main idea is, that you can create an nice looking Visual on your matrix by selecting the right "elements". The "elements" of a Visual are
@@ -49,24 +50,29 @@ I try to visualize it:
 
     [GENERATOR A] ---> [EFFECT A] ---> [MIXER] <--- [EFFECT B] <--- [GENERATOR B]
                                           |
-                                          V  [Colorset]
+                                      [Colorset]
+                                          |
                                        [VISUAL]
 
 A Visual can be assigned to one or more Output LED Matrices.
 
 **Exception:** There are two exceptions, if you use the Capture generator or use the OSC Generator (that sends 24bpp data) PixelController switch to the **Pass-though mode**. This means no Colorset, Effect and Mixer can be used and the original input data is send to the panels.
 
-Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a non-visible Visual, that can be displayed later. 
-All Visuals can be stored (and of course loaded) in a preset.
+Per default PixelController creates one Visual more than the number of connected Output devices. This allows you to play with a Visual that is
+not assigned to an Output (non-visible), that can be displayed later. All Visuals can be stored (and of course loaded) to a preset file.
 
 
 ### Advanced usage
 
-You can run the PixelController daemon without frontend and connect the PixelController frontend to the daemon.
+You can run the PixelController daemon without frontend (for example on a Raspberry Pi) and then connect the PixelController frontend, which is
+running on your computer, to the daemon.
 
-Start the PixelController server by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The server part generate the visuals and send them to the output. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control PixelController server by
+Start the PixelController daemon by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on 
+Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The PixelController daemon generate the visuals and send them to the 
+output. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control 
+PixelController server by
 
-* using the PixelController remote client, start it with `pixConClient/PixelControllerClient.jar`
+* using the PixelController frontend/remote client, start it with `pixConClient/PixelControllerClient.jar`
 * using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
 * any other OSC client, see chapter **OSC Clients to control PixelController** 
 
@@ -85,26 +91,31 @@ PixelController supports different (LED) matrix hardware devices/controller:
 * E1.31 devices (see [http://www.opendmx.net/index.php/E1.31](http://www.opendmx.net/index.php/E1.31))
 * RPi (Raspberry Pi) SPI controlled WS2801 LED pixels, see [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)
 
-Check out the `integration/ArduinoFW` directory, all Arduino based firmware files are stored there.
+Check out the `integration/ArduinoFw` directory, all Arduino based firmware files are stored there.
 
 ### [Arduino] Which firmware should I use?
-If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between different firmwares.
+If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between 
+different firmwares.
   
 * If you bought a [PixelInvaders DIY Kit](http://shop.pixelinvaders.ch/product/pixelinvaders-diy-basic-pack), use the `integration/ArduinoFw/pixelinvaders/neoLedLPD6803Spi` firmware
 * If you want to create a ONE panel matrix with an arbitrary resolution, use the `integration/ArduinoFw/tpm2serial` firmware
 * If you want to create multiple 8x8 panels, use the `integration/ArduinoFw/pixelinvaders/neoLedWS2801Spi` firmware. This firmware is based on the fastspi2 library and can handle different led chips.
 
-I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency (especially the Arduino UNO r3). You need to install the Arduino IDE, see the "Getting started with Arduino" ([http://arduino.cc/en/Guide/HomePage](http://arduino.cc/en/Guide/HomePage)) Tutorial.
+I recommend a Teensy 2.0 microcontroller, as some Arduino boards suffer from bad serial latency (especially the Arduino UNO r3). You need to 
+install the Arduino IDE, see the "Getting started with Arduino" ([http://arduino.cc/en/Guide/HomePage](http://arduino.cc/en/Guide/HomePage)) Tutorial.
 
-You need to know how to install an Arduino Library ([http://arduino.cc/en/Guide/Libraries](http://arduino.cc/en/Guide/Libraries)). For PixelInvaders Panels (LPD6803) install the `integration/ArduinoFw/libraries/timer1` and `integration/ArduinoFw/libraries/neophob_lpd6803spi` libraries, for other panels (WS2801, WS281x...) install the `integration/ArduinoFw/libraries/FastSPI_LED2` library.  
+You need to know how to install an Arduino Library ([http://arduino.cc/en/Guide/Libraries](http://arduino.cc/en/Guide/Libraries)). 
+For PixelInvaders Panels (LPD6803) install the `integration/ArduinoFw/libraries/timer1` and `integration/ArduinoFw/libraries/neophob_lpd6803spi` 
+libraries, for other panels (WS2801, WS281x...) install the `integration/ArduinoFw/libraries/FastSPI_LED2` library.  
 
 ### How does it work?
 
-PixelController generates the content for the LED matrix and sends the data out to the controller. The controller then handle the LED module update (which depends on the used LED modules). There are two options to send the data to the controller: 
+PixelController generates the content for the LED matrix and sends the data out to the controller. The controller then handle the LED module 
+update (which depends on the used LED modules). There are two options to send the data to the controller: 
 * sends the data via USB to the Arduino/Teensy board aka. DIY LED controller.
 * sends the data via ethernet to a PixelInvaders/E1.31/ArtNet... device.
 
-Here are some primitive schemes:
+Here are some primitive schemes how the visual is send to the LED matrix:
 
     [PixelController]---<USB>---[Teensy with PixelInvaders firmware]---<SPI>---[LED#1]---[LED#2]...
 
@@ -117,7 +128,8 @@ Here are some primitive schemes:
 
 ### Advanced PixelController configuration
 
-There are a lot of options in the `config.properties` file. I describe some examples; PixelController updates all Visuals depending on the Sound input. If a beat is detected, the Visuals are updated faster. You can disable this behavior by setting this option:
+There are a lot of options in the `config.properties` file. I describe some examples; PixelController updates all Visuals depending on the Sound 
+input. If a beat is detected, the Visuals are updated faster. You can disable this behavior by setting this option:
 
     #=========================
     #enable pixelcontroller sound analyzer (disable it if you don't have a sound card)
@@ -132,7 +144,8 @@ There is a Generator called "**Screen Capture**" which is disabled by default. I
     screen.capture.window.size.x=500
     screen.capture.window.size.y=300
 
-This enables the Screen Capture Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube videos, other movie players...
+This enables the Screen Capture Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube 
+videos, other movie players...
 
 Or you can start PixelController in the **random mode** where PixelController changes the Visuals randomly:
 
@@ -164,7 +177,8 @@ Or define the window size, depending on this setting, the Visuals are displayed 
     gui.window.maximal.width=820
     gui.window.maximal.height=600
 
-You can define **your own Colorsets**, they are defined in the file `data/palette.properties`. A Colorset definition consists of a name and multiple RGB color values. Here is an example:
+You can define **your own Colorsets**, they are defined in the file `data/palette.properties`. A Colorset definition consists of a 
+name and multiple RGB color values. Here is an example:
 
     MiamiVice=0x1be3ff, 0xff82dc, 0xffffff
 
