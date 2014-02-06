@@ -523,10 +523,9 @@ Prerequisite:
 
 Then run 
 
-    # mvn initialize
-    to install the needed packages in your local repo and    
     # mvn clean package
-    to build PixelController, the distribution directory is "target/assembly/PixelController-VERISON/".
+    
+to build PixelController, the distribution directory is `pixelcontroller-distribution/target/assembly`.
 
 Hint: if you're using eclipse and you see an error like this
 `java.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersionjava.lang.NoClassDefFoundError: Could not initialize class gnu.io.RXTXVersion`
