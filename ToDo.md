@@ -3,6 +3,7 @@
 ## Version 2.1
 * Update pixconcli
 * remote setup, do not display duplicate entries but display whats missing.
+* togle freeze
 * finish / remove teensy3 firmware
 
 ## Version 2.2
