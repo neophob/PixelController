@@ -68,14 +68,14 @@ You can run the PixelController daemon without frontend, for example on a Raspbe
 
 It's important to know that the **configuration** of PixelController is made where the **PixelController deamon** is running.
 
-### Details
+#### Details
 
 Start the **PixelController daemon** by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on 
 Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The PixelController daemon generate the visuals and send them to the 
 Output device. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control 
 PixelController server by
 
-* using the **PixelController frontend**/remote client, start it with `pixConClient/PixelControllerClient.jar`
+* using the **PixelController frontend**/remote client, start it with `pixConClient/PixelControllerClient.jar`. The PixelController frontend will detect the PixelController daemon automatically via Bonjour/Zeroconf.
 * using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
 * any other OSC client, see chapter **OSC Clients to control PixelController** 
 
