@@ -143,8 +143,8 @@ public class VisualState extends Observable {
      * @param ph
      *            the PropertiesHelper
      */
-    public synchronized void init(FileUtils fileUtils, Configuration ph,
-            ISound sound, List<IColorSet> colorSets, PresetService presetService) {
+    public synchronized void init(FileUtils fileUtils, Configuration ph, ISound sound,
+            List<IColorSet> colorSets, PresetService presetService) {
 
         if (initialized) {
             LOG.log(Level.WARNING, "Reinitialize collector, use for unit tests only");
@@ -584,7 +584,7 @@ public class VisualState extends Observable {
     /**
 	 * 
 	 */
-    public void togglePauseMode() {
+    public synchronized void togglePauseMode() {
         if (inPauseMode) {
             inPauseMode = false;
         } else {
