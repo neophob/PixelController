@@ -3,7 +3,6 @@
 ## Version 2.1
 * Update pixconcli
 * remote setup, do not display duplicate entries but display whats missing.
-* add document about rpi client/server, how to start, etc. merge all rpi related things
 * finish / remove teensy3 firmware
 
 ## Version 2.2

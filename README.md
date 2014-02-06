@@ -25,12 +25,12 @@ Prerequisite:
 ### Basic usage
 You can start PixelController with the integrated GUI by double click on the file `PixelController.jar`.
 
-By default PixelController has **no configured** output device (= no configured LED Matrix). To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
+By default PixelController use **a dummy** output device (= no configured LED Matrix). To change that open the `data/config.properties` configuration file and make the necessary changes, lines starting with # are ignored. The most important parts are:
 
     output.resolution.x=8
     output.resolution.y=8
 
-which defines the resolution of your matrix. Next you need to define one or multiple Output devices, for example for two PixelInvaders panels (while the output for the second panel is rotated by 180 degrees):
+which defines the resolution of your matrix. Next you need to define one or multiple Output devices, for example id you use two PixelInvaders panels (while the output for the second panel is rotated by 180 degrees) use:
 
     pixelinvaders.layout.row1=NO_ROTATE,ROTATE_180
     #pixelinvaders.layout.row2=NO_ROTATE,NO_ROTATE
@@ -39,7 +39,7 @@ Take a look at the config file, there are a lot of hints how to configure PixelC
 the configuration file, by default the null output device is enabled. 
 
 ### Main idea
-The main idea is, that you can create an nice looking Visual on your matrix by selecting the right "elements". The "elements" of a Visual are
+The main idea of PixelController is, that you can create an nice looking Visual on your matrix by selecting the right "elements". The "elements" of a Visual are
 
 * two **Generators** (create the content)
 * two **Effects** (modify the content)
@@ -64,23 +64,29 @@ not assigned to an Output (non-visible), that can be displayed later. All Visual
 
 ### Advanced usage
 
-You can run the PixelController daemon without frontend (for example on a Raspberry Pi) and then connect the PixelController frontend, which is
-running on your computer, to the daemon.
+You can run the PixelController daemon without frontend, for example on a Raspberry Pi. Then you start the PixelController frontend on your computer, which will connect to the PixelController daemon.
 
-Start the PixelController daemon by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on 
+It's important to know that the **configuration** of PixelController is made where the **PixelController deamon** is running.
+
+### Details
+
+Start the **PixelController daemon** by execute `pixConServer/PixelController.sh` on Linux/OSX, `pixConServer/PixelControllerRPi.sh` on 
 Raspberry Pi and `pixConServer\PixelController.cmd` on Windows. The PixelController daemon generate the visuals and send them to the 
-output. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control 
+Output device. PixelController create a Bonjour/Zeroconf service you can discover or simply ping at `PixelController.local`. You can control 
 PixelController server by
 
-* using the PixelController frontend/remote client, start it with `pixConClient/PixelControllerClient.jar`
+* using the **PixelController frontend**/remote client, start it with `pixConClient/PixelControllerClient.jar`
 * using the PixelController command line tool by execute `pixConClient/PixConCli.sh` on Linux/OSX or `pixConClient\PixConCli.cmd`
 * any other OSC client, see chapter **OSC Clients to control PixelController** 
+
+If Bonjour/Zeroconf does not work on your network you can edit the PixelController frontend configuration file `./pixConClient/clientRemote.properties` and add the IP address of the PixelController daemon.
+
 
 ## SUPPORTED HARDWARE
 PixelController supports different (LED) matrix hardware devices/controller:
 
-* PixelInvaders 3D Panels serial device (see Readme.PixelInvaders, [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)) 
-* PixelInvaders 3D Panels network device (see Readme.PixelInvaders, [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch))
+* PixelInvaders 3D Panels serial device **(*1)**
+* PixelInvaders 3D Panels network device **(*1)**
 * Seeedstudios Rainbowduino V2 (see Readme.rainbowduinoV2)
 * Seeedstudios Rainbowduino V3 (Using this firmware: [https://code.google.com/p/rainbowduino-v3-streaming-firmware](https://code.google.com/p/rainbowduino-v3-streaming-firmware))
 * ArtNet Devices, multiple universe are supported,510 Channels (170 RGB Pixels) per universe
@@ -92,6 +98,9 @@ PixelController supports different (LED) matrix hardware devices/controller:
 * RPi (Raspberry Pi) SPI controlled WS2801 LED pixels, see [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)
 
 Check out the `integration/ArduinoFw` directory, all Arduino based firmware files are stored there.
+
+**(*1)**: I sell PixelInvaders 3d panels as a DIY kit, see [http://shop.pixelinvaders.ch](http://shop.pixelinvaders.ch) for more details.
+
 
 ### [Arduino] Which firmware should I use?
 If you don't have a hardware controller (like ArtNet or E1.31) and would like to use an Arduino/Teensy microcontroller you can choose between 
@@ -128,8 +137,9 @@ Here are some primitive schemes how the visual is send to the LED matrix:
 
 ### Advanced PixelController configuration
 
-There are a lot of options in the `config.properties` file. I describe some examples; PixelController updates all Visuals depending on the Sound 
-input. If a beat is detected, the Visuals are updated faster. You can disable this behavior by setting this option:
+There are a lot of options in the `config.properties` file, here I describ some options.
+
+PixelController updates all Visuals depending on the **sound input**. If a beat is detected, the Visuals are updated faster. You can disable this behavior by setting this option:
 
     #=========================
     #enable pixelcontroller sound analyzer (disable it if you don't have a sound card)
@@ -154,20 +164,34 @@ Or you can start PixelController in the **random mode** where PixelController ch
     #=========================
     startup.in.randommode=false
 
+If the PixelController is running in **random mode** you can define a lifetime of the random pattern. If the lifetime is over a new random pattern is generated. If the lifetime is configured as 0, the random pattern will change only if an audio input is used and a beat is detected.
+
+    #=========================
+    #if the random mode is enabled, create a random visual each n seconds
+    #if this value is 0, then this feature is disabled
+    #=========================
+    randommode.lifetime.in.s=5
+
 Or you can save a preset and load that one per default if you start PixelController (per default, preset 0 will be loaded)
 
     #=========================
-    #load a preset if PixelController starts?
-    #Warning, this will overwrite your settings configured above (initial generator values)!
+    #load a preset if PixelController starts, default is preset nr 0
     #=========================
-    #startup.load.preset.nr=1
+    #startup.load.preset.nr=0
 
 You can define the **size of the PixelController GUI**, for example the size of the simulated LED Matrix (which is per default 16 pixels):
 
     #=========================
-    #the size of the software output matrix
+    #GUI: the size of the software output matrix
     #=========================
     led.pixel.size=16
+
+Define the **listening port** of PixelController. This port is used if you want to send data or image content via OSC to the PixelController daemon. This port is also used if you want to connect from the PixelController frontend.
+
+    #=========================
+    #network port config
+    #=========================
+    osc.listening.port=9876
 
 Or define the window size, depending on this setting, the Visuals are displayed larger or smaller.
 
@@ -187,11 +211,12 @@ name and multiple RGB color values. Here is an example:
 There are more options in the config file, take a look - each option is documented in the config file.
 
 
-## FRONTENDS
-There are different frontends for PixelController (besides the GUI frontend). It doesn't matter how you control PixelController - you have the same functions. See chapter **OSC Messages** to get an overview.
+## Frontends
+There are different frontends for PixelController (besides the GUI frontend). It doesn't matter how you control PixelController - you have the same functions. See chapter **OSC Messages** to get an overview of all available commands.
 
 * **PixConCli**: Command Line Interface for PixelController, works also remote. The CLI tool is called `PixConCli.cmd` on Windows and `PixConCli.sh` on Linux/OSX. 
-* **OSC**: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included in the `integration/Processing` directory. You can send messages to control PixelController or you can send image content via OSC to PixelController. Of course you can create your own interfaces, for example with the great TouchOSC application or using PureData or MaxDSP.
+* **OSC**: The OSC interface of PixelController is listening (by default) on port 9876. Processing examples are included in the `integration/Processing` directory. You can send messages to control PixelController or you can send image content via OSC to PixelController (using the OSC Generator's). 
+* **TouchOSC**: This mobile application can be used to controler PixelController. see `integration/TouchOsc` for ready to use layouts.
 
 
 ### PixConCli Examples
@@ -235,13 +260,11 @@ I included some [Processing](http://processing.org/) example Sketches. Maybe you
 * `PureData/ledgui5.pd`: The old PixelController GUI, use it to create a frontend for your case...
 * `PureData/Midi2OSC.pd`: MIDI to OSC bridge - control PixelController with a MIDI device
 
-## MORE HINTS
+## More hints
 
 ### Run PixelController on a RPi
-As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphical frontend. But you can run the console version of PixelController (see chapter **Advanced usage**). You need to run PixelController **as root user** if you want to access the USB serial port (or open the /var/lock directory for the running user) or use the RPi SPI interface. 
+As the RPi isn't the beefiest CPU (and PixelController doesn't use the GPU) it's not really practical to run it with the graphical frontend. But you can run the daemon version of PixelController (see chapter **Advanced usage**). You need to run PixelController **as root user** if you want to access the USB serial port (or open the /var/lock directory for the running user) or if you use the RPi SPI interface. 
    
-Make sure you configured your LED Matrix (See above), to control PixelController please check out the "FRONTENDS" chapter.
-
 You need a Java Runtime on your RPi - I recomment using the Oracle Java as it's performance is much better than OpenJDK. You can install it by executing `# sudo apt-get install oracle-java7-jdk`.
 
 The RPi has no **audio input** onboard, you must connect an USB audio card/USB microphone or a Webcam with a microphone. Use `sudo alsamixer --card 1` to verify the input volume is set correct. Use `sudo alsactl store` to save your current settings.
@@ -252,7 +275,7 @@ Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upg
     crw------- 1 root root 153, 0 Jan  1  1970 /dev/spidev0.0
     crw------- 1 root root 153, 1 Jan  1  1970 /dev/spidev0.1
 
-See `integration/RPi-Startscript` for an example init.d startscript. Make sure the `application_dir` variable is correct (default value is `/home/pi/pixcon`) and copy it to `/etc/init.d/`.
+See `integration/RPi-Startscript` for an example init.d startscript. Make sure to edit the `application_dir` variable in the startscript (default value is `/home/pi/pixcon`) and copy it to `/etc/init.d/`.
 
 ### Non-rectangular LED matrix
 
@@ -284,7 +307,7 @@ To create a valid mapping use this config:
 
 With this feature you can use all kinds of matrices, for example a circle matrix. 
 
-To make the mapping process easier you can use the online mapping tool at [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/). First use the keys `a`/`y` and `s`/`x` to change the matrix size, then click the corresponding pixel order. Selected pixels turns yellow. The debug output on the lower end print out the pixel order you can copy and past into the PixelController config file.
+To make the mapping process easier you can use the **online mapping tool** at [http://pixelinvaders.ch/pixelcontroller/](http://pixelinvaders.ch/pixelcontroller/). First use the keys `a`/`y` and `s`/`x` to change the matrix size, then click the corresponding pixel order. Selected pixels turns yellow. The debug output on the lower end print out the pixel order you can copy and past into the PixelController config file.
     
 ### How to use PixelInvaders.net
 
@@ -293,7 +316,7 @@ PixelController allows you to network enable the PixelInvaders panels. See my [B
 * Install ser2net on your RPi
 * configure ser2net: `5333:raw:500:/dev/ttyACM0:115200 8DATABITS NONE 1STOPBIT`
 * connect the Teensy board via USB to the RPi
-* start ser2net daemon
+* start the ser2net daemon
 * configure the PixelInvaders.net IP address in the `config.properties` file
 * have fun
 
@@ -322,7 +345,7 @@ If you prefer to use your mobile/tablet to control PixelController you can use t
 
 ### Create Blinkenlights movie files
 
-Links that help you create Blinkenlights files:
+PixelController can play Blinkenlight movie files (BML). BML was created by the CCC and it's a simple XML based file format. Links that help you create Blinkenlights files:
 
 * [Blinkenlights Dev Tools](http://blinkenlights.net/project/developer-tools)
 * [BLIMP - Blinkenlights Interactive Movie Program](http://wiki.blinkenarea.org/index.php/Blimp)
@@ -365,7 +388,7 @@ The mapping looks like this:
 
 The more colors a Colorset has, the faster it changes the color.
 
-##OSC MESSAGES
+##OSC Messages
 
 Here are all commands PixelController knows.
 
@@ -470,7 +493,7 @@ Here is the list of all **Mixer** ID's:
 		MINIMUM(11)
 		MAXIMUM(12)
 
-## IT DOES NOT WORK!
+## It doesn't work!
 Try to understand **WHAT** does not work, which component? is it the frontend? PixelController itself? or no output?
 
 Here are some common errors:
@@ -489,7 +512,7 @@ Here are some common errors:
 * The **OSC Generator** does not work: make sure you select the correct resolution for the OSC sender, take a look at the INFO tab, there you see the PixelController internal buffer size. Use this resolution in your OSC sender (or Processing sketch).
 
 
-## HOWTO BUILD PIXELCONTROLLER
+## Howto build PixelController from source
 Prerequisite:
 
 * Maven
@@ -507,16 +530,15 @@ Hint: if you're using eclipse and you see an error like this
 make sure you add the lib/serial directory as "Native library location"
 
 
-## ADD NEW HARDWARE SUPPORT
+## Add new hardware support
 It should be pretty simple to add support for new hardware. All Output code should go into the com.neophob.sematrix.output package (`src/main/java/com/neophob/sematrix/output` directory). 
 All you need to do in the Output class is, take an array of int's (one int is used to store the 24 bpp) and send this buffer to your output device (via serial port, ethernet, spi...). 
 Maybe you need to reduce the color depth, flip each second scanline due hardware wiring, such helper methods should go into the `OutputHelper.java` class.
 
-As a string point, add your hardware in the `OutputDeviceEnum.java` class and have a look where the other entries are referenced.
+As a starting point, add your hardware in the `OutputDeviceEnum.java` class and have a look where the other entries are referenced.
 
 
-## NEW RELEASE
-
+## New Release
 Optional, license header check for all source files (http://code.mycila.com/license-maven-plugin/)
 
     # mvn license:check -Dyear=2014 -Demail=michu@neophob.com -Dlicense.header=./../pixelcontroller-distribution/src/main/resources/header.txt 
@@ -571,7 +593,7 @@ Do a deployment build:
 
 Release
 
-## PERFORMANCE
+## Performance
 
 You can start a quick PixelController performance test, where common functions (hashing, generate visuals, resize images) are measured. You can start it by execute `./pixConServer/PixelController.sh -perf`.
 
@@ -592,7 +614,7 @@ Performance test using 500,000 rounds (Using PixelController v2.1.0-RC1)
 
 **OSX**: Machine: MacBook Air, 2x1.8GHz i5, **JRE**: `1.7.0_21-b12`, Kernel: `Darwin xxx.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27 PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64`
 
-## CREDITS
+## Credits
 * **Michael Vogt**:       Project Lead, Main Developer    	
 * **Markus Lang**:        Maven enhancements, Output enhancements, Performance enhancements, Rainbowduino V3 support
 * **McGyver666**:         Contributor
