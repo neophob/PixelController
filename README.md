@@ -82,7 +82,7 @@ PixelController server by
 If Bonjour/Zeroconf does not work on your network you can edit the PixelController frontend configuration file `./pixConClient/clientRemote.properties` and add the IP address of the PixelController daemon.
 
 
-## SUPPORTED HARDWARE
+## Supported Hardware
 PixelController supports different (LED) matrix hardware devices/controller:
 
 * PixelInvaders 3D Panels serial device **(*1)**
@@ -99,7 +99,7 @@ PixelController supports different (LED) matrix hardware devices/controller:
 
 Check out the `integration/ArduinoFw` directory, all Arduino based firmware files are stored there.
 
-**(*1)**: I sell PixelInvaders 3d panels as a DIY kit, see [http://shop.pixelinvaders.ch](http://shop.pixelinvaders.ch) for more details.
+**(*1)**: I sell PixelInvaders 3d panels as a DIY kit, see [http://shop.pixelinvaders.ch](http://shop.pixelinvaders.ch) for more details (and if you want to support PixelController).
 
 
 ### [Arduino] Which firmware should I use?
@@ -137,7 +137,7 @@ Here are some primitive schemes how the visual is send to the LED matrix:
 
 ### Advanced PixelController configuration
 
-There are a lot of options in the `config.properties` file, here I describ some options.
+There are a lot of options in the `config.properties` file, here I describe some of them.
 
 PixelController updates all Visuals depending on the **sound input**. If a beat is detected, the Visuals are updated faster. You can disable this behavior by setting this option:
 
@@ -157,7 +157,7 @@ There is a Generator called "**Screen Capture**" which is disabled by default. I
 This enables the Screen Capture Generator which captures a region of 500 x 300 pixels. Potential use cases for this Generator are: YouTube 
 videos, other movie players...
 
-Or you can start PixelController in the **random mode** where PixelController changes the Visuals randomly:
+Or you can start PixelController in the **random mode**, where PixelController changes the Visuals randomly:
 
     #=========================
     #start in random mode?
