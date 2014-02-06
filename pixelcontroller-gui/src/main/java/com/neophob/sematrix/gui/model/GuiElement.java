@@ -23,80 +23,61 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public enum GuiElement {
 
-	CURRENT_VISUAL,
-	CURRENT_OUTPUT,
-	
-	GENERATOR_ONE_DROPDOWN,
-	GENERATOR_TWO_DROPDOWN,
-	EFFECT_ONE_DROPDOWN,
-	EFFECT_TWO_DROPDOWN,
-	MIXER_DROPDOWN,
-	
-	BUTTON_TOGGLE_FREEZE,
-	BUTTON_TOGGLE_INTERNAL_VISUALS,
-	BUTTON_RANDOM_CONFIGURATION,
-	BUTTON_RANDOM_PRESET,
-	BUTTONS_RANDOM_MODE,
-	
-	BRIGHTNESS,
-	
-	GENERATOR_SPEED,
-	BEAT_WORKMODE,
-	
-	//effects
-	THRESHOLD,
-	FX_ROTOZOOMER,
+    CURRENT_VISUAL, CURRENT_OUTPUT,
 
-	RANDOM_ELEMENT,
-	
-	BLINKENLIGHTS_DROPDOWN,
-	IMAGE_DROPDOWN,
-	
-	TEXTUREDEFORM_OPTIONS,
-	ZOOM_OPTIONS,
-	
-	COLORSCROLL_OPTIONS,
-	
-	TEXTFIELD,
-	TEXTWR_OPTION,
+    GENERATOR_ONE_DROPDOWN, GENERATOR_TWO_DROPDOWN, EFFECT_ONE_DROPDOWN, EFFECT_TWO_DROPDOWN, MIXER_DROPDOWN,
 
-	//single output settings
-	OUTPUT_SELECTED_VISUAL_DROPDOWN,
-	OUTPUT_FADER_DROPDOWN,
+    BUTTON_TOGGLE_FREEZE, BUTTON_TOGGLE_INTERNAL_VISUALS, BUTTON_RANDOM_CONFIGURATION, BUTTON_RANDOM_PRESET, BUTTONS_RANDOM_MODE,
 
-	//all output settings
-	OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN,
-	OUTPUT_ALL_FADER_DROPDOWN,
+    BRIGHTNESS,
 
-	COLOR_SET_DROPDOWN,
-	
-	//preset tab
-	PRESET_BUTTONS,
-	LOAD_PRESET,
-	SAVE_PRESET,
-	
-	SAVE_SCREENSHOT
-	;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public String guiText() {
-		return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));		
-	}
-	
-	/**
-	 * 
-	 * @param s
-	 * @return
-	 */
-	public static GuiElement getGuiElement(String s) {
-		for (GuiElement gw: GuiElement.values()) {
-			if (s.equalsIgnoreCase(gw.toString()) || s.equalsIgnoreCase(gw.guiText())) {
-				return gw;
-			}
-		}
-		return null;
-	}
+    GENERATOR_SPEED, BEAT_WORKMODE,
+
+    // effects
+    THRESHOLD, FX_ROTOZOOMER,
+
+    RANDOM_ELEMENT,
+
+    BLINKENLIGHTS_DROPDOWN, IMAGE_DROPDOWN,
+
+    TEXTUREDEFORM_OPTIONS, ZOOM_OPTIONS,
+
+    COLORSCROLL_OPTIONS,
+
+    TEXTFIELD, TEXTWR_OPTION,
+
+    // single output settings
+    OUTPUT_SELECTED_VISUAL_DROPDOWN, OUTPUT_FADER_DROPDOWN,
+
+    // all output settings
+    OUTPUT_ALL_SELECTED_VISUAL_DROPDOWN, OUTPUT_ALL_FADER_DROPDOWN,
+
+    COLOR_SET_DROPDOWN,
+
+    // preset tab
+    PRESET_BUTTONS, LOAD_PRESET, SAVE_PRESET,
+
+    SAVE_SCREENSHOT;
+
+    /**
+     * 
+     * @return
+     */
+    public String guiText() {
+        return WordUtils.capitalizeFully(StringUtils.replace(this.name(), "_", " "));
+    }
+
+    /**
+     * 
+     * @param s
+     * @return
+     */
+    public static GuiElement getGuiElement(String s) {
+        for (GuiElement gw : GuiElement.values()) {
+            if (gw.toString().equalsIgnoreCase(s) || gw.guiText().equalsIgnoreCase(s)) {
+                return gw;
+            }
+        }
+        return null;
+    }
 }
