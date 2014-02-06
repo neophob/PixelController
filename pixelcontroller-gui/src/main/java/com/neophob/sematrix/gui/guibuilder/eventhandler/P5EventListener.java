@@ -146,6 +146,11 @@ public final class P5EventListener implements ControlListener {
 
             case CURRENT_OUTPUT:
                 List<Boolean> outputs = new ArrayList<Boolean>();
+                if (theEvent.getGroup().getArrayValue() == null) {
+                    LOG.log(Level.WARNING, "no array data provided");
+                    return;
+                }
+
                 for (float f : theEvent.getGroup().getArrayValue()) {
                     if (f == 0 ? outputs.add(Boolean.FALSE) : outputs.add(Boolean.TRUE))
                         ;
@@ -165,13 +170,13 @@ public final class P5EventListener implements ControlListener {
                 break;
 
             case BLINKENLIGHTS_DROPDOWN:
-                name = theEvent.getGroup().getCaptionLabel().getText();
+                name = getTextFromCaptionLabel(theEvent);
                 LOG.log(Level.INFO, selection + " " + name);
                 createMessage(ValidCommand.BLINKEN, name);
                 break;
 
             case IMAGE_DROPDOWN:
-                name = theEvent.getGroup().getCaptionLabel().getText();
+                name = getTextFromCaptionLabel(theEvent);
                 LOG.log(Level.INFO, selection + " " + name);
                 createMessage(ValidCommand.IMAGE, name);
                 break;
@@ -286,6 +291,13 @@ public final class P5EventListener implements ControlListener {
                 LOG.log(Level.INFO, "Invalid Object: " + selection + ", Value: " + value);
                 break;
         }
+    }
+
+    private String getTextFromCaptionLabel(ControlEvent theEvent) {
+        if (theEvent.getGroup().getCaptionLabel() == null) {
+            return "";
+        }
+        return theEvent.getGroup().getCaptionLabel().getText();
     }
 
     /**
