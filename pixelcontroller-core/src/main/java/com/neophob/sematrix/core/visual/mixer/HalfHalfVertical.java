@@ -19,6 +19,7 @@
 package com.neophob.sematrix.core.visual.mixer;
 
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
+import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
 
 /**
@@ -26,38 +27,45 @@ import com.neophob.sematrix.core.visual.Visual;
  */
 public class HalfHalfVertical extends Mixer {
 
+    private MatrixData matrix;
+
     /**
      * Instantiates a new multiply.
-     *
-     * @param controller the controller
+     * 
+     * @param controller
+     *            the controller
      */
-    public HalfHalfVertical() {
+    public HalfHalfVertical(MatrixData matrix) {
         super(MixerName.HALFHALFVERTICAL, ResizeName.PIXEL_RESIZE);
+        this.matrix = matrix;
     }
 
-    /* (non-Javadoc)
-     * @see com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.core.glue.Visual)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.
+     * core.glue.Visual)
      */
     public int[] getBuffer(Visual visual) {
         if (visual.getEffect2() == null) {
             return visual.getEffect1Buffer();
         }
 
-        int width = visual.getGenerator1().getInternalBufferXSize();
-        int halfWidth=width/2;
-        int height = visual.getGenerator1().getInternalBufferYSize();
+        int halfWidth = matrix.getBufferXSize() / 2;
+        int height = matrix.getBufferYSize();
         int[] src1 = visual.getEffect1Buffer();
         int[] src2 = visual.getEffect2Buffer();
-        int[] dst = new int [src1.length];
+        int[] dst = new int[src1.length];
 
-        int ofs=0;
-        for (int i=0; i<height; i++){
-        	for (int j=0; j<halfWidth; j++){
-                dst[ofs]=src1[ofs]&255;
-                dst[ofs+halfWidth]=src2[ofs+halfWidth]&255;
+        int ofs = 0;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < halfWidth; j++) {
+                dst[ofs] = src1[ofs] & 255;
+                dst[ofs + halfWidth] = src2[ofs + halfWidth] & 255;
                 ofs++;
-        	}
-        	ofs+=halfWidth;
+            }
+            ofs += halfWidth;
         }
 
         return dst;

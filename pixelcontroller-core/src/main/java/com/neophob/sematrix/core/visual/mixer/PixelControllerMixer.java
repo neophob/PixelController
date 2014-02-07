@@ -36,112 +36,121 @@ public class PixelControllerMixer implements PixelControllerElement {
 
     private static final Logger LOG = Logger.getLogger(PixelControllerMixer.class.getName());
 
-	/** The all mixer. */
-	private List<Mixer> allMixer;
-	private MatrixData matrix;
-	private ISound sound;
-	
-	/**
-	 * Instantiates a new pixel controller mixer.
-	 */
-	public PixelControllerMixer(MatrixData matrix, ISound sound) {
-		allMixer = new CopyOnWriteArrayList<Mixer>();
-		this.matrix = matrix;
-		this.sound = sound;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.glue.PixelControllerElement#initAll()
-	 */
-	public void initAll() {
-		//create mixer
-		allMixer.add(new AddSat());
-		allMixer.add(new Multiply());
-		allMixer.add(new Mix());
-		allMixer.add(new PassThruMixer());
-		allMixer.add(new NegativeMultiply());
-		allMixer.add(new Checkbox(matrix));
-		allMixer.add(new Voluminizer(sound));
-		allMixer.add(new Either());
-		allMixer.add(new SubSat());
-		allMixer.add(new HalfHalf());
-		allMixer.add(new HalfHalfVertical());
-		allMixer.add(new Maximum());
-		allMixer.add(new Minimum());
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.glue.PixelControllerElement#getCurrentState()
-	 */
-	public List<String> getCurrentState() {
-		List<String> ret = new ArrayList<String>();
-		
-		return ret;
-	}
+    /** The all mixer. */
+    private List<Mixer> allMixer;
+    private MatrixData matrix;
+    private ISound sound;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()
-	 */
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
+    /**
+     * Instantiates a new pixel controller mixer.
+     */
+    public PixelControllerMixer(MatrixData matrix, ISound sound) {
+        allMixer = new CopyOnWriteArrayList<Mixer>();
+        this.matrix = matrix;
+        this.sound = sound;
+    }
 
-	/*
-	 * MIXER ======================================================
-	 */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.glue.PixelControllerElement#initAll()
+     */
+    public void initAll() {
+        // create mixer
+        allMixer.add(new AddSat());
+        allMixer.add(new Multiply());
+        allMixer.add(new Mix());
+        allMixer.add(new PassThruMixer());
+        allMixer.add(new NegativeMultiply());
+        allMixer.add(new Checkbox(matrix));
+        allMixer.add(new Voluminizer(sound));
+        allMixer.add(new Either());
+        allMixer.add(new SubSat());
+        allMixer.add(new HalfHalf());
+        allMixer.add(new HalfHalfVertical(matrix));
+        allMixer.add(new Maximum());
+        allMixer.add(new Minimum());
+    }
 
-	/**
-	 * Gets the size.
-	 *
-	 * @return the size
-	 */
-	public int getSize() {
-		return allMixer.size();
-	}
-	
-	/**
-	 * Gets the mixer.
-	 *
-	 * @param name the name
-	 * @return the mixer
-	 */
-	public Mixer getMixer(MixerName name) {
-		for (Mixer mix: allMixer) {
-			if (mix.getId() == name.getId()) {
-				return mix;
-			}
-		}
-		
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.glue.PixelControllerElement#getCurrentState()
+     */
+    public List<String> getCurrentState() {
+        List<String> ret = new ArrayList<String>();
+
+        return ret;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.neophob.sematrix.core.glue.PixelControllerElement#update()
+     */
+    @Override
+    public void update() {
+        // TODO Auto-generated method stub
+
+    }
+
+    /*
+     * MIXER ======================================================
+     */
+
+    /**
+     * Gets the size.
+     * 
+     * @return the size
+     */
+    public int getSize() {
+        return allMixer.size();
+    }
+
+    /**
+     * Gets the mixer.
+     * 
+     * @param name
+     *            the name
+     * @return the mixer
+     */
+    public Mixer getMixer(MixerName name) {
+        for (Mixer mix : allMixer) {
+            if (mix.getId() == name.getId()) {
+                return mix;
+            }
+        }
+
         LOG.log(Level.WARNING, "Invalid Mixer name selected: {0}", name);
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Gets the all mixer.
-	 *
-	 * @return the all mixer
-	 */
-	public List<Mixer> getAllMixer() {
-		return allMixer;
-	}
+    /**
+     * Gets the all mixer.
+     * 
+     * @return the all mixer
+     */
+    public List<Mixer> getAllMixer() {
+        return allMixer;
+    }
 
-	/**
-	 * Gets the mixer.
-	 *
-	 * @param index the index
-	 * @return the mixer
-	 */
-	public Mixer getMixer(int index) {
-		for (Mixer mix: allMixer) {
-			if (mix.getId() == index) {
-				return mix;
-			}
-		}
-		
+    /**
+     * Gets the mixer.
+     * 
+     * @param index
+     *            the index
+     * @return the mixer
+     */
+    public Mixer getMixer(int index) {
+        for (Mixer mix : allMixer) {
+            if (mix.getId() == index) {
+                return mix;
+            }
+        }
+
         LOG.log(Level.WARNING, "Invalid Mixer index selected: {0}", index);
-		return null;
-	}
+        return null;
+    }
 
 }

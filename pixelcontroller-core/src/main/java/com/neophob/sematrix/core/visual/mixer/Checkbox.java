@@ -24,123 +24,117 @@ import java.util.logging.Logger;
 import com.neophob.sematrix.core.resize.Resize.ResizeName;
 import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.Visual;
-import com.neophob.sematrix.core.visual.generator.Generator;
 
 /**
  * checkbox mixer.
- *
+ * 
  * @author mvogt
  */
 public class Checkbox extends Mixer {
 
-	private static final Logger LOG = Logger.getLogger(Checkbox.class.getName());
-	
-	/** The pixels per line. */
-	private int flpX = -1;
-	private int flpY = -1;
+    private static final Logger LOG = Logger.getLogger(Checkbox.class.getName());
 
-	private int checkBoxSizeX;
-	private int checkBoxSizeY;
+    /** The pixels per line. */
+    private int flpX = -1;
+    private int flpY = -1;
 
-	/**
-	 * Instantiates a new checkbox.
-	 *
-	 * @param controller the controller
-	 */
-	public Checkbox(MatrixData matrix) {
-		super(MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
-		checkBoxSizeX = matrix.getDeviceXSize();
-		checkBoxSizeY = matrix.getDeviceYSize();
-	}
+    private int checkBoxSizeX;
+    private int checkBoxSizeY;
 
-	/* (non-Javadoc)
-	 * @see com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.core.glue.Visual)
-	 */
-	public int[] getBuffer(Visual visual) {
+    private MatrixData matrix;
 
-		if (visual.getEffect2() == null) {
-			return visual.getEffect1Buffer();
-		}
+    /**
+     * Instantiates a new checkbox.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public Checkbox(MatrixData matrix) {
+        super(MixerName.CHECKBOX, ResizeName.PIXEL_RESIZE);
 
-		Generator gen1 = visual.getGenerator1();
+        this.matrix = matrix;
+        checkBoxSizeX = matrix.getDeviceXSize();
+        checkBoxSizeY = matrix.getDeviceYSize();
+    }
 
-		//lazy init
-		if (flpX == -1) {
-			this.flpX = gen1.getInternalBufferXSize()/checkBoxSizeX;	        
-			//this.flpY = gen1.getInternalBufferYSize()/checkBoxSizeY;
-			this.flpY = gen1.getInternalBufferXSize()*gen1.getInternalBufferYSize()/checkBoxSizeY;
-			LOG.log(Level.FINE, "Checkbox Mixer lazy init, flpx: {0}, flpY: {1}", new Integer[] {flpX, flpY});
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.neophob.sematrix.core.mixer.Mixer#getBuffer(com.neophob.sematrix.
+     * core.glue.Visual)
+     */
+    public int[] getBuffer(Visual visual) {
 
-		int[] src1 = visual.getEffect1Buffer();
-		int[] src2 = visual.getEffect2Buffer();
-		int[] dst = new int [src1.length];		
+        if (visual.getEffect2() == null) {
+            return visual.getEffect1Buffer();
+        }
 
-		boolean flip=true;
-		
-		boolean flipY=true;
+        // lazy init
+        if (flpX == -1) {
+            this.flpX = matrix.getBufferXSize() / checkBoxSizeX;
+            // this.flpY = gen1.getInternalBufferYSize()/checkBoxSizeY;
+            this.flpY = matrix.getBufferXSize() * matrix.getBufferXSize() / checkBoxSizeY;
+            LOG.log(Level.FINE, "Checkbox Mixer lazy init, flpx: {0}, flpY: {1}", new Integer[] {
+                    flpX, flpY });
+        }
 
-	/* complicated but working implementation
-	 * 
-	 * for (int y=0; y<checkBoxSizeY; y++) {			
-			flip=!flip;
-			for (int m=0; m<flpY; m++) {						
-				drawHorizontalLine(flip, src1, src2, dst);	
-			}
+        int[] src1 = visual.getEffect1Buffer();
+        int[] src2 = visual.getEffect2Buffer();
+        int[] dst = new int[src1.length];
 
-		}*/
+        boolean flip = true;
 
-		for (int i=0; i<src1.length; i++) {
-			if (i%flpX==0) {				
-				flip=!flip;
-			}
-			if (i%flpY==0) {
-				flipY=!flipY;
-			}
-			
-			//reset flip state on the beginning of a line
-			if (i%gen1.getInternalBufferXSize()==0) {
-				flip=flipY;
-			}
+        boolean flipY = true;
 
-			try {
-				if (flip) {
-					dst[i] = src2[i];
-				} else {
-					dst[i] = src1[i];
-				}				
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Checkbox Mixer error detected!", e);
-				LOG.log(Level.WARNING, "Details: i: {0}, dst: {1}, src1: {2}, src2: {3}",
-						new String[] {i+"", dst.length+"", src1.length+"", src2.length+""});
-			}
+        for (int i = 0; i < src1.length; i++) {
+            if (i % flpX == 0) {
+                flip = !flip;
+            }
+            if (i % flpY == 0) {
+                flipY = !flipY;
+            }
 
-		}	
-		return dst;
-	}
+            // reset flip state on the beginning of a line
+            if (i % matrix.getBufferXSize() == 0) {
+                flip = flipY;
+            }
 
-	/**
-	 * draws a horizontal line, checkbox pattern, checkbox width is checkBoxSizeX 
-	 * @param src1
-	 * @param src2
-	 * @param dst
-	 */
-/*	private void drawHorizontalLine(boolean flip, int[] src1, int[] src2, int[] dst) {
-		boolean flipTmp = flip;
-		for (int x=0; x<checkBoxSizeX; x++) {
+            try {
+                if (flip) {
+                    dst[i] = src2[i];
+                } else {
+                    dst[i] = src1[i];
+                }
+            } catch (Exception e) {
+                LOG.log(Level.WARNING, "Checkbox Mixer error detected!", e);
+                LOG.log(Level.WARNING,
+                        "Details: i: {0}, dst: {1}, src1: {2}, src2: {3}",
+                        new String[] { i + "", dst.length + "", src1.length + "", src2.length + "" });
+            }
 
-			for (int n=0; n<flpX; n++) {
+        }
+        return dst;
+    }
 
-				if (flipTmp) {
-					dst[i] = src2[i];
-				} else {
-					dst[i] = src1[i];
-				}
-				i++;					
-			}
-
-			flipTmp=!flipTmp;
-		}		
-	}*/
+    /**
+     * draws a horizontal line, checkbox pattern, checkbox width is
+     * checkBoxSizeX
+     * 
+     * @param src1
+     * @param src2
+     * @param dst
+     */
+    /*
+     * private void drawHorizontalLine(boolean flip, int[] src1, int[] src2,
+     * int[] dst) { boolean flipTmp = flip; for (int x=0; x<checkBoxSizeX; x++)
+     * {
+     * 
+     * for (int n=0; n<flpX; n++) {
+     * 
+     * if (flipTmp) { dst[i] = src2[i]; } else { dst[i] = src1[i]; } i++; }
+     * 
+     * flipTmp=!flipTmp; } }
+     */
 
 }
