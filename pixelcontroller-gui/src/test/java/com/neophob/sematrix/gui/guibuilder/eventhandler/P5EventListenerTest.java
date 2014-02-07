@@ -42,6 +42,22 @@ public class P5EventListenerTest {
         when(theEvent.getName()).thenReturn("does not exist...");
         event.controlEvent(theEvent);
 
+        when(theEvent.getName()).thenReturn(GuiElement.RANDOM_ELEMENT.toString());
+        event.controlEvent(theEvent);
+
+        when(theEvent.getName()).thenReturn(GuiElement.RANDOM_ELEMENT.toString());
+        when(theEvent.getGroup().getArrayValue()).thenReturn(new float[] { 2, 4, 5, 2, 3 });
+        event.controlEvent(theEvent);
+
+        when(theEvent.getName()).thenReturn(GuiElement.BUTTONS_RANDOM_MODE.toString());
+        event.controlEvent(theEvent);
+
+        when(theEvent.getName()).thenReturn(GuiElement.EFFECT_ONE_DROPDOWN.toString());
+        event.controlEvent(theEvent);
+
+        when(theEvent.getName()).thenReturn(GuiElement.GENERATOR_TWO_DROPDOWN.toString());
+        event.controlEvent(theEvent);
+
         when(theEvent.getName()).thenReturn(null);
         event.controlEvent(theEvent);
 

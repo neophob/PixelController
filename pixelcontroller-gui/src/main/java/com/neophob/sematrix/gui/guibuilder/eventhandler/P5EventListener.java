@@ -228,6 +228,11 @@ public final class P5EventListener implements ControlListener {
                 break;
 
             case RANDOM_ELEMENT:
+                if (theEvent.getGroup().getArrayValue() == null) {
+                    LOG.log(Level.WARNING, "no array data provided");
+                    return;
+                }
+
                 String param = "";
                 for (float ff : theEvent.getGroup().getArrayValue()) {
                     if (ff < 0.5f) {

@@ -2,6 +2,8 @@ package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import static org.mockito.Mockito.when;
 
+import java.awt.event.KeyEvent;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -24,9 +26,16 @@ public class KeyboardHandlerTest {
         KeyboardHandler.keyboardHandler('R', 0);
 
         KeyboardHandler.init(callback, pixConSrv);
-        KeyboardHandler.keyboardHandler('R', 0);
+        KeyboardHandler.keyboardHandler('E', 0);
 
         when(callback.isTextfieldInEditMode()).thenReturn(true);
-        KeyboardHandler.keyboardHandler('R', 0);
+        KeyboardHandler.keyboardHandler('W', 0);
+
+        when(callback.isTextfieldInEditMode()).thenReturn(false);
+        KeyboardHandler.keyboardHandler('W', 0);
+
+        KeyboardHandler.keyboardHandler('.', KeyEvent.VK_LEFT);
+
+        KeyboardHandler.keyboardHandler('2', 0);
     }
 }
