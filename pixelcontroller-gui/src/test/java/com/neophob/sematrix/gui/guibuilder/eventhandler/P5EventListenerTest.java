@@ -31,6 +31,11 @@ public class P5EventListenerTest {
 
     @Test
     public void testEventListener() {
+        if (java.awt.GraphicsEnvironment.isHeadless()) {
+            // this test will initialize process, which cannot run on a headless
+            // machine!
+            return;
+        }
         P5EventListener event = new P5EventListener(pixConSrv, callback);
 
         when(theEvent.getName()).thenReturn(GuiElement.BRIGHTNESS.toString());
