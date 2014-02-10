@@ -2,9 +2,7 @@ package com.neophob.sematrix.gui.guibuilder.eventhandler;
 
 import static org.mockito.Mockito.when;
 
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import com.neophob.sematrix.gui.guibuilder.GeneratorGui;
 import com.neophob.sematrix.gui.model.GuiElement;
@@ -13,7 +11,7 @@ import com.neophob.sematrix.gui.service.PixConServer;
 import controlP5.ControlEvent;
 import controlP5.ControlGroup;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class P5EventListenerTest {
 
     @Mock
