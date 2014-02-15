@@ -37,7 +37,7 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
 
     private static final transient Logger LOG = Logger.getLogger(UdpDevice.class.getName());
 
-    private IEthernetUdp udpImpl;
+    private transient IEthernetUdp udpImpl;
     private String targetHost;
     private int targetPort;
     private int errorCounter = 0;
@@ -46,8 +46,8 @@ public class UdpDevice extends OnePanelResolutionAwareOutput {
      * 
      * @param controller
      */
-    public UdpDevice(MatrixData matrixData, PixelControllerResize resizeHelper,
-            Configuration ph, IEthernetUdp udpImpl) {
+    public UdpDevice(MatrixData matrixData, PixelControllerResize resizeHelper, Configuration ph,
+            IEthernetUdp udpImpl) {
         super(matrixData, resizeHelper, OutputDeviceEnum.UDP, ph, 8);
 
         targetHost = ph.getUdpIp();
