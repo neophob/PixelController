@@ -19,8 +19,9 @@
 package com.neophob.sematrix.core.output.transport.ethernet;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public interface IEthernetUdp {
+public interface IEthernetUdp extends Serializable {
 
     /**
      * init
