@@ -17,6 +17,9 @@
 
 ## Features
 
+* Support both SPI output ports on RPI - automatic switch to second SPI port
+* Independent preview visual, today generators and effects exists only once
+* add slider fader if a preset is loaded   
 * Support Artnet remote, should be independent from the artnet output, should work more like the osc input.
 * Processing SDK
 * current RMI API use targetip/port - but should use sockets. current limit: can not use same socket for client/server
