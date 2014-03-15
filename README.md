@@ -1,4 +1,3 @@
-
 # PixelController
 **PixelController** - a matrix control project by Michael Vogt <michu at neophob.com>, (c) 2010-2014. The main goal of this application is to create an easy to use matrix controller software which creates stunning visuals!
 
@@ -612,6 +611,8 @@ Performance test using 500,000 rounds (Using PixelController v2.1.0-RC1)
 | BBB, 32x32   | `2554ms (5ns)` |`6883ms (13ns)` |`7971ms (3188ns)` |`151ms (60ns)` |`1633ms (653ns)` |
 | RPi, 16x16   | `1915ms (3ns)` |`3267ms (6ns)`  |`18355ms (7342ns)`|`117ms (46ns)` |`575ms (230ns)`  |
 | RPi, 32x32   | `5604ms (11ns)`|`12616ms (25ns)`|`17892ms (7156ns)`|`584ms (233ns)`|`2629ms (1051ns)`|
+| A20, 16x16   | `1130ms (2ns)` |`1606ms (3ns)`  |`7197ms (2878ns)` |`28ms (11ns)`  |`186ms (74ns)`  |
+| A20, 32x32   | `3515ms (7ns)` |`6230ms (12ns)` |`7117ms (2846ns)` |`119ms (47ns)` |`812ms (324ns)` |
 
 **BBB**: Beagle Bone Black, ARMv7 Processor rev 2 (v7l), 300 BogoMIPS, **JRE**: `1.7.0_51-b13`, Kernel: `Linux beaglebone 3.8.13 #1 SMP Thu Sep 12 10:27:06 CEST 2013 armv7l GNU/Linux`
 
