@@ -1,6 +1,6 @@
 # PixelController ChangeLog
 
-## Changelog v2.0.0 to v2.1.0-RC1
+## Changelog v2.0.0 to v2.1.0-RC1 (1. April 2014)
     632 files changed, 96745 insertions(+), 151436 deletions(-)
     
 * Add client/server architecture. PixelController can started headless on a server, connect to the server with the client GUI (same look as the standalone version)
