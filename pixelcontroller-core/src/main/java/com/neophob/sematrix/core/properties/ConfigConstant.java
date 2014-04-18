@@ -87,6 +87,7 @@ public final class ConfigConstant {
 
     /** The Constant STARTUP_IN_RANDOM_MODE. */
     public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
+    public static final String STARTUP_IN_RANDOM_PRESET_MODE = "startup.in.random.presetmode";
     public static final String STARTUP_LOAD_PRESET_NR = "startup.load.preset.nr";
 
     /** The Constant STARTUP_IN_RANDOM_MODE. */

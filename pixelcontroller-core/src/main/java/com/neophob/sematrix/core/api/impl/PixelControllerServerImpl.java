@@ -47,8 +47,6 @@ import com.neophob.sematrix.core.visual.MatrixData;
 import com.neophob.sematrix.core.visual.OutputMapping;
 import com.neophob.sematrix.core.visual.VisualState;
 import com.neophob.sematrix.core.visual.color.IColorSet;
-import com.neophob.sematrix.mdns.server.PixMDnsServer;
-import com.neophob.sematrix.mdns.server.impl.MDnsServerFactory;
 
 /**
  * 
@@ -258,6 +256,11 @@ final class PixelControllerServerImpl extends PixelControllerServer implements R
             LOG.log(Level.INFO, "Random Mode enabled");
             Shuffler.manualShuffleStuff(visualState);
             visualState.setRandomMode(true);
+        }
+
+        if (applicationConfig.startRandomPresetmode()) {
+            LOG.log(Level.INFO, "Random Preset Mode enabled");
+            visualState.setRandomPresetMode(true);
         }
 
         // load saves presets

@@ -1,5 +1,9 @@
 # PixelController ChangeLog
 
+## Changelog v2.1.0-RC1 to v2.1.0
+
+* Add option to start in random preset mode
+
 ## Changelog v2.0.0 to v2.1.0-RC1 (1. April 2014)
     632 files changed, 96745 insertions(+), 151436 deletions(-)
     
