@@ -1,6 +1,7 @@
 # Roadmap PixelController
 
 ## Version 2.1
+* implement start in random preset mode
 * Update pixconcli
 * remote setup, do not display duplicate entries but display whats missing.
 * togle freeze

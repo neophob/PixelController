@@ -614,11 +614,13 @@ Performance test using 500,000 rounds (Using PixelController v2.1.0-RC1)
 | A20, 16x16   | `1130ms (2ns)` |`1606ms (3ns)`  |`7197ms (2878ns)` |`28ms (11ns)`  |`186ms (74ns)`  |
 | A20, 32x32   | `3515ms (7ns)` |`6230ms (12ns)` |`7117ms (2846ns)` |`119ms (47ns)` |`812ms (324ns)` |
 
+**OSX**: Machine: MacBook Air, 2x1.8GHz i5, **JRE**: `1.7.0_21-b12`, Kernel: `Darwin xxx.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27 PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64`
+
 **BBB**: Beagle Bone Black, ARMv7 Processor rev 2 (v7l), 300 BogoMIPS, **JRE**: `1.7.0_51-b13`, Kernel: `Linux beaglebone 3.8.13 #1 SMP Thu Sep 12 10:27:06 CEST 2013 armv7l GNU/Linux`
 
 **RPi**: Raspberry Pi, Model B, 512MB Ram, ARMv6-compatible processor rev 7 (v6l), **JRE**: `1.7.0_40-b43`, Kernel: `Linux raspberrypi 3.10.27+ #630 PREEMPT Fri Jan 17 19:44:36 GMT 2014 armv6l GNU/Linux`
 
-**OSX**: Machine: MacBook Air, 2x1.8GHz i5, **JRE**: `1.7.0_21-b12`, Kernel: `Darwin xxx.local 13.0.0 Darwin Kernel Version 13.0.0: Thu Sep 19 22:22:27 PDT 2013; root:xnu-2422.1.72~6/RELEASE_X86_64 x86_64`
+**A20**: A20-OLinuXino-MICRO, 1GB Ram, ARM Cortex-A7
 
 ## Credits
 * **Michael Vogt**:       Project Lead, Main Developer    	
