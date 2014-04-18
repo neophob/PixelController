@@ -28,6 +28,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.neophob.sematrix.core.output.OutputDeviceEnum;
 import com.neophob.sematrix.core.output.gamma.GammaType;
 import com.neophob.sematrix.core.output.gamma.RGBAdjust;
