@@ -1,8 +1,11 @@
 # PixelController ChangeLog
 
 ## Changelog v2.1.0-RC1 to v2.1.0
+    16 files changed, 35 insertions(+), 15 deletions(-)
 
-* Add option to start in random preset mode
+* Add option to start PixelController in random preset mode
+* Add TouchOSC Phone Layout for iPhone 5 (Thanks r26D)
+* Add hint to start PixelController on RPI (as root)
 
 ## Changelog v2.0.0 to v2.1.0-RC1 (1. April 2014)
     632 files changed, 96745 insertions(+), 151436 deletions(-)
