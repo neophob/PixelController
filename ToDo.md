@@ -1,13 +1,12 @@
 # Roadmap PixelController
 
 ## Version 2.1
-* implement start in random preset mode
-* Update pixconcli
 * remote setup, do not display duplicate entries but display whats missing.
 * togle freeze
 * finish / remove teensy3 firmware
 
 ## Version 2.2
+* Update pixconcli
 * PixelInvaders firmware: support Teensy 3 (IntervalTimer Library)
 * PixelInvaders firmware: Support ambient color for the output panel(s)
 * Support Multiple Output devices with different matrix sizes
