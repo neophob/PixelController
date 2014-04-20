@@ -6,7 +6,7 @@
 		<groupId>com.neophob.pixelcontroller</groupId>
 		<artifactId>pixelcontroller</artifactId>
 		<relativePath>../pom.xml</relativePath>
-		<version>2.1.0-RC1</version>
+		<version>2.1.0-RC2</version>
 	</parent>        
         
 	<artifactId>pixelcontroller-distribution</artifactId>
