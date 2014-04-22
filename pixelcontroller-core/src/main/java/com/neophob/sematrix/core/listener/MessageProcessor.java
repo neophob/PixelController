@@ -362,12 +362,12 @@ public final class MessageProcessor {
 			case RANDOM:	//enable or disable random mode
 				try {
 					String onOrOff = msg[1];
-					if (onOrOff.equalsIgnoreCase("ON")) {
+					if (onOrOff.equalsIgnoreCase("ON") || onOrOff.equalsIgnoreCase("1")) {
 						col.setRandomPresetMode(false);
 						col.setRandomMode(true);
 						LOG.log(Level.INFO, "Random Mode enabled");
 					}
-					if (onOrOff.equalsIgnoreCase("OFF")) {
+					if (onOrOff.equalsIgnoreCase("OFF") || onOrOff.equalsIgnoreCase("0")) {
 						col.setRandomPresetMode(false);
 						col.setRandomMode(false);
 						LOG.log(Level.INFO, "Random Mode disabled");
@@ -380,12 +380,12 @@ public final class MessageProcessor {
 			case RANDOM_PRESET_MODE:
 				try {
 					String onOrOff = msg[1];
-					if (onOrOff.equalsIgnoreCase("ON")) {
+					if (onOrOff.equalsIgnoreCase("ON") || onOrOff.equalsIgnoreCase("1")) {
 						col.setRandomMode(false);
 						col.setRandomPresetMode(true);
 						LOG.log(Level.INFO, "Random Preset Mode enabled");
 					}
-					if (onOrOff.equalsIgnoreCase("OFF")) {
+					if (onOrOff.equalsIgnoreCase("OFF") || onOrOff.equalsIgnoreCase("0")) {
 						col.setRandomMode(false);
 						col.setRandomPresetMode(false);
 						LOG.log(Level.INFO, "Random Preset Mode disabled");
