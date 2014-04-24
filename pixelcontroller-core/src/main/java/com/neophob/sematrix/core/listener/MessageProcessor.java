@@ -469,15 +469,18 @@ public enum MessageProcessor {
                 case RANDOM: // enable or disable random mode
                     try {
                         String onOrOff = msg[1];
-                        if (ON.equalsIgnoreCase(onOrOff) || "1".equalsIgnoreCase(onOrOff)) {
+                        if (ON.equalsIgnoreCase(onOrOff) || "1".equalsIgnoreCase(onOrOff)
+                                || "1.0".equalsIgnoreCase(onOrOff)) {
                             col.setRandomPresetMode(false);
                             col.setRandomMode(true);
                             LOG.log(Level.INFO, "Random Mode enabled");
-                        }
-                        if (OFF.equalsIgnoreCase(onOrOff) || "0".equalsIgnoreCase(onOrOff)) {
+                        } else if (OFF.equalsIgnoreCase(onOrOff) || "0".equalsIgnoreCase(onOrOff)
+                                || "0.0".equalsIgnoreCase(onOrOff)) {
                             col.setRandomPresetMode(false);
                             col.setRandomMode(false);
                             LOG.log(Level.INFO, "Random Mode disabled");
+                        } else {
+                            LOG.log(Level.WARNING, IGNORE_COMMAND + " RANDOM: " + onOrOff);
                         }
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
@@ -487,15 +490,18 @@ public enum MessageProcessor {
                 case RANDOM_PRESET_MODE:
                     try {
                         String onOrOff = msg[1];
-                        if (ON.equalsIgnoreCase(onOrOff) || "1".equalsIgnoreCase(onOrOff)) {
+                        if (ON.equalsIgnoreCase(onOrOff) || "1".equalsIgnoreCase(onOrOff)
+                                || "1.0".equalsIgnoreCase(onOrOff)) {
                             col.setRandomMode(false);
                             col.setRandomPresetMode(true);
                             LOG.log(Level.INFO, "Random Preset Mode enabled");
-                        }
-                        if (OFF.equalsIgnoreCase(onOrOff) || "0".equalsIgnoreCase(onOrOff)) {
+                        } else if (OFF.equalsIgnoreCase(onOrOff) || "0".equalsIgnoreCase(onOrOff)
+                                || "0.0".equalsIgnoreCase(onOrOff)) {
                             col.setRandomMode(false);
                             col.setRandomPresetMode(false);
                             LOG.log(Level.INFO, "Random Preset Mode disabled");
+                        } else {
+                            LOG.log(Level.WARNING, IGNORE_COMMAND, "RANDOM_PRESET_MODE: " + onOrOff);
                         }
                     } catch (Exception e) {
                         LOG.log(Level.WARNING, IGNORE_COMMAND, e);
