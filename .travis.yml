@@ -8,3 +8,19 @@ notifications:
   # See http://about.travis-ci.org/docs/user/build-configuration/ to learn more
   # about configuring notification recipients and more.
   email: false
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "Wd/QqAytHx6CmmgXyJYAtOvIZMZiwIyUOO0zyQ6TVhyEZVZyi4QebUEXEdNrOuMCQM9nqzjYCDqW7hWHzmwhVX777BpBSMcYmmChuz2vzpcdqCh/e6NJGEKywXnitz9ZNTgnk7W6P1mTlGdwT5OEdsYWDdPpzHabtAiWHtunJak="
+
+addons:
+  coverity_scan:
+    project:
+      name: "neophob/PixelController"
+      description: "Create stunning visuals for your LED matrix"
+    notification_email: michu@neophob.com
+    build_command_prepend:
+    build_command:
+    branch_pattern: coverity_scan
