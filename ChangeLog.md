@@ -6,6 +6,7 @@
 * Add option to start PixelController in random preset mode
 * Add TouchOSC Phone Layout for iPhone 5 (Thanks r26D)
 * Add hint to start PixelController on RPI (as root)
+* Fixed Issue #73, support on/off, 1/0 and 1.0f/0.0f as parameter for random mode events 
 
 ## Changelog v2.0.0 to v2.1.0-RC1 (1. April 2014)
     632 files changed, 96745 insertions(+), 151436 deletions(-)
