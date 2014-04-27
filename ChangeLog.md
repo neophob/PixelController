@@ -1,7 +1,7 @@
 # PixelController ChangeLog
 
 ## Changelog v2.1.0-RC1 to v2.1.0
-    16 files changed, 35 insertions(+), 15 deletions(-)
+    22 files changed, 292 insertions(+), 64 deletions(-)
 
 * Add option to start PixelController in random preset mode
 * Add TouchOSC Phone Layout for iPhone 5 (Thanks r26D)
