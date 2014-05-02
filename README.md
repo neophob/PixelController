@@ -278,6 +278,24 @@ Make sure your RPi is up to date - run `#sudo apt-get update && sudo apt-get upg
 
 See `integration/RPi-Startscript` for an example init.d startscript. Make sure to edit the `application_dir` variable in the startscript (default value is `/home/pi/pixcon`) and copy it to `/etc/init.d/`.
 
+To start PixelController on the RPi, change to the `pixConServer` directory and execute `PixelControllerRPi.sh`:
+
+    pi@raspberrypi ~/pixelcontroller-distribution-2.1.0-RC1/pixConServer $ sudo ./PixelControllerRPi.sh 
+     
+    HINT: run this script with root permissions [sudo ././PixelControllerRPi.sh]!
+     
+    spi devices:
+    crw------- 1 root root 153, 0 Jan  1  1970 /dev/spidev0.0
+    crw------- 1 root root 153, 1 Jan  1  1970 /dev/spidev0.1
+    May 02, 2014 5:31:32 PM com.neophob.sematrix.cli.PixConDaemon <init>
+    INFO: Initialize...
+    May 02, 2014 5:31:33 PM com.neophob.sematrix.cli.PixConDaemon <init>
+    INFO: 
+     
+    PixelController v2.1.0-RC1 - http://www.pixelinvaders.ch
+    <cut>
+
+
 ### Non-rectangular LED matrix
 
 If you have a non-rectangular LED matrix you want to use with PixelController you can use the custom mapping feature called `output.mapping`. While it's position define the target offset, the nr define the source, example:
