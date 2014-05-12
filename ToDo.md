@@ -16,7 +16,8 @@
 # Backlog
 
 ## Features
-
+* Large BML Files (18mb) on RPI
+* Strobo Speed Slider
 * Support both SPI output ports on RPI - automatic switch to second SPI port
 * Independent preview visual, today generators and effects exists only once
 * add slider fader if a preset is loaded   
