@@ -4,6 +4,17 @@
 * remote setup, do not display duplicate entries but display whats missing.
 * togle freeze
 * finish / remove teensy3 firmware
+* If an invalid configuration is detected, inform user (not it just freeze) example:
+
+```
+May 13, 2014 7:38:21 PM com.neophob.sematrix.core.api.impl.PixelControllerServer loadConfiguration
+SEVERE: Configuration Error: 
+java.lang.IllegalArgumentException: Invalid output mapping entries, output.mapping > output.resolution.x*output.resolution.y (448>64)
+	at com.neophob.sematrix.core.properties.Configuration.<init>(Configuration.java:237)
+	at com.neophob.sematrix.core.api.impl.PixelControllerServer.loadConfiguration(PixelControllerServer.java:94)
+	at com.neophob.sematrix.core.api.impl.PixelControllerServerImpl.run(PixelControllerServerImpl.java:112)
+	at java.lang.Thread.run(Thread.java:744)
+```
 
 ## Version 2.2
 * Update pixconcli
