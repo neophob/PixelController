@@ -98,6 +98,7 @@ PixelController supports different (LED) matrix hardware devices/controller:
 * E1.31 devices (see [http://www.opendmx.net/index.php/E1.31](http://www.opendmx.net/index.php/E1.31))
 * RPi (Raspberry Pi) SPI controlled WS2801 LED pixels, see [http://www.pixelinvaders.ch](http://www.pixelinvaders.ch)
 * OctoWS2811, see [https://github.com/PaulStoffregen/OctoWS2811/tree/master/examples/PixelInvaders](https://github.com/PaulStoffregen/OctoWS2811/tree/master/examples/PixelInvaders)
+
 Check out the `integration/ArduinoFw` directory, all Arduino based firmware files are stored there.
 
 **(*1)**: I sell PixelInvaders 3d panels as a DIY kit, see [http://shop.pixelinvaders.ch](http://shop.pixelinvaders.ch) for more details (and if you want to support PixelController).
