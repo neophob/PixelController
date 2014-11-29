@@ -63,7 +63,7 @@ public class Tpm2 extends OnePanelResolutionAwareOutput {
 
         // HINT: on windows you need to (for example) use COM1, com1 will not
         // work! (case sensitive)
-        String serialPortName = serialPort.getSerialPortName(ph.getTpm2Device().toUpperCase());
+        String serialPortName = serialPort.getSerialPortName(ph.getTpm2Device());
         this.initialized = false;
         this.supportConnectionState = true;
         try {
