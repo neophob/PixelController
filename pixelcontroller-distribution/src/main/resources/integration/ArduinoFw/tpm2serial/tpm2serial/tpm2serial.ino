@@ -32,15 +32,18 @@
 //how many led pixels are connected
 #define NUM_LEDS 256
 
-// Teensy 3.0 has the LED on pin 13
-const int ledPin = 13;
+// Teensy 3.0 and Arduino Uno have the LED on pin 13
+#define LED_PIN = 13;
+
+// The ouput pin the LEDs are connected to.
+#define OUTPUT_PIN 6
 
 //---- END USER CONFIG ----
 
 #define BAUD_RATE 115200
 
-//define some tpm constants
-#define TPM2NET_HEADER_SIZE 4
+//define some TPM constants
+#define TPM2NET_HEADER_SIZE 6
 #define TPM2NET_HEADER_IDENT 0x9c
 #define TPM2NET_CMD_DATAFRAME 0xda
 #define TPM2NET_CMD_COMMAND 0xc0
@@ -57,7 +60,7 @@ const int ledPin = 13;
 
 // buffers for receiving and sending data
 uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
-uint16_t psize;
+uint16_t frameSize;
 uint8_t currentPacket;
 uint8_t totalPacket;
 
@@ -74,13 +77,12 @@ void setup() {
   Serial.println("HI");
 #endif 
 
-  pinMode(ledPin, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
   debugBlink(500);
 
   memset(packetBuffer, 0, MAX_PACKED_SIZE);
 
-  //LEDS.addLeds<WS2801>(leds, NUM_LEDS);
-  LEDS.addLeds<WS2811, 11, GRB>(leds, NUM_LEDS);  //connect on pin 11
+  LEDS.addLeds<WS2811, OUTPUT_PIN, RGB>(leds, NUM_LEDS);  //Connect NUM_LEDS on pin OUTPUT_PIN
   
   //Flickering issues?
   //...it turned out that as my PSU got hotter, the voltage was dropping towards the end of the LED strip.
@@ -91,7 +93,7 @@ void setup() {
   // setting brightness to 50% brightness  
   LEDS.setBrightness(64);
   
-  showInitImage();      // display some colors
+  showInitImage(); // Display a default blank image
 }
 
 //********************************
@@ -102,7 +104,7 @@ void loop() {
   if (res > 0) {
 #ifdef DEBUG      
     Serial.print("FINE: ");
-    Serial.print(psize, DEC);    
+    Serial.print(frameSize, DEC);
     Serial.print("/");
     Serial.print(currentPacket, DEC);    
 #if defined (CORE_TEENSY_SERIAL)    
@@ -110,9 +112,9 @@ void loop() {
 #endif
 
 #endif
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(LED_PIN, HIGH);
     updatePixels();
-    digitalWrite(ledPin, LOW);    
+    digitalWrite(LED_PIN, LOW);
   }
 #ifdef DEBUG      
   else {
@@ -122,6 +124,7 @@ void loop() {
 #if defined (CORE_TEENSY_SERIAL)          
       Serial.send_now();
 #endif
+      showError();
     }
   }
 #endif  
@@ -131,17 +134,17 @@ void loop() {
 // UPDATE PIXELS
 //********************************
 void updatePixels() {
-  uint8_t nrOfPixels = psize/3;
+  uint8_t nrOfPixels = frameSize/3;
   
   uint16_t ofs=0;
-  uint16_t ledOffset = PIXELS_PER_PACKET*currentPacket;
+  uint16_t ledOffset = PIXELS_PER_PACKET * currentPacket;
   
   for (uint16_t i=0; i<nrOfPixels; i++) {
     leds[i+ledOffset] = CRGB(packetBuffer[ofs++], packetBuffer[ofs++], packetBuffer[ofs++]);    
   }
   
-  //update only if all data packets recieved
-  if (currentPacket==totalPacket-1) {
+  //update only if all data packets received
+  if (currentPacket == totalPacket-1) {
 #ifdef DEBUG      
     Serial.println("DRAW!");
 #if defined (CORE_TEENSY_SERIAL)        
@@ -169,15 +172,16 @@ int16_t readCommand() {
     return -1;
   }
   
-  uint8_t dataFrame = Serial.read();
-  if (dataFrame != TPM2NET_CMD_DATAFRAME) {
+  uint8_t tpmCommand = Serial.read();
+  if (tpmCommand != TPM2NET_CMD_DATAFRAME) {
     return -2;  
   }
   
+  // Get both 8 bit values for frameSize and assemble into a 16 bit integer.
   uint8_t s1 = Serial.read();
   uint8_t s2 = Serial.read();  
-  psize = (s1<<8) + s2;
-  if (psize < 6 || psize > MAX_PACKED_SIZE) {
+  frameSize = (s1<<8) + s2;
+  if (frameSize < 6 || frameSize > MAX_PACKED_SIZE) {
     return -3;
   }  
 
@@ -185,8 +189,8 @@ int16_t readCommand() {
   totalPacket = Serial.read();    
   
   //get remaining bytes
-  uint16_t recvNr = Serial.readBytes((char *)packetBuffer, psize);
-  if (recvNr!=psize) {
+  uint16_t recvNr = Serial.readBytes((char *)packetBuffer, frameSize);
+  if (recvNr != frameSize) {
     return -5;
   }  
 
@@ -195,24 +199,30 @@ int16_t readCommand() {
     return -6;
   }
 
-  return psize;
+  return frameSize;
 }
 
 
-// --------------------------------------------
+//********************************
 //     create initial image
-// --------------------------------------------
+//********************************
 void showInitImage() {
-  for (int i = 0 ; i < NUM_LEDS; i++ ) {
-    leds[i] = CRGB(i&255, (i>>1)&255, (i>>2)&255);
+  for (int i = 0 ; i < NUM_LEDS; i++) {
+    leds[i] = CRGB(10, 10, 10);
   }
   LEDS.show();
 }
 
 void debugBlink(uint8_t t) {
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(LED_PIN, HIGH);
   delay(t);
-  digitalWrite(ledPin, LOW);  
+  digitalWrite(LED_PIN, LOW);
 }
 
+void showError() {
+  for (int i = 0 ; i < NUM_LEDS; i++) {
+    leds[i] = CRGB(50, 0, 0);
+  }
+  LEDS.show();
+}
 

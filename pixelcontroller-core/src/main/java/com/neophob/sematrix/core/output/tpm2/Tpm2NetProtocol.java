@@ -68,8 +68,9 @@ public final class Tpm2NetProtocol {
         int frameSize = data.length;
         byte[] outputBuffer = new byte[frameSize + TPM2_NET_HEADER_SIZE + 1];
 
-        outputBuffer[0] = ((byte) (START_BYTE & 0xff));
-        outputBuffer[1] = ((byte) (DATA_FRAME & 0xff));
+        outputBuffer[0] = ((byte) (START_BYTE & 0xFF));
+        outputBuffer[1] = ((byte) (DATA_FRAME & 0xFF));
+        // Split frameSize into two bytes to store up to a 16 bit value.
         outputBuffer[2] = ((byte) (frameSize >> 8 & 0xFF));
         outputBuffer[3] = ((byte) (frameSize & 0xFF));
         outputBuffer[4] = ((byte) packetNumber);
