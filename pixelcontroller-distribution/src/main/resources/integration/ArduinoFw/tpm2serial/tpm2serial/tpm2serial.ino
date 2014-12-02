@@ -136,7 +136,8 @@ void updatePixels() {
   uint16_t ledOffset = PIXELS_PER_PACKET * currentPacket;
 
   for (uint16_t i=0; i<nrOfPixels; i++) {
-    leds[i+ledOffset] = CRGB(frameData[ofs++], frameData[ofs++], frameData[ofs++]);
+    leds[i+ledOffset] = CRGB(frameData[ofs], frameData[ofs+1], frameData[ofs+2]);
+    ofs = ofs + 3;
   }
 
   //update only if all data packets received
