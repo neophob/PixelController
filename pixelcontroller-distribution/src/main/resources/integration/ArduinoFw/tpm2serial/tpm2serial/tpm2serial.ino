@@ -33,10 +33,10 @@
 #define NUM_LEDS 256
 
 // Teensy 3.0 and Arduino Uno have the LED on pin 13
-#define LED_PIN = 13;
+#define LED_PIN 13
 
 // The ouput pin the LEDs are connected to.
-#define OUTPUT_PIN 6
+#define OUTPUT_PIN 11
 
 //---- END USER CONFIG ----
 
@@ -44,10 +44,10 @@
 
 //define some TPM constants
 #define TPM2NET_HEADER_SIZE 6
-#define TPM2NET_HEADER_IDENT 0x9c
-#define TPM2NET_CMD_DATAFRAME 0xda
-#define TPM2NET_CMD_COMMAND 0xc0
-#define TPM2NET_CMD_ANSWER 0xaa
+#define TPM2NET_HEADER_IDENT 0x9C
+#define TPM2NET_CMD_DATAFRAME 0xDA
+#define TPM2NET_CMD_COMMAND 0xC0
+#define TPM2NET_CMD_ANSWER 0xAA
 #define TPM2NET_FOOTER_IDENT 0x36
 
 //3 byte per pixel or 24bit (RGB)
@@ -59,16 +59,13 @@
 #define PIXELS_PER_PACKET 170
 
 // buffers for receiving and sending data
-uint8_t packetBuffer[MAX_PACKED_SIZE]; //buffer to hold incoming packet
+uint8_t frameData[MAX_PACKED_SIZE]; //buffer to hold incoming frame data
 uint16_t frameSize;
 uint8_t currentPacket;
 uint8_t totalPacket;
 
 CRGB leds[NUM_LEDS];
 
-//********************************
-// SETUP
-//********************************
 void setup() {  
   Serial.begin(BAUD_RATE);
   Serial.flush();
@@ -80,10 +77,10 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   debugBlink(500);
 
-  memset(packetBuffer, 0, MAX_PACKED_SIZE);
+  memset(frameData, 0, MAX_PACKED_SIZE);
 
   LEDS.addLeds<WS2811, OUTPUT_PIN, RGB>(leds, NUM_LEDS);  //Connect NUM_LEDS on pin OUTPUT_PIN
-  
+
   //Flickering issues?
   //...it turned out that as my PSU got hotter, the voltage was dropping towards the end of the LED strip.
   //Tried feeding power to both ends of the strip, only delayed the issue slightly.  Changed to a bigger PSU and fault went away 
@@ -91,14 +88,11 @@ void setup() {
 
   // For safety (to prevent too high of a power draw), the test case defaults to
   // setting brightness to 50% brightness  
-  LEDS.setBrightness(64);
-  
+  LEDS.setBrightness(128);
+
   showInitImage(); // Display a default blank image
 }
 
-//********************************
-// LOOP
-//********************************
 void loop() {  
   int16_t res = readCommand();
   if (res > 0) {
@@ -119,30 +113,32 @@ void loop() {
 #ifdef DEBUG      
   else {
     if (res!=-1) {
+      // Set all LEDs to red if bad data is received, lower the framerate to avoid.
+      // TODO: Additional debugging needed to confirm the source of the bug.
+      showError();
       Serial.print("ERR: ");
       Serial.println(res, DEC);
 #if defined (CORE_TEENSY_SERIAL)          
       Serial.send_now();
 #endif
-      showError();
     }
   }
 #endif  
 }
 
-//********************************
-// UPDATE PIXELS
-//********************************
+/*
+ * Update all Pixels using the frameData.
+ */
 void updatePixels() {
   uint8_t nrOfPixels = frameSize/3;
-  
+
   uint16_t ofs=0;
   uint16_t ledOffset = PIXELS_PER_PACKET * currentPacket;
-  
+
   for (uint16_t i=0; i<nrOfPixels; i++) {
-    leds[i+ledOffset] = CRGB(packetBuffer[ofs++], packetBuffer[ofs++], packetBuffer[ofs++]);    
+    leds[i+ledOffset] = CRGB(frameData[ofs++], frameData[ofs++], frameData[ofs++]);
   }
-  
+
   //update only if all data packets received
   if (currentPacket == totalPacket-1) {
 #ifdef DEBUG      
@@ -163,38 +159,37 @@ void updatePixels() {
   }
 }
 
-//********************************
-// READ SERIAL PORT
-//********************************
+/*
+ * Read the next command packet from the serial port.
+ */
 int16_t readCommand() {  
-  uint8_t startChar = Serial.read();  
+  int startChar = serialWaitRead();
   if (startChar != TPM2NET_HEADER_IDENT) {
     return -1;
   }
-  
-  uint8_t tpmCommand = Serial.read();
+  int tpmCommand = serialWaitRead();
   if (tpmCommand != TPM2NET_CMD_DATAFRAME) {
-    return -2;  
+    return -2;
   }
-  
+
   // Get both 8 bit values for frameSize and assemble into a 16 bit integer.
-  uint8_t s1 = Serial.read();
-  uint8_t s2 = Serial.read();  
-  frameSize = (s1<<8) + s2;
+  int s1 = serialWaitRead();
+  int s2 = serialWaitRead();
+  frameSize = (s1 << 8) + s2;
   if (frameSize < 6 || frameSize > MAX_PACKED_SIZE) {
     return -3;
-  }  
+  }
 
-  currentPacket = Serial.read();  
-  totalPacket = Serial.read();    
-  
-  //get remaining bytes
-  uint16_t recvNr = Serial.readBytes((char *)packetBuffer, frameSize);
-  if (recvNr != frameSize) {
+  currentPacket = serialWaitRead();
+  totalPacket = serialWaitRead();
+
+  // Get the complete frame data
+  uint16_t byteCount = Serial.readBytes((char *)frameData, frameSize);
+  if (byteCount != frameSize) {
     return -5;
-  }  
+  }
 
-  uint8_t endChar = Serial.read();
+  int endChar = serialWaitRead();
   if (endChar != TPM2NET_FOOTER_IDENT) {
     return -6;
   }
@@ -202,23 +197,42 @@ int16_t readCommand() {
   return frameSize;
 }
 
+/*
+ * Read a byte from Serial, but block until a byte is received to avoid Ardiuno latency problems.
+ */
+int serialWaitRead() {
+  int inByte = Serial.read();
 
-//********************************
-//     create initial image
-//********************************
+  // Loop until a byte is read.
+  while (inByte == -1) {
+    inByte = Serial.read();
+  }
+
+  return inByte;
+}
+
+/*
+ * Create initial image.
+ */
 void showInitImage() {
   for (int i = 0 ; i < NUM_LEDS; i++) {
-    leds[i] = CRGB(10, 10, 10);
+    leds[i] = CRGB(i&255, (i>>1)&255, (i>>2)&255);
   }
   LEDS.show();
 }
 
+/*
+ * Blink the LED_PIN, generally used to confirm the connection.
+ */
 void debugBlink(uint8_t t) {
   digitalWrite(LED_PIN, HIGH);
   delay(t);
   digitalWrite(LED_PIN, LOW);
 }
 
+/*
+ * Change all LEDs to red to represent an error status.
+ */
 void showError() {
   for (int i = 0 ; i < NUM_LEDS; i++) {
     leds[i] = CRGB(50, 0, 0);
