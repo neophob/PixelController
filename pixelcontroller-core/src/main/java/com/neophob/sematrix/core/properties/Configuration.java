@@ -133,6 +133,7 @@ public class Configuration implements Serializable {
         int tpm2NetDevices = parseTpm2NetDevices();
         int udpDevices = parseUdpDevices();
         int rpi2801Devices = parseRpi2801Devices();
+        int opcDevices = parseOPCDevices();
         // track how many output systems are enabled
         int enabledOutputs = 0;
 
@@ -205,6 +206,14 @@ public class Configuration implements Serializable {
             LOG.log(Level.INFO, "found RPI2801 device: " + totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.RPI_2801;
         }
+        if(opcDevices > 0) {
+            enabledOutputs++;
+            totalDevices = opcDevices;
+            LOG.log(Level.INFO, "found OPC device: " + totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.OPEN_PIXEL_CONTROL;
+        }
+
+
         if (nullDevices > 0) {
             // enable null output only if configured AND no other output is
             // enabled.
@@ -676,6 +685,24 @@ public class Configuration implements Serializable {
         return parseInt(ConfigConstant.UDP_PORT, ConfigDefault.DEFAULT_UDP_PORT);
     }
 
+      /**
+     * get configured OPC ip.
+     * 
+     * @return the tcp ip
+     */
+    public String getOpcIp() {
+        return config.getProperty(ConfigConstant.OPC_IP);
+    }
+
+    /**
+     * get configured OPC port.
+     * 
+     * @return the tcp port
+     */
+    public int getOpcPort() {
+        return parseInt(ConfigConstant.OPC_PORT, ConfigDefault.DEFAULT_OPC_PORT);
+    }
+
     /**
      * get configured e131 ip.
      * 
@@ -887,6 +914,19 @@ public class Configuration implements Serializable {
 
     public int parseRpi2801Devices() {
         if (getRpiWs2801SpiSpeed() > 1000 && parseOutputXResolution() > 0
+                && parseOutputYResolution() > 0) {
+            this.devicesInRow1 = 1;
+            this.devicesInRow2 = 0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
+            return 1;
+        }
+
+        return 0;
+    }
+
+    public int parseOPCDevices() {
+        if (StringUtils.length(getOpcIp()) > 6 && parseOutputXResolution() > 0
                 && parseOutputYResolution() > 0) {
             this.devicesInRow1 = 1;
             this.devicesInRow2 = 0;

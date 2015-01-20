@@ -54,6 +54,9 @@ public enum OutputDeviceEnum {
 
     RPI_2801(RaspberrySpi2801.class, true),
 
+    /** Open Pixel Control **/
+    OPEN_PIXEL_CONTROL(OpenPixelControl.class, true),
+
     /** The NULL Output. */
     NULL(NullDevice.class, true);
 

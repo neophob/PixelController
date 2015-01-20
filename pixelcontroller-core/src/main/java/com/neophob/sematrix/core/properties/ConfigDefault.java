@@ -50,6 +50,8 @@ public final class ConfigDefault {
 
     public static final int DEFAULT_UDP_PORT = 6803;
 
+    public static final int DEFAULT_OPC_PORT = 7890;
+
     public static final int DEFAULT_PIXELINVADERS_PANEL_RESOULTION = 8;
     public static final int DEFAULT_EXPEDITINVADERS_PANEL_RESOULTION = 4;
 }

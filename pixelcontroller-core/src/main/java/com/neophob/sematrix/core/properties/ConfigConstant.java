@@ -67,6 +67,10 @@ public final class ConfigConstant {
     public static final String UDP_IP = "udp.ip";
     public static final String UDP_PORT = "udp.port";
 
+    /** Constants for Open Pixel Control **/
+    public static final String OPC_IP = "opc.ip";
+    public static final String OPC_PORT = "opc.port";
+
     /** The Constant OUTPUT_DEVICE_RESOLUTION_X. */
     public static final String OUTPUT_DEVICE_RESOLUTION_X = "output.resolution.x";
 

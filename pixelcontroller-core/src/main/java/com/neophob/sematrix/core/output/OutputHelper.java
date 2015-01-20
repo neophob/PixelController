@@ -220,6 +220,40 @@ public class OutputHelper {
     }
 
     /**
+     * Convert internal buffer to 24bit byte buffer, using colorformat,
+     * offset by N bytes from the start of the buffer
+     * 
+     * @param data
+     *            the data
+     * @param colorFormat
+     *            the color format
+     * @param offset
+     *            extra bytes to pad at the start of the buffer before data
+     * @return the byte[]
+     * @throws IllegalArgumentException
+     *             the illegal argument exception
+     */
+    public static byte[] convertBufferTo24bit(int[] data, ColorFormat colorFormat, int offset)
+            throws IllegalArgumentException {
+        int targetBuffersize = data.length;
+
+        int[] r = new int[targetBuffersize];
+        int[] g = new int[targetBuffersize];
+        int[] b = new int[targetBuffersize];
+
+        splitUpBuffers(targetBuffersize, data, colorFormat, r, g, b);
+
+        byte[] buffer = new byte[(targetBuffersize * 3) + offset];
+        for (int i = 0; i < targetBuffersize; i++) {
+            buffer[offset++] = (byte) r[i];
+            buffer[offset++] = (byte) g[i];
+            buffer[offset++] = (byte) b[i];
+        }
+
+        return buffer;
+    }
+
+    /**
      * convert the int buffer in byte buffers, respecting the color order
      * 
      * @param targetBuffersize

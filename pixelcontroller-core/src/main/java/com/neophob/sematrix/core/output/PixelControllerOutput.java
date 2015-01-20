@@ -121,6 +121,11 @@ public class PixelControllerOutput implements PixelControllerElement {
                     output = new RaspberrySpi2801(matrixData, resizeHelper, applicationConfig,
                             OutputTransportFactory.getRaspberryPiSpiImpl());
                     break;
+                case OPEN_PIXEL_CONTROL:
+                    output = new OpenPixelControl(matrixData, resizeHelper, applicationConfig,
+                            OutputTransportFactory.getTcpImpl());
+                    break;
+
                 default:
                     throw new IllegalArgumentException(
                             "Unable to initialize unknown output device: " + outputDeviceEnum);
