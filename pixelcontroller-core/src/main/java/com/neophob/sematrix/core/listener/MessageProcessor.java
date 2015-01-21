@@ -572,6 +572,22 @@ public enum MessageProcessor {
                     }
                     break;
 
+                case CHANGE_OUTPUT_GAIN:
+                    try {
+                        int a = parseValue(msg[1]);
+                        if (a < 0 || a > 100) {
+                            LOG.log(Level.WARNING, IGNORE_COMMAND + ", invalid gain value: "
+                                    + a);
+                            break;
+                        } else {
+                            float f = a / 100f;
+                            col.setOutputGain(f);
+                        }
+                    } catch (Exception e) {
+                        LOG.log(Level.WARNING, IGNORE_COMMAND, e);
+                    }
+                    break;
+
                 case GENERATOR_SPEED:
                     try {
                         int fpsAdjustment = (int) Float.parseFloat(msg[1]);

@@ -109,6 +109,9 @@ public class Configuration implements Serializable {
     /** user selected gamma correction */
     private GammaType gammaType;
 
+    /** user selected startup output gain */
+    private int startupOutputGain = 0;
+
     private String pixelinvadersNetIp;
     private int pixelinvadersNetPort;
 
@@ -281,6 +284,8 @@ public class Configuration implements Serializable {
         }
 
         gammaType = parseGammaCorrection();
+
+        startupOutputGain = parseStartupOutputGain();
     }
 
     /**
@@ -585,6 +590,28 @@ public class Configuration implements Serializable {
             LOG.log(Level.WARNING, FAILED_TO_PARSE, ConfigConstant.CFG_PANEL_GAMMA_TAB);
         }
         return ret;
+    }
+
+    /**
+     * Parses the startup global output gain
+     *
+     * @return int gain value from cfg or default
+     */
+    private int parseStartupOutputGain() {
+        String tmp = config.getProperty(ConfigConstant.STARTUP_GLOBAL_OUTPUT_GAIN, ""
+                + ConfigDefault.DEFAULT_STARTUP_GLOBAL_OUTPUT_GAIN);
+        try {
+            int ti = Integer.parseInt(tmp);
+            if (ti < 0 || ti > 100) {
+                LOG.log(Level.WARNING, ConfigConstant.STARTUP_GLOBAL_OUTPUT_GAIN + ", invalid startup gain value: "
+                    + ti);
+            } else {
+                return ti;
+            }
+        } catch (NumberFormatException e) {
+            LOG.log(Level.WARNING, FAILED_TO_PARSE, e);
+        }
+        return ConfigDefault.DEFAULT_STARTUP_GLOBAL_OUTPUT_GAIN;
     }
 
     /**
@@ -1364,6 +1391,15 @@ public class Configuration implements Serializable {
      */
     public GammaType getGammaType() {
         return gammaType;
+    }
+
+    /**
+     * return user selected startup output gain
+     * 
+     * @return
+     */
+    public int getStartupOutputGain() {
+        return startupOutputGain;
     }
 
     /**

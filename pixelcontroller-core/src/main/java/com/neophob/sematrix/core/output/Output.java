@@ -72,6 +72,12 @@ public abstract class Output implements IOutput {
 
     private GammaType gammaType;
 
+    /** The user defined startup output gain. Output gain is the global gain value
+    * that defines output brightness. Startup value is used initially to set the
+    * current value which can then be overridden by the user at runtime *
+    */
+    private int startupOutputGain;
+
     /**
      * does this output device know if its connected to the matrix
      */
@@ -100,6 +106,7 @@ public abstract class Output implements IOutput {
         this.layout = ph.getLayout();
         this.bpp = bpp;
         this.gammaType = ph.getGammaType();
+        this.startupOutputGain = ph.getStartupOutputGain();
 
         this.bufferMap = new HashMap<Integer, int[]>();
         this.totalNrOfOutputBuffers = ph.getNrOfScreens();
@@ -109,9 +116,12 @@ public abstract class Output implements IOutput {
             this.gammaType = GammaType.NONE;
         }
 
-        LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}, Gamma Correction: {3}",
+        /* set the global output gain value to the startup value */
+        VisualState.getInstance().setOutputGain(this.startupOutputGain / 100f);
+
+        LOG.log(Level.INFO, "Output created: {0}, Layout: {1}, BPP: {2}, Gamma Correction: {3}, Output Gain: {4}",
                 new Object[] { this.outputDeviceEnum, layout.getLayoutName(), this.bpp,
-                        this.gammaType });
+                        this.gammaType, this.startupOutputGain });
     }
 
     /**
@@ -125,7 +135,8 @@ public abstract class Output implements IOutput {
     public abstract void close();
 
     /**
-     * get buffer for a output, this method respect the mapping and brightness
+     * get buffer for a output, this method respect the mapping, brightness
+     * and global output gain (not affected by presets)
      * 
      * @param screenNr
      *            the screen nr
@@ -140,10 +151,12 @@ public abstract class Output implements IOutput {
         }
 
         float brightness = VisualState.getInstance().getBrightness();
+        float outputGain = VisualState.getInstance().getOutputGain();
+
         if (!applyGamma) {
-            return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness);
+            return Gammatab.applyBrightnessAndGammaTab(buffer, GammaType.NONE, brightness, outputGain);
         }
-        return Gammatab.applyBrightnessAndGammaTab(buffer, this.gammaType, brightness);
+        return Gammatab.applyBrightnessAndGammaTab(buffer, this.gammaType, brightness, outputGain);
     }
 
     /**
