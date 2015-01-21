@@ -55,7 +55,7 @@ public class OpenPixelControl extends OnePanelResolutionAwareOutput {
 
         LOG.log(Level.INFO, "Connect to target " + targetHost + ":" + targetPort);
         if (this.tcpImpl.initializeEthernet(targetHost, targetPort)) {
-            this.initialized = true;
+            initialized = true;
             LOG.log(Level.INFO, "initialized: " + this.initialized);
         } else {
             LOG.log(Level.INFO,
@@ -77,10 +77,13 @@ public class OpenPixelControl extends OnePanelResolutionAwareOutput {
             writeData(buffer);
         }
         else {
-            if (connectionErrorCounter % 10 == 9) {
-                // try to reconnect
-                LOG.log(Level.INFO, "Reinitialize TCP Socket");
-                tcpImpl.initializeEthernet(targetHost, targetPort);
+            // try to reconnect
+            if (this.tcpImpl.initializeEthernet(targetHost, targetPort)) {
+                initialized = true;
+                LOG.log(Level.INFO, "Reinitialized TCP Socket");
+            } else {
+                LOG.log(Level.INFO,
+                "Failed to reinitialize OPC target, verify the destination settings");
             }
         }
     }
