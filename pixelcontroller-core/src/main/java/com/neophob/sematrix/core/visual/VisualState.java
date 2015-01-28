@@ -118,8 +118,8 @@ public class VisualState extends Observable {
 
     private float brightness = 1.0f;
 
-    /** Global output gain */
-    private float outputGain = 0.0f;
+    /** Output gain */
+    private float outputGain = 1.0f;
 
     // the fps multiplier
     private float fpsSpeed = 1.0f;

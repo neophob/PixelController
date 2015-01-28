@@ -598,12 +598,12 @@ public class Configuration implements Serializable {
      * @return int gain value from cfg or default
      */
     private int parseStartupOutputGain() {
-        String tmp = config.getProperty(ConfigConstant.STARTUP_GLOBAL_OUTPUT_GAIN, ""
-                + ConfigDefault.DEFAULT_STARTUP_GLOBAL_OUTPUT_GAIN);
+        String tmp = config.getProperty(ConfigConstant.STARTUP_OUTPUT_GAIN, ""
+                + ConfigDefault.DEFAULT_STARTUP_OUTPUT_GAIN);
         try {
             int ti = Integer.parseInt(tmp);
             if (ti < 0 || ti > 100) {
-                LOG.log(Level.WARNING, ConfigConstant.STARTUP_GLOBAL_OUTPUT_GAIN + ", invalid startup gain value: "
+                LOG.log(Level.WARNING, ConfigConstant.STARTUP_OUTPUT_GAIN + ", invalid startup gain value: "
                     + ti);
             } else {
                 return ti;
@@ -611,7 +611,7 @@ public class Configuration implements Serializable {
         } catch (NumberFormatException e) {
             LOG.log(Level.WARNING, FAILED_TO_PARSE, e);
         }
-        return ConfigDefault.DEFAULT_STARTUP_GLOBAL_OUTPUT_GAIN;
+        return ConfigDefault.DEFAULT_STARTUP_OUTPUT_GAIN;
     }
 
     /**

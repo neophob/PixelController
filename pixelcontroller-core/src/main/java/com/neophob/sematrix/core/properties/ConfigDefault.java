@@ -55,5 +55,5 @@ public final class ConfigDefault {
     public static final int DEFAULT_PIXELINVADERS_PANEL_RESOULTION = 8;
     public static final int DEFAULT_EXPEDITINVADERS_PANEL_RESOULTION = 4;
 
-    public static final int DEFAULT_STARTUP_GLOBAL_OUTPUT_GAIN = 100;
+    public static final int DEFAULT_STARTUP_OUTPUT_GAIN = 100;
 }

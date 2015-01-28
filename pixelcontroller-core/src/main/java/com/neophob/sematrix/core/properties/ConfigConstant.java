@@ -94,8 +94,8 @@ public final class ConfigConstant {
     public static final String STARTUP_IN_RANDOM_PRESET_MODE = "startup.in.random.presetmode";
     public static final String STARTUP_LOAD_PRESET_NR = "startup.load.preset.nr";
 
-    /** Constant for STARTUP_GLOBAL_OUTPUT_GAIN */
-    public static final String STARTUP_GLOBAL_OUTPUT_GAIN = "startup.global.output.gain";
+    /** Constant for STARTUP_OUTPUT_GAIN */
+    public static final String STARTUP_OUTPUT_GAIN = "startup.output.gain";
 
     /** The Constant STARTUP_IN_RANDOM_MODE. */
     public static final String SOUND_AWARE_GENERATORS = "sound.analyze.enabled";
