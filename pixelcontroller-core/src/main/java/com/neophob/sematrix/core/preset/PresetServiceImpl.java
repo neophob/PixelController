@@ -92,6 +92,20 @@ public class PresetServiceImpl implements PresetService {
      * @return
      */
     private List<String> removeObsoleteCommands(List<String> preset) {
+        /* Global output gain should not be affected by presets
+           Yes, this is a little hacky; we could use a blacklist of
+           settings that never get saved to or read from presets */
+        if (preset.contains("CHANGE_OUTPUT_GAIN")) {
+            int ofs = 0;
+            for (String s : preset) {
+                if (s.startsWith("CHANGE_OUTPUT_GAIN")) {
+                    LOG.log(Level.INFO, "Removing Output gain from preset");
+                    break;
+                }
+                ofs++;
+            }
+            preset.remove(ofs);
+        }
         if (!preset.contains("CHANGE_GENERATOR_B 1") && !preset.contains("CHANGE_GENERATOR_A 1")) {
             LOG.log(Level.INFO, "No Blinkengenerator found, remove loading blinken resource");
             int ofs = 0;

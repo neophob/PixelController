@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * simple class to store present set's.
+ * simple class to store preset set's.
  * 
  * @author michu
  */
@@ -35,34 +35,34 @@ public class PresetSettings implements Serializable {
 
     private static final transient char DELIM = ';';
 
-    /** The present. */
+    /** The preset. */
     private List<String> preset;
     private String name = "";
 
     /**
-     * Gets the present.
+     * Gets the preset.
      * 
-     * @return the present
+     * @return the preset
      */
     public List<String> getPreset() {
         return preset;
     }
 
     /**
-     * Sets the present.
+     * Sets the preset.
      * 
-     * @param present
-     *            the new present
+     * @param preset
+     *            the new preset
      */
     public void setPreset(List<String> preset) {
         this.preset = preset;
     }
 
     /**
-     * Sets the present.
+     * Sets the preset.
      * 
-     * @param present
-     *            the new present
+     * @param preset
+     *            the new preset
      */
     public void setPreset(String[] preset) {
         List<String> list = new ArrayList<String>();
