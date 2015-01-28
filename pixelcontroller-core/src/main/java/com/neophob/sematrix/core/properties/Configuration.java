@@ -109,6 +109,9 @@ public class Configuration implements Serializable {
     /** user selected gamma correction */
     private GammaType gammaType;
 
+    /** user selected startup output gain */
+    private int startupOutputGain = 0;
+
     private String pixelinvadersNetIp;
     private int pixelinvadersNetPort;
 
@@ -133,6 +136,7 @@ public class Configuration implements Serializable {
         int tpm2NetDevices = parseTpm2NetDevices();
         int udpDevices = parseUdpDevices();
         int rpi2801Devices = parseRpi2801Devices();
+        int opcDevices = parseOPCDevices();
         // track how many output systems are enabled
         int enabledOutputs = 0;
 
@@ -205,6 +209,14 @@ public class Configuration implements Serializable {
             LOG.log(Level.INFO, "found RPI2801 device: " + totalDevices);
             this.outputDeviceEnum = OutputDeviceEnum.RPI_2801;
         }
+        if(opcDevices > 0) {
+            enabledOutputs++;
+            totalDevices = opcDevices;
+            LOG.log(Level.INFO, "found OPC device: " + totalDevices);
+            this.outputDeviceEnum = OutputDeviceEnum.OPEN_PIXEL_CONTROL;
+        }
+
+
         if (nullDevices > 0) {
             // enable null output only if configured AND no other output is
             // enabled.
@@ -272,6 +284,8 @@ public class Configuration implements Serializable {
         }
 
         gammaType = parseGammaCorrection();
+
+        startupOutputGain = parseStartupOutputGain();
     }
 
     /**
@@ -579,6 +593,28 @@ public class Configuration implements Serializable {
     }
 
     /**
+     * Parses the startup global output gain
+     *
+     * @return int gain value from cfg or default
+     */
+    private int parseStartupOutputGain() {
+        String tmp = config.getProperty(ConfigConstant.STARTUP_OUTPUT_GAIN, ""
+                + ConfigDefault.DEFAULT_STARTUP_OUTPUT_GAIN);
+        try {
+            int ti = Integer.parseInt(tmp);
+            if (ti < 0 || ti > 100) {
+                LOG.log(Level.WARNING, ConfigConstant.STARTUP_OUTPUT_GAIN + ", invalid startup gain value: "
+                    + ti);
+            } else {
+                return ti;
+            }
+        } catch (NumberFormatException e) {
+            LOG.log(Level.WARNING, FAILED_TO_PARSE, e);
+        }
+        return ConfigDefault.DEFAULT_STARTUP_OUTPUT_GAIN;
+    }
+
+    /**
      * Parses the i2c address.
      * 
      * @return the int
@@ -674,6 +710,24 @@ public class Configuration implements Serializable {
      */
     public int getUdpPort() {
         return parseInt(ConfigConstant.UDP_PORT, ConfigDefault.DEFAULT_UDP_PORT);
+    }
+
+      /**
+     * get configured OPC ip.
+     * 
+     * @return the tcp ip
+     */
+    public String getOpcIp() {
+        return config.getProperty(ConfigConstant.OPC_IP);
+    }
+
+    /**
+     * get configured OPC port.
+     * 
+     * @return the tcp port
+     */
+    public int getOpcPort() {
+        return parseInt(ConfigConstant.OPC_PORT, ConfigDefault.DEFAULT_OPC_PORT);
     }
 
     /**
@@ -887,6 +941,19 @@ public class Configuration implements Serializable {
 
     public int parseRpi2801Devices() {
         if (getRpiWs2801SpiSpeed() > 1000 && parseOutputXResolution() > 0
+                && parseOutputYResolution() > 0) {
+            this.devicesInRow1 = 1;
+            this.devicesInRow2 = 0;
+            this.deviceXResolution = parseOutputXResolution();
+            this.deviceYResolution = parseOutputYResolution();
+            return 1;
+        }
+
+        return 0;
+    }
+
+    public int parseOPCDevices() {
+        if (StringUtils.length(getOpcIp()) > 6 && parseOutputXResolution() > 0
                 && parseOutputYResolution() > 0) {
             this.devicesInRow1 = 1;
             this.devicesInRow2 = 0;
@@ -1324,6 +1391,15 @@ public class Configuration implements Serializable {
      */
     public GammaType getGammaType() {
         return gammaType;
+    }
+
+    /**
+     * return user selected startup output gain
+     * 
+     * @return
+     */
+    public int getStartupOutputGain() {
+        return startupOutputGain;
     }
 
     /**

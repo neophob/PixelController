@@ -79,7 +79,7 @@ public final class Gammatab {
      * @param brightness
      * @return
      */
-    public static int[] applyBrightnessAndGammaTab(int[] buffer, GammaType type, float brightness) {
+    public static int[] applyBrightnessAndGammaTab(int[] buffer, GammaType type, float brightness, float outputGain) {
         int[] ret = new int[buffer.length];
         int ofs = 0;
         int r, g, b;
@@ -91,9 +91,9 @@ public final class Gammatab {
             b = (int) (tmp & 255);
 
             // apply brightness
-            r = (int) (r * brightness);
-            g = (int) (g * brightness);
-            b = (int) (b * brightness);
+            r = (int) (r * brightness * outputGain);
+            g = (int) (g * brightness * outputGain);
+            b = (int) (b * brightness * outputGain);
 
             // apply gamma
             switch (type) {

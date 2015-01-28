@@ -118,6 +118,9 @@ public class VisualState extends Observable {
 
     private float brightness = 1.0f;
 
+    /** Output gain */
+    private float outputGain = 1.0f;
+
     // the fps multiplier
     private float fpsSpeed = 1.0f;
 
@@ -616,6 +619,13 @@ public class VisualState extends Observable {
         return brightness;
     }
 
+    /**
+     * @return the output gain
+     */
+    public float getOutputGain() {
+        return outputGain;
+    }
+
     public float getFpsSpeed() {
         return fpsSpeed;
     }
@@ -632,6 +642,14 @@ public class VisualState extends Observable {
         this.brightness = brightness;
     }
 
+    /**
+     * @param outputGain
+     *            the output gain to set
+     */
+    public void setOutputGain(float outputGain) {
+        this.outputGain = outputGain;
+    }
+
     public boolean isPassThroughModeEnabledForCurrentVisual() {
         return getVisual(currentVisual).isPassThroughModeEnabledForCurrentVisual();
     }
@@ -643,6 +661,8 @@ public class VisualState extends Observable {
         ret.add(ValidCommand.CHANGE_BRIGHTNESS + " " + brightnessInt);
         int generatorSpeed = (int) (this.fpsSpeed * 100f);
         ret.add(ValidCommand.GENERATOR_SPEED + " " + generatorSpeed);
+        int outputGainInt =  (int) (this.outputGain * 100f);
+        ret.add(ValidCommand.CHANGE_OUTPUT_GAIN + " " + outputGainInt);
 
         // add element status
         ret.addAll(pixelControllerEffect.getCurrentState());

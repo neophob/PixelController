@@ -67,6 +67,10 @@ public final class ConfigConstant {
     public static final String UDP_IP = "udp.ip";
     public static final String UDP_PORT = "udp.port";
 
+    /** Constants for Open Pixel Control **/
+    public static final String OPC_IP = "opc.ip";
+    public static final String OPC_PORT = "opc.port";
+
     /** The Constant OUTPUT_DEVICE_RESOLUTION_X. */
     public static final String OUTPUT_DEVICE_RESOLUTION_X = "output.resolution.x";
 
@@ -89,6 +93,9 @@ public final class ConfigConstant {
     public static final String STARTUP_IN_RANDOM_MODE = "startup.in.randommode";
     public static final String STARTUP_IN_RANDOM_PRESET_MODE = "startup.in.random.presetmode";
     public static final String STARTUP_LOAD_PRESET_NR = "startup.load.preset.nr";
+
+    /** Constant for STARTUP_OUTPUT_GAIN */
+    public static final String STARTUP_OUTPUT_GAIN = "startup.output.gain";
 
     /** The Constant STARTUP_IN_RANDOM_MODE. */
     public static final String SOUND_AWARE_GENERATORS = "sound.analyze.enabled";

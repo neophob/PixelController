@@ -121,6 +121,9 @@ public enum ValidCommand {
 
     CHANGE_BRIGHTNESS(CommandGroup.GENERATOR, 1, "<INT> output brightness 0 .. 100"),
 
+    /** Output Gain */
+    CHANGE_OUTPUT_GAIN(CommandGroup.MISC, 1, "<INT> output gain, 0-100 (%)"),
+
     GENERATOR_SPEED(CommandGroup.GENERATOR, 1,
             "<INT> generator speed 0 .. 200 (default speed is 100)"),
 
