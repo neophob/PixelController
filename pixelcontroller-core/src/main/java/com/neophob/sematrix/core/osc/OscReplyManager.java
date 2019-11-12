@@ -81,19 +81,23 @@ public class OscReplyManager extends CallbackMessage<ArrayList> implements Runna
 
     // handle all "INTERNAL" commands, eg. API calls
     public void handleClientResponse(OscMessage oscIn, String[] msg) throws OscClientException {
+        Protocol NETWORK_PROTOCOL = Protocol.UDP;
+        int LOCAL_SERVER_PORT = 10009;
         ValidCommand cmd = ValidCommand.valueOf(msg[0]);
         Command command = new Command(cmd);
 
         if (oscIn != null) {
             InetSocketAddress currentTarget = (InetSocketAddress) oscIn.getSocketAddress();
-            int clientPort = currentTarget.getPort();
+
             if (!currentClientIp.equalsIgnoreCase(currentTarget.getHostName())) {
                 LOG.log(Level.INFO, "New Client connection, IP: {0}/{1}, Port: {2}", new Object[] {
-                        remoteServer.getClientTargetIp(), currentTarget.getHostName(), clientPort });
-                remoteServer.startClient(Protocol.TCP, currentTarget.getHostName(), clientPort, 0);
+                        remoteServer.getClientTargetIp(), currentTarget.getHostName(), LOCAL_SERVER_PORT });
+                remoteServer.startClient(NETWORK_PROTOCOL, currentTarget.getHostName(), LOCAL_SERVER_PORT, 0);
                 currentClientIp = currentTarget.getHostName();
             }
         }
+
+        LOG.log(Level.INFO, cmd.toString() + " received.");
 
         switch (cmd) {
             case GET_CONFIGURATION:

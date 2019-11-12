@@ -76,7 +76,7 @@ public class PixConClient {
         }
 
         // send request
-        rmi.startClient(NETWORK_PROTOCOL, cmd.getHostname(), cmd.getPort(), LOCAL_SERVER_PORT);
+        rmi.startClient(NETWORK_PROTOCOL, cmd.getHostname(), cmd.getPort(), 0);
         Command cmdAndParameter = new Command(cmd.getCommand(), new String[] { cmd.getParameter() });
         rmi.sendPayload(cmdAndParameter, null);
 
